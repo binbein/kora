@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, CreditCard, FileText, Shield, BarChart3, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Users, CreditCard, FileText, Shield, Menu, X } from 'lucide-react';
 import HealthOSLogo from '@/components/shared/HealthOSLogo';
 
 const navItems = [

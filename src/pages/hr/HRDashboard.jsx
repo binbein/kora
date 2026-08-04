@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Users, CheckCircle2, Brain, Stethoscope, TrendingDown, Activity, Calculator, Calendar } from 'lucide-react';
+import { Users, CheckCircle2, Brain, Stethoscope, TrendingDown, Calculator, Calendar } from 'lucide-react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import KPICard from '@/components/shared/KPICard';
 import PrivacyBanner from '@/components/shared/PrivacyBanner';

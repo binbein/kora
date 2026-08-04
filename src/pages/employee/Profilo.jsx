@@ -1,8 +1,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Shield, User, Building2, Mail, Heart, Brain, Activity, Moon, Zap } from 'lucide-react';
+import { Shield, Building2, Mail, Heart, Brain, Activity, Moon, Zap } from 'lucide-react';
 import PrivacyBanner from '@/components/shared/PrivacyBanner';
 
 const profile = {

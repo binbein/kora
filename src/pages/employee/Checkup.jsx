@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { MapPin, Calendar, CheckCircle2, ClipboardCheck, Heart, Activity } from 'lucide-react';
+import { MapPin, Calendar, CheckCircle2, ClipboardCheck } from 'lucide-react';
 
 const providers = [
   { id: 1, name: 'Centro Medico Lugano', city: 'Lugano', address: 'Via Nassa 15', distance: '2.1 km', slots: ['Lun 9:00', 'Mar 10:30', 'Gio 14:00'] },

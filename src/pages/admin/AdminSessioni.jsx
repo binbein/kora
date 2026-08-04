@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ClipboardList, Video, CheckCircle2, XCircle } from 'lucide-react';
+import { ClipboardList, CheckCircle2, XCircle } from 'lucide-react';
 import KPICard from '@/components/shared/KPICard';
 
 const sessions = [

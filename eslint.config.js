@@ -5,13 +5,17 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginUnusedImports from "eslint-plugin-unused-imports";
 
 export default [
+  // Non manteniamo questo codice e non deve produrre errori: `reference/` e' il
+  // magazzino di sola lettura della vecchia demo (CLAUDE.md §3), `dist/` e' il build.
+  {
+    ignores: ["reference/**", "dist/**"],
+  },
   {
     files: [
-      "src/components/**/*.{js,mjs,cjs,jsx}",
-      "src/pages/**/*.{js,mjs,cjs,jsx}",
-      "src/Layout.jsx",
+      "src/**/*.{js,mjs,cjs,jsx}",
     ],
-    ignores: ["src/lib/**/*", "src/components/ui/**/*"],
+    // I componenti shadcn non si toccano se non per i bug di CLAUDE.md §3.
+    ignores: ["src/components/ui/**/*"],
     ...pluginJs.configs.recommended,
     ...pluginReact.configs.flat.recommended,
     languageOptions: {

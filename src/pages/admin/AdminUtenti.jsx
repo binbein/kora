@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Users, Search, Filter } from 'lucide-react';
+import { Users, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import KPICard from '@/components/shared/KPICard';
 

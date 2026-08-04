@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Download, Calendar, TrendingUp, TrendingDown, Shield } from 'lucide-react';
+import { FileText, Download, Calendar, TrendingUp, TrendingDown } from 'lucide-react';
 import PrivacyBanner from '@/components/shared/PrivacyBanner';
 
 const reportData = {
