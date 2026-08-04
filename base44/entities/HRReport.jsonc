@@ -1,0 +1,40 @@
+{
+  "name": "HRReport",
+  "type": "object",
+  "properties": {
+    "company_id": {
+      "type": "string"
+    },
+    "period": {
+      "type": "string"
+    },
+    "activation_rate": {
+      "type": "number"
+    },
+    "checkup_completion_rate": {
+      "type": "number"
+    },
+    "mental_health_usage_rate": {
+      "type": "number"
+    },
+    "average_stress_change": {
+      "type": "number"
+    },
+    "virtual_doctor_consults": {
+      "type": "number"
+    },
+    "estimated_roi_chf": {
+      "type": "number"
+    },
+    "estimated_absence_days_avoided": {
+      "type": "number"
+    },
+    "pdf_url": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "company_id",
+    "period"
+  ]
+}

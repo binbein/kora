@@ -1,0 +1,659 @@
+# KORA — frontend
+
+Questo file è la costituzione del progetto. Ogni sessione di lavoro deve rispettarlo.
+Le decisioni qui dentro sono CONGELATE: si cambiano solo su richiesta esplicita dei
+founder, mai per iniziativa autonoma. Se una richiesta sembra in conflitto con questo
+file, segnalarlo prima di procedere.
+
+## 1. Cos'è questo progetto
+
+KORA è una piattaforma B2B di salute aziendale per il mercato svizzero (abbonamento
+mensile per dipendente: psicologo con cap annuale, coach, medico virtuale, check-up
+fisico, prevenzione AI, dashboard HR con ROI).
+
+Questo repository ha **due obiettivi insieme**, e l'ordine conta:
+
+1. **Oggi: la demo per gli investitori.** Deve convincere in una presentazione dal
+   vivo di 30 minuti. Tutti i dati sono finti e costruiti ad arte (§7). Tutti i
+   servizi complessi (video, pagamenti, AI, chat medica, referti) sono simulati.
+2. **Domani: il frontend dell'MVP.** Quando arriva il funding, il passaggio alla
+   produzione deve essere **sostituire l'implementazione mock con le chiamate
+   all'API vera**, non riscrivere le schermate. Ogni scelta di architettura qui
+   dentro serve a rendere vera questa frase.
+
+Il secondo obiettivo non deve mai ritardare il primo. Costruiamo la casa con gli
+attacchi dell'acqua già al posto giusto; i sanitari si montano dopo il term sheet.
+
+### Da dove viene questo codice
+
+È il **fork della demo generata su base44**, di cui teniamo grafica, layout,
+navigazione ed esperienza utente. Ci viene innestato il **layer dati, il modello
+economico e la disciplina sui numeri** della precedente demo Next.js.
+
+Il sorgente di quella demo vive in **`reference/`**: è un magazzino di sola
+lettura da cui si copia, **non si modifica e non si importa**. Nessun file di
+`src/` deve mai avere un `import` che punta là dentro. Sparisce a fine M3, quando
+non c'è più niente da prendere; resta comunque nella storia di git.
+
+Dove le due divergono, la regola è: **layout e grafica di base44, logica e numeri
+della demo Next.** Le uniche eccezioni sono le regole di §6 che non sono estetica
+ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
+
+## 2. Regole d'oro (non negoziabili)
+
+1. **Nessun dato dentro i componenti.** Mai un array di dati in cima a una pagina,
+   mai un numero scritto in JSX. Tutto viene dal provider (§5) e passa da
+   `format.ts`. È la regola che rende vero l'obiettivo §1.2, ed è quella che il
+   codice ereditato viola in ogni singola pagina: sistemarla è metà del lavoro.
+2. **Il provider è asincrono ed è la specifica dell'API.** Il backend post-funding
+   sarà nostro e dovrà rispettare questo contratto. Si progetta con quella cura.
+3. **Sempre presentabile.** Nessuna migrazione "big-bang": ogni passo finisce con
+   una demo che funziona da capo a fondo. Non esiste lo stato "è tutto rotto ma fra
+   tre giorni è meglio". Si migra un'area alla volta, completa.
+4. **Numeri solo da §7 e §8.** Prezzi, cap sessioni, formule ROI, dataset. Non si
+   inventa mai una cifra nuova. Se ne serve una che non c'è, si chiede ai founder
+   e poi si scrive qui.
+5. **Nessun backend reale, nessuna credenziale nel codice.** Niente database, niente
+   API server, niente auth vera. `.env*` è in `.gitignore` dal giorno 1.
+6. **Scope congelato.** Le schermate sono quelle di §9. Nessuna schermata, feature o
+   sezione nuova senza approvazione esplicita dei founder. Se un'idea sembra buona,
+   proporla e fermarsi: la decisione spetta a loro.
+7. **Lingua: italiano — con architettura pronta per 4 lingue.** La piattaforma avrà
+   IT, DE, FR, EN; oggi resta SOLO italiano (it-CH: valuta CHF, numeri 14'200, date
+   gg.mm.aaaa). Niente language switcher. Ma valgono da subito:
+   - Stringhe UI in `src/lib/i18n/it.ts` (oggetto tipizzato, niente testo cablato
+     nei componenti). Aggiungere una lingua domani = aggiungere un file con le
+     stesse chiavi. **Retrofittare l'i18n su 21 schermate dopo costa dieci volte
+     tanto: si fa mentre si tocca ogni schermata, non alla fine.**
+   - **Mai concatenare stringhe per comporre frasi** (l'ordine delle parole cambia
+     tra lingue). Sempre frasi complete con segnaposto:
+     `"Hai usato {n} delle tue {max} sessioni"`, mai `"Hai usato " + n + ...`.
+   - `format.ts` riceve il locale come parametro (oggi fisso a `it-CH`). Il
+     separatore delle migliaia è l'apostrofo in tutte le varianti svizzere secondo
+     CLDR, ma date, valuta e liste cambiano — fr-CH scrive `14'200 CHF`, con la
+     valuta dopo. Nessun formato numerico o di data cablato nei componenti.
+   - **Layout che regge il tedesco** (parole ~30% più lunghe): niente larghezze
+     fisse su etichette e pulsanti.
+8. **Commit piccoli e frequenti**, messaggi in inglese, conventional commits
+   (`feat: hr dashboard reads from provider`). Mai commit giganti multi-feature.
+   Le decisioni non ovvie finiscono in questo file con un commit `docs:` separato
+   dal codice.
+9. **Prima di implementare task non banali: proporre un piano breve e attendere ok.**
+
+## 3. Stack tecnico
+
+Ereditato da base44, **e non è lo stack della demo precedente**: chi arriva dal
+repository Next non dia niente per scontato.
+
+- **Vite 6 + React 18 + react-router-dom 6.** Nessun server, nessun SSR: è una SPA
+  che si serve come file statici.
+- **TypeScript.** Vite compila `.ts`/`.tsx` nativamente e la convivenza con il
+  `.jsx` esistente è indolore. **Tutto il codice nuovo si scrive in TypeScript**;
+  le pagine ereditate si convertono quando le si tocca (§10), non tutte insieme.
+  Il layer dati (§5) è TS strict senza `any` — è il contratto con l'API futura e
+  in JavaScript quel contratto non esisterebbe.
+- **Tailwind CSS 3** con i token in `src/index.css` come variabili HSL, e
+  `tailwind.config.js` che li mappa. **Non è Tailwind 4**: esiste ancora
+  `tailwind.config.js`, non c'è il blocco `@theme`.
+- **shadcn/ui** stile *new-york*, su Radix, già installato (45 componenti in
+  `src/components/ui/`). **Attenzione alle varianti che i componenti shadcn danno
+  per esistenti**: nel loro codice compaiono classi come `data-active:` e
+  `data-horizontal:`, che Tailwind compila in selettori su attributi
+  `[data-active]` e `[data-horizontal]`, mentre Radix scrive `data-state` e
+  `data-orientation`. La regola non aggancia nulla e non segnala niente. È già
+  costato dei Tabs disposti in colonna nella demo precedente: aggiungendo un
+  componente shadcn, controllare **a schermo** che le sue varianti `data-*`
+  corrispondano ad attributi che Radix scrive davvero.
+- **@tanstack/react-query 5** — già installato e mai usato. Diventa l'unico modo in
+  cui le schermate leggono e mutano dati (§5).
+- **recharts 2** per i grafici, **lucide-react** per le icone, **framer-motion**
+  per le animazioni di ingresso della landing.
+- **Font: Inter (testo) + DM Sans (display).** Oggi arrivano da un `@import` di
+  Google Fonts dentro `index.css`. **Vanno self-hostati**: una richiesta a runtime
+  verso i server di Google trasmette l'IP dell'utente, ed è incompatibile con
+  quello che le nostre stesse schermate promettono (hosting in Svizzera, LPD,
+  GDPR). Non è un dettaglio di performance, è coerenza con l'argomento di vendita.
+
+### Dipendenze
+
+Il `package.json` ereditato contiene **una ventina di pacchetti mai importati**:
+`three`, `react-leaflet`, `react-quill`, `moment`, `lodash`, `@stripe/*`,
+`canvas-confetti`, `@hello-pangea/dnd`, `react-markdown`, `react-hot-toast`,
+`html2canvas`, `jspdf`, `date-fns`. Vanno verificati e rimossi: pesano sul bundle
+di un frontend che diventerà produzione. **Prima di rimuoverne uno, cercarlo nel
+codice**; `jspdf` e `html2canvas` in particolare potrebbero servire al report
+scaricabile (§9.C.3) e in quel caso restano.
+
+`zod`, `react-hook-form` e `@hookform/resolvers` sono installati e serviranno alla
+validazione dei form (§9, milestone M5): non toglierli.
+
+Prima di aggiungere qualunque dipendenza nuova: **chiedere.**
+
+### Il plugin base44 e il Builder
+
+`vite.config.js` carica `@base44/vite-plugin` con `visualEditAgent`,
+`hmrNotifier`, `navigationNotifier` e `analyticsTracker` attivi, e
+`src/lib/app-params.js` legge id e token dell'app.
+
+**Decisione dei founder: il repository è forkato e git è la fonte di verità.** Il
+Builder rigenera codice da prompt e un refactoring profondo fatto a mano o viene
+sovrascritto o diverge; un frontend di produzione non può avere due autori che non
+si parlano. Il plugin e l'SDK vanno quindi rimossi, insieme all'unico punto che li
+usa davvero (`DemoRequest.create()` nel form della landing, che diventa una
+mutation del provider come tutto il resto).
+
+**Attenzione a una dipendenza nascosta.** Ogni file importa con l'alias `@/`, ma
+quell'alias non è definito da nessuna parte nel repository: `vite.config.js` non ha
+un blocco `resolve.alias`, e Vite **non legge** i `paths` di `jsconfig.json`. Lo
+inietta il plugin base44. Togliendo il plugin senza aggiungere prima l'alias a
+`vite.config.js`, ogni import del progetto smette di risolvere in un colpo solo.
+È il primo passo di M1, non una conseguenza da scoprire dopo.
+
+Deploy: **Vercel**, progetto collegato al repo, preview automatica per branch.
+L'app sta alla radice del repository, quindi non serve impostare una Root
+Directory. L'alias pubblico è l'unico indirizzo da condividere: gli URL con l'hash
+del singolo deployment sono protetti da Vercel Authentication e chiedono a chi li
+riceve di autenticarsi, quindi non vanno mai mandati a un investitore.
+
+### Struttura del repository
+
+```
+kora/
+  CLAUDE.md              ← questo file: le regole, l'unica fonte
+  docs/PROGRESS.md       ← cosa esiste e perché, milestone per milestone
+  docs/CONTRATTO-DATI.md ← output di M2: la specifica per il backend futuro
+  src/
+    pages/
+      public/            ← landing, prezzi, richiesta demo
+      employee/          ← portale dipendente
+      hr/                ← portale HR
+      professional/      ← portale professionista
+      admin/             ← back-office interno
+    components/
+      ui/                ← shadcn, non si tocca se non per i bug di §3
+      shared/            ← KPICard, PrivacyBanner, logo
+      public|employee|hr|professional|admin/  ← layout e navigazione per area
+      kora/              ← componenti di dominio nuovi (StressBar, SessionMeter…)
+    lib/
+      data/              ← il contratto dati e l'implementazione mock (§5)
+      i18n/it.ts         ← tutte le stringhe UI
+      format.ts          ← formatCHF, formatDate, formatPercent — unico punto
+      dates.ts           ← aritmetica sui giorni: calcola, non formatta
+      roi-model.ts       ← formule del calcolatore ROI (§8)
+  reference/             ← sorgente della vecchia demo Next: sola lettura, si
+                           cancella a fine M3. Contiene solo il suo `src/`:
+                           niente package.json, niente config, niente app viva
+```
+
+**Un solo `CLAUDE.md` in tutto l'albero.** È il file che orienta ogni sessione:
+averne due significa due costituzioni in conflitto, e quella della vecchia demo
+descrive Next 16, Tailwind 4 e un provider sincrono. `reference/` contiene
+sorgenti e basta, mai una seconda costituzione.
+
+`reference/` va escluso da ESLint e da `tsconfig`: è codice che non manteniamo e
+che non deve produrre errori né entrare nel build. Vite non lo tocca comunque,
+perché parte da `index.html` e da `src/`.
+
+**Due file di documentazione, due mestieri diversi.** Le regole stanno solo qui:
+palette, formule, dataset, definizione di "finito". `docs/PROGRESS.md` racconta
+cosa esiste, milestone per milestone, ed è l'indice con cui ci si orienta
+riprendendo il lavoro — non decide niente e non duplica: cita e rimanda qui.
+
+**Il Business Plan non è nel repository.** I numeri che servono sono trascritti in
+§7 e §8, e quelli sono gli unici ammessi (§2.4).
+
+## 4. Come si lavora — le milestone
+
+Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
+(§2.3). Non si passa alla successiva lasciando indietro un'area a metà.
+
+- **M0 — Messa in sicurezza.** Le cose che rendono il codice ereditato pericoloso o
+  rotto se qualcuno apre il link: nomi di aziende e cliniche reali, marchio, link
+  morti, `/admin` esposto, disclaimer medico, piano "Personalizzato" nascosto.
+  Da qui in poi la demo è **sempre condivisibile**.
+- **M1 — Fondamenta tecniche.** Fork pulito, TypeScript, deploy proprio, trapianto
+  dei file puri (`format.ts`, `dates.ts`, `roi-model.ts`), struttura `i18n`.
+  A schermo non cambia niente.
+- **M2 — Il contratto dati.** `DataProvider` asincrono, `types.ts`, implementazione
+  mock, react-query, `DEMO_TODAY`, guardrail. Chiude con **una sola schermata
+  migrata** come prova del contratto (il portale professionista: piccolo,
+  autocontenuto, e mette subito sotto stress date, denaro e aggregazioni).
+- **M3 — Area per area.** HR → dipendente → professionista → admin. Ogni area viene
+  migrata **e** rinarrata nello stesso passaggio: dati dal provider, stringhe in
+  i18n, importi da `format.ts`, microcopy nel registro giusto. Toccare due volte la
+  stessa schermata è lavoro sprecato. **Chiude cancellando `reference/`**: se
+  serve ancora qualcosa da lì, l'area non è finita.
+- **M4 — I pezzi nuovi.** Calcolatore ROI pubblico (§9.A.2) e report trimestrale
+  scaricabile (§9.C.3).
+- **M5 — Verso la produzione.** Differibile, non blocca niente: guardie di rotta per
+  ruolo, stati di errore e vuoto veri, validazione dei form, accessibilità
+  completa, le altre tre lingue. **Le schermate di M3 vanno costruite in modo da
+  poterli ospitare, non da doverli rimandare.**
+
+## 5. Architettura dati — il cuore del progetto
+
+Principio: **le schermate non sanno che i dati sono finti.** Consumano
+un'interfaccia; oggi l'implementazione è mock, post-funding sarà l'API. Questo è il
+pezzo di codice che sopravvive alla demo, ed è la specifica che il backend dovrà
+rispettare.
+
+### 5.1 Il provider è asincrono
+
+```ts
+// src/lib/data/provider.ts
+export interface DataProvider {
+  getCompany(): Promise<Company>
+  getDepartments(): Promise<Department[]>
+  getStressHistory(departmentId?: string): Promise<StressRecord[]>
+  getRoiSnapshot(period: Quarter): Promise<RoiSnapshot>
+  bookAppointment(slot: AppointmentSlot): Promise<Appointment>
+  // ...
+}
+```
+
+**Ogni metodo restituisce una Promise, senza eccezioni.** È l'unica scelta di questo
+file che non si recupera dopo: se una schermata chiama il provider aspettandosi un
+oggetto, il giorno in cui dietro c'è una `fetch` non si sostituisce
+l'implementazione — si riscrive ogni schermata, perché ognuna deve imparare a
+gestire attesa, errore e vuoto. La demo precedente aveva metodi sincroni ed era
+giusto così, perché doveva solo essere una demo. Questa no.
+
+L'implementazione mock risolve immediatamente da un dataset già in memoria, quindi
+**durante il pitch non si vede mai uno spinner**. Non aggiungere ritardi artificiali
+"per realismo": in una presentazione dal vivo l'attesa è tempo morto da spiegare.
+
+### 5.2 react-query è l'unico modo di leggere e mutare
+
+Nessun `useState` che copia dati, nessun `useEffect` che carica, nessuno store
+globale. Le letture sono query con chiavi stabili; le scritture sono mutation che
+invalidano le query toccate. Una prenotazione fatta nel portale dipendente deve
+comparire nel calendario del professionista **perché la query si invalida**, non
+perché qualcuno passa lo stato a mano.
+
+`src/lib/query-client.js` esiste già e va tipizzato e configurato (niente refetch
+al focus della finestra durante una presentazione).
+
+### 5.3 Il dominio, per intero
+
+`types.ts` copre tutto il dominio delle schermate di §9, non solo quello della
+vecchia demo: azienda, reparti, dipendente, professionista, appuntamenti, sessioni,
+compensi, check-up e strutture, piano di prevenzione, piani di abbonamento, report,
+richieste demo, utenti e ruoli.
+
+I 12 schemi in `base44/entities/*.jsonc` del progetto originale sono una **lista di
+controllo della copertura**, non un vincolo di forma: il backend sarà nostro e il
+contratto lo disegniamo noi. Servono a ricordarci quali entità esistono, non a
+dettarne i campi.
+
+### 5.4 Il tempo ha una sola sorgente
+
+`DEMO_TODAY` in `src/lib/data/mock/demo-date.ts`. Da lì derivano lo storico dello
+stress, il trimestre corrente, la data dell'alert, il mese del riepilogo compensi,
+la settimana del calendario, il marcatore "oggi" e il confine fra sessione erogata
+e in programma.
+
+**Nessun componente chiama `new Date()`.** Se lo facesse, le schermate cambierebbero
+da sole col passare dei giorni — il calendario mostrerebbe una settimana vuota, il
+trimestre "in corso" diventerebbe chiuso — e la demo provata non sarebbe quella
+presentata. Il codice ereditato lo fa in un punto (la scelta della data nella
+prenotazione psicologo) e va corretto.
+
+Scegliere il giorno con attenzione: **un feriale, non a ridosso dell'inizio del
+mese.** Di sabato la colonna "oggi" del calendario è vuota; il 2 del mese il
+riepilogo compensi apre su un totale prossimo allo zero.
+
+### 5.5 Niente si scrive a mano se si può derivare
+
+È la lezione più cara della demo precedente e il difetto principale di quella
+ereditata. Vanno **calcolati, non scritti**:
+
+- la serie di stress aziendale = media dei reparti pesata sulle risposte, esclusi i
+  reparti sotto soglia;
+- l'alert precoce = scansione delle serie, così il marker sul grafico si sposta da
+  sé se i punteggi cambiano;
+- i giorni di assenza evitati = risparmio ÷ costo di una giornata (§8);
+- il monte sessioni annuo = organico × sessioni del piano;
+- i trimestri = contati a ritroso dal trimestre corrente;
+- i totali di riga e di colonna di ogni tabella.
+
+Due numeri che descrivono la stessa cosa non devono poter divergere, perché devono
+essere lo stesso numero.
+
+### 5.6 Guardrail che falliscono in sviluppo
+
+Controlli che lanciano in `import.meta.env.DEV` e tacciono in produzione, per i
+disallineamenti che a schermo non si vedono: il trimestre del PDF diverso da quello
+mostrato, il trimestre corrente fuori dal dataset, uno snapshot mancante, un id di
+professionista inesistente. Uno svarione si deve vedere mentre si lavora, non
+durante il pitch.
+
+### 5.7 Il giorno del passaggio alla produzione
+
+Non ci sarà un repository nuovo, e non ci sarà una riscrittura. **Questo è già il
+frontend dell'MVP**, in una fase in cui l'implementazione dietro l'interfaccia è
+finta. Il passaggio ha questa forma e nessun'altra:
+
+```
+src/lib/data/
+  provider.ts     ← l'interfaccia: non cambia
+  types.ts        ← i tipi: non cambiano
+  mock/           ← si cancella
+  http/           ← si aggiunge: stessa interfaccia, fetch dentro
+  index.ts        ← una riga che decide quale implementazione istanziare
+```
+
+Si cambia quella riga, si cancella `mock/`, e **le schermate non le tocca
+nessuno**. Da `CLAUDE.md` sparisce il §1.1 e il resto continua a valere.
+
+L'unico repository nuovo sarà quello del **backend**, e nascerà con in mano
+`docs/CONTRATTO-DATI.md`, che è l'output di M2.
+
+Questa sezione è anche un test: se durante il lavoro viene il pensiero *"a questo
+punto conviene rifarlo da capo pulito"*, vuol dire che qualcosa del seam non ha
+tenuto. È un segnale da riportare ai founder, non un piano da eseguire.
+
+## 6. Design system — quello di base44, documentato
+
+**Direzione approvata**: si tiene la resa visiva della demo base44. Questa sezione
+la mette per iscritto perché finora non lo era.
+
+### 6.1 Palette
+
+Token HSL in `src/index.css`, mappati in `tailwind.config.js`. Gli esadecimali sono
+indicativi, la fonte è la variabile.
+
+```css
+--primary:      207 68% 21%;   /* #11395A — blu petrolio: header, testi forti, CTA scure */
+--secondary:    172 73% 39%;   /* #1BAC99 — teal: azione primaria, dati positivi, accenti */
+--executive:    260 28% 35%;   /* #514072 — viola: piano Executive, portale professionista */
+--accent:       155 68% 92%;   /* #DDF8ED — menta chiara: fondi di riquadro, chip */
+--background:   150 20% 98%;   /* #F9FBFA */
+--foreground:   207 28% 15%;   /* #1C2731 */
+--muted:        150 20% 95%;   --muted-foreground: 210 15% 44%;
+--border:       210 20% 90%;
+--warning:      42 90% 68%;    /* #F7CB64 */
+--destructive:  0 84% 60%;     /* #EF4444 */
+--radius:       0.75rem;
+```
+
+Regole:
+
+- `warning` e `destructive` sono riservati ad alert e stati critici: è il loro essere
+  rari a farli notare.
+- **Mai testo normale su `secondary` pieno.** Il teal a 39% di luminosità non regge
+  il minimo AA di 4.5 con testo scuro. Le etichette vanno fuori dalla barra, oppure
+  in testo grande (≥19px, o ≥14px in peso 600), dove la soglia AA scende a 3.0.
+  Testo bianco su `secondary` va verificato caso per caso.
+- **Solo light mode.** `index.css` definisce una palette `.dark` completa che nessun
+  componente attiva: resta lì, inerte. Nessun toggle e nessun `next-themes` finché
+  non è una decisione dei founder.
+
+### 6.2 Tipografia
+
+- Testo e UI: **Inter**.
+- Titoli e numeri di rilievo: **DM Sans** (`font-display`).
+- Numeri importanti (CHF, percentuali, orari, contatori): **`tabular-nums`**. Senza,
+  le cifre ballano quando un valore cambia — e in questa demo cambiano di continuo.
+
+### 6.3 Due registri di forme e densità
+
+| | HR · landing · professionista · admin | App dipendente |
+|---|---|---|
+| Densità | compatta, da strumento | ariosa, da consumer |
+| Raggi | quelli derivati da `--radius` | più morbidi (`rounded-2xl`) |
+| Tono | professionale, terza persona | caldo, seconda persona |
+
+## 7. Microcopy
+
+- **Registro strumento** (HR, landing, professionista, admin): professionale,
+  metrico, terza persona. Parla di soglie, trimestri, CHF. *"Risparmio del
+  trimestre"*, *"Alert precoce — reparto Vendite"*.
+- **Registro consumer** (app dipendente): caldo, seconda persona, nome proprio,
+  incoraggiante ma mai infantile. *"Buongiorno Laura"*, *"Il sonno merita
+  attenzione"*.
+- Ovunque: **sentence case** (niente Title Case), niente punti esclamativi nel testo
+  di sistema, **niente emoji**. Il codice ereditato ne ha due (👋 nel saluto della
+  home dipendente, 💡 nel riquadro prezzi): il secondo va tolto senz'altro — è un
+  contratto da CHF 79'200 l'anno — il primo si può discutere con i founder.
+- **Un professionista parla come parlerebbe lui**, non come parla il prodotto: il
+  medico virtuale dà del lei ed è coerente dall'inizio alla fine della
+  conversazione. Il codice ereditato oscilla fra "lei" e "tu" nella stessa chat.
+- La privacy è un argomento di vendita: la nota *"Dati aggregati e anonimi · soglia
+  minima 15 risposte per reparto"* con icona lucchetto è sempre visibile in
+  dashboard. Dice **"risposte"**, non "dipendenti": la soglia si applica a chi ha
+  risposto al questionario (§7).
+- **Spazi JSX attorno agli elementi inline.** Quando il testo che segue un `<code>`,
+  `<strong>`, `<a>` o `<span>` va a capo nel sorgente, la trasformazione JSX ne
+  mangia lo spazio iniziale e le parole si attaccano. Un `{" "}` esplicito non
+  basta, perché il formattatore riaccorpa la riga e lo rimuove: va riscritta la
+  frase tenendo corto il testo fra un elemento inline e l'altro. Dopo aver scritto
+  una sezione con molti inline, **rileggere il testo reso, non il sorgente**.
+
+## 8. Il dataset demo — la storia dei 12 mesi
+
+Azienda: **Demo SA**, Lugano, 120 dipendenti, Piano Plus (CHF 55/dip/mese).
+
+> *Il codice ereditato usa "Alpine Finance SA, 150 dipendenti". Si rinomina in Demo
+> SA e si riporta a 120: tutte le cifre di questa sezione e della §9 sono già
+> congelate e verificate su quell'organico, mentre passare a 150 imporrebbe di
+> riderivare gli snapshot ROI e il monte sessioni — cioè rifare lavoro già
+> approvato. Il rename tocca sei punti; la fatturazione diventa CHF 6'600 al mese
+> e CHF 79'200 l'anno.*
+
+6 reparti: Vendite (24), Operations (31), Finanza (18), IT (17), HR + Legale (15),
+Direzione (15). Il codice ereditato ha reparti diversi e **senza le Vendite**, che è
+il reparto della storia: vanno sostituiti con questi.
+
+Persona dipendente: **Laura Bernasconi**, 34, Operations, profilo salute 78/100
+("In buon equilibrio", area debole: sonno), 3/10 sessioni psicologo usate, 1/4
+sessioni coach, prossimo appuntamento Dr.ssa Meier giovedì 17:30.
+
+La narrazione (deve emergere dai grafici senza spiegazioni):
+
+- Mesi 1–8: stress aziendale stabile su "Medio", in lieve calo. Vendite in linea.
+- Mesi 9–12: Vendite si stacca e sale costantemente fino ad "Alto".
+- **Mese 10: scatta l'alert precoce** (evidenziato sul grafico con un marker).
+- Adozione: 68% iscritti (82), 41 attivi nel mese. Sessioni azienda: 142 usate.
+- ROI trimestre corrente: **CHF 14'200 risparmiati, 16 giorni di assenza evitati**.
+- Stress per reparto (ultimo mese): Vendite Alto (78%), Operations Medio (52%),
+  Finanza Medio (44%), IT Basso (31%), HR + Legale Basso (26%). Direzione: sotto
+  soglia anonimato → la UI mostra "—" con un lucchetto.
+
+**La soglia di anonimato si applica alle risposte, non all'organico.** HR + Legale e
+Direzione hanno entrambi 15 dipendenti: con una regola sull'organico sarebbero
+indistinguibili. `Department.respondents` dice quante persone del reparto hanno
+risposto al questionario mensile, ed è quel numero a decidere se il dato è
+pubblicabile. Direzione ha 11 risposte, HR + Legale 15. Gli 82 "iscritti" sono
+un'altra cosa: chi ha attivato l'account per prenotare.
+
+**Le risposte si mostrano su ogni riga**, non solo su quelle sotto soglia: con il
+solo organico, i due reparti da 15 sarebbero due righe identiche con esiti opposti,
+e una delle due sembrerebbe rotta.
+
+**Il conteggio dei reparti in calo esclude quelli sotto soglia**: sono 4 su 5, non
+su 6. Un reparto fuori dalla media aziendale non può stare nel denominatore del
+dato che quella media descrive.
+
+**La serie aziendale è derivata, mai scritta a mano**: media dei punteggi di reparto
+pesata sulle risposte, con i reparti sotto soglia esclusi. Le curve vanno disegnate
+in modo che l'aggregato resti **piatto o in lieve calo**: se la linea aziendale
+sale, contraddice la narrazione, che è *"la media non mostrava nulla, il dettaglio
+per reparto sì"*. Il codice ereditato ha una sola linea che scende da 68 a 52, senza
+reparti: racconta "va tutto bene" invece di "l'abbiamo visto prima".
+
+**I giorni di assenza evitati sono un quoziente**: risparmio ÷ CHF 900 (§8). Danno
+16 sul trimestre corrente, 13 / 10 / 7 sui precedenti.
+
+**Il monte sessioni annuo è 1'200**: 120 dipendenti × 10 sessioni del piano Plus. A
+142 usate la quota è il 12%, quindi la KPI mostra il numero grande e la proporzione
+come barra sottile — una traccia spessa e quasi vuota si legge come un errore di
+rendering.
+
+Professionisti (minimo 4): Dr.ssa Colombo (stress lavorativo, IT/DE, 4.9),
+Dr. Rossi (burnout e ansia, IT/FR, 4.8), Dr.ssa Meier (sonno, IT/DE, 4.9),
+Dr. Fontana (coaching, IT, 4.7). Foto: **avatar a iniziali**, niente foto stock di
+persone — evita questioni di licenza e sembra più pulito.
+
+**Nomi di aziende, cliniche e strutture: solo di fantasia.** Il codice ereditato usa
+società e ospedali reali come clienti paganti e partner convenzionati. Non è una
+questione di stile: è una dichiarazione falsa su soggetti reali, e va corretta
+prima di qualunque altra cosa.
+
+## 9. Numeri ufficiali dal Business Plan (unici ammessi)
+
+Piani: **Essenziale CHF 38** (6 sessioni/anno, extra CHF 35, medico virtuale 12h con
+3 consulti/anno) · **Plus CHF 55** (10 sessioni/anno, extra CHF 28, coach 4
+sessioni/anno, medico 4h consulti illimitati, check-up annuale, piano AI ogni 6
+mesi) · **Executive CHF 82** (16 sessioni/anno, extra CHF 22, medico 1h illimitato,
+nutrizionista 4/anno, familiari inclusi). La demo usa il piano Plus.
+
+**Tutti e tre i piani includono il medico virtuale.** Il tetto di consulti vive su
+`Plan` insieme all'SLA, così la card lo dice dove esiste e lo tace dove non c'è.
+
+**Compenso ai professionisti: CHF 70–80 a sessione erogata.** Il BP dà la banda, non
+la tariffa del singolo: dove cade ognuno dei quattro è una scelta della demo, da
+dichiarare nel file del dataset.
+
+**A pieno regime, 20 sessioni a settimana valgono CHF 5'600–6'400 al mese.** Serve
+al portale professionista: **il regime va sempre detto accanto al totale**,
+altrimenti chi ha letto il BP legge uno scarto di un ordine di grandezza come un
+errore.
+
+### Formule del calcolatore ROI (§9.A.2), per N dipendenti
+
+- Assenteismo: `N × 6.5 giorni × CHF 900`
+- Presenteismo: `N × CHF 1'500`
+- Burnout pre-clinico: `N × 0.30 × CHF 65'000 × 0.15`
+- Turnover da salute: `N × 0.043 × CHF 50'000 + stima sostituzione`
+- Risparmio (scenario conservativo): 15% su assenteismo e presenteismo, 20% su
+  burnout e turnover.
+- Costo KORA: `N × 55 × 12`. Mostrare risparmio netto e ROI.
+- Etichettare sempre come **"scenario conservativo"** con fonti (SECO, Job Stress
+  Index).
+
+**Il punto di ancoraggio è N = 100.** A cento dipendenti il calcolatore deve dare
+esattamente: perdite **CHF 1'289'500**, risparmio **CHF 221'150**, costo KORA
+**CHF 66'000**, risparmio netto **CHF 155'150**, ROI **2.35:1**. È il primo
+confronto che fa un investitore col documento in mano: qualunque modifica alle
+costanti va verificata contro quei cinque numeri. Il calcolatore si apre su 100.
+
+**ROI = risparmio netto / costo**, non risparmio lordo / costo (che darebbe 3.35:1).
+**Il 19.5:1 dell'executive summary non va usato da nessuna parte**: è un terzo
+rapporto ancora (perdite totali / costo), e mescolare due definizioni di ROI
+indebolisce quella buona.
+
+**La "stima sostituzione" vale CHF 470 per dipendente**, ricavata per differenza dal
+totale del BP. Vive in `roi-model.ts`: se arriva la cifra vera, si sostituisce lì.
+
+**Ogni voce è lineare in N**, quindi da 20 a 1000 dipendenti gli importi crescono ma
+il rapporto 2.35:1 non cambia mai. È una proprietà del modello: la UI non deve far
+credere che il ROI reagisca all'input.
+
+**Il "risparmio potenziale CHF 1'400–2'900 per dipendente"** che compare oggi nella
+pagina prezzi e nella fatturazione HR **non è nel Business Plan**: va sostituito con
+le cifre derivate dal modello.
+
+### Trimestri diversi da quello corrente
+
+Il §8 fissa solo il trimestre in corso, ma il selettore della dashboard deve
+cambiare davvero i dati. I trimestri precedenti non si inventano: si derivano da una
+regola dichiarata nel file — il risparmio è proporzionale ai dipendenti attivi,
+ancorato a CHF 14'200 su 41 attivi. Ne vengono 11'800 / 9'400 / 6'200. **Nemmeno i
+periodi stanno nei semi**: si contano a ritroso dal trimestre corrente, che viene da
+`DEMO_TODAY`.
+
+## 10. Scope — le schermate e la definizione di "finito"
+
+21 rotte su cinque aree, ereditate da base44. **Nessuna schermata nuova senza
+approvazione** (§2.6); nessuna schermata esistente si elimina senza dirlo.
+
+### A. Pubblica — `/`, `/pricing`, `/demo`
+1. **Landing**: hero, problema, tre livelli di valore, anteprima piani, privacy, CTA.
+2. **Calcolatore ROI** — *da costruire, non esiste*. Perdite oggi vs risparmio con
+   KORA, il dettaglio delle quattro voci che si aggiorna con N, formule §9.
+   Va costruito con la grafica e il layout di base44; il motore è `roi-model.ts`.
+3. **Prezzi**: i tre piani + simulatore di costo. Il quarto piano
+   "Personalizzato" a moduli **resta nascosto** finché i founder non decidono:
+   i suoi undici prezzi non sono nel BP e a 150 dipendenti la preselezione esce
+   allo stesso prezzo dell'Essenziale offrendo più di lui.
+4. **Richiesta demo**: form che oggi scrive su base44 e diventerà una mutation.
+
+**Finita quando:** il calcolatore è corretto per qualsiasi N fra 20 e 1000, le
+quattro voci sommano al totale mostrato, e a N=100 escono i cinque numeri di §9.
+
+### B. Portale dipendente — `/employee` + 5 sottopagine
+Home, Psicologi, Medico virtuale, Check-up, Piano AI, Profilo.
+
+**Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — il contatore
+sale, l'appuntamento compare in home, lo slot sparisce dalla disponibilità e compare
+nel calendario del professionista. Oggi la conferma si perde chiudendo il dialogo.
+Nessun vicolo cieco: ogni schermata ha una via d'uscita, e ogni voce del menu porta
+a una rotta che esiste.
+
+### C. Portale HR — `/hr` + 4 sottopagine
+Dashboard, Dipendenti, Report, Fatturazione, Privacy.
+
+1. **Dashboard**: KPI, utilizzo servizi, **stress per reparto** (da costruire),
+   **trend 12 mesi azienda vs Vendite con marker dell'alert** (da costruire),
+   **banner alert precoce** (da costruire), selettore trimestre che cambia i dati.
+2. **Report**: le metriche del trimestre e le raccomandazioni.
+3. **Report scaricabile** — *il pulsante esiste e non fa niente*. Il PDF non si
+   scrive a mano: si genera da una pagina che legge dal provider come tutte le
+   altre. Deve restare **una pagina sola**: è un allegato per il consiglio, non un
+   fascicolo.
+
+**Finita quando:** la storia dei 12 mesi si capisce senza parlare; il selettore
+trimestre cambia davvero i dati; la soglia di anonimato si legge dai numeri in
+tabella; tutto regge da 1280px in su.
+
+### D. Portale professionista — `/professional` + 4 sottopagine
+Calendario, Sessioni, Pazienti, Pagamenti, Profilo.
+
+È il portale della **Dr.ssa Meier**, la professionista che il dipendente prenota in
+§10.B: i tre lati del marketplace raccontano la stessa storia invece di essere tre
+demo scollegate.
+
+**Finita quando:** una prenotazione fatta in §10.B compare nel calendario; le righe
+settimanali sommano al totale del mese; i pazienti elencati sono lo stesso numero
+che dichiara la KPI; le date e i giorni della settimana coincidono con il calendario
+vero (oggi non lo fanno in cinque punti su cinque).
+
+### E. Back-office admin — `/admin` + 5 sottopagine
+Aziende, Utenti, Professionisti, Sessioni, Provider check-up, Analytics.
+
+Non ha valore narrativo diretto ma ha valore di prodotto: serve dopo. **Va protetto
+o marcato come dati dimostrativi**: `ProtectedRoute` esiste nel codice e non è usato
+da nessuna rotta, quindi oggi chiunque abbia il link vede il back-office con
+l'elenco dei "clienti".
+
+**Finita quando:** i totali di ogni schermata si ricavano dai dati e non sono
+scritti a mano — oggi "618 utenti attivi" convive con un tasso di attivazione che ne
+implica 767, e il fatturato del mese non torna con l'elenco delle aziende accanto.
+
+### Come si naviga durante la demo
+
+Il provider vive in memoria: lo stato sopravvive alla navigazione interna, non a un
+ricaricamento. Si parte dalla landing e si usano i link, mai la barra degli
+indirizzi.
+
+## 11. Qualità e revisione
+
+- TypeScript senza `any` nel codice nuovo; ESLint pulito, zero warning.
+- Componenti piccoli e componibili; le pagine sono composizione.
+- **Ogni numero a schermo passa da `format.ts`.** CHF con apostrofo: `CHF 14'200`.
+  Il codice ereditato usa `toLocaleString()` senza locale e importi scritti a mano
+  all'italiana (`CHF 8.250`, che in Svizzera si legge "otto virgola due").
+- **`useGrouping: "always"` in `format.ts`, non toglierlo.** CLDR dà a it-CH e de-CH
+  `minimumGroupingDigits: 2`, quindi Intl di suo NON separa i numeri di quattro
+  cifre: `14'200` ma `6200`. In una dashboard dove il selettore fa passare dall'uno
+  all'altro la differenza si legge come un difetto.
+- **Il separatore decimale è il punto**: `2.35:1`, non `2,35:1`. È la convenzione
+  svizzera ed è coerente con l'apostrofo delle migliaia.
+- **Nessuna data scritta a mano.** Il codice ereditato ha cinque coppie
+  giorno/data e sono sbagliate tutte e cinque ("Mar 29 Apr" era un mercoledì). Le
+  date si derivano da `DEMO_TODAY` e si formattano con `format.ts`.
+- Accessibilità di base: contrasti AA, focus visibili, alt text. La demo si presenta
+  anche da tastiera durante un pitch: i focus contano.
+- **A fine sessione**: riepilogo di cosa è stato fatto e screenshot delle schermate
+  toccate, così i founder revisionano a colpo d'occhio. Le verifiche si fanno **a
+  schermo con asserzioni concrete**, non solo con `tsc` e lint puliti.

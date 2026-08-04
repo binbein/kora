@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="KORA">
+  <!--
+    Favicon (§4.1): fondo petrolio, lettera bianca.
+
+    A 16px il wordmark intero non si legge — quattro lettere da quattro pixel
+    l'una — quindi resta la sola iniziale, con lo stesso peso semibold del
+    marchio. La famiglia è un grottesco di sistema: Inter non è disponibile
+    dentro un'icona, e alla misura di una scheda la differenza non esiste.
+  -->
+  <rect width="64" height="64" rx="12" fill="#04342C" />
+  <text
+    x="32"
+    y="45"
+    text-anchor="middle"
+    font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+    font-size="38"
+    font-weight="600"
+    fill="#FFFFFF"
+  >K</text>
+</svg>

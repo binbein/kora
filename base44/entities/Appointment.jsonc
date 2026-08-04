@@ -1,0 +1,59 @@
+{
+  "name": "Appointment",
+  "type": "object",
+  "properties": {
+    "employee_id": {
+      "type": "string"
+    },
+    "professional_id": {
+      "type": "string"
+    },
+    "appointment_type": {
+      "type": "string",
+      "enum": [
+        "psychologist",
+        "coach",
+        "doctor",
+        "nutritionist"
+      ]
+    },
+    "date_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "duration_minutes": {
+      "type": "number",
+      "default": 50
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "booked",
+        "completed",
+        "cancelled",
+        "no_show"
+      ],
+      "default": "booked"
+    },
+    "included_in_plan": {
+      "type": "boolean",
+      "default": true
+    },
+    "copayment_amount": {
+      "type": "number",
+      "default": 0
+    },
+    "video_session_url": {
+      "type": "string"
+    },
+    "private_note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "employee_id",
+    "professional_id",
+    "appointment_type",
+    "date_time"
+  ]
+}

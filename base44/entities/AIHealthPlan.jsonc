@@ -1,0 +1,37 @@
+{
+  "name": "AIHealthPlan",
+  "type": "object",
+  "properties": {
+    "employee_id": {
+      "type": "string"
+    },
+    "main_recommendations": {
+      "type": "string"
+    },
+    "stress_plan": {
+      "type": "string"
+    },
+    "sleep_plan": {
+      "type": "string"
+    },
+    "movement_plan": {
+      "type": "string"
+    },
+    "nutrition_plan": {
+      "type": "string"
+    },
+    "checkup_recommendation": {
+      "type": "string"
+    },
+    "update_frequency": {
+      "type": "string"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "employee_id"
+  ]
+}

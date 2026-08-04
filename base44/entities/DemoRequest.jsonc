@@ -1,0 +1,38 @@
+{
+  "name": "DemoRequest",
+  "type": "object",
+  "properties": {
+    "company_name": {
+      "type": "string"
+    },
+    "contact_name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "employee_count": {
+      "type": "number"
+    },
+    "message": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "contacted",
+        "scheduled",
+        "completed"
+      ],
+      "default": "new"
+    }
+  },
+  "required": [
+    "company_name",
+    "email"
+  ]
+}

@@ -1,0 +1,255 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+ * Light mode, sempre (CLAUDE.md §2.1).
+ *
+ * In Tailwind v4 `dark:` è una variante incorporata che segue
+ * prefers-color-scheme: lasciarla attiva significherebbe che i `dark:`
+ * presenti nei componenti shadcn scattano da soli sui sistemi impostati
+ * in scuro. Qui la variante viene riagganciata a un selettore che non
+ * compare mai nel markup, quindi nessuna regola `dark:` può applicarsi.
+ * Non aggiungere questa classe da nessuna parte.
+ */
+@custom-variant dark (&:where(.kora-never-dark *));
+
+/*
+ * Varianti che i componenti shadcn danno per esistenti.
+ *
+ * Nel loro codice compaiono classi come `data-active:bg-background` e
+ * `group-data-horizontal/tabs:h-8`: senza queste dichiarazioni Tailwind le
+ * compila come attributi `[data-active]` e `[data-horizontal]`, che Radix non
+ * scrive mai — lui usa `data-state` e `data-orientation`. Il risultato è che
+ * la regola non aggancia niente e passa inosservata, perché una classe che
+ * non corrisponde a nulla non è un errore: i Tabs restavano disposti in
+ * colonna e alti quanto il contenuto, e la linguetta attiva non si
+ * distingueva dall'altra.
+ *
+ * Riguarda `tabs.tsx` e `separator.tsx`, cioè lo showcase e il portale
+ * professionista.
+ */
+@custom-variant data-active (&[data-state="active"]);
+@custom-variant data-horizontal (&[data-orientation="horizontal"]);
+@custom-variant data-vertical (&[data-orientation="vertical"]);
+
+/*
+ * KORA — design tokens (CLAUDE.md §4, CONGELATI).
+ * Ogni namespace viene azzerato con `initial` prima di essere ridefinito:
+ * così le utility fuori dal design system non generano CSS e un uso
+ * sbagliato resta visibile invece di passare inosservato.
+ */
+@theme {
+  /* ---------------------------------------------------------------
+   * Colori — §4.1. Unici colori ammessi.
+   * --------------------------------------------------------------- */
+  --color-*: initial;
+
+  --color-white: #fff;
+  --color-black: #000;
+
+  /* petrolio: header, testi su tinte chiare, pulsanti primari */
+  --color-petrol-900: #04342c;
+  --color-petrol-800: #085041;
+  --color-petrol-700: #0f6e56;
+
+  /* teal: dati, accenti, tinte di sfondo */
+  --color-teal-500: #1d9e75;
+  --color-teal-300: #5dcaa5;
+  --color-teal-200: #9fe1cb;
+  --color-teal-50: #e1f5ee;
+
+  /* warn / danger: riservati ad alert e stati critici, mai decorativi */
+  --color-warn: #ef9f27;
+  --color-warn-bg: #faeeda;
+  --color-warn-text: #854f0b;
+  --color-warn-dark: #633806;
+
+  --color-danger: #e24b4a;
+  --color-danger-bg: #fcebeb;
+  --color-danger-text: #a32d2d;
+
+  /* neutri: scala gray/stone di Tailwind, per testi e bordi */
+  --color-gray-50: oklch(98.5% 0.002 247.839);
+  --color-gray-100: oklch(96.7% 0.003 264.542);
+  --color-gray-200: oklch(92.8% 0.006 264.531);
+  --color-gray-300: oklch(87.2% 0.01 258.338);
+  --color-gray-400: oklch(70.7% 0.022 261.325);
+  --color-gray-500: oklch(55.1% 0.027 264.364);
+  --color-gray-600: oklch(44.6% 0.03 256.802);
+  --color-gray-700: oklch(37.3% 0.034 259.733);
+  --color-gray-800: oklch(27.8% 0.033 256.848);
+  --color-gray-900: oklch(21% 0.034 264.665);
+  --color-gray-950: oklch(13% 0.028 261.692);
+
+  --color-stone-50: oklch(98.5% 0.001 106.423);
+  --color-stone-100: oklch(97% 0.001 106.424);
+  --color-stone-200: oklch(92.3% 0.003 48.717);
+  --color-stone-300: oklch(86.9% 0.005 56.366);
+  --color-stone-400: oklch(70.9% 0.01 56.259);
+  --color-stone-500: oklch(55.3% 0.013 58.071);
+  --color-stone-600: oklch(44.4% 0.011 73.639);
+  --color-stone-700: oklch(37.4% 0.01 67.558);
+  --color-stone-800: oklch(26.8% 0.007 34.298);
+  --color-stone-900: oklch(21.6% 0.006 56.043);
+  --color-stone-950: oklch(14.7% 0.004 49.25);
+
+  /* ---------------------------------------------------------------
+   * Tipografia — §4.2
+   * --------------------------------------------------------------- */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), ui-serif, Georgia, serif;
+
+  /* pesi: 400 / 500 / 600. Mai 700+, quindi qui non esistono. */
+  --font-weight-*: initial;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* scala 12 / 13 / 14 (base UI) / 16 / 20 / 24 / 32 — niente valori fuori scala */
+  --text-*: initial;
+  --text-xs: 0.75rem; /* 12 */
+  --text-xs--line-height: 1rem; /* 16 */
+  --text-sm: 0.8125rem; /* 13 */
+  --text-sm--line-height: 1.25rem; /* 20 */
+  --text-base: 0.875rem; /* 14 — base UI */
+  --text-base--line-height: 1.375rem; /* 22 */
+  --text-lg: 1rem; /* 16 */
+  --text-lg--line-height: 1.5rem; /* 24 */
+  --text-xl: 1.25rem; /* 20 */
+  --text-xl--line-height: 1.75rem; /* 28 */
+  --text-2xl: 1.5rem; /* 24 */
+  --text-2xl--line-height: 2rem; /* 32 */
+  --text-3xl: 2rem; /* 32 */
+  --text-3xl--line-height: 2.5rem; /* 40 */
+
+  /* ---------------------------------------------------------------
+   * Raggi — §4.3. Due registri: strumento (HR + landing), consumer (app).
+   * Il registro è una scelta esplicita nel nome, non un numero magico.
+   * --------------------------------------------------------------- */
+  --radius-*: initial;
+  --radius-chip: 0.5rem; /* 8  — chip/badge HR */
+  --radius-btn: 0.5rem; /* 8  — pulsanti HR + landing */
+  --radius-card: 0.625rem; /* 10 — card HR + landing */
+  --radius-card-app: 1.25rem; /* 20 — card app dipendente */
+  --radius-pill: 9999px; /* pulsanti e chip app dipendente */
+}
+
+/*
+ * Ponte verso shadcn/ui: i suoi componenti ragionano per ruoli semantici
+ * (primary, muted, border, ring...), non per colori. Qui ogni ruolo viene
+ * agganciato a un token KORA, così un componente preso dal registro shadcn
+ * nasce già nella nostra palette senza toccarne il codice.
+ *
+ * Nessun valore nuovo entra da qui: sono tutti rimandi al §4.1.
+ */
+:root {
+  --background: var(--color-white);
+  --foreground: var(--color-gray-900);
+
+  --card: var(--color-white);
+  --card-foreground: var(--color-gray-900);
+
+  --popover: var(--color-white);
+  --popover-foreground: var(--color-gray-900);
+
+  --primary: var(--color-petrol-700);
+  --primary-foreground: var(--color-white);
+
+  --secondary: var(--color-teal-50);
+  --secondary-foreground: var(--color-petrol-800);
+
+  --muted: var(--color-gray-50);
+  --muted-foreground: var(--color-gray-600);
+
+  --accent: var(--color-teal-50);
+  --accent-foreground: var(--color-petrol-800);
+
+  --destructive: var(--color-danger);
+  --destructive-foreground: var(--color-white);
+
+  --border: var(--color-gray-200);
+  --input: var(--color-gray-300);
+  --ring: var(--color-petrol-700);
+
+  /*
+   * Raggio di riferimento per i componenti shadcn: coincide con il raggio
+   * card del registro HR. I componenti nel registro app ricevono
+   * `rounded-pill` o `rounded-card-app` dal chiamante.
+   */
+  --radius: 0.625rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Scala derivata dal raggio KORA, così resta proporzionata ai registri. */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /*
+   * La call to action dell'hero porta al calcolatore più in basso: lo
+   * scorrimento animato dice che si è rimasti sulla stessa pagina, mentre un
+   * salto secco sembra un cambio di schermata. Chi ha chiesto meno animazioni
+   * al sistema operativo continua a saltare.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* I componenti shadcn usano `border` senza colore: il default è il nostro. */
+  * {
+    border-color: var(--border);
+  }
+
+  /*
+   * Focus visibile ovunque: la demo si presenta anche da tastiera (§9).
+   * Solo :focus-visible, così il mouse non lascia aloni.
+   */
+  :focus-visible {
+    outline: 2px solid var(--color-petrol-700);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Numeri in tabella allineati in colonna — §4.2 */
+  :where(th, td) {
+    font-variant-numeric: tabular-nums;
+  }
+}

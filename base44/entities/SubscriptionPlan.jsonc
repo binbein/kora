@@ -1,0 +1,39 @@
+{
+  "name": "SubscriptionPlan",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "target_company_size": {
+      "type": "string"
+    },
+    "monthly_price_per_employee": {
+      "type": "number"
+    },
+    "psychologist_sessions_per_year": {
+      "type": "number"
+    },
+    "coach_sessions_per_year": {
+      "type": "number"
+    },
+    "virtual_doctor_access": {
+      "type": "string"
+    },
+    "checkup_included": {
+      "type": "boolean"
+    },
+    "ai_plan_update_frequency": {
+      "type": "string"
+    },
+    "hr_dashboard_level": {
+      "type": "string"
+    },
+    "copayment_extra_session": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

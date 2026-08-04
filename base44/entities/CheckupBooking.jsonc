@@ -1,0 +1,44 @@
+{
+  "name": "CheckupBooking",
+  "type": "object",
+  "properties": {
+    "employee_id": {
+      "type": "string"
+    },
+    "provider_id": {
+      "type": "string"
+    },
+    "date_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "package_type": {
+      "type": "string",
+      "enum": [
+        "base",
+        "plus",
+        "executive"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "booked",
+        "completed",
+        "cancelled"
+      ],
+      "default": "booked"
+    },
+    "report_uploaded": {
+      "type": "boolean",
+      "default": false
+    },
+    "report_summary": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "employee_id",
+    "provider_id"
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "name": "Employee",
+  "type": "object",
+  "properties": {
+    "first_name": {
+      "type": "string"
+    },
+    "last_name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "company_id": {
+      "type": "string"
+    },
+    "plan_type": {
+      "type": "string",
+      "enum": [
+        "Essenziale",
+        "Plus",
+        "Executive"
+      ]
+    },
+    "activation_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "pending",
+        "inactive"
+      ],
+      "default": "active"
+    },
+    "health_score": {
+      "type": "number"
+    },
+    "stress_score": {
+      "type": "string",
+      "enum": [
+        "basso",
+        "medio",
+        "alto"
+      ]
+    },
+    "sleep_score": {
+      "type": "string",
+      "enum": [
+        "buono",
+        "da migliorare",
+        "scarso"
+      ]
+    },
+    "energy_score": {
+      "type": "string",
+      "enum": [
+        "buona",
+        "media",
+        "bassa"
+      ]
+    },
+    "checkup_status": {
+      "type": "string",
+      "enum": [
+        "disponibile",
+        "prenotato",
+        "completato"
+      ],
+      "default": "disponibile"
+    },
+    "psychologist_sessions_used": {
+      "type": "number",
+      "default": 0
+    },
+    "psychologist_sessions_limit": {
+      "type": "number",
+      "default": 6
+    },
+    "coach_sessions_used": {
+      "type": "number",
+      "default": 0
+    },
+    "coach_sessions_limit": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "first_name",
+    "last_name",
+    "email"
+  ]
+}

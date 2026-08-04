@@ -1,0 +1,38 @@
+{
+  "name": "Payment",
+  "type": "object",
+  "properties": {
+    "professional_id": {
+      "type": "string"
+    },
+    "month": {
+      "type": "string"
+    },
+    "completed_sessions": {
+      "type": "number"
+    },
+    "average_rate": {
+      "type": "number"
+    },
+    "total_amount_chf": {
+      "type": "number"
+    },
+    "payment_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "paid",
+        "processing"
+      ],
+      "default": "pending"
+    },
+    "payment_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "professional_id",
+    "month"
+  ]
+}

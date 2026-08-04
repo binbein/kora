@@ -1,0 +1,53 @@
+{
+  "name": "Company",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Company name"
+    },
+    "industry": {
+      "type": "string"
+    },
+    "employee_count": {
+      "type": "number"
+    },
+    "headquarters": {
+      "type": "string"
+    },
+    "plan_type": {
+      "type": "string",
+      "enum": [
+        "Essenziale",
+        "Plus",
+        "Executive"
+      ]
+    },
+    "billing_frequency": {
+      "type": "string",
+      "enum": [
+        "monthly",
+        "annual"
+      ]
+    },
+    "company_code": {
+      "type": "string"
+    },
+    "contract_start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "contract_end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "active_status": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "company_code"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "CheckupProvider",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "services": {
+      "type": "string"
+    },
+    "availability": {
+      "type": "string"
+    },
+    "partner_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "pending",
+        "inactive"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "name",
+    "city"
+  ]
+}

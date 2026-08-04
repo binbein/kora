@@ -1,0 +1,65 @@
+{
+  "name": "Professional",
+  "type": "object",
+  "properties": {
+    "first_name": {
+      "type": "string"
+    },
+    "last_name": {
+      "type": "string"
+    },
+    "profession_type": {
+      "type": "string",
+      "enum": [
+        "psychologist",
+        "doctor",
+        "coach",
+        "nutritionist",
+        "psychiatrist"
+      ]
+    },
+    "certification_number": {
+      "type": "string"
+    },
+    "languages": {
+      "type": "string"
+    },
+    "specializations": {
+      "type": "string"
+    },
+    "bio": {
+      "type": "string"
+    },
+    "availability": {
+      "type": "string"
+    },
+    "session_rate_chf": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "pending",
+        "inactive"
+      ],
+      "default": "pending"
+    },
+    "iban": {
+      "type": "string"
+    },
+    "documents_verified": {
+      "type": "boolean",
+      "default": false
+    },
+    "mandate_contract_signed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "first_name",
+    "last_name",
+    "profession_type"
+  ]
+}
