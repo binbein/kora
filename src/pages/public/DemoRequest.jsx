@@ -6,25 +6,20 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { CheckCircle2, ArrowLeft, Calendar, Shield } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
 import PublicNav from '@/components/public/PublicNav';
 import Footer from '@/components/public/Footer';
 
 export default function DemoRequest() {
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     company_name: '', contact_name: '', email: '', phone: '', employee_count: '', message: ''
   });
 
-  const handleSubmit = async (e) => {
+  // TODO M2: mutation del provider (createDemoRequest), con invalidazione della
+  // query che alimenta /admin. Oggi si risolve in locale: non esiste un backend
+  // dove scrivere, e questo e' il CTA primario della landing.
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-    await base44.entities.DemoRequest.create({
-      ...form,
-      employee_count: Number(form.employee_count) || 0
-    });
-    setLoading(false);
     setSubmitted(true);
   };
 
@@ -98,8 +93,8 @@ export default function DemoRequest() {
                 <span>I tuoi dati saranno trattati in conformità con la LPD svizzera e il GDPR.</span>
               </div>
 
-              <Button type="submit" className="w-full bg-secondary hover:bg-secondary/90" disabled={loading}>
-                {loading ? 'Invio in corso...' : 'Prenota la demo'}
+              <Button type="submit" className="w-full bg-secondary hover:bg-secondary/90">
+                Prenota la demo
               </Button>
             </form>
           </Card>
