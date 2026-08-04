@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { CheckCircle2, ArrowRight, Calculator } from 'lucide-react';
 import PublicNav from '@/components/public/PublicNav';
 import Footer from '@/components/public/Footer';
-import FlexiblePlanCard from '@/components/public/FlexiblePlanCard';
 
 const plans = [
   {
@@ -83,7 +82,10 @@ export default function Pricing() {
       {/* Plans */}
       <section className="pb-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Tre colonne, non quattro: il quarto piano "Personalizzato" resta
+              nascosto in attesa della decisione dei founder (CLAUDE.md §10.A.3).
+              FlexiblePlanCard.jsx resta nel repository per riattivarlo. */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {plans.map((p) => (
               <Card key={p.name} className={`p-6 relative ${p.recommended ? 'ring-2 ring-secondary shadow-xl' : 'hover:shadow-lg'} transition-all`}>
                 {p.recommended && (
@@ -110,7 +112,6 @@ export default function Pricing() {
                 </Button>
               </Card>
             ))}
-            <FlexiblePlanCard />
           </div>
         </div>
       </section>
