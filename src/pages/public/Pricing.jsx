@@ -32,7 +32,7 @@ const plans = [
       'Piano prevenzione AI aggiornato ogni 6 mesi',
       'Dashboard HR per reparto con report trimestrale',
       'Co-payment oltre soglia: CHF 28 / sessione',
-      'Estensione partner: + CHF 15/mese (opzionale)',
+      'Estensione partner: + CHF 15/dipendente/mese (opzionale)',
     ],
   },
   {
@@ -162,11 +162,9 @@ export default function Pricing() {
               <p className="text-sm text-muted-foreground">
                 {employees} dipendenti × CHF {plan?.price} × {billing === 'annual' ? '12 mesi' : '1 mese'}
               </p>
-              <div className="pt-3 border-t border-border">
-                <p className="text-sm font-medium text-secondary">
-                  💡 Risparmio potenziale stimato: CHF {Math.round(employees * 1400).toLocaleString()} – {Math.round(employees * 2900).toLocaleString()} / anno
-                </p>
-              </div>
+              {/* La stima "CHF 1'400–2'900 per dipendente" non era nel Business
+                  Plan (CLAUDE.md §9). Il risparmio torna qui in M4, calcolato da
+                  roi-model.ts e etichettato come scenario conservativo. */}
             </div>
 
             <Button className="w-full mt-6 bg-secondary hover:bg-secondary/90" asChild>
