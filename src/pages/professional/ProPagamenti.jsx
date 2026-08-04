@@ -25,7 +25,7 @@ export default function ProPagamenti() {
 
       <Card className="p-5 bg-accent/40 border-secondary/20">
         <p className="text-sm">
-          <strong>Modello di collaborazione:</strong> Pagamento per sessione completata. HealthOS genera automaticamente la fattura e il pagamento viene effettuato entro il 5 del mese successivo.
+          <strong>Modello di collaborazione:</strong> Pagamento per sessione completata. Kora genera automaticamente la fattura e il pagamento viene effettuato entro il 5 del mese successivo.
         </p>
       </Card>
 

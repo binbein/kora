@@ -81,7 +81,7 @@ export default function ProProfilo() {
           </div>
         </div>
         <p className="text-xs text-muted-foreground mt-4">
-          Collaborazione a mandato (Auftrag). Nessun vincolo di assunzione. HealthOS porta i pazienti, gestisce prenotazioni, video e pagamenti.
+          Collaborazione a mandato (Auftrag). Nessun vincolo di assunzione. Kora porta i pazienti, gestisce prenotazioni, video e pagamenti.
         </p>
       </Card>
     </div>

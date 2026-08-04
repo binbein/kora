@@ -24,7 +24,7 @@ export default function HRDipendenti() {
         <p className="text-sm text-muted-foreground mt-1">{activated}/{employees.length} attivati — Solo dati anonimi</p>
       </div>
 
-      <PrivacyBanner message="I nomi sono abbreviati. HealthOS non mostra mai dati sanitari individuali all'HR." />
+      <PrivacyBanner message="I nomi sono abbreviati. Kora non mostra mai dati sanitari individuali all'HR." />
 
       <Card>
         <Table>

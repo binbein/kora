@@ -8,7 +8,7 @@ import { Stethoscope, Send, Clock, Shield } from 'lucide-react';
 const initialMessages = [
   {
     role: 'system',
-    text: 'Benvenuta nel servizio medico virtuale HealthOS. Sono il Dr. Andrea Fontana. Come posso aiutarti oggi?',
+    text: 'Benvenuta nel servizio medico virtuale Kora. Sono il Dr. Andrea Fontana. Come posso aiutarti oggi?',
   },
 ];
 

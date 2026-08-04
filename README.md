@@ -1,39 +1,46 @@
-**Welcome to your Base44 project** 
+# KORA — frontend
 
-**About**
+Piattaforma B2B di salute aziendale per il mercato svizzero. Questo repository è
+**insieme** la demo per gli investitori e il frontend dell'MVP: i dati sono finti,
+l'interfaccia no.
 
-View and Edit  your app on [Base44.com](http://Base44.com) 
+**Le regole del progetto stanno in [`CLAUDE.md`](CLAUDE.md)** — è l'unica fonte, e va
+letto prima di toccare qualunque cosa. Lo stato di avanzamento sta in
+[`docs/PROGRESS.md`](docs/PROGRESS.md).
 
-This project contains everything you need to run your app locally.
-
-**Edit the code in your local development environment**
-
-Any change pushed to the repo will also be reflected in the Base44 Builder.
-
-**Prerequisites:** 
-
-1. Clone the repository using the project's Git URL 
-2. Navigate to the project directory
-3. Install dependencies: `npm install`
-4. Create an `.env.local` file and set the right environment variables
+## Avvio
 
 ```
-VITE_BASE44_APP_ID=your_app_id
-VITE_BASE44_APP_BASE_URL=your_backend_url
-
-e.g.
-VITE_BASE44_APP_ID=cbef744a8545c389ef439ea6
-VITE_BASE44_APP_BASE_URL=https://my-to-do-list-81bfaad7.base44.app
+npm install
+npm run dev
 ```
 
-Run the app: `npm run dev`
+L'app risponde su http://localhost:5173. L'indirizzo **non viene stampato**: il
+`logLevel: 'error'` in `vite.config.js` sopprime il banner di avvio insieme ai
+warning.
 
-**Publish your changes**
+Non serve nessun file `.env`: non c'è backend, e non deve essercene uno
+(`CLAUDE.md` §2.5).
 
-Open [Base44.com](http://Base44.com) and click on Publish.
+## Comandi
 
-**Docs & Support**
+| | |
+|---|---|
+| `npm run dev` | server di sviluppo |
+| `npm run build` | build statico in `dist/` |
+| `npm run preview` | serve il build |
+| `npm run lint` | ESLint — deve uscire 0 |
+| `npm run typecheck` | `tsc`; oggi eredita ~421 errori dai `.jsx` non tipizzati, si sistema in M1 |
 
-Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
+## Struttura
 
-Support: [https://app.base44.com/support](https://app.base44.com/support)
+`src/pages/` per area (`public`, `employee`, `hr`, `professional`, `admin`),
+`src/components/ui/` per shadcn (non si tocca), `src/lib/` per il layer dati.
+`reference/` è il sorgente della precedente demo Next.js: **sola lettura**, si copia
+ma non si importa, e si cancella a fine M3.
+
+## Origine
+
+Fork della demo generata su base44. Il Builder non è più la fonte di verità: **git
+lo è**. Il plugin e l'SDK di base44 vengono rimossi in M1 (`CLAUDE.md` §3) — occhio
+all'alias `@/`, che oggi lo inietta il plugin e non è definito da nessun'altra parte.

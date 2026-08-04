@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import HealthOSLogo from '@/components/shared/HealthOSLogo';
+import KoraLogo from '@/components/shared/KoraLogo';
 import { Shield, MapPin } from 'lucide-react';
 
 export default function Footer() {
@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="space-y-4">
-            <HealthOSLogo size="sm" light />
+            <KoraLogo size="sm" light />
             <p className="text-sm opacity-70 leading-relaxed">
               Il sistema operativo della salute per le aziende svizzere.
             </p>

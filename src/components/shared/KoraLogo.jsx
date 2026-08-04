@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function HealthOSLogo({ size = 'md', light = false }) {
+export default function KoraLogo({ size = 'md', light = false }) {
   const sizes = {
     sm: { icon: 24, text: 'text-lg' },
     md: { icon: 32, text: 'text-xl' },

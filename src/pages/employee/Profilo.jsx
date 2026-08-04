@@ -8,7 +8,7 @@ const profile = {
   name: 'Giulia Rossi',
   email: 'giulia.rossi@demo-sa.example',
   company: 'Demo SA',
-  plan: 'HealthOS Plus',
+  plan: 'Kora Plus',
   since: 'Gennaio 2026',
   healthScore: 74,
   stress: 'Medio',
