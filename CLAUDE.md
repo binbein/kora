@@ -63,7 +63,7 @@ ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
    gg.mm.aaaa). Niente language switcher. Ma valgono da subito:
    - Stringhe UI in `src/lib/i18n/it.ts` (oggetto tipizzato, niente testo cablato
      nei componenti). Aggiungere una lingua domani = aggiungere un file con le
-     stesse chiavi. **Retrofittare l'i18n su 21 schermate dopo costa dieci volte
+     stesse chiavi. **Retrofittare l'i18n su 25 schermate dopo costa dieci volte
      tanto: si fa mentre si tocca ogni schermata, non alla fine.**
    - **Mai concatenare stringhe per comporre frasi** (l'ordine delle parole cambia
      tra lingue). Sempre frasi complete con segnaposto:
@@ -499,6 +499,40 @@ società e ospedali reali come clienti paganti e partner convenzionati. Non è u
 questione di stile: è una dichiarazione falsa su soggetti reali, e va corretta
 prima di qualunque altra cosa.
 
+### I nomi inventati, congelati in M0
+
+Ogni nome è stato verificato con una ricerca prima di entrare nel codice. **Si
+riusano questi, non se ne inventano altri**: due schermate che nominano la stessa
+azienda in due modi sono lo stesso difetto dei numeri che divergono (§5.5). Se ne
+serve uno nuovo, si verifica allo stesso modo e si aggiunge qui.
+
+Aziende clienti (back-office admin) — **Demo SA** (finance, Lugano, l'azienda della
+storia), **Larice Pharma SA** (pharma, Mendrisio), **Studio Legale Rovere** (legale,
+Lugano), **Genziana Tech SA** (tech, Bellinzona), **Betulla Assicurazioni SA**
+(assicurazioni, Locarno).
+
+Rete convenzionata per i check-up — **Centro Medico Ardesia** (Lugano),
+**Poliambulatorio Quarzo** (Bellinzona), **Centro Salute Onice** (Locarno),
+**Clinica Zaffiro** (Lugano), **Centro Diagnostico Basalto** (Mendrisio). È **una
+sola rete**: il portale dipendente e il back-office elencano le stesse strutture con
+gli stessi indirizzi, non due elenchi scollegati.
+
+Tre vincoli che vengono dalla verifica, non dal gusto:
+
+- **Niente toponimi lacustri o vallivi** (Verbano, Ceresio, Monteverde…): esistono
+  identici sulla sponda italiana e collidono con strutture sanitarie vere. Due
+  candidati su cinque sono stati scartati per questo.
+- **Niente "Centro Medico" + nome di città**: è il modo in cui si chiamano le
+  strutture vere (il codice ereditato aveva "Centro Medico Lugano", che a Lugano
+  esiste).
+- **Anche gli indirizzi sono generici.** Una via reale con il numero civico giusto
+  identifica la struttura anche dopo che il nome è cambiato: il codice ereditato
+  aveva l'indirizzo esatto dell'ospedale di Mendrisio.
+
+Domini email: TLD riservato **`.example`** (RFC 2606), che nessuno può registrare —
+`m.bianchi@demo-sa.example`. Si vedono solo nel back-office, che dichiara di essere
+dimostrativo. Le persone inventate non devono comparire su domini di terzi.
+
 ## 9. Numeri ufficiali dal Business Plan (unici ammessi)
 
 Piani: **Essenziale CHF 38** (6 sessioni/anno, extra CHF 35, medico virtuale 12h con
@@ -509,6 +543,12 @@ nutrizionista 4/anno, familiari inclusi). La demo usa il piano Plus.
 
 **Tutti e tre i piani includono il medico virtuale.** Il tetto di consulti vive su
 `Plan` insieme all'SLA, così la card lo dice dove esiste e lo tace dove non c'è.
+
+**Estensione partner sul piano Plus: + CHF 15 per dipendente al mese**, opzionale
+(BP p.9). Va detto **per dipendente**: scritto "+ CHF 15/mese" si legge come una
+tariffa unica per l'azienda, che a 120 dipendenti sbaglia di due ordini di
+grandezza. L'Executive include già i familiari (partner + 1 figlio) e non ha
+l'estensione.
 
 **Compenso ai professionisti: CHF 70–80 a sessione erogata.** Il BP dà la banda, non
 la tariffa del singolo: dove cade ognuno dei quattro è una scelta della demo, da
@@ -564,7 +604,9 @@ periodi stanno nei semi**: si contano a ritroso dal trimestre corrente, che vien
 
 ## 10. Scope — le schermate e la definizione di "finito"
 
-21 rotte su cinque aree, ereditate da base44. **Nessuna schermata nuova senza
+25 rotte su cinque aree, ereditate da base44 (3 + 6 + 5 + 5 + 6: le sotto-liste qui
+sotto sono sempre state giuste, era il totale a essere sbagliato). **Nessuna
+schermata nuova senza
 approvazione** (§2.6); nessuna schermata esistente si elimina senza dirlo.
 
 ### A. Pubblica — `/`, `/pricing`, `/demo`
