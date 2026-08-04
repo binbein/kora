@@ -43,7 +43,7 @@ export default function EmployeeNav() {
         <div className="p-4 border-t border-border">
           <div className="bg-accent rounded-lg p-3">
             <p className="text-xs font-medium text-foreground">Giulia Rossi</p>
-            <p className="text-[10px] text-muted-foreground">Alpine Finance SA · Plus</p>
+            <p className="text-[10px] text-muted-foreground">Demo SA · Plus</p>
           </div>
         </div>
       </aside>

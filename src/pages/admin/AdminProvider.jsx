@@ -6,12 +6,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { MapPin, Plus, CheckCircle2 } from 'lucide-react';
 import KPICard from '@/components/shared/KPICard';
 
+// Strutture di fantasia (CLAUDE.md §8). Anche gli indirizzi sono generici: una via
+// reale con il numero civico giusto identifica la struttura anche se il nome cambia.
 const providers = [
-  { name: 'Clinica Moncucco', city: 'Lugano', address: 'Via Moncucco 10', services: 'Check-up Base, Plus, Executive', bookings: 42, status: 'active' },
-  { name: 'Medicheck SA', city: 'Bellinzona', address: 'Piazza Governo 3', services: 'Check-up Base, Plus', bookings: 28, status: 'active' },
-  { name: 'Centro Medico Locarno', city: 'Locarno', address: 'Via Vallemaggia 5', services: 'Check-up Base', bookings: 15, status: 'active' },
-  { name: 'Hirslanden Lugano', city: 'Lugano', address: 'Via Dr. Agostino Nobile 21', services: 'Check-up Executive', bookings: 9, status: 'active' },
-  { name: 'Ospedale Mendrisio', city: 'Mendrisio', address: 'Via Turconi 23', services: 'Check-up Base, Plus', bookings: 0, status: 'pending' },
+  { name: 'Centro Medico Ardesia', city: 'Lugano', address: 'Via al Parco 4', services: 'Check-up Base, Plus, Executive', bookings: 42, status: 'active' },
+  { name: 'Poliambulatorio Quarzo', city: 'Bellinzona', address: 'Via delle Scuole 12', services: 'Check-up Base, Plus', bookings: 28, status: 'active' },
+  { name: 'Centro Salute Onice', city: 'Locarno', address: 'Via Campagna 7', services: 'Check-up Base', bookings: 15, status: 'active' },
+  { name: 'Clinica Zaffiro', city: 'Lugano', address: 'Viale dei Faggi 30', services: 'Check-up Executive', bookings: 9, status: 'active' },
+  { name: 'Centro Diagnostico Basalto', city: 'Mendrisio', address: 'Via Industria 18', services: 'Check-up Base, Plus', bookings: 0, status: 'pending' },
 ];
 
 export default function AdminProvider() {

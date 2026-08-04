@@ -6,8 +6,8 @@ import PrivacyBanner from '@/components/shared/PrivacyBanner';
 
 const profile = {
   name: 'Giulia Rossi',
-  email: 'giulia.rossi@alpinefinance.ch',
-  company: 'Alpine Finance SA',
+  email: 'giulia.rossi@demo-sa.example',
+  company: 'Demo SA',
   plan: 'HealthOS Plus',
   since: 'Gennaio 2026',
   healthScore: 74,

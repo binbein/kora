@@ -38,7 +38,7 @@ export default function HRNav() {
         </nav>
         <div className="p-4 border-t border-border">
           <div className="bg-accent rounded-lg p-3">
-            <p className="text-xs font-medium text-foreground">Alpine Finance SA</p>
+            <p className="text-xs font-medium text-foreground">Demo SA</p>
             <p className="text-[10px] text-muted-foreground">150 dipendenti · Piano Plus</p>
           </div>
         </div>

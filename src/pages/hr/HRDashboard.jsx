@@ -43,7 +43,7 @@ export default function HRDashboard() {
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
         <div>
           <h1 className="text-2xl font-bold font-display">Dashboard HR</h1>
-          <p className="text-sm text-muted-foreground mt-1">Alpine Finance SA — Piano HealthOS Plus</p>
+          <p className="text-sm text-muted-foreground mt-1">Demo SA — Piano HealthOS Plus</p>
         </div>
       </div>
 

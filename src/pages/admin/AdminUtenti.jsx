@@ -6,14 +6,16 @@ import { Users, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import KPICard from '@/components/shared/KPICard';
 
+// I domini sono sotto il TLD riservato `.example` (RFC 2606): non e' registrabile
+// da nessuno, quindi nessuna persona inventata puo' finire su un dominio di terzi.
 const users = [
-  { name: 'Marco Bianchi', email: 'm.bianchi@alpinefinance.ch', company: 'Alpine Finance SA', plan: 'Plus', status: 'active', score: 74, joined: 'Gen 2026' },
-  { name: 'Sara Conti', email: 's.conti@alpinefinance.ch', company: 'Alpine Finance SA', plan: 'Plus', status: 'active', score: 82, joined: 'Gen 2026' },
-  { name: 'Luca Ferrari', email: 'l.ferrari@tpgroup.ch', company: 'Ticino Pharma Group', plan: 'Executive', status: 'active', score: 61, joined: 'Feb 2026' },
-  { name: 'Elena Russo', email: 'e.russo@tpgroup.ch', company: 'Ticino Pharma Group', plan: 'Executive', status: 'active', score: 88, joined: 'Feb 2026' },
-  { name: 'Giorgio Motta', email: 'g.motta@slb.ch', company: 'Studio Legale Bernasconi', plan: 'Essenziale', status: 'pending', score: null, joined: 'Apr 2026' },
-  { name: 'Chiara Verdi', email: 'c.verdi@swisscom.ch', company: 'Swisscom Innovation Lab', plan: 'Plus', status: 'active', score: 79, joined: 'Mar 2026' },
-  { name: 'Roberto Neri', email: 'r.neri@swisscom.ch', company: 'Swisscom Innovation Lab', plan: 'Plus', status: 'inactive', score: 55, joined: 'Mar 2026' },
+  { name: 'Marco Bianchi', email: 'm.bianchi@demo-sa.example', company: 'Demo SA', plan: 'Plus', status: 'active', score: 74, joined: 'Gen 2026' },
+  { name: 'Sara Conti', email: 's.conti@demo-sa.example', company: 'Demo SA', plan: 'Plus', status: 'active', score: 82, joined: 'Gen 2026' },
+  { name: 'Luca Ferrari', email: 'l.ferrari@laricepharma.example', company: 'Larice Pharma SA', plan: 'Executive', status: 'active', score: 61, joined: 'Feb 2026' },
+  { name: 'Elena Russo', email: 'e.russo@laricepharma.example', company: 'Larice Pharma SA', plan: 'Executive', status: 'active', score: 88, joined: 'Feb 2026' },
+  { name: 'Giorgio Motta', email: 'g.motta@studiolegalerovere.example', company: 'Studio Legale Rovere', plan: 'Essenziale', status: 'pending', score: null, joined: 'Apr 2026' },
+  { name: 'Chiara Verdi', email: 'c.verdi@genzianatech.example', company: 'Genziana Tech SA', plan: 'Plus', status: 'active', score: 79, joined: 'Mar 2026' },
+  { name: 'Roberto Neri', email: 'r.neri@genzianatech.example', company: 'Genziana Tech SA', plan: 'Plus', status: 'inactive', score: 55, joined: 'Mar 2026' },
 ];
 
 const statusColors = {
