@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { MapPin, Calendar, CheckCircle2, ClipboardCheck } from 'lucide-react';
+import { MapPin, Calendar, CheckCircle2, ClipboardCheck, AlertTriangle } from 'lucide-react';
 
 // Stessa rete convenzionata elencata in /admin/provider: nome, citta' e indirizzo
 // coincidono, cosi' le due schermate non descrivono due reti diverse (CLAUDE.md §8).
@@ -134,6 +134,14 @@ export default function Checkup() {
               <p className="text-muted-foreground leading-relaxed">
                 Il tuo colesterolo è leggermente sopra il valore consigliato. Non è un'emergenza, ma ti consigliamo di seguire il piano nutrizionale e ripetere il controllo tra 6 mesi.
               </p>
+            </div>
+
+            <div className="flex items-start gap-2 rounded-lg border border-warning/40 bg-warning/20 px-3 py-2.5 text-xs text-foreground">
+              <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+              <span>
+                Referto dimostrativo con valori di esempio. Non è un documento clinico e
+                non sostituisce il referto del centro che esegue il check-up.
+              </span>
             </div>
           </div>
         </DialogContent>
