@@ -673,9 +673,11 @@ vero (oggi non lo fanno in cinque punti su cinque).
 Aziende, Utenti, Professionisti, Sessioni, Provider check-up, Analytics.
 
 Non ha valore narrativo diretto ma ha valore di prodotto: serve dopo. **Va protetto
-o marcato come dati dimostrativi**: `ProtectedRoute` esiste nel codice e non è usato
-da nessuna rotta, quindi oggi chiunque abbia il link vede il back-office con
-l'elenco dei "clienti".
+o marcato come dati dimostrativi**: M0 lo marca con un banner, perché chiunque abbia
+il link vede il back-office con l'elenco dei "clienti". La guardia vera è M5 e va
+scritta da zero sui nostri ruoli: il `ProtectedRoute` ereditato è stato cancellato
+in M1 insieme all'SDK, perché dipendeva dall'auth di base44 e usarlo avrebbe mandato
+al login del Builder.
 
 **Finita quando:** i totali di ogni schermata si ricavano dai dati e non sono
 scritti a mano — oggi "618 utenti attivi" convive con un tasso di attivazione che ne
