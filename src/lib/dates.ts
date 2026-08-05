@@ -16,7 +16,11 @@ export function startOfWeek(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() - shift);
 }
 
-/** Stesso orario, giorni spostati. Passa da `Date` per gestire i fine mese. */
+/**
+ * Sposta di N giorni e azzera l'ora, come tutte le funzioni di questo file.
+ * Non conserva l'orario: per costruire un appuntamento delle 17:30 si prende
+ * il giorno da qui e l'ora si mette dopo. Passa da `Date` per i fine mese.
+ */
 export function addDays(date: Date, days: number): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
 }

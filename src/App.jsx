@@ -45,48 +45,48 @@ import AdminAnalytics from '@/pages/admin/AdminAnalytics';
 
 const AppRoutes = () => (
   <Routes>
-      {/* Public */}
-      <Route path="/" element={<Landing />} />
-      <Route path="/pricing" element={<Pricing />} />
-      <Route path="/demo" element={<DemoRequest />} />
+    {/* Public */}
+    <Route path="/" element={<Landing />} />
+    <Route path="/pricing" element={<Pricing />} />
+    <Route path="/demo" element={<DemoRequest />} />
 
-      {/* Employee portal */}
-      <Route path="/employee" element={<EmployeeLayout />}>
-        <Route index element={<EmployeeHome />} />
-        <Route path="psicologi" element={<Psicologi />} />
-        <Route path="medico" element={<Medico />} />
-        <Route path="checkup" element={<Checkup />} />
-        <Route path="piano-ai" element={<PianoAI />} />
-        <Route path="profilo" element={<Profilo />} />
-      </Route>
+    {/* Employee portal */}
+    <Route path="/employee" element={<EmployeeLayout />}>
+      <Route index element={<EmployeeHome />} />
+      <Route path="psicologi" element={<Psicologi />} />
+      <Route path="medico" element={<Medico />} />
+      <Route path="checkup" element={<Checkup />} />
+      <Route path="piano-ai" element={<PianoAI />} />
+      <Route path="profilo" element={<Profilo />} />
+    </Route>
 
-      {/* HR portal */}
-      <Route path="/hr" element={<HRLayout />}>
-        <Route index element={<HRDashboard />} />
-        <Route path="dipendenti" element={<HRDipendenti />} />
-        <Route path="report" element={<HRReport />} />
-        <Route path="fatturazione" element={<HRFatturazione />} />
-        <Route path="privacy" element={<HRPrivacy />} />
-      </Route>
+    {/* HR portal */}
+    <Route path="/hr" element={<HRLayout />}>
+      <Route index element={<HRDashboard />} />
+      <Route path="dipendenti" element={<HRDipendenti />} />
+      <Route path="report" element={<HRReport />} />
+      <Route path="fatturazione" element={<HRFatturazione />} />
+      <Route path="privacy" element={<HRPrivacy />} />
+    </Route>
 
-      {/* Professional portal */}
-      <Route path="/professional" element={<ProLayout />}>
-        <Route index element={<ProCalendario />} />
-        <Route path="sessioni" element={<ProSessioni />} />
-        <Route path="pazienti" element={<ProPazienti />} />
-        <Route path="pagamenti" element={<ProPagamenti />} />
-        <Route path="profilo" element={<ProProfilo />} />
-      </Route>
+    {/* Professional portal */}
+    <Route path="/professional" element={<ProLayout />}>
+      <Route index element={<ProCalendario />} />
+      <Route path="sessioni" element={<ProSessioni />} />
+      <Route path="pazienti" element={<ProPazienti />} />
+      <Route path="pagamenti" element={<ProPagamenti />} />
+      <Route path="profilo" element={<ProProfilo />} />
+    </Route>
 
-      {/* Admin portal */}
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<AdminAziende />} />
-        <Route path="utenti" element={<AdminUtenti />} />
-        <Route path="professionisti" element={<AdminProfessionisti />} />
-        <Route path="sessioni" element={<AdminSessioni />} />
-        <Route path="provider" element={<AdminProvider />} />
-        <Route path="analytics" element={<AdminAnalytics />} />
-      </Route>
+    {/* Admin portal */}
+    <Route path="/admin" element={<AdminLayout />}>
+      <Route index element={<AdminAziende />} />
+      <Route path="utenti" element={<AdminUtenti />} />
+      <Route path="professionisti" element={<AdminProfessionisti />} />
+      <Route path="sessioni" element={<AdminSessioni />} />
+      <Route path="provider" element={<AdminProvider />} />
+      <Route path="analytics" element={<AdminAnalytics />} />
+    </Route>
 
     <Route path="*" element={<PageNotFound />} />
   </Routes>
