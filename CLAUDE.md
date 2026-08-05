@@ -737,6 +737,24 @@ indirizzi.
   funzione ha un solo chiamante, di solito è una riga dentro il chiamante. Vale
   soprattutto in questa fase: il codice che non c'è non va mantenuto quando arriva
   il backend.
+- **Minimo nell'astrazione, completo nel comportamento.** Le due cose non sono in
+  conflitto e non si scambiano: "il minimo" riguarda quante astrazioni si
+  costruiscono, mai quanti casi si gestiscono. Un componente che ignora la lista
+  vuota, il valore mancante o il reparto sotto soglia non è minimale, è incompleto,
+  e il caso scoperto si presenta durante il pitch. Prima di chiudere un pezzo:
+  cosa succede con zero elementi, con un dato assente, al primo e all'ultimo
+  periodo del dataset, e quando il valore cade esattamente sulla soglia.
+- **Il codice che non serve non si scrive e non si conserva.** Niente boilerplate
+  messo per abitudine: file barrel che riesportano e basta, props opzionali che
+  nessuno passa, `try/catch` che ingoiano l'errore, rami irraggiungibili, codice
+  commentato "che magari serve". Quello che va tolto si toglie in un commit suo:
+  git lo ricorda e `PROGRESS.md` spiega perché. L'unica eccezione è ciò che questo
+  file o `PROGRESS.md` dichiarano sospeso in attesa di una decisione dei founder.
+- **Chiarezza prima di brevità.** Conciso vuol dire senza parti inutili, non
+  compresso: un nome esplicito batte un nome corto, e una funzione che si legge in
+  ordine batte una catena di `map`/`reduce` da rileggere due volte. Questo codice
+  lo erediterà chi scriverà il backend con in mano `CONTRATTO-DATI.md`, e non avrà
+  a disposizione la conversazione in cui è stato scritto.
 - **I commenti si guadagnano il posto.** Resta solo il commento che impedisce un
   errore che il codice da solo non impedisce (perché quel TLD, perché quell'indirizzo
   è generico). Spiegare cosa è stato tolto e perché è mestiere di
