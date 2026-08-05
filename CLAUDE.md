@@ -108,46 +108,46 @@ repository Next non dia niente per scontato.
   cui le schermate leggono e mutano dati (§5).
 - **recharts 2** per i grafici, **lucide-react** per le icone, **framer-motion**
   per le animazioni di ingresso della landing.
-- **Font: Inter (testo) + DM Sans (display).** Oggi arrivano da un `@import` di
-  Google Fonts dentro `index.css`. **Vanno self-hostati**: una richiesta a runtime
-  verso i server di Google trasmette l'IP dell'utente, ed è incompatibile con
-  quello che le nostre stesse schermate promettono (hosting in Svizzera, LPD,
-  GDPR). Non è un dettaglio di performance, è coerenza con l'argomento di vendita.
+- **Font: Inter (testo) + DM Sans (display), self-hostati.** Arrivano da
+  `@fontsource-variable`, in variante variabile, con un `@import` per famiglia in
+  `index.css`. **Non si torna all'`@import` di Google Fonts**, per comodità o per
+  qualunque altra ragione: una richiesta a runtime verso i server di Google
+  trasmette l'IP dell'utente, ed è incompatibile con quello che le nostre stesse
+  schermate promettono (hosting in Svizzera, LPD, GDPR). Non è un dettaglio di
+  performance, è coerenza con l'argomento di vendita. Da qui **le richieste
+  esterne a runtime sono zero**, ed è una proprietà da non perdere: vale anche per
+  CDN, icone, analytics e mappe.
 
 ### Dipendenze
 
-Il `package.json` ereditato contiene **una ventina di pacchetti mai importati**:
-`three`, `react-leaflet`, `react-quill`, `moment`, `lodash`, `@stripe/*`,
-`canvas-confetti`, `@hello-pangea/dnd`, `react-markdown`, `react-hot-toast`,
-`html2canvas`, `jspdf`, `date-fns`. Vanno verificati e rimossi: pesano sul bundle
-di un frontend che diventerà produzione. **Prima di rimuoverne uno, cercarlo nel
-codice**; `jspdf` e `html2canvas` in particolare potrebbero servire al report
-scaricabile (§10.C.3) e in quel caso restano.
+I pacchetti che il `package.json` ereditava senza che nessuno li importasse sono
+stati rimossi in M1: pesavano sul bundle di un frontend che diventerà produzione.
+La regola con cui sono stati tolti resta, perché la prossima passata di pulizia la
+rifarà: **prima di rimuovere una dipendenza, cercarla nel codice.**
 
-`zod`, `react-hook-form` e `@hookform/resolvers` sono installati e serviranno alla
-validazione dei form (§10, milestone M5): non toglierli.
+Due gruppi sono installati e inutilizzati **di proposito**, e non vanno tolti
+trovandoli senza `import`:
+
+- `jspdf` e `html2canvas` servono al report scaricabile (§10.C.3), che è M4;
+- `zod`, `react-hook-form` e `@hookform/resolvers` serviranno alla validazione dei
+  form (§10, milestone M5).
 
 Prima di aggiungere qualunque dipendenza nuova: **chiedere.**
 
 ### Il plugin base44 e il Builder
 
-`vite.config.js` carica `@base44/vite-plugin` con `visualEditAgent`,
-`hmrNotifier`, `navigationNotifier` e `analyticsTracker` attivi, e
-`src/lib/app-params.js` legge id e token dell'app.
-
 **Decisione dei founder: il repository è forkato e git è la fonte di verità.** Il
 Builder rigenera codice da prompt e un refactoring profondo fatto a mano o viene
 sovrascritto o diverge; un frontend di produzione non può avere due autori che non
-si parlano. Il plugin e l'SDK vanno quindi rimossi, insieme all'unico punto che li
-usa davvero (`DemoRequest.create()` nel form della landing, che diventa una
-mutation del provider come tutto il resto).
+si parlano. Il plugin, l'SDK e l'unico punto che li usava davvero sono stati
+rimossi in M1, e non rientrano: **niente base44 nel repository**, né come
+dipendenza né come servizio chiamato a runtime.
 
-**Attenzione a una dipendenza nascosta.** Ogni file importa con l'alias `@/`, ma
-quell'alias non è definito da nessuna parte nel repository: `vite.config.js` non ha
-un blocco `resolve.alias`, e Vite **non legge** i `paths` di `jsconfig.json`. Lo
-inietta il plugin base44. Togliendo il plugin senza aggiungere prima l'alias a
-`vite.config.js`, ogni import del progetto smette di risolvere in un colpo solo.
-È il primo passo di M1, non una conseguenza da scoprire dopo.
+**L'alias `@/` è definito in `vite.config.js` sotto `resolve.alias`, e non si
+toglie.** Ogni file del progetto importa con quell'alias, e Vite **non legge** i
+`paths` di `tsconfig.json`: senza quel blocco ogni import smette di risolvere in
+un colpo solo. Prima di M1 lo iniettava il plugin base44, che è esattamente il
+motivo per cui oggi è scritto lì.
 
 Deploy: **Vercel**, progetto collegato al repo, preview automatica per branch.
 L'app sta alla radice del repository, quindi non serve impostare una Root
@@ -705,7 +705,8 @@ approvazione** (§2.6); nessuna schermata esistente si elimina senza dirlo.
    "Personalizzato" a moduli **resta nascosto** finché i founder non decidono:
    i suoi undici prezzi non sono nel BP e a 150 dipendenti la preselezione esce
    allo stesso prezzo dell'Essenziale offrendo più di lui.
-4. **Richiesta demo**: form che oggi scrive su base44 e diventerà una mutation.
+4. **Richiesta demo**: form che oggi si risolve in locale e diventerà una
+   mutation del provider.
 
 **Finita quando:** il calcolatore è corretto per qualsiasi N fra 20 e 1000, le
 quattro voci sommano al totale mostrato, e a N=100 escono i cinque numeri di §9.
