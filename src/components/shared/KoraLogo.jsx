@@ -8,8 +8,8 @@ export default function KoraLogo({ size = 'md', light = false }) {
     xl: { icon: 56, text: 'text-4xl' },
   };
   const s = sizes[size];
-  const color = light ? '#FFFFFF' : '#123A5A';
-  const tealColor = '#1BAA9A';
+  const color = light ? '#FFFFFF' : 'hsl(var(--primary))';
+  const tealColor = 'hsl(var(--secondary))';
 
   return (
     <div className="flex items-center gap-2">
