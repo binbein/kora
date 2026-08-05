@@ -307,8 +307,8 @@ riepilogo compensi apre su un totale prossimo allo zero.
 È la lezione più cara della demo precedente e il difetto principale di quella
 ereditata. Vanno **calcolati, non scritti**:
 
-- la serie di stress aziendale = media dei reparti pesata sulle risposte, esclusi i
-  reparti sotto soglia;
+- la serie di stress aziendale = media dei reparti pesata sui dipendenti misurati,
+  esclusi i reparti sotto soglia;
 - l'alert precoce = scansione delle serie, così il marker sul grafico si sposta da
   sé se i punteggi cambiano;
 - i giorni di assenza evitati = risparmio ÷ costo di una giornata (§9);
@@ -419,9 +419,10 @@ Regole:
   medico virtuale dà del lei ed è coerente dall'inizio alla fine della
   conversazione. Il codice ereditato oscilla fra "lei" e "tu" nella stessa chat.
 - La privacy è un argomento di vendita: la nota *"Dati aggregati e anonimi · soglia
-  minima 15 risposte per reparto"* con icona lucchetto è sempre visibile in
-  dashboard. Dice **"risposte"**, non "dipendenti": la soglia si applica a chi ha
-  risposto al questionario (§8).
+  minima {n} dipendenti misurati per reparto"* con icona lucchetto è sempre visibile
+  in dashboard. Dice **"misurati"**, non "dipendenti" né "iscritti": la soglia conta
+  chi ha risposto al check rapido nel periodo (§8). La soglia è un segnaposto e non
+  una cifra nel testo, perché il suo valore è ancora da riderivare.
 - **Spazi JSX attorno agli elementi inline.** Quando il testo che segue un `<code>`,
   `<strong>`, `<a>` o `<span>` va a capo nel sorgente, la trasformazione JSX ne
   mangia lo spazio iniziale e le parole si attaccano. Un `{" "}` esplicito non
@@ -453,33 +454,78 @@ La narrazione (deve emergere dai grafici senza spiegazioni):
 - Mesi 1–8: stress aziendale stabile su "Medio", in lieve calo. Vendite in linea.
 - Mesi 9–12: Vendite si stacca e sale costantemente fino ad "Alto".
 - **Mese 10: scatta l'alert precoce** (evidenziato sul grafico con un marker).
-- Adozione: 68% iscritti (82), 41 attivi nel mese. Sessioni azienda: 142 usate.
+- Adozione: 68% iscritti (82, da riderivare), 41 attivi nel mese. Sessioni
+  azienda: 142 usate.
 - ROI trimestre corrente: **CHF 14'200 risparmiati, 16 giorni di assenza evitati**.
 - Stress per reparto (ultimo mese): Vendite Alto (78%), Operations Medio (52%),
   Finanza Medio (44%), IT Basso (31%), HR + Legale Basso (26%). Direzione: sotto
   soglia anonimato → la UI mostra "—" con un lucchetto.
 
-**La soglia di anonimato si applica alle risposte, non all'organico.** HR + Legale e
-Direzione hanno entrambi 15 dipendenti: con una regola sull'organico sarebbero
-indistinguibili. `Department.respondents` dice quante persone del reparto hanno
-risposto al questionario mensile, ed è quel numero a decidere se il dato è
-pubblicabile. Direzione ha 11 risposte, HR + Legale 15. Gli 82 "iscritti" sono
-un'altra cosa: chi ha attivato l'account per prenotare.
+**Come si misura lo stress: due strumenti, e nessuno dei due è un questionario
+mensile.**
 
-**Le risposte si mostrano su ogni riga**, non solo su quelle sotto soglia: con il
+1. **Assessment iniziale** — all'attivazione dell'account, 10 domande in circa 8
+   minuti (BP §6-B1). Genera il Profilo Salute e fissa la **baseline** del
+   dipendente: reparto, sonno, stress, le cinque aree. Non è una fotografia una
+   tantum: è il primo punto della sua serie, e tutto quello che viene dopo si legge
+   come scostamento da lì.
+2. **Check rapido ricorrente** — una domanda, un tocco, auto-riportato. È il segnale
+   che alimenta il trend per reparto. Vive **dentro l'app** per chi ha l'account e su
+   **link anonimo** per chi non ce l'ha: rispondere non richiede un account.
+
+Il link anonimo non è una comodità. Misurare solo chi ha attivato l'account
+significa misurare solo chi è già ingaggiato — il campione sbagliato, e quello che
+del prodotto ha meno bisogno. **I dipendenti misurati possono quindi essere più
+degli iscritti**, ed è una proprietà voluta del modello: il dato vale anche dove
+l'adozione non è ancora arrivata.
+
+**Lo stress non si deduce mai dal comportamento** — non dalle sessioni prenotate,
+non dalle aperture dell'app, non da un wearable. Un segnale comportamentale non
+distingue "il reparto sta peggio" da "il reparto ha adottato bene il prodotto", e
+legge come in miglioramento chi si sta ritirando. La dashboard HR afferma la prima
+cosa, quindi il dato deve misurare quella e non un suo surrogato. È un vincolo, non
+una preferenza: nessuna metrica di stress, in nessuna schermata, si calcola a
+partire dall'uso del prodotto.
+
+> **Tre conteggi sono sospesi e M2 non deve usarli**: iscritti (82), dipendenti
+> misurati per reparto, valore della soglia (15). Arrivano dai founder e si scrivono
+> qui prima che il mock li usi. Il resto del §8 resta valido.
+
+**La soglia di anonimato si applica ai dipendenti misurati nel periodo**, non
+all'organico e non agli iscritti. HR + Legale e Direzione hanno entrambi 15
+dipendenti: con una regola sull'organico sarebbero indistinguibili. A decidere se
+il dato è pubblicabile è quante persone del reparto hanno risposto al check rapido
+in quel periodo. Nei valori provvisori Direzione ne ha 11 e HR + Legale 15. Gli
+"iscritti" sono un'altra cosa ancora: chi ha attivato l'account per prenotare.
+Essere iscritto ed essere misurato sono indipendenti, e nessuno dei due implica
+l'altro.
+
+**Il conteggio dei misurati sta sul record mensile del reparto, non su
+`Department`.** Il nome `measuredEmployees` va bene dentro un record già datato: è
+la posizione che cambia. L'anagrafica del reparto porta un numero solo, mentre la
+serie del §5.5 copre dodici mesi: chi implementa peserebbe tutti e dodici i mesi
+con il conteggio di oggi e deciderebbe l'esclusione una volta sola per tutta la
+storia. Non si rompe niente — esce una curva diversa da quella descritta e a
+schermo non se ne accorge nessuno. E non è un caso di scuola: la narrazione fa
+staccare le Vendite fra il mese 9 e il 12, e l'adesione al check rapido è proprio
+il dato che si muove quando un reparto va sotto pressione. Su `Department` può
+restare al massimo il valore del periodo corrente, derivato dal record mensile.
+
+**I misurati si mostrano su ogni riga**, non solo su quelle sotto soglia: con il
 solo organico, i due reparti da 15 sarebbero due righe identiche con esiti opposti,
 e una delle due sembrerebbe rotta.
 
-**Il conteggio dei reparti in calo esclude quelli sotto soglia**: sono 4 su 5, non
-su 6. Un reparto fuori dalla media aziendale non può stare nel denominatore del
-dato che quella media descrive.
+**I reparti sotto soglia non entrano nel denominatore.** Un reparto escluso dalla
+media aziendale non può contare nel dato che quella media descrive: "reparti in
+calo su N" conta i soli reparti pubblicabili, e N si deriva come tutto il resto.
 
-**La serie aziendale è derivata, mai scritta a mano**: media dei punteggi di reparto
-pesata sulle risposte, con i reparti sotto soglia esclusi. Le curve vanno disegnate
-in modo che l'aggregato resti **piatto o in lieve calo**: se la linea aziendale
-sale, contraddice la narrazione, che è *"la media non mostrava nulla, il dettaglio
-per reparto sì"*. Il codice ereditato ha una sola linea che scende da 68 a 52, senza
-reparti: racconta "va tutto bene" invece di "l'abbiamo visto prima".
+**La serie aziendale è derivata, mai scritta a mano**: media dei punteggi di
+reparto pesata sui dipendenti misurati, con i reparti sotto soglia esclusi. Le
+curve vanno disegnate in modo che l'aggregato resti **piatto o in lieve calo**: se
+la linea aziendale sale, contraddice la narrazione, che è *"la media non mostrava
+nulla, il dettaglio per reparto sì"*. Il codice ereditato ha una sola linea che
+scende da 68 a 52, senza reparti: racconta "va tutto bene" invece di "l'abbiamo
+visto prima".
 
 **I giorni di assenza evitati sono un quoziente**: risparmio ÷ CHF 900 (§9). Danno
 16 sul trimestre corrente, 13 / 10 / 7 sui precedenti.
@@ -698,6 +744,24 @@ indirizzi.
   funzione ha un solo chiamante, di solito è una riga dentro il chiamante. Vale
   soprattutto in questa fase: il codice che non c'è non va mantenuto quando arriva
   il backend.
+- **Minimo nell'astrazione, completo nel comportamento.** Le due cose non sono in
+  conflitto e non si scambiano: "il minimo" riguarda quante astrazioni si
+  costruiscono, mai quanti casi si gestiscono. Un componente che ignora la lista
+  vuota, il valore mancante o il reparto sotto soglia non è minimale, è incompleto,
+  e il caso scoperto si presenta durante il pitch. Prima di chiudere un pezzo:
+  cosa succede con zero elementi, con un dato assente, al primo e all'ultimo
+  periodo del dataset, e quando il valore cade esattamente sulla soglia.
+- **Il codice che non serve non si scrive e non si conserva.** Niente boilerplate
+  messo per abitudine: file barrel che riesportano e basta, props opzionali che
+  nessuno passa, `try/catch` che ingoiano l'errore, rami irraggiungibili, codice
+  commentato "che magari serve". Quello che va tolto si toglie in un commit suo:
+  git lo ricorda e `PROGRESS.md` spiega perché. L'unica eccezione è ciò che questo
+  file o `PROGRESS.md` dichiarano sospeso in attesa di una decisione dei founder.
+- **Chiarezza prima di brevità.** Conciso vuol dire senza parti inutili, non
+  compresso: un nome esplicito batte un nome corto, e una funzione che si legge in
+  ordine batte una catena di `map`/`reduce` da rileggere due volte. Questo codice
+  lo erediterà chi scriverà il backend con in mano `CONTRATTO-DATI.md`, e non avrà
+  a disposizione la conversazione in cui è stato scritto.
 - **I commenti si guadagnano il posto.** Resta solo il commento che impedisce un
   errore che il codice da solo non impedisce (perché quel TLD, perché quell'indirizzo
   è generico). Spiegare cosa è stato tolto e perché è mestiere di
