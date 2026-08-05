@@ -101,7 +101,7 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
 
 ### M1 — Fondamenta tecniche
 
-Nove commit, uno per passo. **A schermo non cambia niente**, ed è stato verificato
+Undici commit, uno per passo. **A schermo non cambia niente**, ed è stato verificato
 confrontando le rotte con gli screenshot di M0, non a occhio.
 
 L'ordine non era negoziabile in un punto: **l'alias `@/` è stato definito in
@@ -121,7 +121,11 @@ avrebbe fatto smettere di risolvere ogni import del progetto in un colpo solo.
   `allowJs: true` e **`checkJs: false`**: le pagine ereditate compilano ma non si
   dichiarano tipizzate, che è la verità, ed entrano sotto controllo quando M3 le
   converte. `npm run typecheck` passa da 405 errori a **0**.
-- **Dipendenze.** Via 13 pacchetti mai importati, 110 dal tree.
+- **Dipendenze.** Via 13 pacchetti mai importati, 110 dal tree. In revisione ne sono
+  emersi altri due, `sonner` e `next-themes`, tenuti in vita da un solo file morto:
+  `components/ui/sonner.jsx` era l'unico a importarli, e nessuno importava lui —
+  `App.jsx` monta il `Toaster` di `ui/toaster.jsx`, che è la reimplementazione senza
+  Radix. Il §6.1 escludeva `next-themes` esplicitamente.
 - **Font self-hostati.** Inter e DM Sans in variante **variabile**: un import per
   famiglia copre tutti i pesi da 100 a 900, quindi la domanda "quali pesi
   spediamo" non si ripresenta la prima volta che qualcuno usa un `font-semibold`
@@ -140,8 +144,9 @@ del codice — e `@fontsource-variable/inter` + `@fontsource-variable/dm-sans`.
 **Verificato**: i cinque numeri di ancoraggio del §9 a N=100 (perdite 1'289'500,
 risparmio 221'150, costo 66'000, netto 155'150, ROI 2.35), le quattro voci che
 sommano al totale, il rapporto invariato a N=20 e N=1000, `formatCHF(6200)` =
-`CHF 6'200`, `git status` pulito dopo `npm run typecheck`, zero richieste esterne
-a schermo, `npm run lint` e `npm run typecheck` a 0.
+`CHF 6'200`, `git status` pulito dopo `npm run typecheck`, 25 rotte senza 404 né
+schermate vuote, zero richieste esterne a schermo, console del browser senza
+errori, `npm run lint` e `npm run typecheck` a 0.
 
 **Difetti noti di M1:**
 
@@ -162,6 +167,14 @@ a schermo, `npm run lint` e `npm run typecheck` a 0.
 - **`src/utils/index.ts` è ancora lì e non lo importa nessuno** (`createPageUrl`,
   zero chiamanti dal primo commit). Ora che ESLint legge il TypeScript si vede; è un
   candidato alla cancellazione, non fatta perché fuori dai passi approvati.
+- **Resta un warning di lint**, ora visibile perché lo script non usa più `--quiet`:
+  `bookingStep` in `Psicologi.jsx`, stato morto di un wizard a più passi. Sparisce
+  in M3 quando la prenotazione viene rifatta. `npm run lint` esce comunque 0 —
+  ESLint non fallisce sui warning.
+- **La console mostra due avvisi di `react-router`** sui future flag della 7
+  (`v7_startTransition`, `v7_relativeSplatPath`). Non sono errori e non si vedono
+  in produzione; spariscono con la stessa migrazione alla 7 che chiuderebbe le due
+  vulnerabilità, ed è la stessa decisione di scope.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
