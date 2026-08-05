@@ -31,7 +31,7 @@ restano fuori dal repository: le cifre che servono sono trascritte in `CLAUDE.md
 
 ### M0 — Messa in sicurezza
 
-Otto commit. Cosa è stato fatto e perché:
+Undici commit. Cosa è stato fatto e perché:
 
 - **Nomi reali sostituiti.** Swisscom e Reale Mutua comparivano come clienti
   paganti, Clinica Moncucco / Hirslanden / Ospedale Mendrisio come partner
@@ -50,10 +50,24 @@ Otto commit. Cosa è stato fatto e perché:
   output clinico simulato senza qualificarlo.
 - **Piano "Personalizzato" nascosto**, griglia riportata a tre colonne.
   `FlexiblePlanCard.jsx` resta nel repository.
+- **Stima di risparmio rimossa** dal calcolatore prezzi e dal simulatore di
+  fatturazione HR. Diceva "CHF 1'400–2'900 per dipendente all'anno" ed era la frase
+  più in evidenza di entrambi i riquadri, ma **quella cifra non è nel Business
+  Plan**: era la sola voce di quelle schermate che un investitore col documento in
+  mano non avrebbe potuto ritrovare. Torna in M4, calcolata da `roi-model.ts` e
+  etichettata come scenario conservativo (`CLAUDE.md` §9). Le due 💡 sono sparite
+  con le righe che le contenevano. Nella stessa passata, l'estensione partner del
+  Plus è passata da "+ CHF 15/mese" a "+ CHF 15/dipendente/mese": la cifra è nel BP
+  (p.9), l'etichetta la faceva leggere come una tariffa unica per l'azienda.
 - **Form demo risolto in locale.** Restava bloccato su "Invio in corso…" per
   sempre, sul CTA primario della landing.
 - **Scope di ESLint allargato** a `src/**` (prima `src/lib`, `src/api`, `App.jsx` e
   `main.jsx` non erano lintati affatto) e 36 import inutilizzati rimossi.
+- **Revisione**: i tre riquadri introdotti sopra (banner back-office e i due
+  disclaimer) erano su `warning`, che il §6.1 riserva ad alert e stati critici.
+  Sono avvisi, non allarmi, e bruciavano il colore che serve al banner dell'alert
+  precoce di M3 (§10.C.1): portati a `bg-muted` / `border-border`. La favicon è
+  passata da `#1BAA9A`/`#123A5A` ai token `#1BAC99`/`#11395A` del §6.1.
 
 **Verificato a schermo**: 25 rotte navigate dalla landing usando solo i link, zero
 404; nessuna richiesta verso `base44.com` in nessun percorso, invio del form
@@ -64,9 +78,20 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
 - `npm run lint` esce 0, ma lo script usa `--quiet`: resta **un warning nascosto**
   (`bookingStep` mai letto in `Psicologi.jsx`, residuo di un wizard a più passi).
   Sparisce in M3 quando la prenotazione viene rifatta.
-- `npm run typecheck` esce 2 con **421 errori** ereditati dai `.jsx` non tipizzati.
-  Non è una regressione ed è il baseline da non superare finché M1 non sostituisce
-  `jsconfig.json`.
+- `npm run typecheck` esce 2 con **405 errori** ereditati dai `.jsx` non tipizzati
+  (erano 421 prima di M0). Non è una regressione ed è il baseline da non superare
+  finché M1 non sostituisce `jsconfig.json`.
+- **Resta una sola richiesta verso terzi, ed è quella dei font.** Il §3 chiede di
+  self-hostare Inter e DM Sans; l'`@import` di Google Fonts in `index.css` è ancora
+  lì e trasmette l'IP del visitatore a Google a ogni caricamento, sulla stessa
+  pagina che promette hosting in Svizzera e conformità LPD. M0 ha tolto la favicon
+  servita da `base44.com` per lo stesso motivo, quindi ora è **l'unica** chiamata
+  esterna e si nota di più. Va chiusa in M1, prima che l'indirizzo sia pubblico.
+- **Il logo e la favicon non usano gli stessi esadecimali.** `KoraLogo.jsx` disegna
+  ancora con `#1BAA9A` e `#123A5A` ereditati da base44; la favicon è stata portata
+  sui token `#1BAC99` / `#11395A` del §6.1. Non allineare il logo è stata una scelta
+  — è grafica di base44, che il §1 dice di tenere — ma i due si scostano di poco e
+  la differenza si vede solo affiancandoli. Da decidere con i founder.
 - L'organico resta **150**, non i 120 del §8: cambiarlo trascina il ricalcolo degli
   importi derivati su sei schermate, che è lavoro di M3.
 - `AuthContext` continua a fare una richiesta fallita a ogni caricamento. Va

@@ -14,7 +14,7 @@ fisico, prevenzione AI, dashboard HR con ROI).
 Questo repository ha **due obiettivi insieme**, e l'ordine conta:
 
 1. **Oggi: la demo per gli investitori.** Deve convincere in una presentazione dal
-   vivo di 30 minuti. Tutti i dati sono finti e costruiti ad arte (§7). Tutti i
+   vivo di 30 minuti. Tutti i dati sono finti e costruiti ad arte (§8). Tutti i
    servizi complessi (video, pagamenti, AI, chat medica, referti) sono simulati.
 2. **Domani: il frontend dell'MVP.** Quando arriva il funding, il passaggio alla
    produzione deve essere **sostituire l'implementazione mock con le chiamate
@@ -36,8 +36,8 @@ lettura da cui si copia, **non si modifica e non si importa**. Nessun file di
 non c'è più niente da prendere; resta comunque nella storia di git.
 
 Dove le due divergono, la regola è: **layout e grafica di base44, logica e numeri
-della demo Next.** Le uniche eccezioni sono le regole di §6 che non sono estetica
-ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
+della demo Next.** Le uniche eccezioni sono le regole di §6 e §11 che non sono
+estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
 
 ## 2. Regole d'oro (non negoziabili)
 
@@ -50,12 +50,12 @@ ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
 3. **Sempre presentabile.** Nessuna migrazione "big-bang": ogni passo finisce con
    una demo che funziona da capo a fondo. Non esiste lo stato "è tutto rotto ma fra
    tre giorni è meglio". Si migra un'area alla volta, completa.
-4. **Numeri solo da §7 e §8.** Prezzi, cap sessioni, formule ROI, dataset. Non si
+4. **Numeri solo da §8 e §9.** Prezzi, cap sessioni, formule ROI, dataset. Non si
    inventa mai una cifra nuova. Se ne serve una che non c'è, si chiede ai founder
    e poi si scrive qui.
 5. **Nessun backend reale, nessuna credenziale nel codice.** Niente database, niente
    API server, niente auth vera. `.env*` è in `.gitignore` dal giorno 1.
-6. **Scope congelato.** Le schermate sono quelle di §9. Nessuna schermata, feature o
+6. **Scope congelato.** Le schermate sono quelle di §10. Nessuna schermata, feature o
    sezione nuova senza approvazione esplicita dei founder. Se un'idea sembra buona,
    proporla e fermarsi: la decisione spetta a loro.
 7. **Lingua: italiano — con architettura pronta per 4 lingue.** La piattaforma avrà
@@ -122,10 +122,10 @@ Il `package.json` ereditato contiene **una ventina di pacchetti mai importati**:
 `html2canvas`, `jspdf`, `date-fns`. Vanno verificati e rimossi: pesano sul bundle
 di un frontend che diventerà produzione. **Prima di rimuoverne uno, cercarlo nel
 codice**; `jspdf` e `html2canvas` in particolare potrebbero servire al report
-scaricabile (§9.C.3) e in quel caso restano.
+scaricabile (§10.C.3) e in quel caso restano.
 
 `zod`, `react-hook-form` e `@hookform/resolvers` sono installati e serviranno alla
-validazione dei form (§9, milestone M5): non toglierli.
+validazione dei form (§10, milestone M5): non toglierli.
 
 Prima di aggiungere qualunque dipendenza nuova: **chiedere.**
 
@@ -179,7 +179,7 @@ kora/
       i18n/it.ts         ← tutte le stringhe UI
       format.ts          ← formatCHF, formatDate, formatPercent — unico punto
       dates.ts           ← aritmetica sui giorni: calcola, non formatta
-      roi-model.ts       ← formule del calcolatore ROI (§8)
+      roi-model.ts       ← formule del calcolatore ROI (§9)
   reference/             ← sorgente della vecchia demo Next: sola lettura, si
                            cancella a fine M3. Contiene solo il suo `src/`:
                            niente package.json, niente config, niente app viva
@@ -200,7 +200,7 @@ cosa esiste, milestone per milestone, ed è l'indice con cui ci si orienta
 riprendendo il lavoro — non decide niente e non duplica: cita e rimanda qui.
 
 **Il Business Plan non è nel repository.** I numeri che servono sono trascritti in
-§7 e §8, e quelli sono gli unici ammessi (§2.4).
+§8 e §9, e quelli sono gli unici ammessi (§2.4).
 
 ## 4. Come si lavora — le milestone
 
@@ -223,8 +223,8 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
   i18n, importi da `format.ts`, microcopy nel registro giusto. Toccare due volte la
   stessa schermata è lavoro sprecato. **Chiude cancellando `reference/`**: se
   serve ancora qualcosa da lì, l'area non è finita.
-- **M4 — I pezzi nuovi.** Calcolatore ROI pubblico (§9.A.2) e report trimestrale
-  scaricabile (§9.C.3).
+- **M4 — I pezzi nuovi.** Calcolatore ROI pubblico (§10.A.2) e report trimestrale
+  scaricabile (§10.C.3).
 - **M5 — Verso la produzione.** Differibile, non blocca niente: guardie di rotta per
   ruolo, stati di errore e vuoto veri, validazione dei form, accessibilità
   completa, le altre tre lingue. **Le schermate di M3 vanno costruite in modo da
@@ -275,7 +275,7 @@ al focus della finestra durante una presentazione).
 
 ### 5.3 Il dominio, per intero
 
-`types.ts` copre tutto il dominio delle schermate di §9, non solo quello della
+`types.ts` copre tutto il dominio delle schermate di §10, non solo quello della
 vecchia demo: azienda, reparti, dipendente, professionista, appuntamenti, sessioni,
 compensi, check-up e strutture, piano di prevenzione, piani di abbonamento, report,
 richieste demo, utenti e ruoli.
@@ -311,7 +311,7 @@ ereditata. Vanno **calcolati, non scritti**:
   reparti sotto soglia;
 - l'alert precoce = scansione delle serie, così il marker sul grafico si sposta da
   sé se i punteggi cambiano;
-- i giorni di assenza evitati = risparmio ÷ costo di una giornata (§8);
+- i giorni di assenza evitati = risparmio ÷ costo di una giornata (§9);
 - il monte sessioni annuo = organico × sessioni del piano;
 - i trimestri = contati a ritroso dal trimestre corrente;
 - i totali di riga e di colonna di ogni tabella.
@@ -421,7 +421,7 @@ Regole:
 - La privacy è un argomento di vendita: la nota *"Dati aggregati e anonimi · soglia
   minima 15 risposte per reparto"* con icona lucchetto è sempre visibile in
   dashboard. Dice **"risposte"**, non "dipendenti": la soglia si applica a chi ha
-  risposto al questionario (§7).
+  risposto al questionario (§8).
 - **Spazi JSX attorno agli elementi inline.** Quando il testo che segue un `<code>`,
   `<strong>`, `<a>` o `<span>` va a capo nel sorgente, la trasformazione JSX ne
   mangia lo spazio iniziale e le parole si attaccano. Un `{" "}` esplicito non
@@ -481,7 +481,7 @@ sale, contraddice la narrazione, che è *"la media non mostrava nulla, il dettag
 per reparto sì"*. Il codice ereditato ha una sola linea che scende da 68 a 52, senza
 reparti: racconta "va tutto bene" invece di "l'abbiamo visto prima".
 
-**I giorni di assenza evitati sono un quoziente**: risparmio ÷ CHF 900 (§8). Danno
+**I giorni di assenza evitati sono un quoziente**: risparmio ÷ CHF 900 (§9). Danno
 16 sul trimestre corrente, 13 / 10 / 7 sui precedenti.
 
 **Il monte sessioni annuo è 1'200**: 120 dipendenti × 10 sessioni del piano Plus. A
@@ -536,10 +536,19 @@ dimostrativo. Le persone inventate non devono comparire su domini di terzi.
 ## 9. Numeri ufficiali dal Business Plan (unici ammessi)
 
 Piani: **Essenziale CHF 38** (6 sessioni/anno, extra CHF 35, medico virtuale 12h con
-3 consulti/anno) · **Plus CHF 55** (10 sessioni/anno, extra CHF 28, coach 4
-sessioni/anno, medico 4h consulti illimitati, check-up annuale, piano AI ogni 6
-mesi) · **Executive CHF 82** (16 sessioni/anno, extra CHF 22, medico 1h illimitato,
-nutrizionista 4/anno, familiari inclusi). La demo usa il piano Plus.
+3 consulti/anno, colloquio conoscitivo gratuito una volta) · **Plus CHF 55** (10
+sessioni/anno, extra CHF 28, coach 4 sessioni/anno, medico 4h consulti illimitati,
+check-up annuale, piano AI ogni 6 mesi) · **Executive CHF 82** (16 sessioni/anno,
+extra CHF 22, medico 1h illimitato, nutrizionista 4/anno, coaching 6 sessioni/anno,
+psichiatra su richiesta incluso, 2 workshop live/anno inclusi, familiari inclusi).
+La demo usa il piano Plus.
+
+**Il colloquio conoscitivo dell'Essenziale è una volta sola**, non uno per
+sessione: la card deve dirlo, altrimenti si legge come un extra ricorrente.
+
+**Sull'Executive, "incluso" è l'informazione**: psichiatra e workshop non sono
+opzioni a pagamento e non hanno un prezzo da mostrare. Il coaching ha un tetto
+(6/anno) e va detto, come i 4/anno del Plus.
 
 **Tutti e tre i piani includono il medico virtuale.** Il tetto di consulti vive su
 `Plan` insieme all'SLA, così la card lo dice dove esiste e lo tace dove non c'è.
@@ -559,7 +568,7 @@ al portale professionista: **il regime va sempre detto accanto al totale**,
 altrimenti chi ha letto il BP legge uno scarto di un ordine di grandezza come un
 errore.
 
-### Formule del calcolatore ROI (§9.A.2), per N dipendenti
+### Formule del calcolatore ROI (§10.A.2), per N dipendenti
 
 - Assenteismo: `N × 6.5 giorni × CHF 900`
 - Presenteismo: `N × CHF 1'500`
@@ -682,6 +691,16 @@ indirizzi.
 
 - TypeScript senza `any` nel codice nuovo; ESLint pulito, zero warning.
 - Componenti piccoli e componibili; le pagine sono composizione.
+- **Il minimo che risolve il problema.** Niente astrazioni per un solo caso d'uso,
+  niente opzioni che nessuno passa, niente wrapper che rigirano props. Se una
+  funzione ha un solo chiamante, di solito è una riga dentro il chiamante. Vale
+  soprattutto in questa fase: il codice che non c'è non va mantenuto quando arriva
+  il backend.
+- **I commenti si guadagnano il posto.** Resta solo il commento che impedisce un
+  errore che il codice da solo non impedisce (perché quel TLD, perché quell'indirizzo
+  è generico). Spiegare cosa è stato tolto e perché è mestiere di
+  `docs/PROGRESS.md`: nel sorgente diventa archeologia che nessuno cancella più. Un
+  `TODO` vale solo con una destinazione: `TODO M2: …`.
 - **Ogni numero a schermo passa da `format.ts`.** CHF con apostrofo: `CHF 14'200`.
   Il codice ereditato usa `toLocaleString()` senza locale e importi scritti a mano
   all'italiana (`CHF 8.250`, che in Svizzera si legge "otto virgola due").
