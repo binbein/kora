@@ -244,14 +244,22 @@ Decisioni dei founder che non appartengono a una milestone. La regola vive in
   soglia fuori dal denominatore, serie aziendale come media pesata dei reparti
   sopra soglia.
 
-  **I conteggi restano da riderivare** (iscritti, misurati per reparto, valore
-  della soglia): arrivano dai founder, e M2 non li usa finché non sono in
-  `CLAUDE.md`. Perché erano da rifare: sotto il modello a questionario, cinque
-  reparti alla soglia di 15 più gli 11 della Direzione facevano 86 misurati contro
-  82 iscritti, e chi rispondeva non poteva che essere un iscritto — i tre numeri
-  non stavano insieme. Sotto questo modello quella relazione è ammessa e la
-  contraddizione sparisce, ma i valori non sono mai stati scelti per il modello
-  nuovo, quindi restano sospesi lo stesso.
+  **I conteggi sono decisi e stanno in `CLAUDE.md` §8**: soglia a 12 dipendenti
+  misurati, 82 iscritti, e i misurati per reparto come serie derivata sotto
+  vincoli dichiarati invece che come cifra congelata. Le motivazioni stanno lì.
+  Perché erano rimasti sospesi: sotto il modello a questionario, cinque reparti
+  alla soglia di 15 più gli 11 della Direzione facevano 86 misurati contro 82
+  iscritti, e chi rispondeva non poteva che essere un iscritto — i tre numeri non
+  stavano insieme. Questo modello ammette la relazione, ma i valori andavano
+  comunque scelti.
+
+- **05.08.2026 — `DEMO_TODAY` fissata a mercoledì 23.09.2026** (`CLAUDE.md`
+  §5.4). A scartare la data della vecchia demo (29.07.2026) è stata la posizione
+  nel trimestre, non il giorno della settimana: le prove "infrasettimanale" e
+  "lontano dall'inizio del mese" le passavano entrambe. Al 29 luglio il terzo
+  trimestre è a poco meno di un terzo, quindi i CHF 14'200 di risparmio
+  trimestrale sarebbero stati letti su quattro settimane; al 23 settembre è al
+  92%. Le tre ragioni per esteso stanno in §5.4.
 
 ## Decisioni in sospeso
 
@@ -274,15 +282,27 @@ Decisioni dei founder che non appartengono a una milestone. La regola vive in
 - `reference/` è il **magazzino, ma non tutto si copia.** Non si modifica, non si
   importa: nessun file di `src/` deve avere un `import` che punta dentro
   `reference/`. E soprattutto va distinto cosa è pronto da cosa non lo è:
-  - **Si copiano davvero**: `lib/format.ts`, `lib/dates.ts`, `lib/roi-model.ts`,
-    `lib/i18n/it.ts`, `lib/data/types.ts` e i dataset di `lib/data/mock/`. Sono file
-    puri, già scritti e verificati.
+  - **Si copiano davvero**: `lib/format.ts`, `lib/dates.ts` e `lib/roi-model.ts`
+    — già trapiantati in M1 — e i dataset di `lib/data/mock/` che non toccano il
+    modello di misurazione: `people.ts`, `scheduling.ts`,
+    `professional-portal.ts`, `roi.ts`. Sono file puri, già scritti e verificati.
+  - **Si copia una chiave alla volta**: `lib/i18n/it.ts`. Sono 592 righe scritte
+    per le schermate della vecchia demo, e il §2.7 vuole che le stringhe entrino
+    mentre M3 migra la schermata che le usa. Da lì si prende la chiave che serve,
+    mai il file.
   - **Si leggono come specifica e si riprogettano**: `lib/data/provider.ts`,
     `lib/data/index.ts`, `lib/data/use-data.ts` e le firme dei mock. Quel provider è
     **sincrono per scelta dichiarata** (lo dice un commento nel file) e la reattività
     passa da `useSyncExternalStore` su un contatore di versione. `CLAUDE.md` §5.1
     e §5.2 impongono provider asincrono e react-query: sono due modelli diversi, e
     convertirli per copia non funziona.
+
+    Qui stanno anche **`lib/data/types.ts`, `lib/data/mock/company.ts` e
+    `lib/data/mock/stress.ts`**: i primi due portano `respondents` su
+    `Department`, cioè sull'anagrafica — la posizione che la decisione del 05.08
+    vieta — e i loro commenti descrivono il questionario mensile, che è il
+    modello superato. `stress.ts` legge quel campo due volte, per decidere la
+    pubblicabilità e per pesare la media aziendale, quindi segue i primi due.
   - I componenti di dominio in `components/kora/` stanno in mezzo: la resa si tiene,
     ma sono Next/TSX e leggono dal provider sincrono, quindi si adattano.
 
