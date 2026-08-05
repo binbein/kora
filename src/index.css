@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
+/* Font self-hostati: una richiesta a runtime verso Google trasmetterebbe l'IP
+   dell'utente, ed e' incompatibile con quello che le nostre schermate promettono
+   (CLAUDE.md §3). Sono varianti variabili, quindi un import per famiglia copre
+   tutti i pesi da 100 a 900. */
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/dm-sans';
 
 @tailwind base;
 @tailwind components;
@@ -6,8 +11,8 @@
 
 @layer base {
   :root {
-    --font-inter: 'Inter', sans-serif;
-    --font-display: 'DM Sans', sans-serif;
+    --font-inter: 'Inter Variable', system-ui, sans-serif;
+    --font-display: 'DM Sans Variable', system-ui, sans-serif;
 
     --background: 150 20% 98%;
     --foreground: 207 28% 15%;
