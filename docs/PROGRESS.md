@@ -17,9 +17,10 @@ lì.
 
 ## Stato
 
-**M0 chiusa.** La demo è condivisibile: non nomina più soggetti reali, il marchio è
+**M0 e M1 chiuse.** La demo è condivisibile — non nomina soggetti reali, il marchio è
 uno solo, non ha vicoli ciechi, e le schermate mediche dichiarano di essere
-simulazioni.
+simulazioni — e il repository è nostro: niente base44, niente chiamate verso
+l'esterno, TypeScript configurato, i file puri al loro posto.
 
 Il primo commit è l'export **intatto**, così ogni modifica successiva si legge come
 diff contro quello che base44 ha prodotto. In `reference/` c'è il sorgente della
@@ -78,18 +79,8 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
 
 **Difetti noti e accettati, da non riscoprire:**
 
-- `npm run lint` esce 0, ma lo script usa `--quiet`: resta **un warning nascosto**
-  (`bookingStep` mai letto in `Psicologi.jsx`, residuo di un wizard a più passi).
-  Sparisce in M3 quando la prenotazione viene rifatta.
-- `npm run typecheck` esce 2 con **405 errori** ereditati dai `.jsx` non tipizzati
-  (erano 421 prima di M0). Non è una regressione ed è il baseline da non superare
-  finché M1 non sostituisce `jsconfig.json`.
-- **Resta una sola richiesta verso terzi, ed è quella dei font.** Il §3 chiede di
-  self-hostare Inter e DM Sans; l'`@import` di Google Fonts in `index.css` è ancora
-  lì e trasmette l'IP del visitatore a Google a ogni caricamento, sulla stessa
-  pagina che promette hosting in Svizzera e conformità LPD. M0 ha tolto la favicon
-  servita da `base44.com` per lo stesso motivo, quindi ora è **l'unica** chiamata
-  esterna e si nota di più. Va chiusa in M1, prima che l'indirizzo sia pubblico.
+- ~~`--quiet` nasconde i warning · 405 errori di typecheck · i font di Google~~ →
+  tutti e tre chiusi da M1.
 - **Tre voci delle card prezzi non corrispondono al Business Plan.** Restano così
   fino a M3, che le fa leggere da `Plan` invece di elencarle a mano in JSX — a quel
   punto la card non può più divergere dal piano. Sono in `Pricing.jsx` e, per le
@@ -104,13 +95,86 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
     il piano invece di gonfiarlo.
 - L'organico resta **150**, non i 120 del §8: cambiarlo trascina il ricalcolo degli
   importi derivati su sei schermate, che è lavoro di M3.
-- **`AuthContext` fa una richiesta fallita a ogni caricamento di pagina.**
-  `AuthContext.jsx:29` costruisce il client con `baseURL: '/api/apps/public'`, che
-  è **relativo**: la chiamata va all'origine dell'app, non a `base44.com`, quindi
-  non è un problema di privacy. In sviluppo il plugin dovrebbe fare da proxy, e
-  senza `.env.local` non lo fa; **su Vercel diventerebbe un 404 a ogni pagina**,
-  perché lì non c'è niente sotto `/api`. Sparisce in M1 con l'SDK.
+- ~~`AuthContext` fa una richiesta fallita a ogni caricamento~~ → chiuso da M1
+  insieme all'SDK.
 - Il 👋 nella home dipendente resta: decisione in sospeso qui sotto.
+
+### M1 — Fondamenta tecniche
+
+Undici commit, uno per passo. **A schermo non cambia niente**, ed è stato verificato
+confrontando le rotte con gli screenshot di M0, non a occhio.
+
+L'ordine non era negoziabile in un punto: **l'alias `@/` è stato definito in
+`vite.config.js` con il plugin base44 ancora attivo**, in un commit da solo. Lo
+iniettava il plugin, e Vite non legge i `paths` di `tsconfig.json`: toglierlo prima
+avrebbe fatto smettere di risolvere ogni import del progetto in un colpo solo.
+
+- **Fuori base44.** L'SDK era un **grappolo chiuso** — `AuthContext`,
+  `ProtectedRoute`, `base44Client`, `app-params` e `UserNotRegisteredError` si
+  citavano solo fra loro, con `App.jsx` come unico punto di contatto. Cinque
+  cancellazioni e una semplificazione, 636 righe in meno. `src/api/` conteneva solo
+  `base44Client.js` e sparisce; `PageNotFound.jsx` si sposta in `src/pages/`, dove
+  sta una pagina. **`base44/entities/*.jsonc` resta**: il §5.3 lo usa come lista di
+  controllo della copertura del dominio. `base44/config.jsonc` no — configurava il
+  deploy del Builder, che Vercel sostituisce.
+- **TypeScript.** `jsconfig.json` → `tsconfig.json` con `strict: true`,
+  `allowJs: true` e **`checkJs: false`**: le pagine ereditate compilano ma non si
+  dichiarano tipizzate, che è la verità, ed entrano sotto controllo quando M3 le
+  converte. `npm run typecheck` passa da 405 errori a **0**.
+- **Dipendenze.** Via 13 pacchetti mai importati, 110 dal tree. In revisione ne sono
+  emersi altri due, `sonner` e `next-themes`, tenuti in vita da un solo file morto:
+  `components/ui/sonner.jsx` era l'unico a importarli, e nessuno importava lui —
+  `App.jsx` monta il `Toaster` di `ui/toaster.jsx`, che è la reimplementazione senza
+  Radix. Il §6.1 escludeva `next-themes` esplicitamente.
+- **Font self-hostati.** Inter e DM Sans in variante **variabile**: un import per
+  famiglia copre tutti i pesi da 100 a 900, quindi la domanda "quali pesi
+  spediamo" non si ripresenta la prima volta che qualcuno usa un `font-semibold`
+  che oggi non c'è. **Da qui le richieste esterne sono zero.**
+- **Trapianto.** `format.ts`, `dates.ts`, `roi-model.ts` copiati da `reference/`.
+  Nessuna schermata li usa ancora: si collegano in M3 e M4.
+- **Scheletro i18n.** Dizionario tipizzato e interpolatore di segnaposto. Niente
+  libreria, context, provider o namespace: c'è una lingua sola e nessuno switcher.
+- **`vercel.json`** con la rewrite SPA.
+
+**Due dipendenze nuove, approvate esplicitamente** (§3): `typescript-eslint` — solo
+parser e regole `recommended`, non le varianti type-aware, che caricherebbero il
+programma TypeScript a ogni lint e con `checkJs: false` coprirebbero comunque metà
+del codice — e `@fontsource-variable/inter` + `@fontsource-variable/dm-sans`.
+
+**Verificato**: i cinque numeri di ancoraggio del §9 a N=100 (perdite 1'289'500,
+risparmio 221'150, costo 66'000, netto 155'150, ROI 2.35), le quattro voci che
+sommano al totale, il rapporto invariato a N=20 e N=1000, `formatCHF(6200)` =
+`CHF 6'200`, `git status` pulito dopo `npm run typecheck`, 25 rotte senza 404 né
+schermate vuote, zero richieste esterne a schermo, console del browser senza
+errori, `npm run lint` e `npm run typecheck` a 0.
+
+**Difetti noti di M1:**
+
+- **Restano 2 vulnerabilità moderate**, entrambe lo stesso open redirect di
+  `react-router` via backslash in `<Link>`. `npm audit fix` è un **no-op**: resta
+  alla 6.30.4, perché il fix è `react-router` **7**, un major che cambia l'API del
+  router. **È una modifica di scope da approvare (§2.6), non una patch**, e per una
+  demo senza URL forniti dall'utente non è sfruttabile. Si riapre quando il router
+  si tocca per altri motivi. Non lanciare `npm audit fix --force`.
+- **La rewrite di `vercel.json` risolve il 404 sui link profondi, non lo stato.** Il
+  provider vivrà in memoria (§10, "Come si naviga durante la demo"), quindi un
+  ricaricamento azzera comunque la demo: `/hr/report` aperto da zero mostrerà la
+  dashboard nello stato iniziale, non quello in cui l'aveva lasciata chi ha
+  condiviso il link. Sono due problemi diversi e solo il primo è chiuso.
+- **`formatCHF` separa `CHF` dalle cifre con uno spazio unificatore** (U+00A0), non
+  con uno spazio normale. È la resa corretta, ma un'asserzione o un `grep` scritti
+  con lo spazio da tastiera falliscono contro una stringa che sembra identica.
+- **`src/utils/index.ts` è ancora lì e non lo importa nessuno** (`createPageUrl`,
+  zero chiamanti dal primo commit). Ora che ESLint legge il TypeScript si vede; è un
+  candidato alla cancellazione, non fatta perché fuori dai passi approvati.
+- **Resta un warning di lint**, ora visibile perché lo script non usa più `--quiet`:
+  `bookingStep` in `Psicologi.jsx`, stato morto di un wizard a più passi. Sparisce
+  in M3 quando la prenotazione viene rifatta. `npm run lint` esce comunque 0 —
+  ESLint non fallisce sui warning.
+- **La console mostra due avvisi di `react-router`** sui future flag della 7
+  (`v7_startTransition`, `v7_relativeSplatPath`). Non sono errori e non si vedono
+  in produzione; spariscono con la stessa migrazione alla 7 che chiuderebbe le due
+  vulnerabilità, ed è la stessa decisione di scope.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
@@ -143,7 +207,7 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 | | Milestone | Stato |
 |---|---|---|
 | M0 | Messa in sicurezza | **fatta** |
-| M1 | Fondamenta tecniche | da fare |
+| M1 | Fondamenta tecniche | **fatta** |
 | M2 | Il contratto dati | da fare |
 | M3 | Migrazione area per area | da fare |
 | M4 | Calcolatore ROI e report scaricabile | da fare |
