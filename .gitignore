@@ -34,3 +34,6 @@ base44/.app.jsonc
 # Documenti riservati: il Business Plan resta fuori dal repository (CLAUDE.md §3).
 # Le cifre che servono sono trascritte in CLAUDE.md §8 e §9.
 *.pdf
+
+# Configurazione locale degli strumenti di sviluppo
+.claude/
