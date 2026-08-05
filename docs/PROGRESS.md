@@ -66,8 +66,11 @@ Undici commit. Cosa è stato fatto e perché:
 - **Revisione**: i tre riquadri introdotti sopra (banner back-office e i due
   disclaimer) erano su `warning`, che il §6.1 riserva ad alert e stati critici.
   Sono avvisi, non allarmi, e bruciavano il colore che serve al banner dell'alert
-  precoce di M3 (§10.C.1): portati a `bg-muted` / `border-border`. La favicon è
-  passata da `#1BAA9A`/`#123A5A` ai token `#1BAC99`/`#11395A` del §6.1.
+  precoce di M3 (§10.C.1): portati a `bg-muted` / `border-border`. Nella stessa
+  passata il marchio è andato sui token del §6.1: `KoraLogo.jsx` disegna con
+  `hsl(var(--secondary))` e `hsl(var(--primary))` invece dei `#1BAA9A`/`#123A5A`
+  ereditati, e la favicon — che è un file statico e le variabili non le legge —
+  porta gli stessi valori scritti a mano, `#1BAC99` e `#11395A`.
 
 **Verificato a schermo**: 25 rotte navigate dalla landing usando solo i link, zero
 404; nessuna richiesta verso `base44.com` in nessun percorso, invio del form
@@ -87,16 +90,26 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
   pagina che promette hosting in Svizzera e conformità LPD. M0 ha tolto la favicon
   servita da `base44.com` per lo stesso motivo, quindi ora è **l'unica** chiamata
   esterna e si nota di più. Va chiusa in M1, prima che l'indirizzo sia pubblico.
-- **Il logo e la favicon non usano gli stessi esadecimali.** `KoraLogo.jsx` disegna
-  ancora con `#1BAA9A` e `#123A5A` ereditati da base44; la favicon è stata portata
-  sui token `#1BAC99` / `#11395A` del §6.1. Non allineare il logo è stata una scelta
-  — è grafica di base44, che il §1 dice di tenere — ma i due si scostano di poco e
-  la differenza si vede solo affiancandoli. Da decidere con i founder.
+- **Tre voci delle card prezzi non corrispondono al Business Plan.** Restano così
+  fino a M3, che le fa leggere da `Plan` invece di elencarle a mano in JSX — a quel
+  punto la card non può più divergere dal piano. Sono in `Pricing.jsx` e, per le
+  prime due, anche nell'anteprima piani della landing:
+  - Il **Plus** elenca "Colloquio conoscitivo gratuito", ma il BP (p.9) lo dà solo
+    all'Essenziale;
+  - l'**Executive** dice "Coach + psichiatra se necessario": il §9 vuole il tetto
+    di **6 sessioni di coaching all'anno**, e lo psichiatra è **incluso**, non
+    condizionato a un "se necessario";
+  - l'**Executive** dice "Consulenza HR trimestrale", ma il BP (p.10) dà **report
+    mensile e call mensile col team clinico**. È l'unica delle tre che sottostima
+    il piano invece di gonfiarlo.
 - L'organico resta **150**, non i 120 del §8: cambiarlo trascina il ricalcolo degli
   importi derivati su sei schermate, che è lavoro di M3.
-- `AuthContext` continua a fare una richiesta fallita a ogni caricamento. Va
-  all'origine dell'app, non a base44, quindi non è un problema di privacy — sparisce
-  in M1 con l'SDK.
+- **`AuthContext` fa una richiesta fallita a ogni caricamento di pagina.**
+  `AuthContext.jsx:29` costruisce il client con `baseURL: '/api/apps/public'`, che
+  è **relativo**: la chiamata va all'origine dell'app, non a `base44.com`, quindi
+  non è un problema di privacy. In sviluppo il plugin dovrebbe fare da proxy, e
+  senza `.env.local` non lo fa; **su Vercel diventerebbe un 404 a ogni pagina**,
+  perché lì non c'è niente sotto `/api`. Sparisce in M1 con l'SDK.
 - Il 👋 nella home dipendente resta: decisione in sospeso qui sotto.
 
 ### Punto di partenza — cosa c'è e cosa manca
