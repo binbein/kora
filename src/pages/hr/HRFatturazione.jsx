@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { CreditCard, Calculator, FileText, ArrowRight } from 'lucide-react';
+import { CreditCard, Calculator, FileText } from 'lucide-react';
 
 export default function HRFatturazione() {
   const [employees, setEmployees] = useState(150);
@@ -108,9 +107,6 @@ export default function HRFatturazione() {
             <span className="text-sm text-muted-foreground">Totale {billing === 'annual' ? 'annuale' : 'mensile'}</span>
             <span className="text-2xl font-bold font-display">CHF {total.toLocaleString()}</span>
           </div>
-          <p className="text-sm text-secondary font-medium mt-2">
-            💡 Risparmio potenziale stimato: CHF {Math.round(employees * 1400).toLocaleString()} – {Math.round(employees * 2900).toLocaleString()} / anno
-          </p>
         </div>
       </Card>
     </div>

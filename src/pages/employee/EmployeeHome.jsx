@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import {
   Heart, Brain, Stethoscope, ClipboardCheck, Sparkles, Moon,
-  Zap, Activity, ArrowRight, Shield, Calendar
+  Zap, Activity, ArrowRight
 } from 'lucide-react';
 import PrivacyBanner from '@/components/shared/PrivacyBanner';
 

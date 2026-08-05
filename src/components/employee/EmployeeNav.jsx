@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Brain, Stethoscope, ClipboardCheck, Sparkles, User, Menu, X } from 'lucide-react';
-import HealthOSLogo from '@/components/shared/HealthOSLogo';
+import KoraLogo from '@/components/shared/KoraLogo';
 
 const navItems = [
   { path: '/employee', icon: Home, label: 'Home' },
@@ -21,7 +21,7 @@ export default function EmployeeNav() {
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex flex-col w-64 bg-card border-r border-border min-h-screen fixed left-0 top-0 z-40">
         <div className="p-6 border-b border-border">
-          <HealthOSLogo size="sm" />
+          <KoraLogo size="sm" />
         </div>
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map(({ path, icon: Icon, label }) => {
@@ -43,7 +43,7 @@ export default function EmployeeNav() {
         <div className="p-4 border-t border-border">
           <div className="bg-accent rounded-lg p-3">
             <p className="text-xs font-medium text-foreground">Giulia Rossi</p>
-            <p className="text-[10px] text-muted-foreground">Alpine Finance SA · Plus</p>
+            <p className="text-[10px] text-muted-foreground">Demo SA · Plus</p>
           </div>
         </div>
       </aside>
@@ -51,7 +51,7 @@ export default function EmployeeNav() {
       {/* Mobile header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-xl border-b border-border">
         <div className="flex items-center justify-between px-4 h-14">
-          <HealthOSLogo size="sm" />
+          <KoraLogo size="sm" />
           <button onClick={() => setOpen(!open)} className="p-2">
             {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>

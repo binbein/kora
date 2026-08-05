@@ -1,15 +1,14 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Shield, User, Building2, Mail, Heart, Brain, Activity, Moon, Zap } from 'lucide-react';
+import { Shield, Building2, Mail, Heart, Brain, Activity, Moon, Zap } from 'lucide-react';
 import PrivacyBanner from '@/components/shared/PrivacyBanner';
 
 const profile = {
   name: 'Giulia Rossi',
-  email: 'giulia.rossi@alpinefinance.ch',
-  company: 'Alpine Finance SA',
-  plan: 'HealthOS Plus',
+  email: 'giulia.rossi@demo-sa.example',
+  company: 'Demo SA',
+  plan: 'Kora Plus',
   since: 'Gennaio 2026',
   healthScore: 74,
   stress: 'Medio',

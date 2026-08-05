@@ -7,7 +7,7 @@ const principles = [
   { icon: Eye, title: 'Solo dati aggregati', desc: 'La dashboard mostra esclusivamente statistiche anonime e aggregate per reparto o azienda.' },
   { icon: Lock, title: 'Crittografia end-to-end', desc: 'Tutti i dati sanitari sono crittografati in transito e a riposo con standard AES-256.' },
   { icon: Server, title: 'Hosting in Svizzera', desc: 'I dati risiedono su server in Svizzera, conformi alla Legge Federale sulla Protezione dei Dati (LPD).' },
-  { icon: FileText, title: 'Conformità GDPR e LPD', desc: 'HealthOS è pienamente conforme al GDPR europeo e alla LPD svizzera.' },
+  { icon: FileText, title: 'Conformità GDPR e LPD', desc: 'Kora è pienamente conforme al GDPR europeo e alla LPD svizzera.' },
   { icon: Shield, title: 'Consenso del dipendente', desc: 'Ogni dipendente conferma il proprio consenso durante l\'onboarding. Può revocare in ogni momento.' },
 ];
 
@@ -16,7 +16,7 @@ export default function HRPrivacy() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold font-display">Privacy e Sicurezza</h1>
-        <p className="text-sm text-muted-foreground mt-1">La privacy è il cuore di HealthOS.</p>
+        <p className="text-sm text-muted-foreground mt-1">La privacy è il cuore di Kora.</p>
       </div>
 
       <Card className="p-6 bg-accent/40 border-secondary/20">

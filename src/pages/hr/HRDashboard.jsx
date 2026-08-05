@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Users, CheckCircle2, Brain, Stethoscope, TrendingDown, Activity, Calculator, Calendar } from 'lucide-react';
+import { Users, CheckCircle2, Brain, Stethoscope, TrendingDown, Calculator, Calendar } from 'lucide-react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import KPICard from '@/components/shared/KPICard';
 import PrivacyBanner from '@/components/shared/PrivacyBanner';
@@ -43,7 +43,7 @@ export default function HRDashboard() {
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
         <div>
           <h1 className="text-2xl font-bold font-display">Dashboard HR</h1>
-          <p className="text-sm text-muted-foreground mt-1">Alpine Finance SA — Piano HealthOS Plus</p>
+          <p className="text-sm text-muted-foreground mt-1">Demo SA — Piano Kora Plus</p>
         </div>
       </div>
 

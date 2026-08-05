@@ -78,7 +78,7 @@ const AuthenticatedApp = () => {
         <Route path="psicologi" element={<Psicologi />} />
         <Route path="medico" element={<Medico />} />
         <Route path="checkup" element={<Checkup />} />
-        <Route path="piano" element={<PianoAI />} />
+        <Route path="piano-ai" element={<PianoAI />} />
         <Route path="profilo" element={<Profilo />} />
       </Route>
 

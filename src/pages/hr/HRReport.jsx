@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Download, Calendar, TrendingUp, TrendingDown, Shield } from 'lucide-react';
+import { FileText, Download, Calendar, TrendingUp, TrendingDown } from 'lucide-react';
 import PrivacyBanner from '@/components/shared/PrivacyBanner';
 
 const reportData = {
@@ -45,7 +45,7 @@ export default function HRReport() {
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
         <div>
           <h1 className="text-2xl font-bold font-display">Report Salute Aziendale</h1>
-          <p className="text-sm text-muted-foreground mt-1">{reportData.period} — Alpine Finance SA</p>
+          <p className="text-sm text-muted-foreground mt-1">{reportData.period} — Demo SA</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm">

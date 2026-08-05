@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Calendar, Clock, Globe, Star, CheckCircle2, Video } from 'lucide-react';
+import { Calendar, Globe, Star, CheckCircle2, Video } from 'lucide-react';
 
 const professionals = [
   {

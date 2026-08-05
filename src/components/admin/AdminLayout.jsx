@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation, Outlet } from 'react-router-dom';
-import { Building2, Users, Briefcase, ClipboardList, MapPin, BarChart3, Menu, X } from 'lucide-react';
-import HealthOSLogo from '@/components/shared/HealthOSLogo';
+import { Building2, Users, Briefcase, ClipboardList, MapPin, BarChart3, Menu, X, Info } from 'lucide-react';
+import KoraLogo from '@/components/shared/KoraLogo';
 
 const navItems = [
   { path: '/admin', icon: Building2, label: 'Aziende' },
@@ -20,7 +20,7 @@ export default function AdminLayout() {
     <div className="min-h-screen bg-background">
       <aside className="hidden lg:flex flex-col w-64 bg-card border-r border-border min-h-screen fixed left-0 top-0 z-40">
         <div className="p-6 border-b border-border">
-          <HealthOSLogo size="sm" />
+          <KoraLogo size="sm" />
           <p className="text-xs text-muted-foreground mt-1">Admin Interno</p>
         </div>
         <nav className="flex-1 p-4 space-y-1">
@@ -41,7 +41,7 @@ export default function AdminLayout() {
 
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-xl border-b border-border">
         <div className="flex items-center justify-between px-4 h-14">
-          <HealthOSLogo size="sm" />
+          <KoraLogo size="sm" />
           <button onClick={() => setOpen(!open)} className="p-2">
             {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -61,7 +61,14 @@ export default function AdminLayout() {
       </header>
 
       <main className="lg:ml-64 pt-14 lg:pt-0">
-        <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+          <div className="flex items-start gap-3 bg-muted border border-border rounded-lg px-4 py-3">
+            <Info className="w-5 h-5 flex-shrink-0 text-muted-foreground" />
+            <p className="text-sm text-foreground">
+              Back-office interno · dati dimostrativi. Aziende, persone e strutture di
+              questa sezione sono di fantasia e non descrivono clienti reali.
+            </p>
+          </div>
           <Outlet />
         </div>
       </main>

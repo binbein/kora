@@ -3,13 +3,15 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { MapPin, Calendar, CheckCircle2, ClipboardCheck, Heart, Activity } from 'lucide-react';
+import { MapPin, Calendar, CheckCircle2, ClipboardCheck, AlertTriangle } from 'lucide-react';
 
+// Stessa rete convenzionata elencata in /admin/provider: nome, citta' e indirizzo
+// coincidono, cosi' le due schermate non descrivono due reti diverse (CLAUDE.md §8).
 const providers = [
-  { id: 1, name: 'Centro Medico Lugano', city: 'Lugano', address: 'Via Nassa 15', distance: '2.1 km', slots: ['Lun 9:00', 'Mar 10:30', 'Gio 14:00'] },
-  { id: 2, name: 'HealthOS Partner Clinic Bellinzona', city: 'Bellinzona', address: 'Viale Stazione 8', distance: '28 km', slots: ['Mer 8:30', 'Ven 11:00'] },
-  { id: 3, name: 'Centro Diagnostico Chiasso', city: 'Chiasso', address: 'Corso San Gottardo 42', distance: '32 km', slots: ['Lun 14:00', 'Gio 9:30', 'Ven 15:00'] },
-  { id: 4, name: 'CDS Partner Network', city: 'Locarno', address: 'Via della Posta 3', distance: '45 km', slots: ['Mar 10:00', 'Gio 16:00'] },
+  { id: 1, name: 'Centro Medico Ardesia', city: 'Lugano', address: 'Via al Parco 4', distance: '2.1 km', slots: ['Lun 9:00', 'Mar 10:30', 'Gio 14:00'] },
+  { id: 2, name: 'Poliambulatorio Quarzo', city: 'Bellinzona', address: 'Via delle Scuole 12', distance: '28 km', slots: ['Mer 8:30', 'Ven 11:00'] },
+  { id: 3, name: 'Centro Diagnostico Basalto', city: 'Mendrisio', address: 'Via Industria 18', distance: '32 km', slots: ['Lun 14:00', 'Gio 9:30', 'Ven 15:00'] },
+  { id: 4, name: 'Centro Salute Onice', city: 'Locarno', address: 'Via Campagna 7', distance: '45 km', slots: ['Mar 10:00', 'Gio 16:00'] },
 ];
 
 const mockReport = {
@@ -132,6 +134,14 @@ export default function Checkup() {
               <p className="text-muted-foreground leading-relaxed">
                 Il tuo colesterolo è leggermente sopra il valore consigliato. Non è un'emergenza, ma ti consigliamo di seguire il piano nutrizionale e ripetere il controllo tra 6 mesi.
               </p>
+            </div>
+
+            <div className="flex items-start gap-2 rounded-lg border border-border bg-muted px-3 py-2.5 text-xs text-foreground">
+              <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-muted-foreground" />
+              <span>
+                Referto dimostrativo con valori di esempio. Non è un documento clinico e
+                non sostituisce il referto del centro che esegue il check-up.
+              </span>
             </div>
           </div>
         </DialogContent>

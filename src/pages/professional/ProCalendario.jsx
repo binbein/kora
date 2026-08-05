@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, Video, User, Plus, Lock } from 'lucide-react';
 import KPICard from '@/components/shared/KPICard';
 

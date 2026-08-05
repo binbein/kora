@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { CheckCircle2, ArrowRight, Calculator } from 'lucide-react';
 import PublicNav from '@/components/public/PublicNav';
 import Footer from '@/components/public/Footer';
-import FlexiblePlanCard from '@/components/public/FlexiblePlanCard';
 
 const plans = [
   {
@@ -33,7 +32,7 @@ const plans = [
       'Piano prevenzione AI aggiornato ogni 6 mesi',
       'Dashboard HR per reparto con report trimestrale',
       'Co-payment oltre soglia: CHF 28 / sessione',
-      'Estensione partner: + CHF 15/mese (opzionale)',
+      'Estensione partner: + CHF 15/dipendente/mese (opzionale)',
     ],
   },
   {
@@ -83,7 +82,7 @@ export default function Pricing() {
       {/* Plans */}
       <section className="pb-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {plans.map((p) => (
               <Card key={p.name} className={`p-6 relative ${p.recommended ? 'ring-2 ring-secondary shadow-xl' : 'hover:shadow-lg'} transition-all`}>
                 {p.recommended && (
@@ -110,7 +109,6 @@ export default function Pricing() {
                 </Button>
               </Card>
             ))}
-            <FlexiblePlanCard />
           </div>
         </div>
       </section>
@@ -161,11 +159,6 @@ export default function Pricing() {
               <p className="text-sm text-muted-foreground">
                 {employees} dipendenti × CHF {plan?.price} × {billing === 'annual' ? '12 mesi' : '1 mese'}
               </p>
-              <div className="pt-3 border-t border-border">
-                <p className="text-sm font-medium text-secondary">
-                  💡 Risparmio potenziale stimato: CHF {Math.round(employees * 1400).toLocaleString()} – {Math.round(employees * 2900).toLocaleString()} / anno
-                </p>
-              </div>
             </div>
 
             <Button className="w-full mt-6 bg-secondary hover:bg-secondary/90" asChild>

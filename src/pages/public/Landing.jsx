@@ -4,13 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 import {
-  Brain, Stethoscope, ClipboardCheck, Activity, Shield, BarChart3,
-  Heart, Users, Clock, TrendingDown, AlertTriangle, Puzzle,
+  Brain, Shield, BarChart3,
+  Heart, Clock, TrendingDown, AlertTriangle, Puzzle,
   UserCheck, Building2, Briefcase, ArrowRight, CheckCircle2
 } from 'lucide-react';
 import PublicNav from '@/components/public/PublicNav';
 import Footer from '@/components/public/Footer';
-import HealthOSLogo from '@/components/shared/HealthOSLogo';
 
 const fadeIn = {
   hidden: { opacity: 0, y: 30 },

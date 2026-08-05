@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Shield, User } from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 const patients = [
   { id: 'G.R.', sessions: 3, lastSession: '22 Apr 2026', nextSession: '29 Apr 2026', status: 'Attivo' },

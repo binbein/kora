@@ -1,8 +1,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { User, Globe, Star, Award, FileText, CheckCircle2, Briefcase } from 'lucide-react';
+import { User, Globe, Star, Award, CheckCircle2, Briefcase } from 'lucide-react';
 
 const profile = {
   name: 'Dr.ssa Laura Bianchi',
@@ -82,7 +81,7 @@ export default function ProProfilo() {
           </div>
         </div>
         <p className="text-xs text-muted-foreground mt-4">
-          Collaborazione a mandato (Auftrag). Nessun vincolo di assunzione. HealthOS porta i pazienti, gestisce prenotazioni, video e pagamenti.
+          Collaborazione a mandato (Auftrag). Nessun vincolo di assunzione. Kora porta i pazienti, gestisce prenotazioni, video e pagamenti.
         </p>
       </Card>
     </div>

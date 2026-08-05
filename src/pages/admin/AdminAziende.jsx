@@ -7,11 +7,11 @@ import { Building2, Plus } from 'lucide-react';
 import KPICard from '@/components/shared/KPICard';
 
 const companies = [
-  { name: 'Alpine Finance SA', industry: 'Finance', employees: 150, plan: 'Plus', location: 'Lugano', status: true, revenue: 99000 },
-  { name: 'Ticino Pharma Group', industry: 'Pharma', employees: 420, plan: 'Executive', location: 'Mendrisio', status: true, revenue: 413280 },
-  { name: 'Studio Legale Bernasconi', industry: 'Legal', employees: 48, plan: 'Essenziale', location: 'Lugano', status: true, revenue: 21888 },
-  { name: 'Swisscom Innovation Lab', industry: 'Tech', employees: 210, plan: 'Plus', location: 'Bellinzona', status: true, revenue: 138600 },
-  { name: 'Reale Mutua Ticino', industry: 'Insurance', employees: 85, plan: 'Plus', location: 'Locarno', status: false, revenue: 56100 },
+  { name: 'Demo SA', industry: 'Finance', employees: 150, plan: 'Plus', location: 'Lugano', status: true, revenue: 99000 },
+  { name: 'Larice Pharma SA', industry: 'Pharma', employees: 420, plan: 'Executive', location: 'Mendrisio', status: true, revenue: 413280 },
+  { name: 'Studio Legale Rovere', industry: 'Legal', employees: 48, plan: 'Essenziale', location: 'Lugano', status: true, revenue: 21888 },
+  { name: 'Genziana Tech SA', industry: 'Tech', employees: 210, plan: 'Plus', location: 'Bellinzona', status: true, revenue: 138600 },
+  { name: 'Betulla Assicurazioni SA', industry: 'Insurance', employees: 85, plan: 'Plus', location: 'Locarno', status: false, revenue: 56100 },
 ];
 
 const planColors = {
