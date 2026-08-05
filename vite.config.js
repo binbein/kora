@@ -1,4 +1,3 @@
-import base44 from "@base44/vite-plugin"
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
@@ -6,24 +5,11 @@ import { fileURLToPath, URL } from 'node:url'
 // https://vite.dev/config/
 export default defineConfig({
   resolve: {
-    // Ogni file importa con `@/`, ma finora l'alias lo iniettava il plugin base44:
-    // qui non c'era, e Vite non legge i `paths` di jsconfig.json. Definirlo prima
-    // di togliere il plugin e' l'unico ordine in cui gli import continuano a
-    // risolvere (CLAUDE.md §3).
+    // Ogni file importa con `@/`. Finora l'alias lo iniettava il plugin base44:
+    // Vite non legge i `paths` di tsconfig.json, quindi va definito qui.
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  plugins: [
-    base44({
-      // Support for legacy code that imports the base44 SDK with @/integrations, @/entities, etc.
-      // can be removed if the code has been updated to use the new SDK imports from @base44/sdk
-      legacySDKImports: process.env.BASE44_LEGACY_SDK_IMPORTS === 'true',
-      hmrNotifier: true,
-      navigationNotifier: true,
-      analyticsTracker: true,
-      visualEditAgent: true
-    }),
-    react(),
-  ]
+  plugins: [react()],
 });
