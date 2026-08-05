@@ -136,8 +136,8 @@ export default function Checkup() {
               </p>
             </div>
 
-            <div className="flex items-start gap-2 rounded-lg border border-warning/40 bg-warning/20 px-3 py-2.5 text-xs text-foreground">
-              <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+            <div className="flex items-start gap-2 rounded-lg border border-border bg-muted px-3 py-2.5 text-xs text-foreground">
+              <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-muted-foreground" />
               <span>
                 Referto dimostrativo con valori di esempio. Non è un documento clinico e
                 non sostituisce il referto del centro che esegue il check-up.

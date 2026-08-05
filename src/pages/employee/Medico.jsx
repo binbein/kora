@@ -119,8 +119,8 @@ export default function Medico() {
         </form>
       </Card>
 
-      <div className="flex items-start gap-2 rounded-lg border border-warning/40 bg-warning/20 px-3 py-2.5 text-xs text-foreground">
-        <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+      <div className="flex items-start gap-2 rounded-lg border border-border bg-muted px-3 py-2.5 text-xs text-foreground">
+        <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-muted-foreground" />
         <span>
           Questa conversazione è una simulazione dimostrativa. Le risposte non sono un
           parere medico e non sostituiscono una visita. In caso di emergenza chiama il 144.

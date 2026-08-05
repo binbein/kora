@@ -15,9 +15,7 @@ export default function DemoRequest() {
     company_name: '', contact_name: '', email: '', phone: '', employee_count: '', message: ''
   });
 
-  // TODO M2: mutation del provider (createDemoRequest), con invalidazione della
-  // query che alimenta /admin. Oggi si risolve in locale: non esiste un backend
-  // dove scrivere, e questo e' il CTA primario della landing.
+  // TODO M2: mutation del provider (createDemoRequest), invalida la query di /admin.
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);

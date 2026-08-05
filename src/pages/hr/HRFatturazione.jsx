@@ -107,9 +107,6 @@ export default function HRFatturazione() {
             <span className="text-sm text-muted-foreground">Totale {billing === 'annual' ? 'annuale' : 'mensile'}</span>
             <span className="text-2xl font-bold font-display">CHF {total.toLocaleString()}</span>
           </div>
-          {/* La stima "CHF 1'400–2'900 per dipendente" non era nel Business Plan
-              (CLAUDE.md §9). Il risparmio torna qui in M4, calcolato da
-              roi-model.ts e etichettato come scenario conservativo. */}
         </div>
       </Card>
     </div>

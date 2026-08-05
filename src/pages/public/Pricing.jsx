@@ -82,9 +82,6 @@ export default function Pricing() {
       {/* Plans */}
       <section className="pb-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Tre colonne, non quattro: il quarto piano "Personalizzato" resta
-              nascosto in attesa della decisione dei founder (CLAUDE.md §10.A.3).
-              FlexiblePlanCard.jsx resta nel repository per riattivarlo. */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {plans.map((p) => (
               <Card key={p.name} className={`p-6 relative ${p.recommended ? 'ring-2 ring-secondary shadow-xl' : 'hover:shadow-lg'} transition-all`}>
@@ -162,9 +159,6 @@ export default function Pricing() {
               <p className="text-sm text-muted-foreground">
                 {employees} dipendenti × CHF {plan?.price} × {billing === 'annual' ? '12 mesi' : '1 mese'}
               </p>
-              {/* La stima "CHF 1'400–2'900 per dipendente" non era nel Business
-                  Plan (CLAUDE.md §9). Il risparmio torna qui in M4, calcolato da
-                  roi-model.ts e etichettato come scenario conservativo. */}
             </div>
 
             <Button className="w-full mt-6 bg-secondary hover:bg-secondary/90" asChild>
