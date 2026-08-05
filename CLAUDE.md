@@ -298,9 +298,20 @@ trimestre "in corso" diventerebbe chiuso — e la demo provata non sarebbe quell
 presentata. Il codice ereditato lo fa in un punto (la scelta della data nella
 prenotazione psicologo) e va corretto.
 
-Scegliere il giorno con attenzione: **un feriale, non a ridosso dell'inizio del
-mese.** Di sabato la colonna "oggi" del calendario è vuota; il 2 del mese il
-riepilogo compensi apre su un totale prossimo allo zero.
+**`DEMO_TODAY` è mercoledì 23.09.2026.** Tre proprietà di quel giorno, tutte e
+tre vincoli e non preferenze:
+
+- **è infrasettimanale**, quindi la colonna "oggi" del calendario del
+  professionista non è vuota — di sabato lo sarebbe;
+- **è il 23 del mese**, quindi il riepilogo compensi non apre su un totale
+  prossimo allo zero, come farebbe il 2;
+- **chiude il terzo trimestre 2026 al 92%** (85 giorni su 92), quindi i CHF
+  14'200 e i 16 giorni di assenza evitati del §8 descrivono un trimestre quasi
+  concluso e non quattro settimane. È l'unica delle tre prove che la data della
+  vecchia demo non passava: mercoledì 29.07.2026 era infrasettimanale e lontano
+  dall'inizio del mese, ma stava a ventotto giorni dall'inizio del trimestre, e
+  un risparmio trimestrale letto su un terzo di trimestre non regge la domanda
+  successiva.
 
 ### 5.5 Niente si scrive a mano se si può derivare
 
@@ -454,8 +465,7 @@ La narrazione (deve emergere dai grafici senza spiegazioni):
 - Mesi 1–8: stress aziendale stabile su "Medio", in lieve calo. Vendite in linea.
 - Mesi 9–12: Vendite si stacca e sale costantemente fino ad "Alto".
 - **Mese 10: scatta l'alert precoce** (evidenziato sul grafico con un marker).
-- Adozione: 68% iscritti (82, da riderivare), 41 attivi nel mese. Sessioni
-  azienda: 142 usate.
+- Adozione: 68% iscritti (82), 41 attivi nel mese. Sessioni azienda: 142 usate.
 - ROI trimestre corrente: **CHF 14'200 risparmiati, 16 giorni di assenza evitati**.
 - Stress per reparto (ultimo mese): Vendite Alto (78%), Operations Medio (52%),
   Finanza Medio (44%), IT Basso (31%), HR + Legale Basso (26%). Direzione: sotto
@@ -487,16 +497,38 @@ cosa, quindi il dato deve misurare quella e non un suo surrogato. È un vincolo,
 una preferenza: nessuna metrica di stress, in nessuna schermata, si calcola a
 partire dall'uso del prodotto.
 
-> **Tre conteggi sono sospesi e M2 non deve usarli**: iscritti (82), dipendenti
-> misurati per reparto, valore della soglia (15). Arrivano dai founder e si scrivono
-> qui prima che il mock li usi. Il resto del §8 resta valido.
+**I tre conteggi che erano sospesi, decisi.** Il dataset di M2 si costruisce su
+questi.
+
+**Soglia di anonimato: 12 dipendenti misurati nel periodo.** Non 15. HR + Legale
+ha 15 di organico: con la soglia a 15 quel reparto sarebbe pubblicabile solo con
+il 100% di risposte in tutti e dodici i mesi, e basterebbe una persona che salta
+il check perché la riga sparisca dalla dashboard. Il dataset funzionerebbe grazie
+a un numero implausibile. A 12 c'è margine sopra, e la Direzione resta sotto.
+
+**Iscritti: 82**, il 68% di 120. Il cambio di modello di misurazione non li
+tocca: gli iscritti sono chi ha attivato l'account per prenotare le sessioni, e
+l'essere iscritto è indipendente dall'essere misurato.
+
+**Misurati per reparto: una serie derivata, non una cifra congelata** (§5.5). M2
+la costruisce sotto questi vincoli, che vanno verificati a schermo:
+
+- misurati ≤ organico del reparto, in ogni mese;
+- la Direzione sta sotto soglia in tutti e dodici i mesi;
+- gli altri cinque reparti stanno sopra soglia in tutti e dodici i mesi;
+- l'adesione delle Vendite cala fra il mese 9 e il 12 — è esattamente il motivo
+  per cui il conteggio vive sul record mensile e non su `Department`;
+- la serie aziendale derivata resta piatta o in lieve calo su tutti e dodici i
+  mesi. Se sale, è sbagliato il dataset, non la regola;
+- il totale dei misurati può superare gli 82 iscritti: è una proprietà voluta del
+  modello, già dichiarata sopra.
 
 **La soglia di anonimato si applica ai dipendenti misurati nel periodo**, non
 all'organico e non agli iscritti. HR + Legale e Direzione hanno entrambi 15
 dipendenti: con una regola sull'organico sarebbero indistinguibili. A decidere se
 il dato è pubblicabile è quante persone del reparto hanno risposto al check rapido
-in quel periodo. Nei valori provvisori Direzione ne ha 11 e HR + Legale 15. Gli
-"iscritti" sono un'altra cosa ancora: chi ha attivato l'account per prenotare.
+in quel periodo. Gli "iscritti" sono un'altra cosa ancora: chi ha attivato
+l'account per prenotare.
 Essere iscritto ed essere misurato sono indipendenti, e nessuno dei due implica
 l'altro.
 

@@ -244,14 +244,22 @@ Decisioni dei founder che non appartengono a una milestone. La regola vive in
   soglia fuori dal denominatore, serie aziendale come media pesata dei reparti
   sopra soglia.
 
-  **I conteggi restano da riderivare** (iscritti, misurati per reparto, valore
-  della soglia): arrivano dai founder, e M2 non li usa finché non sono in
-  `CLAUDE.md`. Perché erano da rifare: sotto il modello a questionario, cinque
-  reparti alla soglia di 15 più gli 11 della Direzione facevano 86 misurati contro
-  82 iscritti, e chi rispondeva non poteva che essere un iscritto — i tre numeri
-  non stavano insieme. Sotto questo modello quella relazione è ammessa e la
-  contraddizione sparisce, ma i valori non sono mai stati scelti per il modello
-  nuovo, quindi restano sospesi lo stesso.
+  **I conteggi sono decisi e stanno in `CLAUDE.md` §8**: soglia a 12 dipendenti
+  misurati, 82 iscritti, e i misurati per reparto come serie derivata sotto
+  vincoli dichiarati invece che come cifra congelata. Le motivazioni stanno lì.
+  Perché erano rimasti sospesi: sotto il modello a questionario, cinque reparti
+  alla soglia di 15 più gli 11 della Direzione facevano 86 misurati contro 82
+  iscritti, e chi rispondeva non poteva che essere un iscritto — i tre numeri non
+  stavano insieme. Questo modello ammette la relazione, ma i valori andavano
+  comunque scelti.
+
+- **05.08.2026 — `DEMO_TODAY` fissata a mercoledì 23.09.2026** (`CLAUDE.md`
+  §5.4). A scartare la data della vecchia demo (29.07.2026) è stata la posizione
+  nel trimestre, non il giorno della settimana: le prove "infrasettimanale" e
+  "lontano dall'inizio del mese" le passavano entrambe. Al 29 luglio il terzo
+  trimestre è a poco meno di un terzo, quindi i CHF 14'200 di risparmio
+  trimestrale sarebbero stati letti su quattro settimane; al 23 settembre è al
+  92%. Le tre ragioni per esteso stanno in §5.4.
 
 ## Decisioni in sospeso
 
