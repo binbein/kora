@@ -487,38 +487,45 @@ cosa, quindi il dato deve misurare quella e non un suo surrogato. È un vincolo,
 una preferenza: nessuna metrica di stress, in nessuna schermata, si calcola a
 partire dall'uso del prodotto.
 
-> **Tre conteggi non sono ancora stati derivati sotto questo modello, e M2 non deve
-> usarli**: iscritti (82), dipendenti misurati per reparto, valore della soglia
-> (15). Sotto il modello precedente erano in contraddizione — cinque reparti a 15
-> più gli 11 della Direzione fanno 86 misurati contro 82 iscritti, e chi rispondeva
-> non poteva che essere un iscritto. Qui quella relazione è ammessa, ma i valori
-> vanno comunque scelti. La ri-derivazione arriva dai founder e si scrive qui prima
-> che il mock la usi. **Il resto del §8 resta valido**: organico, punteggi di stress
-> per reparto, sessioni, ROI, professionisti, nomi.
+> **Tre conteggi sono sospesi e M2 non deve usarli**: iscritti (82), dipendenti
+> misurati per reparto, valore della soglia (15). Arrivano dai founder e si scrivono
+> qui prima che il mock li usi. Il resto del §8 resta valido.
 
 **La soglia di anonimato si applica ai dipendenti misurati nel periodo**, non
 all'organico e non agli iscritti. HR + Legale e Direzione hanno entrambi 15
-dipendenti: con una regola sull'organico sarebbero indistinguibili.
-`Department.measuredEmployees` dice quante persone del reparto hanno risposto al
-check rapido nel periodo, ed è quel numero a decidere se il dato è pubblicabile.
-Nei valori provvisori Direzione ne ha 11 e HR + Legale 15. Gli "iscritti" sono
-un'altra cosa ancora: chi ha attivato l'account per prenotare. Essere iscritto ed
-essere misurato sono indipendenti, e nessuno dei due implica l'altro.
+dipendenti: con una regola sull'organico sarebbero indistinguibili. A decidere se
+il dato è pubblicabile è quante persone del reparto hanno risposto al check rapido
+in quel periodo. Nei valori provvisori Direzione ne ha 11 e HR + Legale 15. Gli
+"iscritti" sono un'altra cosa ancora: chi ha attivato l'account per prenotare.
+Essere iscritto ed essere misurato sono indipendenti, e nessuno dei due implica
+l'altro.
+
+**Il conteggio dei misurati sta sul record mensile del reparto, non su
+`Department`.** Il nome `measuredEmployees` va bene dentro un record già datato: è
+la posizione che cambia. L'anagrafica del reparto porta un numero solo, mentre la
+serie del §5.5 copre dodici mesi: chi implementa peserebbe tutti e dodici i mesi
+con il conteggio di oggi e deciderebbe l'esclusione una volta sola per tutta la
+storia. Non si rompe niente — esce una curva diversa da quella descritta e a
+schermo non se ne accorge nessuno. E non è un caso di scuola: la narrazione fa
+staccare le Vendite fra il mese 9 e il 12, e l'adesione al check rapido è proprio
+il dato che si muove quando un reparto va sotto pressione. Su `Department` può
+restare al massimo il valore del periodo corrente, derivato dal record mensile.
 
 **I misurati si mostrano su ogni riga**, non solo su quelle sotto soglia: con il
 solo organico, i due reparti da 15 sarebbero due righe identiche con esiti opposti,
 e una delle due sembrerebbe rotta.
 
-**Il conteggio dei reparti in calo esclude quelli sotto soglia**: sono 4 su 5, non
-su 6. Un reparto fuori dalla media aziendale non può stare nel denominatore del
-dato che quella media descrive.
+**I reparti sotto soglia non entrano nel denominatore.** Un reparto escluso dalla
+media aziendale non può contare nel dato che quella media descrive: "reparti in
+calo su N" conta i soli reparti pubblicabili, e N si deriva come tutto il resto.
 
-**La serie aziendale è derivata, mai scritta a mano**: media dei punteggi di reparto
-pesata sui dipendenti misurati, con i reparti sotto soglia esclusi. Le curve vanno disegnate
-in modo che l'aggregato resti **piatto o in lieve calo**: se la linea aziendale
-sale, contraddice la narrazione, che è *"la media non mostrava nulla, il dettaglio
-per reparto sì"*. Il codice ereditato ha una sola linea che scende da 68 a 52, senza
-reparti: racconta "va tutto bene" invece di "l'abbiamo visto prima".
+**La serie aziendale è derivata, mai scritta a mano**: media dei punteggi di
+reparto pesata sui dipendenti misurati, con i reparti sotto soglia esclusi. Le
+curve vanno disegnate in modo che l'aggregato resti **piatto o in lieve calo**: se
+la linea aziendale sale, contraddice la narrazione, che è *"la media non mostrava
+nulla, il dettaglio per reparto sì"*. Il codice ereditato ha una sola linea che
+scende da 68 a 52, senza reparti: racconta "va tutto bene" invece di "l'abbiamo
+visto prima".
 
 **I giorni di assenza evitati sono un quoziente**: risparmio ÷ CHF 900 (§9). Danno
 16 sul trimestre corrente, 13 / 10 / 7 sui precedenti.
