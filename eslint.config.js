@@ -3,6 +3,7 @@ import pluginJs from "@eslint/js";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginUnusedImports from "eslint-plugin-unused-imports";
+import tseslint from "typescript-eslint";
 
 export default [
   // Non manteniamo questo codice e non deve produrre errori: `reference/` e' il
@@ -10,9 +11,17 @@ export default [
   {
     ignores: ["reference/**", "dist/**"],
   },
+  // Solo parser e regole `recommended`: le varianti type-aware caricherebbero il
+  // programma TypeScript a ogni lint, e con `checkJs: false` coprirebbero comunque
+  // solo meta' del codice.
+  ...tseslint.configs.recommended.map((c) => ({
+    ...c,
+    files: ["src/**/*.{ts,tsx}"],
+    ignores: ["src/components/ui/**/*"],
+  })),
   {
     files: [
-      "src/**/*.{js,mjs,cjs,jsx}",
+      "src/**/*.{js,mjs,cjs,jsx,ts,tsx}",
     ],
     // I componenti shadcn non si toccano se non per i bug di CLAUDE.md §3.
     ignores: ["src/components/ui/**/*"],
