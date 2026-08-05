@@ -307,8 +307,8 @@ riepilogo compensi apre su un totale prossimo allo zero.
 È la lezione più cara della demo precedente e il difetto principale di quella
 ereditata. Vanno **calcolati, non scritti**:
 
-- la serie di stress aziendale = media dei reparti pesata sulle risposte, esclusi i
-  reparti sotto soglia;
+- la serie di stress aziendale = media dei reparti pesata sui dipendenti misurati,
+  esclusi i reparti sotto soglia;
 - l'alert precoce = scansione delle serie, così il marker sul grafico si sposta da
   sé se i punteggi cambiano;
 - i giorni di assenza evitati = risparmio ÷ costo di una giornata (§9);
@@ -419,9 +419,10 @@ Regole:
   medico virtuale dà del lei ed è coerente dall'inizio alla fine della
   conversazione. Il codice ereditato oscilla fra "lei" e "tu" nella stessa chat.
 - La privacy è un argomento di vendita: la nota *"Dati aggregati e anonimi · soglia
-  minima 15 risposte per reparto"* con icona lucchetto è sempre visibile in
-  dashboard. Dice **"risposte"**, non "dipendenti": la soglia si applica a chi ha
-  risposto al questionario (§8).
+  minima {n} dipendenti misurati per reparto"* con icona lucchetto è sempre visibile
+  in dashboard. Dice **"misurati"**, non "dipendenti" né "iscritti": la soglia conta
+  chi ha risposto al check rapido nel periodo (§8). La soglia è un segnaposto e non
+  una cifra nel testo, perché il suo valore è ancora da riderivare.
 - **Spazi JSX attorno agli elementi inline.** Quando il testo che segue un `<code>`,
   `<strong>`, `<a>` o `<span>` va a capo nel sorgente, la trasformazione JSX ne
   mangia lo spazio iniziale e le parole si attaccano. Un `{" "}` esplicito non
@@ -453,20 +454,58 @@ La narrazione (deve emergere dai grafici senza spiegazioni):
 - Mesi 1–8: stress aziendale stabile su "Medio", in lieve calo. Vendite in linea.
 - Mesi 9–12: Vendite si stacca e sale costantemente fino ad "Alto".
 - **Mese 10: scatta l'alert precoce** (evidenziato sul grafico con un marker).
-- Adozione: 68% iscritti (82), 41 attivi nel mese. Sessioni azienda: 142 usate.
+- Adozione: 68% iscritti (82, da riderivare), 41 attivi nel mese. Sessioni
+  azienda: 142 usate.
 - ROI trimestre corrente: **CHF 14'200 risparmiati, 16 giorni di assenza evitati**.
 - Stress per reparto (ultimo mese): Vendite Alto (78%), Operations Medio (52%),
   Finanza Medio (44%), IT Basso (31%), HR + Legale Basso (26%). Direzione: sotto
   soglia anonimato → la UI mostra "—" con un lucchetto.
 
-**La soglia di anonimato si applica alle risposte, non all'organico.** HR + Legale e
-Direzione hanno entrambi 15 dipendenti: con una regola sull'organico sarebbero
-indistinguibili. `Department.respondents` dice quante persone del reparto hanno
-risposto al questionario mensile, ed è quel numero a decidere se il dato è
-pubblicabile. Direzione ha 11 risposte, HR + Legale 15. Gli 82 "iscritti" sono
-un'altra cosa: chi ha attivato l'account per prenotare.
+**Come si misura lo stress: due strumenti, e nessuno dei due è un questionario
+mensile.**
 
-**Le risposte si mostrano su ogni riga**, non solo su quelle sotto soglia: con il
+1. **Assessment iniziale** — all'attivazione dell'account, 10 domande in circa 8
+   minuti (BP §6-B1). Genera il Profilo Salute e fissa la **baseline** del
+   dipendente: reparto, sonno, stress, le cinque aree. Non è una fotografia una
+   tantum: è il primo punto della sua serie, e tutto quello che viene dopo si legge
+   come scostamento da lì.
+2. **Check rapido ricorrente** — una domanda, un tocco, auto-riportato. È il segnale
+   che alimenta il trend per reparto. Vive **dentro l'app** per chi ha l'account e su
+   **link anonimo** per chi non ce l'ha: rispondere non richiede un account.
+
+Il link anonimo non è una comodità. Misurare solo chi ha attivato l'account
+significa misurare solo chi è già ingaggiato — il campione sbagliato, e quello che
+del prodotto ha meno bisogno. **I dipendenti misurati possono quindi essere più
+degli iscritti**, ed è una proprietà voluta del modello: il dato vale anche dove
+l'adozione non è ancora arrivata.
+
+**Lo stress non si deduce mai dal comportamento** — non dalle sessioni prenotate,
+non dalle aperture dell'app, non da un wearable. Un segnale comportamentale non
+distingue "il reparto sta peggio" da "il reparto ha adottato bene il prodotto", e
+legge come in miglioramento chi si sta ritirando. La dashboard HR afferma la prima
+cosa, quindi il dato deve misurare quella e non un suo surrogato. È un vincolo, non
+una preferenza: nessuna metrica di stress, in nessuna schermata, si calcola a
+partire dall'uso del prodotto.
+
+> **Tre conteggi non sono ancora stati derivati sotto questo modello, e M2 non deve
+> usarli**: iscritti (82), dipendenti misurati per reparto, valore della soglia
+> (15). Sotto il modello precedente erano in contraddizione — cinque reparti a 15
+> più gli 11 della Direzione fanno 86 misurati contro 82 iscritti, e chi rispondeva
+> non poteva che essere un iscritto. Qui quella relazione è ammessa, ma i valori
+> vanno comunque scelti. La ri-derivazione arriva dai founder e si scrive qui prima
+> che il mock la usi. **Il resto del §8 resta valido**: organico, punteggi di stress
+> per reparto, sessioni, ROI, professionisti, nomi.
+
+**La soglia di anonimato si applica ai dipendenti misurati nel periodo**, non
+all'organico e non agli iscritti. HR + Legale e Direzione hanno entrambi 15
+dipendenti: con una regola sull'organico sarebbero indistinguibili.
+`Department.measuredEmployees` dice quante persone del reparto hanno risposto al
+check rapido nel periodo, ed è quel numero a decidere se il dato è pubblicabile.
+Nei valori provvisori Direzione ne ha 11 e HR + Legale 15. Gli "iscritti" sono
+un'altra cosa ancora: chi ha attivato l'account per prenotare. Essere iscritto ed
+essere misurato sono indipendenti, e nessuno dei due implica l'altro.
+
+**I misurati si mostrano su ogni riga**, non solo su quelle sotto soglia: con il
 solo organico, i due reparti da 15 sarebbero due righe identiche con esiti opposti,
 e una delle due sembrerebbe rotta.
 
@@ -475,7 +514,7 @@ su 6. Un reparto fuori dalla media aziendale non può stare nel denominatore del
 dato che quella media descrive.
 
 **La serie aziendale è derivata, mai scritta a mano**: media dei punteggi di reparto
-pesata sulle risposte, con i reparti sotto soglia esclusi. Le curve vanno disegnate
+pesata sui dipendenti misurati, con i reparti sotto soglia esclusi. Le curve vanno disegnate
 in modo che l'aggregato resti **piatto o in lieve calo**: se la linea aziendale
 sale, contraddice la narrazione, che è *"la media non mostrava nulla, il dettaglio
 per reparto sì"*. Il codice ereditato ha una sola linea che scende da 68 a 52, senza

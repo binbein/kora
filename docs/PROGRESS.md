@@ -213,6 +213,33 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 | M4 | Calcolatore ROI e report scaricabile | da fare |
 | M5 | Verso la produzione (differibile) | da fare |
 
+## Decisioni chiuse
+
+Decisioni dei founder che non appartengono a una milestone. La regola vive in
+`CLAUDE.md`; qui restano la data e il motivo.
+
+- **05.08.2026 — Come si misura lo stress** (`CLAUDE.md` §8). Il dato di reparto
+  non viene più da un questionario mensile. All'attivazione dell'account c'è un
+  **assessment iniziale** che fissa la baseline del dipendente; da lì in poi il
+  segnale è un **check rapido ricorrente**, in app per chi ha l'account e su link
+  anonimo per chi non ce l'ha.
+
+  Il motivo è uno solo: **rendere la misurazione indipendente dall'adozione.**
+  Misurare solo chi ha attivato l'account significa misurare solo chi è già
+  ingaggiato, cioè il campione sbagliato — e dedurre lo stress dal comportamento
+  (sessioni prenotate, aperture dell'app, wearable) sarebbe peggio ancora, perché
+  non distingue un reparto che sta peggio da uno che ha adottato bene il prodotto,
+  e legge come in miglioramento chi si sta ritirando. La dashboard HR afferma la
+  prima cosa, quindi il dato deve misurare quella.
+
+  Conseguenza sul contratto dati, da tenere presente in M2: la soglia di anonimato
+  conta i **dipendenti misurati nel periodo** — non l'organico, non gli iscritti —
+  e il campo su `Department` si chiama `measuredEmployees`. La meccanica non
+  cambia: soglia su ogni riga, reparti sotto soglia fuori dal denominatore, serie
+  aziendale come media pesata dei reparti sopra soglia. **I conteggi restano da
+  riderivare** (iscritti, misurati per reparto, valore della soglia): arrivano dai
+  founder, e M2 non li usa finché non sono in `CLAUDE.md`.
+
 ## Decisioni in sospeso
 
 - **Piano "Personalizzato" della pagina prezzi.** Nascosto in M0 in attesa della
