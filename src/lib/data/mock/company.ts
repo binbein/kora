@@ -12,11 +12,14 @@ import type { Company, Department, Plan, PlanId } from "../types";
  * I tre piani del §9. La demo usa Plus.
  *
  * I campi opzionali seguono la regola dichiarata sul tipo: **assente significa
- * che il Business Plan non lo dice**, non che il piano ne sia privo. L'Executive
- * non compare qui con `includesAnnualCheckup: false` perché il documento sul
- * check-up dell'Executive tace, e scrivere `false` sarebbe una nostra
- * affermazione su un piano da CHF 82 (§2.4). La card salta la riga; non la
- * trasforma in una negazione.
+ * che il Business Plan non lo dice**, non che il piano ne sia privo — la card
+ * salta la riga, non la trasforma in una negazione. Vale per esempio per il
+ * coaching dell'Essenziale, che il §9 non nomina.
+ *
+ * La regola si è già ripagata: costruendo questi tre piani il check-up
+ * dell'Executive risultava assente, e invece di diventare un `false` scritto da
+ * noi ha fatto emergere che era il §9 a saltare tre righe della p.10 del
+ * Business Plan. La correzione è andata sulla costituzione, non qui.
  */
 export const PLANS: Record<PlanId, Plan> = {
   essenziale: {
@@ -56,6 +59,11 @@ export const PLANS: Record<PlanId, Plan> = {
     coachSessionsPerYear: 6,
     nutritionistSessionsPerYear: 4,
     liveWorkshopsPerYear: 2,
+    // il check-up dell'Executive è più esteso di quello annuale del Plus — ECG,
+    // eco addome, oculista, sangue completo — e il §9 chiede che la card sappia
+    // distinguerli
+    includesAnnualCheckup: true,
+    aiPlanEveryMonths: 1,
     includesPsychiatrist: true,
     includesFamily: true,
     freeIntroInterview: false,
