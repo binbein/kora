@@ -440,8 +440,12 @@ Regole:
 - La privacy è un argomento di vendita: la nota *"Dati aggregati e anonimi · soglia
   minima {n} dipendenti misurati per reparto"* con icona lucchetto è sempre visibile
   in dashboard. Dice **"misurati"**, non "dipendenti" né "iscritti": la soglia conta
-  chi ha risposto al check rapido nel periodo (§8). La soglia è un segnaposto e non
-  una cifra nel testo, perché il suo valore è ancora da riderivare.
+  chi ha risposto al check rapido nel periodo (§8). **La soglia nella stringa è
+  `{n}`, non il numero**, e resta tale ora che il §8 l'ha fissata a 12: una cifra
+  dentro una frase del dizionario è testo cablato quanto qualunque altro (§2.7),
+  ogni numero a schermo passa da `format.ts` (§11), e la soglia è un valore del
+  dominio come gli altri — arriva dal provider, così il giorno in cui un'azienda
+  cliente ne ha una diversa la frase non cambia.
 - **Spazi JSX attorno agli elementi inline.** Quando il testo che segue un `<code>`,
   `<strong>`, `<a>` o `<span>` va a capo nel sorgente, la trasformazione JSX ne
   mangia lo spazio iniziale e le parole si attaccano. Un `{" "}` esplicito non
