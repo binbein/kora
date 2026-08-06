@@ -683,11 +683,42 @@ le cifre derivate dal modello.
 ### Trimestri diversi da quello corrente
 
 Il §8 fissa solo il trimestre in corso, ma il selettore della dashboard deve
-cambiare davvero i dati. I trimestri precedenti non si inventano: si derivano da una
-regola dichiarata nel file — il risparmio è proporzionale ai dipendenti attivi,
-ancorato a CHF 14'200 su 41 attivi. Ne vengono 11'800 / 9'400 / 6'200. **Nemmeno i
-periodi stanno nei semi**: si contano a ritroso dal trimestre corrente, che viene da
-`DEMO_TODAY`.
+cambiare davvero i dati. I trimestri precedenti non si inventano: si derivano da
+quattro semi dichiarati qui. **Nemmeno i periodi stanno nei semi**: si contano a
+ritroso dal trimestre corrente, che viene da `DEMO_TODAY`.
+
+**I semi sono le persone, non il denaro.** Un importo arrotondato non si inverte:
+risalire agli attivi da CHF 11'800 darebbe 34.07 persone — cioè la cifra scritta a
+mano *e* la persona finta. Si parte dai conteggi e si scende verso gli importi, mai
+il contrario.
+
+| Trimestre | Iscritti | Attivi | Sessioni (cumulate) |
+|---|---|---|---|
+| corrente | 82 | 41 | 142 |
+| −1 | 71 | 34 | 105 |
+| −2 | 58 | 27 | 64 |
+| −3 | 39 | 18 | 28 |
+
+L'adozione che ne esce — **68 → 59 → 48 → 33%** su 120 dipendenti — è la stessa
+curva che il §8 già racconta.
+
+Da qui si deriva il resto, e si deriva davvero (§5.5):
+
+- **Risparmio** = attivi × (14'200 / 41), **arrotondato al centinaio**. Il trimestre
+  corrente non passa dal calcolo: usa i CHF 14'200 esatti del §8, che sono
+  l'ancoraggio. Gli altri tre danno 11'775.6 → **11'800**, 9'351.2 → **9'400**,
+  6'234.1 → **6'200**, cioè i tre importi che questa sezione già dichiarava.
+  **L'arrotondamento al centinaio è parte della regola, non un dettaglio di
+  formattazione**: senza, quei tre numeri non sono riproducibili, e una cifra al
+  franco su un risparmio stimato è finta precisione.
+- **Giorni di assenza evitati** = risparmio ÷ CHF 900 (§8): 16 / 13 / 10 / 7.
+
+**Le sessioni sono cumulate sui dodici mesi, non consumate nel trimestre.** È l'unica
+lettura che tiene in piedi la KPI del §8: il monte di 1'200 è annuo, e "142 su 1'200"
+confronta due grandezze solo se coprono lo stesso periodo. I quattro trimestri del
+selettore sono i quattro trimestri di quel monte, quindi il valore del trimestre
+corrente è anche il totale dell'anno. Il consumo del singolo trimestre — 28 / 36 /
+41 / 37 — si ricava per differenza e non si scrive.
 
 ## 10. Scope — le schermate e la definizione di "finito"
 

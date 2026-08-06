@@ -218,6 +218,16 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 Decisioni dei founder che non appartengono a una milestone. La regola vive in
 `CLAUDE.md`; qui restano la data e il motivo.
 
+- **06.08.2026 — I semi dei trimestri precedenti** (`CLAUDE.md` §9, "Trimestri
+  diversi da quello corrente"). Il selettore della dashboard ha quattro righe di
+  partenza — iscritti, attivi e sessioni cumulate — e da lì si derivano risparmio,
+  giorni di assenza evitati e percentuale di adozione. I semi sono conteggi di
+  persone e non importi, perché un importo arrotondato non si inverte senza
+  produrre una persona frazionaria. Nella stessa passata sono diventate esplicite
+  due cose che erano implicite e senza le quali il §9 non era riproducibile:
+  **l'arrotondamento del risparmio al centinaio** e **il periodo delle sessioni
+  consumate**, che sono cumulate sui dodici mesi del monte annuo.
+
 - **05.08.2026 — Come si misura lo stress** (`CLAUDE.md` §8). Il dato di reparto
   non viene più da un questionario mensile. All'attivazione dell'account c'è un
   **assessment iniziale** che fissa la baseline del dipendente; da lì in poi il
