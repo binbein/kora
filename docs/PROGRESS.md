@@ -99,6 +99,13 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
   proprio la dashboard HR mensile. Chi fosse andato a correggere la card leggendo
   la costituzione non ci avrebbe trovato la riga, e avrebbe lasciato il trimestrale
   al suo posto.
+- **Cinque numeri d'albo inventati in `AdminProfessionisti.jsx`** — FSP-2019-4521,
+  FMH-2015-8830, ICF-ACC-3310, FSP-2021-9901, SVDE-2018-7712. Il §8 li vieta da M2:
+  un identificatore di formato plausibile su una persona inventata può collidere con
+  l'iscrizione di un professionista vero, e nessuno se ne accorge leggendo. Restano
+  fino a M3, che ripulisce quella schermata una volta sola — il roster è comunque da
+  rifare per intero (§8). Nel portale professionista la riga esce già in M2, con la
+  migrazione dell'area.
 - L'organico resta **150**, non i 120 del §8: cambiarlo trascina il ricalcolo degli
   importi derivati su sei occorrenze in quattro file — una delle quali è `HRNav`,
   che è la navigazione condivisa dalle cinque rotte HR e non una schermata — più il

@@ -644,6 +644,25 @@ Domini email: TLD riservato **`.example`** (RFC 2606), che nessuno può registra
 `m.bianchi@demo-sa.example`. Si vedono solo nel back-office, che dichiara di essere
 dimostrativo. Le persone inventate non devono comparire su domini di terzi.
 
+**Non si inventano identificatori di albi professionali.** Nessun numero FSP, FMH,
+SVDE, ICF o equivalente compare nel dataset o a schermo. La qualifica sì —
+"Psicologa FSP" è l'informazione che conta a chi guarda — e lo stato dei documenti
+pure, perché è quello che la piattaforma verifica davvero.
+
+È lo stesso ragionamento degli indirizzi e delle email: un numero di formato
+plausibile attaccato a una persona inventata può collidere con l'iscrizione di un
+professionista vero, e a differenza di un nome nessuno se ne accorge leggendo. Lì
+però esisteva un modo di essere inequivocabilmente finti, il TLD `.example`; per un
+numero d'albo quell'equivalente non esiste, perché un formato dichiaratamente falso
+si legge come segnaposto proprio sulla card che promette credenziali verificate.
+Non si sceglie fra sembrare finti e rischiare di essere veri: **si toglie il dato.**
+
+Il campo non esiste nemmeno nei tipi — un campo opzionale che nessuno riempie è
+codice che il §11 non vuole, e messo lì invita a riempirlo. L'esclusione si dichiara
+in `docs/CONTRATTO-DATI.md` fra le cose lasciate fuori di proposito: è lì che la
+legge chi scrive il backend, ed è lì che serve, perché in produzione quel numero
+esisterà davvero.
+
 ## 9. Numeri ufficiali dal Business Plan (unici ammessi)
 
 Piani: **Essenziale CHF 38** (6 sessioni/anno, extra CHF 35, medico virtuale 12h con
