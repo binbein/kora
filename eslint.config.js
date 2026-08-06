@@ -70,4 +70,36 @@ export default [
       "react-hooks/rules-of-hooks": "error",
     },
   },
+  // Il seam del CLAUDE.md §5.7, reso eseguibile. Il giorno in cui `mock/` si
+  // cancella per lasciare posto a `http/`, se il lint era verde nessuna
+  // schermata se ne accorge — ed e' l'unica prova che quel giorno non sara' una
+  // riscrittura. Vale anche per `new Date()`: una schermata che legge
+  // l'orologio vero cambia da sola col passare dei giorni, e la demo provata
+  // non e' quella presentata (§5.4).
+  {
+    files: ["src/**/*.{js,mjs,cjs,jsx,ts,tsx}"],
+    ignores: ["src/components/ui/**/*", "src/lib/data/**/*"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/lib/data/mock/*", "**/lib/data/mock/*"],
+              message:
+                "Il dataset finto si legge solo attraverso il provider (@/lib/data): CLAUDE.md §5.7.",
+            },
+          ],
+        },
+      ],
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "NewExpression[callee.name='Date'][arguments.length=0]",
+          message:
+            "Nessun componente chiama new Date(): la data della demo arriva dal provider (CLAUDE.md §5.4).",
+        },
+      ],
+    },
+  },
 ];

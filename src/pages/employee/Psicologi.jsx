@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { dataProvider } from '@/lib/data';
+import { queryKeys } from '@/lib/data/query-keys';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -54,11 +57,28 @@ export default function Psicologi() {
     setBookingStep(3);
   };
 
+  // I giorni proponibili partono dal giorno della demo, non dall'orologio vero
+  // (CLAUDE.md §5.4). La schermata resta di M3: qui si sposta solo la sorgente
+  // della data, che e' cio' che la regola di lint impone da subito.
+  const { data: referenceDate } = useQuery({
+    queryKey: queryKeys.referenceDate(),
+    queryFn: () => dataProvider.getReferenceDate(),
+  });
+
   const dates = [];
-  for (let i = 1; i <= 5; i++) {
-    const d = new Date();
-    d.setDate(d.getDate() + i);
-    dates.push(d.toISOString().split('T')[0]);
+  if (referenceDate) {
+    for (let i = 1; i <= 5; i++) {
+      const day = new Date(
+        referenceDate.getFullYear(),
+        referenceDate.getMonth(),
+        referenceDate.getDate() + i,
+      );
+      // non `toISOString`: converte in UTC e in Svizzera riporta indietro di un
+      // giorno, facendo comparire oggi fra le date prenotabili da domani
+      const month = String(day.getMonth() + 1).padStart(2, '0');
+      const date = String(day.getDate()).padStart(2, '0');
+      dates.push(`${day.getFullYear()}-${month}-${date}`);
+    }
   }
 
   return (
