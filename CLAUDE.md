@@ -215,10 +215,16 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
   dei file puri (`format.ts`, `dates.ts`, `roi-model.ts`), struttura `i18n`.
   A schermo non cambia niente.
 - **M2 — Il contratto dati.** `DataProvider` asincrono, `types.ts`, implementazione
-  mock, react-query, `DEMO_TODAY`, guardrail. Chiude con **una sola schermata
-  migrata** come prova del contratto (il portale professionista: piccolo,
-  autocontenuto, e mette subito sotto stress date, denaro e aggregazioni).
-- **M3 — Area per area.** HR → dipendente → professionista → admin. Ogni area viene
+  mock, react-query, `DEMO_TODAY`, guardrail. Chiude con **una sola area migrata**,
+  la più piccola: il portale professionista (§10.D), autocontenuto e capace di
+  mettere subito sotto stress date, denaro e aggregazioni.
+  **Un'area, non una rotta.** L'identità della Dr.ssa Meier vive in `ProNav` e
+  `ProProfilo`, che tutte e cinque le rotte condividono: migrandone una sola,
+  l'intestazione direbbe un nome e il corpo un altro nella stessa schermata. E la
+  definizione di "finito" del §10.D è scritta per l'area — le righe settimanali che
+  sommano al mese, i pazienti che coincidono con la KPI — non per una schermata.
+- **M3 — Area per area.** HR → dipendente → admin; il professionista è già migrato
+  in M2 e non si ritocca. Ogni area viene
   migrata **e** rinarrata nello stesso passaggio: dati dal provider, stringhe in
   i18n, importi da `format.ts`, microcopy nel registro giusto. Toccare due volte la
   stessa schermata è lavoro sprecato. **Chiude cancellando `reference/`**: se
@@ -774,10 +780,16 @@ Calendario, Sessioni, Pazienti, Pagamenti, Profilo.
 §10.B: i tre lati del marketplace raccontano la stessa storia invece di essere tre
 demo scollegate.
 
-**Finita quando:** una prenotazione fatta in §10.B compare nel calendario; le righe
-settimanali sommano al totale del mese; i pazienti elencati sono lo stesso numero
-che dichiara la KPI; le date e i giorni della settimana coincidono con il calendario
-vero (oggi non lo fanno in cinque punti su cinque).
+**Finita quando:** le righe settimanali sommano al totale del mese; i pazienti
+elencati sono lo stesso numero che dichiara la KPI; le date e i giorni della
+settimana coincidono con il calendario vero (oggi non lo fanno in cinque punti su
+cinque).
+
+**Eccezione dichiarata.** «Una prenotazione fatta in §10.B compare nel calendario»
+non si verifica alla chiusura di M2, perché il lato dipendente è M3. Il contratto
+dati deve già reggerla — stessa entità, stessa query invalidata (§5.2) — e la prova
+a schermo arriva con l'area dipendente. Non è un requisito mancato: è un requisito
+che ha bisogno dell'altra metà del marketplace.
 
 ### E. Back-office admin — `/admin` + 5 sottopagine
 Aziende, Utenti, Professionisti, Sessioni, Provider check-up, Analytics.
