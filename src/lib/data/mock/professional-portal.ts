@@ -165,9 +165,11 @@ function buildSessions(): ProfessionalSession[] {
             ? "completed"
             : "scheduled",
         type,
-        // una nota esiste sulle sessioni già erogate, che sono le uniche su cui
-        // ci sia qualcosa da annotare
-        hasNote: !cancelled && start < DEMO_TODAY,
+        // la nota si scrive dopo la seduta, quindi l'ultima erogata di ogni
+        // paziente non ce l'ha ancora: è quella su cui il professionista sta per
+        // scrivere, ed è anche l'unico modo perché il pulsante "aggiungi nota"
+        // esista davvero invece di essere sempre "nota"
+        hasNote: false,
         ...(cancelled ? { cancellationReasonKey: "by_patient" as const } : {}),
       });
 
@@ -175,7 +177,19 @@ function buildSessions(): ProfessionalSession[] {
     }
   }
 
-  return sessions.sort((a, b) => a.start.getTime() - b.start.getTime());
+  const sorted = sessions.sort((a, b) => a.start.getTime() - b.start.getTime());
+
+  for (const session of sorted) {
+    if (session.status !== "completed") continue;
+    session.hasNote = sorted.some(
+      (other) =>
+        other.patientId === session.patientId &&
+        other.status === "completed" &&
+        other.start > session.start,
+    );
+  }
+
+  return sorted;
 }
 
 /** Tutte le sessioni della Dr.ssa Meier, dalla più vecchia alla più recente. */
