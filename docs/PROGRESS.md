@@ -93,6 +93,12 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
   - l'**Executive** dice "Consulenza HR trimestrale", ma il BP (p.10) dà **report
     mensile e call mensile col team clinico**. È l'unica delle tre che sottostima
     il piano invece di gonfiarlo.
+
+  Le tre voci restano aperte, ma **da M2 il §9 contiene il dato con cui M3 le
+  chiude**: la trascrizione dell'Executive saltava tre righe della p.10, fra cui
+  proprio la dashboard HR mensile. Chi fosse andato a correggere la card leggendo
+  la costituzione non ci avrebbe trovato la riga, e avrebbe lasciato il trimestrale
+  al suo posto.
 - L'organico resta **150**, non i 120 del §8: cambiarlo trascina il ricalcolo degli
   importi derivati su sei occorrenze in quattro file — una delle quali è `HRNav`,
   che è la navigazione condivisa dalle cinque rotte HR e non una schermata — più il

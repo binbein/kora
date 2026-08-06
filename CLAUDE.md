@@ -651,8 +651,19 @@ Piani: **Essenziale CHF 38** (6 sessioni/anno, extra CHF 35, medico virtuale 12h
 sessioni/anno, extra CHF 28, coach 4 sessioni/anno, medico 4h consulti illimitati,
 check-up annuale, piano AI ogni 6 mesi) · **Executive CHF 82** (16 sessioni/anno,
 extra CHF 22, medico 1h illimitato, nutrizionista 4/anno, coaching 6 sessioni/anno,
-psichiatra su richiesta incluso, 2 workshop live/anno inclusi, familiari inclusi).
-La demo usa il piano Plus.
+psichiatra su richiesta incluso, 2 workshop live/anno inclusi, familiari inclusi,
+check-up executive completo 1 volta/anno — ECG, eco addome, oculista, sangue
+completo —, piano prevenzione AI aggiornato mensilmente, dashboard HR avanzata con
+report mensile e call mensile col team clinico). La demo usa il piano Plus.
+
+**Le ultime tre voci dell'Executive mancavano da questa trascrizione**, non dal
+Business Plan (p.10). La conseguenza era che il piano più caro risultava offrire
+meno di quanto offre, e che un difetto già noto non era chiudibile: `PROGRESS.md`
+segnala da M0 che la card dice "Consulenza HR trimestrale" mentre il BP dà mensile,
+e chi fosse andato a correggerla leggendo il §9 non avrebbe trovato la riga.
+
+**I due check-up non sono lo stesso check-up.** Il Plus ha quello annuale, l'Executive
+ne ha uno più esteso: sono due voci diverse e la card deve poterle distinguere.
 
 **Il colloquio conoscitivo dell'Essenziale è una volta sola**, non uno per
 sessione: la card deve dirlo, altrimenti si legge come un extra ricorrente.
