@@ -101,13 +101,14 @@ export type Plan = {
   nutritionistSessionsPerYear?: number;
   /** Workshop live inclusi in un anno: 2, solo Executive. */
   liveWorkshopsPerYear?: number;
-  includesAnnualCheckup: boolean;
+  /** Check-up fisico annuale compreso: il §9 lo dichiara sul Plus. */
+  includesAnnualCheckup?: boolean;
   /** Ogni quanti mesi il piano di prevenzione AI viene rigenerato. */
   aiPlanEveryMonths?: number;
   /** Psichiatra su richiesta: incluso, non a pagamento (solo Executive). */
-  includesPsychiatrist: boolean;
+  includesPsychiatrist?: boolean;
   /** Familiari compresi nel prezzo: partner e un figlio (solo Executive). */
-  includesFamily: boolean;
+  includesFamily?: boolean;
   /**
    * Colloquio conoscitivo gratuito, **una volta sola** e solo sull'Essenziale.
    * Il §9 chiede che la card lo dica, altrimenti si legge come un extra
