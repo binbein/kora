@@ -101,8 +101,17 @@ export type Plan = {
   nutritionistSessionsPerYear?: number;
   /** Workshop live inclusi in un anno: 2, solo Executive. */
   liveWorkshopsPerYear?: number;
-  /** Check-up fisico annuale compreso: il §9 lo dichiara sul Plus. */
-  includesAnnualCheckup?: boolean;
+  /**
+   * Il check-up fisico compreso nel piano, se ce n'è uno.
+   *
+   * I due che il §9 dichiara non sono lo stesso check-up: il Plus ha quello
+   * annuale, l'Executive uno più esteso — ECG, eco addome, oculista, sangue
+   * completo. Un booleano li mostrerebbe come la stessa riga, che è il modo in
+   * cui il piano più caro finisce per sembrare identico a quello di mezzo.
+   *
+   * Assente sull'Essenziale, dove il §9 non ne dichiara nessuno.
+   */
+  checkup?: "annual" | "executive";
   /** Ogni quanti mesi il piano di prevenzione AI viene rigenerato. */
   aiPlanEveryMonths?: number;
   /** Psichiatra su richiesta: incluso, non a pagamento (solo Executive). */

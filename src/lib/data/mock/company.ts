@@ -41,7 +41,7 @@ export const PLANS: Record<PlanId, Plan> = {
     virtualDoctorSlaHours: 4,
     virtualDoctorConsultsPerYear: "unlimited",
     coachSessionsPerYear: 4,
-    includesAnnualCheckup: true,
+    checkup: "annual",
     aiPlanEveryMonths: 6,
     freeIntroInterview: false,
     // per dipendente al mese: scritto "+ CHF 15/mese" si legge come una tariffa
@@ -59,10 +59,9 @@ export const PLANS: Record<PlanId, Plan> = {
     coachSessionsPerYear: 6,
     nutritionistSessionsPerYear: 4,
     liveWorkshopsPerYear: 2,
-    // il check-up dell'Executive è più esteso di quello annuale del Plus — ECG,
-    // eco addome, oculista, sangue completo — e il §9 chiede che la card sappia
-    // distinguerli
-    includesAnnualCheckup: true,
+    // più esteso di quello annuale del Plus: ECG, eco addome, oculista, sangue
+    // completo (§9)
+    checkup: "executive",
     aiPlanEveryMonths: 1,
     includesPsychiatrist: true,
     includesFamily: true,
