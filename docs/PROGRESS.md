@@ -228,6 +228,13 @@ Decisioni dei founder che non appartengono a una milestone. La regola vive in
   **l'arrotondamento del risparmio al centinaio** e **il periodo delle sessioni
   consumate**, che sono cumulate sui dodici mesi del monte annuo.
 
+- **06.08.2026 — Il check rapido nella home del dipendente** (`CLAUDE.md` §10.B).
+  Approvata la card del check rapido ricorrente: **una domanda, un tocco**. È una
+  decisione di scope ai sensi del §2.6, ed è la prima schermata nuova rispetto
+  all'inventario ereditato — ma è una card dentro la home, non una rotta: **le
+  rotte restano 25**. È lavoro di M3, e qui si è approvata l'esistenza della
+  schermata, non la sua resa. Il motivo per cui esiste sta in §10.B.
+
 - **05.08.2026 — Come si misura lo stress** (`CLAUDE.md` §8). Il dato di reparto
   non viene più da un questionario mensile. All'attivazione dell'account c'è un
   **assessment iniziale** che fissa la baseline del dipendente; da lì in poi il
