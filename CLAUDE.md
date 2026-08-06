@@ -751,6 +751,16 @@ quattro voci sommano al totale mostrato, e a N=100 escono i cinque numeri di §9
 ### B. Portale dipendente — `/employee` + 5 sottopagine
 Home, Psicologi, Medico virtuale, Check-up, Piano AI, Profilo.
 
+1. **Check rapido nella home** — *da costruire, non esiste*. **Una domanda, un
+   tocco** (§8). È il segnale su cui poggia ogni dato di stress della dashboard HR,
+   e oggi la demo non lo mostra da nessuna parte: a un investitore che chiede da
+   dove arrivano quei numeri non abbiamo niente da indicare. Il Business Plan lo
+   chiama "cuore di KORA" e ne descrive tre mensili: dove i due divergono vince
+   questo file, e il documento si aggiorna.
+   È una card nella home, **non una rotta nuova**: le rotte restano 25.
+   Approvato dai founder il **06.08.2026** ai sensi del §2.6. È lavoro di M3, e qui
+   si approva l'esistenza della schermata e basta: la resa si decide migrando l'area.
+
 **Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — il contatore
 sale, l'appuntamento compare in home, lo slot sparisce dalla disponibilità e compare
 nel calendario del professionista. Oggi la conferma si perde chiudendo il dialogo.
