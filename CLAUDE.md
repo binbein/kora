@@ -95,8 +95,9 @@ repository Next non dia niente per scontato.
 - **Tailwind CSS 3** con i token in `src/index.css` come variabili HSL, e
   `tailwind.config.js` che li mappa. **Non è Tailwind 4**: esiste ancora
   `tailwind.config.js`, non c'è il blocco `@theme`.
-- **shadcn/ui** stile *new-york*, su Radix, già installato (45 componenti in
-  `src/components/ui/`). **Attenzione alle varianti che i componenti shadcn danno
+- **shadcn/ui** stile *new-york*, su Radix, già installato: `src/components/ui/`
+  contiene 48 file, 47 componenti più l'hook `use-toast`.
+  **Attenzione alle varianti che i componenti shadcn danno
   per esistenti**: nel loro codice compaiono classi come `data-active:` e
   `data-horizontal:`, che Tailwind compila in selettori su attributi
   `[data-active]` e `[data-horizontal]`, mentre Radix scrive `data-state` e
@@ -276,8 +277,9 @@ invalidano le query toccate. Una prenotazione fatta nel portale dipendente deve
 comparire nel calendario del professionista **perché la query si invalida**, non
 perché qualcuno passa lo stato a mano.
 
-`src/lib/query-client.js` esiste già e va tipizzato e configurato (niente refetch
-al focus della finestra durante una presentazione).
+`src/lib/query-client.js` esiste già, e `refetchOnWindowFocus: false` c'è dal primo
+commit — niente refetch al focus della finestra durante una presentazione. Resta da
+tipizzare, e solo quello.
 
 ### 5.3 Il dominio, per intero
 
@@ -451,12 +453,18 @@ Regole:
 
 Azienda: **Demo SA**, Lugano, 120 dipendenti, Piano Plus (CHF 55/dip/mese).
 
-> *Il codice ereditato usa "Alpine Finance SA, 150 dipendenti". Si rinomina in Demo
-> SA e si riporta a 120: tutte le cifre di questa sezione e della §9 sono già
-> congelate e verificate su quell'organico, mentre passare a 150 imporrebbe di
-> riderivare gli snapshot ROI e il monte sessioni — cioè rifare lavoro già
-> approvato. Il rename tocca sei punti; la fatturazione diventa CHF 6'600 al mese
-> e CHF 79'200 l'anno.*
+> *Il rename da "Alpine Finance SA" a **Demo SA** è già stato fatto in M0.
+> L'organico no: il codice dichiara ancora **150** in sei punti. La divergenza si
+> chiude portando il codice a 120, **mai il contrario**, e il motivo va tenuto in
+> vista: tutte le cifre di questa sezione e della §9 sono congelate e verificate su
+> 120, mentre allineare questo file al codice imporrebbe di riderivare gli snapshot
+> ROI e il monte sessioni — cioè rifare lavoro già approvato. A 120 la fatturazione
+> è CHF 6'600 al mese e CHF 79'200 l'anno.*
+>
+> *Due dei sei punti non sono un 150 da sostituire e basta: `AdminAziende.jsx`
+> porta `revenue: 99000`, che è 150 × 55 × 12 e diventa 79'200; `HRDashboard.jsx:54`
+> dice "124/150 · Attivazione 82%", che diventa 82 su 120 e il 68% di questa
+> sezione — una KPI che torna a coincidere col dataset, non una cifra da riscrivere.*
 
 6 reparti: Vendite (24), Operations (31), Finanza (18), IT (17), HR + Legale (15),
 Direzione (15). Il codice ereditato ha reparti diversi e **senza le Vendite**, che è
@@ -792,8 +800,8 @@ demo scollegate.
 
 **Finita quando:** le righe settimanali sommano al totale del mese; i pazienti
 elencati sono lo stesso numero che dichiara la KPI; le date e i giorni della
-settimana coincidono con il calendario vero (oggi non lo fanno in cinque punti su
-cinque).
+settimana coincidono con il calendario vero (oggi sbagliano in tutti e quattro i
+punti in cui compaiono, §11).
 
 **Eccezione dichiarata.** «Una prenotazione fatta in §10.B compare nel calendario»
 non si verifica alla chiusura di M2, perché il lato dipendente è M3. Il contratto
@@ -862,9 +870,13 @@ indirizzi.
   all'altro la differenza si legge come un difetto.
 - **Il separatore decimale è il punto**: `2.35:1`, non `2,35:1`. È la convenzione
   svizzera ed è coerente con l'apostrofo delle migliaia.
-- **Nessuna data scritta a mano.** Il codice ereditato ha cinque coppie
-  giorno/data e sono sbagliate tutte e cinque ("Mar 29 Apr" era un mercoledì). Le
-  date si derivano da `DEMO_TODAY` e si formattano con `format.ts`.
+- **Nessuna data scritta a mano.** Il codice ereditato ha **quattro** coppie
+  giorno/data ed è sbagliata ognuna, tutte in `ProSessioni.jsx`: "Mar 29 Apr",
+  "Gio 24 Apr", "Mar 22 Apr", "Lun 21 Apr". Sono esatte sul calendario **2025**,
+  cioè è l'anno riscritto a mano su date vecchie. Il `"Mar 09:00"` di
+  `ProCalendario.jsx` è un giorno **senza** data: va derivato anche quello, ma non
+  è una quinta coppia da andare a cercare. Le date si derivano da `DEMO_TODAY` e si
+  formattano con `format.ts`.
 - Accessibilità di base: contrasti AA, focus visibili, alt text. La demo si presenta
   anche da tastiera durante un pitch: i focus contano.
 - **A fine sessione**: riepilogo di cosa è stato fatto e screenshot delle schermate

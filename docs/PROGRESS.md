@@ -179,7 +179,7 @@ errori, `npm run lint` e `npm run typecheck` a 0.
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
-professionista, admin), design system e navigazione, 45 componenti shadcn, grafici
+professionista, admin), design system e navigazione, 47 componenti shadcn, grafici
 recharts.
 
 Ereditato e **non** funzionante. Le ultime due righe sono state chiuse da M0; le
