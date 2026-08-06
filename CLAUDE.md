@@ -431,9 +431,11 @@ Regole:
   incoraggiante ma mai infantile. *"Buongiorno Laura"*, *"Il sonno merita
   attenzione"*.
 - Ovunque: **sentence case** (niente Title Case), niente punti esclamativi nel testo
-  di sistema, **niente emoji**. Il codice ereditato ne ha due (👋 nel saluto della
-  home dipendente, 💡 nel riquadro prezzi): il secondo va tolto senz'altro — è un
-  contratto da CHF 79'200 l'anno — il primo si può discutere con i founder.
+  di sistema, **niente emoji**. Ne resta una sola nel codice, il 👋 del saluto in
+  `EmployeeHome.jsx`: è l'unico punto in cui il registro consumer potrebbe
+  giustificarne una, e la decisione dei founder è aperta — sta in `PROGRESS.md`,
+  "Decisioni in sospeso". Il 💡 del riquadro prezzi è sparito in M0 con la riga che
+  lo conteneva.
 - **Un professionista parla come parlerebbe lui**, non come parla il prodotto: il
   medico virtuale dà del lei ed è coerente dall'inizio alla fine della
   conversazione. Il codice ereditato oscilla fra "lei" e "tu" nella stessa chat.

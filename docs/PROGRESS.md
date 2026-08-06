@@ -338,3 +338,9 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 - Ogni milestone chiude con una demo che funziona da capo a fondo (`CLAUDE.md`
   §2.3). Se una migrazione non entra in una sessione, si chiude l'area corrente e si
   comincia la prossima dopo, mai a metà.
+- **Un `✓` testuale in `Psicologi.jsx:179`** ("✓ Sessione inclusa nel piano"). Non è
+  un'emoji e il §7 non lo vieta, quindi non è un difetto da correggere subito: è un
+  glifo dove tutto il resto del progetto usa un'icona lucide, e uno screen reader lo
+  legge come "segno di spunta" in mezzo alla frase. Da sostituire con l'icona
+  quando M3 rifà la prenotazione, che è la stessa passata in cui sparisce il
+  `bookingStep` morto. È l'unico caso: cercato in tutto `src/`.
