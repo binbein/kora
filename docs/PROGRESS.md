@@ -232,6 +232,17 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   **l'arrotondamento del risparmio al centinaio** e **il periodo delle sessioni
   consumate**, che sono cumulate sui dodici mesi del monte annuo.
 
+- **06.08.2026 — La nota privata di sessione si salva** (`CLAUDE.md` §10.D). Il
+  pulsante "Salva nota" del portale professionista, che oggi chiude il dialogo e
+  basta, diventa una mutation vera. Il motivo non è la completezza della schermata:
+  è che **la prenotazione — l'unica altra scrittura del dominio — sta sul lato
+  dipendente, cioè in M3**, quindi senza questa M2 chiuderebbe senza aver mai
+  eseguito una mutation, e il pattern che il §5.2 esiste per fissare verrebbe
+  replicato venticinque volte senza essere stato provato una volta. Il dialogo esiste
+  già nel codice ereditato, quindi non è una schermata nuova ai sensi del §2.6.
+  Aggiunge `SessionNote` al dominio; la nota resta privata e il tipo lo rende
+  impossibile da aggirare, non solo la JSX.
+
 - **06.08.2026 — Il check rapido nella home del dipendente** (`CLAUDE.md` §10.B).
   Approvata la card del check rapido ricorrente: **una domanda, un tocco**. È una
   decisione di scope ai sensi del §2.6, ed è la prima schermata nuova rispetto

@@ -817,6 +817,17 @@ Calendario, Sessioni, Pazienti, Pagamenti, Profilo.
 §10.B: i tre lati del marketplace raccontano la stessa storia invece di essere tre
 demo scollegate.
 
+1. **La nota privata di sessione si salva davvero.** Il dialogo esiste già nel codice
+   ereditato con i suoi tre campi e un pulsante che oggi chiude e basta. Collegarlo
+   aggiunge `SessionNote` al dominio ed è **l'unica scrittura che M2 può dimostrare**:
+   la prenotazione è sul lato dipendente, che è M3, quindi senza questa il pattern
+   scrittura → invalidazione → riletto dalla query verrebbe replicato venticinque
+   volte in M3 senza essere mai stato provato una volta (§5.2).
+   **La nota è privata e non esce mai verso l'azienda**, e a impedirlo è il tipo, non
+   la JSX: il testo vive solo sulle proiezioni che il professionista riceve e non
+   compare su nessun tipo che l'area HR o l'admin possano leggere. Approvato dai
+   founder il **06.08.2026**; non è una schermata nuova, quindi il §2.6 è soddisfatto.
+
 **Finita quando:** le righe settimanali sommano al totale del mese; i pazienti
 elencati sono lo stesso numero che dichiara la KPI; le date e i giorni della
 settimana coincidono con il calendario vero (oggi sbagliano in tutti e quattro i
