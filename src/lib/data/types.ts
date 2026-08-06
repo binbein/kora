@@ -362,8 +362,14 @@ export type Professional = {
    * in `mock/people.ts`.
    */
   sessionFee: number;
-  /** Numero di iscrizione all'albo, per il profilo e il back-office */
-  certification: string;
+  /*
+   * Non c'è un numero di iscrizione all'albo, e non è una dimenticanza: il §8
+   * vieta di inventarne. La qualifica e lo stato dei documenti dicono a chi
+   * guarda quello che conta, e un identificatore plausibile su una persona
+   * inventata potrebbe collidere con l'iscrizione di un professionista vero.
+   * In produzione il campo esisterà: l'esclusione è dichiarata in
+   * `docs/CONTRATTO-DATI.md`.
+   */
   /** Sessioni erogate sulla piattaforma da quando collabora */
   totalSessions: number;
   documentsVerified: boolean;
