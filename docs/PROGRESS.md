@@ -94,7 +94,10 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
     mensile e call mensile col team clinico**. È l'unica delle tre che sottostima
     il piano invece di gonfiarlo.
 - L'organico resta **150**, non i 120 del §8: cambiarlo trascina il ricalcolo degli
-  importi derivati su sei schermate, che è lavoro di M3.
+  importi derivati su sei occorrenze in quattro file — una delle quali è `HRNav`,
+  che è la navigazione condivisa dalle cinque rotte HR e non una schermata — più il
+  fatturato che ne discende senza contenere il numero. L'elenco è in `CLAUDE.md` §8.
+  È lavoro di M3.
 - ~~`AuthContext` fa una richiesta fallita a ogni caricamento~~ → chiuso da M1
   insieme all'SDK.
 - Il 👋 nella home dipendente resta: decisione in sospeso qui sotto.
