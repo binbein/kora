@@ -218,8 +218,9 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 
 ## Decisioni chiuse
 
-Decisioni dei founder che non appartengono a una milestone. La regola vive in
-`CLAUDE.md`; qui restano la data e il motivo.
+Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà una
+milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
+`CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
 
 - **06.08.2026 — I semi dei trimestri precedenti** (`CLAUDE.md` §9, "Trimestri
   diversi da quello corrente"). Il selettore della dashboard ha quattro righe di
