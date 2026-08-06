@@ -1,20 +1,21 @@
 import { assertInDev } from "../guardrails";
-import type {
-  Appointment,
-  AppointmentSlot,
-  SessionEntitlement,
-} from "../types";
+import type { AppointmentSlot, SessionEntitlement } from "../types";
 import { COMPANY } from "./company";
 import { DEMO_TODAY } from "./demo-date";
 import { PROFESSIONALS } from "./people";
 
 /*
- * Sessioni e agenda di Laura (CLAUDE.md §8): 3 sessioni usate su 10, prossimo
- * appuntamento con la Dr.ssa Meier giovedì alle 17:30.
+ * Il diritto alle sessioni di Laura e gli slot ancora prenotabili (CLAUDE.md §8).
  *
  * Il cap e il prezzo della sessione extra vengono dal piano dell'azienda, non
  * ricopiati qui: il Plus dà 10 sessioni all'anno e CHF 28 per quelle in più, e
  * se domani Demo SA passa all'Executive il contatore segue da solo.
+ *
+ * Gli **appuntamenti** di Laura non stanno qui: sono le sessioni della Dr.ssa
+ * Meier, in `professional-portal.ts`. Il giovedì 17:30 del §8 è un record solo,
+ * proiettato da due lati — tenerne una copia per il dipendente e una per la
+ * professionista significherebbe avere due verità sullo stesso appuntamento, che
+ * è precisamente ciò che il §5.5 vieta.
  */
 
 export const INITIAL_ENTITLEMENT: SessionEntitlement = {
@@ -35,28 +36,6 @@ function at(daysFromReference: number, hour: number, minute = 0): Date {
     minute,
   );
 }
-
-/*
- * L'appuntamento del §8: giovedì 17:30 con la Dr.ssa Meier.
- *
- * Con la demo ambientata di **mercoledì**, quel giovedì è **domani** — un solo
- * giorno dopo il riferimento — ed è così che la home del dipendente lo deve
- * presentare. Il giorno si deriva dallo scarto e non si scrive: il guardrail
- * qui sotto verifica che sia davvero giovedì, così spostando `DEMO_TODAY` la
- * bugia si vede subito.
- */
-export const INITIAL_APPOINTMENTS: Appointment[] = [
-  {
-    id: "appointment-meier-1",
-    kind: "psychologist",
-    professionalId: "meier",
-    start: at(1, 17, 30),
-    durationMinutes: SESSION_DURATION_MINUTES,
-    status: "scheduled",
-    // la quarta sessione di Laura, non una prima visita: ne ha già fatte tre
-    type: "session",
-  },
-];
 
 /*
  * Slot proponibili, dal giorno dopo il riferimento. Solo giorni feriali e orari
@@ -105,31 +84,17 @@ export const INITIAL_SLOTS: AppointmentSlot[] = PROFESSIONALS.flatMap(
 // Guardrail (§5.6)
 // ---------------------------------------------------------------------------
 
-const THURSDAY = 4;
-assertInDev(
-  INITIAL_APPOINTMENTS[0].start.getDay() === THURSDAY,
-  "L'appuntamento con la Dr.ssa Meier non cade di giovedì come dice il §8.",
-);
-
 assertInDev(
   INITIAL_ENTITLEMENT.used <= INITIAL_ENTITLEMENT.total,
   `Laura ha usato ${INITIAL_ENTITLEMENT.used} sessioni su un cap di ${INITIAL_ENTITLEMENT.total}.`,
 );
 
 /*
- * Uno slot proponibile non può cadere su un appuntamento già preso: le due
- * liste finiscono nella stessa griglia, e un'ora insieme occupata e prenotabile
- * si nota solo a schermo e solo se qualcuno guarda quel giorno.
+ * Uno slot proponibile non può cadere nel fine settimana. Che non caschi su una
+ * sessione già presa lo verifica `professional-portal.ts`, che è dove vivono le
+ * sessioni.
  */
 for (const slot of INITIAL_SLOTS) {
-  assertInDev(
-    !INITIAL_APPOINTMENTS.some(
-      (appointment) =>
-        appointment.professionalId === slot.professionalId &&
-        appointment.start.getTime() === slot.start.getTime(),
-    ),
-    `Uno slot di ${slot.professionalId} cade su un appuntamento già preso.`,
-  );
   assertInDev(
     slot.start.getDay() !== 0 && slot.start.getDay() !== 6,
     `Uno slot di ${slot.professionalId} cade nel fine settimana.`,
