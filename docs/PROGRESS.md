@@ -94,7 +94,10 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
     mensile e call mensile col team clinico**. È l'unica delle tre che sottostima
     il piano invece di gonfiarlo.
 - L'organico resta **150**, non i 120 del §8: cambiarlo trascina il ricalcolo degli
-  importi derivati su sei schermate, che è lavoro di M3.
+  importi derivati su sei occorrenze in quattro file — una delle quali è `HRNav`,
+  che è la navigazione condivisa dalle cinque rotte HR e non una schermata — più il
+  fatturato che ne discende senza contenere il numero. L'elenco è in `CLAUDE.md` §8.
+  È lavoro di M3.
 - ~~`AuthContext` fa una richiesta fallita a ogni caricamento~~ → chiuso da M1
   insieme all'SDK.
 - Il 👋 nella home dipendente resta: decisione in sospeso qui sotto.
@@ -179,7 +182,7 @@ errori, `npm run lint` e `npm run typecheck` a 0.
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
-professionista, admin), design system e navigazione, 45 componenti shadcn, grafici
+professionista, admin), design system e navigazione, 47 componenti shadcn, grafici
 recharts.
 
 Ereditato e **non** funzionante. Le ultime due righe sono state chiuse da M0; le
@@ -215,8 +218,26 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 
 ## Decisioni chiuse
 
-Decisioni dei founder che non appartengono a una milestone. La regola vive in
-`CLAUDE.md`; qui restano la data e il motivo.
+Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà una
+milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
+`CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
+
+- **06.08.2026 — I semi dei trimestri precedenti** (`CLAUDE.md` §9, "Trimestri
+  diversi da quello corrente"). Il selettore della dashboard ha quattro righe di
+  partenza — iscritti, attivi e sessioni cumulate — e da lì si derivano risparmio,
+  giorni di assenza evitati e percentuale di adozione. I semi sono conteggi di
+  persone e non importi, perché un importo arrotondato non si inverte senza
+  produrre una persona frazionaria. Nella stessa passata sono diventate esplicite
+  due cose che erano implicite e senza le quali il §9 non era riproducibile:
+  **l'arrotondamento del risparmio al centinaio** e **il periodo delle sessioni
+  consumate**, che sono cumulate sui dodici mesi del monte annuo.
+
+- **06.08.2026 — Il check rapido nella home del dipendente** (`CLAUDE.md` §10.B).
+  Approvata la card del check rapido ricorrente: **una domanda, un tocco**. È una
+  decisione di scope ai sensi del §2.6, ed è la prima schermata nuova rispetto
+  all'inventario ereditato — ma è una card dentro la home, non una rotta: **le
+  rotte restano 25**. È lavoro di M3, e qui si è approvata l'esistenza della
+  schermata, non la sua resa. Il motivo per cui esiste sta in §10.B.
 
 - **05.08.2026 — Come si misura lo stress** (`CLAUDE.md` §8). Il dato di reparto
   non viene più da un questionario mensile. All'attivazione dell'account c'è un
@@ -317,3 +338,9 @@ Decisioni dei founder che non appartengono a una milestone. La regola vive in
 - Ogni milestone chiude con una demo che funziona da capo a fondo (`CLAUDE.md`
   §2.3). Se una migrazione non entra in una sessione, si chiude l'area corrente e si
   comincia la prossima dopo, mai a metà.
+- **Un `✓` testuale in `Psicologi.jsx:179`** ("✓ Sessione inclusa nel piano"). Non è
+  un'emoji e il §7 non lo vieta, quindi non è un difetto da correggere subito: è un
+  glifo dove tutto il resto del progetto usa un'icona lucide, e uno screen reader lo
+  legge come "segno di spunta" in mezzo alla frase. Da sostituire con l'icona
+  quando M3 rifà la prenotazione, che è la stessa passata in cui sparisce il
+  `bookingStep` morto. È l'unico caso: cercato in tutto `src/`.

@@ -95,8 +95,9 @@ repository Next non dia niente per scontato.
 - **Tailwind CSS 3** con i token in `src/index.css` come variabili HSL, e
   `tailwind.config.js` che li mappa. **Non è Tailwind 4**: esiste ancora
   `tailwind.config.js`, non c'è il blocco `@theme`.
-- **shadcn/ui** stile *new-york*, su Radix, già installato (45 componenti in
-  `src/components/ui/`). **Attenzione alle varianti che i componenti shadcn danno
+- **shadcn/ui** stile *new-york*, su Radix, già installato: `src/components/ui/`
+  contiene 48 file, 47 componenti più l'hook `use-toast`.
+  **Attenzione alle varianti che i componenti shadcn danno
   per esistenti**: nel loro codice compaiono classi come `data-active:` e
   `data-horizontal:`, che Tailwind compila in selettori su attributi
   `[data-active]` e `[data-horizontal]`, mentre Radix scrive `data-state` e
@@ -215,10 +216,16 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
   dei file puri (`format.ts`, `dates.ts`, `roi-model.ts`), struttura `i18n`.
   A schermo non cambia niente.
 - **M2 — Il contratto dati.** `DataProvider` asincrono, `types.ts`, implementazione
-  mock, react-query, `DEMO_TODAY`, guardrail. Chiude con **una sola schermata
-  migrata** come prova del contratto (il portale professionista: piccolo,
-  autocontenuto, e mette subito sotto stress date, denaro e aggregazioni).
-- **M3 — Area per area.** HR → dipendente → professionista → admin. Ogni area viene
+  mock, react-query, `DEMO_TODAY`, guardrail. Chiude con **una sola area migrata**,
+  la più piccola: il portale professionista (§10.D), autocontenuto e capace di
+  mettere subito sotto stress date, denaro e aggregazioni.
+  **Un'area, non una rotta.** L'identità della Dr.ssa Meier vive in `ProNav` e
+  `ProProfilo`, che tutte e cinque le rotte condividono: migrandone una sola,
+  l'intestazione direbbe un nome e il corpo un altro nella stessa schermata. E la
+  definizione di "finito" del §10.D è scritta per l'area — le righe settimanali che
+  sommano al mese, i pazienti che coincidono con la KPI — non per una schermata.
+- **M3 — Area per area.** HR → dipendente → admin; il professionista è già migrato
+  in M2 e non si ritocca. Ogni area viene
   migrata **e** rinarrata nello stesso passaggio: dati dal provider, stringhe in
   i18n, importi da `format.ts`, microcopy nel registro giusto. Toccare due volte la
   stessa schermata è lavoro sprecato. **Chiude cancellando `reference/`**: se
@@ -270,8 +277,9 @@ invalidano le query toccate. Una prenotazione fatta nel portale dipendente deve
 comparire nel calendario del professionista **perché la query si invalida**, non
 perché qualcuno passa lo stato a mano.
 
-`src/lib/query-client.js` esiste già e va tipizzato e configurato (niente refetch
-al focus della finestra durante una presentazione).
+`src/lib/query-client.js` esiste già, e `refetchOnWindowFocus: false` c'è dal primo
+commit — niente refetch al focus della finestra durante una presentazione. Resta da
+tipizzare, e solo quello.
 
 ### 5.3 Il dominio, per intero
 
@@ -423,17 +431,23 @@ Regole:
   incoraggiante ma mai infantile. *"Buongiorno Laura"*, *"Il sonno merita
   attenzione"*.
 - Ovunque: **sentence case** (niente Title Case), niente punti esclamativi nel testo
-  di sistema, **niente emoji**. Il codice ereditato ne ha due (👋 nel saluto della
-  home dipendente, 💡 nel riquadro prezzi): il secondo va tolto senz'altro — è un
-  contratto da CHF 79'200 l'anno — il primo si può discutere con i founder.
+  di sistema, **niente emoji**. Ne resta una sola nel codice, il 👋 del saluto in
+  `EmployeeHome.jsx`: è l'unico punto in cui il registro consumer potrebbe
+  giustificarne una, e la decisione dei founder è aperta — sta in `PROGRESS.md`,
+  "Decisioni in sospeso". Il 💡 del riquadro prezzi è sparito in M0 con la riga che
+  lo conteneva.
 - **Un professionista parla come parlerebbe lui**, non come parla il prodotto: il
   medico virtuale dà del lei ed è coerente dall'inizio alla fine della
   conversazione. Il codice ereditato oscilla fra "lei" e "tu" nella stessa chat.
 - La privacy è un argomento di vendita: la nota *"Dati aggregati e anonimi · soglia
   minima {n} dipendenti misurati per reparto"* con icona lucchetto è sempre visibile
   in dashboard. Dice **"misurati"**, non "dipendenti" né "iscritti": la soglia conta
-  chi ha risposto al check rapido nel periodo (§8). La soglia è un segnaposto e non
-  una cifra nel testo, perché il suo valore è ancora da riderivare.
+  chi ha risposto al check rapido nel periodo (§8). **La soglia nella stringa è
+  `{n}`, non il numero**, e resta tale ora che il §8 l'ha fissata a 12: una cifra
+  dentro una frase del dizionario è testo cablato quanto qualunque altro (§2.7),
+  ogni numero a schermo passa da `format.ts` (§11), e la soglia è un valore del
+  dominio come gli altri — arriva dal provider, così il giorno in cui un'azienda
+  cliente ne ha una diversa la frase non cambia.
 - **Spazi JSX attorno agli elementi inline.** Quando il testo che segue un `<code>`,
   `<strong>`, `<a>` o `<span>` va a capo nel sorgente, la trasformazione JSX ne
   mangia lo spazio iniziale e le parole si attaccano. Un `{" "}` esplicito non
@@ -445,12 +459,31 @@ Regole:
 
 Azienda: **Demo SA**, Lugano, 120 dipendenti, Piano Plus (CHF 55/dip/mese).
 
-> *Il codice ereditato usa "Alpine Finance SA, 150 dipendenti". Si rinomina in Demo
-> SA e si riporta a 120: tutte le cifre di questa sezione e della §9 sono già
-> congelate e verificate su quell'organico, mentre passare a 150 imporrebbe di
-> riderivare gli snapshot ROI e il monte sessioni — cioè rifare lavoro già
-> approvato. Il rename tocca sei punti; la fatturazione diventa CHF 6'600 al mese
-> e CHF 79'200 l'anno.*
+> *Il rename da "Alpine Finance SA" a **Demo SA** è già stato fatto in M0.
+> L'organico no: il codice dichiara ancora **150** in sei punti. La divergenza si
+> chiude portando il codice a 120, **mai il contrario**, e il motivo va tenuto in
+> vista: tutte le cifre di questa sezione e della §9 sono congelate e verificate su
+> 120, mentre allineare questo file al codice imporrebbe di riderivare gli snapshot
+> ROI e il monte sessioni — cioè rifare lavoro già approvato. A 120 la fatturazione
+> è CHF 6'600 al mese e CHF 79'200 l'anno.*
+>
+> *I sei punti sono sei occorrenze **letterali** di `150`, in quattro file:
+> `HRNav.jsx:42`, `HRFatturazione.jsx` alle righe 10, 35 e 62, `HRDashboard.jsx:54`
+> e `AdminAziende.jsx:10`. Uno dei sei non è una sostituzione: `HRDashboard.jsx:54`
+> dice "124/150 · Attivazione 82%", e diventa 82 su 120 con l'attivazione al 68% —
+> le cifre di questa sezione. È una KPI che torna a coincidere col dataset, non un
+> numero da riscrivere.*
+>
+> *C'è poi un **settimo punto che un `grep 150` non trova**: `revenue: 99000` in
+> `AdminAziende.jsx`, che è 150 × 55 × 12 e diventa **79'200**. Non contiene il
+> numero, discende dal numero. È il modo concreto in cui l'errore si produce: si
+> cerca `150`, se ne sistemano sei, e nel back-office resta un fatturato calcolato
+> su un organico che l'elenco accanto non dichiara più.*
+>
+> *Gli altri `150` del codice non sono l'organico di Demo SA e non si toccano:
+> `Pricing.jsx:58` è il valore di apertura del simulatore pubblico, e le tre di
+> `FlexiblePlanCard.jsx` sono una soglia di sconto a volume del piano nascosto
+> (§10.A.3).*
 
 6 reparti: Vendite (24), Operations (31), Finanza (18), IT (17), HR + Legale (15),
 Direzione (15). Il codice ereditato ha reparti diversi e **senza le Vendite**, che è
@@ -683,11 +716,42 @@ le cifre derivate dal modello.
 ### Trimestri diversi da quello corrente
 
 Il §8 fissa solo il trimestre in corso, ma il selettore della dashboard deve
-cambiare davvero i dati. I trimestri precedenti non si inventano: si derivano da una
-regola dichiarata nel file — il risparmio è proporzionale ai dipendenti attivi,
-ancorato a CHF 14'200 su 41 attivi. Ne vengono 11'800 / 9'400 / 6'200. **Nemmeno i
-periodi stanno nei semi**: si contano a ritroso dal trimestre corrente, che viene da
-`DEMO_TODAY`.
+cambiare davvero i dati. I trimestri precedenti non si inventano: si derivano da
+quattro semi dichiarati qui. **Nemmeno i periodi stanno nei semi**: si contano a
+ritroso dal trimestre corrente, che viene da `DEMO_TODAY`.
+
+**I semi sono le persone, non il denaro.** Un importo arrotondato non si inverte:
+risalire agli attivi da CHF 11'800 darebbe 34.07 persone — cioè la cifra scritta a
+mano *e* la persona finta. Si parte dai conteggi e si scende verso gli importi, mai
+il contrario.
+
+| Trimestre | Iscritti | Attivi | Sessioni (cumulate) |
+|---|---|---|---|
+| corrente | 82 | 41 | 142 |
+| −1 | 71 | 34 | 105 |
+| −2 | 58 | 27 | 64 |
+| −3 | 39 | 18 | 28 |
+
+L'adozione che ne esce — **68 → 59 → 48 → 33%** su 120 dipendenti — è la stessa
+curva che il §8 già racconta.
+
+Da qui si deriva il resto, e si deriva davvero (§5.5):
+
+- **Risparmio** = attivi × (14'200 / 41), **arrotondato al centinaio**. Il trimestre
+  corrente non passa dal calcolo: usa i CHF 14'200 esatti del §8, che sono
+  l'ancoraggio. Gli altri tre danno 11'775.6 → **11'800**, 9'351.2 → **9'400**,
+  6'234.1 → **6'200**, cioè i tre importi che questa sezione già dichiarava.
+  **L'arrotondamento al centinaio è parte della regola, non un dettaglio di
+  formattazione**: senza, quei tre numeri non sono riproducibili, e una cifra al
+  franco su un risparmio stimato è finta precisione.
+- **Giorni di assenza evitati** = risparmio ÷ CHF 900 (§8): 16 / 13 / 10 / 7.
+
+**Le sessioni sono cumulate sui dodici mesi, non consumate nel trimestre.** È l'unica
+lettura che tiene in piedi la KPI del §8: il monte di 1'200 è annuo, e "142 su 1'200"
+confronta due grandezze solo se coprono lo stesso periodo. I quattro trimestri del
+selettore sono i quattro trimestri di quel monte, quindi il valore del trimestre
+corrente è anche il totale dell'anno. Il consumo del singolo trimestre — 28 / 36 /
+41 / 37 — si ricava per differenza e non si scrive.
 
 ## 10. Scope — le schermate e la definizione di "finito"
 
@@ -713,6 +777,16 @@ quattro voci sommano al totale mostrato, e a N=100 escono i cinque numeri di §9
 
 ### B. Portale dipendente — `/employee` + 5 sottopagine
 Home, Psicologi, Medico virtuale, Check-up, Piano AI, Profilo.
+
+1. **Check rapido nella home** — *da costruire, non esiste*. **Una domanda, un
+   tocco** (§8). È il segnale su cui poggia ogni dato di stress della dashboard HR,
+   e oggi la demo non lo mostra da nessuna parte: a un investitore che chiede da
+   dove arrivano quei numeri non abbiamo niente da indicare. Il Business Plan lo
+   chiama "cuore di KORA" e ne descrive tre mensili: dove i due divergono vince
+   questo file, e il documento si aggiorna.
+   È una card nella home, **non una rotta nuova**: le rotte restano 25.
+   Approvato dai founder il **06.08.2026** ai sensi del §2.6. È lavoro di M3, e qui
+   si approva l'esistenza della schermata e basta: la resa si decide migrando l'area.
 
 **Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — il contatore
 sale, l'appuntamento compare in home, lo slot sparisce dalla disponibilità e compare
@@ -743,10 +817,16 @@ Calendario, Sessioni, Pazienti, Pagamenti, Profilo.
 §10.B: i tre lati del marketplace raccontano la stessa storia invece di essere tre
 demo scollegate.
 
-**Finita quando:** una prenotazione fatta in §10.B compare nel calendario; le righe
-settimanali sommano al totale del mese; i pazienti elencati sono lo stesso numero
-che dichiara la KPI; le date e i giorni della settimana coincidono con il calendario
-vero (oggi non lo fanno in cinque punti su cinque).
+**Finita quando:** le righe settimanali sommano al totale del mese; i pazienti
+elencati sono lo stesso numero che dichiara la KPI; le date e i giorni della
+settimana coincidono con il calendario vero (oggi sbagliano in tutti e quattro i
+punti in cui compaiono, §11).
+
+**Eccezione dichiarata.** «Una prenotazione fatta in §10.B compare nel calendario»
+non si verifica alla chiusura di M2, perché il lato dipendente è M3. Il contratto
+dati deve già reggerla — stessa entità, stessa query invalidata (§5.2) — e la prova
+a schermo arriva con l'area dipendente. Non è un requisito mancato: è un requisito
+che ha bisogno dell'altra metà del marketplace.
 
 ### E. Back-office admin — `/admin` + 5 sottopagine
 Aziende, Utenti, Professionisti, Sessioni, Provider check-up, Analytics.
@@ -809,9 +889,13 @@ indirizzi.
   all'altro la differenza si legge come un difetto.
 - **Il separatore decimale è il punto**: `2.35:1`, non `2,35:1`. È la convenzione
   svizzera ed è coerente con l'apostrofo delle migliaia.
-- **Nessuna data scritta a mano.** Il codice ereditato ha cinque coppie
-  giorno/data e sono sbagliate tutte e cinque ("Mar 29 Apr" era un mercoledì). Le
-  date si derivano da `DEMO_TODAY` e si formattano con `format.ts`.
+- **Nessuna data scritta a mano.** Il codice ereditato ha **quattro** coppie
+  giorno/data ed è sbagliata ognuna, tutte in `ProSessioni.jsx`: "Mar 29 Apr",
+  "Gio 24 Apr", "Mar 22 Apr", "Lun 21 Apr". Sono esatte sul calendario **2025**,
+  cioè è l'anno riscritto a mano su date vecchie. Il `"Mar 09:00"` di
+  `ProCalendario.jsx` è un giorno **senza** data: va derivato anche quello, ma non
+  è una quinta coppia da andare a cercare. Le date si derivano da `DEMO_TODAY` e si
+  formattano con `format.ts`.
 - Accessibilità di base: contrasti AA, focus visibili, alt text. La demo si presenta
   anche da tastiera durante un pitch: i focus contano.
 - **A fine sessione**: riepilogo di cosa è stato fatto e screenshot delle schermate
