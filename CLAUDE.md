@@ -563,11 +563,12 @@ l'area admin**, che di grafici ne ha cinque e non è ancora migrata.
   incoraggiante ma mai infantile. *"Buongiorno Laura"*, *"Il sonno merita
   attenzione"*.
 - Ovunque: **sentence case** (niente Title Case), niente punti esclamativi nel testo
-  di sistema, **niente emoji**. Ne resta una sola nel codice, il 👋 del saluto in
-  `EmployeeHome.jsx`: è l'unico punto in cui il registro consumer potrebbe
-  giustificarne una, e la decisione dei founder è aperta — sta in `PROGRESS.md`,
-  "Decisioni in sospeso". Il 💡 del riquadro prezzi è sparito in M0 con la riga che
-  lo conteneva.
+  di sistema, **niente emoji**. Nessuna eccezione: il 👋 del saluto nella home
+  dipendente era l'unico caso in cui il registro consumer avrebbe potuto
+  giustificarne una, e i founder hanno deciso il 07.08.2026 di **toglierlo** — il
+  calore lo fa il copy, e un'emoji che lo sostituisce è la scorciatoia che rende
+  infantile un registro che il §7 vuole caldo. Il 💡 del riquadro prezzi era già
+  sparito in M0 con la riga che lo conteneva.
 - **Un professionista parla come parlerebbe lui**, non come parla il prodotto: il
   medico virtuale dà del lei ed è coerente dall'inizio alla fine della
   conversazione. Il codice ereditato oscilla fra "lei" e "tu" nella stessa chat.
@@ -965,11 +966,22 @@ Home, Psicologi, Medico virtuale, Check-up, Piano AI, Profilo.
    Approvato dai founder il **06.08.2026** ai sensi del §2.6. È lavoro di M3, e qui
    si approva l'esistenza della schermata e basta: la resa si decide migrando l'area.
 
-**Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — il contatore
-sale, l'appuntamento compare in home, lo slot sparisce dalla disponibilità e compare
-nel calendario del professionista. Oggi la conferma si perde chiudendo il dialogo.
-Nessun vicolo cieco: ogni schermata ha una via d'uscita, e ogni voce del menu porta
-a una rotta che esiste.
+**Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — la parte in
+programma del contatore sale, l'appuntamento compare in home, lo slot sparisce dalla
+disponibilità e compare nel calendario del professionista. Oggi la conferma si perde
+chiudendo il dialogo. Nessun vicolo cieco: ogni schermata ha una via d'uscita, e ogni
+voce del menu porta a una rotta che esiste.
+
+**"Il contatore sale" non vuol dire che 3/10 diventa 4/10.** `used` è il conto delle
+sedute **erogate** (§5.5, e la tabella delle KPI di `docs/CONTRATTO-DATI.md` §3), e
+una prenotazione nasce `scheduled`: farlo salire sarebbe un secondo numero pinnato
+sullo stesso fatto, e direbbe al dipendente che ha consumato una seduta che non ha
+ancora fatto. A muoversi è la parte in programma, e la frase le tiene distinte:
+*"3 su 10 sessioni usate · 1 in programma"*. Deciso dai founder il 07.08.2026.
+
+Ne discendono due guardrail dell'area: dopo una prenotazione `used` è invariato, e
+**nessun numero dell'area HR si muove** — le sessioni consumate dell'azienda contano
+le erogate, e vengono dalla serie di utilizzo (§9), non dall'agenda.
 
 ### C. Portale HR — `/hr` + 4 sottopagine
 Dashboard, Dipendenti, Report, Fatturazione, Privacy.

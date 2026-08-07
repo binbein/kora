@@ -509,6 +509,24 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   `roi-model.ts` è trapiantato da M1 e verificato sui cinque numeri di
   ancoraggio.
 
+- **07.08.2026 — Una prenotazione non fa salire `used`** (`CLAUDE.md` §10.B). Il
+  §10.B chiedeva che prenotando "il contatore salga", e letto alla lettera
+  avrebbe portato 3/10 a 4/10. Ma `used` conta le sedute **erogate** — è la
+  definizione della tabella KPI di `CONTRATTO-DATI.md` §3, ed è la stessa
+  funzione che alimenta il co-payment dell'elenco pazienti — mentre una
+  prenotazione nasce `scheduled`. Farlo salire sarebbe un secondo numero pinnato
+  sullo stesso fatto (§5.5) e direbbe al dipendente che ha consumato una seduta
+  che non ha ancora fatto. A muoversi è la parte in programma: *"3 su 10 sessioni
+  usate · 1 in programma"*. Da qui due guardrail dell'area dipendente — `used`
+  invariato dopo una prenotazione, e nessun numero HR che si muove.
+
+- **07.08.2026 — Il 👋 della home dipendente si toglie** (`CLAUDE.md` §7). Era
+  l'unica emoji rimasta nel codice e l'unico punto in cui il registro consumer
+  avrebbe potuto giustificarne una. I founder hanno deciso di non fare
+  l'eccezione: il calore lo fa il copy, e un'emoji che lo sostituisce rende
+  infantile un registro che il §7 vuole caldo. Chiude la voce che stava fra le
+  decisioni in sospeso; il §7 non ha più eccezioni.
+
 - **07.08.2026 — Il terzo blocco di M3 è l'area pubblica intera** (`CLAUDE.md`
   §4, §10.A). Non il solo `/roi`: landing, prezzi e richiesta demo entrano nello
   stesso passaggio. Erano l'unica parte del §10 che nessun blocco di M3
@@ -605,10 +623,8 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   sconti a volume nemmeno, e a 150 dipendenti la preselezione esce a **CHF 38** —
   identico all'Essenziale — offrendo medico virtuale illimitato e check-up annuale
   che l'Essenziale non ha. Verificato alla cifra.
-- **Emoji nel saluto della home dipendente.** Il §7 di `CLAUDE.md` vieta le emoji
-  nel testo di sistema; il 👋 della home è l'unico caso in cui il registro consumer
-  potrebbe giustificarla. Da chiedere ai founder. (Il 💡 del riquadro prezzi è
-  sparito in M0 insieme alla riga che lo conteneva.)
+*(La voce sulle emoji nel saluto della home è stata decisa il 07.08.2026 ed è
+passata fra le decisioni chiuse.)*
 
 ## Note per chi riprende
 
