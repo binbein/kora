@@ -280,6 +280,60 @@ export const it = {
         "Le conversazioni sono private e protette. La tua azienda non accede mai a queste informazioni.",
     },
 
+    /*
+     * Il check-up. Laura l'ha già fatto (§8), quindi la schermata mostra il
+     * referto e dice quando si apre il prossimo, invece di riproporre una
+     * prenotazione: l'elenco dipendenti dell'HR dichiara `completed` per la sua
+     * riga, e due schermate che si contraddicono sono il difetto del §5.5.
+     */
+    checkup: {
+      title: "Check-up annuale",
+      subtitle: "Il check-up fisico incluso nel tuo piano.",
+
+      lastTitle: "Il tuo ultimo referto",
+      /** "Fatto il 15.03.2026 · Centro Medico Ardesia" */
+      lastDone: "Fatto il {date} · {provider}",
+      lastOpen: "Tocca per vederlo",
+
+      /** "Puoi prenotarne uno nuovo dal 15.03.2027." */
+      nextFrom: "Puoi prenotarne uno nuovo dal {date}.",
+
+      networkTitle: "I centri convenzionati",
+      networkHint:
+        "Sono le strutture in cui Kora prenota il tuo check-up, con i costi già coperti dal piano.",
+      /** "2.1 km" */
+      distance: "{km} km",
+      /** Sul pulsante, quando il prossimo check-up non è ancora aperto */
+      bookFrom: "Dal {date}",
+
+      report: {
+        /** "Referto del 15.03.2026" */
+        title: "Referto del {date}",
+        measurement: {
+          blood_pressure: "Pressione",
+          cholesterol: "Colesterolo",
+          ecg: "ECG",
+          bmi: "BMI",
+          stress_risk: "Rischio da stress",
+        },
+        status: {
+          normal: "Nella norma",
+          attention: "Da tenere d'occhio",
+        },
+        explanationTitle: "Cosa vuol dire",
+        /*
+         * La spiegazione copre **tutte** le misure fuori norma: commentarne una
+         * sola lascerebbe l'altra segnalata e senza risposta (§11).
+         */
+        explanation: {
+          laura:
+            "Il colesterolo è poco sopra il valore consigliato e il rischio da stress risulta moderato. Non è un'emergenza: segui il piano di prevenzione e ripeti il controllo al prossimo check-up.",
+        },
+        disclaimer:
+          "Referto dimostrativo con valori di esempio. Non è un documento clinico e non sostituisce il referto del centro che esegue il check-up.",
+      },
+    },
+
     aiPlan: {
       /*
        * Gli obiettivi del piano, per chiave. Li leggono due schermate — la home
