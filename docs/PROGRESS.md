@@ -114,11 +114,25 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
   fino a M3, che ripulisce quella schermata una volta sola — il roster è comunque da
   rifare per intero (§8). Nel portale professionista la riga esce già in M2, con la
   migrazione dell'area.
-- L'organico resta **150**, non i 120 del §8: cambiarlo trascina il ricalcolo degli
-  importi derivati su sei occorrenze in quattro file — una delle quali è `HRNav`,
-  che è la navigazione condivisa dalle cinque rotte HR e non una schermata — più il
-  fatturato che ne discende senza contenere il numero. L'elenco è in `CLAUDE.md` §8.
-  È lavoro di M3.
+- **L'organico resta 150, non i 120 del §8.** La divergenza si chiude portando
+  il codice a 120, mai il contrario (`CLAUDE.md` §8); è lavoro di M3.
+  L'inventario, verificato occorrenza per occorrenza:
+  - **sei occorrenze letterali** di `150` in quattro file: il riquadro azienda
+    in fondo alla sidebar di `HRNav.jsx` (navigazione condivisa dalle cinque
+    rotte HR, non una schermata); tre in `HRFatturazione.jsx` (stato iniziale
+    del simulatore, riquadro "Piano attivo", righe delle fatture); la KPI
+    "Dipendenti iscritti" di `HRDashboard.jsx`; la riga di Demo SA in
+    `AdminAziende.jsx`. La KPI non è una sostituzione secca: "124/150 ·
+    Attivazione 82%" diventa 82 su 120 con l'attivazione al 68%, le cifre del
+    §8.
+  - **un settimo punto che un `grep 150` non trova**: `revenue: 99000` in
+    `AdminAziende.jsx`, che è 150 × 55 × 12 e diventa **79'200**. Non contiene
+    il numero, discende dal numero: si sistemano i sei letterali e nel
+    back-office resta un fatturato calcolato su un organico che l'elenco
+    accanto non dichiara più.
+  - **gli altri `150` non sono l'organico e non si toccano**: il valore di
+    apertura del simulatore pubblico in `Pricing.jsx` e le tre soglie di sconto
+    a volume del piano nascosto in `FlexiblePlanCard.jsx` (§10.A.3).
 - ~~`AuthContext` fa una richiesta fallita a ogni caricamento~~ → chiuso da M1
   insieme all'SDK.
 - Il 👋 nella home dipendente resta: decisione in sospeso qui sotto.

@@ -498,30 +498,14 @@ Regole:
 Azienda: **Demo SA**, Lugano, 120 dipendenti, Piano Plus (CHF 55/dip/mese).
 
 > *Il rename da "Alpine Finance SA" a **Demo SA** è già stato fatto in M0.
-> L'organico no: il codice dichiara ancora **150** in sei punti. La divergenza si
-> chiude portando il codice a 120, **mai il contrario**, e il motivo va tenuto in
-> vista: tutte le cifre di questa sezione e della §9 sono congelate e verificate su
-> 120, mentre allineare questo file al codice imporrebbe di riderivare gli snapshot
-> ROI e il monte sessioni — cioè rifare lavoro già approvato. A 120 la fatturazione
-> è CHF 6'600 al mese e CHF 79'200 l'anno.*
->
-> *I sei punti sono sei occorrenze **letterali** di `150`, in quattro file:
-> `HRNav.jsx:42`, `HRFatturazione.jsx` alle righe 10, 35 e 62, `HRDashboard.jsx:54`
-> e `AdminAziende.jsx:10`. Uno dei sei non è una sostituzione: `HRDashboard.jsx:54`
-> dice "124/150 · Attivazione 82%", e diventa 82 su 120 con l'attivazione al 68% —
-> le cifre di questa sezione. È una KPI che torna a coincidere col dataset, non un
-> numero da riscrivere.*
->
-> *C'è poi un **settimo punto che un `grep 150` non trova**: `revenue: 99000` in
-> `AdminAziende.jsx`, che è 150 × 55 × 12 e diventa **79'200**. Non contiene il
-> numero, discende dal numero. È il modo concreto in cui l'errore si produce: si
-> cerca `150`, se ne sistemano sei, e nel back-office resta un fatturato calcolato
-> su un organico che l'elenco accanto non dichiara più.*
->
-> *Gli altri `150` del codice non sono l'organico di Demo SA e non si toccano:
-> `Pricing.jsx:58` è il valore di apertura del simulatore pubblico, e le tre di
-> `FlexiblePlanCard.jsx` sono una soglia di sconto a volume del piano nascosto
-> (§10.A.3).*
+> L'organico no: il codice dichiara ancora **150** in più punti, e la divergenza
+> si chiude portando il codice a 120, **mai il contrario**: tutte le cifre di
+> questa sezione e della §9 sono congelate e verificate su 120, mentre
+> allineare questo file al codice imporrebbe di riderivare gli snapshot ROI e
+> il monte sessioni — cioè rifare lavoro già approvato. A 120 la fatturazione è
+> CHF 6'600 al mese e CHF 79'200 l'anno. L'inventario esatto delle occorrenze —
+> compresa quella che un `grep 150` non trova e quelle che non vanno toccate —
+> sta nei difetti noti di `docs/PROGRESS.md`, ed è lavoro di M3.*
 
 6 reparti: Vendite (24), Operations (31), Finanza (18), IT (17), HR + Legale (15),
 Direzione (15). Il codice ereditato ha reparti diversi e **senza le Vendite**, che è
