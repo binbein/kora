@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from '@/App.jsx'
+import App from '@/App'
 import '@/index.css'
 import { queryClientInstance } from '@/lib/query-client'
 import { assertQueriesArePrewarmed, prefetchDemo } from '@/lib/data/prefetch'
@@ -12,8 +12,15 @@ import { assertQueriesArePrewarmed, prefetchDemo } from '@/lib/data/prefetch'
  */
 assertQueriesArePrewarmed(queryClientInstance)
 
+const container = document.getElementById('root')
+if (!container) {
+  // `index.html` porta il div: se manca, il montaggio fallirebbe comunque, ma
+  // con un errore su `null` invece che con la sua causa.
+  throw new Error('#root non è in index.html: l\'app non ha dove montarsi.')
+}
+
 prefetchDemo(queryClientInstance).then(() => {
-  ReactDOM.createRoot(document.getElementById('root')).render(
+  ReactDOM.createRoot(container).render(
     <App />
   )
 })
