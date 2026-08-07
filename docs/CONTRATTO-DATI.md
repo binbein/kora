@@ -199,11 +199,17 @@ dominio, non come vincolo di forma. Il contratto è nostro.
 interfaccia. `UserRole` esiste nei tipi perché il back-office ne ha bisogno come
 dato, non come meccanismo di accesso.
 
-**Il periodo sui metodi di lettura.** `getProfessionalSessions` accetta un
-`range`, e le schermate di M2 non lo passano perché il dataset demo è piccolo e
-una lista sola tiene insieme calendario, KPI e totale del mese. **Un'agenda vera
-non entra in una risposta**: l'implementazione HTTP dovrà usare quel parametro e
-probabilmente paginare, e il client dovrà smettere di filtrare in memoria.
+**Il periodo sui metodi di lettura.** `getProfessionalSessions` restituisce tutte
+le sedute di un professionista, e le schermate filtrano in memoria: il dataset
+demo è piccolo, e una lista sola è ciò che tiene insieme calendario, KPI e totale
+del mese senza che possano divergere.
+
+**In produzione questo metodo prenderà un intervallo**, perché un'agenda vera non
+entra in una risposta. L'implementazione HTTP dovrà accettarlo e probabilmente
+paginare, e il client dovrà smettere di filtrare in memoria — il che ricade sul
+calendario e sul riepilogo compensi, che oggi condividono una fetch sola. Il
+parametro non è nell'interfaccia oggi: dichiararlo senza chiamanti non lo
+renderebbe più vero, e sarebbe un'opzione che nessuno passa (§11).
 
 ## 7. Semplificazioni del dataset demo, non del contratto
 
