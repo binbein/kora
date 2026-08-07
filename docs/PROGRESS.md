@@ -52,10 +52,12 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
 
 **Difetti noti e accettati, da non riscoprire:**
 
-- **Tre voci delle card prezzi non corrispondono al Business Plan.** Restano così
-  fino a M3, che le fa leggere da `Plan` invece di elencarle a mano in JSX — a quel
-  punto la card non può più divergere dal piano. Sono in `Pricing.jsx` e, per le
-  prime due, anche nell'anteprima piani della landing:
+- ~~**Tre voci delle card prezzi non corrispondono al Business Plan.**~~ →
+  **chiuse in M3** con l'area pubblica, e chiuse come previsto: le card leggono
+  da `Plan` tramite `plan-features.ts` invece di elencare le voci a mano, quindi
+  non è stato corretto niente a mano e non c'è più niente da cui divergere.
+  Erano in `Pricing.jsx` e, per le prime due, anche nell'anteprima piani della
+  landing:
   - Il **Plus** elenca "Colloquio conoscitivo gratuito", ma il BP (p.9) lo dà solo
     all'Essenziale;
   - l'**Executive** dice "Coach + psichiatra se necessario": il §9 vuole il tetto
@@ -65,11 +67,10 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
     mensile e call mensile col team clinico**. È l'unica delle tre che sottostima
     il piano invece di gonfiarlo.
 
-  Le tre voci restano aperte, ma **da M2 il §9 contiene il dato con cui M3 le
-  chiude**: la trascrizione dell'Executive saltava tre righe della p.10, fra cui
-  proprio la dashboard HR mensile. Chi fosse andato a correggere la card leggendo
-  la costituzione non ci avrebbe trovato la riga, e avrebbe lasciato il trimestrale
-  al suo posto.
+  **Da M2 il §9 conteneva il dato con cui M3 le ha chiuse**: la trascrizione
+  dell'Executive saltava tre righe della p.10, fra cui proprio la dashboard HR
+  mensile. Chi fosse andato a correggere la card leggendo la costituzione non ci
+  avrebbe trovato la riga, e avrebbe lasciato il trimestrale al suo posto.
 - **Le iniziali dei pazienti e l'elenco dipendenti HR sono lo stesso insieme di
   persone.** `HRDipendenti.jsx` elenca G.R., M.B., E.K., L.B., S.C., F.M., A.T. e
   P.V.; il dataset del portale professionista (M2) usa G.R., M.B., E.K., S.C.,
@@ -492,6 +493,118 @@ dataset con il messaggio giusto.
   ha navigazione fra settimane — ma è la ragione per cui la prova a schermo è
   stata fatta due volte, una dentro la settimana e una fuori.
 
+#### L'area pubblica (§10.A)
+
+La terza delle quattro aree, e la prima che contiene **una schermata costruita
+da zero**: il calcolatore ROI, che porta le rotte da 25 a 26.
+
+**Il calcolatore collega il motore, non lo riscrive.** `roi-model.ts` è
+trapiantato e verificato da M1; la pagina non contiene nessuna costante
+economica, e il prezzo arriva da `Plan` — `computeRoi` lo prende come parametro
+proprio per non essere una seconda fonte di quella cifra. Sta sul **Plus** e lo
+dichiara a schermo: il §9 fissa `costo = N × 55 × 12`, quindi è il Plus a
+produrre i CHF 66'000 e il 2.35:1, e un selettore di piano mostrerebbe ~1.2:1
+sull'Executive — il numero che l'investitore ha letto sul documento smetterebbe
+di essere *il* numero.
+
+**Il campo tiene il testo, non il numero.** Con lo stato già ristretto
+all'intervallo non si potrebbe digitare "50": la "5" diventerebbe 20 sotto le
+dita. Il clamp governa il calcolo, la normalizzazione avviene all'uscita dal
+campo, e un campo vuoto calcola sul minimo invece di mostrare NaN.
+
+**Le card leggono da `Plan`, e i tre difetti di M0 si sono chiusi da soli.**
+`plan-features.ts` deriva le righe del listino, e ha due chiamanti — `/pricing`
+e l'anteprima della landing — quindi le due schermate possono mostrare un numero
+diverso di voci ma non una voce diversa. Nel codice ereditato la landing diceva
+"Coach + psichiatra" e `/pricing` "Coach + psichiatra se necessario" dello
+stesso piano.
+
+**`Plan` ha un campo nuovo**, `advancedHrReportEveryMonths`, per la dashboard
+mensile dell'Executive che chiude il terzo difetto. Ne discende una conseguenza
+dichiarata: **le card Essenziale e Plus non nominano più un livello di
+dashboard**, perché il §9 non ne trascrive nessuno per loro. È il §2.4 — se il
+Business Plan p.9 lo dà, la cifra va prima nel §9 e poi sul tipo.
+
+**L'hero della landing sbagliava quattro cifre su quattro**, sulla prima
+schermata che un investitore vede: 74 di punteggio dove Laura ne ha 78, un
+"Sonno 6.2h" che il §8 non contiene, un'adozione dell'"82%" che era il numero
+degli **iscritti** letto come percentuale — la vera è 68% — e uno "Stress −8%"
+che la migrazione HR aveva già dimostrato non riproducibile. Più la Dr.ssa
+Bianchi, che non è nel roster, a un "domani 10:00" scritto a mano. Ora è una
+proiezione vera; il sonno resta come **area debole del profilo**, che è un
+valore del dominio, non come un numero di ore che non esiste.
+
+**`submitDemoRequest` è la terza mutation e non invalida niente.** A leggere le
+richieste sarà il back-office, che è l'ultima area: la lettura e la sua
+invalidazione nascono lì, insieme, invece di essere indovinate adesso. Il record
+si salva comunque, quindi l'admin lo troverà. Lo stato di successo **è il record
+restituito** e nomina l'azienda che ha scritto: non può comparire se la scrittura
+non è avvenuta, dove l'`handleSubmit` ereditato metteva `submitted = true` e non
+chiamava niente.
+
+**Verificato a schermo a 1280px**, con le asserzioni del §10.A:
+
+- a N=100 escono i cinque numeri di ancoraggio: perdite CHF 1'289'500, risparmio
+  CHF 221'150, costo CHF 66'000, netto CHF 155'150, ROI 2.35:1;
+- le quattro voci sommano al totale mostrato a N=20 (257'900), N=100
+  (1'289'500) e N=1000 (12'895'000), e il rapporto resta 2.35:1 su tutti e tre;
+- digitando 5000 il calcolo si ferma a 1000, un campo vuoto calcola su 20, e
+  "50" si digita cifra per cifra senza che il clamp lo contrasti;
+- le tre card corrispondono al §9 riga per riga, e il simulatore deriva sia le
+  opzioni sia i totali: 150 sul Plus annuale dà CHF 99'000, 120 dà **CHF
+  79'200** — la fatturazione di Demo SA del §8 — l'Executive annuale CHF
+  147'600 e mensile CHF 12'300;
+- l'hero dice 78/100, "In buon equilibrio", "Focus: sonno", "gio 17:30 · Dr.ssa
+  Meier", "Adozione 68% · Stress −2 punti";
+- il form registra la richiesta e la conferma nomina l'azienda; un invio vuoto è
+  bloccato con i tre campi obbligatori segnalati;
+- **26 rotte percorse, zero 404, zero schermate vuote, zero errori in console**;
+  `npm run lint` e `npm run typecheck` a zero.
+
+**La nav regge il tedesco.** Con le sei etichette sostituite dai loro
+equivalenti tedeschi — Preise, ROI-Rechner, Demo, Mitarbeitende, HR,
+Fachpersonen, più Anmelden e Demo vereinbaren — la barra sta su una riga a
+1280px con 184px di margine e senza scorrimento orizzontale (§2.7).
+
+**Difetti trovati in questa passata:**
+
+- **L'Executive diceva "risposta entro 1 ore".** L'SLA di un'ora è nel §9 ed è
+  sulla card più cara: derivando le voci da `Plan` è saltato fuori subito, e la
+  correzione è quattro frasi complete invece di due con un numero dentro. È il
+  §2.7 nel suo caso più piccolo, e la stessa trappola aspetta in tedesco, dove
+  cambia anche l'ordine delle parole.
+- **La stessa stringa usciva due volte nell'hero**, come badge e come sigillo
+  del riquadro, a mezzo schermo di distanza.
+- **Le voci morte del footer** erano `<p>` con `cursor-pointer` e hover su tutte
+  e quattro le rotte pubbliche: si comportavano da link e non portavano da
+  nessuna parte. Tolta l'affordance, il testo resta come elenco di sezioni —
+  decisione dei founder dell'08.08.2026. **Privacy policy, termini e cookie
+  policy veri sono lavoro di M5**, insieme a "Chi siamo", "Contatti", "Carriere"
+  e "Blog".
+
+**Aperto e dichiarato:**
+
+- **Le card Essenziale e Plus non dichiarano più una dashboard HR.** Sopra il
+  perché. Se il Business Plan la dà, serve una decisione dei founder che passi
+  prima dal §9.
+- **L'animazione d'ingresso della landing non completa a scheda nascosta.**
+  Verificato: con `document.visibilityState === "hidden"` il browser congela
+  `requestAnimationFrame` e framer-motion resta fermo — misurato a **opacità
+  0.068** dopo due secondi. A scheda visibile completa regolarmente, ed è la
+  ragione per cui gli screenshot dell'hero vanno presi con la scheda in primo
+  piano. **Non è stato toccato**: il §6.2 vieta l'animazione d'ingresso sui
+  *grafici*, e il §3 tiene framer-motion apposta per questa schermata. Ma è la
+  stessa famiglia del difetto che ha prodotto quella regola, e vale la pena
+  deciderlo: durante il pitch la landing non va aperta in una scheda di sfondo.
+- **`FlexiblePlanCard.jsx` resta `.jsx` e senza chiamanti**, ed è voluto: il
+  piano "Personalizzato" è in sospeso, e i suoi undici prezzi non stanno nel
+  Business Plan, quindi non potrebbe leggere da `Plan` nemmeno volendo. È
+  l'eccezione dichiarata del §11, non una dimenticanza.
+- **Il debito AA sulla CTA verde è sceso ma non è chiuso.** Le schermate nuove e
+  rifatte usano `primary` o la coppia `accent`, quindi il debito non si è
+  allargato, ma i punti che restano nelle aree non toccate vanno chiusi con la
+  decisione di palette prima di M5.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -513,12 +626,14 @@ difetto già risolto, e a non rifarne uno già dichiarato aperto. Il dettaglio �
 - ~~le prenotazioni non producono effetti: nessun contatore si muove, nessun
   appuntamento compare, nessuno slot si occupa~~ → chiuso in M3 con l'area
   dipendente, e con la prova a schermo sui due lati del marketplace;
-- manca il calcolatore ROI pubblico;
+- ~~manca il calcolatore ROI pubblico~~ → costruito in M3 su `/roi`, la
+  ventiseiesima rotta;
 - ~~mancano stress per reparto, alert precoce e selettore trimestre nella
   dashboard HR~~ → costruiti in M3 con la migrazione dell'area HR;
 - importi non formattati in svizzero (6 scritti a mano all'italiana, 9
-  `toLocaleString()` senza locale, che a schermo escono in formato en-US), nelle
-  aree non ancora migrate;
+  `toLocaleString()` senza locale, che a schermo escono in formato en-US).
+  **Restano solo nell'area admin**: pubblica, dipendente, HR e professionista
+  passano tutte da `format.ts`;
 - ~~**quattro** coppie giorno/data sbagliate — non cinque — tutte in
   `ProSessioni.jsx` e tutte con lo stesso scarto di un giorno: è il calendario
   2025 con l'anno riscritto a mano~~ → sparite in M2 con la lista che le
@@ -535,7 +650,7 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 | M0 | Messa in sicurezza | **fatta** |
 | M1 | Fondamenta tecniche | **fatta** |
 | M2 | Il contratto dati | **fatta** |
-| M3 | Migrazione area per area + calcolatore ROI | da fare |
+| M3 | Migrazione area per area + calcolatore ROI | **in corso** — restano l'admin e la cancellazione di `reference/` |
 | M4 | Report scaricabile | da fare |
 | M5 | Verso la produzione (differibile) | da fare |
 
@@ -544,6 +659,16 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà una
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
+
+- **08.08.2026 — Le voci morte del footer perdono l'affordance da link**
+  (`CLAUDE.md` §10). "Chi siamo", "Contatti", "Carriere", "Blog" e i tre
+  documenti legali erano `<p>` con `cursor-pointer` e hover: non link rotti in
+  senso tecnico, ma a schermo si comportavano da link e non portavano da nessuna
+  parte — che è la definizione di vicolo cieco del §10, ripetuta su tutte e
+  quattro le rotte pubbliche. Costruire le pagine sarebbe scope nuovo (§2.6),
+  quindi si toglie l'affordance e il testo resta come **elenco di sezioni
+  previste**. Privacy policy, termini di servizio e cookie policy veri sono
+  lavoro di M5, insieme alle quattro pagine istituzionali.
 
 - **07.08.2026 — Il sistema di toast si rimuove** (`CLAUDE.md` §3). `toast`,
   `toaster` e `use-toast` escono dal repository insieme al `<Toaster />` montato
