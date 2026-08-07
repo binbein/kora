@@ -335,6 +335,13 @@ export const it = {
     },
 
     aiPlan: {
+      title: "Piano di prevenzione",
+      subtitle: "Costruito sul tuo profilo di salute.",
+      /** "Aggiornato a luglio 2026" */
+      generated: "Aggiornato a {month}",
+      /** "Il prossimo aggiornamento è a gennaio 2027." */
+      nextUpdate: "Il prossimo aggiornamento è a {month}.",
+
       /*
        * Gli obiettivi del piano, per chiave. Li leggono due schermate — la home
        * mostra quello dell'area debole, la pagina del piano tutti e cinque — ed
@@ -347,6 +354,32 @@ export const it = {
         nutrition_cholesterol:
           "Riportare il colesterolo nella norma con un'alimentazione equilibrata",
         mental_coaching: "Fare 2 sessioni con il coach nel prossimo mese",
+      },
+
+      /*
+       * I suggerimenti. Nessuno promette un servizio che il piano non comprende
+       * — l'ereditato ne aveva uno che rimandava alla nutrizionista, che il §9
+       * dà solo all'Executive mentre Demo SA è su Plus — e nessuno ripete un
+       * contatore che vive altrove (§5.5).
+       */
+      tip: {
+        sleep_screens: "Evita gli schermi nei 30 minuti prima di dormire",
+        sleep_schedule: "Vai a letto e alzati sempre alla stessa ora",
+        sleep_caffeine: "Niente caffeina dopo le 14:00",
+        stress_breathing: "Dedica 10 minuti al giorno alla respirazione",
+        stress_breaks: "Programma una pausa ogni 90 minuti",
+        stress_coach:
+          "Prenota una sessione con il coach per le tecniche di gestione",
+        activity_walk: "Comincia con camminate di 30 minuti",
+        activity_stairs: "Usa le scale al posto dell'ascensore",
+        activity_yoga: "Prova una lezione di yoga online",
+        nutrition_fibre: "Aumenta fibre e verdura a ogni pasto",
+        nutrition_fats: "Riduci i grassi saturi",
+        nutrition_recheck:
+          "Ripeti il controllo del colesterolo al prossimo check-up",
+        mental_continue: "Prosegui il percorso con la psicologa",
+        mental_techniques: "Usa fuori dalla seduta le tecniche che impari",
+        mental_journal: "Annota come ti senti nei giorni difficili",
       },
     },
   },
