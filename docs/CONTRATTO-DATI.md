@@ -153,6 +153,55 @@ restituisce**. Le altre proiezioni sanno al massimo che una nota esiste
 (`ProfessionalSession.hasNote`), mai cosa dice. La nota non esce mai verso
 l'azienda del paziente, e a impedirlo è la forma del dominio.
 
+### Percorso dipendente
+
+`getEntitlement` prende **quale servizio**, non solo lo psicologo:
+`CappedServiceKind` è l'unione stretta dei due che il Plus cappa a un numero di
+sedute l'anno. Il medico virtuale è illimitato e il check-up si conta una volta
+l'anno, quindi per loro `SessionEntitlement` non direbbe niente di vero. In
+produzione l'unione si allarga se un piano cappa altro — l'Executive ha
+nutrizionista e workshop.
+
+`SessionEntitlement.extraSessionPrice` è **opzionale**, ed è il criterio `?` del
+§2 applicato bene: assente significa che il piano non dichiara un prezzo oltre il
+cap, non che la seduta successiva sia gratis. Il Business Plan dà l'importo per
+lo psicologo e non ne dà nessuno per il coaching. Le schermate saltano la riga:
+il portale professionista non mostra il co-payment, la prenotazione non offre una
+seduta a pagamento.
+
+`VirtualDoctorConsult` esiste perché il conto dei consulti si prende **dalla
+lista**, non da uno scalare accanto. Porta la sola data di apertura: la
+conversazione della demo è una simulazione dichiarata e non ha trascritti da
+conservare. In produzione il tipo cresce qui — trascritto, medico che ha
+risposto, esito — non in una seconda entità.
+
+`RapidCheckAnswer` è il segnale che alimenta ogni dato di stress della dashboard
+(§3, misurazione). La scrittura prende **il solo valore**: chi risponde è la
+persona autenticata e il reparto lo sa il server, come `getCompany()` non prende
+un identificatore (§7). La variante su link anonimo porterà il reparto dal link.
+
+### Check-up
+
+`CheckupProvider` porta lo **stato del convenzionamento**, e arriva al client
+anche quando è `pending`: non è una soppressione per privacy come quella dei
+reparti sotto soglia, è un dato che il back-office segue. Chi prenota mostra le
+sole strutture attive. È **una rete sola**: il portale dipendente e il
+back-office descrivono le stesse strutture.
+
+`CheckupEligibility` risponde a "posso prenotare, e da quando". La cadenza è una
+regola del piano — il Plus dà un check-up all'anno — quindi il calcolo sta nel
+contratto e non nella schermata, che potrebbe ricalcolarlo diversamente.
+`availableFrom` è `null` quando il piano non comprende il check-up, che non è la
+stessa cosa di una data lontana.
+
+`CheckupReport` è **l'unico dato sanitario individuale del dominio** e vive solo
+lì, come `SessionNote`: nessun metodo dell'area HR o admin lo restituisce.
+`EmployeeDirectoryEntry` porta lo stato del check-up, mai il suo esito. Sta su un
+metodo suo e non dentro l'eligibility perché si chiede quando lo si apre, che è
+anche il modo in cui in produzione lo si permessiona e lo si traccia. I valori
+delle misure sono **stringhe** — "120/80 mmHg", "Ritmo sinusale" — perché sono
+letture con la loro unità, non grandezze che il client debba riformattare.
+
 ### Compensi
 
 `ProfessionalEarnings` conta **solo le sedute erogate**: quelle in programma non
@@ -203,14 +252,28 @@ compensi e pagamenti.
 | Mutation | Invalida |
 |---|---|
 | `saveSessionNote` | `["professional", professionalId]` |
+| `bookAppointment` | `["professional", professionalId]` **e** `["employee"]` |
+| `submitRapidCheck` | `["employee", "rapid-check"]` |
 
-L'unica scrittura implementata oggi. Le prossime — la prenotazione, il check
-rapido, la richiesta demo — arrivano con l'area che le usa, e ognuna porta la sua
-riga in questa tabella.
+Resta fuori la richiesta demo, che arriva con l'area pubblica.
 
-Una prenotazione dovrà invalidare **la stessa radice del professionista** e le
-query del dipendente: è lo stesso record visto da due lati, e la prova a schermo
-arriva quando M3 costruisce il lato dipendente.
+**`bookAppointment` invalida due radici perché scrive un record solo.**
+`Appointment` e `ProfessionalSession` sono due proiezioni della stessa seduta
+(§3), quindi dopo la scrittura devono rileggere entrambe: la radice del
+professionista porta con sé sedute, pazienti e **disponibilità** — per questo
+gli slot stanno sotto di lei e non sotto il dipendente — e quella del dipendente
+appuntamenti e contatori. La prova a schermo esiste: prenotando dal portale
+dipendente lo slot sparisce, l'appuntamento compare in home e la stessa seduta
+compare nel calendario e nelle sedute in programma del professionista.
+
+**`submitRapidCheck` invalida solo la risposta**, non la radice: il check rapido
+non muove contatori né appuntamenti, e invalidare più del necessario farebbe
+rileggere mezza schermata per un tocco.
+
+**Una prenotazione non fa salire `used`.** Il diritto alle sedute conta le
+erogate (§3) e la seduta nasce `scheduled`: a muoversi è la parte in programma.
+Per la stessa ragione **non muove nessun aggregato aziendale** — le sessioni
+consumate si sommano dalla serie di utilizzo, che copre i dodici mesi chiusi.
 
 ## 5. Vuoto, errore, attesa
 
@@ -281,3 +344,19 @@ invece di restare assunzioni implicite:
 - **Il tempo ha una sola sorgente.** `getReferenceDate()` restituisce la data in
   cui la demo è ambientata. In produzione restituisce oggi, e sparisce dal
   contratto insieme al §1.1 di `CLAUDE.md`.
+- **Il check rapido non alimenta gli aggregati.** `submitRapidCheck` salva la
+  risposta e la rilegge, e basta: le dodici curve della dashboard sono la storia
+  curata del §8, e un tocco fatto davanti a un investitore non deve poterla
+  muovere. **In produzione è esattamente il contrario** — quella scrittura è
+  ciò che alimenta le serie di `DepartmentMonth`, e questa è la semplificazione
+  che salta per prima il giorno del passaggio.
+- **Il coach non ha un'agenda dietro.** Il contatore delle sedute di coaching è
+  un valore dichiarato del dataset, non un conto sulle sedute erogate come
+  quello dello psicologo: il portale professionista della demo è quello di una
+  psicologa, e il coach non ne ha uno. Il contratto non se ne accorge —
+  `getEntitlement("coach")` ha la stessa forma — ma chi costruisce il backend
+  deve saperlo, perché lì `used` si conterà da un'agenda vera.
+- **Un solo dipendente.** `getEmployeeProfile`, `getEntitlement`,
+  `getAppointments`, `getCheckupEligibility` e le altre letture del percorso non
+  prendono un identificatore: la demo ha Laura Bernasconi e basta. In produzione
+  la persona viene dalla sessione, come l'azienda.
