@@ -261,9 +261,11 @@ backend.
   07.08.2026 l'aggiunta dei tipi a `src/components/ui/` (`CLAUDE.md` §3), che è il
   primo lavoro di M3 — prima della prima area, così le schermate si convertono
   mentre le si migra invece che due volte.
-- **Il `range` di `getProfessionalSessions` non ha chiamanti.** È nel contratto
-  perché un'agenda vera non entra in una risposta, ma oggi le schermate filtrano
-  in memoria. È dichiarato in `CONTRATTO-DATI.md` §6.
+- ~~Il `range` di `getProfessionalSessions` non ha chiamanti~~ → il parametro è
+  stato tolto subito dopo la chiusura di M2: un'opzione che nessuno passa è ciò
+  che il §11 vieta, e dichiararla non la curava. L'informazione che serve — che
+  in produzione quel metodo un intervallo lo prenderà — è in
+  `CONTRATTO-DATI.md` §6.
 - **Il totale dell'anno nei pagamenti copre l'anno solare**, non i dodici mesi
   mobili: con la demo a settembre sono i mesi da marzo, e a gennaio sarebbe una
   riga sola. Nessuna conseguenza sulla demo, che è ambientata a settembre.
