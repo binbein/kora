@@ -198,6 +198,15 @@ export const it = {
    * §7 vuole "dipendenti misurati".
    */
   hr: {
+    portalName: "Portale HR",
+    navDashboard: "Dashboard",
+    navEmployees: "Dipendenti",
+    navReport: "Report",
+    navBilling: "Fatturazione",
+    navPrivacy: "Privacy",
+    /** "120 dipendenti · Piano Plus" */
+    navCompanyMeta: "{count} dipendenti · Piano {plan}",
+
     dashboardTitle: "Dashboard HR",
     /** "Demo SA · 120 dipendenti · Piano Plus" */
     companySubtitle: "{name} · {count} dipendenti · Piano {plan}",
@@ -288,6 +297,137 @@ export const it = {
       virtual_doctor: "Medico virtuale",
       coach: "Coach",
       checkup: "Check-up",
+    },
+
+    employees: {
+      title: "Dipendenti",
+      /** "82 iscritti su 120 · solo dati anonimi" */
+      subtitle: "{enrolled} iscritti su {total} · solo dati anonimi",
+      /* La tabella è un estratto e lo dice: il codice ereditato contava
+         "6/8 attivati" accanto a una dashboard che ne dichiarava 82 su 120, e
+         chi leggeva entrambe trovava due aziende diverse. */
+      sampleNote: "La tabella mostra un estratto di {n} dipendenti.",
+      privacyNote:
+        "I nomi sono abbreviati. Kora non mostra mai dati sanitari individuali all'azienda.",
+      columnEmployee: "Dipendente",
+      columnDepartment: "Reparto",
+      columnStatus: "Stato",
+      columnCheckup: "Check-up",
+      enrolled: "Attivo",
+      notEnrolled: "In attesa",
+      checkup: {
+        completed: "Completato",
+        booked: "Prenotato",
+        available: "Disponibile",
+      },
+      checkupUnavailable: "—",
+    },
+
+    billing: {
+      title: "Fatturazione",
+      planTitle: "Piano attivo",
+      employees: "Dipendenti",
+      monthlyCost: "Costo mensile",
+      annualContract: "Contratto annuale",
+      renewal: "Scadenza",
+      invoicesTitle: "Fatture recenti",
+      /** "120 dipendenti × CHF 55" */
+      invoiceDetail: "{count} dipendenti × {price}",
+      invoicePaid: "Pagata",
+      invoicePending: "In attesa",
+      simulatorTitle: "Simulatore costi",
+      simulatorEmployees: "Dipendenti",
+      simulatorPlan: "Piano",
+      simulatorBilling: "Frequenza",
+      billingMonthly: "Mensile",
+      billingAnnual: "Annuale",
+      totalMonthly: "Totale mensile",
+      totalAnnual: "Totale annuale",
+      /** "Plus (CHF 55)" */
+      planOption: "{name} ({price})",
+    },
+
+    report: {
+      title: "Report salute aziendale",
+      /** "3° trimestre 2026 · Demo SA" */
+      subtitle: "{quarter} · {company}",
+      download: "Scarica PDF",
+      metricsTitle: "Metriche chiave",
+      adoption: "Tasso di attivazione",
+      usage: "Sessioni sul monte annuo",
+      checkup: "Check-up completati",
+      stress: "Stress medio",
+      /** "−2 punti" */
+      stressValue: "{points} punti",
+      stressEmpty: "—",
+      savings: "Risparmio stimato",
+      avoidedDays: "Giorni di assenza evitati",
+      /** "16 giorni" */
+      daysValue: "{days} giorni",
+      recommendationsTitle: "Raccomandazioni",
+      recommendation: {
+        salesWorkshop:
+          "Programmare un intervento sul reparto Vendite, in fascia alta da tre mesi.",
+        checkupPush:
+          "Ricordare il check-up annuale a chi ha attivato l'account e non l'ha ancora prenotato.",
+        coachAwareness:
+          "Far conoscere il coach: è la voce del piano con l'utilizzo più basso.",
+        partnerExtension:
+          "Valutare l'estensione ai familiari, opzionale sul piano Plus.",
+      },
+    },
+
+    privacy: {
+      title: "Privacy e sicurezza",
+      subtitle: "La privacy è il cuore di Kora.",
+      neverSeenTitle: "L'azienda non vede mai:",
+      neverSeen: {
+        healthData: "Dati sanitari individuali",
+        names: "Chi ha usato lo psicologo",
+        notes: "Note cliniche o referti",
+        diagnoses: "Diagnosi o trattamenti",
+        bookings: "Prenotazioni individuali",
+      },
+      /*
+       * Da dove vengono i numeri della dashboard. Nessuna schermata lo diceva, ed
+       * è la domanda che un investitore fa subito dopo aver visto il grafico per
+       * reparto (§8).
+       */
+      measurementTitle: "Da dove vengono i dati di stress",
+      measurementBody:
+        "Il dato di stress arriva dal check rapido: una domanda, un tocco, auto-riportata dal dipendente. Non si deduce mai dal comportamento — né dalle sedute prenotate, né dalle aperture dell'app.",
+      anonymousLinkTitle: "Anche senza account",
+      anonymousLinkBody:
+        "Il check rapido si risponde nell'app oppure da un link anonimo, che non richiede di aver attivato l'account. Misurare solo chi si è iscritto vorrebbe dire misurare solo chi è già ingaggiato, e il dato serve soprattutto dove l'adozione non è ancora arrivata.",
+      thresholdTitle: "Soglia di anonimato",
+      thresholdBody:
+        "Il dato di un reparto viene pubblicato solo se in quel periodo hanno risposto almeno {threshold} dipendenti misurati. Sotto la soglia la dashboard mostra un trattino, non un punteggio.",
+      principle: {
+        noIndividual: {
+          title: "Nessun dato individuale",
+          body: "L'azienda non vede mai sessioni, referti, diagnosi o dati sanitari di singoli dipendenti.",
+        },
+        aggregated: {
+          title: "Solo dati aggregati",
+          body: "La dashboard mostra statistiche anonime, aggregate per reparto o per azienda.",
+        },
+        encryption: {
+          title: "Crittografia end-to-end",
+          body: "I dati sanitari sono crittografati in transito e a riposo con standard AES-256.",
+        },
+        hosting: {
+          title: "Hosting in Svizzera",
+          body: "I dati risiedono su server in Svizzera, conformi alla Legge federale sulla protezione dei dati.",
+        },
+        compliance: {
+          title: "Conformità GDPR e LPD",
+          body: "Kora è conforme al GDPR europeo e alla LPD svizzera.",
+        },
+        consent: {
+          title: "Consenso del dipendente",
+          body: "Ogni dipendente conferma il consenso durante l'attivazione e può revocarlo in ogni momento.",
+        },
+      },
     },
   },
 } as const;
