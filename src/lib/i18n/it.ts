@@ -223,6 +223,63 @@ export const it = {
       },
     },
 
+    /*
+     * Il medico virtuale.
+     *
+     * **Due registri nella stessa schermata, ed è voluto.** L'intestazione, il
+     * campo e i piedi di pagina sono il prodotto che parla a Laura, quindi danno
+     * del tu; i messaggi sono il medico che parla, e un professionista parla
+     * come parlerebbe lui — dà del lei, dall'inizio alla fine (§7). Il codice
+     * ereditato oscillava fra i due dentro la stessa conversazione.
+     *
+     * Il medico **non ha un nome**: quello ereditato, "Dr. Andrea Fontana",
+     * prendeva il cognome del coach del §8 e ci attaccava un nome proprio
+     * inventato. Il servizio si presenta come servizio.
+     */
+    doctor: {
+      title: "Medico virtuale",
+      subtitle: "Descrivi i sintomi: un medico ti risponde.",
+      /** "Risposta entro 4 ore" — le ore vengono dal piano */
+      sla: "Risposta entro {hours} ore",
+      online: "In linea",
+      placeholder: "Descrivi i sintomi",
+      send: "Invia",
+      typing: "Il medico sta scrivendo",
+
+      /*
+       * Le parole chiave stanno qui accanto alla risposta perché sono lingua:
+       * un dizionario tedesco non cercherebbe "schiena". Il confronto è sul
+       * testo scritto da chi legge, quindi cambia con il dizionario attivo.
+       */
+      greeting:
+        "Buongiorno. Sono il medico di turno del servizio Kora. Mi dica pure: che disturbo la porta qui oggi?",
+      reply: {
+        back: {
+          keyword: "schiena",
+          text: "Mi dispiace per il dolore. Le faccio qualche domanda: il dolore scende lungo la gamba? Ha febbre o formicolii?",
+        },
+        head: {
+          keyword: "testa",
+          text: "Il mal di testa può avere cause diverse. È localizzato o diffuso? Sta prendendo farmaci in questo periodo?",
+        },
+        stress: {
+          keyword: "stress",
+          text: "Lo stress può manifestarsi in molti modi. Le consiglio di prenotare una sessione con uno psicologo dalla sezione dedicata. Nel frattempo posso aiutarla con i sintomi fisici.",
+        },
+        sleep: {
+          keyword: "sonno",
+          text: "I disturbi del sonno sono molto comuni. Da quanto tempo ha difficoltà? Si sveglia durante la notte o fatica ad addormentarsi?",
+        },
+      },
+      fallback:
+        "Capisco. Può descrivermi meglio il disturbo? Da quanto tempo lo avverte?",
+
+      disclaimer:
+        "Questa conversazione è una simulazione dimostrativa. Le risposte non sono un parere medico e non sostituiscono una visita. In caso di emergenza chiama il 144.",
+      privacy:
+        "Le conversazioni sono private e protette. La tua azienda non accede mai a queste informazioni.",
+    },
+
     aiPlan: {
       /*
        * Gli obiettivi del piano, per chiave. Li leggono due schermate — la home
