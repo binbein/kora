@@ -363,6 +363,14 @@ export type Professional = {
   lastName: string;
   specialty: ProfessionalSpecialty;
   languages: ProfessionalLanguage[];
+  /**
+   * Chiave della qualifica in `it.ts`: "Psicologa FSP", "Coach".
+   *
+   * La qualifica è ciò che conta a chi guarda, ed è quanto il §8 ammette del
+   * corpo professionale: il numero di iscrizione all'albo non esiste in questo
+   * tipo e non si inventa.
+   */
+  qualificationKey: "psychologist_f" | "psychologist_m" | "coach_m";
   /** 0–5, un decimale */
   rating: number;
   /**
