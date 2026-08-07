@@ -239,25 +239,39 @@ backend.
 Il primo passo di M3, prima della prima area (`CLAUDE.md` §3). **Non chiude la
 milestone**: le aree sono ancora tutte da migrare.
 
-Fatto: 44 dei 48 file di `src/components/ui/`, più `lib/utils.ts`,
-`hooks/use-mobile.tsx`, `KPICard` e le cinque pagine del professionista. Un
-pattern solo, ripetuto — `React.ElementRef` e `React.ComponentPropsWithoutRef`
-sull'elemento sottostante, `VariantProps` dove c'è `cva` — e nessun `any`,
-nessun cast: `src/components/ui/` è entrato nel blocco TypeScript di ESLint
-apposta, perché `no-explicit-any` sorvegli le annotazioni appena aggiunte. Nel
-blocco React resta fuori: quelle regole sorveglierebbero il codice che
-l'eccezione del §3 vieta di toccare.
+Fatto in due passate: **tutti e 45 i componenti di `src/components/ui/`** — zero
+`.jsx` rimasti — più `lib/utils.ts`, `hooks/use-mobile.tsx`, `KPICard` e le
+cinque pagine del professionista. Un pattern solo, ripetuto — `React.ElementRef` e `React.ComponentPropsWithoutRef`
+sull'elemento sottostante, `VariantProps` dove c'è `cva` — e nessun `any`:
+`src/components/ui/` è entrato nel blocco TypeScript di ESLint apposta, perché
+`no-explicit-any` sorvegli le annotazioni appena aggiunte. Nel blocco React resta
+fuori: quelle regole sorveglierebbero il codice che l'eccezione del §3 vieta di
+toccare.
+
+**Dieci `as` in tutto, tutti nei tre compositi finali**, e nessuno zittisce un
+errore: due in `form` (i context nascono con `{}`, che non è assegnabile al loro
+tipo), cinque in `chart` e tre in `sidebar`. Di questi otto, quattro sono
+proprietà CSS custom — `--color-bg`, `--sidebar-width`, `--skeleton-width` —
+che non stanno in `React.CSSProperties`, e quattro sono indicizzazioni con una
+chiave nota solo a runtime, che TypeScript non restringe. In ogni caso
+l'alternativa era cambiare il codice di un componente congelato. Nel sorgente
+ereditato il posto del cast si riconosce: è il doppio paio di graffe attorno
+allo stile inline, rimasto dove base44 aveva tolto l'annotazione.
 
 **Come si prova che a runtime non è cambiato niente.** Un diff di cinquanta file
 non si legge riga per riga: per ognuno si transpila con esbuild la versione
 `master` e quella nuova e si confrontano. I tipi si cancellano, quindi l'output
-deve essere identico byte a byte. Lo è su 48 file su 50; i due che differiscono
-sono `ProSessioni` e `ProProfilo`, cioè esattamente i punti in cui i tipi hanno
+deve essere identico byte a byte. Lo è su tutti i file convertiti tranne due,
+`ProSessioni` e `ProProfilo`, cioè esattamente i punti in cui i tipi hanno
 trovato qualcosa (elencati nel commit che li converte). È la verifica da rifare
 se qualcuno rimette mano a questa passata.
 
+Il controllo ha anche deciso una scelta di stile: in `form` i due
+`React.createContext` stanno su una riga sola perché mandarli a capo cambiava
+l'output transpilato — a parità di semantica, ma la prova non lo sa.
+
 **Le varianti `data-*` rotte non c'erano.** Cercate una per una: le 194 varianti
-dei 48 file usano tutte la sintassi a parentesi, che Tailwind 3 compila giusta.
+usano tutte la sintassi a parentesi, che Tailwind 3 compila giusta.
 Le classi che ruppero i Tabs stanno in `reference/`, cioè nella generazione
 Tailwind 4. La cautela del §3 riguarda ciò che si aggiunge, e resta.
 
@@ -268,25 +282,45 @@ scelta si riflette sul trigger; la nota privata si salva ancora senza ricaricare
 — "aggiungi nota" diventa "nota" — che è la mutation di M2 sopravvissuta alla
 conversione.
 
+**I quattro compositi**, chiusi nella seconda passata, uno per commit:
+`form` porta i generici di react-hook-form, `carousel` deriva l'API di embla
+dalla libreria invece di riscriverla, `chart` prende i props di tooltip e
+legenda da recharts, `sidebar` dichiara il context che tiene insieme il file —
+da lì `state` resta `"expanded" | "collapsed"` invece di allargarsi a `string`.
+
+**Il sistema di toast è stato rimosso** (decisione del 07.08.2026 qui sotto).
+
 **Cosa resta aperto:**
 
-- **Quattro compositi non convertiti**: `sidebar` (626 righe), `chart` (309),
-  `carousel` (193), `form` (134). La conversione meccanica lascia 106 errori:
-  hanno context, generici di librerie terze e props che non sono dell'elemento
-  sottostante. **Nessuno dei quattro ha un consumatore oggi**, quindi il rinvio
-  non toglie niente a schermo. Restano `.jsx` e compilano.
-- **`toaster` e `use-toast` restano `.jsx`, e non per fatica.** Tipizzandoli
-  emerge che il `toast.jsx` ereditato non è quello di shadcn: è una riscrittura
-  su `div` semplici, senza Radix. Il toast costruito porta `open` e
-  `onOpenChange`, che il `Toaster` riversa su un `<div>` — props che un div non
-  ha — e `dismiss()` mette `open: false` senza che niente nasconda il toast.
-  **Il sistema di notifiche non funziona**, e oggi non si vede perché nessuno
-  chiama `toast()`: il `Toaster` è montato in `App.jsx` e renderizza sempre una
-  lista vuota. Sistemarlo è un cambio di comportamento e va deciso dai founder —
-  è la voce in sospeso qui sotto.
-- **`isIframe` in `lib/utils.ts` non ha chiamanti** dal primo commit: è un
-  residuo dell'anteprima nel Builder base44. Candidato alla cancellazione come
-  `createPageUrl`, non fatto perché fuori dai passi approvati.
+- **`App.jsx` e `main.jsx` restano `.jsx` di proposito**: `App.jsx` si converte
+  quando M3 aggiunge `/roi`, perché è la stessa riga di codice che si tocca.
+- **I grafici recharts si vedono schiacciati su una colonna sola** nelle
+  catture del browser di sviluppo — `/admin/analytics` e la dashboard HR.
+  **Non è una regressione**: verificato passando a `master` e ripetendo la
+  cattura, si comporta identico, e nessuna delle due schermate usa il
+  `chart` di shadcn (importano recharts direttamente). È il
+  `ResponsiveContainer` che misura zero al primo layout in quel contesto. Da
+  verificare in un browser vero prima di costruire la dashboard HR, che di
+  grafici ne ha quattro.
+- **La guardia di `useFormField` in `form.tsx` non scatta mai.** Il codice fa
+  `getFieldState(fieldContext.name, formState)` e *poi* controlla
+  `if (!fieldContext) throw new Error(…)`: il controllo sta dopo l'uso che
+  dovrebbe proteggere, e comunque non scatterebbe, perché il valore di default
+  del context è `{}`, che è truthy. Fuori da un `<FormField>` il componente non
+  lancia il messaggio che ha scritto apposta — sbaglia più avanti, in un punto
+  che non lo dice.
+
+  Emerso tipizzando il file: è la ragione per cui i due `createContext` hanno un
+  `as`, e il default `{}` è esattamente ciò che il tipo deve mentire per stare
+  in piedi. **Sta anche a monte in shadcn**, quindi non è un guasto di base44 e
+  non si chiude riallineandosi ai sorgenti ufficiali.
+
+  Non corretto: `src/components/ui/` è congelato e l'eccezione del `CLAUDE.md`
+  §3 copre le sole annotazioni. Spostare la guardia prima dell'uso e darle un
+  default che possa essere falso è un **cambio di comportamento**, e va deciso
+  dai founder. Nessuna urgenza: `form` non ha consumatori, e ne avrà quando M5
+  costruirà la validazione con `zod` e `react-hook-form` — è quello il momento
+  di deciderlo, non prima.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
@@ -330,6 +364,30 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà una
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
+
+- **07.08.2026 — Il sistema di toast si rimuove** (`CLAUDE.md` §3). `toast`,
+  `toaster` e `use-toast` escono dal repository insieme al `<Toaster />` montato
+  in `App.jsx`. Il componente ereditato non era quello di shadcn ma una
+  riscrittura su `div` semplici senza Radix, che non sa chiudere una notifica:
+  `dismiss()` mette `open: false` e niente la nasconde. **Conservarlo non era
+  conservare l'ultima copia buona della generazione Tailwind 3** — l'eccezione
+  al §11 scritta il giorno prima — perché quella copia era rotta: era lasciare
+  una trappola alla prima schermata che chiamasse `toast()`. A schermo non
+  cambia niente, `toast()` non ha mai avuto chiamanti.
+
+  **La via di ritorno è annotata di proposito**: se una schermata futura avrà
+  bisogno di notifiche si aggiunge `@radix-ui/react-toast`, che è una dipendenza
+  nuova e passa dal §3. Non si recupera da git il componente tolto.
+
+- **07.08.2026 — `null` e `?` dicono due cose diverse** (`CONTRATTO-DATI.md` §2).
+  La regola «assente si dice `null`, mai `undefined`» leggeva come un divieto
+  dell'opzionale, e i tipi lo usano in due posti — gli opzionali di `Plan` e
+  `cancellationReasonKey`. Nessuno dei due la violava: `| null` è per gli slot
+  di valore che il caso prevede e possono essere vuoti, `?` è per i campi che al
+  caso non pertengono. Un motivo di annullamento `null` su una seduta erogata
+  sarebbe un campo che non dovrebbe stare lì, dichiarato vuoto. Per il backend
+  la differenza è concreta: `| null` sta sempre nella risposta, `?` non c'è.
+  Nessun tipo è cambiato. Chiude il rilievo della passata precedente.
 
 - **07.08.2026 — Il calcolatore ROI ha una rotta sua, `/roi`** (`CLAUDE.md` §10.A).
   Le rotte passano da 25 a **26**: è la prima aggiunta all'inventario ereditato da
@@ -457,14 +515,6 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   sconti a volume nemmeno, e a 150 dipendenti la preselezione esce a **CHF 38** —
   identico all'Essenziale — offrendo medico virtuale illimitato e check-up annuale
   che l'Essenziale non ha. Verificato alla cifra.
-- **Il sistema di toast è rotto e non lo usa nessuno.** Il `toast.jsx` ereditato
-  da base44 non è quello di shadcn — è una riscrittura su `div` semplici senza
-  Radix — e non sa chiudere una notifica: `dismiss()` mette `open: false` e
-  niente la nasconde. Il `Toaster` è montato in `App.jsx` ma `toast()` non ha
-  chiamanti, quindi oggi non si vede. Tre strade: ripristinare il componente
-  Radix vero, togliere del tutto il sistema (§11: il codice che non serve non si
-  conserva), o lasciarlo così finché una schermata di M3 non ne ha bisogno.
-  Emersa tipizzando il layer; i due file restano `.jsx` finché non si decide.
 - **Emoji nel saluto della home dipendente.** Il §7 di `CLAUDE.md` vieta le emoji
   nel testo di sistema; il 👋 della home è l'unico caso in cui il registro consumer
   potrebbe giustificarla. Da chiedere ai founder. (Il 💡 del riquadro prezzi è
