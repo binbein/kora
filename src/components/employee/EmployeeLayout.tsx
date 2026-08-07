@@ -1,6 +1,5 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import EmployeeNav from './EmployeeNav';
+import { Outlet } from "react-router-dom";
+import EmployeeNav from "./EmployeeNav";
 
 export default function EmployeeLayout() {
   return (

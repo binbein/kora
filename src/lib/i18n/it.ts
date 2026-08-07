@@ -57,6 +57,32 @@ export const it = {
     by_professional: "Annullata dal professionista",
   },
 
+  /*
+   * Percorso dipendente (§10.B). Registro consumer: seconda persona, caldo, mai
+   * infantile — e senza emoji, che il §7 non ammette nemmeno qui (decisione dei
+   * founder del 07.08.2026, che ha tolto il 👋 del saluto).
+   *
+   * È l'unica area che dà del tu. Il medico virtuale, che è una persona che
+   * parla, dà del lei anche dentro questa area: un professionista parla come
+   * parlerebbe lui, non come parla il prodotto (§7).
+   */
+  employee: {
+    nav: {
+      home: "Home",
+      psychologists: "Psicologi",
+      doctor: "Medico",
+      checkup: "Check-up",
+      aiPlan: "Piano AI",
+      profile: "Profilo",
+    },
+
+    /** "Demo SA · Plus" */
+    identity: "{company} · {plan}",
+
+    privacy:
+      "La tua azienda vede solo dati aggregati e anonimi. La tua salute resta tua.",
+  },
+
   professional: {
     portalName: "Portale professionisti",
 

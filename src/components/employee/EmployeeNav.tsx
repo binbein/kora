@@ -1,16 +1,65 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Home, Brain, Stethoscope, ClipboardCheck, Sparkles, User, Menu, X } from 'lucide-react';
-import KoraLogo from '@/components/shared/KoraLogo';
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  Home,
+  Brain,
+  Stethoscope,
+  ClipboardCheck,
+  Sparkles,
+  User,
+  Menu,
+  X,
+} from "lucide-react";
+import KoraLogo from "@/components/shared/KoraLogo";
+import { useCompany, useEmployeeProfile } from "@/lib/data/queries";
+import { employeeDisplayName } from "@/lib/data/types";
+import { interpolate, t } from "@/lib/i18n";
 
 const navItems = [
-  { path: '/employee', icon: Home, label: 'Home' },
-  { path: '/employee/psicologi', icon: Brain, label: 'Psicologi' },
-  { path: '/employee/medico', icon: Stethoscope, label: 'Medico' },
-  { path: '/employee/checkup', icon: ClipboardCheck, label: 'Check-up' },
-  { path: '/employee/piano-ai', icon: Sparkles, label: 'Piano AI' },
-  { path: '/employee/profilo', icon: User, label: 'Profilo' },
+  { path: "/employee", icon: Home, label: t.employee.nav.home },
+  {
+    path: "/employee/psicologi",
+    icon: Brain,
+    label: t.employee.nav.psychologists,
+  },
+  { path: "/employee/medico", icon: Stethoscope, label: t.employee.nav.doctor },
+  {
+    path: "/employee/checkup",
+    icon: ClipboardCheck,
+    label: t.employee.nav.checkup,
+  },
+  { path: "/employee/piano-ai", icon: Sparkles, label: t.employee.nav.aiPlan },
+  { path: "/employee/profilo", icon: User, label: t.employee.nav.profile },
 ];
+
+/*
+ * Chi è connesso, in fondo alla barra.
+ *
+ * Legge dal provider come tutto il resto: il codice ereditato scriveva "Giulia
+ * Rossi" qui e in cinque schermate, e G.R. nel dataset è un'altra persona —
+ * un'iscritta di Finanza che compare nell'elenco HR e fra i pazienti della
+ * Dr.ssa Meier. Stesse iniziali devono voler dire la stessa persona.
+ */
+function Identity() {
+  const { data: profile } = useEmployeeProfile();
+  const { data: company } = useCompany();
+
+  if (!profile || !company) return null;
+
+  return (
+    <div className="bg-accent rounded-lg p-3">
+      <p className="text-xs font-medium text-foreground">
+        {employeeDisplayName(profile)}
+      </p>
+      <p className="text-[10px] text-muted-foreground">
+        {interpolate(t.employee.identity, {
+          company: company.name,
+          plan: t.plan[company.plan.id],
+        })}
+      </p>
+    </div>
+  );
+}
 
 export default function EmployeeNav() {
   const location = useLocation();
@@ -31,7 +80,9 @@ export default function EmployeeNav() {
                 key={path}
                 to={path}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  active ? 'bg-secondary/10 text-secondary' : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                  active
+                    ? "bg-secondary/10 text-secondary"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
                 <Icon className="w-4.5 h-4.5" />
@@ -41,10 +92,7 @@ export default function EmployeeNav() {
           })}
         </nav>
         <div className="p-4 border-t border-border">
-          <div className="bg-accent rounded-lg p-3">
-            <p className="text-xs font-medium text-foreground">Giulia Rossi</p>
-            <p className="text-[10px] text-muted-foreground">Demo SA · Plus</p>
-          </div>
+          <Identity />
         </div>
       </aside>
 
@@ -66,7 +114,7 @@ export default function EmployeeNav() {
                   to={path}
                   onClick={() => setOpen(false)}
                   className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium ${
-                    active ? 'bg-secondary/10 text-secondary' : 'text-muted-foreground'
+                    active ? "bg-secondary/10 text-secondary" : "text-muted-foreground"
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -84,7 +132,13 @@ export default function EmployeeNav() {
           {navItems.slice(0, 5).map(({ path, icon: Icon, label }) => {
             const active = location.pathname === path;
             return (
-              <Link key={path} to={path} className={`flex flex-col items-center gap-0.5 py-1 px-2 ${active ? 'text-secondary' : 'text-muted-foreground'}`}>
+              <Link
+                key={path}
+                to={path}
+                className={`flex flex-col items-center gap-0.5 py-1 px-2 ${
+                  active ? "text-secondary" : "text-muted-foreground"
+                }`}
+              >
                 <Icon className="w-5 h-5" />
                 <span className="text-[10px] font-medium">{label}</span>
               </Link>

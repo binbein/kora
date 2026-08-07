@@ -342,6 +342,15 @@ export type EmployeeProfile = {
  */
 export type CappedServiceKind = "psychologist" | "coach";
 
+/**
+ * Nome da mostrare al diretto interessato. Sta qui per la stessa ragione di
+ * `professionalDisplayName`: l'ordine delle parti di un nome è una convenzione,
+ * non una scelta di layout, e cambiarla un giorno deve essere una modifica sola.
+ */
+export function employeeDisplayName(profile: EmployeeProfile): string {
+  return `${profile.firstName} ${profile.lastName}`;
+}
+
 /** Quante sessioni sono state usate sul cap del piano, e quanto costa la successiva. */
 export type SessionEntitlement = {
   used: number;
