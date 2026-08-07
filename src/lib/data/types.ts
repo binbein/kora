@@ -595,6 +595,32 @@ export type AiHealthPlan = {
 };
 
 // ---------------------------------------------------------------------------
+// Utilizzo servizi
+// ---------------------------------------------------------------------------
+
+/**
+ * L'utilizzo dei servizi in un mese: quante sessioni per ogni tipo (§10.C.1).
+ *
+ * È una serie mensile come quella dello stress, e per la stessa ragione: le
+ * serie aziendali hanno il mese come granularità (§5.3). La ciambella di
+ * distribuzione non ha un tipo suo — è la somma di questa serie sul periodo
+ * selezionato, derivata (§5.5): con un tipo proprio i due grafici potrebbero
+ * divergere, che è il difetto della schermata ereditata, dove la ciambella
+ * dice 180 sessioni di psicologo contro le 142 del §8.
+ *
+ * Invariante per il dataset, che è lavoro di M3 con la dashboard: le sessioni
+ * `psychologist`, sommate sui dodici mesi, sono le 142 del §8 — lo stesso
+ * numero della KPI dello snapshot, non un secondo conteggio che gli somiglia.
+ * Il guardrail arriva con il dataset. I conteggi degli altri tre servizi non
+ * sono nel §8: si fissano lì quando M3 li costruisce (§2.4).
+ */
+export type ServiceUsageMonth = {
+  /** Primo giorno del mese */
+  month: Date;
+  sessions: Record<AppointmentKind, number>;
+};
+
+// ---------------------------------------------------------------------------
 // Report HR
 // ---------------------------------------------------------------------------
 

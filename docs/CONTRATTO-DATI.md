@@ -140,6 +140,7 @@ nascono due e le schermate divergono:
 | KPI | Definizione |
 |---|---|
 | **Paziente attivo** | ha una seduta in programma, **oppure** una erogata nelle ultime 6 settimane |
+| **Dipendente attivo** (azienda) | ha usato almeno un servizio **nel trimestre**: è il conteggio che pilota il risparmio trimestrale, quindi copre il suo stesso periodo |
 | **Adozione** | iscritti ÷ organico, arrotondato all'intero |
 | **Diritto alle sedute** (`used`) | conto delle sedute **erogate** del paziente nell'anno di piano — mai un contatore a parte |
 | **Regime tenuto** | media delle sedute erogate nelle 4 settimane piene precedenti quella corrente |
@@ -150,6 +151,14 @@ nascono due e le schermate divergono:
 L'arrotondamento al centinaio fa parte della regola, non della formattazione:
 senza, gli importi non sono riproducibili, e una cifra al franco su un risparmio
 stimato è finta precisione.
+
+### Granularità
+
+Una scelta del contratto, non del mock: le serie aziendali (stress, utilizzo
+servizi — `ServiceUsageMonth`) sono **mensili**; gli aggregati economici
+dell'azienda (risparmio, giorni evitati) sono **trimestrali**; il lato
+professionista rendiconta **al mese**. La distribuzione per servizio non è
+un'entità: si deriva sommando la serie mensile sul periodo selezionato.
 
 ## 4. Letture e scritture
 

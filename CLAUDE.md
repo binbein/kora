@@ -243,14 +243,19 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
   l'intestazione direbbe un nome e il corpo un altro nella stessa schermata. E la
   definizione di "finito" del §10.D è scritta per l'area — le righe settimanali che
   sommano al mese, i pazienti che coincidono con la KPI — non per una schermata.
-- **M3 — Area per area.** HR → dipendente → admin; il professionista è già migrato
-  in M2 e non si ritocca. Ogni area viene
+- **M3 — Area per area, più il calcolatore.** HR → dipendente → **calcolatore
+  ROI pubblico (§10.A.2)** → admin; il professionista è già migrato in M2 e non
+  si ritocca. Il calcolatore passa qui da M4 per decisione dei founder del
+  07.08.2026: è il terzo dei tre pezzi che il pitch ordina per importanza —
+  dashboard HR, percorso dipendente, calcolatore — il motore `roi-model.ts` è
+  trapiantato e verificato dai tempi di M1, e il back-office non ha valore
+  narrativo. Ogni area viene
   migrata **e** rinarrata nello stesso passaggio: dati dal provider, stringhe in
   i18n, importi da `format.ts`, microcopy nel registro giusto. Toccare due volte la
   stessa schermata è lavoro sprecato. **Chiude cancellando `reference/`**: se
   serve ancora qualcosa da lì, l'area non è finita.
-- **M4 — I pezzi nuovi.** Calcolatore ROI pubblico (§10.A.2) e report trimestrale
-  scaricabile (§10.C.3).
+- **M4 — Il report scaricabile** (§10.C.3). Il calcolatore ROI, che stava qui,
+  è passato in M3.
 - **M5 — Verso la produzione.** Differibile, non blocca niente: guardie di rotta per
   ruolo, stati di errore e vuoto veri, validazione dei form, accessibilità
   completa, le altre tre lingue. **Le schermate di M3 vanno costruite in modo da
@@ -311,6 +316,14 @@ I 12 schemi in `base44/entities/*.jsonc` del progetto originale sono una **lista
 controllo della copertura**, non un vincolo di forma: il backend sarà nostro e il
 contratto lo disegniamo noi. Servono a ricordarci quali entità esistono, non a
 dettarne i campi.
+
+**Le granularità sono una scelta del dominio, non della schermata.** Le serie
+aziendali — stress, utilizzo servizi — sono **mensili**; gli aggregati
+economici dell'azienda — risparmio, giorni evitati — sono **trimestrali**; il
+lato professionista rendiconta **al mese**. Oggi è già vero nei fatti, e va
+tenuto vero: è la prima cosa che chi costruisce una dashboard decide
+diversamente senza accorgersene. La regola vale anche per il backend e sta
+anche in `docs/CONTRATTO-DATI.md`.
 
 ### 5.4 Il tempo ha una sola sorgente
 
@@ -425,6 +438,12 @@ Regole:
 - **Solo light mode.** `index.css` definisce una palette `.dark` completa che nessun
   componente attiva: resta lì, inerte. Nessun toggle e nessun `next-themes` finché
   non è una decisione dei founder.
+- **Sulle KPI di trend il colore segue il beneficio, la freccia segue il
+  segno.** Verde quando la metrica migliora, `destructive` quando peggiora, e
+  ogni KPI dichiara se scendere è un bene: "Stress medio −8%" è la buona
+  notizia della dashboard ed esce verde con la freccia in giù. Un rosso su ogni
+  segno meno racconta il contrario della storia del §8. Deciso dai founder il
+  07.08.2026; si implementa in M3, quando la dashboard legge dal provider.
 
 ### 6.2 Tipografia
 
@@ -479,30 +498,14 @@ Regole:
 Azienda: **Demo SA**, Lugano, 120 dipendenti, Piano Plus (CHF 55/dip/mese).
 
 > *Il rename da "Alpine Finance SA" a **Demo SA** è già stato fatto in M0.
-> L'organico no: il codice dichiara ancora **150** in sei punti. La divergenza si
-> chiude portando il codice a 120, **mai il contrario**, e il motivo va tenuto in
-> vista: tutte le cifre di questa sezione e della §9 sono congelate e verificate su
-> 120, mentre allineare questo file al codice imporrebbe di riderivare gli snapshot
-> ROI e il monte sessioni — cioè rifare lavoro già approvato. A 120 la fatturazione
-> è CHF 6'600 al mese e CHF 79'200 l'anno.*
->
-> *I sei punti sono sei occorrenze **letterali** di `150`, in quattro file:
-> `HRNav.jsx:42`, `HRFatturazione.jsx` alle righe 10, 35 e 62, `HRDashboard.jsx:54`
-> e `AdminAziende.jsx:10`. Uno dei sei non è una sostituzione: `HRDashboard.jsx:54`
-> dice "124/150 · Attivazione 82%", e diventa 82 su 120 con l'attivazione al 68% —
-> le cifre di questa sezione. È una KPI che torna a coincidere col dataset, non un
-> numero da riscrivere.*
->
-> *C'è poi un **settimo punto che un `grep 150` non trova**: `revenue: 99000` in
-> `AdminAziende.jsx`, che è 150 × 55 × 12 e diventa **79'200**. Non contiene il
-> numero, discende dal numero. È il modo concreto in cui l'errore si produce: si
-> cerca `150`, se ne sistemano sei, e nel back-office resta un fatturato calcolato
-> su un organico che l'elenco accanto non dichiara più.*
->
-> *Gli altri `150` del codice non sono l'organico di Demo SA e non si toccano:
-> `Pricing.jsx:58` è il valore di apertura del simulatore pubblico, e le tre di
-> `FlexiblePlanCard.jsx` sono una soglia di sconto a volume del piano nascosto
-> (§10.A.3).*
+> L'organico no: il codice dichiara ancora **150** in più punti, e la divergenza
+> si chiude portando il codice a 120, **mai il contrario**: tutte le cifre di
+> questa sezione e della §9 sono congelate e verificate su 120, mentre
+> allineare questo file al codice imporrebbe di riderivare gli snapshot ROI e
+> il monte sessioni — cioè rifare lavoro già approvato. A 120 la fatturazione è
+> CHF 6'600 al mese e CHF 79'200 l'anno. L'inventario esatto delle occorrenze —
+> compresa quella che un `grep 150` non trova e quelle che non vanno toccate —
+> sta nei difetti noti di `docs/PROGRESS.md`, ed è lavoro di M3.*
 
 6 reparti: Vendite (24), Operations (31), Finanza (18), IT (17), HR + Legale (15),
 Direzione (15). Il codice ereditato ha reparti diversi e **senza le Vendite**, che è
@@ -517,7 +520,9 @@ La narrazione (deve emergere dai grafici senza spiegazioni):
 - Mesi 1–8: stress aziendale stabile su "Medio", in lieve calo. Vendite in linea.
 - Mesi 9–12: Vendite si stacca e sale costantemente fino ad "Alto".
 - **Mese 10: scatta l'alert precoce** (evidenziato sul grafico con un marker).
-- Adozione: 68% iscritti (82), 41 attivi nel mese. Sessioni azienda: 142 usate.
+- Adozione: 68% iscritti (82), 41 attivi nel trimestre — "attivo" è chi ha
+  usato almeno un servizio nel trimestre, la definizione è nella tabella KPI di
+  `docs/CONTRATTO-DATI.md`. Sessioni azienda: 142 usate.
 - ROI trimestre corrente: **CHF 14'200 risparmiati, 16 giorni di assenza evitati**.
 - Stress per reparto (ultimo mese): Vendite Alto (78%), Operations Medio (52%),
   Finanza Medio (44%), IT Basso (31%), HR + Legale Basso (26%). Direzione: sotto
@@ -552,59 +557,50 @@ partire dall'uso del prodotto.
 **I tre conteggi che erano sospesi, decisi.** Il dataset di M2 si costruisce su
 questi.
 
-**Soglia di anonimato: 12 dipendenti misurati nel periodo.** Non 15. HR + Legale
-ha 15 di organico: con la soglia a 15 quel reparto sarebbe pubblicabile solo con
-il 100% di risposte in tutti e dodici i mesi, e basterebbe una persona che salta
-il check perché la riga sparisca dalla dashboard. Il dataset funzionerebbe grazie
-a un numero implausibile. A 12 c'è margine sopra, e la Direzione resta sotto.
+**Soglia di anonimato: 12 dipendenti misurati nel periodo** — non l'organico,
+non gli iscritti: a decidere se il dato di un reparto è pubblicabile è quante
+persone hanno risposto al check rapido in quel periodo, e con una regola
+sull'organico i due reparti da 15 (HR + Legale e Direzione) sarebbero
+indistinguibili. E non 15: con la soglia a 15, HR + Legale sarebbe pubblicabile
+solo con il 100% di risposte in tutti e dodici i mesi, e basterebbe una persona
+che salta il check perché la riga sparisca dalla dashboard — il dataset
+funzionerebbe grazie a un numero implausibile. A 12 c'è margine sopra, e la
+Direzione resta sotto.
 
-**Iscritti: 82**, il 68% di 120. Il cambio di modello di misurazione non li
-tocca: gli iscritti sono chi ha attivato l'account per prenotare le sessioni, e
-l'essere iscritto è indipendente dall'essere misurato.
+**Iscritti: 82**, il 68% di 120. Gli iscritti sono chi ha attivato l'account
+per prenotare le sessioni: essere iscritto ed essere misurato sono
+indipendenti, nessuno dei due implica l'altro, e il cambio di modello di
+misurazione non li tocca.
 
-**Misurati per reparto: una serie derivata, non una cifra congelata** (§5.5). M2
-la costruisce sotto questi vincoli, che vanno verificati a schermo:
+**Misurati per reparto: una serie derivata, non una cifra congelata** (§5.5), e
+**il conteggio sta sul record mensile del reparto, non su `Department`**:
+l'anagrafica porta un numero solo, e con quello si peserebbero tutti e dodici i
+mesi e si deciderebbe l'esclusione una volta sola per tutta la storia — senza
+che niente si rompa, esce solo una curva diversa da quella descritta. Non è un
+caso di scuola: l'adesione al check rapido è proprio ciò che si muove quando un
+reparto va sotto pressione, ed è così che le Vendite calano fra il mese 9 e il
+12. Su `Department` può restare al massimo il valore del periodo corrente,
+derivato dal record mensile. M2 la costruisce sotto questi vincoli, che vanno
+verificati a schermo:
 
 - misurati ≤ organico del reparto, in ogni mese;
 - la Direzione sta sotto soglia in tutti e dodici i mesi;
 - gli altri cinque reparti stanno sopra soglia in tutti e dodici i mesi;
-- l'adesione delle Vendite cala fra il mese 9 e il 12 — è esattamente il motivo
-  per cui il conteggio vive sul record mensile e non su `Department`;
+- l'adesione delle Vendite cala fra il mese 9 e il 12;
 - la serie aziendale derivata resta piatta o in lieve calo su tutti e dodici i
   mesi. Se sale, è sbagliato il dataset, non la regola;
 - il totale dei misurati può superare gli 82 iscritti: è una proprietà voluta del
   modello, già dichiarata sopra.
 
-**La soglia di anonimato si applica ai dipendenti misurati nel periodo**, non
-all'organico e non agli iscritti. HR + Legale e Direzione hanno entrambi 15
-dipendenti: con una regola sull'organico sarebbero indistinguibili. A decidere se
-il dato è pubblicabile è quante persone del reparto hanno risposto al check rapido
-in quel periodo. Gli "iscritti" sono un'altra cosa ancora: chi ha attivato
-l'account per prenotare.
-Essere iscritto ed essere misurato sono indipendenti, e nessuno dei due implica
-l'altro.
-
-**Il conteggio dei misurati sta sul record mensile del reparto, non su
-`Department`.** Il nome `measuredEmployees` va bene dentro un record già datato: è
-la posizione che cambia. L'anagrafica del reparto porta un numero solo, mentre la
-serie del §5.5 copre dodici mesi: chi implementa peserebbe tutti e dodici i mesi
-con il conteggio di oggi e deciderebbe l'esclusione una volta sola per tutta la
-storia. Non si rompe niente — esce una curva diversa da quella descritta e a
-schermo non se ne accorge nessuno. E non è un caso di scuola: la narrazione fa
-staccare le Vendite fra il mese 9 e il 12, e l'adesione al check rapido è proprio
-il dato che si muove quando un reparto va sotto pressione. Su `Department` può
-restare al massimo il valore del periodo corrente, derivato dal record mensile.
-
 **I misurati si mostrano su ogni riga**, non solo su quelle sotto soglia: con il
 solo organico, i due reparti da 15 sarebbero due righe identiche con esiti opposti,
 e una delle due sembrerebbe rotta.
 
-**I reparti sotto soglia non entrano nel denominatore.** Un reparto escluso dalla
-media aziendale non può contare nel dato che quella media descrive: "reparti in
-calo su N" conta i soli reparti pubblicabili, e N si deriva come tutto il resto.
-
 **La serie aziendale è derivata, mai scritta a mano**: media dei punteggi di
-reparto pesata sui dipendenti misurati, con i reparti sotto soglia esclusi. Le
+reparto pesata sui dipendenti misurati, con i reparti sotto soglia esclusi —
+anche dal denominatore, perché un punteggio non pubblicabile non può rientrare
+da una porta di servizio dentro un aggregato, e "reparti in calo su N" conta i
+soli reparti pubblicabili. Le
 curve vanno disegnate in modo che l'aggregato resti **piatto o in lieve calo**: se
 la linea aziendale sale, contraddice la narrazione, che è *"la media non mostrava
 nulla, il dettaglio per reparto sì"*. Il codice ereditato ha una sola linea che
@@ -949,13 +945,12 @@ indirizzi.
   all'altro la differenza si legge come un difetto.
 - **Il separatore decimale è il punto**: `2.35:1`, non `2,35:1`. È la convenzione
   svizzera ed è coerente con l'apostrofo delle migliaia.
-- **Nessuna data scritta a mano.** Il codice ereditato ha **quattro** coppie
-  giorno/data ed è sbagliata ognuna, tutte in `ProSessioni.jsx`: "Mar 29 Apr",
-  "Gio 24 Apr", "Mar 22 Apr", "Lun 21 Apr". Sono esatte sul calendario **2025**,
-  cioè è l'anno riscritto a mano su date vecchie. Il `"Mar 09:00"` di
-  `ProCalendario.jsx` è un giorno **senza** data: va derivato anche quello, ma non
-  è una quinta coppia da andare a cercare. Le date si derivano da `DEMO_TODAY` e si
-  formattano con `format.ts`.
+- **Nessuna data scritta a mano.** Le date si derivano da `DEMO_TODAY` e si
+  formattano con `format.ts`. Le quattro coppie giorno/data sbagliate di
+  `ProSessioni.jsx` — l'anno riscritto a mano su date del 2025 — sono sparite
+  con la migrazione di M2; nelle aree non migrate le date scritte a mano ci
+  sono ancora (i mesi delle fatture HR, le iscrizioni dell'admin) e spariscono
+  con M3, area per area.
 - Accessibilità di base: contrasti AA, focus visibili, alt text. La demo si presenta
   anche da tastiera durante un pitch: i focus contano.
 - **A fine sessione**: riepilogo di cosa è stato fatto e screenshot delle schermate
