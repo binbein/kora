@@ -1105,6 +1105,14 @@ Il provider vive in memoria: lo stato sopravvive alla navigazione interna, non a
 ricaricamento. Si parte dalla landing e si usano i link, mai la barra degli
 indirizzi.
 
+**La landing non si pre-apre in una scheda di sfondo**: l'animazione d'ingresso
+resta congelata finché la scheda non è visibile, e la prima schermata che
+l'investitore vede sarebbe quasi vuota. Il browser sospende
+`requestAnimationFrame` sulle schede nascoste, quindi non è un difetto da
+correggere ma un vincolo su come si apre la demo — misurato in M3: dopo due
+secondi a scheda nascosta l'hero sta a un'opacità di 0.07. Se la landing va
+aperta in anticipo, va **portata in primo piano** prima di cominciare.
+
 ## 11. Qualità e revisione
 
 - TypeScript senza `any` nel codice nuovo; ESLint pulito, zero warning.
