@@ -495,10 +495,18 @@ Regole:
   non è una decisione dei founder.
 - **Sulle KPI di trend il colore segue il beneficio, la freccia segue il
   segno.** Verde quando la metrica migliora, `destructive` quando peggiora, e
-  ogni KPI dichiara se scendere è un bene: "Stress medio −8%" è la buona
-  notizia della dashboard ed esce verde con la freccia in giù. Un rosso su ogni
-  segno meno racconta il contrario della storia del §8. Deciso dai founder il
-  07.08.2026; si implementa in M3, quando la dashboard legge dal provider.
+  ogni KPI dichiara se scendere è un bene: "Stress medio **−2 punti** vs
+  trimestre precedente" è la buona notizia della dashboard ed esce verde con la
+  freccia in giù. Un rosso su ogni segno meno racconta il contrario della storia
+  del §8. Deciso dai founder il 07.08.2026; si implementa in M3, quando la
+  dashboard legge dal provider.
+
+  **L'esempio diceva −8%, che dal dataset non esce.** La serie aziendale di M2 fa
+  `53 52 52 51 50 50 49 48 48 48 47 46`: trimestre su trimestre sono −2 punti,
+  sui dodici mesi −13%, e il −8% si otteneva solo scegliendo una finestra di sei
+  mesi, cioè cercando la finestra che dà il numero voluto — l'opposto del §5.5.
+  Corretto il 07.08.2026: si mostra il valore calcolato, e **l'etichetta dice su
+  cosa è calcolato**, altrimenti "−2" da solo non è verificabile da chi guarda.
 
 ### 6.2 Tipografia
 
