@@ -945,13 +945,12 @@ indirizzi.
   all'altro la differenza si legge come un difetto.
 - **Il separatore decimale è il punto**: `2.35:1`, non `2,35:1`. È la convenzione
   svizzera ed è coerente con l'apostrofo delle migliaia.
-- **Nessuna data scritta a mano.** Il codice ereditato ha **quattro** coppie
-  giorno/data ed è sbagliata ognuna, tutte in `ProSessioni.jsx`: "Mar 29 Apr",
-  "Gio 24 Apr", "Mar 22 Apr", "Lun 21 Apr". Sono esatte sul calendario **2025**,
-  cioè è l'anno riscritto a mano su date vecchie. Il `"Mar 09:00"` di
-  `ProCalendario.jsx` è un giorno **senza** data: va derivato anche quello, ma non
-  è una quinta coppia da andare a cercare. Le date si derivano da `DEMO_TODAY` e si
-  formattano con `format.ts`.
+- **Nessuna data scritta a mano.** Le date si derivano da `DEMO_TODAY` e si
+  formattano con `format.ts`. Le quattro coppie giorno/data sbagliate di
+  `ProSessioni.jsx` — l'anno riscritto a mano su date del 2025 — sono sparite
+  con la migrazione di M2; nelle aree non migrate le date scritte a mano ci
+  sono ancora (i mesi delle fatture HR, le iscrizioni dell'admin) e spariscono
+  con M3, area per area.
 - Accessibilità di base: contrasti AA, focus visibili, alt text. La demo si presenta
   anche da tastiera durante un pitch: i focus contano.
 - **A fine sessione**: riepilogo di cosa è stato fatto e screenshot delle schermate

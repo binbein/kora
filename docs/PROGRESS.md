@@ -32,46 +32,19 @@ restano fuori dal repository: le cifre che servono sono trascritte in `CLAUDE.md
 
 ### M0 — Messa in sicurezza
 
-Undici commit. Cosa è stato fatto e perché:
-
-- **Nomi reali sostituiti.** Swisscom e Reale Mutua comparivano come clienti
-  paganti, Clinica Moncucco / Hirslanden / Ospedale Mendrisio come partner
-  convenzionati, e due persone inventate avevano indirizzi `@swisscom.ch`. Il set
-  sostitutivo è verificato e **congelato in `CLAUDE.md` §8**: M3 riusa quello.
-- **Marchio unificato su Kora**, incluse dieci stringhe che dicevano "HealthOS"
-  accanto al logo che diceva "Kora". La favicon non arriva più da `base44.com`: una
-  richiesta a terzi a ogni caricamento, su un sito che vende hosting svizzero.
-- **Link rotto riparato** (`/employee/piano-ai`, l'unico target morto del
-  repository) e pagina 404 tradotta, ripulita dal testo del Builder e dalla
-  chiamata a `base44.auth.me()`.
-- **`/admin` dichiarato dimostrativo.** `ProtectedRoute` esiste ma dipende
-  dall'auth di base44 e manderebbe al login del Builder: §10.E ammette "protetto
-  **o** marcato", e marcare non richiede architettura. La guardia vera è M5.
-- **Disclaimer medici** su medico virtuale e referto check-up, che producevano
-  output clinico simulato senza qualificarlo.
-- **Piano "Personalizzato" nascosto**, griglia riportata a tre colonne.
-  `FlexiblePlanCard.jsx` resta nel repository.
-- **Stima di risparmio rimossa** dal calcolatore prezzi e dal simulatore di
-  fatturazione HR. Diceva "CHF 1'400–2'900 per dipendente all'anno" ed era la frase
-  più in evidenza di entrambi i riquadri, ma **quella cifra non è nel Business
-  Plan**: era la sola voce di quelle schermate che un investitore col documento in
-  mano non avrebbe potuto ritrovare. Torna col calcolatore in M3, calcolata da `roi-model.ts` e
-  etichettata come scenario conservativo (`CLAUDE.md` §9). Le due 💡 sono sparite
-  con le righe che le contenevano. Nella stessa passata, l'estensione partner del
-  Plus è passata da "+ CHF 15/mese" a "+ CHF 15/dipendente/mese": la cifra è nel BP
-  (p.9), l'etichetta la faceva leggere come una tariffa unica per l'azienda.
-- **Form demo risolto in locale.** Restava bloccato su "Invio in corso…" per
-  sempre, sul CTA primario della landing.
-- **Scope di ESLint allargato** a `src/**` (prima `src/lib`, `src/api`, `App.jsx` e
-  `main.jsx` non erano lintati affatto) e 36 import inutilizzati rimossi.
-- **Revisione**: i tre riquadri introdotti sopra (banner back-office e i due
-  disclaimer) erano su `warning`, che il §6.1 riserva ad alert e stati critici.
-  Sono avvisi, non allarmi, e bruciavano il colore che serve al banner dell'alert
-  precoce di M3 (§10.C.1): portati a `bg-muted` / `border-border`. Nella stessa
-  passata il marchio è andato sui token del §6.1: `KoraLogo.jsx` disegna con
-  `hsl(var(--secondary))` e `hsl(var(--primary))` invece dei `#1BAA9A`/`#123A5A`
-  ereditati, e la favicon — che è un file statico e le variabili non le legge —
-  porta gli stessi valori scritti a mano, `#1BAC99` e `#11395A`.
+Undici commit. In sintesi: nomi reali sostituiti con il set verificato e
+congelato in `CLAUDE.md` §8 (aziende, cliniche, email su TLD `.example`);
+marchio unificato su Kora e favicon non più servita da `base44.com`; link
+morto riparato e 404 ripulita; `/admin` marcato dimostrativo con un banner (la
+guardia vera è M5); disclaimer sulle schermate mediche simulate; piano
+"Personalizzato" nascosto; la stima "CHF 1'400–2'900 per dipendente" — assente
+dal Business Plan — rimossa da prezzi e fatturazione (torna col calcolatore in
+M3, calcolata da `roi-model.ts`); estensione partner corretta in
+"+ CHF 15/dipendente/mese"; form demo che si risolve invece di restare su
+"Invio in corso…"; ESLint allargato a `src/**` e 36 import inutilizzati
+rimossi. In revisione: i tre riquadri informativi portati da `warning` a
+`bg-muted` (il warning è riservato agli alert, §6.1) e il logo sui token della
+palette. Il dettaglio, commit per commit, è in git.
 
 **Verificato a schermo**: 25 rotte navigate dalla landing usando solo i link, zero
 404; nessuna richiesta verso `base44.com` in nessun percorso, invio del form
@@ -79,8 +52,6 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
 
 **Difetti noti e accettati, da non riscoprire:**
 
-- ~~`--quiet` nasconde i warning · 405 errori di typecheck · i font di Google~~ →
-  tutti e tre chiusi da M1.
 - **Tre voci delle card prezzi non corrispondono al Business Plan.** Restano così
   fino a M3, che le fa leggere da `Plan` invece di elencarle a mano in JSX — a quel
   punto la card non può più divergere dal piano. Sono in `Pricing.jsx` e, per le
@@ -133,51 +104,22 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
   - **gli altri `150` non sono l'organico e non si toccano**: il valore di
     apertura del simulatore pubblico in `Pricing.jsx` e le tre soglie di sconto
     a volume del piano nascosto in `FlexiblePlanCard.jsx` (§10.A.3).
-- ~~`AuthContext` fa una richiesta fallita a ogni caricamento~~ → chiuso da M1
-  insieme all'SDK.
 - Il 👋 nella home dipendente resta: decisione in sospeso qui sotto.
 
 ### M1 — Fondamenta tecniche
 
-Undici commit, uno per passo. **A schermo non cambia niente**, ed è stato verificato
-confrontando le rotte con gli screenshot di M0, non a occhio.
-
-L'ordine non era negoziabile in un punto: **l'alias `@/` è stato definito in
-`vite.config.js` con il plugin base44 ancora attivo**, in un commit da solo. Lo
-iniettava il plugin, e Vite non legge i `paths` di `tsconfig.json`: toglierlo prima
-avrebbe fatto smettere di risolvere ogni import del progetto in un colpo solo.
-
-- **Fuori base44.** L'SDK era un **grappolo chiuso** — `AuthContext`,
-  `ProtectedRoute`, `base44Client`, `app-params` e `UserNotRegisteredError` si
-  citavano solo fra loro, con `App.jsx` come unico punto di contatto. Cinque
-  cancellazioni e una semplificazione, 636 righe in meno. `src/api/` conteneva solo
-  `base44Client.js` e sparisce; `PageNotFound.jsx` si sposta in `src/pages/`, dove
-  sta una pagina. **`base44/entities/*.jsonc` resta**: il §5.3 lo usa come lista di
-  controllo della copertura del dominio. `base44/config.jsonc` no — configurava il
-  deploy del Builder, che Vercel sostituisce.
-- **TypeScript.** `jsconfig.json` → `tsconfig.json` con `strict: true`,
-  `allowJs: true` e **`checkJs: false`**: le pagine ereditate compilano ma non si
-  dichiarano tipizzate, che è la verità, ed entrano sotto controllo quando M3 le
-  converte. `npm run typecheck` passa da 405 errori a **0**.
-- **Dipendenze.** Via 13 pacchetti mai importati, 110 dal tree. In revisione ne sono
-  emersi altri due, `sonner` e `next-themes`, tenuti in vita da un solo file morto:
-  `components/ui/sonner.jsx` era l'unico a importarli, e nessuno importava lui —
-  `App.jsx` monta il `Toaster` di `ui/toaster.jsx`, che è la reimplementazione senza
-  Radix. Il §6.1 escludeva `next-themes` esplicitamente.
-- **Font self-hostati.** Inter e DM Sans in variante **variabile**: un import per
-  famiglia copre tutti i pesi da 100 a 900, quindi la domanda "quali pesi
-  spediamo" non si ripresenta la prima volta che qualcuno usa un `font-semibold`
-  che oggi non c'è. **Da qui le richieste esterne sono zero.**
-- **Trapianto.** `format.ts`, `dates.ts`, `roi-model.ts` copiati da `reference/`.
-  Nessuna schermata li usa ancora: si collegano in M3 e M4.
-- **Scheletro i18n.** Dizionario tipizzato e interpolatore di segnaposto. Niente
-  libreria, context, provider o namespace: c'è una lingua sola e nessuno switcher.
-- **`vercel.json`** con la rewrite SPA.
-
-**Due dipendenze nuove, approvate esplicitamente** (§3): `typescript-eslint` — solo
-parser e regole `recommended`, non le varianti type-aware, che caricherebbero il
-programma TypeScript a ogni lint e con `checkJs: false` coprirebbero comunque metà
-del codice — e `@fontsource-variable/inter` + `@fontsource-variable/dm-sans`.
+Undici commit, uno per passo. **A schermo non cambia niente**, verificato
+confrontando le rotte con gli screenshot di M0. In sintesi: fuori il plugin e
+l'SDK base44 (636 righe; prima, in un commit a sé, l'alias `@/` è passato in
+`vite.config.js` — lo iniettava il plugin, e Vite non legge i `paths` di
+`tsconfig.json`); `tsconfig.json` con `strict: true`, `allowJs: true` e
+`checkJs: false`, typecheck da 405 errori a 0; via 13 dipendenze mai importate
+più `sonner` e `next-themes`; Inter e DM Sans self-hostati in variante
+variabile — da qui **le richieste esterne sono zero**; `format.ts`, `dates.ts`
+e `roi-model.ts` trapiantati da `reference/`; scheletro i18n (dizionario
+tipizzato e interpolatore, niente libreria); `vercel.json` con la rewrite SPA.
+Due dipendenze nuove approvate (§3): `typescript-eslint` — solo parser e
+regole `recommended` — e i due `@fontsource-variable`. Il dettaglio è in git.
 
 **Verificato**: i cinque numeri di ancoraggio del §9 a N=100 (perdite 1'289'500,
 risparmio 221'150, costo 66'000, netto 155'150, ROI 2.35), le quattro voci che
@@ -489,7 +431,8 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 - Ogni milestone chiude con una demo che funziona da capo a fondo (`CLAUDE.md`
   §2.3). Se una migrazione non entra in una sessione, si chiude l'area corrente e si
   comincia la prossima dopo, mai a metà.
-- **Un `✓` testuale in `Psicologi.jsx:179`** ("✓ Sessione inclusa nel piano"). Non è
+- **Un `✓` testuale in `Psicologi.jsx`**, nel riepilogo della prenotazione
+  ("✓ Sessione inclusa nel piano"). Non è
   un'emoji e il §7 non lo vieta, quindi non è un difetto da correggere subito: è un
   glifo dove tutto il resto del progetto usa un'icona lucide, e uno screen reader lo
   legge come "segno di spunta" in mezzo alla frase. Da sostituire con l'icona
