@@ -678,6 +678,26 @@ visto prima".
 come barra sottile — una traccia spessa e quasi vuota si legge come un errore di
 rendering.
 
+**L'utilizzo dei quattro servizi è una serie mensile**, approvata dai founder il
+07.08.2026 e costruita in M3. I totali sui dodici mesi: **psicologo 142** (il
+numero qui sopra), **medico virtuale 118**, **coach 85**, **check-up 51**. Le
+curve crescono con l'adozione e l'ultimo mese è parziale, perché la demo cade al
+23 di settembre.
+
+Le tre cifre nuove hanno ognuna una ragione, e vanno lette insieme: il medico
+virtuale sta **sotto** lo psicologo perché la ciambella deve dire che il supporto
+psicologico è la fetta più grande — è la frase del pitch, e senza quel vincolo un
+servizio illimitato e a bassa frizione lo supererebbe; il coach sta al 18% del suo
+monte (480 = 120 × 4) perché è la voce meno matura dell'offerta; i check-up sono
+il **62% degli iscritti**, non il 68%, per non affiancare all'adozione una seconda
+percentuale identica che si legge come lo stesso numero copiato due volte.
+
+**Lo psicologo non si scrive, si compone.** La Dr.ssa Meier è una delle
+professioniste dell'azienda e la sua agenda esiste già (§10.D): il totale del mese
+è la sua agenda più la quota degli altri psicologi della rete. Scriverlo a mano
+vuol dire poterlo contraddire, ed è successo — la prima stesura dava all'azienda
+10 sedute a settembre, mese in cui la sola Meier ne eroga 14.
+
 Professionisti (minimo 4): Dr.ssa Colombo (stress lavorativo, IT/DE, 4.9),
 Dr. Rossi (burnout e ansia, IT/FR, 4.8), Dr.ssa Meier (sonno, IT/DE, 4.9),
 Dr. Fontana (coaching, IT, 4.7). Foto: **avatar a iniziali**, niente foto stock di
@@ -833,12 +853,20 @@ risalire agli attivi da CHF 11'800 darebbe 34.07 persone — cioè la cifra scri
 mano *e* la persona finta. Si parte dai conteggi e si scende verso gli importi, mai
 il contrario.
 
-| Trimestre | Iscritti | Attivi | Sessioni (cumulate) |
-|---|---|---|---|
-| corrente | 82 | 41 | 142 |
-| −1 | 71 | 34 | 105 |
-| −2 | 58 | 27 | 64 |
-| −3 | 39 | 18 | 28 |
+| Trimestre | Iscritti | Attivi |
+|---|---|---|
+| corrente | 82 | 41 |
+| −1 | 71 | 34 |
+| −2 | 58 | 27 |
+| −3 | 39 | 18 |
+
+**Le sessioni non sono più un seme.** Erano una quarta colonna — 142 / 105 / 64 /
+28 — scelta prima che l'agenda della Dr.ssa Meier esistesse, e non la conteneva:
+la sola Meier eroga 41 sedute nel trimestre corrente, dove quella colonna ne
+attribuiva 37 all'azienda intera. Si sommano dalla serie di utilizzo dei servizi
+(§8), cumulate dall'inizio della finestra, e danno **142 / 86 / 50 / 22**.
+Correzione dei founder del 07.08.2026: la regola "si deriva, non si scrive" vale
+anche per i numeri che questo file aveva già fissato.
 
 L'adozione che ne esce — **68 → 59 → 48 → 33%** su 120 dipendenti — è la stessa
 curva che il §8 già racconta.
@@ -858,8 +886,8 @@ Da qui si deriva il resto, e si deriva davvero (§5.5):
 lettura che tiene in piedi la KPI del §8: il monte di 1'200 è annuo, e "142 su 1'200"
 confronta due grandezze solo se coprono lo stesso periodo. I quattro trimestri del
 selettore sono i quattro trimestri di quel monte, quindi il valore del trimestre
-corrente è anche il totale dell'anno. Il consumo del singolo trimestre — 28 / 36 /
-41 / 37 — si ricava per differenza e non si scrive.
+corrente è anche il totale dell'anno. Il consumo del singolo trimestre — 22 / 28 /
+36 / 56 — si ricava per differenza e non si scrive.
 
 ## 10. Scope — le schermate e la definizione di "finito"
 
