@@ -99,6 +99,14 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
   proprio la dashboard HR mensile. Chi fosse andato a correggere la card leggendo
   la costituzione non ci avrebbe trovato la riga, e avrebbe lasciato il trimestrale
   al suo posto.
+- **Le iniziali dei pazienti e l'elenco dipendenti HR sono lo stesso insieme di
+  persone.** `HRDipendenti.jsx` elenca G.R., M.B., E.K., L.B., S.C., F.M., A.T. e
+  P.V.; il dataset del portale professionista (M2) usa G.R., M.B., E.K., S.C.,
+  L.B. e A.T. fra gli attivi e introduce D.F., P.M. e R.T. fra i percorsi
+  conclusi. Oggi non c'è conflitto, ma in M3 quella schermata leggerà dal
+  provider: **stesse iniziali devono voler dire la stessa persona**, e due
+  persone diverse non possono condividerle. `L.B.` è Laura Bernasconi in
+  entrambe, ed è il caso che rende la regola non teorica.
 - **Cinque numeri d'albo inventati in `AdminProfessionisti.jsx`** — FSP-2019-4521,
   FMH-2015-8830, ICF-ACC-3310, FSP-2021-9901, SVDE-2018-7712. Il §8 li vieta da M2:
   un identificatore di formato plausibile su una persona inventata può collidere con
