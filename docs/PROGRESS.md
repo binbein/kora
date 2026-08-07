@@ -392,24 +392,33 @@ Operations; le date di fatturazione ferme ad aprile su una demo di settembre.
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
-professionista, admin), design system e navigazione, 47 componenti shadcn, grafici
-recharts.
+professionista, admin), design system e navigazione, 47 componenti shadcn
+(**oggi sono 45**: il sistema di toast, che ne contava tre, è uscito il
+07.08.2026 — decisione qui sotto), grafici recharts.
 
-Ereditato e **non** funzionante. Le ultime due righe sono state chiuse da M0; le
-altre restano aperte (il dettaglio è in `CLAUDE.md` §10):
+Ereditato e **non** funzionante. Questa è la fotografia del primo commit, e le
+righe barrate sono quelle che una milestone ha chiuso: serve a non riscoprire un
+difetto già risolto, e a non rifarne uno già dichiarato aperto. Il dettaglio è in
+`CLAUDE.md` §10.
 
 - nessun layer dati: ogni pagina dichiara le proprie costanti in cima al file, e le
   stesse grandezze divergono fra schermate vicine — 618 vs 767 utenti, 18 vs 6
-  pazienti, 180 vs 142 sessioni, tre roster di professionisti che non si parlano;
+  pazienti, 180 vs 142 sessioni, tre roster di professionisti che non si parlano.
+  **Chiuso dove l'area è migrata**: i pazienti in M2, le sessioni in M3 con la
+  dashboard HR. Restano gli utenti dell'admin e i roster, che vivono nelle aree
+  non ancora migrate;
 - le prenotazioni non producono effetti: nessun contatore si muove, nessun
   appuntamento compare, nessuno slot si occupa;
-- manca il calcolatore ROI pubblico, mancano stress per reparto, alert precoce e
-  selettore trimestre nella dashboard HR;
+- manca il calcolatore ROI pubblico;
+- ~~mancano stress per reparto, alert precoce e selettore trimestre nella
+  dashboard HR~~ → costruiti in M3 con la migrazione dell'area HR;
 - importi non formattati in svizzero (6 scritti a mano all'italiana, 9
-  `toLocaleString()` senza locale, che a schermo escono in formato en-US);
-  **quattro** coppie giorno/data sbagliate — non cinque — tutte in `ProSessioni.jsx`
-  e tutte con lo stesso scarto di un giorno: è il calendario 2025 con l'anno
-  riscritto a mano;
+  `toLocaleString()` senza locale, che a schermo escono in formato en-US), nelle
+  aree non ancora migrate;
+- ~~**quattro** coppie giorno/data sbagliate — non cinque — tutte in
+  `ProSessioni.jsx` e tutte con lo stesso scarto di un giorno: è il calendario
+  2025 con l'anno riscritto a mano~~ → sparite in M2 con la lista che le
+  conteneva;
 - ~~link di menu che porta a una pagina inesistente~~ → chiuso in M0;
 - ~~marchio a metà, aziende e cliniche reali, `/admin` aperto~~ → chiuso in M0.
 
@@ -522,6 +531,11 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   eseguibile — i `forwardRef` dei 47 file non dichiarano i prop, quindi da un
   `.tsx` `Card` rifiuta `children` — e M2 lo ha dimostrato fermandocisi contro. Si
   fa in apertura di M3, prima della prima area.
+
+  *(I 47 sono il conto di quel giorno: `src/components/ui/` ne aveva 48, 47
+  componenti più l'hook `use-toast`. La rimozione del toast, decisa poche ore
+  dopo, ne ha tolti tre e ha lasciato i **45** di oggi. Le due cifre non sono in
+  disaccordo, contano lo stesso albero prima e dopo.)*
 
 - **06.08.2026 — La nota privata di sessione si salva** (`CLAUDE.md` §10.D). Il
   pulsante "Salva nota" del portale professionista, che oggi chiude il dialogo e
