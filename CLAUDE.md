@@ -644,6 +644,25 @@ Domini email: TLD riservato **`.example`** (RFC 2606), che nessuno può registra
 `m.bianchi@demo-sa.example`. Si vedono solo nel back-office, che dichiara di essere
 dimostrativo. Le persone inventate non devono comparire su domini di terzi.
 
+**Non si inventano identificatori di albi professionali.** Nessun numero FSP, FMH,
+SVDE, ICF o equivalente compare nel dataset o a schermo. La qualifica sì —
+"Psicologa FSP" è l'informazione che conta a chi guarda — e lo stato dei documenti
+pure, perché è quello che la piattaforma verifica davvero.
+
+È lo stesso ragionamento degli indirizzi e delle email: un numero di formato
+plausibile attaccato a una persona inventata può collidere con l'iscrizione di un
+professionista vero, e a differenza di un nome nessuno se ne accorge leggendo. Lì
+però esisteva un modo di essere inequivocabilmente finti, il TLD `.example`; per un
+numero d'albo quell'equivalente non esiste, perché un formato dichiaratamente falso
+si legge come segnaposto proprio sulla card che promette credenziali verificate.
+Non si sceglie fra sembrare finti e rischiare di essere veri: **si toglie il dato.**
+
+Il campo non esiste nemmeno nei tipi — un campo opzionale che nessuno riempie è
+codice che il §11 non vuole, e messo lì invita a riempirlo. L'esclusione si dichiara
+in `docs/CONTRATTO-DATI.md` fra le cose lasciate fuori di proposito: è lì che la
+legge chi scrive il backend, ed è lì che serve, perché in produzione quel numero
+esisterà davvero.
+
 ## 9. Numeri ufficiali dal Business Plan (unici ammessi)
 
 Piani: **Essenziale CHF 38** (6 sessioni/anno, extra CHF 35, medico virtuale 12h con
@@ -651,8 +670,19 @@ Piani: **Essenziale CHF 38** (6 sessioni/anno, extra CHF 35, medico virtuale 12h
 sessioni/anno, extra CHF 28, coach 4 sessioni/anno, medico 4h consulti illimitati,
 check-up annuale, piano AI ogni 6 mesi) · **Executive CHF 82** (16 sessioni/anno,
 extra CHF 22, medico 1h illimitato, nutrizionista 4/anno, coaching 6 sessioni/anno,
-psichiatra su richiesta incluso, 2 workshop live/anno inclusi, familiari inclusi).
-La demo usa il piano Plus.
+psichiatra su richiesta incluso, 2 workshop live/anno inclusi, familiari inclusi,
+check-up executive completo 1 volta/anno — ECG, eco addome, oculista, sangue
+completo —, piano prevenzione AI aggiornato mensilmente, dashboard HR avanzata con
+report mensile e call mensile col team clinico). La demo usa il piano Plus.
+
+**Le ultime tre voci dell'Executive mancavano da questa trascrizione**, non dal
+Business Plan (p.10). La conseguenza era che il piano più caro risultava offrire
+meno di quanto offre, e che un difetto già noto non era chiudibile: `PROGRESS.md`
+segnala da M0 che la card dice "Consulenza HR trimestrale" mentre il BP dà mensile,
+e chi fosse andato a correggerla leggendo il §9 non avrebbe trovato la riga.
+
+**I due check-up non sono lo stesso check-up.** Il Plus ha quello annuale, l'Executive
+ne ha uno più esteso: sono due voci diverse e la card deve poterle distinguere.
 
 **Il colloquio conoscitivo dell'Essenziale è una volta sola**, non uno per
 sessione: la card deve dirlo, altrimenti si legge come un extra ricorrente.
@@ -816,6 +846,17 @@ Calendario, Sessioni, Pazienti, Pagamenti, Profilo.
 È il portale della **Dr.ssa Meier**, la professionista che il dipendente prenota in
 §10.B: i tre lati del marketplace raccontano la stessa storia invece di essere tre
 demo scollegate.
+
+1. **La nota privata di sessione si salva davvero.** Il dialogo esiste già nel codice
+   ereditato con i suoi tre campi e un pulsante che oggi chiude e basta. Collegarlo
+   aggiunge `SessionNote` al dominio ed è **l'unica scrittura che M2 può dimostrare**:
+   la prenotazione è sul lato dipendente, che è M3, quindi senza questa il pattern
+   scrittura → invalidazione → riletto dalla query verrebbe replicato venticinque
+   volte in M3 senza essere mai stato provato una volta (§5.2).
+   **La nota è privata e non esce mai verso l'azienda**, e a impedirlo è il tipo, non
+   la JSX: il testo vive solo sulle proiezioni che il professionista riceve e non
+   compare su nessun tipo che l'area HR o l'admin possano leggere. Approvato dai
+   founder il **06.08.2026**; non è una schermata nuova, quindi il §2.6 è soddisfatto.
 
 **Finita quando:** le righe settimanali sommano al totale del mese; i pazienti
 elencati sono lo stesso numero che dichiara la KPI; le date e i giorni della

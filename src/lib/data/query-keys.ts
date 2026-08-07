@@ -1,0 +1,42 @@
+/*
+ * Le chiavi di react-query, in un posto solo (CLAUDE.md §5.2).
+ *
+ * Stanno qui e non nei componenti perché una chiave scritta a mano in due punti
+ * è due cache diverse per lo stesso dato: la mutation ne invalida una, l'altra
+ * resta ferma, e a schermo si vede una schermata aggiornata accanto a una che
+ * non lo è.
+ *
+ * Le chiavi sono gerarchiche, e non è un vezzo: invalidare `["professional",
+ * id]` invalida sessioni, pazienti, compensi e pagamenti di quel
+ * professionista in un colpo solo, che è esattamente ciò che deve succedere
+ * quando una sessione cambia.
+ *
+ * Crescono un'area alla volta, come i metodi del provider: qui c'è quello che
+ * M2 collega davvero.
+ */
+export const queryKeys = {
+  referenceDate: () => ["reference-date"] as const,
+
+  professional: {
+    /** Radice di tutto ciò che riguarda un professionista: invalida il resto. */
+    root: (professionalId: string) => ["professional", professionalId] as const,
+    portalId: () => ["professional", "portal-id"] as const,
+    profile: (professionalId: string) =>
+      ["professional", professionalId, "profile"] as const,
+    sessions: (professionalId: string) =>
+      ["professional", professionalId, "sessions"] as const,
+    patients: (professionalId: string) =>
+      ["professional", professionalId, "patients"] as const,
+    earnings: (professionalId: string, month: string) =>
+      ["professional", professionalId, "earnings", month] as const,
+    payouts: (professionalId: string) =>
+      ["professional", professionalId, "payouts"] as const,
+  },
+
+  sessionNote: (sessionId: string) => ["session-note", sessionId] as const,
+} as const;
+
+/** Il mese come chiave stabile: "2026-09". Una `Date` non è confrontabile. */
+export function monthKey(month: Date): string {
+  return `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}`;
+}

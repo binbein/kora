@@ -17,7 +17,7 @@ lì.
 
 ## Stato
 
-**M0 e M1 chiuse.** La demo è condivisibile — non nomina soggetti reali, il marchio è
+**M0, M1 e M2 chiuse.** La demo è condivisibile — non nomina soggetti reali, il marchio è
 uno solo, non ha vicoli ciechi, e le schermate mediche dichiarano di essere
 simulazioni — e il repository è nostro: niente base44, niente chiamate verso
 l'esterno, TypeScript configurato, i file puri al loro posto.
@@ -93,6 +93,27 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
   - l'**Executive** dice "Consulenza HR trimestrale", ma il BP (p.10) dà **report
     mensile e call mensile col team clinico**. È l'unica delle tre che sottostima
     il piano invece di gonfiarlo.
+
+  Le tre voci restano aperte, ma **da M2 il §9 contiene il dato con cui M3 le
+  chiude**: la trascrizione dell'Executive saltava tre righe della p.10, fra cui
+  proprio la dashboard HR mensile. Chi fosse andato a correggere la card leggendo
+  la costituzione non ci avrebbe trovato la riga, e avrebbe lasciato il trimestrale
+  al suo posto.
+- **Le iniziali dei pazienti e l'elenco dipendenti HR sono lo stesso insieme di
+  persone.** `HRDipendenti.jsx` elenca G.R., M.B., E.K., L.B., S.C., F.M., A.T. e
+  P.V.; il dataset del portale professionista (M2) usa G.R., M.B., E.K., S.C.,
+  L.B. e A.T. fra gli attivi e introduce D.F., P.M. e R.T. fra i percorsi
+  conclusi. Oggi non c'è conflitto, ma in M3 quella schermata leggerà dal
+  provider: **stesse iniziali devono voler dire la stessa persona**, e due
+  persone diverse non possono condividerle. `L.B.` è Laura Bernasconi in
+  entrambe, ed è il caso che rende la regola non teorica.
+- **Cinque numeri d'albo inventati in `AdminProfessionisti.jsx`** — FSP-2019-4521,
+  FMH-2015-8830, ICF-ACC-3310, FSP-2021-9901, SVDE-2018-7712. Il §8 li vieta da M2:
+  un identificatore di formato plausibile su una persona inventata può collidere con
+  l'iscrizione di un professionista vero, e nessuno se ne accorge leggendo. Restano
+  fino a M3, che ripulisce quella schermata una volta sola — il roster è comunque da
+  rifare per intero (§8). Nel portale professionista la riga esce già in M2, con la
+  migrazione dell'area.
 - L'organico resta **150**, non i 120 del §8: cambiarlo trascina il ricalcolo degli
   importi derivati su sei occorrenze in quattro file — una delle quali è `HRNav`,
   che è la navigazione condivisa dalle cinque rotte HR e non una schermata — più il
@@ -179,6 +200,74 @@ errori, `npm run lint` e `npm run typecheck` a 0.
   in produzione; spariscono con la stessa migrazione alla 7 che chiuderebbe le due
   vulnerabilità, ed è la stessa decisione di scope.
 
+### M2 — Il contratto dati
+
+Ventisei commit. Chiude con **l'area professionista intera**, cinque rotte, e con
+`docs/CONTRATTO-DATI.md`, che è il documento con cui nascerà il repository del
+backend.
+
+- **`reference/lib/data/` è stato letto, non copiato.** Il provider di riferimento
+  è sincrono per scelta dichiarata e la reattività passa da un contatore di
+  versione su `useSyncExternalStore`: `use-data.ts` non è mai entrato, e
+  react-query non ha mai convissuto con il version counter. Si sono copiati
+  davvero solo `people.ts` e la struttura di `professional-portal.ts`, `roi.ts` e
+  `scheduling.ts` — quest'ultimo con `process.env.NODE_ENV` sostituito da
+  `import.meta.env.DEV`, che in una SPA Vite è la differenza fra un guardrail e
+  una pagina bianca.
+- **Il dataset è due matrici e nient'altro scritto a mano**: misurati e punteggi
+  per reparto e per mese. Pubblicabilità, serie aziendale, alert precoce,
+  percentuali di adesione e denominatori si derivano. La serie aziendale esce
+  `53 52 52 51 50 50 49 48 48 48 47 46` — non crescente ogni mese, sempre in
+  fascia "Medio" — e l'alert cade sulle Vendite al decimo mese, come il §8.
+- **Il cap del piano ha deciso la forma dell'agenda.** Sei pazienti valgono al
+  massimo 60 sedute l'anno: un'agenda da cinque sedute settimanali descrive molti
+  percorsi brevi che si avvicendano, non sei percorsi lunghi. Da qui tre percorsi
+  conclusi, che stanno fuori dall'elenco pazienti e dentro lo storico compensi, e
+  due pazienti sopra il cap che mostrano il co-payment — il meccanismo su cui il
+  Business Plan regge il margine, messo a schermo.
+- **L'appuntamento di Laura è un record solo**, proiettato da due lati. Il
+  contatore del dipendente è il conto delle sue sedute erogate, non un numero a
+  parte: in M3 la prenotazione lo farà salire come conseguenza.
+- **Guardrail che lanciano in sviluppo e tacciono in produzione**, provati anche
+  al contrario: una serie che risale, la Direzione sopra soglia, misurati oltre
+  l'organico, l'adesione delle Vendite che smette di calare, l'alert spostato di
+  un mese e le sessioni cumulate che smettono di crescere fanno tutti fallire il
+  dataset con il messaggio giusto.
+- **Il seam è eseguibile**: due regole ESLint vietano di importare `lib/data/mock/`
+  e di chiamare `new Date()` fuori dal layer dati. L'unica violazione esistente è
+  stata corretta nello stesso commit, e correggendola è emerso che `toISOString()`
+  riportava indietro di un giorno le date prenotabili.
+
+**Verificato a schermo, non solo con tsc e lint** (le asserzioni del §10.D):
+
+- le righe settimanali sommano al totale del mese: CHF 240 + 320 + 400 + 160 =
+  CHF 1'120, e 3 + 4 + 5 + 2 = 14 sedute;
+- i pazienti elencati sono lo stesso numero della KPI: **6 e 6**, dove il codice
+  ereditato diceva 18 ed elencava 6;
+- date e giorni della settimana coincidono col calendario vero: mercoledì
+  23.09.2026, giovedì 24.09 alle 17:30, venerdì 25.09, lunedì 28.09, martedì
+  29.09 — le quattro coppie sbagliate sono sparite con la lista che le conteneva;
+- il regime sta accanto al totale: 5 sedute a settimana contro le 20 del pieno
+  regime, con le CHF 5'600–6'400 del §9 e la disponibilità minima di 8 ore;
+- la nota privata si salva davvero: aprendo la seduta di M.B. del 21.09,
+  scrivendo e salvando, "aggiungi nota" diventa "nota" senza ricaricare — le
+  sedute senza nota passano da 8 a 7.
+
+**Difetti noti di M2:**
+
+- **Le pagine dell'area restano `.jsx`.** Il §3 vuole che una schermata si
+  converta a TypeScript quando la si tocca, ma i 47 componenti shadcn sono `.jsx`
+  senza tipi di prop: da un file `.tsx`, `Card` e `Badge` rifiutano `children`, e
+  tipizzarli significa toccare i file che il §3 congela. `ProNav` è passato a
+  `.tsx` perché non li usa. **La conversione è bloccata da una regola, non
+  saltata**: va sciolta decidendo se i componenti shadcn si tipizzano.
+- **Il `range` di `getProfessionalSessions` non ha chiamanti.** È nel contratto
+  perché un'agenda vera non entra in una risposta, ma oggi le schermate filtrano
+  in memoria. È dichiarato in `CONTRATTO-DATI.md` §6.
+- **Il totale dell'anno nei pagamenti copre l'anno solare**, non i dodici mesi
+  mobili: con la demo a settembre sono i mesi da marzo, e a gennaio sarebbe una
+  riga sola. Nessuna conseguenza sulla demo, che è ambientata a settembre.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -211,7 +300,7 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 |---|---|---|
 | M0 | Messa in sicurezza | **fatta** |
 | M1 | Fondamenta tecniche | **fatta** |
-| M2 | Il contratto dati | da fare |
+| M2 | Il contratto dati | **fatta** |
 | M3 | Migrazione area per area | da fare |
 | M4 | Calcolatore ROI e report scaricabile | da fare |
 | M5 | Verso la produzione (differibile) | da fare |
@@ -231,6 +320,17 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   due cose che erano implicite e senza le quali il §9 non era riproducibile:
   **l'arrotondamento del risparmio al centinaio** e **il periodo delle sessioni
   consumate**, che sono cumulate sui dodici mesi del monte annuo.
+
+- **06.08.2026 — La nota privata di sessione si salva** (`CLAUDE.md` §10.D). Il
+  pulsante "Salva nota" del portale professionista, che oggi chiude il dialogo e
+  basta, diventa una mutation vera. Il motivo non è la completezza della schermata:
+  è che **la prenotazione — l'unica altra scrittura del dominio — sta sul lato
+  dipendente, cioè in M3**, quindi senza questa M2 chiuderebbe senza aver mai
+  eseguito una mutation, e il pattern che il §5.2 esiste per fissare verrebbe
+  replicato venticinque volte senza essere stato provato una volta. Il dialogo esiste
+  già nel codice ereditato, quindi non è una schermata nuova ai sensi del §2.6.
+  Aggiunge `SessionNote` al dominio; la nota resta privata e il tipo lo rende
+  impossibile da aggirare, non solo la JSX.
 
 - **06.08.2026 — Il check rapido nella home del dipendente** (`CLAUDE.md` §10.B).
   Approvata la card del check rapido ricorrente: **una domanda, un tocco**. È una
