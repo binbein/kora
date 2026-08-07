@@ -1,8 +1,17 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { TrendingUp, TrendingDown } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
-export default function KPICard({ title, value, subtitle, icon: Icon, trend, trendLabel, variant = 'default' }) {
+export default function KPICard({ title, value, subtitle, icon: Icon, trend, trendLabel, variant = 'default' }: {
+  title: string;
+  value: React.ReactNode;
+  subtitle?: React.ReactNode;
+  icon?: LucideIcon;
+  trend?: number;
+  trendLabel?: string;
+  variant?: 'default' | 'primary' | 'secondary' | 'accent';
+}) {
   const bgMap = {
     default: 'bg-card',
     primary: 'bg-primary text-primary-foreground',

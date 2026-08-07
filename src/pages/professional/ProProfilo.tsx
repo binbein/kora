@@ -5,11 +5,12 @@ import { Award, Briefcase, CheckCircle2, Globe, Star } from 'lucide-react';
 import { formatCHF, formatRating } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import { professionalDisplayName } from '@/lib/data/types';
+import type { Professional } from '@/lib/data/types';
 import { usePortalProfessional } from '@/lib/data/queries';
 
-function initialsOf(professional) {
+function initialsOf(professional: Professional) {
   return [professional.firstName, professional.lastName]
-    .filter(Boolean)
+    .filter((part): part is string => Boolean(part))
     .map((part) => part[0])
     .join('');
 }

@@ -13,8 +13,18 @@ import { interpolate, t } from '@/lib/i18n';
 import { dataProvider } from '@/lib/data';
 import { queryKeys } from '@/lib/data/query-keys';
 import { usePortalProfessionalId, useProfessionalSessions } from '@/lib/data/queries';
+import type { ProfessionalSession, SessionNote } from '@/lib/data/types';
 
-function SessionRow({ session, onNote }) {
+/** Il callback esiste solo dove le sedute possono avere una nota: le erogate. */
+type NoteHandler = (session: ProfessionalSession) => void;
+
+function SessionRow({
+  session,
+  onNote,
+}: {
+  session: ProfessionalSession;
+  onNote?: NoteHandler;
+}) {
   const tone = {
     scheduled: 'bg-secondary/10 text-secondary',
     completed: 'bg-primary/10 text-primary',
@@ -46,14 +56,14 @@ function SessionRow({ session, onNote }) {
             </Button>
           )}
           {session.status === 'completed' && (
-            <Button size="sm" variant="outline" onClick={() => onNote(session)}>
+            <Button size="sm" variant="outline" onClick={() => onNote?.(session)}>
               <FileText className="w-3.5 h-3.5 mr-1" />
               {session.hasNote ? t.professional.sessions.editNote : t.professional.sessions.addNote}
             </Button>
           )}
           {session.status === 'cancelled' && (
             <Badge variant="outline" className="text-destructive border-destructive/30">
-              {t.cancellationReason[session.cancellationReasonKey]}
+              {session.cancellationReasonKey && t.cancellationReason[session.cancellationReasonKey]}
             </Badge>
           )}
         </div>
@@ -62,7 +72,15 @@ function SessionRow({ session, onNote }) {
   );
 }
 
-function SessionList({ sessions, emptyLabel, onNote }) {
+function SessionList({
+  sessions,
+  emptyLabel,
+  onNote,
+}: {
+  sessions: ProfessionalSession[];
+  emptyLabel: string;
+  onNote?: NoteHandler;
+}) {
   if (sessions.length === 0) {
     return (
       <Card className="p-8 text-center text-sm text-muted-foreground">{emptyLabel}</Card>
@@ -83,15 +101,16 @@ export default function ProSessioni() {
    * aperta e cosa si sta scrivendo muoiono con il dialogo. Ciò che resta lo
    * scrive la mutation e lo rilegge la query.
    */
-  const [openSession, setOpenSession] = useState(null);
+  const [openSession, setOpenSession] = useState<ProfessionalSession | null>(null);
   const [draft, setDraft] = useState({ notes: '', nextGoal: '', suggestedFollowUp: '' });
 
   const saveNote = useMutation({
-    mutationFn: (note) => dataProvider.saveSessionNote(note),
+    mutationFn: (note: Omit<SessionNote, "updatedAt">) =>
+      dataProvider.saveSessionNote(note),
     onSuccess: () => {
       // invalidare la radice porta con sé sedute, pazienti, compensi e pagamenti
       queryClient.invalidateQueries({
-        queryKey: queryKeys.professional.root(professionalId),
+        queryKey: queryKeys.professional.root(professionalId ?? ""),
       });
       setOpenSession(null);
     },
@@ -106,7 +125,7 @@ export default function ProSessioni() {
     .reverse();
   const cancelled = sessions.filter((session) => session.status === 'cancelled');
 
-  const openNote = (session) => {
+  const openNote: NoteHandler = (session) => {
     setDraft({ notes: '', nextGoal: '', suggestedFollowUp: '' });
     setOpenSession(session);
   };
@@ -185,7 +204,9 @@ export default function ProSessioni() {
             <Button
               className="w-full bg-executive hover:bg-executive/90"
               disabled={saveNote.isPending}
-              onClick={() => saveNote.mutate({ sessionId: openSession.id, ...draft })}
+              onClick={() =>
+                openSession && saveNote.mutate({ sessionId: openSession.id, ...draft })
+              }
             >
               <Save className="w-4 h-4 mr-1" />
               {saveNote.isPending

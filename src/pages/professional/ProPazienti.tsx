@@ -5,6 +5,7 @@ import { Shield } from 'lucide-react';
 import { formatCHF, formatDate } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import { usePortalProfessionalId, useProfessionalPatients } from '@/lib/data/queries';
+import type { SessionEntitlement } from '@/lib/data/types';
 
 /*
  * Il diritto alle sedute, detto come lo legge il professionista.
@@ -13,7 +14,7 @@ import { usePortalProfessionalId, useProfessionalPatients } from '@/lib/data/que
  * il margine (§9): un paziente che lo supera senza che la riga lo dica
  * contraddice il documento che l'investitore ha in mano.
  */
-function EntitlementLine({ entitlement }) {
+function EntitlementLine({ entitlement }: { entitlement: SessionEntitlement }) {
   const extra = entitlement.used - entitlement.total;
 
   if (extra > 0) {
