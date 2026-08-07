@@ -1,7 +1,10 @@
 import type { QueryClient } from "@tanstack/react-query";
 import { dataProvider } from "./index";
 import { monthKey, queryKeys } from "./query-keys";
-import { quarterKey } from "./types";
+import { quarterKey, type CappedServiceKind } from "./types";
+
+/** I due servizi cappati dal piano: la home ne mostra i contatori affiancati. */
+const CAPPED_SERVICES: CappedServiceKind[] = ["psychologist", "coach"];
 
 /*
  * La cache si scalda prima del primo paint (CLAUDE.md §5.1).
@@ -28,6 +31,11 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
   // il reparto in allarme si sa solo chiedendolo, e la dashboard ne mostra la
   // serie accanto a quella aziendale: senza, il grafico del trend parte freddo
   const alert = await dataProvider.getEarlyAlert();
+  // la pagina di prenotazione mostra tutto il corpo professionale, e di ognuno
+  // la disponibilità: le chiavi si sanno solo dopo aver chiesto chi c'è
+  const professionals = await dataProvider.getProfessionals();
+  // il referto si chiede per id, e l'id lo porta il check-up già fatto
+  const lastCheckup = (await dataProvider.getCheckupEligibility()).lastCompleted;
   const month = new Date(
     referenceDate.getFullYear(),
     referenceDate.getMonth(),
@@ -122,6 +130,64 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
       queryKey: queryKeys.company.invoices(),
       queryFn: () => dataProvider.getInvoices(),
     }),
+    // percorso dipendente: i due contatori della home, gli appuntamenti, il
+    // piano e il check-up. La disponibilità di ogni professionista si scalda
+    // più sotto, insieme al corpo professionale
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.employee.profile(),
+      queryFn: () => dataProvider.getEmployeeProfile(),
+    }),
+    ...CAPPED_SERVICES.map((kind) =>
+      queryClient.prefetchQuery({
+        queryKey: queryKeys.employee.entitlement(kind),
+        queryFn: () => dataProvider.getEntitlement(kind),
+      }),
+    ),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.employee.appointments(),
+      queryFn: () => dataProvider.getAppointments(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.employee.virtualDoctorConsults(),
+      queryFn: () => dataProvider.getVirtualDoctorConsults(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.employee.aiPlan(),
+      queryFn: () => dataProvider.getAiHealthPlan(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.employee.rapidCheck(),
+      queryFn: () => dataProvider.getRapidCheckAnswer(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.checkup.providers(),
+      queryFn: () => dataProvider.getCheckupProviders(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.checkup.eligibility(),
+      queryFn: () => dataProvider.getCheckupEligibility(),
+    }),
+    // il referto si apre in un dialogo, che è un montaggio come un altro: senza
+    // questa riga il guardrail lancerebbe al primo clic
+    ...(lastCheckup
+      ? [
+          queryClient.prefetchQuery({
+            queryKey: queryKeys.checkup.report(lastCheckup.id),
+            queryFn: () => dataProvider.getCheckupReport(lastCheckup.id),
+          }),
+        ]
+      : []),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.professional.all(),
+      queryFn: () => dataProvider.getProfessionals(),
+    }),
+    ...professionals.map((professional) =>
+      queryClient.prefetchQuery({
+        queryKey: queryKeys.professional.slots(professional.id),
+        queryFn: () => dataProvider.getAvailableSlots(professional.id),
+      }),
+    ),
+
     ...quarters.flatMap((period) => [
       queryClient.prefetchQuery({
         queryKey: queryKeys.company.roiSnapshot(quarterKey(period)),

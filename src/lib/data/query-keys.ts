@@ -21,6 +21,15 @@ export const queryKeys = {
     /** Radice di tutto ciò che riguarda un professionista: invalida il resto. */
     root: (professionalId: string) => ["professional", professionalId] as const,
     portalId: () => ["professional", "portal-id"] as const,
+    /** Il corpo professionale, per chi deve sceglierne uno. */
+    all: () => ["professional", "all"] as const,
+    /*
+     * La disponibilità sta sotto la radice del professionista, non sotto quella
+     * del dipendente, perché è la sua agenda: una prenotazione la invalida
+     * insieme a sedute e pazienti, con la stessa riga.
+     */
+    slots: (professionalId: string) =>
+      ["professional", professionalId, "slots"] as const,
     profile: (professionalId: string) =>
       ["professional", professionalId, "profile"] as const,
     sessions: (professionalId: string) =>
@@ -57,6 +66,33 @@ export const queryKeys = {
     report: (period: string) => ["company", "report", period] as const,
     directory: () => ["company", "directory"] as const,
     invoices: () => ["company", "invoices"] as const,
+  },
+
+  /*
+   * Il percorso dipendente. La radice porta con sé tutto ciò che una
+   * prenotazione cambia dal suo lato — gli appuntamenti e i contatori — e una
+   * prenotazione invalida questa radice **e** quella del professionista, perché
+   * la seduta è un record solo visto da due parti (§10.D).
+   */
+  employee: {
+    root: () => ["employee"] as const,
+    profile: () => ["employee", "profile"] as const,
+    entitlement: (kind: string) => ["employee", "entitlement", kind] as const,
+    appointments: () => ["employee", "appointments"] as const,
+    virtualDoctorConsults: () => ["employee", "virtual-doctor"] as const,
+    aiPlan: () => ["employee", "ai-plan"] as const,
+    rapidCheck: () => ["employee", "rapid-check"] as const,
+  },
+
+  /*
+   * Il check-up sta fuori dalla radice del dipendente perché la rete non è sua:
+   * è la stessa che il back-office segue, e nessuna prenotazione di seduta la
+   * tocca.
+   */
+  checkup: {
+    providers: () => ["checkup", "providers"] as const,
+    eligibility: () => ["checkup", "eligibility"] as const,
+    report: (bookingId: string) => ["checkup", "report", bookingId] as const,
   },
 } as const;
 
