@@ -47,9 +47,33 @@ layout. Per la stessa ragione **nell'interfaccia non c'è nessun raggruppamento
 per settimana**: la griglia del calendario e le righe del riepilogo compensi si
 costruiscono nel client, dalle stesse sedute.
 
-**Assente si dice `null`, mai `undefined`.** Un valore che non c'è e un campo che
-nessuno ha valorizzato sono cose diverse, e alla prima serializzazione JSON
-`undefined` sparirebbe dall'oggetto invece di arrivare come assenza.
+**Assente si dice `null`, mai `undefined` — dove il campo pertiene.** Un valore
+che non c'è e un campo che nessuno ha valorizzato sono cose diverse, e alla prima
+serializzazione JSON `undefined` sparirebbe dall'oggetto invece di arrivare come
+assenza. La regola vale sugli **slot di valore**: posti che il caso prevede e che
+possono essere vuoti. `PatientSummary.lastSessionAt` è `Date | null` perché ogni
+paziente ha una data dell'ultima seduta, e per chi non ne ha ancora fatte quella
+data è vuota; `getPlan` restituisce `Plan | null` perché la domanda ha sempre
+senso e la risposta può essere "nessuno".
+
+**Il `?` dice un'altra cosa: che il campo non pertiene al caso.** Non è
+un'eccezione tollerata, è la seconda metà della regola, e le due non si
+sostituiscono a vicenda:
+
+- gli opzionali di `Plan` — assente significa che **il contratto commerciale non
+  lo prevede** (§3), e il listino salta la riga invece di stampare una negazione.
+  Un `null` direbbe "questo piano ha un tetto di consulti, ed è vuoto", che è
+  falso;
+- `ProfessionalSession.cancellationReasonKey` — assente significa che **la seduta
+  non è annullata**. Un motivo di annullamento `null` su una seduta erogata
+  sarebbe un campo che non dovrebbe esistere lì, dichiarato vuoto.
+
+Il criterio, in una domanda: *se il valore mancasse, la riga avrebbe comunque un
+posto dove metterlo?* Se sì, `| null`. Se no, `?`.
+
+Per il backend la differenza è concreta: un campo `| null` **è sempre nella
+risposta**, con `null` dentro; un campo `?` **non c'è** quando non pertiene, e il
+client non deve distinguere fra assente e vuoto perché il caso non si presenta.
 
 **La superficie del provider cresce così**: *le letture si espongono quando il
 dato esiste, le scritture solo quando hanno un chiamante.* Le due metà non sono
