@@ -809,6 +809,7 @@ export const it = {
   public: {
     nav: {
       pricing: "Piani",
+      roi: "Calcolatore ROI",
       demo: "Demo",
       employees: "Dipendenti",
       hr: "HR",
@@ -825,6 +826,7 @@ export const it = {
 
       platformTitle: "Piattaforma",
       platformPricing: "Piani e prezzi",
+      platformRoi: "Calcolatore ROI",
       platformEmployee: "Portale dipendenti",
       platformHr: "Portale HR",
       platformProfessional: "Per professionisti",
@@ -852,6 +854,79 @@ export const it = {
 
       /** "© 2026 Kora Switzerland SA. Tutti i diritti riservati." */
       copyright: "© {year} Kora Switzerland SA. Tutti i diritti riservati.",
+    },
+
+    /*
+     * Il calcolatore ROI (§10.A.2). Risponde a "quanto stai già perdendo",
+     * mentre il simulatore di `/pricing` risponde a "quanto costa": è la
+     * ragione per cui stanno su due rotte e non condividono un campo
+     * "numero di dipendenti".
+     */
+    roi: {
+      title: "Quanto costa oggi la salute dei dipendenti",
+      subtitle:
+        "Le perdite che un'azienda svizzera sostiene ogni anno, e quanto ne recupera con Kora. Scenario conservativo.",
+
+      employeesLabel: "Numero di dipendenti",
+      /** Sotto il campo: "Da 20 a 1'000 dipendenti" */
+      employeesRange: "Da {min} a {max} dipendenti",
+
+      lossesTitle: "Perdite annue stimate",
+      loss: {
+        absenteeism: "Assenteismo",
+        presenteeism: "Presenteismo",
+        burnout: "Burnout pre-clinico",
+        turnover: "Turnover legato alla salute",
+      },
+      lossHint: {
+        /** "6.5 giorni di assenza per dipendente, a CHF 900 al giorno" */
+        absenteeism: "{days} giorni di assenza per dipendente, a {cost} al giorno",
+        /** "CHF 1'500 di produttività persa per dipendente" */
+        presenteeism: "{cost} di produttività persa per dipendente",
+        /** "30% della popolazione a rischio, 15% di produttività persa" */
+        burnout: "{share} della popolazione a rischio, {loss} di produttività persa",
+        /** "4.3% di uscite legate alla salute, più il costo di sostituzione" */
+        turnover: "{rate} di uscite legate alla salute, più il costo di sostituzione",
+      },
+      lossesTotal: "Totale perdite",
+
+      savingsTitle: "Con Kora",
+      savings: "Risparmio stimato",
+      /** "Il 15% su assenteismo e presenteismo, il 20% su burnout e turnover" */
+      savingsHint:
+        "Il {absence} su assenteismo e presenteismo, il {burnout} su burnout e turnover",
+      cost: "Costo Kora",
+      /** "Sul piano Plus, CHF 55 per dipendente al mese" */
+      costHint: "Sul piano {plan}, {price} per dipendente al mese",
+      netSavings: "Risparmio netto",
+      ratio: "Ritorno sull'investimento",
+      /** "2.35:1" */
+      ratioValue: "{ratio}:1",
+      ratioHint: "Risparmio netto per ogni franco investito",
+
+      /*
+       * La riga che sostituisce la stima "CHF 1'400–2'900 per dipendente",
+       * che il Business Plan non contiene ed è uscita in M0 (§9). Qui il
+       * numero è derivato dal modello e arrotondato al centinaio: al franco
+       * sarebbe finta precisione su una stima.
+       */
+      perEmployee: "≈ {amount} per dipendente all'anno, scenario conservativo",
+
+      /*
+       * Ogni voce è lineare nell'organico, quindi il rapporto non si muove da
+       * 20 a 1000 dipendenti. Il §9 chiede che la UI non faccia credere il
+       * contrario: chi muove il cursore deve leggerlo, non dedurlo.
+       */
+      linearityNote:
+        "Ogni voce cresce in proporzione all'organico: il rapporto resta {ratio} a qualunque numero di dipendenti.",
+
+      sources: "Scenario conservativo. Fonti: SECO, Job Stress Index.",
+
+      ctaTitle: "Questi numeri, sulla vostra azienda",
+      ctaBody:
+        "Una demo di trenta minuti sui dati del vostro settore e del vostro organico.",
+      ctaButton: "Prenota una demo",
+      ctaPricing: "Vedi i piani",
     },
   },
 } as const;

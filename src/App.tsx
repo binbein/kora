@@ -5,6 +5,7 @@ import PageNotFound from '@/pages/PageNotFound';
 
 // Public pages
 import Landing from '@/pages/public/Landing';
+import Roi from '@/pages/public/Roi';
 import Pricing from '@/pages/public/Pricing';
 import DemoRequest from '@/pages/public/DemoRequest';
 
@@ -46,6 +47,7 @@ const AppRoutes = () => (
   <Routes>
     {/* Public */}
     <Route path="/" element={<Landing />} />
+    <Route path="/roi" element={<Roi />} />
     <Route path="/pricing" element={<Pricing />} />
     <Route path="/demo" element={<DemoRequest />} />
 

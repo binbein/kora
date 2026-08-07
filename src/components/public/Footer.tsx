@@ -45,6 +45,12 @@ export default function Footer() {
               {t.public.footer.platformPricing}
             </Link>
             <Link
+              to="/roi"
+              className="block text-sm opacity-80 hover:opacity-100 transition-opacity"
+            >
+              {t.public.footer.platformRoi}
+            </Link>
+            <Link
               to="/employee"
               className="block text-sm opacity-80 hover:opacity-100 transition-opacity"
             >

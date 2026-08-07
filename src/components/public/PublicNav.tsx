@@ -16,6 +16,7 @@ import { t } from "@/lib/i18n";
  */
 const navItems = [
   { path: "/pricing", label: t.public.nav.pricing },
+  { path: "/roi", label: t.public.nav.roi },
   { path: "/demo", label: t.public.nav.demo },
   { path: "/employee", label: t.public.nav.employees },
   { path: "/hr", label: t.public.nav.hr },
