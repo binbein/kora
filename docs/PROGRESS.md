@@ -313,6 +313,14 @@ Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà 
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
 
+- **07.08.2026 — "Dipendente attivo" è un conteggio trimestrale** (`CLAUDE.md`
+  §8, `CONTRATTO-DATI.md` §3). Il 41 della dashboard conta chi ha usato almeno
+  un servizio nel trimestre, non nel mese: è lo stesso periodo del risparmio
+  che ne deriva, è coerente con gli altri due semi del selettore, e non
+  contraddice il 15–25% di utilizzo mensile su cui il Business Plan fonda il
+  margine. Il §8 diceva "nel mese" ed era l'unico punto in disaccordo con
+  `types.ts`, che il trimestre lo dichiarava già.
+
 - **06.08.2026 — I semi dei trimestri precedenti** (`CLAUDE.md` §9, "Trimestri
   diversi da quello corrente"). Il selettore della dashboard ha quattro righe di
   partenza — iscritti, attivi e sessioni cumulate — e da lì si derivano risparmio,

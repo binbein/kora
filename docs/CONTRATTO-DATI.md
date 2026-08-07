@@ -140,6 +140,7 @@ nascono due e le schermate divergono:
 | KPI | Definizione |
 |---|---|
 | **Paziente attivo** | ha una seduta in programma, **oppure** una erogata nelle ultime 6 settimane |
+| **Dipendente attivo** (azienda) | ha usato almeno un servizio **nel trimestre**: è il conteggio che pilota il risparmio trimestrale, quindi copre il suo stesso periodo |
 | **Adozione** | iscritti ÷ organico, arrotondato all'intero |
 | **Diritto alle sedute** (`used`) | conto delle sedute **erogate** del paziente nell'anno di piano — mai un contatore a parte |
 | **Regime tenuto** | media delle sedute erogate nelle 4 settimane piene precedenti quella corrente |

@@ -517,7 +517,9 @@ La narrazione (deve emergere dai grafici senza spiegazioni):
 - Mesi 1–8: stress aziendale stabile su "Medio", in lieve calo. Vendite in linea.
 - Mesi 9–12: Vendite si stacca e sale costantemente fino ad "Alto".
 - **Mese 10: scatta l'alert precoce** (evidenziato sul grafico con un marker).
-- Adozione: 68% iscritti (82), 41 attivi nel mese. Sessioni azienda: 142 usate.
+- Adozione: 68% iscritti (82), 41 attivi nel trimestre — "attivo" è chi ha
+  usato almeno un servizio nel trimestre, la definizione è nella tabella KPI di
+  `docs/CONTRATTO-DATI.md`. Sessioni azienda: 142 usate.
 - ROI trimestre corrente: **CHF 14'200 risparmiati, 16 giorni di assenza evitati**.
 - Stress per reparto (ultimo mese): Vendite Alto (78%), Operations Medio (52%),
   Finanza Medio (44%), IT Basso (31%), HR + Legale Basso (26%). Direzione: sotto
