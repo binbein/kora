@@ -13,6 +13,7 @@ import {
   CalendarDays,
 } from "lucide-react";
 import PrivacyBanner from "@/components/shared/PrivacyBanner";
+import RapidCheckCard from "@/components/kora/RapidCheckCard";
 import { formatDate, formatNumber, formatTime, formatWeekday } from "@/lib/format";
 import { interpolate, t } from "@/lib/i18n";
 import {
@@ -202,6 +203,8 @@ export default function EmployeeHome() {
       </div>
 
       <PrivacyBanner message={t.employee.privacy} />
+
+      <RapidCheckCard />
 
       <Card className="p-6">
         <div className="flex flex-col sm:flex-row items-center gap-6">

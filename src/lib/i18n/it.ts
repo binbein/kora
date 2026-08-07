@@ -153,6 +153,28 @@ export const it = {
       planCta: "Vedi il piano",
     },
 
+    /*
+     * Il check rapido (§8, §10.B): **una domanda, un tocco**. Cinque opzioni e
+     * un solo gesto — la frase è quella congelata del §8, e descrive il gesto,
+     * non il numero di scelte.
+     *
+     * La scala è quella del dominio, da 1 "molto bene" a 5 "molto male": le
+     * etichette stanno qui perché il valore è un dato e la parola è interfaccia.
+     */
+    rapidCheck: {
+      question: "Come ti senti oggi?",
+      hint: "Una domanda, un tocco. La tua risposta entra solo nella media del tuo reparto.",
+      option: {
+        1: "Molto bene",
+        2: "Bene",
+        3: "Così così",
+        4: "Non bene",
+        5: "Molto male",
+      },
+      done: "Grazie, registrato.",
+      doneHint: "Ti richiediamo come stai fra qualche giorno.",
+    },
+
     aiPlan: {
       /*
        * Gli obiettivi del piano, per chiave. Li leggono due schermate — la home
