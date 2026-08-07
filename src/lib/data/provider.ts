@@ -1,6 +1,11 @@
 import type {
+  AiHealthPlan,
   Appointment,
   AppointmentSlot,
+  CappedServiceKind,
+  CheckupEligibility,
+  CheckupProvider,
+  CheckupReport,
   Company,
   Department,
   EarlyAlert,
@@ -22,6 +27,7 @@ import type {
   SessionEntitlement,
   SessionNote,
   StressRecord,
+  VirtualDoctorConsult,
 } from "./types";
 
 /*
@@ -190,7 +196,17 @@ export interface DataProvider {
 
   /** La persona della demo: Laura Bernasconi. */
   getEmployeeProfile(): Promise<EmployeeProfile>;
-  getEntitlement(): Promise<SessionEntitlement>;
+
+  /**
+   * Quante sedute ha usato sul cap del piano, per uno dei servizi cappati.
+   *
+   * Prende il servizio invece di rispondere solo per lo psicologo perché il Plus
+   * ne cappa due, e la home mostra i due contatori affiancati: con un metodo
+   * solo il coach sarebbe finito da qualche altra parte, e due contatori che si
+   * assomigliano ma arrivano da strade diverse sono il modo in cui poi
+   * divergono.
+   */
+  getEntitlement(kind: CappedServiceKind): Promise<SessionEntitlement>;
   /**
    * Gli appuntamenti **in programma** della persona, dal più imminente. Le
    * sedute già erogate non sono appuntamenti da elencare: sono il contatore
@@ -199,4 +215,42 @@ export interface DataProvider {
   getAppointments(): Promise<Appointment[]>;
   /** Slot proponibili per un professionista, già filtrati sui liberi. */
   getAvailableSlots(professionalId: string): Promise<AppointmentSlot[]>;
+
+  /**
+   * I consulti di medico virtuale già avvenuti, dal più vecchio.
+   *
+   * Il Profilo ne mostra il conto, e lo conta da qui: il piano Plus non li
+   * limita, quindi il numero che interessa è quanti ne hai fatti, non quanti te
+   * ne restano — e per quello `SessionEntitlement` non sarebbe il tipo giusto.
+   */
+  getVirtualDoctorConsults(): Promise<VirtualDoctorConsult[]>;
+
+  // --- Check-up (§10.B) -----------------------------------------------------
+
+  /**
+   * La rete convenzionata, **tutta**, con lo stato di ciascuna struttura.
+   *
+   * Le strutture in convenzionamento arrivano al client invece di essere
+   * filtrate: il back-office le segue, ed è un dato del dominio, non una
+   * soppressione per privacy come quella dei reparti sotto soglia. Chi prenota
+   * mostra le sole `active`.
+   */
+  getCheckupProviders(): Promise<CheckupProvider[]>;
+
+  /** Se il dipendente può prenotare un check-up, e da quando. */
+  getCheckupEligibility(): Promise<CheckupEligibility>;
+
+  /**
+   * Il referto di un check-up eseguito.
+   *
+   * Sta su un metodo suo e non dentro `getCheckupEligibility` perché è l'unico
+   * dato sanitario individuale del dominio: si chiede quando lo si apre, che è
+   * anche il modo in cui in produzione lo si permessiona e lo si traccia.
+   */
+  getCheckupReport(bookingId: string): Promise<CheckupReport | null>;
+
+  // --- Prevenzione (§10.B) --------------------------------------------------
+
+  /** Il piano di prevenzione della persona, con le cinque aree di salute. */
+  getAiHealthPlan(): Promise<AiHealthPlan>;
 }

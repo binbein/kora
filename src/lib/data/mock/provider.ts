@@ -1,9 +1,15 @@
 import type { DataProvider } from "../provider";
 import {
+  type AiHealthPlan,
+  type CappedServiceKind,
+  type CheckupEligibility,
+  type CheckupProvider,
+  type CheckupReport,
   type EmployeeDirectoryEntry,
   type HrReport,
   type Invoice,
   type ServiceUsageMonth,
+  type VirtualDoctorConsult,
   sameQuarter,
   type Appointment,
   type AppointmentSlot,
@@ -25,7 +31,17 @@ import {
   type SessionNote,
   type StressRecord,
 } from "../types";
+import { LAURA_AI_PLAN } from "./ai-plan";
+import {
+  CHECKUP_PROVIDERS,
+  LAURA_CHECKUP_ELIGIBILITY,
+  LAURA_CHECKUP_REPORT,
+} from "./checkup";
 import { COMPANY, DEPARTMENTS, PLANS, PLAN_LIST } from "./company";
+import {
+  employeeEntitlement,
+  LAURA_VIRTUAL_DOCTOR_CONSULTS,
+} from "./employee-portal";
 import { EMPLOYEE_DIRECTORY, HR_REPORTS, INVOICES } from "./hr";
 import { DEMO_TODAY } from "./demo-date";
 import { LAURA, PROFESSIONALS } from "./people";
@@ -258,13 +274,40 @@ export class MockDataProvider implements DataProvider {
   }
 
   /*
-   * Il contatore di Laura è il conto delle sue sedute erogate, non un numero a
-   * parte: è la stessa funzione che alimenta il co-payment dell'elenco pazienti
-   * (§5.5). In M3 la prenotazione lo farà salire come conseguenza dell'aggiunta
-   * di una seduta, invece che come seconda scrittura.
+   * Il contatore dello psicologo è il conto delle sedute erogate di Laura, non
+   * un numero a parte: è la stessa funzione che alimenta il co-payment
+   * dell'elenco pazienti (§5.5). Quello del coach è un seme del §8, perché
+   * dietro non c'è nessuna agenda — la distinzione è dichiarata in
+   * `employee-portal.ts`.
+   *
+   * Una prenotazione **non** fa salire `used`: nasce `scheduled`, e `used` conta
+   * le erogate (§10.B).
    */
-  getEntitlement(): Promise<SessionEntitlement> {
-    return Promise.resolve(entitlementFor(PORTAL_PATIENT_EMPLOYEE_ID));
+  getEntitlement(kind: CappedServiceKind): Promise<SessionEntitlement> {
+    return Promise.resolve(employeeEntitlement(kind));
+  }
+
+  getVirtualDoctorConsults(): Promise<VirtualDoctorConsult[]> {
+    return Promise.resolve(LAURA_VIRTUAL_DOCTOR_CONSULTS);
+  }
+
+  getCheckupProviders(): Promise<CheckupProvider[]> {
+    return Promise.resolve(CHECKUP_PROVIDERS);
+  }
+
+  getCheckupEligibility(): Promise<CheckupEligibility> {
+    return Promise.resolve(LAURA_CHECKUP_ELIGIBILITY);
+  }
+
+  getCheckupReport(bookingId: string): Promise<CheckupReport | null> {
+    if (bookingId !== LAURA_CHECKUP_REPORT.bookingId) {
+      return Promise.resolve(null);
+    }
+    return Promise.resolve(LAURA_CHECKUP_REPORT);
+  }
+
+  getAiHealthPlan(): Promise<AiHealthPlan> {
+    return Promise.resolve(LAURA_AI_PLAN);
   }
 
   /*
