@@ -152,6 +152,14 @@ L'arrotondamento al centinaio fa parte della regola, non della formattazione:
 senza, gli importi non sono riproducibili, e una cifra al franco su un risparmio
 stimato è finta precisione.
 
+### Granularità
+
+Una scelta del contratto, non del mock: le serie aziendali (stress, utilizzo
+servizi — `ServiceUsageMonth`) sono **mensili**; gli aggregati economici
+dell'azienda (risparmio, giorni evitati) sono **trimestrali**; il lato
+professionista rendiconta **al mese**. La distribuzione per servizio non è
+un'entità: si deriva sommando la serie mensile sul periodo selezionato.
+
 ## 4. Letture e scritture
 
 Le chiavi di react-query stanno in `src/lib/data/query-keys.ts` e sono

@@ -269,6 +269,15 @@ backend.
 - **Il totale dell'anno nei pagamenti copre l'anno solare**, non i dodici mesi
   mobili: con la demo a settembre sono i mesi da marzo, e a gennaio sarebbe una
   riga sola. Nessuna conseguenza sulla demo, che è ambientata a settembre.
+- **Il dominio dell'utilizzo servizi mancava.** Il §10.C.1 lo mette fra i
+  contenuti della dashboard HR e il §5.3 dichiarava la copertura completa del
+  dominio, ma `types.ts` non aveva l'entità: `HrReport.usagePercent` è uno
+  scalare. `ServiceUsageMonth` è stato aggiunto **dopo la chiusura di M2**,
+  insieme alla regola sulle granularità (`CLAUDE.md` §5.3): la dichiarazione di
+  copertura era ottimista, ed è sfuggita perché l'area di prova era il portale
+  professionista. Dataset e guardrail (psicologo sommato sui dodici mesi = 142)
+  arrivano in M3 con la dashboard; i conteggi di coach, medico virtuale e
+  check-up non sono nel §8 e vanno approvati allora (§2.4).
 
 ### Punto di partenza — cosa c'è e cosa manca
 

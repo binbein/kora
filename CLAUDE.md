@@ -317,6 +317,14 @@ controllo della copertura**, non un vincolo di forma: il backend sarà nostro e 
 contratto lo disegniamo noi. Servono a ricordarci quali entità esistono, non a
 dettarne i campi.
 
+**Le granularità sono una scelta del dominio, non della schermata.** Le serie
+aziendali — stress, utilizzo servizi — sono **mensili**; gli aggregati
+economici dell'azienda — risparmio, giorni evitati — sono **trimestrali**; il
+lato professionista rendiconta **al mese**. Oggi è già vero nei fatti, e va
+tenuto vero: è la prima cosa che chi costruisce una dashboard decide
+diversamente senza accorgersene. La regola vale anche per il backend e sta
+anche in `docs/CONTRATTO-DATI.md`.
+
 ### 5.4 Il tempo ha una sola sorgente
 
 `DEMO_TODAY` in `src/lib/data/mock/demo-date.ts`. Da lì derivano lo storico dello
