@@ -500,6 +500,15 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   `roi-model.ts` è trapiantato da M1 e verificato sui cinque numeri di
   ancoraggio.
 
+- **07.08.2026 — Il terzo blocco di M3 è l'area pubblica intera** (`CLAUDE.md`
+  §4, §10.A). Non il solo `/roi`: landing, prezzi e richiesta demo entrano nello
+  stesso passaggio. Erano l'unica parte del §10 che nessun blocco di M3
+  reclamava, e restarci fuori aveva una conseguenza concreta — i **tre
+  disallineamenti delle card prezzi** elencati qui sopra fra i difetti noti di
+  M0 dicono "restano così fino a M3", ma M3 non prevedeva la passata che li
+  chiude. Si chiudono facendo leggere le card da `Plan`: corretti a mano
+  resterebbero tre righe di JSX che la prima riscrittura riapre.
+
 - **07.08.2026 — Polarità dei colori sulle KPI di trend** (`CLAUDE.md` §6.1).
   Il colore segue il beneficio, la freccia segue il segno: "Stress medio −8%"
   esce verde con la freccia in giù, e ogni KPI dichiara se scendere è un bene.

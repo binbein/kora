@@ -299,17 +299,27 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
   l'intestazione direbbe un nome e il corpo un altro nella stessa schermata. E la
   definizione di "finito" del §10.D è scritta per l'area — le righe settimanali che
   sommano al mese, i pazienti che coincidono con la KPI — non per una schermata.
-- **M3 — Area per area, più il calcolatore.** HR → dipendente → **calcolatore
-  ROI pubblico (§10.A.2)** → admin; il professionista è già migrato in M2 e non
-  si ritocca. Il calcolatore passa qui da M4 per decisione dei founder del
-  07.08.2026: è il terzo dei tre pezzi che il pitch ordina per importanza —
-  dashboard HR, percorso dipendente, calcolatore — il motore `roi-model.ts` è
-  trapiantato e verificato dai tempi di M1, e il back-office non ha valore
-  narrativo. Ogni area viene
+- **M3 — Area per area.** HR → dipendente → **area pubblica** → admin; il
+  professionista è già migrato in M2 e non si ritocca. Ogni area viene
   migrata **e** rinarrata nello stesso passaggio: dati dal provider, stringhe in
   i18n, importi da `format.ts`, microcopy nel registro giusto. Toccare due volte la
   stessa schermata è lavoro sprecato. **Chiude cancellando `reference/`**: se
   serve ancora qualcosa da lì, l'area non è finita.
+
+  Il calcolatore ROI passa qui da M4 per decisione dei founder del 07.08.2026:
+  è il terzo dei tre pezzi che il pitch ordina per importanza — dashboard HR,
+  percorso dipendente, calcolatore — il motore `roi-model.ts` è trapiantato e
+  verificato dai tempi di M1, e il back-office non ha valore narrativo.
+
+  **Il terzo blocco è l'area pubblica intera, non il solo `/roi`** (founder,
+  07.08.2026). Il calcolatore è la parte che il pitch mostra, ma le altre tre
+  rotte della §10.A sono l'unica cosa che M3 lascerebbe indietro senza che
+  nessun blocco la reclami — e una di loro ha un difetto che aspetta proprio
+  questo passaggio: i **tre disallineamenti delle card prezzi** con il §9,
+  aperti da M0, si chiudono facendo leggere le card da `Plan` invece di
+  elencarne le voci a mano in JSX, e da lì la card non può più divergere dal
+  piano. Landing e richiesta demo seguono la stessa regola dell'area: dati dal
+  provider, stringhe in i18n.
 - **M4 — Il report scaricabile** (§10.C.3). Il calcolatore ROI, che stava qui,
   è passato in M3.
 - **M5 — Verso la produzione.** Differibile, non blocca niente: guardie di rotta per
@@ -937,7 +947,10 @@ approvazione** (§2.6); nessuna schermata esistente si elimina senza dirlo.
    mutation del provider.
 
 **Finita quando:** il calcolatore è corretto per qualsiasi N fra 20 e 1000, le
-quattro voci sommano al totale mostrato, e a N=100 escono i cinque numeri di §9.
+quattro voci sommano al totale mostrato, e a N=100 escono i cinque numeri di §9;
+e **le card prezzi leggono da `Plan`**, quindi nessuna delle loro voci può
+divergere dal §9 — è il modo in cui si chiudono i tre disallineamenti aperti da
+M0, non correggendo tre righe di JSX che la prossima passata riaprirebbe.
 
 ### B. Portale dipendente — `/employee` + 5 sottopagine
 Home, Psicologi, Medico virtuale, Check-up, Piano AI, Profilo.
