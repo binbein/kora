@@ -4,6 +4,9 @@ import type {
   Company,
   Department,
   EarlyAlert,
+  EmployeeDirectoryEntry,
+  HrReport,
+  Invoice,
   EmployeeProfile,
   PatientSummary,
   Payout,
@@ -15,6 +18,7 @@ import type {
   ProfessionalSession,
   Quarter,
   RoiSnapshot,
+  ServiceUsageMonth,
   SessionEntitlement,
   SessionNote,
   StressRecord,
@@ -98,6 +102,32 @@ export interface DataProvider {
   /** Trimestre mostrato all'apertura della dashboard. */
   getCurrentQuarter(): Promise<Quarter>;
   getRoiSnapshot(period: Quarter): Promise<RoiSnapshot | null>;
+
+  // --- Area HR (§10.C) ------------------------------------------------------
+
+  /**
+   * L'utilizzo dei servizi, un record per mese, dal più vecchio al più recente.
+   *
+   * Una serie sola per due grafici: le barre la leggono mese per mese, la
+   * ciambella la somma sul periodo scelto. Esporre la distribuzione già
+   * aggregata sarebbe un secondo conteggio della stessa cosa, ed è il difetto
+   * della schermata ereditata — dove la ciambella dice 180 sessioni di
+   * psicologo e la KPI accanto ne dice 142 (§5.5).
+   */
+  getServiceUsage(): Promise<ServiceUsageMonth[]>;
+
+  /** Le metriche del trimestre, per la pagina report e per il PDF di M4. */
+  getHrReport(period: Quarter): Promise<HrReport | null>;
+
+  /**
+   * L'elenco dipendenti che l'azienda può vedere: iniziali e reparto, mai un
+   * nome. Nel dataset demo è un estratto di otto righe su 120 — la paginazione
+   * è M5 — e la schermata lo dichiara invece di far credere il contrario.
+   */
+  getEmployeeDirectory(): Promise<EmployeeDirectoryEntry[]>;
+
+  /** Le fatture dell'abbonamento, dalla più recente. */
+  getInvoices(): Promise<Invoice[]>;
 
   // --- Professionisti -------------------------------------------------------
 

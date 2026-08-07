@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { dataProvider } from "./index";
 import { monthKey, queryKeys } from "./query-keys";
+import { quarterKey, type Quarter } from "./types";
 
 /*
  * Le query dell'area professionista (CLAUDE.md §5.2).
@@ -97,5 +98,108 @@ export function useProfessionalPayouts(professionalId: string | undefined) {
     queryKey: queryKeys.professional.payouts(professionalId ?? ""),
     queryFn: () => dataProvider.getProfessionalPayouts(professionalId ?? ""),
     enabled: professionalId !== undefined,
+  });
+}
+
+/*
+ * Le query dell'area HR (§10.C).
+ *
+ * Il periodo entra nella chiave come stringa e non come oggetto: due `Quarter`
+ * con gli stessi campi sono due oggetti diversi, e react-query confronta le
+ * chiavi per struttura — una chiave con dentro una `Date` o un oggetto nuovo a
+ * ogni render rifarebbe la query a ogni giro.
+ */
+
+export function useCompany() {
+  return useQuery({
+    queryKey: queryKeys.company.profile(),
+    queryFn: () => dataProvider.getCompany(),
+  });
+}
+
+export function useDepartments() {
+  return useQuery({
+    queryKey: queryKeys.company.departments(),
+    queryFn: () => dataProvider.getDepartments(),
+  });
+}
+
+export function usePlans() {
+  return useQuery({
+    queryKey: queryKeys.company.plans(),
+    queryFn: () => dataProvider.getPlans(),
+  });
+}
+
+/** Senza `departmentId` è la serie aggregata dell'azienda. */
+export function useStressHistory(departmentId?: string) {
+  return useQuery({
+    queryKey: queryKeys.company.stressHistory(departmentId),
+    queryFn: () => dataProvider.getStressHistory(departmentId),
+  });
+}
+
+export function useLatestStressByDepartment() {
+  return useQuery({
+    queryKey: queryKeys.company.latestStress(),
+    queryFn: () => dataProvider.getLatestStressByDepartment(),
+  });
+}
+
+export function useEarlyAlert() {
+  return useQuery({
+    queryKey: queryKeys.company.earlyAlert(),
+    queryFn: () => dataProvider.getEarlyAlert(),
+  });
+}
+
+export function useQuarters() {
+  return useQuery({
+    queryKey: queryKeys.company.quarters(),
+    queryFn: () => dataProvider.getQuarters(),
+  });
+}
+
+export function useCurrentQuarter() {
+  return useQuery({
+    queryKey: queryKeys.company.currentQuarter(),
+    queryFn: () => dataProvider.getCurrentQuarter(),
+  });
+}
+
+export function useRoiSnapshot(period: Quarter | undefined) {
+  return useQuery({
+    queryKey: queryKeys.company.roiSnapshot(period ? quarterKey(period) : ""),
+    queryFn: () => dataProvider.getRoiSnapshot(period as Quarter),
+    enabled: period !== undefined,
+  });
+}
+
+export function useServiceUsage() {
+  return useQuery({
+    queryKey: queryKeys.company.serviceUsage(),
+    queryFn: () => dataProvider.getServiceUsage(),
+  });
+}
+
+export function useHrReport(period: Quarter | undefined) {
+  return useQuery({
+    queryKey: queryKeys.company.report(period ? quarterKey(period) : ""),
+    queryFn: () => dataProvider.getHrReport(period as Quarter),
+    enabled: period !== undefined,
+  });
+}
+
+export function useEmployeeDirectory() {
+  return useQuery({
+    queryKey: queryKeys.company.directory(),
+    queryFn: () => dataProvider.getEmployeeDirectory(),
+  });
+}
+
+export function useInvoices() {
+  return useQuery({
+    queryKey: queryKeys.company.invoices(),
+    queryFn: () => dataProvider.getInvoices(),
   });
 }

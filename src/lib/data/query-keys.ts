@@ -34,6 +34,29 @@ export const queryKeys = {
   },
 
   sessionNote: (sessionId: string) => ["session-note", sessionId] as const,
+
+  /*
+   * L'area HR. La radice porta con sé tutto ciò che riguarda l'azienda, come
+   * per il professionista: il giorno in cui una prenotazione muoverà i
+   * contatori aziendali, invalidarla sarà una riga sola.
+   */
+  company: {
+    root: () => ["company"] as const,
+    profile: () => ["company", "profile"] as const,
+    departments: () => ["company", "departments"] as const,
+    plans: () => ["company", "plans"] as const,
+    stressHistory: (departmentId?: string) =>
+      ["company", "stress", departmentId ?? "all"] as const,
+    latestStress: () => ["company", "stress", "latest"] as const,
+    earlyAlert: () => ["company", "early-alert"] as const,
+    quarters: () => ["company", "quarters"] as const,
+    currentQuarter: () => ["company", "quarters", "current"] as const,
+    roiSnapshot: (period: string) => ["company", "roi", period] as const,
+    serviceUsage: () => ["company", "service-usage"] as const,
+    report: (period: string) => ["company", "report", period] as const,
+    directory: () => ["company", "directory"] as const,
+    invoices: () => ["company", "invoices"] as const,
+  },
 } as const;
 
 /** Il mese come chiave stabile: "2026-09". Una `Date` non è confrontabile. */
