@@ -26,6 +26,8 @@ import { COMPANY, DEPARTMENTS, PLANS, PLAN_LIST } from "./company";
 import { DEMO_TODAY } from "./demo-date";
 import { LAURA, PROFESSIONALS } from "./people";
 import {
+  entitlementFor,
+  isActivePatient,
   monthlyEarnings,
   payoutHistory,
   PORTAL_PATIENT_EMPLOYEE_ID,
@@ -33,7 +35,7 @@ import {
   PORTAL_SESSIONS,
 } from "./professional-portal";
 import { CURRENT_QUARTER, QUARTERS, ROI_SNAPSHOTS } from "./roi";
-import { INITIAL_ENTITLEMENT, INITIAL_SLOTS } from "./scheduling";
+import { INITIAL_SLOTS } from "./scheduling";
 import {
   COMPANY_STRESS_HISTORY,
   DEPARTMENT_STRESS_HISTORY,
@@ -159,37 +161,41 @@ export class MockDataProvider implements DataProvider {
     const sessions = await this.getProfessionalSessions(professionalId);
 
     /*
-     * I pazienti si ricavano dalle sessioni e non da un elenco a parte: due
-     * liste che descrivono le stesse persone finirebbero per non coincidere, ed
-     * è esattamente il difetto che il §10.D chiede di chiudere — oggi la KPI
-     * dice 18 pazienti e la pagina ne elenca 6.
+     * I pazienti si ricavano dalle sedute e non da un elenco a parte: due liste
+     * che descrivono le stesse persone finirebbero per non coincidere, ed è
+     * esattamente il difetto che il §10.D chiede di chiudere — oggi la KPI dice
+     * 18 pazienti e la pagina ne elenca 6.
      */
-    const byPatient = new Map<string, PatientSummary>();
+    const byPatient = new Map<string, ProfessionalSession[]>();
     for (const session of sessions) {
-      const summary = byPatient.get(session.patientId) ?? {
-        patientId: session.patientId,
-        patientInitials: session.patientInitials,
-        sessionsCompleted: 0,
-        lastSessionAt: null,
-        nextSessionAt: null,
-      };
+      byPatient.set(session.patientId, [
+        ...(byPatient.get(session.patientId) ?? []),
+        session,
+      ]);
+    }
 
-      if (session.status === "completed") {
-        summary.sessionsCompleted += 1;
-        summary.lastSessionAt = session.start;
-      }
-      if (session.status === "scheduled" && summary.nextSessionAt === null) {
-        summary.nextSessionAt = session.start;
-      }
+    const summaries: PatientSummary[] = [];
+    for (const [patientId, mine] of byPatient) {
+      // l'elenco conta i pazienti **attivi**, ed è la stessa definizione che la
+      // KPI usa perché è lo stesso calcolo
+      if (!isActivePatient(mine)) continue;
 
-      byPatient.set(session.patientId, summary);
+      const completed = mine.filter((session) => session.status === "completed");
+      summaries.push({
+        patientId,
+        patientInitials: mine[0].patientInitials,
+        lastSessionAt: completed[completed.length - 1]?.start ?? null,
+        nextSessionAt:
+          mine.find((session) => session.status === "scheduled")?.start ?? null,
+        entitlement: entitlementFor(patientId),
+      });
     }
 
     /*
      * L'ordine è per prossimo appuntamento: è la domanda che si fa chi apre
      * l'elenco. Chi non ne ha uno va in fondo invece di sparire.
      */
-    return [...byPatient.values()].sort((a, b) => {
+    return summaries.sort((a, b) => {
       if (a.nextSessionAt === null) return 1;
       if (b.nextSessionAt === null) return -1;
       return a.nextSessionAt.getTime() - b.nextSessionAt.getTime();
@@ -227,8 +233,14 @@ export class MockDataProvider implements DataProvider {
     return Promise.resolve(LAURA);
   }
 
+  /*
+   * Il contatore di Laura è il conto delle sue sedute erogate, non un numero a
+   * parte: è la stessa funzione che alimenta il co-payment dell'elenco pazienti
+   * (§5.5). In M3 la prenotazione lo farà salire come conseguenza dell'aggiunta
+   * di una seduta, invece che come seconda scrittura.
+   */
   getEntitlement(): Promise<SessionEntitlement> {
-    return Promise.resolve(INITIAL_ENTITLEMENT);
+    return Promise.resolve(entitlementFor(PORTAL_PATIENT_EMPLOYEE_ID));
   }
 
   /*

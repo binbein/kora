@@ -484,10 +484,20 @@ export type SessionNote = {
 export type PatientSummary = {
   patientId: string;
   patientInitials: string;
-  sessionsCompleted: number;
-  /** `null` quando è un paziente nuovo che non ha ancora fatto sessioni */
+  /** `null` quando è un paziente nuovo che non ha ancora fatto sedute */
   lastSessionAt: Date | null;
   nextSessionAt: Date | null;
+  /**
+   * Quante sedute ha consumato sul cap del suo piano, e quanto costa la
+   * successiva se il cap è esaurito.
+   *
+   * È lo stesso tipo che porta il contatore del dipendente, e non per comodità:
+   * sono lo stesso fatto visto dai due lati del marketplace. Il cap annuale con
+   * co-payment è il meccanismo su cui il Business Plan regge il margine (§9), e
+   * un paziente che lo supera senza che la schermata lo dica contraddice il
+   * documento che l'investitore ha in mano.
+   */
+  entitlement: SessionEntitlement;
 };
 
 /**

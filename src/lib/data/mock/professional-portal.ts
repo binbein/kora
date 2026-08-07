@@ -4,8 +4,10 @@ import type {
   Payout,
   ProfessionalEarnings,
   ProfessionalSession,
+  SessionEntitlement,
   SessionType,
 } from "../types";
+import { COMPANY } from "./company";
 import { DEMO_TODAY } from "./demo-date";
 import { FULL_CAPACITY, PROFESSIONALS } from "./people";
 import { INITIAL_SLOTS, SESSION_DURATION_MINUTES } from "./scheduling";
@@ -14,17 +16,17 @@ import { INITIAL_SLOTS, SESSION_DURATION_MINUTES } from "./scheduling";
  * L'agenda della Dr.ssa Meier (CLAUDE.md §10.D).
  *
  * È il portale della professionista che il dipendente prenota in §10.B, quindi
- * **le sessioni di Laura sono queste sessioni**, non una seconda lista: la home
- * del dipendente e il calendario della professionista proiettano lo stesso
- * record. È anche ciò che rende reggibile, il giorno in cui M3 costruisce la
+ * **le sedute di Laura sono queste sedute**, non una seconda lista: la home del
+ * dipendente e il calendario della professionista proiettano lo stesso record.
+ * È anche ciò che rende reggibile, il giorno in cui M3 costruisce la
  * prenotazione, la prova del §10.D — una prenotazione nuova entra qui dentro e
  * compare da tutti e due i lati perché è una cosa sola.
  *
- * L'agenda non è scritta riga per riga: ogni paziente ha il suo slot
- * settimanale ricorrente, che è come funziona davvero un percorso di terapia, e
- * le sessioni si generano da lì. Una lista scritta a mano si riconosce — gli
- * orari finiscono tutti tondi o tutti diversi — e andrebbe riscritta da capo
- * per cambiare un solo parametro.
+ * L'agenda non è scritta riga per riga: ogni paziente ha il suo slot settimanale
+ * ricorrente, che è come funziona davvero un percorso di terapia, e le sedute si
+ * generano da lì. Una lista scritta a mano si riconosce — gli orari finiscono
+ * tutti tondi o tutti diversi — e andrebbe riscritta da capo per cambiare un
+ * solo parametro.
  */
 
 export const PORTAL_PROFESSIONAL_ID = "meier";
@@ -43,48 +45,64 @@ type PatientSlot = {
   /**
    * Da quante settimane dura il percorso. Negativo = il primo incontro deve
    * ancora avvenire, ed è così che si ottiene un paziente nuovo senza scrivere
-   * "nuovo" da nessuna parte: non ha sessioni erogate perché non ne ha fatte.
+   * "nuovo" da nessuna parte: non ha sedute erogate perché non ne ha fatte.
    */
-  weeksInTherapy: number;
+  fromWeeksAgo: number;
+  /** Quante settimane fa il percorso si è chiuso. Assente = ancora in corso. */
+  untilWeeksAgo?: number;
 };
 
 /*
- * I sei percorsi in corso. Le iniziali sono quelle che la demo ereditata usava
- * già; `L.B.` è Laura Bernasconi, il che chiude il cerchio fra le due aree.
+ * I percorsi della Dr.ssa Meier.
  *
- * Gli orari non si sovrappongono mai e stanno tutti in giornata lavorativa. La
- * durata dei percorsi è volutamente diversa: sei pazienti iniziati la stessa
- * settimana sarebbero un'agenda generata da un ciclo, non uno studio.
+ * IL CAP DEL PIANO DECIDE LA FORMA DELL'AGENDA, e non è un dettaglio del
+ * listino: il Plus include 10 sedute all'anno (§9), quindi sei pazienti valgono
+ * al massimo 60 sedute l'anno, poco più di una a settimana. Un'agenda da cinque
+ * sedute settimanali non descrive sei percorsi lunghi — descrive **molti
+ * percorsi brevi che si avvicendano**, ed è così che va costruita.
+ *
+ * Da qui i tre percorsi già conclusi: non compaiono nell'elenco pazienti, che
+ * conta gli attivi, ma i loro compensi restano nello storico dei pagamenti, ed è
+ * lì che spiegano i mesi in cui la Dr.ssa Meier lavorava con altre persone.
+ * Nessuno dei tre finisce esattamente sul cap: un percorso si chiude quando il
+ * lavoro è fatto, non solo quando finiscono le sedute incluse, e tre corsi che
+ * si fermano tutti a 10 si leggerebbero come generati.
+ *
+ * Due pazienti stanno **sopra** il cap, e la schermata lo dice con il
+ * co-payment: è il meccanismo su cui il Business Plan regge il margine, e
+ * mostrarlo a schermo vale più della riga che costa.
  */
 const PATIENTS: PatientSlot[] = [
-  { patientId: "gr", initials: "G.R.", weekday: 1, hour: 10, minute: 0, weeksInTherapy: 30 },
-  { patientId: "mb", initials: "M.B.", weekday: 1, hour: 14, minute: 0, weeksInTherapy: 18 },
-  { patientId: "ek", initials: "E.K.", weekday: 2, hour: 11, minute: 0, weeksInTherapy: -1 },
-  { patientId: "sc", initials: "S.C.", weekday: 3, hour: 16, minute: 0, weeksInTherapy: 24 },
+  { patientId: "gr", initials: "G.R.", weekday: 1, hour: 10, minute: 0, fromWeeksAgo: 10 },
+  { patientId: "mb", initials: "M.B.", weekday: 1, hour: 14, minute: 0, fromWeeksAgo: 8 },
+  { patientId: "ek", initials: "E.K.", weekday: 2, hour: 11, minute: 0, fromWeeksAgo: -1 },
+  { patientId: "sc", initials: "S.C.", weekday: 3, hour: 16, minute: 0, fromWeeksAgo: 12 },
   {
     patientId: PORTAL_PATIENT_EMPLOYEE_ID,
     initials: "L.B.",
     weekday: 4,
     hour: 17,
     minute: 30,
-    // tre sessioni erogate e la quarta domani: è il 3/10 del §8, e il contatore
+    // tre sedute erogate e la quarta domani: è il 3/10 del §8, e il contatore
     // del dipendente non è un numero a parte ma il conto di queste
-    weeksInTherapy: 3,
+    fromWeeksAgo: 3,
   },
-  { patientId: "at", initials: "A.T.", weekday: 5, hour: 9, minute: 0, weeksInTherapy: 12 },
+  { patientId: "at", initials: "A.T.", weekday: 5, hour: 9, minute: 0, fromWeeksAgo: 6 },
+
+  // percorsi conclusi: fuori dall'elenco pazienti, dentro lo storico compensi
+  { patientId: "df", initials: "D.F.", weekday: 2, hour: 15, minute: 0, fromWeeksAgo: 29, untilWeeksAgo: 22 },
+  { patientId: "pm", initials: "P.M.", weekday: 3, hour: 9, minute: 30, fromWeeksAgo: 24, untilWeeksAgo: 16 },
+  { patientId: "rt", initials: "R.T.", weekday: 5, hour: 14, minute: 0, fromWeeksAgo: 17, untilWeeksAgo: 12 },
 ];
 
 /**
- * Sessioni annullate, indicate come settimane prima di oggi sullo slot del
+ * Sedute annullate, indicate come settimane prima di oggi sullo slot del
  * paziente. Una cancellazione è un fatto isolato, non una regola: si dichiara,
  * ma la data continua a derivarsi.
  */
 const CANCELLATIONS: { patientId: string; weeksAgo: number }[] = [
   { patientId: "at", weeksAgo: 2 },
 ];
-
-/** Sessioni a settimana secondo gli slot: il regime che la Dr.ssa Meier tiene. */
-export const SESSIONS_PER_WEEK = PATIENTS.length;
 
 /** Il mese che il portale riepiloga: quello del giorno della demo. */
 export const PORTAL_MONTH = new Date(
@@ -93,13 +111,17 @@ export const PORTAL_MONTH = new Date(
   1,
 );
 
-/** L'ultimo giorno coperto dall'agenda: la fine del mese di riferimento. */
-const HORIZON = new Date(
-  PORTAL_MONTH.getFullYear(),
-  PORTAL_MONTH.getMonth() + 1,
-  0,
-  23,
-  59,
+/*
+ * L'agenda arriva due settimane oltre la fine del mese.
+ *
+ * Il riepilogo compensi guarda il mese, il calendario guarda la settimana, e i
+ * pazienti guardano il prossimo appuntamento: fermando le sedute al 30
+ * settembre, chi ha la seduta successiva in ottobre comparirebbe nell'elenco
+ * senza una prossima data, come se il percorso fosse finito.
+ */
+const HORIZON = addDays(
+  new Date(PORTAL_MONTH.getFullYear(), PORTAL_MONTH.getMonth() + 1, 0),
+  14,
 );
 
 /** La ricorrenza di un paziente nella settimana spostata di `weekOffset`. */
@@ -119,11 +141,12 @@ function buildSessions(): ProfessionalSession[] {
   const sessions: ProfessionalSession[] = [];
 
   for (const slot of PATIENTS) {
-    let emitted = 0;
+    const lastWeek = slot.untilWeeksAgo === undefined ? null : -slot.untilWeeksAgo;
 
     for (
-      let weekOffset = -slot.weeksInTherapy;
-      occurrence(slot, weekOffset) <= HORIZON;
+      let weekOffset = -slot.fromWeeksAgo;
+      occurrence(slot, weekOffset) <= HORIZON &&
+      (lastWeek === null || weekOffset <= lastWeek);
       weekOffset += 1
     ) {
       const start = occurrence(slot, weekOffset);
@@ -132,26 +155,6 @@ function buildSessions(): ProfessionalSession[] {
           entry.patientId === slot.patientId &&
           occurrence(slot, -entry.weeksAgo).getTime() === start.getTime(),
       );
-
-      /*
-       * Il tipo si deriva dalla posizione nel percorso: il primo incontro è una
-       * prima visita, e la sessione che riprende dopo un'assenza è un
-       * follow-up. Scriverlo sul singolo record vorrebbe dire poterlo
-       * contraddire — un paziente con due prime visite, o con la prima visita a
-       * metà percorso.
-       */
-      const followsCancellation = CANCELLATIONS.some(
-        (entry) =>
-          entry.patientId === slot.patientId &&
-          occurrence(slot, -entry.weeksAgo + 1).getTime() === start.getTime(),
-      );
-      const type: SessionType = cancelled
-        ? "session"
-        : emitted === 0
-          ? "first_visit"
-          : followsCancellation
-            ? "follow_up"
-            : "session";
 
       sessions.push({
         id: `session-${slot.patientId}-${start.getTime()}`,
@@ -164,36 +167,111 @@ function buildSessions(): ProfessionalSession[] {
           : start < DEMO_TODAY
             ? "completed"
             : "scheduled",
-        type,
-        // la nota si scrive dopo la seduta, quindi l'ultima erogata di ogni
-        // paziente non ce l'ha ancora: è quella su cui il professionista sta per
-        // scrivere, ed è anche l'unico modo perché il pulsante "aggiungi nota"
-        // esista davvero invece di essere sempre "nota"
+        // il tipo si deriva sotto, quando la lista è completa e ordinata
+        type: "session",
         hasNote: false,
         ...(cancelled ? { cancellationReasonKey: "by_patient" as const } : {}),
       });
-
-      if (!cancelled) emitted += 1;
     }
   }
 
   const sorted = sessions.sort((a, b) => a.start.getTime() - b.start.getTime());
 
   for (const session of sorted) {
-    if (session.status !== "completed") continue;
-    session.hasNote = sorted.some(
-      (other) =>
-        other.patientId === session.patientId &&
-        other.status === "completed" &&
-        other.start > session.start,
+    const mine = sorted.filter(
+      (other) => other.patientId === session.patientId && other.status !== "cancelled",
     );
+
+    /*
+     * Il tipo si deriva dalla posizione nel percorso: il primo incontro è una
+     * prima visita, e la seduta che riprende dopo un'assenza è un follow-up.
+     * Scriverlo sul singolo record vorrebbe dire poterlo contraddire — un
+     * paziente con due prime visite, o con la prima visita a metà percorso.
+     */
+    if (session.status !== "cancelled") {
+      const previous = mine[mine.indexOf(session) - 1];
+      const gapWeeks =
+        previous === undefined
+          ? 0
+          : Math.round(
+              (session.start.getTime() - previous.start.getTime()) /
+                (7 * 24 * 60 * 60 * 1000),
+            );
+      const type: SessionType =
+        previous === undefined
+          ? "first_visit"
+          : gapWeeks > 1
+            ? "follow_up"
+            : "session";
+      session.type = type;
+    }
+
+    /*
+     * La nota si scrive dopo la seduta, quindi l'ultima erogata di ogni paziente
+     * non ce l'ha ancora: è quella su cui il professionista sta per scrivere, ed
+     * è anche l'unico modo perché il pulsante "aggiungi nota" esista davvero
+     * invece di essere sempre "nota".
+     */
+    if (session.status === "completed") {
+      session.hasNote = sorted.some(
+        (other) =>
+          other.patientId === session.patientId &&
+          other.status === "completed" &&
+          other.start > session.start,
+      );
+    }
   }
 
   return sorted;
 }
 
-/** Tutte le sessioni della Dr.ssa Meier, dalla più vecchia alla più recente. */
+/** Tutte le sedute della Dr.ssa Meier, dalla più vecchia alla più recente. */
 export const PORTAL_SESSIONS: ProfessionalSession[] = buildSessions();
+
+/*
+ * PAZIENTE ATTIVO: ha una seduta in programma, oppure ne ha avuta una nelle
+ * ultime sei settimane.
+ *
+ * È una regola di dominio che il §8 non copre, quindi va dichiarata: "pazienti
+ * attivi" è una KPI, e il backend dovrà calcolarla allo stesso modo. Se la
+ * definizione vivesse solo qui, in produzione ne nascerebbe una seconda e le due
+ * schermate direbbero numeri diversi.
+ *
+ * Le sei settimane servono a non far sparire dall'elenco chi ha saltato un paio
+ * di sedute: un percorso in pausa non è un percorso chiuso, e toglierlo dalla
+ * lista è il modo in cui un professionista perde di vista qualcuno.
+ */
+export const ACTIVE_PATIENT_WEEKS = 6;
+
+export function isActivePatient(sessions: ProfessionalSession[]): boolean {
+  const since = addDays(startOfWeek(DEMO_TODAY), -ACTIVE_PATIENT_WEEKS * 7);
+  return sessions.some(
+    (session) =>
+      session.status === "scheduled" ||
+      (session.status === "completed" && session.start >= since),
+  );
+}
+
+/*
+ * IL DIRITTO ALLE SEDUTE È DERIVATO, mai scritto: `used` è il conto delle sedute
+ * erogate, e non un secondo numero pinnato allo stesso valore.
+ *
+ * È la stessa funzione che alimenta il contatore del dipendente e la riga
+ * "10 incluse + N a CHF 28" dell'elenco pazienti: sono lo stesso calcolo, quindi
+ * devono essere lo stesso codice (§5.5). E in M3, quando la prenotazione
+ * aggiungerà una seduta, il contatore salirà come conseguenza invece che come
+ * seconda scrittura.
+ */
+export function entitlementFor(patientId: string): SessionEntitlement {
+  return {
+    used: PORTAL_SESSIONS.filter(
+      (session) =>
+        session.patientId === patientId && session.status === "completed",
+    ).length,
+    total: COMPANY.plan.sessionsPerYear,
+    extraSessionPrice: COMPANY.plan.extraSessionPrice,
+  };
+}
 
 function sameMonth(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
@@ -205,15 +283,33 @@ function deliveredIn(month: Date): ProfessionalSession[] {
   );
 }
 
+/*
+ * Il regime tenuto: media delle sedute erogate nelle quattro settimane piene
+ * precedenti quella corrente.
+ *
+ * Si deriva e non si conta sugli slot, perché i percorsi si avvicendano: un
+ * numero fisso resterebbe fermo mentre l'agenda cambia. La settimana corrente
+ * resta fuori perché non è finita, e includerla farebbe sempre sembrare il
+ * regime più basso di quello che è.
+ */
+export const SESSIONS_PER_WEEK = Math.round(
+  PORTAL_SESSIONS.filter(
+    (session) =>
+      session.status === "completed" &&
+      session.start >= addDays(startOfWeek(DEMO_TODAY), -28) &&
+      session.start < startOfWeek(DEMO_TODAY),
+  ).length / 4,
+);
+
 /**
  * Riepilogo compensi di un mese.
  *
- * Conta solo le sessioni **erogate**: quelle in programma non sono un compenso
+ * Conta solo le sedute **erogate**: quelle in programma non sono un compenso
  * maturato, ed è la differenza fra un portale credibile e uno che promette soldi
  * non ancora guadagnati.
  *
  * Non produce le righe settimanali: la settimana è un raggruppamento di
- * presentazione e si costruisce dalle stesse sessioni in `lib/earnings.ts`, così
+ * presentazione e si costruisce dalle stesse sedute in `lib/earnings.ts`, così
  * che "le righe sommano al totale" sia un'identità e non un controllo.
  */
 export function monthlyEarnings(
@@ -242,9 +338,9 @@ export function monthlyEarnings(
  * Lo storico pagamenti, dal mese in corso all'indietro.
  *
  * Kora paga entro il 5 del mese successivo, quindi il mese in corso è sempre in
- * attesa e i precedenti sono pagati. I mesi senza sessioni non compaiono: una
- * riga da CHF 0 non è un pagamento mancato, è un mese in cui non si è lavorato,
- * e in un elenco di compensi si legge come un errore.
+ * attesa e i precedenti sono pagati. I mesi senza sedute non compaiono: una riga
+ * da CHF 0 non è un pagamento mancato, è un mese in cui non si è lavorato, e in
+ * un elenco di compensi si legge come un errore.
  */
 export function payoutHistory(feePerSession: number): Payout[] {
   const payouts: Payout[] = [];
@@ -283,7 +379,7 @@ assertInDev(
 );
 
 /*
- * Due sessioni alla stessa ora sono un doppio appuntamento: a schermo entrano
+ * Due sedute alla stessa ora sono un doppio appuntamento: a schermo entrano
  * nella stessa cella della griglia e una delle due sparisce senza che nessuno
  * se ne accorga.
  */
@@ -292,29 +388,24 @@ const startTimes = PORTAL_SESSIONS.filter(
 ).map((session) => session.start.getTime());
 assertInDev(
   new Set(startTimes).size === startTimes.length,
-  "Due sessioni della Dr.ssa Meier cadono alla stessa ora.",
+  "Due sedute della Dr.ssa Meier cadono alla stessa ora.",
 );
 
 assertInDev(
   PORTAL_SESSIONS.every(
     (session) => session.start.getDay() !== 0 && session.start.getDay() !== 6,
   ),
-  "Una sessione della Dr.ssa Meier cade nel fine settimana.",
+  "Una seduta della Dr.ssa Meier cade nel fine settimana.",
 );
 
 /*
- * Il §8 dà a Laura 3 sessioni usate su 10. Il contatore del dipendente non è un
- * numero a parte: è il conto delle sue sessioni erogate, e se le due cose
+ * Il §8 dà a Laura 3 sedute usate su 10. Il contatore del dipendente non è un
+ * numero a parte: è il conto delle sue sedute erogate, e se le due cose
  * divergono è il dataset a essere sbagliato, non la KPI.
  */
-const lauraCompleted = PORTAL_SESSIONS.filter(
-  (session) =>
-    session.patientId === PORTAL_PATIENT_EMPLOYEE_ID &&
-    session.status === "completed",
-).length;
 assertInDev(
-  lauraCompleted === 3,
-  `Laura ha ${lauraCompleted} sessioni erogate, il §8 ne dichiara 3.`,
+  entitlementFor(PORTAL_PATIENT_EMPLOYEE_ID).used === 3,
+  `Laura ha ${entitlementFor(PORTAL_PATIENT_EMPLOYEE_ID).used} sedute erogate, il §8 ne dichiara 3.`,
 );
 
 const lauraNext = PORTAL_SESSIONS.find(
@@ -331,21 +422,60 @@ assertInDev(
 );
 
 /*
- * Le sessioni della demo sono una finestra sulla carriera del professionista,
- * non la carriera intera: il totale dichiarato sul profilo deve contenerle.
+ * NESSUN PAZIENTE SUPERA IL CAP SENZA CHE LA SCHERMATA LO DICA.
+ *
+ * Il cap annuale con co-payment è il meccanismo su cui il Business Plan regge il
+ * margine, quindi un conteggio che lo sfonda in silenzio non è un difetto
+ * interno: contraddice il documento che l'investitore ha in mano mentre guarda
+ * lo schermo. Chi sta sopra il cap deve comparire nell'elenco pazienti, che è
+ * l'unico posto in cui il co-payment si vede.
+ */
+for (const slot of PATIENTS) {
+  const entitlement = entitlementFor(slot.patientId);
+  if (entitlement.used <= entitlement.total) continue;
+  const mine = PORTAL_SESSIONS.filter(
+    (session) => session.patientId === slot.patientId,
+  );
+  assertInDev(
+    isActivePatient(mine),
+    `${slot.initials} ha ${entitlement.used} sedute sul cap di ${entitlement.total} ma non è un paziente attivo: il co-payment non comparirebbe da nessuna parte.`,
+  );
+}
+
+/*
+ * Le sedute della demo sono una finestra sulla carriera del professionista, non
+ * la carriera intera: il totale dichiarato sul profilo deve contenerle.
  */
 const meier = PROFESSIONALS.find((p) => p.id === PORTAL_PROFESSIONAL_ID);
 assertInDev(
   meier !== undefined &&
     meier.totalSessions >=
       PORTAL_SESSIONS.filter((session) => session.status === "completed").length,
-  "Il profilo della Dr.ssa Meier dichiara meno sessioni di quante ne contenga la sua agenda.",
+  "Il profilo della Dr.ssa Meier dichiara meno sedute di quante ne contenga la sua agenda.",
+);
+
+/*
+ * SEMPLIFICAZIONE DEL DATASET, NON DEL CONTRATTO: tutti i pazienti della Dr.ssa
+ * Meier sono dipendenti di Demo SA, quindi ogni sua seduta erogata è una delle
+ * 142 che il §8 attribuisce all'azienda.
+ *
+ * In produzione una professionista serve più aziende clienti e questo controllo
+ * è il primo a saltare — che è esattamente il suo mestiere: costringe a
+ * dichiarare l'estensione invece di lasciarla accadere. Il tipo non cambia in
+ * nessuno dei due scenari, perché il professionista riceve le iniziali e non
+ * vede mai un dato aziendale.
+ */
+const COMPANY_SESSIONS_USED = 142;
+assertInDev(
+  PORTAL_SESSIONS.filter((session) => session.status === "completed").length <=
+    COMPANY_SESSIONS_USED,
+  `La Dr.ssa Meier eroga più sedute delle ${COMPANY_SESSIONS_USED} che il §8 attribuisce a Demo SA in dodici mesi.`,
 );
 
 /*
  * Un'ora non può essere insieme occupata e prenotabile: le due liste finiscono
- * nella stessa griglia, e il conflitto si vede solo a schermo e solo se
- * qualcuno guarda proprio quel giorno.
+ * nella stessa griglia, e il conflitto si vede solo a schermo e solo se qualcuno
+ * guarda proprio quel giorno.
  */
 for (const slot of INITIAL_SLOTS.filter(
   (entry) => entry.professionalId === PORTAL_PROFESSIONAL_ID,
@@ -356,6 +486,6 @@ for (const slot of INITIAL_SLOTS.filter(
         session.status !== "cancelled" &&
         session.start.getTime() === slot.start.getTime(),
     ),
-    `Uno slot prenotabile della Dr.ssa Meier cade su una sessione già in agenda.`,
+    `Uno slot prenotabile della Dr.ssa Meier cade su una seduta già in agenda.`,
   );
 }

@@ -1,28 +1,17 @@
 import { assertInDev } from "../guardrails";
-import type { AppointmentSlot, SessionEntitlement } from "../types";
-import { COMPANY } from "./company";
+import type { AppointmentSlot } from "../types";
 import { DEMO_TODAY } from "./demo-date";
 import { PROFESSIONALS } from "./people";
 
 /*
- * Il diritto alle sessioni di Laura e gli slot ancora prenotabili (CLAUDE.md §8).
+ * Gli slot ancora prenotabili (CLAUDE.md §8).
  *
- * Il cap e il prezzo della sessione extra vengono dal piano dell'azienda, non
- * ricopiati qui: il Plus dà 10 sessioni all'anno e CHF 28 per quelle in più, e
- * se domani Demo SA passa all'Executive il contatore segue da solo.
- *
- * Gli **appuntamenti** di Laura non stanno qui: sono le sessioni della Dr.ssa
- * Meier, in `professional-portal.ts`. Il giovedì 17:30 del §8 è un record solo,
- * proiettato da due lati — tenerne una copia per il dipendente e una per la
- * professionista significherebbe avere due verità sullo stesso appuntamento, che
- * è precisamente ciò che il §5.5 vieta.
+ * Qui non c'è né il diritto alle sedute di Laura né i suoi appuntamenti, e per
+ * la stessa ragione: sono entrambi conti sulle sedute della Dr.ssa Meier, che
+ * vivono in `professional-portal.ts`. Il giovedì 17:30 del §8 è un record solo,
+ * proiettato da due lati, e `used: 3` sarebbe un secondo numero pinnato sullo
+ * stesso fatto — che è precisamente ciò che il §5.5 vieta.
  */
-
-export const INITIAL_ENTITLEMENT: SessionEntitlement = {
-  used: 3,
-  total: COMPANY.plan.sessionsPerYear,
-  extraSessionPrice: COMPANY.plan.extraSessionPrice,
-};
 
 export const SESSION_DURATION_MINUTES = 50;
 
@@ -83,11 +72,6 @@ export const INITIAL_SLOTS: AppointmentSlot[] = PROFESSIONALS.flatMap(
 // ---------------------------------------------------------------------------
 // Guardrail (§5.6)
 // ---------------------------------------------------------------------------
-
-assertInDev(
-  INITIAL_ENTITLEMENT.used <= INITIAL_ENTITLEMENT.total,
-  `Laura ha usato ${INITIAL_ENTITLEMENT.used} sessioni su un cap di ${INITIAL_ENTITLEMENT.total}.`,
-);
 
 /*
  * Uno slot proponibile non può cadere nel fine settimana. Che non caschi su una
