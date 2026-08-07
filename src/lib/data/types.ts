@@ -330,12 +330,60 @@ export type EmployeeProfile = {
   healthProfile: HealthProfile;
 };
 
+/**
+ * I servizi che il piano cappa a un numero di sedute l'anno, cioè quelli per cui
+ * ha senso chiedere "quante ne ho usate".
+ *
+ * È un'unione stretta e non `AppointmentKind`: il medico virtuale del Plus è
+ * illimitato e il check-up si conta una volta l'anno, quindi per loro
+ * `SessionEntitlement` non direbbe niente di vero. In produzione l'unione si
+ * allarga se un piano cappa altro — l'Executive ha nutrizionista e workshop —
+ * ma un valore in più qui è un caso in più da gestire, e oggi non ha chiamanti.
+ */
+export type CappedServiceKind = "psychologist" | "coach";
+
+/**
+ * Nome da mostrare al diretto interessato. Sta qui per la stessa ragione di
+ * `professionalDisplayName`: l'ordine delle parti di un nome è una convenzione,
+ * non una scelta di layout, e cambiarla un giorno deve essere una modifica sola.
+ */
+export function employeeDisplayName(profile: EmployeeProfile): string {
+  return `${profile.firstName} ${profile.lastName}`;
+}
+
 /** Quante sessioni sono state usate sul cap del piano, e quanto costa la successiva. */
 export type SessionEntitlement = {
   used: number;
   total: number;
-  /** CHF per sessione oltre il cap, dal piano */
-  extraSessionPrice: number;
+  /**
+   * CHF per sessione oltre il cap, dal piano.
+   *
+   * **Assente quando il piano non dichiara un prezzo oltre il cap**, ed è il
+   * criterio `?` di `docs/CONTRATTO-DATI.md` §2: il campo non pertiene, non è
+   * uno slot vuoto. Il §9 dà l'importo per lo psicologo (CHF 28 sul Plus) e non
+   * ne dà nessuno per il coach, quindi la seduta di coaching successiva alla
+   * quarta non è acquistabile a un prezzo che conosciamo — e inventarlo
+   * violerebbe il §2.4. La schermata salta la riga invece di stampare un
+   * "gratis" che il Business Plan non promette.
+   */
+  extraSessionPrice?: number;
+};
+
+/**
+ * Un consulto di medico virtuale già avvenuto (§8, §10.B).
+ *
+ * Esiste perché il Profilo dice quanti ne hai fatti quest'anno, e quel numero si
+ * **conta da questa lista** invece di essere uno scalare accanto: due numeri che
+ * descrivono la stessa cosa devono essere lo stesso numero (§5.5).
+ *
+ * Porta la sola data di apertura, e non il contenuto della conversazione: la
+ * chat della demo è una simulazione dichiarata (disclaimer di M0) e non ha
+ * trascritti da conservare. In produzione questo tipo cresce — trascritto,
+ * medico che ha risposto, esito — e cresce qui, non in una seconda entità.
+ */
+export type VirtualDoctorConsult = {
+  id: string;
+  startedAt: Date;
 };
 
 // ---------------------------------------------------------------------------
@@ -397,6 +445,19 @@ export type Professional = {
 export function professionalDisplayName(professional: Professional): string {
   const { title, firstName, lastName } = professional;
   return [title, firstName, lastName].filter(Boolean).join(" ");
+}
+
+/**
+ * Quale dei due servizi cappati dal piano eroga un professionista.
+ *
+ * Si deriva dalla specializzazione invece di essere un campo suo: sono lo stesso
+ * fatto, e un campo in più potrebbe smettere di concordare con la specialità che
+ * la card mostra accanto. Il coaching è coaching, il resto è psicologia — ed è
+ * la ragione per cui la schermata di prenotazione non può presentare i quattro
+ * professionisti in un elenco solo senza dire chi fa cosa.
+ */
+export function serviceOf(professional: Professional): CappedServiceKind {
+  return professional.specialty === "coaching" ? "coach" : "psychologist";
 }
 
 export type ProfessionalFilter = {
@@ -561,12 +622,24 @@ export type Payout = {
 // Check-up e prevenzione
 // ---------------------------------------------------------------------------
 
+/**
+ * Una struttura della rete convenzionata (§8). È **una sola rete**: il portale
+ * dipendente e il back-office descrivono queste stesse strutture.
+ *
+ * `status` sta sul dato e non nella schermata, ed è la ragione per cui il tipo
+ * ce l'ha: il codice ereditato offriva al dipendente una struttura che l'admin
+ * dichiarava non ancora convenzionata, perché ognuna delle due pagine teneva il
+ * proprio elenco. Una struttura `pending` si vede nel back-office, che segue i
+ * convenzionamenti in corso, e non si può prenotare.
+ */
 export type CheckupProvider = {
   id: string;
   name: string;
   city: string;
   address: string;
+  /** Distanza dalla sede dell'azienda, che è da dove parte chi prenota */
   distanceKm: number;
+  status: "active" | "pending";
 };
 
 export type CheckupBooking = {
@@ -574,6 +647,64 @@ export type CheckupBooking = {
   providerId: string;
   start: Date;
   status: AppointmentStatus;
+};
+
+/**
+ * Se il dipendente può prenotare un check-up, e da quando (§10.B).
+ *
+ * Sta sul contratto e non nella schermata perché la cadenza è una regola del
+ * piano — il Plus ne dà uno all'anno (§9) — e una pagina che la ricalcolasse
+ * potrebbe smettere di concordare con quella del piano. È la stessa ragione per
+ * cui `SessionEntitlement` non è un conto tenuto dalla UI.
+ *
+ * `lastCompleted` è `null` per chi non ne ha ancora fatto nessuno;
+ * `availableFrom` è `null` quando il piano non comprende il check-up, che è il
+ * caso dell'Essenziale — e non è la stessa cosa di una data lontana.
+ */
+export type CheckupEligibility = {
+  lastCompleted: CheckupBooking | null;
+  availableFrom: Date | null;
+};
+
+export type CheckupMeasurementKey =
+  | "blood_pressure"
+  | "cholesterol"
+  | "ecg"
+  | "bmi"
+  | "stress_risk";
+
+/**
+ * Una misura del referto.
+ *
+ * `value` è una **stringa e resta tale**: "120/80 mmHg" e "Ritmo sinusale" sono
+ * letture con la loro unità, come il centro le ha refertate, non grandezze che
+ * il client debba riformattare. La regola del §11 — ogni numero a schermo passa
+ * da `format.ts` — riguarda importi, percentuali e date, cioè ciò che cambia
+ * forma con il locale; una pressione arteriosa no, e passarla da un
+ * formattatore vorrebbe dire deciderne noi la resa clinica.
+ */
+export type CheckupMeasurement = {
+  key: CheckupMeasurementKey;
+  value: string;
+  status: "normal" | "attention";
+};
+
+/**
+ * Il referto di un check-up eseguito (§10.B).
+ *
+ * È l'unico dato sanitario individuale del dominio, e vive **solo** su questo
+ * tipo: nessun metodo dell'area HR o admin lo restituisce, esattamente come per
+ * `SessionNote`. `EmployeeDirectoryEntry` porta lo stato del check-up e non il
+ * suo esito, e la garanzia è la forma del tipo, non una scelta di rendering.
+ *
+ * Nella demo i valori sono quelli già a schermo e dichiaratamente dimostrativi:
+ * la schermata lo dice con il disclaimer di M0.
+ */
+export type CheckupReport = {
+  bookingId: string;
+  measurements: CheckupMeasurement[];
+  /** Chiave della spiegazione in `it.ts` */
+  explanationKey: string;
 };
 
 /**
@@ -588,6 +719,18 @@ export type AiPlanArea = {
   tipKeys: string[];
 };
 
+/**
+ * Il piano di prevenzione (§10.B).
+ *
+ * Le aree sono le cinque di `HealthArea` e nient'altro: il piano commenta lo
+ * stato di salute, e il check-up è un servizio che si prenota, non un'area su
+ * cui si progredisce. Nel codice ereditato era la sesta voce, con la sua barra
+ * di avanzamento allo 0% — cioè un servizio travestito da abitudine.
+ *
+ * Le due date **si derivano** dall'iscrizione del dipendente e dalla cadenza del
+ * piano (`Plan.aiPlanEveryMonths`), e non si scrivono: una data scritta
+ * invecchia da sola mentre `DEMO_TODAY` resta l'unica manopola (§5.4).
+ */
 export type AiHealthPlan = {
   id: string;
   generatedAt: Date;

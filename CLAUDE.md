@@ -299,17 +299,27 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
   l'intestazione direbbe un nome e il corpo un altro nella stessa schermata. E la
   definizione di "finito" del §10.D è scritta per l'area — le righe settimanali che
   sommano al mese, i pazienti che coincidono con la KPI — non per una schermata.
-- **M3 — Area per area, più il calcolatore.** HR → dipendente → **calcolatore
-  ROI pubblico (§10.A.2)** → admin; il professionista è già migrato in M2 e non
-  si ritocca. Il calcolatore passa qui da M4 per decisione dei founder del
-  07.08.2026: è il terzo dei tre pezzi che il pitch ordina per importanza —
-  dashboard HR, percorso dipendente, calcolatore — il motore `roi-model.ts` è
-  trapiantato e verificato dai tempi di M1, e il back-office non ha valore
-  narrativo. Ogni area viene
+- **M3 — Area per area.** HR → dipendente → **area pubblica** → admin; il
+  professionista è già migrato in M2 e non si ritocca. Ogni area viene
   migrata **e** rinarrata nello stesso passaggio: dati dal provider, stringhe in
   i18n, importi da `format.ts`, microcopy nel registro giusto. Toccare due volte la
   stessa schermata è lavoro sprecato. **Chiude cancellando `reference/`**: se
   serve ancora qualcosa da lì, l'area non è finita.
+
+  Il calcolatore ROI passa qui da M4 per decisione dei founder del 07.08.2026:
+  è il terzo dei tre pezzi che il pitch ordina per importanza — dashboard HR,
+  percorso dipendente, calcolatore — il motore `roi-model.ts` è trapiantato e
+  verificato dai tempi di M1, e il back-office non ha valore narrativo.
+
+  **Il terzo blocco è l'area pubblica intera, non il solo `/roi`** (founder,
+  07.08.2026). Il calcolatore è la parte che il pitch mostra, ma le altre tre
+  rotte della §10.A sono l'unica cosa che M3 lascerebbe indietro senza che
+  nessun blocco la reclami — e una di loro ha un difetto che aspetta proprio
+  questo passaggio: i **tre disallineamenti delle card prezzi** con il §9,
+  aperti da M0, si chiudono facendo leggere le card da `Plan` invece di
+  elencarne le voci a mano in JSX, e da lì la card non può più divergere dal
+  piano. Landing e richiesta demo seguono la stessa regola dell'area: dati dal
+  provider, stringhe in i18n.
 - **M4 — Il report scaricabile** (§10.C.3). Il calcolatore ROI, che stava qui,
   è passato in M3.
 - **M5 — Verso la produzione.** Differibile, non blocca niente: guardie di rotta per
@@ -553,11 +563,12 @@ l'area admin**, che di grafici ne ha cinque e non è ancora migrata.
   incoraggiante ma mai infantile. *"Buongiorno Laura"*, *"Il sonno merita
   attenzione"*.
 - Ovunque: **sentence case** (niente Title Case), niente punti esclamativi nel testo
-  di sistema, **niente emoji**. Ne resta una sola nel codice, il 👋 del saluto in
-  `EmployeeHome.jsx`: è l'unico punto in cui il registro consumer potrebbe
-  giustificarne una, e la decisione dei founder è aperta — sta in `PROGRESS.md`,
-  "Decisioni in sospeso". Il 💡 del riquadro prezzi è sparito in M0 con la riga che
-  lo conteneva.
+  di sistema, **niente emoji**. Nessuna eccezione: il 👋 del saluto nella home
+  dipendente era l'unico caso in cui il registro consumer avrebbe potuto
+  giustificarne una, e i founder hanno deciso il 07.08.2026 di **toglierlo** — il
+  calore lo fa il copy, e un'emoji che lo sostituisce è la scorciatoia che rende
+  infantile un registro che il §7 vuole caldo. Il 💡 del riquadro prezzi era già
+  sparito in M0 con la riga che lo conteneva.
 - **Un professionista parla come parlerebbe lui**, non come parla il prodotto: il
   medico virtuale dà del lei ed è coerente dall'inizio alla fine della
   conversazione. Il codice ereditato oscilla fra "lei" e "tu" nella stessa chat.
@@ -597,7 +608,38 @@ il reparto della storia: vanno sostituiti con questi.
 
 Persona dipendente: **Laura Bernasconi**, 34, Operations, profilo salute 78/100
 ("In buon equilibrio", area debole: sonno), 3/10 sessioni psicologo usate, 1/4
-sessioni coach, prossimo appuntamento Dr.ssa Meier giovedì 17:30.
+sessioni coach, **2 consulti di medico virtuale nell'anno**, check-up annuale
+**già fatto**, prossimo appuntamento Dr.ssa Meier giovedì 17:30.
+
+**Dei suoi quattro conteggi, uno solo è derivato e tre sono dichiarati**, ed è
+una distinzione da tenere in chiaro nel codice invece che scoprirla leggendo il
+dataset (§5.5):
+
+- **3/10 psicologo si deriva** dall'agenda della Dr.ssa Meier — è il conto delle
+  sedute erogate di Laura, la stessa funzione che alimenta il co-payment
+  dell'elenco pazienti. Il giovedì 17:30 è quello stesso record visto dal lato
+  dipendente.
+- **1/4 coach è dichiarato qui.** Dietro non c'è un'agenda: il portale
+  professionista è quello della Dr.ssa Meier, che è psicologa, e il Dr. Fontana
+  non ne ha uno. Il giorno in cui un'agenda coach esistesse, il numero si
+  deriverebbe da lì e questa riga sparirebbe — il dataset deve dire a chiare
+  lettere che oggi è un seme.
+- **2 consulti di medico virtuale** nell'anno di piano, e **il secondo è la chat
+  che la schermata mostra**, cioè quella aperta il giorno della demo. Senza
+  quella coincidenza il Profilo direbbe "2" mentre chi guarda è dentro il terzo,
+  e il conto sarebbe già vecchio nel momento in cui lo si legge. Il conteggio si
+  ricava dalla lista dei consulti, non è uno scalare: due numeri che descrivono
+  la stessa cosa devono essere lo stesso numero. I 2 stanno dentro i 118 consulti
+  aziendali dei dodici mesi, che su 82 iscritti fanno una media di 1.4.
+- **Il check-up è completato**, con referto di marzo. È la stessa cosa che
+  l'elenco dipendenti dell'HR dichiara della riga `L.B.`, ed è il vincolo che
+  tiene la storia unica sui tre lati: la home e il Profilo non possono dire
+  "disponibile", e la pagina check-up mostra il referto invece di riproporre una
+  prenotazione. Il prossimo si apre dodici mesi dopo, cioè fuori dalla demo.
+
+Nessuno dei quattro è un numero libero: il piano Plus dà 10 sedute di psicologo,
+4 di coach, consulti di medico virtuale illimitati con risposta entro 4 ore e un
+check-up annuale (§9).
 
 La narrazione (deve emergere dai grafici senza spiegazioni):
 
@@ -746,6 +788,13 @@ Rete convenzionata per i check-up — **Centro Medico Ardesia** (Lugano),
 **Clinica Zaffiro** (Lugano), **Centro Diagnostico Basalto** (Mendrisio). È **una
 sola rete**: il portale dipendente e il back-office elencano le stesse strutture con
 gli stessi indirizzi, non due elenchi scollegati.
+
+**Il Basalto è in convenzionamento, non ancora attivo**, ed è l'unico dei cinque:
+il back-office lo dichiara da sempre `pending` con zero prenotazioni, e il portale
+dipendente **non lo propone**. Lo stato sta sul dato della struttura, non nella
+schermata che la disegna, altrimenti la stessa rete si racconta in due modi — che
+è esattamente il difetto che il codice ereditato aveva, offrendo al dipendente una
+struttura che l'admin diceva non ancora convenzionata.
 
 Tre vincoli che vengono dalla verifica, non dal gusto:
 
@@ -937,7 +986,10 @@ approvazione** (§2.6); nessuna schermata esistente si elimina senza dirlo.
    mutation del provider.
 
 **Finita quando:** il calcolatore è corretto per qualsiasi N fra 20 e 1000, le
-quattro voci sommano al totale mostrato, e a N=100 escono i cinque numeri di §9.
+quattro voci sommano al totale mostrato, e a N=100 escono i cinque numeri di §9;
+e **le card prezzi leggono da `Plan`**, quindi nessuna delle loro voci può
+divergere dal §9 — è il modo in cui si chiudono i tre disallineamenti aperti da
+M0, non correggendo tre righe di JSX che la prossima passata riaprirebbe.
 
 ### B. Portale dipendente — `/employee` + 5 sottopagine
 Home, Psicologi, Medico virtuale, Check-up, Piano AI, Profilo.
@@ -952,11 +1004,22 @@ Home, Psicologi, Medico virtuale, Check-up, Piano AI, Profilo.
    Approvato dai founder il **06.08.2026** ai sensi del §2.6. È lavoro di M3, e qui
    si approva l'esistenza della schermata e basta: la resa si decide migrando l'area.
 
-**Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — il contatore
-sale, l'appuntamento compare in home, lo slot sparisce dalla disponibilità e compare
-nel calendario del professionista. Oggi la conferma si perde chiudendo il dialogo.
-Nessun vicolo cieco: ogni schermata ha una via d'uscita, e ogni voce del menu porta
-a una rotta che esiste.
+**Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — la parte in
+programma del contatore sale, l'appuntamento compare in home, lo slot sparisce dalla
+disponibilità e compare nel calendario del professionista. Oggi la conferma si perde
+chiudendo il dialogo. Nessun vicolo cieco: ogni schermata ha una via d'uscita, e ogni
+voce del menu porta a una rotta che esiste.
+
+**"Il contatore sale" non vuol dire che 3/10 diventa 4/10.** `used` è il conto delle
+sedute **erogate** (§5.5, e la tabella delle KPI di `docs/CONTRATTO-DATI.md` §3), e
+una prenotazione nasce `scheduled`: farlo salire sarebbe un secondo numero pinnato
+sullo stesso fatto, e direbbe al dipendente che ha consumato una seduta che non ha
+ancora fatto. A muoversi è la parte in programma, e la frase le tiene distinte:
+*"3 su 10 sessioni usate · 1 in programma"*. Deciso dai founder il 07.08.2026.
+
+Ne discendono due guardrail dell'area: dopo una prenotazione `used` è invariato, e
+**nessun numero dell'area HR si muove** — le sessioni consumate dell'azienda contano
+le erogate, e vengono dalla serie di utilizzo (§9), non dall'agenda.
 
 ### C. Portale HR — `/hr` + 4 sottopagine
 Dashboard, Dipendenti, Report, Fatturazione, Privacy.

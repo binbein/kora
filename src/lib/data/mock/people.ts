@@ -1,4 +1,8 @@
-import type { EmployeeProfile, FullCapacityReference, Professional } from "../types";
+import type {
+  EmployeeProfile,
+  FullCapacityReference,
+  Professional,
+} from "../types";
 import { DEMO_TODAY } from "./demo-date";
 
 /*

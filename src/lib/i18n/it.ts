@@ -46,6 +46,21 @@ export const it = {
     en: "English",
   },
 
+  /** Le cinque aree dell'assessment (§8), come etichette a sé. */
+  healthArea: {
+    sleep: "Sonno",
+    stress: "Stress",
+    activity: "Movimento",
+    nutrition: "Alimentazione",
+    mental: "Salute mentale",
+  },
+
+  healthSummary: {
+    balanced: "In buon equilibrio",
+    attention: "Da tenere d'occhio",
+    at_risk: "A rischio",
+  },
+
   sessionType: {
     first_visit: "Prima visita",
     session: "Seduta",
@@ -55,6 +70,358 @@ export const it = {
   cancellationReason: {
     by_patient: "Annullata dal paziente",
     by_professional: "Annullata dal professionista",
+  },
+
+  /*
+   * Percorso dipendente (§10.B). Registro consumer: seconda persona, caldo, mai
+   * infantile — e senza emoji, che il §7 non ammette nemmeno qui (decisione dei
+   * founder del 07.08.2026, che ha tolto il 👋 del saluto).
+   *
+   * È l'unica area che dà del tu. Il medico virtuale, che è una persona che
+   * parla, dà del lei anche dentro questa area: un professionista parla come
+   * parlerebbe lui, non come parla il prodotto (§7).
+   */
+  employee: {
+    nav: {
+      home: "Home",
+      psychologists: "Psicologi",
+      doctor: "Medico",
+      checkup: "Check-up",
+      aiPlan: "Piano AI",
+      profile: "Profilo",
+    },
+
+    /** "Demo SA · Plus" */
+    identity: "{company} · {plan}",
+
+    privacy:
+      "La tua azienda vede solo dati aggregati e anonimi. La tua salute resta tua.",
+
+    /** I due servizi che il piano cappa, come li chiama chi li usa. */
+    service: {
+      psychologist: "Psicologo",
+      coach: "Coach",
+    },
+
+    home: {
+      /** "Buongiorno Laura" */
+      greeting: "Buongiorno {name}",
+      subtitle: "La tua salute, in un unico posto.",
+
+      healthTitle: "Il tuo stato di salute",
+      scoreOutOf: "/100",
+      /*
+       * Cinque frasi complete, non "{area} merita attenzione": in italiano
+       * l'articolo cambia con la parola, e in tedesco cambia l'ordine. È il §2.7
+       * applicato al caso più piccolo che ci sia.
+       */
+      weakestArea: {
+        sleep: "Il sonno merita attenzione",
+        stress: "Lo stress merita attenzione",
+        activity: "Il movimento merita attenzione",
+        nutrition: "L'alimentazione merita attenzione",
+        mental: "La salute mentale merita attenzione",
+      },
+      weakestAreaHint:
+        "È l'area da cui parte il tuo piano di prevenzione.",
+
+      appointmentsTitle: "I tuoi prossimi appuntamenti",
+      appointmentsEmpty: "Non hai appuntamenti in programma.",
+      /** "giovedì 24.09.2026, alle 17:30" */
+      appointmentWhen: "{weekday} {date}, alle {time}",
+
+      /** "3 su 10 sessioni usate" */
+      sessions: "{used} su {total} sessioni usate",
+      /*
+       * Una prenotazione non fa salire le usate — quelle sono le sedute già
+       * fatte (§10.B) — quindi la parte in programma è una frase a sé, e la
+       * riga la usa solo quando c'è qualcosa in programma.
+       */
+      sessionsWithScheduled:
+        "{used} su {total} sessioni usate · {scheduled} in programma",
+      book: "Prenota una sessione",
+
+      quickAction: {
+        doctor: "Medico virtuale",
+        checkup: "Check-up annuale",
+        aiPlan: "Piano di prevenzione",
+        profile: "Profilo salute",
+      },
+      checkupDone: "Fatto",
+
+      planTitle: "Dal tuo piano di prevenzione",
+      planCta: "Vedi il piano",
+    },
+
+    /*
+     * Il check rapido (§8, §10.B): **una domanda, un tocco**. Cinque opzioni e
+     * un solo gesto — la frase è quella congelata del §8, e descrive il gesto,
+     * non il numero di scelte.
+     *
+     * La scala è quella del dominio, da 1 "molto bene" a 5 "molto male": le
+     * etichette stanno qui perché il valore è un dato e la parola è interfaccia.
+     */
+    rapidCheck: {
+      question: "Come ti senti oggi?",
+      hint: "Una domanda, un tocco. La tua risposta entra solo nella media del tuo reparto.",
+      option: {
+        1: "Molto bene",
+        2: "Bene",
+        3: "Così così",
+        4: "Non bene",
+        5: "Molto male",
+      },
+      done: "Grazie, registrato.",
+      doneHint: "Ti richiediamo come stai fra qualche giorno.",
+    },
+
+    /*
+     * La prenotazione. L'intestazione non dice "Psicologi" come la voce di menu,
+     * perché la schermata elenca anche il coach: dire una cosa sola sopra un
+     * elenco che ne contiene due è il difetto che il §5.5 chiama divergenza,
+     * applicato alle parole.
+     */
+    psychologists: {
+      title: "Parla con qualcuno",
+      subtitle:
+        "Psicologi e coach della rete Kora. Scegli chi ti segue e prenota quando ti è comodo.",
+      filter: {
+        psychologist: "Psicologi",
+        coach: "Coach",
+      },
+      empty: "Nessun professionista disponibile per questo servizio.",
+      /** "312 sedute erogate" */
+      totalSessions: "{n} sedute erogate",
+      book: "Prenota",
+
+      dialog: {
+        /** "Prenota con Dr.ssa Meier" */
+        title: "Prenota con {professional}",
+        chooseDay: "Scegli un giorno",
+        chooseTime: "Scegli un orario",
+        noSlots:
+          "Non ci sono orari liberi al momento. Riprova fra qualche giorno.",
+        summary: "Riepilogo",
+        /** "venerdì 25.09.2026, alle 10:00" */
+        summaryWhen: "{weekday} {date}, alle {time}",
+        included: "Sessione inclusa nel tuo piano",
+        /** "Le sessioni incluse sono finite: questa costa CHF 28" */
+        overCapWithPrice: "Le sessioni incluse sono finite: questa costa {price}",
+        /*
+         * Il §9 non dà un prezzo oltre il cap per il coaching, quindi non se ne
+         * offre una a pagamento: si dice che le incluse sono finite e si ferma
+         * la conferma, invece di far credere che sia gratis.
+         */
+        overCapWithoutPrice:
+          "Hai finito le sessioni incluse nel piano per questo servizio.",
+        confirm: "Conferma la prenotazione",
+        confirmedTitle: "Prenotazione confermata",
+        confirmedWith: "con {professional}",
+        confirmedNote:
+          "La trovi nella tua home. Ti arriva il link per il video via email.",
+        close: "Chiudi",
+      },
+    },
+
+    /*
+     * Il medico virtuale.
+     *
+     * **Due registri nella stessa schermata, ed è voluto.** L'intestazione, il
+     * campo e i piedi di pagina sono il prodotto che parla a Laura, quindi danno
+     * del tu; i messaggi sono il medico che parla, e un professionista parla
+     * come parlerebbe lui — dà del lei, dall'inizio alla fine (§7). Il codice
+     * ereditato oscillava fra i due dentro la stessa conversazione.
+     *
+     * Il medico **non ha un nome**: quello ereditato, "Dr. Andrea Fontana",
+     * prendeva il cognome del coach del §8 e ci attaccava un nome proprio
+     * inventato. Il servizio si presenta come servizio.
+     */
+    doctor: {
+      title: "Medico virtuale",
+      subtitle: "Descrivi i sintomi: un medico ti risponde.",
+      /** "Risposta entro 4 ore" — le ore vengono dal piano */
+      sla: "Risposta entro {hours} ore",
+      online: "In linea",
+      placeholder: "Descrivi i sintomi",
+      send: "Invia",
+      typing: "Il medico sta scrivendo",
+
+      /*
+       * Le parole chiave stanno qui accanto alla risposta perché sono lingua:
+       * un dizionario tedesco non cercherebbe "schiena". Il confronto è sul
+       * testo scritto da chi legge, quindi cambia con il dizionario attivo.
+       */
+      greeting:
+        "Buongiorno. Sono il medico di turno del servizio Kora. Mi dica pure: che disturbo la porta qui oggi?",
+      reply: {
+        back: {
+          keyword: "schiena",
+          text: "Mi dispiace per il dolore. Le faccio qualche domanda: il dolore scende lungo la gamba? Ha febbre o formicolii?",
+        },
+        head: {
+          keyword: "testa",
+          text: "Il mal di testa può avere cause diverse. È localizzato o diffuso? Sta prendendo farmaci in questo periodo?",
+        },
+        stress: {
+          keyword: "stress",
+          text: "Lo stress può manifestarsi in molti modi. Le consiglio di prenotare una sessione con uno psicologo dalla sezione dedicata. Nel frattempo posso aiutarla con i sintomi fisici.",
+        },
+        sleep: {
+          keyword: "sonno",
+          text: "I disturbi del sonno sono molto comuni. Da quanto tempo ha difficoltà? Si sveglia durante la notte o fatica ad addormentarsi?",
+        },
+      },
+      fallback:
+        "Capisco. Può descrivermi meglio il disturbo? Da quanto tempo lo avverte?",
+
+      disclaimer:
+        "Questa conversazione è una simulazione dimostrativa. Le risposte non sono un parere medico e non sostituiscono una visita. In caso di emergenza chiama il 144.",
+      privacy:
+        "Le conversazioni sono private e protette. La tua azienda non accede mai a queste informazioni.",
+    },
+
+    /*
+     * Il check-up. Laura l'ha già fatto (§8), quindi la schermata mostra il
+     * referto e dice quando si apre il prossimo, invece di riproporre una
+     * prenotazione: l'elenco dipendenti dell'HR dichiara `completed` per la sua
+     * riga, e due schermate che si contraddicono sono il difetto del §5.5.
+     */
+    checkup: {
+      title: "Check-up annuale",
+      subtitle: "Il check-up fisico incluso nel tuo piano.",
+
+      lastTitle: "Il tuo ultimo referto",
+      /** "Fatto il 15.03.2026 · Centro Medico Ardesia" */
+      lastDone: "Fatto il {date} · {provider}",
+      lastOpen: "Tocca per vederlo",
+
+      /** "Puoi prenotarne uno nuovo dal 15.03.2027." */
+      nextFrom: "Puoi prenotarne uno nuovo dal {date}.",
+
+      networkTitle: "I centri convenzionati",
+      networkHint:
+        "Sono le strutture in cui Kora prenota il tuo check-up, con i costi già coperti dal piano.",
+      /** "2.1 km" */
+      distance: "{km} km",
+      /** Sul pulsante, quando il prossimo check-up non è ancora aperto */
+      bookFrom: "Dal {date}",
+
+      report: {
+        /** "Referto del 15.03.2026" */
+        title: "Referto del {date}",
+        measurement: {
+          blood_pressure: "Pressione",
+          cholesterol: "Colesterolo",
+          ecg: "ECG",
+          bmi: "BMI",
+          stress_risk: "Rischio da stress",
+        },
+        status: {
+          normal: "Nella norma",
+          attention: "Da tenere d'occhio",
+        },
+        explanationTitle: "Cosa vuol dire",
+        /*
+         * La spiegazione copre **tutte** le misure fuori norma: commentarne una
+         * sola lascerebbe l'altra segnalata e senza risposta (§11).
+         */
+        explanation: {
+          laura:
+            "Il colesterolo è poco sopra il valore consigliato e il rischio da stress risulta moderato. Non è un'emergenza: segui il piano di prevenzione e ripeti il controllo al prossimo check-up.",
+        },
+        disclaimer:
+          "Referto dimostrativo con valori di esempio. Non è un documento clinico e non sostituisce il referto del centro che esegue il check-up.",
+      },
+    },
+
+    /*
+     * Il profilo. Ogni riga viene dalla stessa fonte delle altre schermate: è
+     * l'unico posto in cui i quattro contatori stanno insieme, quindi è anche
+     * quello in cui una divergenza si vedrebbe subito.
+     */
+    profile: {
+      title: "Il tuo profilo",
+      privacy:
+        "La tua salute resta tua. Nessun dato individuale viene condiviso con la tua azienda.",
+
+      company: "Azienda",
+      plan: "Piano",
+      memberSince: "Iscritta da",
+
+      healthTitle: "Riepilogo salute",
+      score: "Punteggio salute",
+      /** "78/100" */
+      scoreValue: "{score}/100",
+      summary: "Sintesi",
+      weakest: "Area da seguire",
+
+      usageTitle: "Utilizzo dei servizi",
+      usage: {
+        psychologist: "Sessioni psicologo",
+        coach: "Sessioni coach",
+        checkup: "Check-up annuale",
+        doctor: "Consulti medico virtuale",
+      },
+      /** "3 su 10" */
+      outOf: "{used} su {total}",
+      /** "Fatto il 15.03.2026" */
+      checkupDone: "Fatto il {date}",
+      checkupToBook: "Da prenotare",
+      /** "2 quest'anno" */
+      consults: "{n} quest'anno",
+
+      dataNote:
+        "I tuoi dati sanitari sono protetti e non vengono mai condivisi con terzi.",
+    },
+
+    aiPlan: {
+      title: "Piano di prevenzione",
+      subtitle: "Costruito sul tuo profilo di salute.",
+      /** "Aggiornato a luglio 2026" */
+      generated: "Aggiornato a {month}",
+      /** "Il prossimo aggiornamento è a gennaio 2027." */
+      nextUpdate: "Il prossimo aggiornamento è a {month}.",
+
+      /*
+       * Gli obiettivi del piano, per chiave. Li leggono due schermate — la home
+       * mostra quello dell'area debole, la pagina del piano tutti e cinque — ed
+       * è la ragione per cui stanno in una mappa e non accanto alla loro area.
+       */
+      goal: {
+        sleep_hours: "Portare il sonno da 6 a 7 ore per notte",
+        stress_reduction: "Ridurre lo stress percepito del 15% in 8 settimane",
+        activity_weekly: "Arrivare a 2 sessioni di movimento a settimana",
+        nutrition_cholesterol:
+          "Riportare il colesterolo nella norma con un'alimentazione equilibrata",
+        mental_coaching: "Fare 2 sessioni con il coach nel prossimo mese",
+      },
+
+      /*
+       * I suggerimenti. Nessuno promette un servizio che il piano non comprende
+       * — l'ereditato ne aveva uno che rimandava alla nutrizionista, che il §9
+       * dà solo all'Executive mentre Demo SA è su Plus — e nessuno ripete un
+       * contatore che vive altrove (§5.5).
+       */
+      tip: {
+        sleep_screens: "Evita gli schermi nei 30 minuti prima di dormire",
+        sleep_schedule: "Vai a letto e alzati sempre alla stessa ora",
+        sleep_caffeine: "Niente caffeina dopo le 14:00",
+        stress_breathing: "Dedica 10 minuti al giorno alla respirazione",
+        stress_breaks: "Programma una pausa ogni 90 minuti",
+        stress_coach:
+          "Prenota una sessione con il coach per le tecniche di gestione",
+        activity_walk: "Comincia con camminate di 30 minuti",
+        activity_stairs: "Usa le scale al posto dell'ascensore",
+        activity_yoga: "Prova una lezione di yoga online",
+        nutrition_fibre: "Aumenta fibre e verdura a ogni pasto",
+        nutrition_fats: "Riduci i grassi saturi",
+        nutrition_recheck:
+          "Ripeti il controllo del colesterolo al prossimo check-up",
+        mental_continue: "Prosegui il percorso con la psicologa",
+        mental_techniques: "Usa fuori dalla seduta le tecniche che impari",
+        mental_journal: "Annota come ti senti nei giorni difficili",
+      },
+    },
   },
 
   professional: {

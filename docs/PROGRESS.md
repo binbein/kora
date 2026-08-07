@@ -147,10 +147,10 @@ errori, `npm run lint` e `npm run typecheck` a 0.
 - **`src/utils/index.ts` è ancora lì e non lo importa nessuno** (`createPageUrl`,
   zero chiamanti dal primo commit). Ora che ESLint legge il TypeScript si vede; è un
   candidato alla cancellazione, non fatta perché fuori dai passi approvati.
-- **Resta un warning di lint**, ora visibile perché lo script non usa più `--quiet`:
-  `bookingStep` in `Psicologi.jsx`, stato morto di un wizard a più passi. Sparisce
-  in M3 quando la prenotazione viene rifatta. `npm run lint` esce comunque 0 —
-  ESLint non fallisce sui warning.
+- ~~**Resta un warning di lint**, ora visibile perché lo script non usa più
+  `--quiet`: `bookingStep` in `Psicologi.jsx`, stato morto di un wizard a più
+  passi~~ → sparito in M3 con la riscrittura della prenotazione. Da lì
+  `npm run lint` esce **a zero warning**, non solo a zero errori.
 - **La console mostra due avvisi di `react-router`** sui future flag della 7
   (`v7_startTransition`, `v7_relativeSplatPath`). Non sono errori e non si vedono
   in produzione; spariscono con la stessa migrazione alla 7 che chiuderebbe le due
@@ -389,27 +389,139 @@ Operations; le date di fatturazione ferme ad aprile su una demo di settembre.
 - **L'elenco dipendenti è un estratto di otto righe su 120**, dichiarato a
   schermo e in `CONTRATTO-DATI.md` §7. La paginazione è M5.
 
+#### L'area dipendente (§10.B)
+
+La seconda delle quattro aree. Sei rotte dal provider, più la card del check
+rapido approvata il 06.08.2026, e **le prime due scritture del percorso**.
+
+**La prova del marketplace, rimandata da M2, è chiusa.** Prenotando uno slot
+della Dr.ssa Meier dal portale dipendente succedono tutte e quattro le cose del
+§10.B, e succedono perché è **un record solo**: `bookAppointment` scrive una
+seduta, e le due proiezioni la rileggono da due radici invalidate. Non c'è nessun
+stato allineato a mano.
+
+**Il contatore non sale, e non deve.** Il §10.B chiedeva che prenotando "il
+contatore salga"; `used` conta le erogate e una prenotazione nasce `scheduled`,
+quindi a muoversi è la parte in programma — decisione dei founder, e ora il §10.B
+lo dice. Da lì due guardrail: `used` invariato dopo una prenotazione, e nessun
+numero dell'area HR che si muove.
+
+**Dei quattro contatori di Laura, uno si derivava e tre no.** Il §8 dava 3/10
+psicologo e 1/4 coach senza dire che hanno origini diverse: il primo si conta
+dall'agenda della Dr.ssa Meier, il secondo è un seme, perché dietro il coach non
+c'è nessun portale. Ora la distinzione è scritta nel §8 e nel dataset. I due
+conteggi nuovi — 2 consulti di medico virtuale, check-up già fatto — sono stati
+approvati il 07.08.2026, e **il secondo consulto è la chat che la schermata
+mostra**: senza quella coincidenza il Profilo direbbe "2" mentre chi guarda è
+dentro il terzo.
+
+**Sette punti dicevano "Giulia Rossi".** Cinque schermate, il riquadro della
+sidebar e l'avatar. G.R. nel dataset è un'altra persona — un'iscritta di Finanza
+che compare nell'elenco HR e fra i pazienti della Dr.ssa Meier — quindi non era
+solo il nome sbagliato: era il difetto "stesse iniziali, stessa persona" che M0
+aveva segnalato come da chiudere in M3.
+
+**Verificato a schermo**, con le asserzioni del §10.B:
+
+- prenotando mercoledì 30.09 alle 17:30 con la Dr.ssa Meier: lo slot sparisce
+  dai liberi (restano 25, 28, 29), l'appuntamento compare in home al posto
+  giusto fra il 24.09 e il 01.10, la seduta compare nelle sedute in programma
+  del professionista;
+- prenotando venerdì 25.09 alle 10:00, cioè dentro la settimana visibile, la
+  seduta compare **nella griglia del calendario**: "sedute questa settimana"
+  passa da 5 a 6 e "in agenda questo mese" da 22 a 23;
+- dopo due prenotazioni il contatore dice "3 su 10 sessioni usate · 4 in
+  programma" — `used` fermo — e la dashboard HR non si muove di un numero:
+  CHF 14'200, 16 giorni, 68%, 41 attivi, 142 sessioni, 62% check-up;
+- il check-up dice la stessa cosa sui tre lati: referto del 15.03.2026 nel
+  portale dipendente, `completed` nell'elenco HR, e il Centro Diagnostico
+  Basalto — che l'admin dà in convenzionamento — non è fra i quattro
+  prenotabili;
+- il check rapido si salva e si rilegge: "Grazie, registrato." con la risposta
+  scelta, tornando in home;
+- 25 rotte percorse, **zero errori e zero promise rifiutate**, nessuna schermata
+  vuota; `npm run lint` a **zero warning**, che è la prima volta da M1.
+
+**I guardrail nuovi, provati al contrario**: la prenotazione del check-up
+spostata su una struttura in convenzionamento, l'elenco HR che dà il check-up di
+Laura come "available", l'ultimo consulto spostato via dal giorno della demo e
+il piano di prevenzione senza una delle cinque aree fanno tutti fallire il
+dataset con il messaggio giusto.
+
+**Difetti trovati in questa passata:**
+
+- **Il guardrail della prenotazione era due volte inutile**, e l'ha detto
+  proprio il test al contrario. *Era tautologico*: verificava che lo slot fosse
+  fra quelli di `getAvailableSlots`, cioè si appoggiava alla funzione che
+  avrebbe dovuto sorvegliare, e rompendo il filtro degli occupati la stessa
+  rottura faceva passare il controllo. *E spariva*: un `throw` in un metodo
+  `async` diventa una promise rifiutata, e react-query la cattura nello stato
+  della mutation. Ora confronta con l'agenda, che è indipendente, e usa
+  `assertInDevOutsidePromise`, che rilancia da un microtask — lo stesso rimedio
+  del controllo sulla cache fredda. **È la regola generale per ogni guardrail
+  dentro una mutation**, e la prossima area ne avrà.
+- **Il bianco su `secondary` non passa l'AA**: 2.83:1 su testo da 14px in peso
+  normale, contro il minimo di 4.5. Riguardava i chip selezionati della
+  prenotazione, la bolla del medico e il badge del check-up, tutti portati sulla
+  coppia `accent`/`accent-foreground`, che dà 10.7:1. Il §6.1 chiedeva di
+  verificare caso per caso, ed è la prima volta che qualcuno lo ha fatto con un
+  numero in mano. **Il caso grosso resta aperto**: sotto.
+- **Il "Piano AI" prometteva la nutrizionista**, che il §9 dà solo
+  all'Executive mentre Demo SA è su Plus, e ripeteva un contatore di sedute
+  coach in una forma diversa da quella del §8.
+- **La schermata check-up si contraddiceva con l'HR**, e offriva in prenotazione
+  una struttura che l'admin dichiarava non ancora convenzionata.
+
+**Aperto e dichiarato:**
+
+- **La CTA verde piena non passa l'AA, in tutta la demo.** `bg-secondary` con
+  testo bianco a 14px in peso 500 è lo stesso 2.83:1, e compare in **19 punti su
+  11 file** — pubblica, dipendente, HR, professionista, admin. Non è stato
+  toccato: cambiarlo è una decisione di palette dei founder, non una correzione
+  di passata, e `--secondary-foreground` è bianco nei token, quindi la scelta è
+  incorporata nel design system. Le due strade sono scurire `--secondary` o
+  portare le CTA su `primary`. Va deciso prima di M5, che ha
+  "accessibilità completa" in elenco.
+- **La home elenca tutti gli appuntamenti in programma**, che oggi sono tre più
+  quelli che si prenotano durante la demo. È voluto — è così che si vede
+  comparire quello nuovo — ma se l'elenco crescesse troppo andrebbe accorciato.
+- **Il calendario del professionista mostra solo la settimana corrente.**
+  Prenotando oltre il 27.09 la seduta compare nelle sedute in programma e non
+  nella griglia. Non è un difetto di questa passata — il calendario è di M2 e non
+  ha navigazione fra settimane — ma è la ragione per cui la prova a schermo è
+  stata fatta due volte, una dentro la settimana e una fuori.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
-professionista, admin), design system e navigazione, 47 componenti shadcn, grafici
-recharts.
+professionista, admin), design system e navigazione, 47 componenti shadcn
+(**oggi sono 45**: il sistema di toast, che ne contava tre, è uscito il
+07.08.2026 — decisione qui sotto), grafici recharts.
 
-Ereditato e **non** funzionante. Le ultime due righe sono state chiuse da M0; le
-altre restano aperte (il dettaglio è in `CLAUDE.md` §10):
+Ereditato e **non** funzionante. Questa è la fotografia del primo commit, e le
+righe barrate sono quelle che una milestone ha chiuso: serve a non riscoprire un
+difetto già risolto, e a non rifarne uno già dichiarato aperto. Il dettaglio è in
+`CLAUDE.md` §10.
 
 - nessun layer dati: ogni pagina dichiara le proprie costanti in cima al file, e le
   stesse grandezze divergono fra schermate vicine — 618 vs 767 utenti, 18 vs 6
-  pazienti, 180 vs 142 sessioni, tre roster di professionisti che non si parlano;
-- le prenotazioni non producono effetti: nessun contatore si muove, nessun
-  appuntamento compare, nessuno slot si occupa;
-- manca il calcolatore ROI pubblico, mancano stress per reparto, alert precoce e
-  selettore trimestre nella dashboard HR;
+  pazienti, 180 vs 142 sessioni, tre roster di professionisti che non si parlano.
+  **Chiuso dove l'area è migrata**: i pazienti in M2, le sessioni in M3 con la
+  dashboard HR. Restano gli utenti dell'admin e i roster, che vivono nelle aree
+  non ancora migrate;
+- ~~le prenotazioni non producono effetti: nessun contatore si muove, nessun
+  appuntamento compare, nessuno slot si occupa~~ → chiuso in M3 con l'area
+  dipendente, e con la prova a schermo sui due lati del marketplace;
+- manca il calcolatore ROI pubblico;
+- ~~mancano stress per reparto, alert precoce e selettore trimestre nella
+  dashboard HR~~ → costruiti in M3 con la migrazione dell'area HR;
 - importi non formattati in svizzero (6 scritti a mano all'italiana, 9
-  `toLocaleString()` senza locale, che a schermo escono in formato en-US);
-  **quattro** coppie giorno/data sbagliate — non cinque — tutte in `ProSessioni.jsx`
-  e tutte con lo stesso scarto di un giorno: è il calendario 2025 con l'anno
-  riscritto a mano;
+  `toLocaleString()` senza locale, che a schermo escono in formato en-US), nelle
+  aree non ancora migrate;
+- ~~**quattro** coppie giorno/data sbagliate — non cinque — tutte in
+  `ProSessioni.jsx` e tutte con lo stesso scarto di un giorno: è il calendario
+  2025 con l'anno riscritto a mano~~ → sparite in M2 con la lista che le
+  conteneva;
 - ~~link di menu che porta a una pagina inesistente~~ → chiuso in M0;
 - ~~marchio a metà, aziende e cliniche reali, `/admin` aperto~~ → chiuso in M0.
 
@@ -500,6 +612,33 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   `roi-model.ts` è trapiantato da M1 e verificato sui cinque numeri di
   ancoraggio.
 
+- **07.08.2026 — Una prenotazione non fa salire `used`** (`CLAUDE.md` §10.B). Il
+  §10.B chiedeva che prenotando "il contatore salga", e letto alla lettera
+  avrebbe portato 3/10 a 4/10. Ma `used` conta le sedute **erogate** — è la
+  definizione della tabella KPI di `CONTRATTO-DATI.md` §3, ed è la stessa
+  funzione che alimenta il co-payment dell'elenco pazienti — mentre una
+  prenotazione nasce `scheduled`. Farlo salire sarebbe un secondo numero pinnato
+  sullo stesso fatto (§5.5) e direbbe al dipendente che ha consumato una seduta
+  che non ha ancora fatto. A muoversi è la parte in programma: *"3 su 10 sessioni
+  usate · 1 in programma"*. Da qui due guardrail dell'area dipendente — `used`
+  invariato dopo una prenotazione, e nessun numero HR che si muove.
+
+- **07.08.2026 — Il 👋 della home dipendente si toglie** (`CLAUDE.md` §7). Era
+  l'unica emoji rimasta nel codice e l'unico punto in cui il registro consumer
+  avrebbe potuto giustificarne una. I founder hanno deciso di non fare
+  l'eccezione: il calore lo fa il copy, e un'emoji che lo sostituisce rende
+  infantile un registro che il §7 vuole caldo. Chiude la voce che stava fra le
+  decisioni in sospeso; il §7 non ha più eccezioni.
+
+- **07.08.2026 — Il terzo blocco di M3 è l'area pubblica intera** (`CLAUDE.md`
+  §4, §10.A). Non il solo `/roi`: landing, prezzi e richiesta demo entrano nello
+  stesso passaggio. Erano l'unica parte del §10 che nessun blocco di M3
+  reclamava, e restarci fuori aveva una conseguenza concreta — i **tre
+  disallineamenti delle card prezzi** elencati qui sopra fra i difetti noti di
+  M0 dicono "restano così fino a M3", ma M3 non prevedeva la passata che li
+  chiude. Si chiudono facendo leggere le card da `Plan`: corretti a mano
+  resterebbero tre righe di JSX che la prima riscrittura riapre.
+
 - **07.08.2026 — Polarità dei colori sulle KPI di trend** (`CLAUDE.md` §6.1).
   Il colore segue il beneficio, la freccia segue il segno: "Stress medio −8%"
   esce verde con la freccia in giù, e ogni KPI dichiara se scendere è un bene.
@@ -513,6 +652,11 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   eseguibile — i `forwardRef` dei 47 file non dichiarano i prop, quindi da un
   `.tsx` `Card` rifiuta `children` — e M2 lo ha dimostrato fermandocisi contro. Si
   fa in apertura di M3, prima della prima area.
+
+  *(I 47 sono il conto di quel giorno: `src/components/ui/` ne aveva 48, 47
+  componenti più l'hook `use-toast`. La rimozione del toast, decisa poche ore
+  dopo, ne ha tolti tre e ha lasciato i **45** di oggi. Le due cifre non sono in
+  disaccordo, contano lo stesso albero prima e dopo.)*
 
 - **06.08.2026 — La nota privata di sessione si salva** (`CLAUDE.md` §10.D). Il
   pulsante "Salva nota" del portale professionista, che oggi chiude il dialogo e
@@ -582,10 +726,8 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   sconti a volume nemmeno, e a 150 dipendenti la preselezione esce a **CHF 38** —
   identico all'Essenziale — offrendo medico virtuale illimitato e check-up annuale
   che l'Essenziale non ha. Verificato alla cifra.
-- **Emoji nel saluto della home dipendente.** Il §7 di `CLAUDE.md` vieta le emoji
-  nel testo di sistema; il 👋 della home è l'unico caso in cui il registro consumer
-  potrebbe giustificarla. Da chiedere ai founder. (Il 💡 del riquadro prezzi è
-  sparito in M0 insieme alla riga che lo conteneva.)
+*(Era in sospeso anche l'emoji nel saluto della home dipendente: decisa il
+07.08.2026 — si toglie — e passata fra le decisioni chiuse.)*
 
 ## Note per chi riprende
 
@@ -627,10 +769,6 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 - Ogni milestone chiude con una demo che funziona da capo a fondo (`CLAUDE.md`
   §2.3). Se una migrazione non entra in una sessione, si chiude l'area corrente e si
   comincia la prossima dopo, mai a metà.
-- **Un `✓` testuale in `Psicologi.jsx`**, nel riepilogo della prenotazione
-  ("✓ Sessione inclusa nel piano"). Non è
-  un'emoji e il §7 non lo vieta, quindi non è un difetto da correggere subito: è un
-  glifo dove tutto il resto del progetto usa un'icona lucide, e uno screen reader lo
-  legge come "segno di spunta" in mezzo alla frase. Da sostituire con l'icona
-  quando M3 rifà la prenotazione, che è la stessa passata in cui sparisce il
-  `bookingStep` morto. È l'unico caso: cercato in tutto `src/`.
+- ~~Un `✓` testuale in `Psicologi.jsx`~~ → sostituito con l'icona lucide quando
+  M3 ha rifatto la prenotazione, insieme al `bookingStep` morto. Era l'unico
+  caso in `src/`.

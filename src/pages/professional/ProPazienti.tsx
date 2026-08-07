@@ -17,7 +17,13 @@ import type { SessionEntitlement } from '@/lib/data/types';
 function EntitlementLine({ entitlement }: { entitlement: SessionEntitlement }) {
   const extra = entitlement.used - entitlement.total;
 
-  if (extra > 0) {
+  /*
+   * Il co-payment si mostra solo dove il piano ne dichiara il prezzo. Sul
+   * coaching il §9 non ne dà nessuno, e una riga "2 a CHF 0" prometterebbe
+   * gratis ciò che il Business Plan non promette: lì si dice che le sedute
+   * incluse sono finite, e basta.
+   */
+  if (extra > 0 && entitlement.extraSessionPrice !== undefined) {
     return (
       <p className="text-[11px] text-muted-foreground tabular-nums">
         {interpolate(t.professional.patients.overCap, {
@@ -29,7 +35,7 @@ function EntitlementLine({ entitlement }: { entitlement: SessionEntitlement }) {
     );
   }
 
-  if (entitlement.used === entitlement.total) {
+  if (entitlement.used >= entitlement.total) {
     return (
       <p className="text-[11px] text-muted-foreground">
         {t.professional.patients.capReached}

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { dataProvider } from "./index";
 import { monthKey, queryKeys } from "./query-keys";
-import { quarterKey, type Quarter } from "./types";
+import { quarterKey, type CappedServiceKind, type Quarter } from "./types";
 
 /*
  * Le query dell'area professionista (CLAUDE.md §5.2).
@@ -208,5 +208,96 @@ export function useInvoices() {
   return useQuery({
     queryKey: queryKeys.company.invoices(),
     queryFn: () => dataProvider.getInvoices(),
+  });
+}
+
+/*
+ * Le query del percorso dipendente (§10.B).
+ *
+ * Le due scritture — la prenotazione e il check rapido — non stanno qui ma nelle
+ * schermate che le usano, come `saveSessionNote`: hanno un chiamante solo, e una
+ * `useMutation` avvolta in un hook che nessun altro chiama è il wrapper che il
+ * §11 non vuole. Le letture invece sono qui perché più di una schermata legge lo
+ * stesso dato — i contatori stanno in home e nel profilo, gli appuntamenti in
+ * home e nella prenotazione.
+ */
+
+/** Il corpo professionale, per chi deve sceglierne uno. */
+export function useProfessionals() {
+  return useQuery({
+    queryKey: queryKeys.professional.all(),
+    queryFn: () => dataProvider.getProfessionals(),
+  });
+}
+
+export function useAvailableSlots(professionalId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.professional.slots(professionalId ?? ""),
+    queryFn: () => dataProvider.getAvailableSlots(professionalId ?? ""),
+    enabled: professionalId !== undefined,
+  });
+}
+
+export function useEmployeeProfile() {
+  return useQuery({
+    queryKey: queryKeys.employee.profile(),
+    queryFn: () => dataProvider.getEmployeeProfile(),
+  });
+}
+
+export function useEntitlement(kind: CappedServiceKind) {
+  return useQuery({
+    queryKey: queryKeys.employee.entitlement(kind),
+    queryFn: () => dataProvider.getEntitlement(kind),
+  });
+}
+
+export function useAppointments() {
+  return useQuery({
+    queryKey: queryKeys.employee.appointments(),
+    queryFn: () => dataProvider.getAppointments(),
+  });
+}
+
+export function useVirtualDoctorConsults() {
+  return useQuery({
+    queryKey: queryKeys.employee.virtualDoctorConsults(),
+    queryFn: () => dataProvider.getVirtualDoctorConsults(),
+  });
+}
+
+export function useAiHealthPlan() {
+  return useQuery({
+    queryKey: queryKeys.employee.aiPlan(),
+    queryFn: () => dataProvider.getAiHealthPlan(),
+  });
+}
+
+export function useRapidCheckAnswer() {
+  return useQuery({
+    queryKey: queryKeys.employee.rapidCheck(),
+    queryFn: () => dataProvider.getRapidCheckAnswer(),
+  });
+}
+
+export function useCheckupProviders() {
+  return useQuery({
+    queryKey: queryKeys.checkup.providers(),
+    queryFn: () => dataProvider.getCheckupProviders(),
+  });
+}
+
+export function useCheckupEligibility() {
+  return useQuery({
+    queryKey: queryKeys.checkup.eligibility(),
+    queryFn: () => dataProvider.getCheckupEligibility(),
+  });
+}
+
+export function useCheckupReport(bookingId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.checkup.report(bookingId ?? ""),
+    queryFn: () => dataProvider.getCheckupReport(bookingId ?? ""),
+    enabled: bookingId !== undefined,
   });
 }

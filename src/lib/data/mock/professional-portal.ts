@@ -258,19 +258,34 @@ export function isActivePatient(sessions: ProfessionalSession[]): boolean {
  *
  * È la stessa funzione che alimenta il contatore del dipendente e la riga
  * "10 incluse + N a CHF 28" dell'elenco pazienti: sono lo stesso calcolo, quindi
- * devono essere lo stesso codice (§5.5). E in M3, quando la prenotazione
- * aggiungerà una seduta, il contatore salirà come conseguenza invece che come
- * seconda scrittura.
+ * devono essere lo stesso codice (§5.5).
+ *
+ * Riceve **le sedute del paziente** invece del suo id, e non è un dettaglio: le
+ * prenotazioni fatte durante la demo non stanno in `PORTAL_SESSIONS`, che è il
+ * dataset curato, ma nello stato del provider. Leggendo la costante il conto
+ * sarebbe giusto solo finché nessuna seduta cambia stato a runtime — cioè
+ * giusto per caso. Chi chiama ha già la lista completa e gliela passa.
+ *
+ * Una prenotazione comunque non lo fa salire: nasce `scheduled`, e qui si
+ * contano le erogate (§10.B).
  */
-export function entitlementFor(patientId: string): SessionEntitlement {
+export function entitlementFor(
+  patientSessions: ProfessionalSession[],
+): SessionEntitlement {
   return {
-    used: PORTAL_SESSIONS.filter(
-      (session) =>
-        session.patientId === patientId && session.status === "completed",
-    ).length,
+    used: patientSessions.filter((session) => session.status === "completed")
+      .length,
     total: COMPANY.plan.sessionsPerYear,
     extraSessionPrice: COMPANY.plan.extraSessionPrice,
   };
+}
+
+/** Le sedute di un paziente dentro una lista. */
+export function sessionsOfPatient(
+  patientId: string,
+  sessions: ProfessionalSession[],
+): ProfessionalSession[] {
+  return sessions.filter((session) => session.patientId === patientId);
 }
 
 function sameMonth(a: Date, b: Date): boolean {
@@ -403,9 +418,12 @@ assertInDev(
  * numero a parte: è il conto delle sue sedute erogate, e se le due cose
  * divergono è il dataset a essere sbagliato, non la KPI.
  */
+const lauraEntitlement = entitlementFor(
+  sessionsOfPatient(PORTAL_PATIENT_EMPLOYEE_ID, PORTAL_SESSIONS),
+);
 assertInDev(
-  entitlementFor(PORTAL_PATIENT_EMPLOYEE_ID).used === 3,
-  `Laura ha ${entitlementFor(PORTAL_PATIENT_EMPLOYEE_ID).used} sedute erogate, il §8 ne dichiara 3.`,
+  lauraEntitlement.used === 3,
+  `Laura ha ${lauraEntitlement.used} sedute erogate, il §8 ne dichiara 3.`,
 );
 
 const lauraNext = PORTAL_SESSIONS.find(
@@ -431,11 +449,9 @@ assertInDev(
  * l'unico posto in cui il co-payment si vede.
  */
 for (const slot of PATIENTS) {
-  const entitlement = entitlementFor(slot.patientId);
+  const mine = sessionsOfPatient(slot.patientId, PORTAL_SESSIONS);
+  const entitlement = entitlementFor(mine);
   if (entitlement.used <= entitlement.total) continue;
-  const mine = PORTAL_SESSIONS.filter(
-    (session) => session.patientId === slot.patientId,
-  );
   assertInDev(
     isActivePatient(mine),
     `${slot.initials} ha ${entitlement.used} sedute sul cap di ${entitlement.total} ma non è un paziente attivo: il co-payment non comparirebbe da nessuna parte.`,
