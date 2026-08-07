@@ -159,7 +159,11 @@ export interface DataProvider {
   /** La persona della demo: Laura Bernasconi. */
   getEmployeeProfile(): Promise<EmployeeProfile>;
   getEntitlement(): Promise<SessionEntitlement>;
-  /** Appuntamenti della persona, dal più imminente. */
+  /**
+   * Gli appuntamenti **in programma** della persona, dal più imminente. Le
+   * sedute già erogate non sono appuntamenti da elencare: sono il contatore
+   * (`getEntitlement`), che è il conto di quelle.
+   */
   getAppointments(): Promise<Appointment[]>;
   /** Slot proponibili per un professionista, già filtrati sui liberi. */
   getAvailableSlots(professionalId: string): Promise<AppointmentSlot[]>;

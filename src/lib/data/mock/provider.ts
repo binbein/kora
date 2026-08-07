@@ -242,12 +242,17 @@ export class MockDataProvider implements DataProvider {
    * Gli appuntamenti del dipendente sono le sue sessioni viste dall'altro lato:
    * stesso record, proiezione diversa. Il professionista ne riceve le iniziali,
    * il dipendente il professionista per intero.
+   *
+   * Solo le sedute in programma, dalla più imminente: il contratto promette
+   * quell'ordine, quindi lo garantisce l'implementazione e non l'ordinamento
+   * con cui il dataset è costruito — in M3 la prenotazione aggiungerà sedute
+   * a runtime.
    */
   getAppointments(): Promise<Appointment[]> {
     const mine = PORTAL_SESSIONS.filter(
       (session) =>
         session.patientId === PORTAL_PATIENT_EMPLOYEE_ID &&
-        session.status !== "cancelled",
+        session.status === "scheduled",
     ).map(
       (session): Appointment => ({
         id: session.id,
@@ -259,6 +264,7 @@ export class MockDataProvider implements DataProvider {
         type: session.type,
       }),
     );
+    mine.sort((a, b) => a.start.getTime() - b.start.getTime());
     return Promise.resolve(mine);
   }
 
