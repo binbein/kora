@@ -96,7 +96,7 @@ repository Next non dia niente per scontato.
   `tailwind.config.js` che li mappa. **Non è Tailwind 4**: esiste ancora
   `tailwind.config.js`, non c'è il blocco `@theme`.
 - **shadcn/ui** stile *new-york*, su Radix, già installato: `src/components/ui/`
-  contiene 48 file, 47 componenti più l'hook `use-toast`.
+  contiene **45 componenti**, uno per file.
   **Attenzione alle varianti che i componenti shadcn danno
   per esistenti**: nel loro codice compaiono classi come `data-active:` e
   `data-horizontal:`, che Tailwind compila in selettori su attributi
@@ -106,14 +106,14 @@ repository Next non dia niente per scontato.
   componente shadcn, controllare **a schermo** che le sue varianti `data-*`
   corrispondano ad attributi che Radix scrive davvero.
 
-  **Nei 48 file di oggi non ce n'è nessuna**: cercate una per una in apertura di
+  **Nei file di oggi non ce n'è nessuna**: cercate una per una in apertura di
   M3, le 194 varianti presenti usano tutte la sintassi a parentesi
   (`data-[state=open]:`), che Tailwind 3 compila giusta. Le classi rotte stanno in
   `reference/`, cioè nella generazione Tailwind 4. **La cautela riguarda ciò che si
   aggiunge, non ciò che c'è.**
 
   **Per la stessa ragione i componenti inutilizzati non si cancellano**, ed è
-  un'eccezione dichiarata al §11: 33 dei 48 non li importa nessuno, ma sono
+  un'eccezione dichiarata al §11: 33 dei 45 non li importa nessuno, ma sono
   **l'ultima copia buona della generazione Tailwind 3**. Cancellarli non è
   reversibile a buon mercato — un `shadcn add` domani riporta la generazione
   Tailwind 4 con le varianti che non agganciano — e diversi servono già: slider e
@@ -121,14 +121,29 @@ repository Next non dia niente per scontato.
   validazione con `zod` e `react-hook-form`, che il §3 tiene installati apposta
   (M5).
 
+  **L'eccezione all'eccezione: il sistema di toast è stato rimosso**, il
+  07.08.2026 su decisione dei founder. `toast`, `toaster` e `use-toast` non
+  erano la copia buona di niente: il `toast` ereditato non è quello di shadcn ma
+  una riscrittura su `div` semplici senza Radix, che non sa chiudere una
+  notifica — `dismiss()` mette `open: false` e nulla la nasconde. Conservare un
+  componente rotto non è conservare l'ultima copia buona, è lasciare una
+  trappola per la prima schermata che chiami `toast()`.
+
+  **La via di ritorno, se servono le notifiche**: si aggiunge il toast Radix
+  vero di shadcn, `@radix-ui/react-toast`. È una dipendenza nuova e **passa dal
+  §3**: si chiede prima. Non si recupera da git il componente tolto, che è
+  quello rotto.
+
   **Ai componenti shadcn si possono aggiungere i tipi.** È un'eccezione esplicita
   alla regola per cui `src/components/ui/` non si tocca, decisa dai founder il
   07.08.2026, e senza di essa la regola «le pagine ereditate si convertono quando
-  le si tocca» è ineseguibile: i 47 file sono `.jsx` e i loro `forwardRef` non
-  dichiarano i prop, quindi TypeScript inferisce `P = {}`. Da un `.tsx`, `Card`
-  rifiuta `children` e `Badge` pretende `className` e `variant` come obbligatori.
-  M2 ci si è fermata contro e ha lasciato l'area professionista in `.jsx`; M3
-  tocca venti schermate e non può ripetere la rinuncia.
+  le si tocca» era ineseguibile: i file erano `.jsx` e i loro `forwardRef` non
+  dichiaravano i prop, quindi TypeScript inferiva `P = {}`. Da un `.tsx`, `Card`
+  rifiutava `children` e `Badge` pretendeva `className` e `variant` come
+  obbligatori. M2 ci si è fermata contro e ha lasciato l'area professionista in
+  `.jsx`; M3 tocca venti schermate e non poteva ripetere la rinuncia. **Fatto in
+  apertura di M3**: i 45 file sono tipizzati, e la regola vale per chi ne
+  aggiunge uno.
 
   **Solo annotazioni.** Nessun cambiamento di comportamento, nessuna variante
   nuova, nessun refactoring: il diff deve leggersi come "stesso codice, con i
