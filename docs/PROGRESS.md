@@ -234,7 +234,9 @@ backend.
   arrivano in M3 con la dashboard; i conteggi di coach, medico virtuale e
   check-up non sono nel §8 e vanno approvati allora (§2.4).
 
-### M3 — in corso: la tipizzazione del layer shadcn
+### M3 — in corso
+
+#### La tipizzazione del layer shadcn
 
 Il primo passo di M3, prima della prima area (`CLAUDE.md` §3). **Non chiude la
 milestone**: le aree sono ancora tutte da migrare.
@@ -321,6 +323,71 @@ da lì `state` resta `"expanded" | "collapsed"` invece di allargarsi a `string`.
   dai founder. Nessuna urgenza: `form` non ha consumatori, e ne avrà quando M5
   costruirà la validazione con `zod` e `react-hook-form` — è quello il momento
   di deciderlo, non prima.
+
+#### L'area HR (§10.C)
+
+La prima delle quattro aree, e quella su cui il pitch si regge. Cinque rotte dal
+provider, stringhe in i18n, importi e date da `format.ts`.
+
+**Il dataset ha corretto il §9, non il contrario.** La serie di utilizzo dei
+servizi doveva contenere l'agenda della Dr.ssa Meier, e non ci stava: la sola
+Meier eroga 41 sedute nel trimestre corrente, dove i semi ne attribuivano 37
+all'azienda intera. Lo psicologo ora **si compone** — la sua agenda più la quota
+dichiarata degli altri psicologi della rete — e `sessionsUsed` ha smesso di
+essere un seme: si somma dalla serie. I cumulati passano da 142 / 105 / 64 / 28 a
+**142 / 86 / 50 / 22**; risparmio, giorni evitati, iscritti e attivi non si sono
+mossi. Gli altri tre servizi sono stati approvati il 07.08.2026 (§8).
+
+**Lo "Stress medio −8%" non era riproducibile.** Dalla serie di M2 escono −2
+punti trimestre su trimestre, −13% sui dodici mesi; il −8% usciva solo scegliendo
+una finestra di sei mesi, cioè cercando la finestra che dava il numero voluto.
+Ora si mostra il valore calcolato e l'etichetta dice su cosa — §6.1 aggiornato.
+
+**Quattro difetti chiusi**: la ciambella che diceva 180 dove la KPI diceva 142
+(ora è la stessa somma, quindi lo stesso numero); l'organico a 150, comprese le
+due cifre di `AdminAziende`; le iniziali dell'elenco HR, dove L.B. era "in
+attesa" e in Finance mentre Laura Bernasconi ha tre sedute erogate ed è in
+Operations; le date di fatturazione ferme ad aprile su una demo di settembre.
+
+**Verificato a schermo a 1280px**, con le asserzioni del §10.C:
+
+- fetta psicologo della ciambella = KPI sessioni, in tutti i periodi: 142 sul
+  trimestre corrente, 50 sul primo del 2026, 22 sul più vecchio;
+- media pesata dell'ultimo mese ricalcolata a mano — 13×78 + 26×52 + 16×44 +
+  15×31 + 14×26 su 84 misurati = 46.4 → **46** — che è dove cade il punto del
+  grafico;
+- marker dell'alert sul **decimo mese**, misurato sulle coordinate del tick;
+- **Direzione "—" col lucchetto in tutti i periodi**, e i misurati su ogni riga:
+  è l'unico modo di vedere perché HR + Legale è pubblicabile e la Direzione no,
+  visto che hanno lo stesso organico;
+- "Stress medio **−2 punti**" verde con la freccia in giù;
+- il selettore cambia risparmio, adozione, attivi, sessioni, check-up e
+  ciambella; sul trimestre più vecchio lo stress mostra "—" perché un precedente
+  non ce l'ha.
+
+**Difetti trovati in questa passata:**
+
+- **La ciambella disegnava i settori vuoti.** I gruppi `recharts-pie-sector`
+  c'erano e non contenevano nessun `path`: l'animazione d'ingresso non
+  completava. Cioè la schermata più importante del pitch poteva mostrare un buco
+  a seconda della macchina. Da qui la regola del `CLAUDE.md` §6.2 — **nessuna
+  animazione d'ingresso sui grafici** — che l'area admin, con i suoi cinque
+  grafici, eredita.
+- **"Pianifica review" era un vicolo cieco** nella pagina report: un pulsante che
+  non faceva niente e non era in nessun elenco di scope. Rimosso.
+- **`kpiCheckupHint` diceva "sugli {enrolled} iscritti"**, e l'articolo si
+  accorda con come si legge il numero — "sugli 82" ma "sui 58". Il selettore fa
+  passare dall'uno all'altro, quindi la frase era sbagliata su metà dei periodi.
+  Riscritta con "su", che è invariabile: è il §2.7 applicato a una preposizione.
+
+**Aperto e dichiarato:**
+
+- **La tabella stress per reparto non segue il selettore**: mostra l'ultimo mese,
+  perché lo stress è una serie mensile (§5.3) mentre il selettore governa gli
+  aggregati trimestrali. Il titolo lo dice. Se un giorno dovrà seguirlo, serve un
+  metodo nuovo sul provider.
+- **L'elenco dipendenti è un estratto di otto righe su 120**, dichiarato a
+  schermo e in `CONTRATTO-DATI.md` §7. La paginazione è M5.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

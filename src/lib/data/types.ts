@@ -138,6 +138,8 @@ export type Company = {
    * cambia né la regola né la frase che la mostra (§7).
    */
   anonymityThreshold: number;
+  /** Quando scade il contratto in corso: la fatturazione lo mostra. */
+  contractRenewsOn: Date;
 };
 
 export type Department = {
@@ -621,6 +623,50 @@ export type ServiceUsageMonth = {
 };
 
 // ---------------------------------------------------------------------------
+// Elenco dipendenti e fatturazione (area HR)
+// ---------------------------------------------------------------------------
+
+/**
+ * Una riga dell'elenco dipendenti che l'HR vede (§10.C).
+ *
+ * **Non ha nessun campo su cui un nome possa arrivare**, esattamente come
+ * `ProfessionalSession`: chi guarda riceve le iniziali e il reparto, e la
+ * garanzia è la forma del tipo, non una scelta di rendering. Non porta nemmeno
+ * un dato sanitario — lo stato del check-up dice se è stato fatto, mai cosa ha
+ * detto.
+ *
+ * `checkupStatus` è `null` per chi non ha attivato l'account: la colonna esiste
+ * per tutti, il valore no (`docs/CONTRATTO-DATI.md` §2).
+ */
+export type EmployeeDirectoryEntry = {
+  employeeId: string;
+  /** "L.B." — è tutto ciò che l'azienda riceve del nome */
+  initials: string;
+  departmentId: string;
+  /** Ha attivato l'account e può prenotare */
+  enrolled: boolean;
+  checkupStatus: "completed" | "booked" | "available" | null;
+};
+
+/**
+ * Una fattura mensile dell'abbonamento (§10.C).
+ *
+ * Non porta il totale: è organico per prezzo unitario, e due numeri che
+ * descrivono la stessa cosa non devono poter divergere (§5.5). In produzione,
+ * il giorno in cui una fattura avrà rettifiche o crediti, il totale smetterà di
+ * essere una moltiplicazione e diventerà un campo — è dichiarato in
+ * `docs/CONTRATTO-DATI.md` §6.
+ */
+export type Invoice = {
+  /** Primo giorno del mese fatturato */
+  month: Date;
+  employeeCount: number;
+  /** CHF per dipendente al mese applicati su questa fattura */
+  unitPriceChf: number;
+  status: "paid" | "pending";
+};
+
+// ---------------------------------------------------------------------------
 // Report HR
 // ---------------------------------------------------------------------------
 
@@ -631,11 +677,26 @@ export type ServiceUsageMonth = {
  */
 export type HrReport = {
   period: Quarter;
+  /** Iscritti ÷ organico */
   adoptionPercent: number;
+  /** Sessioni di psicologo consumate ÷ monte annuo: il 12% del §8 */
   usagePercent: number;
+  /**
+   * Check-up eseguiti ÷ **iscritti**, non ÷ organico: chi non ha attivato
+   * l'account non può prenotarlo, e metterlo al denominatore misurerebbe
+   * l'adozione una seconda volta.
+   */
   checkupCompletionPercent: number;
-  /** Variazione dello stress medio sul trimestre, in punti percentuali */
-  stressTrendPercent: number;
+  /**
+   * Variazione dello stress medio sul trimestre, in punti: l'ultimo mese del
+   * trimestre contro l'ultimo del precedente. La finestra è dichiarata perché
+   * il numero da solo non è verificabile da chi guarda (§6.1).
+   *
+   * `null` sul trimestre più vecchio della finestra, che un precedente non ce
+   * l'ha. Uno zero direbbe "invariato" dove il dato non esiste, e la KPI
+   * uscirebbe neutra invece che vuota (§11: il primo periodo del dataset).
+   */
+  stressTrendPoints: number | null;
   savedChf: number;
   avoidedAbsenceDays: number;
   /** Chiavi delle raccomandazioni in `it.ts` */

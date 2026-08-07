@@ -39,10 +39,10 @@ export default function AdminAnalytics() {
       <h1 className="text-2xl font-bold font-display">Analytics piattaforma</h1>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <KPICard title="Revenue Apr" value="CHF 81K" icon={TrendingUp} variant="secondary" trend={14} trendLabel="vs Mar" />
-        <KPICard title="Sessioni Apr" value="352" icon={Briefcase} trend={13} trendLabel="vs Mar" />
-        <KPICard title="Utenti attivi" value="618" icon={Users} trend={8} trendLabel="vs Mar" />
-        <KPICard title="Activation rate" value="84%" icon={BarChart3} trend={6} trendLabel="vs Mar" />
+        <KPICard title="Revenue Apr" value="CHF 81K" icon={TrendingUp} variant="secondary" trend={{ percent: 14, goodWhen: 'up', label: 'vs Mar' }} />
+        <KPICard title="Sessioni Apr" value="352" icon={Briefcase} trend={{ percent: 13, goodWhen: 'up', label: 'vs Mar' }} />
+        <KPICard title="Utenti attivi" value="618" icon={Users} trend={{ percent: 8, goodWhen: 'up', label: 'vs Mar' }} />
+        <KPICard title="Activation rate" value="84%" icon={BarChart3} trend={{ percent: 6, goodWhen: 'up', label: 'vs Mar' }} />
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">

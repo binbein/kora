@@ -1,5 +1,9 @@
 import type { DataProvider } from "../provider";
 import {
+  type EmployeeDirectoryEntry,
+  type HrReport,
+  type Invoice,
+  type ServiceUsageMonth,
   sameQuarter,
   type Appointment,
   type AppointmentSlot,
@@ -22,6 +26,7 @@ import {
   type StressRecord,
 } from "../types";
 import { COMPANY, DEPARTMENTS, PLANS, PLAN_LIST } from "./company";
+import { EMPLOYEE_DIRECTORY, HR_REPORTS, INVOICES } from "./hr";
 import { DEMO_TODAY } from "./demo-date";
 import { LAURA, PROFESSIONALS } from "./people";
 import {
@@ -35,6 +40,7 @@ import {
 } from "./professional-portal";
 import { CURRENT_QUARTER, QUARTERS, ROI_SNAPSHOTS } from "./roi";
 import { INITIAL_SLOTS } from "./scheduling";
+import { SERVICE_USAGE } from "./service-usage";
 import {
   COMPANY_STRESS_HISTORY,
   DEPARTMENT_STRESS_HISTORY,
@@ -112,6 +118,29 @@ export class MockDataProvider implements DataProvider {
       sameQuarter(entry.period, period),
     );
     return Promise.resolve(snapshot ?? null);
+  }
+
+  getRoiSnapshots(): Promise<RoiSnapshot[]> {
+    return Promise.resolve(ROI_SNAPSHOTS);
+  }
+
+  getServiceUsage(): Promise<ServiceUsageMonth[]> {
+    return Promise.resolve(SERVICE_USAGE);
+  }
+
+  getHrReport(period: Quarter): Promise<HrReport | null> {
+    const report = HR_REPORTS.find((entry) =>
+      sameQuarter(entry.period, period),
+    );
+    return Promise.resolve(report ?? null);
+  }
+
+  getEmployeeDirectory(): Promise<EmployeeDirectoryEntry[]> {
+    return Promise.resolve(EMPLOYEE_DIRECTORY);
+  }
+
+  getInvoices(): Promise<Invoice[]> {
+    return Promise.resolve(INVOICES);
   }
 
   getProfessionals(filter?: ProfessionalFilter): Promise<Professional[]> {

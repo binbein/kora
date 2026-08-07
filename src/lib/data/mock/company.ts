@@ -1,4 +1,5 @@
 import type { Company, Department, Plan, PlanId } from "../types";
+import { DEMO_TODAY } from "./demo-date";
 
 /*
  * Demo SA e i suoi reparti (CLAUDE.md §8). Nessuna cifra qui è inventata:
@@ -87,6 +88,9 @@ export const COMPANY: Company = {
   // con la soglia a 15 sarebbe pubblicabile solo con il 100% di risposte in
   // tutti e dodici i mesi (§8)
   anonymityThreshold: 12,
+  // fine dell'anno in cui cade la demo: come per l'iscrizione di Laura, una data
+  // assoluta invecchierebbe da sola mentre `DEMO_TODAY` resta l'unica manopola
+  contractRenewsOn: new Date(DEMO_TODAY.getFullYear(), 11, 31),
 };
 
 /**

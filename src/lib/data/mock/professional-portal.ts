@@ -455,22 +455,12 @@ assertInDev(
 );
 
 /*
- * SEMPLIFICAZIONE DEL DATASET, NON DEL CONTRATTO: tutti i pazienti della Dr.ssa
- * Meier sono dipendenti di Demo SA, quindi ogni sua seduta erogata è una delle
- * 142 che il §8 attribuisce all'azienda.
- *
- * In produzione una professionista serve più aziende clienti e questo controllo
- * è il primo a saltare — che è esattamente il suo mestiere: costringe a
- * dichiarare l'estensione invece di lasciarla accadere. Il tipo non cambia in
- * nessuno dei due scenari, perché il professionista riceve le iniziali e non
- * vede mai un dato aziendale.
+ * Il controllo "le sedute della Dr.ssa Meier stanno dentro quelle dell'azienda"
+ * viveva qui con il 142 scritto a mano. Ora sta in `service-usage.ts`, dove la
+ * serie aziendale la contiene per costruzione invece di limitarsi a non
+ * contraddirla — ed è lì che si legge anche la semplificazione che lo regge:
+ * tutti i suoi pazienti sono di Demo SA (`docs/CONTRATTO-DATI.md` §7).
  */
-const COMPANY_SESSIONS_USED = 142;
-assertInDev(
-  PORTAL_SESSIONS.filter((session) => session.status === "completed").length <=
-    COMPANY_SESSIONS_USED,
-  `La Dr.ssa Meier eroga più sedute delle ${COMPANY_SESSIONS_USED} che il §8 attribuisce a Demo SA in dodici mesi.`,
-);
 
 /*
  * Un'ora non può essere insieme occupata e prenotabile: le due liste finiscono

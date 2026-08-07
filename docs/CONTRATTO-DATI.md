@@ -141,6 +141,13 @@ La proiezione del professionista porta `patientId` e `patientInitials`, e **non 
 nessun campo su cui un nome possa arrivare**. Non è una scelta di rendering: è una
 garanzia del contratto.
 
+`EmployeeDirectoryEntry` è l'altra metà della stessa garanzia, dal lato
+dell'azienda: porta iniziali e reparto e **non ha nessun campo su cui un nome
+possa arrivare**, esattamente come `ProfessionalSession`. Non porta nemmeno un
+dato sanitario — lo stato del check-up dice se è stato fatto, mai cosa ha detto.
+Il suo `checkupStatus` è `null` per chi non ha attivato l'account: la colonna
+esiste per tutti, il valore no (§2).
+
 `SessionNote` porta il testo e **nessun metodo dell'area HR o admin lo
 restituisce**. Le altre proiezioni sanno al massimo che una nota esiste
 (`ProfessionalSession.hasNote`), mai cosa dice. La nota non esce mai verso
@@ -168,9 +175,12 @@ nascono due e le schermate divergono:
 | **Adozione** | iscritti ÷ organico, arrotondato all'intero |
 | **Diritto alle sedute** (`used`) | conto delle sedute **erogate** del paziente nell'anno di piano — mai un contatore a parte |
 | **Regime tenuto** | media delle sedute erogate nelle 4 settimane piene precedenti quella corrente |
-| **Sessioni consumate** (azienda) | **cumulate sui dodici mesi** del monte annuo, non consumate nel trimestre |
+| **Sessioni consumate** (azienda) | **cumulate sui dodici mesi** del monte annuo, non consumate nel trimestre. Si sommano dalla serie di utilizzo: non sono un secondo conteggio |
 | **Risparmio trimestrale** | proporzionale agli attivi, **arrotondato al centinaio** |
 | **Giorni di assenza evitati** | risparmio ÷ costo di una giornata di assenza |
+| **Utilizzo** (`usagePercent`) | sessioni di psicologo consumate ÷ **monte annuo**, non ÷ trimestre: è la stessa grandezza della KPI "142 su 1'200" |
+| **Check-up completati** | check-up eseguiti ÷ **iscritti**, non ÷ organico: chi non ha attivato l'account non può prenotarlo, e metterlo al denominatore misurerebbe l'adozione una seconda volta |
+| **Trend dello stress** | ultimo mese del trimestre **meno** l'ultimo del precedente, in punti. `null` sul trimestre più vecchio della finestra, che un precedente non ce l'ha: uno zero direbbe "invariato" dove il dato non esiste |
 
 L'arrotondamento al centinaio fa parte della regola, non della formattazione:
 senza, gli importi non sono riproducibili, e una cifra al franco su un risparmio
@@ -228,6 +238,12 @@ numero è ciò che verifica.
 progetto originale sono stati usati come lista di controllo della copertura del
 dominio, non come vincolo di forma. Il contratto è nostro.
 
+**Il totale sulla fattura.** `Invoice` porta organico e prezzo unitario, non il
+totale: sono due numeri che dicono la stessa cosa e non devono poter divergere
+(§5.5). **In produzione il totale diventerà un campo** il giorno in cui una
+fattura avrà rettifiche, crediti o un prezzo cambiato a metà mese — cioè quando
+smetterà di essere una moltiplicazione.
+
 **L'autenticazione, i ruoli e le guardie di rotta.** Sono M5 e non sono in questa
 interfaccia. `UserRole` esiste nei tipi perché il back-office ne ha bisogno come
 dato, non come meccanismo di accesso.
@@ -254,6 +270,10 @@ invece di restare assunzioni implicite:
   cambia in nessuno dei due scenari — riceve le iniziali e non vede mai un dato
   aziendale — quindi l'unica cosa che incorpora l'assunzione è un guardrail di
   sviluppo, che è il primo a rompersi quel giorno.
+- **L'elenco dipendenti è un estratto di otto righe su 120.** Un elenco vero si
+  pagina e si cerca, ed è M5. La schermata lo dichiara invece di far credere che
+  l'azienda abbia otto persone, e l'intestazione conta l'azienda e non la
+  tabella: in produzione `getEmployeeDirectory` prenderà una pagina e un filtro.
 - **Un solo cliente, una sola azienda.** `getCompany()` non prende un
   identificatore: la demo ha Demo SA e basta. In produzione l'azienda viene dalla
   sessione, non da un parametro — ed è una modifica al provider, non alle

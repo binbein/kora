@@ -1,6 +1,7 @@
 import type { QueryClient } from "@tanstack/react-query";
 import { dataProvider } from "./index";
 import { monthKey, queryKeys } from "./query-keys";
+import { quarterKey } from "./types";
 
 /*
  * La cache si scalda prima del primo paint (CLAUDE.md §5.1).
@@ -23,6 +24,10 @@ import { monthKey, queryKeys } from "./query-keys";
 export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
   const professionalId = await dataProvider.getPortalProfessionalId();
   const referenceDate = await dataProvider.getReferenceDate();
+  const quarters = await dataProvider.getQuarters();
+  // il reparto in allarme si sa solo chiedendolo, e la dashboard ne mostra la
+  // serie accanto a quella aziendale: senza, il grafico del trend parte freddo
+  const alert = await dataProvider.getEarlyAlert();
   const month = new Date(
     referenceDate.getFullYear(),
     referenceDate.getMonth(),
@@ -58,6 +63,75 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
       queryKey: queryKeys.professional.payouts(professionalId),
       queryFn: () => dataProvider.getProfessionalPayouts(professionalId),
     }),
+
+    // area HR: il selettore può aprire qualunque trimestre senza attese, quindi
+    // si scaldano tutti e quattro invece del solo corrente
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.company.profile(),
+      queryFn: () => dataProvider.getCompany(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.company.departments(),
+      queryFn: () => dataProvider.getDepartments(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.company.plans(),
+      queryFn: () => dataProvider.getPlans(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.company.stressHistory(undefined),
+      queryFn: () => dataProvider.getStressHistory(undefined),
+    }),
+    ...(alert
+      ? [
+          queryClient.prefetchQuery({
+            queryKey: queryKeys.company.stressHistory(alert.departmentId),
+            queryFn: () => dataProvider.getStressHistory(alert.departmentId),
+          }),
+        ]
+      : []),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.company.latestStress(),
+      queryFn: () => dataProvider.getLatestStressByDepartment(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.company.earlyAlert(),
+      queryFn: () => dataProvider.getEarlyAlert(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.company.quarters(),
+      queryFn: () => dataProvider.getQuarters(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.company.currentQuarter(),
+      queryFn: () => dataProvider.getCurrentQuarter(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.company.roiSnapshots(),
+      queryFn: () => dataProvider.getRoiSnapshots(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.company.serviceUsage(),
+      queryFn: () => dataProvider.getServiceUsage(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.company.directory(),
+      queryFn: () => dataProvider.getEmployeeDirectory(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.company.invoices(),
+      queryFn: () => dataProvider.getInvoices(),
+    }),
+    ...quarters.flatMap((period) => [
+      queryClient.prefetchQuery({
+        queryKey: queryKeys.company.roiSnapshot(quarterKey(period)),
+        queryFn: () => dataProvider.getRoiSnapshot(period),
+      }),
+      queryClient.prefetchQuery({
+        queryKey: queryKeys.company.report(quarterKey(period)),
+        queryFn: () => dataProvider.getHrReport(period),
+      }),
+    ]),
   ]);
 }
 

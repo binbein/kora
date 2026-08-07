@@ -10,6 +10,7 @@ import {
 } from "../types";
 import { COMPANY } from "./company";
 import { DEMO_TODAY } from "./demo-date";
+import { sessionsUsedThrough } from "./service-usage";
 
 /*
  * ROI per trimestre (CLAUDE.md §9, "Trimestri diversi da quello corrente").
@@ -23,8 +24,6 @@ import { DEMO_TODAY } from "./demo-date";
 type QuarterSeed = {
   enrolledEmployees: number;
   activeEmployees: number;
-  /** Sessioni consumate a fine trimestre, cumulate sul monte annuo */
-  sessionsUsed: number;
 };
 
 /*
@@ -37,16 +36,22 @@ type QuarterSeed = {
  * periodo senza snapshot, cioè su una schermata vuota — e il §5.4 promette che
  * quella data è l'unica manopola.
  *
- * Le sessioni sono **cumulate sui dodici mesi**, non consumate nel trimestre:
- * il monte di 1'200 è annuo, e "142 su 1'200" confronta due grandezze solo se
- * coprono lo stesso periodo. Il consumo del singolo trimestre — 28 / 36 / 41 /
- * 37 — si ricava per differenza e non si scrive.
+ * LE SESSIONI NON SONO PIÙ UN SEME: si sommano dalla serie di utilizzo dei
+ * servizi (`service-usage.ts`), cumulate dall'inizio della finestra alla fine
+ * del trimestre. Erano quattro numeri scelti prima che l'agenda della Dr.ssa
+ * Meier esistesse, e non la contenevano: la sola Meier eroga più sedute nel
+ * trimestre corrente di quante quei semi ne attribuissero all'azienda intera.
+ * Derivarle è ciò che rende impossibile riaprire quella distanza (§5.5).
+ *
+ * Restano **cumulate sui dodici mesi**, non consumate nel trimestre: il monte
+ * di 1'200 è annuo, e "142 su 1'200" confronta due grandezze solo se coprono lo
+ * stesso periodo.
  */
 const SEEDS: QuarterSeed[] = [
-  { enrolledEmployees: 82, activeEmployees: 41, sessionsUsed: 142 },
-  { enrolledEmployees: 71, activeEmployees: 34, sessionsUsed: 105 },
-  { enrolledEmployees: 58, activeEmployees: 27, sessionsUsed: 64 },
-  { enrolledEmployees: 39, activeEmployees: 18, sessionsUsed: 28 },
+  { enrolledEmployees: 82, activeEmployees: 41 },
+  { enrolledEmployees: 71, activeEmployees: 34 },
+  { enrolledEmployees: 58, activeEmployees: 27 },
+  { enrolledEmployees: 39, activeEmployees: 18 },
 ];
 
 /** CHF risparmiati per dipendente attivo, ancorati al trimestre corrente (§9). */
@@ -105,7 +110,7 @@ function toSnapshot(seed: QuarterSeed, index: number): RoiSnapshot {
     avoidedAbsenceDays: avoidedDaysFrom(savedChf),
     enrolledEmployees: seed.enrolledEmployees,
     activeEmployees: seed.activeEmployees,
-    sessionsUsed: seed.sessionsUsed,
+    sessionsUsed: sessionsUsedThrough(QUARTERS[index]),
     sessionsTotal: ANNUAL_SESSION_ALLOWANCE,
   };
 }
