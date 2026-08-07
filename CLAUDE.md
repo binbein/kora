@@ -106,6 +106,21 @@ repository Next non dia niente per scontato.
   componente shadcn, controllare **a schermo** che le sue varianti `data-*`
   corrispondano ad attributi che Radix scrive davvero.
 
+  **Nei 48 file di oggi non ce n'è nessuna**: cercate una per una in apertura di
+  M3, le 194 varianti presenti usano tutte la sintassi a parentesi
+  (`data-[state=open]:`), che Tailwind 3 compila giusta. Le classi rotte stanno in
+  `reference/`, cioè nella generazione Tailwind 4. **La cautela riguarda ciò che si
+  aggiunge, non ciò che c'è.**
+
+  **Per la stessa ragione i componenti inutilizzati non si cancellano**, ed è
+  un'eccezione dichiarata al §11: 33 dei 48 non li importa nessuno, ma sono
+  **l'ultima copia buona della generazione Tailwind 3**. Cancellarli non è
+  reversibile a buon mercato — un `shadcn add` domani riporta la generazione
+  Tailwind 4 con le varianti che non agganciano — e diversi servono già: slider e
+  switch al check rapido, popover e scroll-area alla dashboard (M3), `form` alla
+  validazione con `zod` e `react-hook-form`, che il §3 tiene installati apposta
+  (M5).
+
   **Ai componenti shadcn si possono aggiungere i tipi.** È un'eccezione esplicita
   alla regola per cui `src/components/ui/` non si tocca, decisa dai founder il
   07.08.2026, e senza di essa la regola «le pagine ereditate si convertono quando
