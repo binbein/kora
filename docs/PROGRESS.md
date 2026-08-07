@@ -278,6 +278,14 @@ Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà 
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
 
+- **07.08.2026 — Il calcolatore ROI ha una rotta sua, `/roi`** (`CLAUDE.md` §10.A).
+  Le rotte passano da 25 a **26**: è la prima aggiunta all'inventario ereditato da
+  base44. Il §10.A elencava quattro voci su tre rotte e non diceva dove vivesse il
+  calcolatore; ora lo dice. Sta fuori da `/pricing` perchè le due pagine
+  risponderebbero a domande diverse con lo stesso campo "numero di dipendenti", e
+  fuori dalla landing perchè un pezzo che il pitch mostra da solo ha bisogno di un
+  indirizzo. Resta lavoro di M3, nell'ordine già fissato.
+
 - **07.08.2026 — Il Business Plan sta in `docs/`** (`CLAUDE.md` §3). La regola
   precedente lo teneva fuori dal repository; la costruzione della demo procede su
   più sessioni e strumenti che condividono solo questo repository, e i documenti

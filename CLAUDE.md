@@ -63,7 +63,7 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
    gg.mm.aaaa). Niente language switcher. Ma valgono da subito:
    - Stringhe UI in `src/lib/i18n/it.ts` (oggetto tipizzato, niente testo cablato
      nei componenti). Aggiungere una lingua domani = aggiungere un file con le
-     stesse chiavi. **Retrofittare l'i18n su 25 schermate dopo costa dieci volte
+     stesse chiavi. **Retrofittare l'i18n su ventisei schermate dopo costa dieci volte
      tanto: si fa mentre si tocca ogni schermata, non alla fine.**
    - **Mai concatenare stringhe per comporre frasi** (l'ordine delle parole cambia
      tra lingue). Sempre frasi complete con segnaposto:
@@ -809,16 +809,23 @@ corrente è anche il totale dell'anno. Il consumo del singolo trimestre — 28 /
 
 ## 10. Scope — le schermate e la definizione di "finito"
 
-25 rotte su cinque aree, ereditate da base44 (3 + 6 + 5 + 5 + 6: le sotto-liste qui
-sotto sono sempre state giuste, era il totale a essere sbagliato). **Nessuna
+**26 rotte su cinque aree** (4 + 6 + 5 + 5 + 6). Venticinque sono ereditate da
+base44; la ventiseiesima è `/roi`, approvata dai founder il 07.08.2026. **Nessuna
 schermata nuova senza
 approvazione** (§2.6); nessuna schermata esistente si elimina senza dirlo.
 
-### A. Pubblica — `/`, `/pricing`, `/demo`
+### A. Pubblica — `/`, `/roi`, `/pricing`, `/demo`
 1. **Landing**: hero, problema, tre livelli di valore, anteprima piani, privacy, CTA.
 2. **Calcolatore ROI** — *da costruire, non esiste*. Perdite oggi vs risparmio con
    KORA, il dettaglio delle quattro voci che si aggiorna con N, formule §9.
    Va costruito con la grafica e il layout di base44; il motore è `roi-model.ts`.
+
+   **Sta su una rotta sua, `/roi`**, decisa dai founder il 07.08.2026: è il terzo
+   dei tre pezzi che il pitch mostra (§4), e un pezzo che si mostra da solo deve
+   avere un indirizzo a cui portarlo, non una sezione da raggiungere scorrendo.
+   Tenerlo fuori da `/pricing` evita anche due campi "numero di dipendenti" nella
+   stessa pagina: lì il simulatore risponde *"quanto costa"*, qui il calcolatore
+   risponde *"quanto stai già perdendo"*, e sono due domande che non si mescolano.
 3. **Prezzi**: i tre piani + simulatore di costo. Il quarto piano
    "Personalizzato" a moduli **resta nascosto** finché i founder non decidono:
    i suoi undici prezzi non sono nel BP e a 150 dipendenti la preselezione esce
@@ -838,7 +845,7 @@ Home, Psicologi, Medico virtuale, Check-up, Piano AI, Profilo.
    dove arrivano quei numeri non abbiamo niente da indicare. Il Business Plan lo
    chiama "cuore di KORA" e ne descrive tre mensili: dove i due divergono vince
    questo file, e il documento si aggiorna.
-   È una card nella home, **non una rotta nuova**: le rotte restano 25.
+   È una card nella home, **non una rotta nuova**: non entra nel conto delle 26.
    Approvato dai founder il **06.08.2026** ai sensi del §2.6. È lavoro di M3, e qui
    si approva l'esistenza della schermata e basta: la resa si decide migrando l'area.
 
