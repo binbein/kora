@@ -608,7 +608,38 @@ il reparto della storia: vanno sostituiti con questi.
 
 Persona dipendente: **Laura Bernasconi**, 34, Operations, profilo salute 78/100
 ("In buon equilibrio", area debole: sonno), 3/10 sessioni psicologo usate, 1/4
-sessioni coach, prossimo appuntamento Dr.ssa Meier giovedì 17:30.
+sessioni coach, **2 consulti di medico virtuale nell'anno**, check-up annuale
+**già fatto**, prossimo appuntamento Dr.ssa Meier giovedì 17:30.
+
+**Dei suoi quattro conteggi, uno solo è derivato e tre sono dichiarati**, ed è
+una distinzione da tenere in chiaro nel codice invece che scoprirla leggendo il
+dataset (§5.5):
+
+- **3/10 psicologo si deriva** dall'agenda della Dr.ssa Meier — è il conto delle
+  sedute erogate di Laura, la stessa funzione che alimenta il co-payment
+  dell'elenco pazienti. Il giovedì 17:30 è quello stesso record visto dal lato
+  dipendente.
+- **1/4 coach è dichiarato qui.** Dietro non c'è un'agenda: il portale
+  professionista è quello della Dr.ssa Meier, che è psicologa, e il Dr. Fontana
+  non ne ha uno. Il giorno in cui un'agenda coach esistesse, il numero si
+  deriverebbe da lì e questa riga sparirebbe — il dataset deve dire a chiare
+  lettere che oggi è un seme.
+- **2 consulti di medico virtuale** nell'anno di piano, e **il secondo è la chat
+  che la schermata mostra**, cioè quella aperta il giorno della demo. Senza
+  quella coincidenza il Profilo direbbe "2" mentre chi guarda è dentro il terzo,
+  e il conto sarebbe già vecchio nel momento in cui lo si legge. Il conteggio si
+  ricava dalla lista dei consulti, non è uno scalare: due numeri che descrivono
+  la stessa cosa devono essere lo stesso numero. I 2 stanno dentro i 118 consulti
+  aziendali dei dodici mesi, che su 82 iscritti fanno una media di 1.4.
+- **Il check-up è completato**, con referto di marzo. È la stessa cosa che
+  l'elenco dipendenti dell'HR dichiara della riga `L.B.`, ed è il vincolo che
+  tiene la storia unica sui tre lati: la home e il Profilo non possono dire
+  "disponibile", e la pagina check-up mostra il referto invece di riproporre una
+  prenotazione. Il prossimo si apre dodici mesi dopo, cioè fuori dalla demo.
+
+Nessuno dei quattro è un numero libero: il piano Plus dà 10 sedute di psicologo,
+4 di coach, consulti di medico virtuale illimitati con risposta entro 4 ore e un
+check-up annuale (§9).
 
 La narrazione (deve emergere dai grafici senza spiegazioni):
 
@@ -757,6 +788,13 @@ Rete convenzionata per i check-up — **Centro Medico Ardesia** (Lugano),
 **Clinica Zaffiro** (Lugano), **Centro Diagnostico Basalto** (Mendrisio). È **una
 sola rete**: il portale dipendente e il back-office elencano le stesse strutture con
 gli stessi indirizzi, non due elenchi scollegati.
+
+**Il Basalto è in convenzionamento, non ancora attivo**, ed è l'unico dei cinque:
+il back-office lo dichiara da sempre `pending` con zero prenotazioni, e il portale
+dipendente **non lo propone**. Lo stato sta sul dato della struttura, non nella
+schermata che la disegna, altrimenti la stessa rete si racconta in due modi — che
+è esattamente il difetto che il codice ereditato aveva, offrendo al dipendente una
+struttura che l'admin diceva non ancora convenzionata.
 
 Tre vincoli che vengono dalla verifica, non dal gusto:
 
