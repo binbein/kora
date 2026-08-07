@@ -105,6 +105,25 @@ repository Next non dia niente per scontato.
   costato dei Tabs disposti in colonna nella demo precedente: aggiungendo un
   componente shadcn, controllare **a schermo** che le sue varianti `data-*`
   corrispondano ad attributi che Radix scrive davvero.
+
+  **Ai componenti shadcn si possono aggiungere i tipi.** È un'eccezione esplicita
+  alla regola per cui `src/components/ui/` non si tocca, decisa dai founder il
+  07.08.2026, e senza di essa la regola «le pagine ereditate si convertono quando
+  le si tocca» è ineseguibile: i 47 file sono `.jsx` e i loro `forwardRef` non
+  dichiarano i prop, quindi TypeScript inferisce `P = {}`. Da un `.tsx`, `Card`
+  rifiuta `children` e `Badge` pretende `className` e `variant` come obbligatori.
+  M2 ci si è fermata contro e ha lasciato l'area professionista in `.jsx`; M3
+  tocca venti schermate e non può ripetere la rinuncia.
+
+  **Solo annotazioni.** Nessun cambiamento di comportamento, nessuna variante
+  nuova, nessun refactoring: il diff deve leggersi come "stesso codice, con i
+  tipi", e in review si rifiuta se non lo è. La cautela sulle varianti `data-*`
+  qui sopra resta intatta — è il motivo per cui questi file erano congelati, e
+  tipizzarli non la scioglie.
+
+  **In apertura di M3, prima della prima area.** Dopo, ogni schermata si converte
+  mentre la si migra; prima, non si converte affatto; in mezzo, si toccano due
+  volte le stesse schermate (§11).
 - **@tanstack/react-query 5** — già installato e mai usato. Diventa l'unico modo in
   cui le schermate leggono e mutano dati (§5).
 - **recharts 2** per i grafici, **lucide-react** per le icone, **framer-motion**
