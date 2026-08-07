@@ -108,6 +108,17 @@ export type Plan = {
   checkup?: "annual" | "executive";
   /** Ogni quanti mesi il piano di prevenzione AI viene rigenerato. */
   aiPlanEveryMonths?: number;
+  /**
+   * Dashboard HR avanzata, con report e call col team clinico: ogni quanti
+   * mesi. Vale 1 sull'Executive, che è l'unico piano di cui il §9 dichiari
+   * qualcosa sulla dashboard.
+   *
+   * Assente sugli altri due **secondo la regola generale dei campi opzionali**:
+   * il §9 non trascrive la loro dashboard, quindi il listino salta la riga
+   * invece di dichiarare un livello che il documento non contiene. Se il
+   * Business Plan lo dà (p.9), la cifra va prima nel §9 e poi qui (§2.4).
+   */
+  advancedHrReportEveryMonths?: number;
   /** Psichiatra su richiesta: incluso, non a pagamento (solo Executive). */
   includesPsychiatrist?: boolean;
   /** Familiari compresi nel prezzo: partner e un figlio (solo Executive). */

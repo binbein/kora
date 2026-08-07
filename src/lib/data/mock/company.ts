@@ -64,6 +64,10 @@ export const PLANS: Record<PlanId, Plan> = {
     // completo (§9)
     checkup: "executive",
     aiPlanEveryMonths: 1,
+    // report mensile e call mensile col team clinico (§9): è la voce che la
+    // card ereditata dava come "consulenza HR trimestrale", sottostimando il
+    // piano più caro
+    advancedHrReportEveryMonths: 1,
     includesPsychiatrist: true,
     includesFamily: true,
     freeIntroInterview: false,

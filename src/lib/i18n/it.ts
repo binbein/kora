@@ -928,5 +928,108 @@ export const it = {
       ctaButton: "Prenota una demo",
       ctaPricing: "Vedi i piani",
     },
+
+    /*
+     * Il listino (§10.A.3). Le voci sono frasi complete con segnaposto e le
+     * compone `lib/plan-features.ts` da `Plan`: nessuna card elenca le proprie
+     * righe, quindi nessuna può divergere dal §9.
+     *
+     * Le fasce di organico sono copy di segmento e non un dato del piano: il
+     * §9 non le trascrive, quindi non stanno sul tipo. Restano quelle
+     * ereditate, invariate.
+     */
+    plans: {
+      title: "Piani trasparenti, valore concreto",
+      subtitle:
+        "Un abbonamento per dipendente. Nessun costo nascosto. ROI misurabile dal primo trimestre.",
+
+      target: {
+        essenziale: "Aziende 20–100 dipendenti",
+        plus: "Aziende 100–300 dipendenti",
+        executive: "Aziende 300+ dipendenti",
+      },
+
+      recommended: "Piano consigliato",
+      /** "CHF 55" accanto a "/ dipendente / mese" */
+      priceUnit: "/ dipendente / mese",
+      cta: "Richiedi preventivo",
+
+      feature: {
+        /** "10 sessioni di psicologo all'anno" */
+        sessions: "{count} sessioni di psicologo all'anno",
+        /* "una volta" è l'informazione: il §9 lo dà una sola volta, non a ogni
+           sessione, e senza il tetto si legge come un extra ricorrente. */
+        intro: "Colloquio conoscitivo gratuito, una volta",
+        /** "4 sessioni di coach all'anno" */
+        coach: "{count} sessioni di coach all'anno",
+        psychiatrist: "Psichiatra su richiesta incluso",
+        /** "4 sessioni di nutrizionista all'anno" */
+        nutritionist: "{count} sessioni di nutrizionista all'anno",
+        /*
+         * L'SLA in quattro frasi e non in due con un numero dentro: a un'ora
+         * "entro {hours} ore" dà "entro 1 ore", ed è il caso dell'Executive,
+         * cioè la card più cara. È il §2.7 nel suo caso più piccolo — la
+         * frase intera cambia, non solo il valore — e vale allo stesso modo
+         * per il tedesco, dove cambia anche l'ordine.
+         */
+        /** "Medico virtuale illimitato, risposta entro 4 ore" */
+        virtualDoctorUnlimited:
+          "Medico virtuale illimitato, risposta entro {hours} ore",
+        virtualDoctorUnlimitedOneHour:
+          "Medico virtuale illimitato, risposta entro un'ora",
+        /** "3 consulti di medico virtuale all'anno, risposta entro 12 ore" */
+        virtualDoctorCapped:
+          "{count} consulti di medico virtuale all'anno, risposta entro {hours} ore",
+        virtualDoctorCappedOneHour:
+          "{count} consulti di medico virtuale all'anno, risposta entro un'ora",
+        /* Due frasi e non una con un aggettivo variabile: i due check-up del
+           §9 non sono lo stesso check-up, e la card deve poterli distinguere. */
+        checkup: {
+          annual: "Check-up fisico annuale",
+          executive:
+            "Check-up executive completo: ECG, eco addome, oculista, sangue completo",
+        },
+        aiPlanMonthly: "Piano di prevenzione AI aggiornato ogni mese",
+        /** "Piano di prevenzione AI aggiornato ogni 6 mesi" */
+        aiPlanEveryMonths:
+          "Piano di prevenzione AI aggiornato ogni {months} mesi",
+        hrReportMonthly:
+          "Dashboard HR avanzata, con report mensile e call mensile col team clinico",
+        /** Cadenza diversa dal mese: oggi il §9 non ne dichiara nessuna. */
+        hrReportEveryMonths:
+          "Dashboard HR avanzata, con report e call col team clinico ogni {months} mesi",
+        /** "2 workshop live all'anno inclusi" */
+        workshops: "{count} workshop live all'anno inclusi",
+        family: "Familiari inclusi: partner e un figlio",
+        /** "Estensione ai familiari: + CHF 15 per dipendente al mese, opzionale" */
+        partnerExtension:
+          "Estensione ai familiari: + {price} per dipendente al mese, opzionale",
+        /** "Sessione oltre il tetto: CHF 28" */
+        extraSession: "Sessione oltre il tetto: {price}",
+      },
+    },
+
+    /* Il simulatore di costo di `/pricing`: risponde a "quanto costa", che è
+       la domanda che il calcolatore di `/roi` non fa. */
+    costSimulator: {
+      title: "Calcola il costo",
+      employeesLabel: "Numero di dipendenti",
+      planLabel: "Piano",
+      /** "Plus — CHF 55 al mese" */
+      planOption: "{plan} — {price} al mese",
+      billingLabel: "Fatturazione",
+      billingMonthly: "Mensile",
+      billingAnnual: "Annuale",
+      totalMonthly: "Totale mensile",
+      totalAnnual: "Totale annuale",
+      /** "120 dipendenti × CHF 55 × 12 mesi" */
+      breakdownAnnual: "{employees} dipendenti × {price} × 12 mesi",
+      /** "120 dipendenti × CHF 55 × 1 mese" */
+      breakdownMonthly: "{employees} dipendenti × {price} × 1 mese",
+      cta: "Prenota una demo",
+      /* Il costo non è il valore: da qui si rimanda al calcolatore, che è la
+         pagina che risponde all'altra metà della domanda (§10.A.2). */
+      roiLink: "Quanto stai già perdendo senza Kora",
+    },
   },
 } as const;
