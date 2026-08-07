@@ -55,7 +55,7 @@ Undici commit. Cosa è stato fatto e perché:
   fatturazione HR. Diceva "CHF 1'400–2'900 per dipendente all'anno" ed era la frase
   più in evidenza di entrambi i riquadri, ma **quella cifra non è nel Business
   Plan**: era la sola voce di quelle schermate che un investitore col documento in
-  mano non avrebbe potuto ritrovare. Torna in M4, calcolata da `roi-model.ts` e
+  mano non avrebbe potuto ritrovare. Torna col calcolatore in M3, calcolata da `roi-model.ts` e
   etichettata come scenario conservativo (`CLAUDE.md` §9). Le due 💡 sono sparite
   con le righe che le contenevano. Nella stessa passata, l'estensione partner del
   Plus è passata da "+ CHF 15/mese" a "+ CHF 15/dipendente/mese": la cifra è nel BP
@@ -303,8 +303,8 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 | M0 | Messa in sicurezza | **fatta** |
 | M1 | Fondamenta tecniche | **fatta** |
 | M2 | Il contratto dati | **fatta** |
-| M3 | Migrazione area per area | da fare |
-| M4 | Calcolatore ROI e report scaricabile | da fare |
+| M3 | Migrazione area per area + calcolatore ROI | da fare |
+| M4 | Report scaricabile | da fare |
 | M5 | Verso la produzione (differibile) | da fare |
 
 ## Decisioni chiuse
@@ -330,6 +330,14 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   due cose che erano implicite e senza le quali il §9 non era riproducibile:
   **l'arrotondamento del risparmio al centinaio** e **il periodo delle sessioni
   consumate**, che sono cumulate sui dodici mesi del monte annuo.
+
+- **07.08.2026 — Il calcolatore ROI passa da M4 a M3, prima dell'area admin**
+  (`CLAUDE.md` §4). Ordine di M3: HR → dipendente → calcolatore → admin. È
+  l'ordine di importanza del pitch: se le conversazioni con gli investitori
+  partono prima della fine del piano, esistono i tre pezzi che contano e a
+  mancare è il back-office, che non ha valore narrativo. Il motore è pronto:
+  `roi-model.ts` è trapiantato da M1 e verificato sui cinque numeri di
+  ancoraggio.
 
 - **07.08.2026 — Polarità dei colori sulle KPI di trend** (`CLAUDE.md` §6.1).
   Il colore segue il beneficio, la freccia segue il segno: "Stress medio −8%"

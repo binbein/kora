@@ -243,14 +243,19 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
   l'intestazione direbbe un nome e il corpo un altro nella stessa schermata. E la
   definizione di "finito" del §10.D è scritta per l'area — le righe settimanali che
   sommano al mese, i pazienti che coincidono con la KPI — non per una schermata.
-- **M3 — Area per area.** HR → dipendente → admin; il professionista è già migrato
-  in M2 e non si ritocca. Ogni area viene
+- **M3 — Area per area, più il calcolatore.** HR → dipendente → **calcolatore
+  ROI pubblico (§10.A.2)** → admin; il professionista è già migrato in M2 e non
+  si ritocca. Il calcolatore passa qui da M4 per decisione dei founder del
+  07.08.2026: è il terzo dei tre pezzi che il pitch ordina per importanza —
+  dashboard HR, percorso dipendente, calcolatore — il motore `roi-model.ts` è
+  trapiantato e verificato dai tempi di M1, e il back-office non ha valore
+  narrativo. Ogni area viene
   migrata **e** rinarrata nello stesso passaggio: dati dal provider, stringhe in
   i18n, importi da `format.ts`, microcopy nel registro giusto. Toccare due volte la
   stessa schermata è lavoro sprecato. **Chiude cancellando `reference/`**: se
   serve ancora qualcosa da lì, l'area non è finita.
-- **M4 — I pezzi nuovi.** Calcolatore ROI pubblico (§10.A.2) e report trimestrale
-  scaricabile (§10.C.3).
+- **M4 — Il report scaricabile** (§10.C.3). Il calcolatore ROI, che stava qui,
+  è passato in M3.
 - **M5 — Verso la produzione.** Differibile, non blocca niente: guardie di rotta per
   ruolo, stati di errore e vuoto veri, validazione dei form, accessibilità
   completa, le altre tre lingue. **Le schermate di M3 vanno costruite in modo da
