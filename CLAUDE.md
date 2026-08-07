@@ -557,59 +557,50 @@ partire dall'uso del prodotto.
 **I tre conteggi che erano sospesi, decisi.** Il dataset di M2 si costruisce su
 questi.
 
-**Soglia di anonimato: 12 dipendenti misurati nel periodo.** Non 15. HR + Legale
-ha 15 di organico: con la soglia a 15 quel reparto sarebbe pubblicabile solo con
-il 100% di risposte in tutti e dodici i mesi, e basterebbe una persona che salta
-il check perché la riga sparisca dalla dashboard. Il dataset funzionerebbe grazie
-a un numero implausibile. A 12 c'è margine sopra, e la Direzione resta sotto.
+**Soglia di anonimato: 12 dipendenti misurati nel periodo** — non l'organico,
+non gli iscritti: a decidere se il dato di un reparto è pubblicabile è quante
+persone hanno risposto al check rapido in quel periodo, e con una regola
+sull'organico i due reparti da 15 (HR + Legale e Direzione) sarebbero
+indistinguibili. E non 15: con la soglia a 15, HR + Legale sarebbe pubblicabile
+solo con il 100% di risposte in tutti e dodici i mesi, e basterebbe una persona
+che salta il check perché la riga sparisca dalla dashboard — il dataset
+funzionerebbe grazie a un numero implausibile. A 12 c'è margine sopra, e la
+Direzione resta sotto.
 
-**Iscritti: 82**, il 68% di 120. Il cambio di modello di misurazione non li
-tocca: gli iscritti sono chi ha attivato l'account per prenotare le sessioni, e
-l'essere iscritto è indipendente dall'essere misurato.
+**Iscritti: 82**, il 68% di 120. Gli iscritti sono chi ha attivato l'account
+per prenotare le sessioni: essere iscritto ed essere misurato sono
+indipendenti, nessuno dei due implica l'altro, e il cambio di modello di
+misurazione non li tocca.
 
-**Misurati per reparto: una serie derivata, non una cifra congelata** (§5.5). M2
-la costruisce sotto questi vincoli, che vanno verificati a schermo:
+**Misurati per reparto: una serie derivata, non una cifra congelata** (§5.5), e
+**il conteggio sta sul record mensile del reparto, non su `Department`**:
+l'anagrafica porta un numero solo, e con quello si peserebbero tutti e dodici i
+mesi e si deciderebbe l'esclusione una volta sola per tutta la storia — senza
+che niente si rompa, esce solo una curva diversa da quella descritta. Non è un
+caso di scuola: l'adesione al check rapido è proprio ciò che si muove quando un
+reparto va sotto pressione, ed è così che le Vendite calano fra il mese 9 e il
+12. Su `Department` può restare al massimo il valore del periodo corrente,
+derivato dal record mensile. M2 la costruisce sotto questi vincoli, che vanno
+verificati a schermo:
 
 - misurati ≤ organico del reparto, in ogni mese;
 - la Direzione sta sotto soglia in tutti e dodici i mesi;
 - gli altri cinque reparti stanno sopra soglia in tutti e dodici i mesi;
-- l'adesione delle Vendite cala fra il mese 9 e il 12 — è esattamente il motivo
-  per cui il conteggio vive sul record mensile e non su `Department`;
+- l'adesione delle Vendite cala fra il mese 9 e il 12;
 - la serie aziendale derivata resta piatta o in lieve calo su tutti e dodici i
   mesi. Se sale, è sbagliato il dataset, non la regola;
 - il totale dei misurati può superare gli 82 iscritti: è una proprietà voluta del
   modello, già dichiarata sopra.
 
-**La soglia di anonimato si applica ai dipendenti misurati nel periodo**, non
-all'organico e non agli iscritti. HR + Legale e Direzione hanno entrambi 15
-dipendenti: con una regola sull'organico sarebbero indistinguibili. A decidere se
-il dato è pubblicabile è quante persone del reparto hanno risposto al check rapido
-in quel periodo. Gli "iscritti" sono un'altra cosa ancora: chi ha attivato
-l'account per prenotare.
-Essere iscritto ed essere misurato sono indipendenti, e nessuno dei due implica
-l'altro.
-
-**Il conteggio dei misurati sta sul record mensile del reparto, non su
-`Department`.** Il nome `measuredEmployees` va bene dentro un record già datato: è
-la posizione che cambia. L'anagrafica del reparto porta un numero solo, mentre la
-serie del §5.5 copre dodici mesi: chi implementa peserebbe tutti e dodici i mesi
-con il conteggio di oggi e deciderebbe l'esclusione una volta sola per tutta la
-storia. Non si rompe niente — esce una curva diversa da quella descritta e a
-schermo non se ne accorge nessuno. E non è un caso di scuola: la narrazione fa
-staccare le Vendite fra il mese 9 e il 12, e l'adesione al check rapido è proprio
-il dato che si muove quando un reparto va sotto pressione. Su `Department` può
-restare al massimo il valore del periodo corrente, derivato dal record mensile.
-
 **I misurati si mostrano su ogni riga**, non solo su quelle sotto soglia: con il
 solo organico, i due reparti da 15 sarebbero due righe identiche con esiti opposti,
 e una delle due sembrerebbe rotta.
 
-**I reparti sotto soglia non entrano nel denominatore.** Un reparto escluso dalla
-media aziendale non può contare nel dato che quella media descrive: "reparti in
-calo su N" conta i soli reparti pubblicabili, e N si deriva come tutto il resto.
-
 **La serie aziendale è derivata, mai scritta a mano**: media dei punteggi di
-reparto pesata sui dipendenti misurati, con i reparti sotto soglia esclusi. Le
+reparto pesata sui dipendenti misurati, con i reparti sotto soglia esclusi —
+anche dal denominatore, perché un punteggio non pubblicabile non può rientrare
+da una porta di servizio dentro un aggregato, e "reparti in calo su N" conta i
+soli reparti pubblicabili. Le
 curve vanno disegnate in modo che l'aggregato resti **piatto o in lieve calo**: se
 la linea aziendale sale, contraddice la narrazione, che è *"la media non mostrava
 nulla, il dettaglio per reparto sì"*. Il codice ereditato ha una sola linea che
