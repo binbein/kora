@@ -52,6 +52,7 @@ export const queryKeys = {
     quarters: () => ["company", "quarters"] as const,
     currentQuarter: () => ["company", "quarters", "current"] as const,
     roiSnapshot: (period: string) => ["company", "roi", period] as const,
+    roiSnapshots: () => ["company", "roi", "all"] as const,
     serviceUsage: () => ["company", "service-usage"] as const,
     report: (period: string) => ["company", "report", period] as const,
     directory: () => ["company", "directory"] as const,

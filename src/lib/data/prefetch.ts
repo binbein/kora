@@ -96,6 +96,10 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
       queryFn: () => dataProvider.getCurrentQuarter(),
     }),
     queryClient.prefetchQuery({
+      queryKey: queryKeys.company.roiSnapshots(),
+      queryFn: () => dataProvider.getRoiSnapshots(),
+    }),
+    queryClient.prefetchQuery({
       queryKey: queryKeys.company.serviceUsage(),
       queryFn: () => dataProvider.getServiceUsage(),
     }),

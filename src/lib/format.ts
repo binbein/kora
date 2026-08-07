@@ -75,6 +75,26 @@ export function formatPercent(
   }).format(percent / 100);
 }
 
+/**
+ * Un numero con il segno sempre davanti: `+5`, `−2`, `0`.
+ *
+ * Serve alle KPI di trend, dove il segno è metà dell'informazione (§6.1): un
+ * `2` senza segno sull'altro caso si legge come un valore assoluto. Il meno è
+ * il segno tipografico U+2212 e non il trattino della tastiera, perché è
+ * allineato alle cifre e della loro larghezza — che con `tabular-nums` è
+ * esattamente il punto.
+ */
+export function formatSigned(
+  value: number,
+  locale: Locale = DEFAULT_LOCALE,
+  options: { decimals?: number } = {},
+): string {
+  const magnitude = formatNumber(Math.abs(value), locale, options);
+  if (value > 0) return `+${magnitude}`;
+  if (value < 0) return `−${magnitude}`;
+  return magnitude;
+}
+
 /** Data completa: it-CH usa gg.mm.aaaa (29.07.2026). */
 export function formatDate(
   date: Date,

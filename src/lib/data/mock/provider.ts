@@ -120,6 +120,10 @@ export class MockDataProvider implements DataProvider {
     return Promise.resolve(snapshot ?? null);
   }
 
+  getRoiSnapshots(): Promise<RoiSnapshot[]> {
+    return Promise.resolve(ROI_SNAPSHOTS);
+  }
+
   getServiceUsage(): Promise<ServiceUsageMonth[]> {
     return Promise.resolve(SERVICE_USAGE);
   }

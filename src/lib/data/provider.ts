@@ -102,6 +102,8 @@ export interface DataProvider {
   /** Trimestre mostrato all'apertura della dashboard. */
   getCurrentQuarter(): Promise<Quarter>;
   getRoiSnapshot(period: Quarter): Promise<RoiSnapshot | null>;
+  /** Tutti gli snapshot, dal più recente: il grafico del risparmio li mostra insieme. */
+  getRoiSnapshots(): Promise<RoiSnapshot[]>;
 
   // --- Area HR (§10.C) ------------------------------------------------------
 

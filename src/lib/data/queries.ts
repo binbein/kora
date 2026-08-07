@@ -175,6 +175,13 @@ export function useRoiSnapshot(period: Quarter | undefined) {
   });
 }
 
+export function useRoiSnapshots() {
+  return useQuery({
+    queryKey: queryKeys.company.roiSnapshots(),
+    queryFn: () => dataProvider.getRoiSnapshots(),
+  });
+}
+
 export function useServiceUsage() {
   return useQuery({
     queryKey: queryKeys.company.serviceUsage(),
