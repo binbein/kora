@@ -46,6 +46,21 @@ export const it = {
     en: "English",
   },
 
+  /** Le cinque aree dell'assessment (§8), come etichette a sé. */
+  healthArea: {
+    sleep: "Sonno",
+    stress: "Stress",
+    activity: "Movimento",
+    nutrition: "Alimentazione",
+    mental: "Salute mentale",
+  },
+
+  healthSummary: {
+    balanced: "In buon equilibrio",
+    attention: "Da tenere d'occhio",
+    at_risk: "A rischio",
+  },
+
   sessionType: {
     first_visit: "Prima visita",
     session: "Seduta",
@@ -81,6 +96,78 @@ export const it = {
 
     privacy:
       "La tua azienda vede solo dati aggregati e anonimi. La tua salute resta tua.",
+
+    /** I due servizi che il piano cappa, come li chiama chi li usa. */
+    service: {
+      psychologist: "Psicologo",
+      coach: "Coach",
+    },
+
+    home: {
+      /** "Buongiorno Laura" */
+      greeting: "Buongiorno {name}",
+      subtitle: "La tua salute, in un unico posto.",
+
+      healthTitle: "Il tuo stato di salute",
+      scoreOutOf: "/100",
+      /*
+       * Cinque frasi complete, non "{area} merita attenzione": in italiano
+       * l'articolo cambia con la parola, e in tedesco cambia l'ordine. È il §2.7
+       * applicato al caso più piccolo che ci sia.
+       */
+      weakestArea: {
+        sleep: "Il sonno merita attenzione",
+        stress: "Lo stress merita attenzione",
+        activity: "Il movimento merita attenzione",
+        nutrition: "L'alimentazione merita attenzione",
+        mental: "La salute mentale merita attenzione",
+      },
+      weakestAreaHint:
+        "È l'area da cui parte il tuo piano di prevenzione.",
+
+      appointmentsTitle: "I tuoi prossimi appuntamenti",
+      appointmentsEmpty: "Non hai appuntamenti in programma.",
+      /** "giovedì 24.09.2026, alle 17:30" */
+      appointmentWhen: "{weekday} {date}, alle {time}",
+
+      /** "3 su 10 sessioni usate" */
+      sessions: "{used} su {total} sessioni usate",
+      /*
+       * Una prenotazione non fa salire le usate — quelle sono le sedute già
+       * fatte (§10.B) — quindi la parte in programma è una frase a sé, e la
+       * riga la usa solo quando c'è qualcosa in programma.
+       */
+      sessionsWithScheduled:
+        "{used} su {total} sessioni usate · {scheduled} in programma",
+      book: "Prenota una sessione",
+
+      quickAction: {
+        doctor: "Medico virtuale",
+        checkup: "Check-up annuale",
+        aiPlan: "Piano di prevenzione",
+        profile: "Profilo salute",
+      },
+      checkupDone: "Fatto",
+
+      planTitle: "Dal tuo piano di prevenzione",
+      planCta: "Vedi il piano",
+    },
+
+    aiPlan: {
+      /*
+       * Gli obiettivi del piano, per chiave. Li leggono due schermate — la home
+       * mostra quello dell'area debole, la pagina del piano tutti e cinque — ed
+       * è la ragione per cui stanno in una mappa e non accanto alla loro area.
+       */
+      goal: {
+        sleep_hours: "Portare il sonno da 6 a 7 ore per notte",
+        stress_reduction: "Ridurre lo stress percepito del 15% in 8 settimane",
+        activity_weekly: "Arrivare a 2 sessioni di movimento a settimana",
+        nutrition_cholesterol:
+          "Riportare il colesterolo nella norma con un'alimentazione equilibrata",
+        mental_coaching: "Fare 2 sessioni con il coach nel prossimo mese",
+      },
+    },
   },
 
   professional: {
