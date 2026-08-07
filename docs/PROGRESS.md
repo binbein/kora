@@ -302,6 +302,25 @@ da lì `state` resta `"expanded" | "collapsed"` invece di allargarsi a `string`.
   `ResponsiveContainer` che misura zero al primo layout in quel contesto. Da
   verificare in un browser vero prima di costruire la dashboard HR, che di
   grafici ne ha quattro.
+- **La guardia di `useFormField` in `form.tsx` non scatta mai.** Il codice fa
+  `getFieldState(fieldContext.name, formState)` e *poi* controlla
+  `if (!fieldContext) throw new Error(…)`: il controllo sta dopo l'uso che
+  dovrebbe proteggere, e comunque non scatterebbe, perché il valore di default
+  del context è `{}`, che è truthy. Fuori da un `<FormField>` il componente non
+  lancia il messaggio che ha scritto apposta — sbaglia più avanti, in un punto
+  che non lo dice.
+
+  Emerso tipizzando il file: è la ragione per cui i due `createContext` hanno un
+  `as`, e il default `{}` è esattamente ciò che il tipo deve mentire per stare
+  in piedi. **Sta anche a monte in shadcn**, quindi non è un guasto di base44 e
+  non si chiude riallineandosi ai sorgenti ufficiali.
+
+  Non corretto: `src/components/ui/` è congelato e l'eccezione del `CLAUDE.md`
+  §3 copre le sole annotazioni. Spostare la guardia prima dell'uso e darle un
+  default che possa essere falso è un **cambio di comportamento**, e va deciso
+  dai founder. Nessuna urgenza: `form` non ha consumatori, e ne avrà quando M5
+  costruirà la validazione con `zod` e `react-hook-form` — è quello il momento
+  di deciderlo, non prima.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
