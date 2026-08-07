@@ -1,6 +1,7 @@
 import { assertInDev } from "../guardrails";
 import type {
   CappedServiceKind,
+  ProfessionalSession,
   SessionEntitlement,
   VirtualDoctorConsult,
 } from "../types";
@@ -10,6 +11,8 @@ import { LAURA } from "./people";
 import {
   entitlementFor,
   PORTAL_PATIENT_EMPLOYEE_ID,
+  PORTAL_SESSIONS,
+  sessionsOfPatient,
 } from "./professional-portal";
 import { SERVICE_USAGE } from "./service-usage";
 
@@ -50,12 +53,19 @@ function coachEntitlement(): SessionEntitlement {
   };
 }
 
-/** Il diritto alle sedute di Laura, per uno dei due servizi cappati dal Plus. */
+/**
+ * Il diritto alle sedute di Laura, per uno dei due servizi cappati dal Plus.
+ *
+ * `psychologistSessions` sono **tutte** le sue sedute di psicologo, comprese
+ * quelle prenotate durante la demo: il conto deve vedere l'agenda intera, non il
+ * solo dataset curato.
+ */
 export function employeeEntitlement(
   kind: CappedServiceKind,
+  psychologistSessions: ProfessionalSession[],
 ): SessionEntitlement {
   if (kind === "coach") return coachEntitlement();
-  return entitlementFor(PORTAL_PATIENT_EMPLOYEE_ID);
+  return entitlementFor(psychologistSessions);
 }
 
 /*
@@ -86,8 +96,13 @@ export const LAURA_VIRTUAL_DOCTOR_CONSULTS: VirtualDoctorConsult[] = [
 // Guardrail (§5.6)
 // ---------------------------------------------------------------------------
 
+const lauraPsychologistSessions = sessionsOfPatient(
+  PORTAL_PATIENT_EMPLOYEE_ID,
+  PORTAL_SESSIONS,
+);
+
 for (const kind of ["psychologist", "coach"] as CappedServiceKind[]) {
-  const entitlement = employeeEntitlement(kind);
+  const entitlement = employeeEntitlement(kind, lauraPsychologistSessions);
   assertInDev(
     entitlement.total > 0,
     `Il piano di Demo SA non comprende il servizio "${kind}", ma il contatore di Laura lo mostra.`,
@@ -99,13 +114,14 @@ for (const kind of ["psychologist", "coach"] as CappedServiceKind[]) {
 }
 
 assertInDev(
-  employeeEntitlement("coach").used === 1 &&
-    employeeEntitlement("coach").total === 4,
+  employeeEntitlement("coach", lauraPsychologistSessions).used === 1 &&
+    employeeEntitlement("coach", lauraPsychologistSessions).total === 4,
   "Il §8 dà a Laura 1 seduta di coach su 4.",
 );
 
 assertInDev(
-  employeeEntitlement("coach").extraSessionPrice === undefined,
+  employeeEntitlement("coach", lauraPsychologistSessions).extraSessionPrice ===
+    undefined,
   "Il §9 non dà un prezzo per la seduta di coaching oltre il cap: non se ne inventa uno.",
 );
 

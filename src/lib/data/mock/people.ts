@@ -1,4 +1,9 @@
-import type { EmployeeProfile, FullCapacityReference, Professional } from "../types";
+import type {
+  CappedServiceKind,
+  EmployeeProfile,
+  FullCapacityReference,
+  Professional,
+} from "../types";
 import { DEMO_TODAY } from "./demo-date";
 
 /*
@@ -53,6 +58,19 @@ export const FULL_CAPACITY: FullCapacityReference = {
   monthlyMinChf: 5600,
   monthlyMaxChf: 6400,
 };
+
+/**
+ * Quale dei due servizi cappati dal piano eroga un professionista.
+ *
+ * Si deriva dalla specializzazione invece di essere un campo suo: sono lo stesso
+ * fatto, e un campo in più potrebbe smettere di concordare con la specialità che
+ * la card mostra accanto. Il Dr. Fontana fa coaching, gli altri tre psicologia —
+ * ed è la ragione per cui la pagina di prenotazione non può presentarli tutti e
+ * quattro nello stesso elenco senza dire quale fa cosa.
+ */
+export function serviceOf(professional: Professional): CappedServiceKind {
+  return professional.specialty === "coaching" ? "coach" : "psychologist";
+}
 
 export const PROFESSIONALS: Professional[] = [
   {

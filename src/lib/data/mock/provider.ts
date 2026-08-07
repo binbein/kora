@@ -1,3 +1,4 @@
+import { assertInDev } from "../guardrails";
 import type { DataProvider } from "../provider";
 import {
   type AiHealthPlan,
@@ -26,6 +27,7 @@ import {
   type ProfessionalFilter,
   type ProfessionalSession,
   type Quarter,
+  type RapidCheckAnswer,
   type RoiSnapshot,
   type SessionEntitlement,
   type SessionNote,
@@ -44,10 +46,11 @@ import {
 } from "./employee-portal";
 import { EMPLOYEE_DIRECTORY, HR_REPORTS, INVOICES } from "./hr";
 import { DEMO_TODAY } from "./demo-date";
-import { LAURA, PROFESSIONALS } from "./people";
+import { LAURA, PROFESSIONALS, serviceOf } from "./people";
 import {
   entitlementFor,
   isActivePatient,
+  sessionsOfPatient,
   monthlyEarnings,
   payoutHistory,
   PORTAL_PATIENT_EMPLOYEE_ID,
@@ -80,6 +83,44 @@ import {
  */
 export class MockDataProvider implements DataProvider {
   private readonly notes = new Map<string, SessionNote>();
+
+  /*
+   * Le sedute prenotate durante la demo, per professionista.
+   *
+   * Stanno qui e non nel dataset perché il dataset è la storia curata del §8,
+   * che non cambia: questo è ciò che succede mentre qualcuno guarda. Ed è **un
+   * record solo**, non due — la stessa seduta esce da `getProfessionalSessions`
+   * per il professionista e da `getAppointments` per il dipendente, che è
+   * l'unico modo perché le due schermate non possano divergere (§10.D).
+   */
+  private readonly bookedByProfessional = new Map<string, ProfessionalSession[]>();
+
+  /*
+   * L'ultima risposta al check rapido. Non entra nelle serie del §8, ed è una
+   * scelta: quelle dodici curve raccontano la storia che il pitch spiega, e un
+   * tocco fatto davanti a un investitore non deve poterla muovere. Serve a
+   * mostrare che il segnale esiste ed è suo — la home rilegge da qui e sa di
+   * aver già risposto.
+   */
+  private lastRapidCheck: RapidCheckAnswer | null = null;
+
+  /**
+   * Tutte le sedute di un professionista, curate e prenotate, in ordine di
+   * orario e con lo stato delle note applicato.
+   */
+  private sessionsOf(professionalId: string): ProfessionalSession[] {
+    const curated =
+      professionalId === PORTAL_PROFESSIONAL_ID ? PORTAL_SESSIONS : [];
+    const all = [
+      ...curated,
+      ...(this.bookedByProfessional.get(professionalId) ?? []),
+    ];
+    all.sort((a, b) => a.start.getTime() - b.start.getTime());
+    return all.map((session) => ({
+      ...session,
+      hasNote: session.hasNote || this.notes.has(session.id),
+    }));
+  }
 
   getReferenceDate(): Promise<Date> {
     return Promise.resolve(DEMO_TODAY);
@@ -185,14 +226,7 @@ export class MockDataProvider implements DataProvider {
   getProfessionalSessions(
     professionalId: string,
   ): Promise<ProfessionalSession[]> {
-    if (professionalId !== PORTAL_PROFESSIONAL_ID) {
-      return Promise.resolve([]);
-    }
-    const sessions = PORTAL_SESSIONS.map((session) => ({
-      ...session,
-      hasNote: session.hasNote || this.notes.has(session.id),
-    }));
-    return Promise.resolve(sessions);
+    return Promise.resolve(this.sessionsOf(professionalId));
   }
 
   async getProfessionalPatients(
@@ -227,7 +261,7 @@ export class MockDataProvider implements DataProvider {
         lastSessionAt: completed[completed.length - 1]?.start ?? null,
         nextSessionAt:
           mine.find((session) => session.status === "scheduled")?.start ?? null,
-        entitlement: entitlementFor(patientId),
+        entitlement: entitlementFor(mine),
       });
     }
 
@@ -284,7 +318,17 @@ export class MockDataProvider implements DataProvider {
    * le erogate (§10.B).
    */
   getEntitlement(kind: CappedServiceKind): Promise<SessionEntitlement> {
-    return Promise.resolve(employeeEntitlement(kind));
+    const psychologistSessions = PROFESSIONALS.filter(
+      (professional) => serviceOf(professional) === "psychologist",
+    ).flatMap((professional) =>
+      sessionsOfPatient(
+        PORTAL_PATIENT_EMPLOYEE_ID,
+        this.sessionsOf(professional.id),
+      ),
+    );
+    return Promise.resolve(
+      employeeEntitlement(kind, psychologistSessions),
+    );
   }
 
   getVirtualDoctorConsults(): Promise<VirtualDoctorConsult[]> {
@@ -321,28 +365,138 @@ export class MockDataProvider implements DataProvider {
    * a runtime.
    */
   getAppointments(): Promise<Appointment[]> {
-    const mine = PORTAL_SESSIONS.filter(
-      (session) =>
-        session.patientId === PORTAL_PATIENT_EMPLOYEE_ID &&
-        session.status === "scheduled",
-    ).map(
-      (session): Appointment => ({
-        id: session.id,
-        kind: "psychologist",
-        professionalId: PORTAL_PROFESSIONAL_ID,
-        start: session.start,
-        durationMinutes: session.durationMinutes,
-        status: session.status,
-        type: session.type,
-      }),
-    );
+    const mine: Appointment[] = [];
+
+    for (const professional of PROFESSIONALS) {
+      for (const session of this.sessionsOf(professional.id)) {
+        if (session.patientId !== PORTAL_PATIENT_EMPLOYEE_ID) continue;
+        if (session.status !== "scheduled") continue;
+        mine.push({
+          id: session.id,
+          kind: serviceOf(professional),
+          professionalId: professional.id,
+          start: session.start,
+          durationMinutes: session.durationMinutes,
+          status: session.status,
+          type: session.type,
+        });
+      }
+    }
+
     mine.sort((a, b) => a.start.getTime() - b.start.getTime());
     return Promise.resolve(mine);
   }
 
   getAvailableSlots(professionalId: string): Promise<AppointmentSlot[]> {
-    return Promise.resolve(
-      INITIAL_SLOTS.filter((slot) => slot.professionalId === professionalId),
+    const taken = new Set(
+      this.sessionsOf(professionalId).map((session) =>
+        session.start.getTime(),
+      ),
     );
+    return Promise.resolve(
+      INITIAL_SLOTS.filter(
+        (slot) =>
+          slot.professionalId === professionalId &&
+          !taken.has(slot.start.getTime()),
+      ),
+    );
+  }
+
+  /*
+   * LA PRENOTAZIONE (§10.B, §5.2).
+   *
+   * Scrive **una seduta sola**. Il dipendente la rilegge da `getAppointments`,
+   * il professionista da `getProfessionalSessions`, e lo slot sparisce da
+   * `getAvailableSlots` perché quell'orario adesso è occupato: sono tre risposte
+   * diverse allo stesso fatto, non tre stati da tenere allineati a mano.
+   *
+   * Non fa salire `used`: la seduta nasce `scheduled`, e il contatore conta le
+   * erogate (§10.B). E non muove nessun numero dell'area HR — le sessioni
+   * consumate dell'azienda vengono dalla serie di utilizzo, che è il dataset
+   * curato del §8.
+   */
+  async bookAppointment(slot: AppointmentSlot): Promise<Appointment> {
+    const professional = await this.getProfessional(slot.professionalId);
+
+    assertInDev(
+      professional !== null,
+      `Prenotazione per "${slot.professionalId}", che non è fra i professionisti.`,
+    );
+
+    const free = await this.getAvailableSlots(slot.professionalId);
+    assertInDev(
+      free.some((entry) => entry.start.getTime() === slot.start.getTime()),
+      "Prenotato uno slot che non era libero: la schermata sta proponendo un orario già occupato.",
+    );
+
+    const mine = sessionsOfPatient(
+      PORTAL_PATIENT_EMPLOYEE_ID,
+      this.sessionsOf(slot.professionalId),
+    );
+
+    const session: ProfessionalSession = {
+      // deterministico: lo stesso slot non può produrre due id diversi
+      id: `booked-${slot.professionalId}-${slot.start.getTime()}`,
+      patientId: PORTAL_PATIENT_EMPLOYEE_ID,
+      // le iniziali si derivano dal profilo: è tutto ciò che il professionista
+      // riceve del nome, e scriverle a mano vorrebbe dire poterle sbagliare
+      patientInitials: `${LAURA.firstName[0]}.${LAURA.lastName[0]}.`,
+      start: slot.start,
+      durationMinutes: slot.durationMinutes,
+      status: "scheduled",
+      // primo colloquio se è la prima volta con questo professionista: è la
+      // stessa distinzione che il suo calendario mostra
+      type: mine.length === 0 ? "first_visit" : "session",
+      hasNote: false,
+    };
+
+    this.bookedByProfessional.set(slot.professionalId, [
+      ...(this.bookedByProfessional.get(slot.professionalId) ?? []),
+      session,
+    ]);
+
+    return {
+      id: session.id,
+      kind: professional === null ? "psychologist" : serviceOf(professional),
+      professionalId: slot.professionalId,
+      start: session.start,
+      durationMinutes: session.durationMinutes,
+      status: session.status,
+      type: session.type,
+    };
+  }
+
+  // --- Check rapido ---------------------------------------------------------
+
+  /**
+   * La risposta di oggi al check rapido, se è già stata data.
+   *
+   * La home la rilegge dopo il tocco invece di tenersi uno stato locale: è il
+   * giro del §5.2 sulla scrittura più piccola del dominio.
+   */
+  getRapidCheckAnswer(): Promise<RapidCheckAnswer | null> {
+    return Promise.resolve(this.lastRapidCheck);
+  }
+
+  /*
+   * Prende il solo valore: chi risponde è la persona autenticata, e il suo
+   * reparto lo sa il provider — in produzione lo saprà la sessione. È la stessa
+   * ragione per cui `getCompany()` non prende un identificatore (§7 del
+   * contratto). La variante su link anonimo porterà il reparto dal link.
+   *
+   * **Non tocca le serie del §8.** Le dodici curve della dashboard sono la
+   * storia che il pitch racconta, e un tocco fatto davanti a un investitore non
+   * deve poterla muovere: qui si dimostra che il segnale esiste, non lo si
+   * aggrega.
+   */
+  submitRapidCheck(value: RapidCheckAnswer["value"]): Promise<RapidCheckAnswer> {
+    const answer: RapidCheckAnswer = {
+      departmentId: LAURA.departmentId,
+      employeeId: LAURA.id,
+      value,
+      answeredAt: DEMO_TODAY,
+    };
+    this.lastRapidCheck = answer;
+    return Promise.resolve(answer);
   }
 }

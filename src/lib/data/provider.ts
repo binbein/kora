@@ -22,6 +22,7 @@ import type {
   ProfessionalFilter,
   ProfessionalSession,
   Quarter,
+  RapidCheckAnswer,
   RoiSnapshot,
   ServiceUsageMonth,
   SessionEntitlement,
@@ -215,6 +216,40 @@ export interface DataProvider {
   getAppointments(): Promise<Appointment[]>;
   /** Slot proponibili per un professionista, già filtrati sui liberi. */
   getAvailableSlots(professionalId: string): Promise<AppointmentSlot[]>;
+
+  /**
+   * Prenota uno slot per la persona della demo.
+   *
+   * **Scrive una seduta sola.** `Appointment` e `ProfessionalSession` sono due
+   * proiezioni dello stesso record (§10.D): dopo questa chiamata la seduta esce
+   * da `getAppointments` per il dipendente e da `getProfessionalSessions` per il
+   * professionista, e lo slot non esce più da `getAvailableSlots`. Il client non
+   * allinea niente a mano — invalida e rilegge (§5.2).
+   *
+   * Non fa salire `used`: la seduta nasce `scheduled` e il diritto conta le
+   * erogate (§10.B).
+   */
+  bookAppointment(slot: AppointmentSlot): Promise<Appointment>;
+
+  // --- Check rapido (§8, §10.B) ---------------------------------------------
+
+  /** La risposta di oggi, se è già stata data. */
+  getRapidCheckAnswer(): Promise<RapidCheckAnswer | null>;
+
+  /**
+   * Registra la risposta al check rapido: una domanda, un tocco.
+   *
+   * Prende il solo valore perché chi risponde è la persona autenticata e il suo
+   * reparto lo sa il server — è la stessa ragione per cui `getCompany()` non
+   * prende un identificatore (`docs/CONTRATTO-DATI.md` §7). La variante su link
+   * anonimo del §8 porterà il reparto dal link, non da qui.
+   *
+   * **Nella demo la risposta non entra negli aggregati**: le dodici curve della
+   * dashboard sono la storia curata del §8, e un tocco fatto durante il pitch non
+   * deve poterla muovere. In produzione questa scrittura è invece esattamente
+   * ciò che alimenta quelle serie.
+   */
+  submitRapidCheck(value: RapidCheckAnswer["value"]): Promise<RapidCheckAnswer>;
 
   /**
    * I consulti di medico virtuale già avvenuti, dal più vecchio.
