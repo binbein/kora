@@ -1031,5 +1031,107 @@ export const it = {
          pagina che risponde all'altra metà della domanda (§10.A.2). */
       roiLink: "Quanto stai già perdendo senza Kora",
     },
+
+    /* La landing (§10.A.1). Parla a un'azienda che valuta, non a un
+       dipendente che usa: terza persona, metrica. */
+    landing: {
+      badge: "Piattaforma svizzera, privacy-first",
+      /* Il sigillo sul riquadro del prodotto. Chiave sua e non `badge`: sono
+         due elementi diversi nella stessa schermata, e la stessa frase due
+         volte a mezzo schermo di distanza si legge come un difetto. */
+      mockupSeal: "Privacy-first",
+      /* Il titolo è spezzato in due perché la seconda metà è colorata: sono
+         due parti della stessa frase, non due frasi da concatenare. */
+      heroTitleLead: "La salute aziendale,",
+      heroTitleAccent: "finalmente integrata.",
+      heroBody:
+        "Kora unisce psicologi online, medico virtuale, check-up fisici, prevenzione AI e dashboard HR anonima in un unico abbonamento per dipendente.",
+      heroCtaRoi: "Calcola il ritorno",
+      heroCtaDemo: "Prenota una demo",
+      heroCompliance: "Hosting in Svizzera. Conforme GDPR e LPD.",
+
+      /*
+       * Il riquadro dell'hero è una miniatura del prodotto e legge dal
+       * provider: nel codice ereditato dichiarava un punteggio, un dato di
+       * sonno, un'adozione e un calo di stress che il §8 non contiene — fra
+       * cui il "−8%" che la migrazione dell'area HR ha già dimostrato non
+       * riproducibile, e un "82%" che era il numero degli iscritti letto come
+       * percentuale.
+       */
+      mockup: {
+        scoreLabel: "Profilo salute",
+        scoreOutOf: "/100",
+        /** "Focus: sonno" — l'area più debole del profilo */
+        focus: "Focus: {area}",
+        nextSessionLabel: "Prossima sessione",
+        /** "gio 17:30 · Dr.ssa Meier" */
+        nextSessionValue: "{weekday} {time} · {professional}",
+        analyticsLabel: "Dashboard HR (anonima)",
+        /** "Adozione 68% · Stress −2 punti" */
+        analyticsValue: "Adozione {adoption} · Stress {trend} punti",
+        /** Quando il trimestre più vecchio non ha un precedente da cui derivare il trend. */
+        analyticsValueNoTrend: "Adozione {adoption}",
+      },
+
+      problemTitle: "Il costo nascosto della salute aziendale",
+      problem: {
+        burnout: "Burnout in aumento",
+        absenteeism: "Assenteismo costoso",
+        waitingLists: "Liste d'attesa per gli psicologi",
+        fragmented: "Benefit sanitari frammentati",
+        noData: "HR senza dati misurabili",
+      },
+
+      valueTitle: "Una piattaforma. Tre livelli di valore.",
+      value: {
+        employee: {
+          title: "Per il dipendente",
+          body: "Accesso semplice a salute mentale, medico virtuale e prevenzione. Tutto privato, tutto in un unico posto.",
+        },
+        company: {
+          title: "Per l'azienda",
+          body: "Insight anonimi, ritorno misurabile, retention migliorata e riduzione dell'assenteismo.",
+        },
+        professional: {
+          title: "Per i professionisti",
+          body: "Nuova domanda, meno burocrazia, pagamenti automatici. Collaborazione a mandato senza vincoli.",
+        },
+      },
+
+      /*
+       * Il richiamo al calcolatore. I numeri sono quelli di ancoraggio del §9,
+       * calcolati dal modello come sulla pagina `/roi`: qui il campione è
+       * dichiarato, perché un importo senza l'organico su cui è calcolato non
+       * è verificabile.
+       */
+      roiTeaser: {
+        title: "Il ritorno, prima della firma",
+        /** "Un'azienda di 100 dipendenti perde CHF 1'289'500 all'anno." */
+        losses: "Un'azienda di {employees} dipendenti perde {amount} all'anno.",
+        /** "Con Kora ne recupera CHF 155'150 netti: 2.35:1, scenario conservativo." */
+        net: "Con Kora ne recupera {amount} netti: {ratio}, scenario conservativo.",
+        cta: "Apri il calcolatore",
+      },
+
+      plansTitle: "Piani trasparenti, valore concreto",
+      plansSubtitle:
+        "Un abbonamento per dipendente. Nessun costo nascosto. Ritorno misurabile.",
+      plansAll: "Confronta i tre piani",
+
+      privacyTitleLead: "La privacy non è un dettaglio.",
+      privacyTitleAccent: "È il cuore del prodotto.",
+      privacyBody:
+        "L'azienda non vede mai dati individuali, sedute, referti o diagnosi. Solo insight aggregati e anonimi. I dati sanitari restano di chi li produce.",
+      privacyChip: {
+        hosting: "Hosting in Svizzera",
+        gdpr: "Conforme GDPR",
+        lpd: "Conforme LPD",
+        encryption: "Crittografia end-to-end",
+      },
+
+      finalTitle: "Porta Kora nella tua azienda.",
+      finalBody: "Trenta minuti per vedere la piattaforma sui vostri numeri.",
+      finalCta: "Prenota una demo",
+    },
   },
 } as const;
