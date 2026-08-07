@@ -17,7 +17,7 @@ lì.
 
 ## Stato
 
-**M0 e M1 chiuse.** La demo è condivisibile — non nomina soggetti reali, il marchio è
+**M0, M1 e M2 chiuse.** La demo è condivisibile — non nomina soggetti reali, il marchio è
 uno solo, non ha vicoli ciechi, e le schermate mediche dichiarano di essere
 simulazioni — e il repository è nostro: niente base44, niente chiamate verso
 l'esterno, TypeScript configurato, i file puri al loro posto.
@@ -200,6 +200,74 @@ errori, `npm run lint` e `npm run typecheck` a 0.
   in produzione; spariscono con la stessa migrazione alla 7 che chiuderebbe le due
   vulnerabilità, ed è la stessa decisione di scope.
 
+### M2 — Il contratto dati
+
+Ventisei commit. Chiude con **l'area professionista intera**, cinque rotte, e con
+`docs/CONTRATTO-DATI.md`, che è il documento con cui nascerà il repository del
+backend.
+
+- **`reference/lib/data/` è stato letto, non copiato.** Il provider di riferimento
+  è sincrono per scelta dichiarata e la reattività passa da un contatore di
+  versione su `useSyncExternalStore`: `use-data.ts` non è mai entrato, e
+  react-query non ha mai convissuto con il version counter. Si sono copiati
+  davvero solo `people.ts` e la struttura di `professional-portal.ts`, `roi.ts` e
+  `scheduling.ts` — quest'ultimo con `process.env.NODE_ENV` sostituito da
+  `import.meta.env.DEV`, che in una SPA Vite è la differenza fra un guardrail e
+  una pagina bianca.
+- **Il dataset è due matrici e nient'altro scritto a mano**: misurati e punteggi
+  per reparto e per mese. Pubblicabilità, serie aziendale, alert precoce,
+  percentuali di adesione e denominatori si derivano. La serie aziendale esce
+  `53 52 52 51 50 50 49 48 48 48 47 46` — non crescente ogni mese, sempre in
+  fascia "Medio" — e l'alert cade sulle Vendite al decimo mese, come il §8.
+- **Il cap del piano ha deciso la forma dell'agenda.** Sei pazienti valgono al
+  massimo 60 sedute l'anno: un'agenda da cinque sedute settimanali descrive molti
+  percorsi brevi che si avvicendano, non sei percorsi lunghi. Da qui tre percorsi
+  conclusi, che stanno fuori dall'elenco pazienti e dentro lo storico compensi, e
+  due pazienti sopra il cap che mostrano il co-payment — il meccanismo su cui il
+  Business Plan regge il margine, messo a schermo.
+- **L'appuntamento di Laura è un record solo**, proiettato da due lati. Il
+  contatore del dipendente è il conto delle sue sedute erogate, non un numero a
+  parte: in M3 la prenotazione lo farà salire come conseguenza.
+- **Guardrail che lanciano in sviluppo e tacciono in produzione**, provati anche
+  al contrario: una serie che risale, la Direzione sopra soglia, misurati oltre
+  l'organico, l'adesione delle Vendite che smette di calare, l'alert spostato di
+  un mese e le sessioni cumulate che smettono di crescere fanno tutti fallire il
+  dataset con il messaggio giusto.
+- **Il seam è eseguibile**: due regole ESLint vietano di importare `lib/data/mock/`
+  e di chiamare `new Date()` fuori dal layer dati. L'unica violazione esistente è
+  stata corretta nello stesso commit, e correggendola è emerso che `toISOString()`
+  riportava indietro di un giorno le date prenotabili.
+
+**Verificato a schermo, non solo con tsc e lint** (le asserzioni del §10.D):
+
+- le righe settimanali sommano al totale del mese: CHF 240 + 320 + 400 + 160 =
+  CHF 1'120, e 3 + 4 + 5 + 2 = 14 sedute;
+- i pazienti elencati sono lo stesso numero della KPI: **6 e 6**, dove il codice
+  ereditato diceva 18 ed elencava 6;
+- date e giorni della settimana coincidono col calendario vero: mercoledì
+  23.09.2026, giovedì 24.09 alle 17:30, venerdì 25.09, lunedì 28.09, martedì
+  29.09 — le quattro coppie sbagliate sono sparite con la lista che le conteneva;
+- il regime sta accanto al totale: 5 sedute a settimana contro le 20 del pieno
+  regime, con le CHF 5'600–6'400 del §9 e la disponibilità minima di 8 ore;
+- la nota privata si salva davvero: aprendo la seduta di M.B. del 21.09,
+  scrivendo e salvando, "aggiungi nota" diventa "nota" senza ricaricare — le
+  sedute senza nota passano da 8 a 7.
+
+**Difetti noti di M2:**
+
+- **Le pagine dell'area restano `.jsx`.** Il §3 vuole che una schermata si
+  converta a TypeScript quando la si tocca, ma i 47 componenti shadcn sono `.jsx`
+  senza tipi di prop: da un file `.tsx`, `Card` e `Badge` rifiutano `children`, e
+  tipizzarli significa toccare i file che il §3 congela. `ProNav` è passato a
+  `.tsx` perché non li usa. **La conversione è bloccata da una regola, non
+  saltata**: va sciolta decidendo se i componenti shadcn si tipizzano.
+- **Il `range` di `getProfessionalSessions` non ha chiamanti.** È nel contratto
+  perché un'agenda vera non entra in una risposta, ma oggi le schermate filtrano
+  in memoria. È dichiarato in `CONTRATTO-DATI.md` §6.
+- **Il totale dell'anno nei pagamenti copre l'anno solare**, non i dodici mesi
+  mobili: con la demo a settembre sono i mesi da marzo, e a gennaio sarebbe una
+  riga sola. Nessuna conseguenza sulla demo, che è ambientata a settembre.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -232,7 +300,7 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 |---|---|---|
 | M0 | Messa in sicurezza | **fatta** |
 | M1 | Fondamenta tecniche | **fatta** |
-| M2 | Il contratto dati | da fare |
+| M2 | Il contratto dati | **fatta** |
 | M3 | Migrazione area per area | da fare |
 | M4 | Calcolatore ROI e report scaricabile | da fare |
 | M5 | Verso la produzione (differibile) | da fare |
