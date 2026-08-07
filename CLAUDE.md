@@ -195,15 +195,25 @@ kora/
       public|employee|hr|professional|admin/  ← layout e navigazione per area
       kora/              ← componenti di dominio nuovi (StressBar, SessionMeter…)
     lib/
-      data/              ← il contratto dati e l'implementazione mock (§5)
+      data/              ← il contratto dati e l'implementazione mock (§5),
+                           più i guardrail e il prefetch della cache
       i18n/it.ts         ← tutte le stringhe UI
       format.ts          ← formatCHF, formatDate, formatPercent — unico punto
       dates.ts           ← aritmetica sui giorni: calcola, non formatta
       roi-model.ts       ← formule del calcolatore ROI (§9)
+      earnings.ts        ← righe settimanali e totali dei compensi (§10.D)
+      schedule.ts        ← la griglia del calendario, costruita dalle sedute
+      query-client.ts    ← configurazione react-query
+  base44/entities/       ← i 12 schemi del progetto originale: lista di controllo
+                           della copertura del dominio (§5.3), non un vincolo
   reference/             ← sorgente della vecchia demo Next: sola lettura, si
                            cancella a fine M3. Contiene solo il suo `src/`:
                            niente package.json, niente config, niente app viva
 ```
+
+`earnings.ts` e `schedule.ts` sono presentazione, non dominio: raggruppare per
+settimana è una decisione della schermata e per questo non sta nel provider
+(`docs/CONTRATTO-DATI.md` §2).
 
 **Un solo `CLAUDE.md` in tutto l'albero.** È il file che orienta ogni sessione:
 averne due significa due costituzioni in conflitto, e quella della vecchia demo
@@ -310,9 +320,8 @@ invalidano le query toccate. Una prenotazione fatta nel portale dipendente deve
 comparire nel calendario del professionista **perché la query si invalida**, non
 perché qualcuno passa lo stato a mano.
 
-`src/lib/query-client.js` esiste già, e `refetchOnWindowFocus: false` c'è dal primo
-commit — niente refetch al focus della finestra durante una presentazione. Resta da
-tipizzare, e solo quello.
+`src/lib/query-client.ts` porta `refetchOnWindowFocus: false` dal primo commit —
+niente refetch al focus della finestra durante una presentazione.
 
 ### 5.3 Il dominio, per intero
 
