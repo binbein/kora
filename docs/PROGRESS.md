@@ -27,8 +27,8 @@ diff contro quello che base44 ha prodotto. In `reference/` c'è il sorgente dell
 precedente demo Next.js — `app/`, `components/` e `lib/`, senza configurazioni né
 app eseguibile — come magazzino di sola lettura; si cancella a fine M3. Il
 repository della vecchia demo è archiviato e non si tocca. I PDF del Business Plan
-restano fuori dal repository: le cifre che servono sono trascritte in `CLAUDE.md`
-§8 e §9.
+stanno in `docs/` dal 07.08.2026 (decisione qui sotto), ma restano una fonte da
+consultare: le cifre ammesse sono solo quelle trascritte in `CLAUDE.md` §8 e §9.
 
 ### M0 — Messa in sicurezza
 
@@ -211,12 +211,11 @@ backend.
 
 **Difetti noti di M2:**
 
-- **Le pagine dell'area sono rimaste `.jsx`**, perché i 47 componenti shadcn non
-  dichiarano i prop e da un `.tsx` rifiutano `children`. `ProNav` è passato a
-  `.tsx` perché non li usa. **Il nodo è sciolto**: i founder hanno autorizzato il
-  07.08.2026 l'aggiunta dei tipi a `src/components/ui/` (`CLAUDE.md` §3), che è il
-  primo lavoro di M3 — prima della prima area, così le schermate si convertono
-  mentre le si migra invece che due volte.
+- ~~Le pagine dell'area sono rimaste `.jsx`~~ → **chiuso in apertura di M3**. Le
+  cinque rotte sono `.tsx`, insieme a `KPICard` che ne condivide il muro. Il nodo
+  era che i componenti shadcn non dichiaravano i prop; i founder hanno autorizzato
+  il 07.08.2026 l'aggiunta dei tipi (`CLAUDE.md` §3) e la passata è quella qui
+  sotto.
 - ~~Il `range` di `getProfessionalSessions` non ha chiamanti~~ → il parametro è
   stato tolto subito dopo la chiusura di M2: un'opzione che nessuno passa è ciò
   che il §11 vieta, e dichiararla non la curava. L'informazione che serve — che
@@ -234,6 +233,60 @@ backend.
   professionista. Dataset e guardrail (psicologo sommato sui dodici mesi = 142)
   arrivano in M3 con la dashboard; i conteggi di coach, medico virtuale e
   check-up non sono nel §8 e vanno approvati allora (§2.4).
+
+### M3 — in corso: la tipizzazione del layer shadcn
+
+Il primo passo di M3, prima della prima area (`CLAUDE.md` §3). **Non chiude la
+milestone**: le aree sono ancora tutte da migrare.
+
+Fatto: 44 dei 48 file di `src/components/ui/`, più `lib/utils.ts`,
+`hooks/use-mobile.tsx`, `KPICard` e le cinque pagine del professionista. Un
+pattern solo, ripetuto — `React.ElementRef` e `React.ComponentPropsWithoutRef`
+sull'elemento sottostante, `VariantProps` dove c'è `cva` — e nessun `any`,
+nessun cast: `src/components/ui/` è entrato nel blocco TypeScript di ESLint
+apposta, perché `no-explicit-any` sorvegli le annotazioni appena aggiunte. Nel
+blocco React resta fuori: quelle regole sorveglierebbero il codice che
+l'eccezione del §3 vieta di toccare.
+
+**Come si prova che a runtime non è cambiato niente.** Un diff di cinquanta file
+non si legge riga per riga: per ognuno si transpila con esbuild la versione
+`master` e quella nuova e si confrontano. I tipi si cancellano, quindi l'output
+deve essere identico byte a byte. Lo è su 48 file su 50; i due che differiscono
+sono `ProSessioni` e `ProProfilo`, cioè esattamente i punti in cui i tipi hanno
+trovato qualcosa (elencati nel commit che li converte). È la verifica da rifare
+se qualcuno rimette mano a questa passata.
+
+**Le varianti `data-*` rotte non c'erano.** Cercate una per una: le 194 varianti
+dei 48 file usano tutte la sintassi a parentesi, che Tailwind 3 compila giusta.
+Le classi che ruppero i Tabs stanno in `reference/`, cioè nella generazione
+Tailwind 4. La cautela del §3 riguarda ciò che si aggiunge, e resta.
+
+**Verificato a schermo**, che qui è il punto: 25 rotte percorse, zero errori in
+console, nessuna schermata vuota. In particolare i Tabs delle sedute sono in
+riga e cambiano pannello; il Select del simulatore si apre con i tre piani e la
+scelta si riflette sul trigger; la nota privata si salva ancora senza ricaricare
+— "aggiungi nota" diventa "nota" — che è la mutation di M2 sopravvissuta alla
+conversione.
+
+**Cosa resta aperto:**
+
+- **Quattro compositi non convertiti**: `sidebar` (626 righe), `chart` (309),
+  `carousel` (193), `form` (134). La conversione meccanica lascia 106 errori:
+  hanno context, generici di librerie terze e props che non sono dell'elemento
+  sottostante. **Nessuno dei quattro ha un consumatore oggi**, quindi il rinvio
+  non toglie niente a schermo. Restano `.jsx` e compilano.
+- **`toaster` e `use-toast` restano `.jsx`, e non per fatica.** Tipizzandoli
+  emerge che il `toast.jsx` ereditato non è quello di shadcn: è una riscrittura
+  su `div` semplici, senza Radix. Il toast costruito porta `open` e
+  `onOpenChange`, che il `Toaster` riversa su un `<div>` — props che un div non
+  ha — e `dismiss()` mette `open: false` senza che niente nasconda il toast.
+  **Il sistema di notifiche non funziona**, e oggi non si vede perché nessuno
+  chiama `toast()`: il `Toaster` è montato in `App.jsx` e renderizza sempre una
+  lista vuota. Sistemarlo è un cambio di comportamento e va deciso dai founder —
+  è la voce in sospeso qui sotto.
+- **`isIframe` in `lib/utils.ts` non ha chiamanti** dal primo commit: è un
+  residuo dell'anteprima nel Builder base44. Candidato alla cancellazione come
+  `createPageUrl`, non fatto perché fuori dai passi approvati.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
@@ -277,6 +330,24 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà una
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
+
+- **07.08.2026 — Il calcolatore ROI ha una rotta sua, `/roi`** (`CLAUDE.md` §10.A).
+  Le rotte passano da 25 a **26**: è la prima aggiunta all'inventario ereditato da
+  base44. Il §10.A elencava quattro voci su tre rotte e non diceva dove vivesse il
+  calcolatore; ora lo dice. Sta fuori da `/pricing` perchè le due pagine
+  risponderebbero a domande diverse con lo stesso campo "numero di dipendenti", e
+  fuori dalla landing perchè un pezzo che il pitch mostra da solo ha bisogno di un
+  indirizzo. Resta lavoro di M3, nell'ordine già fissato.
+
+- **07.08.2026 — Il Business Plan sta in `docs/`** (`CLAUDE.md` §3). La regola
+  precedente lo teneva fuori dal repository; la costruzione della demo procede su
+  più sessioni e strumenti che condividono solo questo repository, e i documenti
+  fuori significa che metà di loro non li ha. **Sui numeri non cambia niente**: gli
+  unici ammessi restano quelli trascritti in §8 e §9 (§2.4), e una cifra che serve e
+  lì non c'è si chiede ai founder e si aggiunge lì — non si legge dal PDF. Sono
+  documenti riservati: il repository deve restare privato. La regola `*.pdf` di
+  `.gitignore` è caduta con la decisione (era comunque inerte: i due file erano già
+  tracciati).
 
 - **07.08.2026 — "Dipendente attivo" è un conteggio trimestrale** (`CLAUDE.md`
   §8, `CONTRATTO-DATI.md` §3). Il 41 della dashboard conta chi ha usato almeno
@@ -386,6 +457,14 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   sconti a volume nemmeno, e a 150 dipendenti la preselezione esce a **CHF 38** —
   identico all'Essenziale — offrendo medico virtuale illimitato e check-up annuale
   che l'Essenziale non ha. Verificato alla cifra.
+- **Il sistema di toast è rotto e non lo usa nessuno.** Il `toast.jsx` ereditato
+  da base44 non è quello di shadcn — è una riscrittura su `div` semplici senza
+  Radix — e non sa chiudere una notifica: `dismiss()` mette `open: false` e
+  niente la nasconde. Il `Toaster` è montato in `App.jsx` ma `toast()` non ha
+  chiamanti, quindi oggi non si vede. Tre strade: ripristinare il componente
+  Radix vero, togliere del tutto il sistema (§11: il codice che non serve non si
+  conserva), o lasciarlo così finché una schermata di M3 non ne ha bisogno.
+  Emersa tipizzando il layer; i due file restano `.jsx` finché non si decide.
 - **Emoji nel saluto della home dipendente.** Il §7 di `CLAUDE.md` vieta le emoji
   nel testo di sistema; il 👋 della home è l'unico caso in cui il registro consumer
   potrebbe giustificarla. Da chiedere ai founder. (Il 💡 del riquadro prezzi è

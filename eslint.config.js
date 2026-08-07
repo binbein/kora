@@ -14,10 +14,15 @@ export default [
   // Solo parser e regole `recommended`: le varianti type-aware caricherebbero il
   // programma TypeScript a ogni lint, e con `checkJs: false` coprirebbero comunque
   // solo meta' del codice.
+  // I file tipizzati di `src/components/ui/` entrano qui, e solo qui. La regola
+  // che conta e' `no-explicit-any`: sorveglia esattamente cio' che l'eccezione
+  // del CLAUDE.md §3 ci ha autorizzato ad aggiungere. Il blocco React piu' sotto
+  // invece li lascia fuori: quelle regole sorveglierebbero il codice che la
+  // stessa eccezione vieta di toccare, e un warning li' e' pressione a
+  // modificare un componente congelato.
   ...tseslint.configs.recommended.map((c) => ({
     ...c,
     files: ["src/**/*.{ts,tsx}"],
-    ignores: ["src/components/ui/**/*"],
   })),
   {
     files: [

@@ -63,7 +63,7 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
    gg.mm.aaaa). Niente language switcher. Ma valgono da subito:
    - Stringhe UI in `src/lib/i18n/it.ts` (oggetto tipizzato, niente testo cablato
      nei componenti). Aggiungere una lingua domani = aggiungere un file con le
-     stesse chiavi. **Retrofittare l'i18n su 25 schermate dopo costa dieci volte
+     stesse chiavi. **Retrofittare l'i18n su ventisei schermate dopo costa dieci volte
      tanto: si fa mentre si tocca ogni schermata, non alla fine.**
    - **Mai concatenare stringhe per comporre frasi** (l'ordine delle parole cambia
      tra lingue). Sempre frasi complete con segnaposto:
@@ -105,6 +105,21 @@ repository Next non dia niente per scontato.
   costato dei Tabs disposti in colonna nella demo precedente: aggiungendo un
   componente shadcn, controllare **a schermo** che le sue varianti `data-*`
   corrispondano ad attributi che Radix scrive davvero.
+
+  **Nei 48 file di oggi non ce n'è nessuna**: cercate una per una in apertura di
+  M3, le 194 varianti presenti usano tutte la sintassi a parentesi
+  (`data-[state=open]:`), che Tailwind 3 compila giusta. Le classi rotte stanno in
+  `reference/`, cioè nella generazione Tailwind 4. **La cautela riguarda ciò che si
+  aggiunge, non ciò che c'è.**
+
+  **Per la stessa ragione i componenti inutilizzati non si cancellano**, ed è
+  un'eccezione dichiarata al §11: 33 dei 48 non li importa nessuno, ma sono
+  **l'ultima copia buona della generazione Tailwind 3**. Cancellarli non è
+  reversibile a buon mercato — un `shadcn add` domani riporta la generazione
+  Tailwind 4 con le varianti che non agganciano — e diversi servono già: slider e
+  switch al check rapido, popover e scroll-area alla dashboard (M3), `form` alla
+  validazione con `zod` e `react-hook-form`, che il §3 tiene installati apposta
+  (M5).
 
   **Ai componenti shadcn si possono aggiungere i tipi.** È un'eccezione esplicita
   alla regola per cui `src/components/ui/` non si tocca, decisa dai founder il
@@ -195,15 +210,25 @@ kora/
       public|employee|hr|professional|admin/  ← layout e navigazione per area
       kora/              ← componenti di dominio nuovi (StressBar, SessionMeter…)
     lib/
-      data/              ← il contratto dati e l'implementazione mock (§5)
+      data/              ← il contratto dati e l'implementazione mock (§5),
+                           più i guardrail e il prefetch della cache
       i18n/it.ts         ← tutte le stringhe UI
       format.ts          ← formatCHF, formatDate, formatPercent — unico punto
       dates.ts           ← aritmetica sui giorni: calcola, non formatta
       roi-model.ts       ← formule del calcolatore ROI (§9)
+      earnings.ts        ← righe settimanali e totali dei compensi (§10.D)
+      schedule.ts        ← la griglia del calendario, costruita dalle sedute
+      query-client.ts    ← configurazione react-query
+  base44/entities/       ← i 12 schemi del progetto originale: lista di controllo
+                           della copertura del dominio (§5.3), non un vincolo
   reference/             ← sorgente della vecchia demo Next: sola lettura, si
                            cancella a fine M3. Contiene solo il suo `src/`:
                            niente package.json, niente config, niente app viva
 ```
+
+`earnings.ts` e `schedule.ts` sono presentazione, non dominio: raggruppare per
+settimana è una decisione della schermata e per questo non sta nel provider
+(`docs/CONTRATTO-DATI.md` §2).
 
 **Un solo `CLAUDE.md` in tutto l'albero.** È il file che orienta ogni sessione:
 averne due significa due costituzioni in conflitto, e quella della vecchia demo
@@ -219,8 +244,24 @@ palette, formule, dataset, definizione di "finito". `docs/PROGRESS.md` racconta
 cosa esiste, milestone per milestone, ed è l'indice con cui ci si orienta
 riprendendo il lavoro — non decide niente e non duplica: cita e rimanda qui.
 
-**Il Business Plan non è nel repository.** I numeri che servono sono trascritti in
-§8 e §9, e quelli sono gli unici ammessi (§2.4).
+**Il Business Plan sta in `docs/`, e resta una fonte da consultare, non da citare.**
+Decisione dei founder del 07.08.2026: durante la costruzione della demo più
+sessioni e strumenti diversi lavorano sullo stesso repository, e tenere i
+documenti altrove significa che metà di loro non li ha. **Non cambia niente sui
+numeri**: quelli ammessi restano i soli trascritti in §8 e §9 (§2.4). Se una cifra
+del BP serve e qui non c'è, si chiede ai founder e si aggiunge qui — non la si
+legge dal PDF e la si scrive in un componente.
+
+Sono documenti riservati e il repository è privato: **verificare che lo resti**
+prima di aggiungere collaboratori o di rendere pubblico alcunché. Il repository
+del backend nascerà con `docs/CONTRATTO-DATI.md`, non con i PDF.
+
+**La decisione nasce con la sua scadenza: i PDF escono prima che gli accessi si
+allarghino.** Al primo ingresso di qualcuno che non sia un founder — un'assunzione,
+un collaboratore esterno — si tolgono dal repository e si ripulisce la storia con
+`git filter-repo`, perché toglierli da `HEAD` non li toglie dai commit passati. **A
+uscire sono i PDF, non il repository**: il codice e la sua storia restano qui, e il
+§5.7 vale intero — non esiste un frontend nuovo per l'MVP.
 
 ## 4. Come si lavora — le milestone
 
@@ -301,9 +342,8 @@ invalidano le query toccate. Una prenotazione fatta nel portale dipendente deve
 comparire nel calendario del professionista **perché la query si invalida**, non
 perché qualcuno passa lo stato a mano.
 
-`src/lib/query-client.js` esiste già, e `refetchOnWindowFocus: false` c'è dal primo
-commit — niente refetch al focus della finestra durante una presentazione. Resta da
-tipizzare, e solo quello.
+`src/lib/query-client.ts` porta `refetchOnWindowFocus: false` dal primo commit —
+niente refetch al focus della finestra durante una presentazione.
 
 ### 5.3 Il dominio, per intero
 
@@ -800,16 +840,23 @@ corrente è anche il totale dell'anno. Il consumo del singolo trimestre — 28 /
 
 ## 10. Scope — le schermate e la definizione di "finito"
 
-25 rotte su cinque aree, ereditate da base44 (3 + 6 + 5 + 5 + 6: le sotto-liste qui
-sotto sono sempre state giuste, era il totale a essere sbagliato). **Nessuna
+**26 rotte su cinque aree** (4 + 6 + 5 + 5 + 6). Venticinque sono ereditate da
+base44; la ventiseiesima è `/roi`, approvata dai founder il 07.08.2026. **Nessuna
 schermata nuova senza
 approvazione** (§2.6); nessuna schermata esistente si elimina senza dirlo.
 
-### A. Pubblica — `/`, `/pricing`, `/demo`
+### A. Pubblica — `/`, `/roi`, `/pricing`, `/demo`
 1. **Landing**: hero, problema, tre livelli di valore, anteprima piani, privacy, CTA.
 2. **Calcolatore ROI** — *da costruire, non esiste*. Perdite oggi vs risparmio con
    KORA, il dettaglio delle quattro voci che si aggiorna con N, formule §9.
    Va costruito con la grafica e il layout di base44; il motore è `roi-model.ts`.
+
+   **Sta su una rotta sua, `/roi`**, decisa dai founder il 07.08.2026: è il terzo
+   dei tre pezzi che il pitch mostra (§4), e un pezzo che si mostra da solo deve
+   avere un indirizzo a cui portarlo, non una sezione da raggiungere scorrendo.
+   Tenerlo fuori da `/pricing` evita anche due campi "numero di dipendenti" nella
+   stessa pagina: lì il simulatore risponde *"quanto costa"*, qui il calcolatore
+   risponde *"quanto stai già perdendo"*, e sono due domande che non si mescolano.
 3. **Prezzi**: i tre piani + simulatore di costo. Il quarto piano
    "Personalizzato" a moduli **resta nascosto** finché i founder non decidono:
    i suoi undici prezzi non sono nel BP e a 150 dipendenti la preselezione esce
@@ -829,7 +876,7 @@ Home, Psicologi, Medico virtuale, Check-up, Piano AI, Profilo.
    dove arrivano quei numeri non abbiamo niente da indicare. Il Business Plan lo
    chiama "cuore di KORA" e ne descrive tre mensili: dove i due divergono vince
    questo file, e il documento si aggiorna.
-   È una card nella home, **non una rotta nuova**: le rotte restano 25.
+   È una card nella home, **non una rotta nuova**: non entra nel conto delle 26.
    Approvato dai founder il **06.08.2026** ai sensi del §2.6. È lavoro di M3, e qui
    si approva l'esistenza della schermata e basta: la resa si decide migrando l'area.
 
