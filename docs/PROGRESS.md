@@ -27,8 +27,8 @@ diff contro quello che base44 ha prodotto. In `reference/` c'è il sorgente dell
 precedente demo Next.js — `app/`, `components/` e `lib/`, senza configurazioni né
 app eseguibile — come magazzino di sola lettura; si cancella a fine M3. Il
 repository della vecchia demo è archiviato e non si tocca. I PDF del Business Plan
-restano fuori dal repository: le cifre che servono sono trascritte in `CLAUDE.md`
-§8 e §9.
+stanno in `docs/` dal 07.08.2026 (decisione qui sotto), ma restano una fonte da
+consultare: le cifre ammesse sono solo quelle trascritte in `CLAUDE.md` §8 e §9.
 
 ### M0 — Messa in sicurezza
 
@@ -277,6 +277,16 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà una
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
+
+- **07.08.2026 — Il Business Plan sta in `docs/`** (`CLAUDE.md` §3). La regola
+  precedente lo teneva fuori dal repository; la costruzione della demo procede su
+  più sessioni e strumenti che condividono solo questo repository, e i documenti
+  fuori significa che metà di loro non li ha. **Sui numeri non cambia niente**: gli
+  unici ammessi restano quelli trascritti in §8 e §9 (§2.4), e una cifra che serve e
+  lì non c'è si chiede ai founder e si aggiunge lì — non si legge dal PDF. Sono
+  documenti riservati: il repository deve restare privato. La regola `*.pdf` di
+  `.gitignore` è caduta con la decisione (era comunque inerte: i due file erano già
+  tracciati).
 
 - **07.08.2026 — "Dipendente attivo" è un conteggio trimestrale** (`CLAUDE.md`
   §8, `CONTRATTO-DATI.md` §3). Il 41 della dashboard conta chi ha usato almeno

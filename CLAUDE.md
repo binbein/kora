@@ -219,8 +219,17 @@ palette, formule, dataset, definizione di "finito". `docs/PROGRESS.md` racconta
 cosa esiste, milestone per milestone, ed è l'indice con cui ci si orienta
 riprendendo il lavoro — non decide niente e non duplica: cita e rimanda qui.
 
-**Il Business Plan non è nel repository.** I numeri che servono sono trascritti in
-§8 e §9, e quelli sono gli unici ammessi (§2.4).
+**Il Business Plan sta in `docs/`, e resta una fonte da consultare, non da citare.**
+Decisione dei founder del 07.08.2026: durante la costruzione della demo più
+sessioni e strumenti diversi lavorano sullo stesso repository, e tenere i
+documenti altrove significa che metà di loro non li ha. **Non cambia niente sui
+numeri**: quelli ammessi restano i soli trascritti in §8 e §9 (§2.4). Se una cifra
+del BP serve e qui non c'è, si chiede ai founder e si aggiunge qui — non la si
+legge dal PDF e la si scrive in un componente.
+
+Sono documenti riservati e il repository è privato: **verificare che lo resti**
+prima di aggiungere collaboratori o di rendere pubblico alcunché. Il repository
+del backend nascerà con `docs/CONTRATTO-DATI.md`, non con i PDF.
 
 ## 4. Come si lavora — le milestone
 
