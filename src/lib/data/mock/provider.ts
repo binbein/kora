@@ -12,6 +12,7 @@ import {
   type ServiceUsageMonth,
   type VirtualDoctorConsult,
   sameQuarter,
+  serviceOf,
   type Appointment,
   type AppointmentSlot,
   type Company,
@@ -46,7 +47,7 @@ import {
 } from "./employee-portal";
 import { EMPLOYEE_DIRECTORY, HR_REPORTS, INVOICES } from "./hr";
 import { DEMO_TODAY } from "./demo-date";
-import { LAURA, PROFESSIONALS, serviceOf } from "./people";
+import { LAURA, PROFESSIONALS } from "./people";
 import {
   entitlementFor,
   isActivePatient,

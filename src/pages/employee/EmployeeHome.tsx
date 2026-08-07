@@ -283,8 +283,13 @@ export default function EmployeeHome() {
             label: t.employee.home.quickAction.checkup,
             path: "/employee/checkup",
             color: "bg-secondary/10 text-secondary",
-            // il check-up è già stato fatto: il badge lo dice invece di
-            // proporlo come disponibile, che è ciò che l'elenco HR smentirebbe
+            /*
+             * Il check-up è già stato fatto: il badge lo dice invece di
+             * proporlo come disponibile, che è ciò che l'elenco HR
+             * smentirebbe. Sta su menta chiara e non sul teal pieno del
+             * codice ereditato: a 10px il bianco su `secondary` è molto
+             * sotto l'AA (§6.1).
+             */
             badge:
               checkup.lastCompleted?.status === "completed"
                 ? t.employee.home.checkupDone
@@ -308,7 +313,7 @@ export default function EmployeeHome() {
           <Link key={path} to={path}>
             <Card className="p-4 hover:shadow-md transition-shadow text-center relative h-full">
               {badge && (
-                <Badge className="absolute -top-2 -right-2 bg-secondary text-white text-[10px] hover:bg-secondary">
+                <Badge className="absolute -top-2 -right-2 bg-accent text-accent-foreground text-[10px] hover:bg-accent">
                   {badge}
                 </Badge>
               )}

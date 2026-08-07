@@ -447,6 +447,19 @@ export function professionalDisplayName(professional: Professional): string {
   return [title, firstName, lastName].filter(Boolean).join(" ");
 }
 
+/**
+ * Quale dei due servizi cappati dal piano eroga un professionista.
+ *
+ * Si deriva dalla specializzazione invece di essere un campo suo: sono lo stesso
+ * fatto, e un campo in più potrebbe smettere di concordare con la specialità che
+ * la card mostra accanto. Il coaching è coaching, il resto è psicologia — ed è
+ * la ragione per cui la schermata di prenotazione non può presentare i quattro
+ * professionisti in un elenco solo senza dire chi fa cosa.
+ */
+export function serviceOf(professional: Professional): CappedServiceKind {
+  return professional.specialty === "coaching" ? "coach" : "psychologist";
+}
+
 export type ProfessionalFilter = {
   specialty?: ProfessionalSpecialty;
   language?: ProfessionalLanguage;

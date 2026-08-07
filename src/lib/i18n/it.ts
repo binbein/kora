@@ -175,6 +175,54 @@ export const it = {
       doneHint: "Ti richiediamo come stai fra qualche giorno.",
     },
 
+    /*
+     * La prenotazione. L'intestazione non dice "Psicologi" come la voce di menu,
+     * perché la schermata elenca anche il coach: dire una cosa sola sopra un
+     * elenco che ne contiene due è il difetto che il §5.5 chiama divergenza,
+     * applicato alle parole.
+     */
+    psychologists: {
+      title: "Parla con qualcuno",
+      subtitle:
+        "Psicologi e coach della rete Kora. Scegli chi ti segue e prenota quando ti è comodo.",
+      filter: {
+        psychologist: "Psicologi",
+        coach: "Coach",
+      },
+      empty: "Nessun professionista disponibile per questo servizio.",
+      /** "312 sedute erogate" */
+      totalSessions: "{n} sedute erogate",
+      book: "Prenota",
+
+      dialog: {
+        /** "Prenota con Dr.ssa Meier" */
+        title: "Prenota con {professional}",
+        chooseDay: "Scegli un giorno",
+        chooseTime: "Scegli un orario",
+        noSlots:
+          "Non ci sono orari liberi al momento. Riprova fra qualche giorno.",
+        summary: "Riepilogo",
+        /** "venerdì 25.09.2026, alle 10:00" */
+        summaryWhen: "{weekday} {date}, alle {time}",
+        included: "Sessione inclusa nel tuo piano",
+        /** "Le sessioni incluse sono finite: questa costa CHF 28" */
+        overCapWithPrice: "Le sessioni incluse sono finite: questa costa {price}",
+        /*
+         * Il §9 non dà un prezzo oltre il cap per il coaching, quindi non se ne
+         * offre una a pagamento: si dice che le incluse sono finite e si ferma
+         * la conferma, invece di far credere che sia gratis.
+         */
+        overCapWithoutPrice:
+          "Hai finito le sessioni incluse nel piano per questo servizio.",
+        confirm: "Conferma la prenotazione",
+        confirmedTitle: "Prenotazione confermata",
+        confirmedWith: "con {professional}",
+        confirmedNote:
+          "La trovi nella tua home. Ti arriva il link per il video via email.",
+        close: "Chiudi",
+      },
+    },
+
     aiPlan: {
       /*
        * Gli obiettivi del piano, per chiave. Li leggono due schermate — la home
