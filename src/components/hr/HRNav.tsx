@@ -2,25 +2,36 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Users, CreditCard, FileText, Shield, Menu, X } from 'lucide-react';
 import KoraLogo from '@/components/shared/KoraLogo';
+import { formatNumber } from '@/lib/format';
+import { interpolate, t } from '@/lib/i18n';
+import { useCompany } from '@/lib/data/queries';
 
+/*
+ * La navigazione dell'area HR, condivisa dalle cinque rotte.
+ *
+ * Il riquadro in fondo leggeva "150 dipendenti" scritto a mano, cioè un organico
+ * diverso da quello che la dashboard accanto dichiarava. Ora viene dal provider:
+ * è la stessa azienda, quindi è lo stesso numero (§5.5).
+ */
 const navItems = [
-  { path: '/hr', icon: LayoutDashboard, label: 'Dashboard' },
-  { path: '/hr/dipendenti', icon: Users, label: 'Dipendenti' },
-  { path: '/hr/report', icon: FileText, label: 'Report' },
-  { path: '/hr/fatturazione', icon: CreditCard, label: 'Fatturazione' },
-  { path: '/hr/privacy', icon: Shield, label: 'Privacy' },
+  { path: '/hr', icon: LayoutDashboard, label: t.hr.navDashboard },
+  { path: '/hr/dipendenti', icon: Users, label: t.hr.navEmployees },
+  { path: '/hr/report', icon: FileText, label: t.hr.navReport },
+  { path: '/hr/fatturazione', icon: CreditCard, label: t.hr.navBilling },
+  { path: '/hr/privacy', icon: Shield, label: t.hr.navPrivacy },
 ];
 
 export default function HRNav() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const { data: company } = useCompany();
 
   return (
     <>
       <aside className="hidden lg:flex flex-col w-64 bg-card border-r border-border min-h-screen fixed left-0 top-0 z-40">
         <div className="p-6 border-b border-border">
           <KoraLogo size="sm" />
-          <p className="text-xs text-muted-foreground mt-1">Portale HR</p>
+          <p className="text-xs text-muted-foreground mt-1">{t.hr.portalName}</p>
         </div>
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map(({ path, icon: Icon, label }) => {
@@ -36,12 +47,19 @@ export default function HRNav() {
             );
           })}
         </nav>
-        <div className="p-4 border-t border-border">
-          <div className="bg-accent rounded-lg p-3">
-            <p className="text-xs font-medium text-foreground">Demo SA</p>
-            <p className="text-[10px] text-muted-foreground">150 dipendenti · Piano Plus</p>
+        {company && (
+          <div className="p-4 border-t border-border">
+            <div className="bg-accent rounded-lg p-3">
+              <p className="text-xs font-medium text-foreground">{company.name}</p>
+              <p className="text-[10px] text-muted-foreground tabular-nums">
+                {interpolate(t.hr.navCompanyMeta, {
+                  count: formatNumber(company.employeeCount),
+                  plan: t.plan[company.plan.id],
+                })}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
       </aside>
 
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-xl border-b border-border">
