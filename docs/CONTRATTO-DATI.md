@@ -255,8 +255,9 @@ compensi e pagamenti.
 | `saveSessionNote` | `["professional", professionalId]` |
 | `bookAppointment` | `["professional", professionalId]` **e** `["employee"]` |
 | `submitRapidCheck` | `["employee", "rapid-check"]` |
+| `submitDemoRequest` | nessuna, oggi — sotto |
 
-Resta fuori la richiesta demo, che arriva con l'area pubblica.
+Sono tutte le scritture del dominio: dopo l'area pubblica non ne restano fuori.
 
 **`bookAppointment` invalida due radici perché scrive un record solo.**
 `Appointment` e `ProfessionalSession` sono due proiezioni della stessa seduta
@@ -270,6 +271,21 @@ compare nel calendario e nelle sedute in programma del professionista.
 **`submitRapidCheck` invalida solo la risposta**, non la radice: il check rapido
 non muove contatori né appuntamenti, e invalidare più del necessario farebbe
 rileggere mezza schermata per un tocco.
+
+**`submitDemoRequest` non invalida niente, e non è una dimenticanza.** A leggere
+le richieste sarà il back-office, che è l'ultima area da migrare: oggi nessuna
+query le mostra, quindi non c'è niente da invalidare. La lettura —
+`getDemoRequests` — nasce con il suo consumatore e con la sua riga in questa
+tabella, che è la regola del §2 applicata al caso in cui è più facile
+disattenderla: la superficie di invalidazione è la parte del contratto in cui
+sbagliare costa di più, e indovinarla adesso non la renderebbe più vera. **In
+produzione questa scrittura invaliderà l'elenco del back-office**, ed è la riga
+che questa tabella prenderà allora.
+
+Il record si salva comunque nello stato del provider, che vive in memoria: una
+richiesta compilata davanti a un investitore è ancora lì navigando su `/admin`
+(`CLAUDE.md` §10). E non ha semi — il §8 non contiene richieste demo, quindi
+l'elenco parte vuoto invece di aprirsi su cinque righe inventate (§2.4).
 
 **Una prenotazione non fa salire `used`.** Il diritto alle sedute conta le
 erogate (§3) e la seduta nasce `scheduled`: a muoversi è la parte in programma.

@@ -1133,5 +1133,34 @@ export const it = {
       finalBody: "Trenta minuti per vedere la piattaforma sui vostri numeri.",
       finalCta: "Prenota una demo",
     },
+
+    /* La richiesta di demo (§10.A.4). La validazione vera è M5: qui bastano i
+       `required` del browser, e il form non finge di controllare altro. */
+    demoRequest: {
+      title: "Prenota una demo",
+      subtitle:
+        "Trenta minuti con il nostro team, sui numeri della vostra azienda.",
+
+      companyLabel: "Nome azienda",
+      contactLabel: "Nome e cognome",
+      emailLabel: "Email aziendale",
+      phoneLabel: "Telefono",
+      employeesLabel: "Numero di dipendenti",
+      messageLabel: "Messaggio",
+      optional: "facoltativo",
+      privacy:
+        "I dati saranno trattati in conformità alla LPD svizzera e al GDPR.",
+      submit: "Invia la richiesta",
+      submitting: "Invio in corso",
+
+      successTitle: "Richiesta ricevuta",
+      /* La conferma nomina l'azienda che ha scritto, e la legge dal record
+         restituito dalla mutation: è la prova che la scrittura è avvenuta,
+         non un cartello che compare comunque. */
+      successBody:
+        "La richiesta per {company} è registrata. Il team risponde entro un giorno lavorativo.",
+      successHome: "Torna alla home",
+      successRoi: "Intanto, calcola il ritorno",
+    },
   },
 } as const;
