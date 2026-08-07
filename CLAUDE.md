@@ -834,9 +834,12 @@ esisterà davvero.
 ## 9. Numeri ufficiali dal Business Plan (unici ammessi)
 
 Piani: **Essenziale CHF 38** (6 sessioni/anno, extra CHF 35, medico virtuale 12h con
-3 consulti/anno, colloquio conoscitivo gratuito una volta) · **Plus CHF 55** (10
+3 consulti/anno, colloquio conoscitivo gratuito una volta, dashboard HR + ROI
+base — % di utilizzo, stress anonimizzato, risparmio in CHF) · **Plus CHF 55** (10
 sessioni/anno, extra CHF 28, coach 4 sessioni/anno, medico 4h consulti illimitati,
-check-up annuale, piano AI ogni 6 mesi) · **Executive CHF 82** (16 sessioni/anno,
+check-up annuale, piano AI ogni 6 mesi, dashboard HR per reparto con report
+trimestrale e alert burnout precoce — notifica se un reparto supera la soglia di
+stress) · **Executive CHF 82** (16 sessioni/anno,
 extra CHF 22, medico 1h illimitato, nutrizionista 4/anno, coaching 6 sessioni/anno,
 psichiatra su richiesta incluso, 2 workshop live/anno inclusi, familiari inclusi,
 check-up executive completo 1 volta/anno — ECG, eco addome, oculista, sangue
@@ -848,6 +851,24 @@ Business Plan (p.10). La conseguenza era che il piano più caro risultava offrir
 meno di quanto offre, e che un difetto già noto non era chiudibile: `PROGRESS.md`
 segnala da M0 che la card dice "Consulenza HR trimestrale" mentre il BP dà mensile,
 e chi fosse andato a correggerla leggendo il §9 non avrebbe trovato la riga.
+
+**La dashboard HR mancava su Essenziale e Plus**, e per la stessa ragione delle
+tre voci qui sopra: il §9 trascriveva la sola riga dell'Executive, quindi le due
+card più economiche non potevano nominarla senza inventarla. Aggiunte dalla p.9
+del Business Plan il **08.08.2026**, su decisione dei founder ai sensi del §2.4.
+
+**I tre livelli sono tre cose diverse, non lo stesso prodotto in tre taglie**, e
+la card deve poterli distinguere come distingue i due check-up: la base dice
+*cosa* mostra (utilizzo, stress anonimizzato, risparmio), quella del Plus
+introduce il **taglio per reparto** e l'**alert burnout precoce** — che è
+l'alert del §8, cioè il pezzo su cui si regge la dashboard del §10.C — e quella
+dell'Executive aggiunge la cadenza mensile e la call col team clinico.
+
+**Le cadenze dei report non sono confrontabili fra i tre piani**, e non vanno
+messe su una scala: il BP dà "trimestrale" al Plus e "mensile" all'Executive,
+mentre sulla riga dell'Essenziale "mensile" si riferisce alla dashboard e non a
+un report. Una cadenza numerica su `Plan` costringerebbe a decidere quel punto,
+cioè a inventare: il livello è un'enumerazione e la frase intera vive in `i18n`.
 
 **I due check-up non sono lo stesso check-up.** Il Plus ha quello annuale, l'Executive
 ne ha uno più esteso: sono due voci diverse e la card deve poterle distinguere.
