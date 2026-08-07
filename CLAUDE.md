@@ -508,14 +508,35 @@ Regole:
   Corretto il 07.08.2026: si mostra il valore calcolato, e **l'etichetta dice su
   cosa è calcolato**, altrimenti "−2" da solo non è verificabile da chi guarda.
 
-### 6.2 Tipografia
+### 6.2 I grafici non si animano in ingresso
+
+**Nessuna animazione d'ingresso su nessun grafico**: linee, barre, ciambelle e
+marker si disegnano già completi. Deciso dai founder il 07.08.2026 dopo che la
+ciambella della dashboard HR ha mostrato i settori **vuoti** — i gruppi
+`recharts-pie-sector` c'erano e non contenevano nessun `path` — perché
+l'animazione non completava. Cioè la schermata su cui il pitch si regge poteva
+mostrare un buco a seconda della macchina.
+
+Le due ragioni per cui è una regola e non la riparazione di quel grafico:
+
+- **il rendering diventa deterministico**, e un difetto di dati si distingue da
+  un fotogramma catturato troppo presto — che è anche ciò che rende affidabili
+  le verifiche a schermo del §11;
+- **un'animazione d'ingresso è tempo morto da spiegare quanto uno spinner**
+  (§5.1). Durante una presentazione dal vivo nessuno aspetta che una barra
+  cresca.
+
+In recharts si scrive `isAnimationActive={false}` su ogni serie. **Vale per
+l'area admin**, che di grafici ne ha cinque e non è ancora migrata.
+
+### 6.3 Tipografia
 
 - Testo e UI: **Inter**.
 - Titoli e numeri di rilievo: **DM Sans** (`font-display`).
 - Numeri importanti (CHF, percentuali, orari, contatori): **`tabular-nums`**. Senza,
   le cifre ballano quando un valore cambia — e in questa demo cambiano di continuo.
 
-### 6.3 Due registri di forme e densità
+### 6.4 Due registri di forme e densità
 
 | | HR · landing · professionista · admin | App dipendente |
 |---|---|---|
