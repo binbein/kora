@@ -425,6 +425,12 @@ Regole:
 - **Solo light mode.** `index.css` definisce una palette `.dark` completa che nessun
   componente attiva: resta lì, inerte. Nessun toggle e nessun `next-themes` finché
   non è una decisione dei founder.
+- **Sulle KPI di trend il colore segue il beneficio, la freccia segue il
+  segno.** Verde quando la metrica migliora, `destructive` quando peggiora, e
+  ogni KPI dichiara se scendere è un bene: "Stress medio −8%" è la buona
+  notizia della dashboard ed esce verde con la freccia in giù. Un rosso su ogni
+  segno meno racconta il contrario della storia del §8. Deciso dai founder il
+  07.08.2026; si implementa in M3, quando la dashboard legge dal provider.
 
 ### 6.2 Tipografia
 

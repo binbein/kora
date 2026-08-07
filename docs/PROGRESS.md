@@ -331,6 +331,12 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   **l'arrotondamento del risparmio al centinaio** e **il periodo delle sessioni
   consumate**, che sono cumulate sui dodici mesi del monte annuo.
 
+- **07.08.2026 — Polarità dei colori sulle KPI di trend** (`CLAUDE.md` §6.1).
+  Il colore segue il beneficio, la freccia segue il segno: "Stress medio −8%"
+  esce verde con la freccia in giù, e ogni KPI dichiara se scendere è un bene.
+  Chiude la voce che stava fra le decisioni in sospeso; si implementa in M3,
+  quando la dashboard legge dal provider.
+
 - **07.08.2026 — Si possono tipizzare i componenti shadcn** (`CLAUDE.md` §3).
   Eccezione esplicita al congelamento di `src/components/ui/`, limitata alle sole
   annotazioni di tipo: nessun cambiamento di comportamento, nessuna variante
@@ -411,10 +417,6 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   nel testo di sistema; il 👋 della home è l'unico caso in cui il registro consumer
   potrebbe giustificarla. Da chiedere ai founder. (Il 💡 del riquadro prezzi è
   sparito in M0 insieme alla riga che lo conteneva.)
-- **Polarità dei colori sulle KPI di trend.** `KPICard` colora di rosso ogni trend
-  negativo: "Stress medio −8%", che è la buona notizia della dashboard, esce con la
-  freccia in giù e in `destructive`. Serve sapere per ogni KPI se scendere è bene o
-  male. Da decidere in M3, quando la dashboard legge dal provider.
 
 ## Note per chi riprende
 
