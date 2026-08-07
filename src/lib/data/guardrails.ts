@@ -28,3 +28,24 @@ export function assertInDev(condition: boolean, message: string): void {
     throw new Error(`[dataset] ${message}`);
   }
 }
+
+/**
+ * Come `assertInDev`, ma per i controlli che stanno **dentro una Promise**.
+ *
+ * Un `throw` in un metodo `async` diventa una promise rifiutata, e react-query
+ * la cattura nello stato della mutation: il guardrail sparirebbe dentro un
+ * `isError` che nessuno guarda, invece di fermare chi sta lavorando. Rilanciare
+ * da un microtask lo porta fuori dalla catena, dove Vite lo mostra nel suo
+ * overlay — è lo stesso rimedio che usa il controllo sulla cache fredda in
+ * `prefetch.ts`.
+ */
+export function assertInDevOutsidePromise(
+  condition: boolean,
+  message: string,
+): void {
+  if (!import.meta.env.DEV) return;
+  if (condition) return;
+  queueMicrotask(() => {
+    throw new Error(`[dataset] ${message}`);
+  });
+}

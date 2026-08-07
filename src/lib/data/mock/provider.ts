@@ -1,4 +1,4 @@
-import { assertInDev } from "../guardrails";
+import { assertInDevOutsidePromise } from "../guardrails";
 import type { DataProvider } from "../provider";
 import {
   type AiHealthPlan,
@@ -419,21 +419,33 @@ export class MockDataProvider implements DataProvider {
   async bookAppointment(slot: AppointmentSlot): Promise<Appointment> {
     const professional = await this.getProfessional(slot.professionalId);
 
-    assertInDev(
+    const agenda = this.sessionsOf(slot.professionalId);
+
+    /*
+     * I due controlli guardano **l'agenda**, non `getAvailableSlots`.
+     *
+     * Appoggiarsi a quella funzione sembrava naturale — è lei che decide cosa è
+     * libero — ed era un controllo tautologico: se il filtro degli occupati si
+     * rompe, la stessa rottura fa passare anche la verifica. Confrontare con le
+     * sedute già in agenda è indipendente, e prende il caso che conta: due
+     * prenotazioni sullo stesso orario, che condividono anche l'id.
+     */
+    assertInDevOutsidePromise(
       professional !== null,
       `Prenotazione per "${slot.professionalId}", che non è fra i professionisti.`,
     );
 
-    const free = await this.getAvailableSlots(slot.professionalId);
-    assertInDev(
-      free.some((entry) => entry.start.getTime() === slot.start.getTime()),
-      "Prenotato uno slot che non era libero: la schermata sta proponendo un orario già occupato.",
+    assertInDevOutsidePromise(
+      !agenda.some((session) => session.start.getTime() === slot.start.getTime()),
+      "Prenotato un orario su cui c'è già una seduta: la schermata sta proponendo uno slot occupato.",
     );
 
-    const mine = sessionsOfPatient(
-      PORTAL_PATIENT_EMPLOYEE_ID,
-      this.sessionsOf(slot.professionalId),
+    assertInDevOutsidePromise(
+      slot.start.getDay() !== 0 && slot.start.getDay() !== 6,
+      "Prenotata una seduta nel fine settimana.",
     );
+
+    const mine = sessionsOfPatient(PORTAL_PATIENT_EMPLOYEE_ID, agenda);
 
     const session: ProfessionalSession = {
       // deterministico: lo stesso slot non può produrre due id diversi
