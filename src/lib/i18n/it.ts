@@ -334,6 +334,46 @@ export const it = {
       },
     },
 
+    /*
+     * Il profilo. Ogni riga viene dalla stessa fonte delle altre schermate: è
+     * l'unico posto in cui i quattro contatori stanno insieme, quindi è anche
+     * quello in cui una divergenza si vedrebbe subito.
+     */
+    profile: {
+      title: "Il tuo profilo",
+      privacy:
+        "La tua salute resta tua. Nessun dato individuale viene condiviso con la tua azienda.",
+
+      company: "Azienda",
+      plan: "Piano",
+      memberSince: "Iscritta da",
+
+      healthTitle: "Riepilogo salute",
+      score: "Punteggio salute",
+      /** "78/100" */
+      scoreValue: "{score}/100",
+      summary: "Sintesi",
+      weakest: "Area da seguire",
+
+      usageTitle: "Utilizzo dei servizi",
+      usage: {
+        psychologist: "Sessioni psicologo",
+        coach: "Sessioni coach",
+        checkup: "Check-up annuale",
+        doctor: "Consulti medico virtuale",
+      },
+      /** "3 su 10" */
+      outOf: "{used} su {total}",
+      /** "Fatto il 15.03.2026" */
+      checkupDone: "Fatto il {date}",
+      checkupToBook: "Da prenotare",
+      /** "2 quest'anno" */
+      consults: "{n} quest'anno",
+
+      dataNote:
+        "I tuoi dati sanitari sono protetti e non vengono mai condivisi con terzi.",
+    },
+
     aiPlan: {
       title: "Piano di prevenzione",
       subtitle: "Costruito sul tuo profilo di salute.",
