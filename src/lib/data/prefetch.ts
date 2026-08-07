@@ -25,6 +25,9 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
   const professionalId = await dataProvider.getPortalProfessionalId();
   const referenceDate = await dataProvider.getReferenceDate();
   const quarters = await dataProvider.getQuarters();
+  // il reparto in allarme si sa solo chiedendolo, e la dashboard ne mostra la
+  // serie accanto a quella aziendale: senza, il grafico del trend parte freddo
+  const alert = await dataProvider.getEarlyAlert();
   const month = new Date(
     referenceDate.getFullYear(),
     referenceDate.getMonth(),
@@ -79,6 +82,14 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
       queryKey: queryKeys.company.stressHistory(undefined),
       queryFn: () => dataProvider.getStressHistory(undefined),
     }),
+    ...(alert
+      ? [
+          queryClient.prefetchQuery({
+            queryKey: queryKeys.company.stressHistory(alert.departmentId),
+            queryFn: () => dataProvider.getStressHistory(alert.departmentId),
+          }),
+        ]
+      : []),
     queryClient.prefetchQuery({
       queryKey: queryKeys.company.latestStress(),
       queryFn: () => dataProvider.getLatestStressByDepartment(),
