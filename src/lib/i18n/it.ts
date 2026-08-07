@@ -797,4 +797,61 @@ export const it = {
       },
     },
   },
+
+  /*
+   * L'area pubblica (§10.A): landing, calcolatore ROI, prezzi, richiesta demo.
+   *
+   * Registro strumento (§7), e con una precisazione che vale solo qui: queste
+   * quattro schermate parlano a **un'azienda che valuta**, non a un dipendente
+   * che usa. Terza persona, metrica, niente incoraggiamento — la seconda
+   * persona calda comincia dopo l'accesso.
+   */
+  public: {
+    nav: {
+      pricing: "Piani",
+      demo: "Demo",
+      employees: "Dipendenti",
+      hr: "HR",
+      professionals: "Professionisti",
+      login: "Accedi",
+      bookDemo: "Prenota una demo",
+      /** Nome del pulsante che apre la barra sul mobile: lo legge chi non vede l'icona. */
+      menu: "Apri il menu",
+    },
+
+    footer: {
+      tagline: "Il sistema operativo della salute per le aziende svizzere.",
+      city: "Lugano, Svizzera",
+
+      platformTitle: "Piattaforma",
+      platformPricing: "Piani e prezzi",
+      platformEmployee: "Portale dipendenti",
+      platformHr: "Portale HR",
+      platformProfessional: "Per professionisti",
+
+      /*
+       * Le voci senza destinazione. Restano come elenco di sezioni previste —
+       * l'affordance da link è stata tolta, perché un testo che si illumina al
+       * passaggio del mouse e non porta da nessuna parte è un vicolo cieco
+       * (§10), e le pagine vere sarebbero scope nuovo (§2.6). Decisione dei
+       * founder dell'08.08.2026; sono lavoro di M5.
+       */
+      companyTitle: "Azienda",
+      companyAbout: "Chi siamo",
+      companyContact: "Contatti",
+      companyCareers: "Carriere",
+      companyBlog: "Blog",
+
+      privacyTitle: "Privacy e sicurezza",
+      privacyBody:
+        "Dati sanitari protetti. Conformità GDPR e LPD. Hosting in Svizzera.",
+
+      legalPrivacy: "Privacy policy",
+      legalTerms: "Termini di servizio",
+      legalCookies: "Cookie policy",
+
+      /** "© 2026 Kora Switzerland SA. Tutti i diritti riservati." */
+      copyright: "© {year} Kora Switzerland SA. Tutti i diritti riservati.",
+    },
+  },
 } as const;
