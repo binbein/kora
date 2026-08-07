@@ -256,6 +256,13 @@ Sono documenti riservati e il repository è privato: **verificare che lo resti**
 prima di aggiungere collaboratori o di rendere pubblico alcunché. Il repository
 del backend nascerà con `docs/CONTRATTO-DATI.md`, non con i PDF.
 
+**La decisione nasce con la sua scadenza: i PDF escono prima che gli accessi si
+allarghino.** Al primo ingresso di qualcuno che non sia un founder — un'assunzione,
+un collaboratore esterno — si tolgono dal repository e si ripulisce la storia con
+`git filter-repo`, perché toglierli da `HEAD` non li toglie dai commit passati. **A
+uscire sono i PDF, non il repository**: il codice e la sua storia restano qui, e il
+§5.7 vale intero — non esiste un frontend nuovo per l'MVP.
+
 ## 4. Come si lavora — le milestone
 
 Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
