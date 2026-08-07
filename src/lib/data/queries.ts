@@ -55,8 +55,11 @@ export function useProfessional(professionalId: string | undefined) {
  * Una sola query, non una per periodo: la settimana del calendario, il totale
  * del mese e il conteggio dei pazienti sono **domande diverse sulla stessa
  * lista**, e filtrarla in memoria è ciò che rende impossibile che divergano
- * (§5.5). Il `range` del provider resta per il giorno in cui l'agenda vera sarà
- * troppo grande per arrivare tutta.
+ * (§5.5).
+ *
+ * Il giorno in cui l'agenda vera sarà troppo grande per arrivare tutta, questo
+ * metodo prenderà un intervallo e le schermate smetteranno di filtrare — è in
+ * `docs/CONTRATTO-DATI.md` §6, che è dove lo legge chi scrive il backend.
  */
 export function useProfessionalSessions(professionalId: string | undefined) {
   return useQuery({

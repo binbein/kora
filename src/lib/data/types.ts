@@ -58,12 +58,6 @@ export function addQuarters(period: Quarter, delta: number): Quarter {
   };
 }
 
-/** Intervallo di date, estremi inclusi. */
-export type DateRange = {
-  from: Date;
-  to: Date;
-};
-
 // ---------------------------------------------------------------------------
 // Piani e azienda
 // ---------------------------------------------------------------------------

@@ -4,7 +4,6 @@ import {
   type Appointment,
   type AppointmentSlot,
   type Company,
-  type DateRange,
   type Department,
   type EarlyAlert,
   type EmployeeProfile,
@@ -140,15 +139,11 @@ export class MockDataProvider implements DataProvider {
 
   getProfessionalSessions(
     professionalId: string,
-    range?: DateRange,
   ): Promise<ProfessionalSession[]> {
     if (professionalId !== PORTAL_PROFESSIONAL_ID) {
       return Promise.resolve([]);
     }
-    const sessions = PORTAL_SESSIONS.filter((session) => {
-      if (!range) return true;
-      return session.start >= range.from && session.start <= range.to;
-    }).map((session) => ({
+    const sessions = PORTAL_SESSIONS.map((session) => ({
       ...session,
       hasNote: session.hasNote || this.notes.has(session.id),
     }));

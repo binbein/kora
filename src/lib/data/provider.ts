@@ -2,7 +2,6 @@ import type {
   Appointment,
   AppointmentSlot,
   Company,
-  DateRange,
   Department,
   EarlyAlert,
   EmployeeProfile,
@@ -115,12 +114,14 @@ export interface DataProvider {
    * orario. Comprende le prenotazioni fatte durante la demo, perché sono lo
    * stesso record che il dipendente vede dal suo lato.
    *
-   * `range` filtra sul periodo: la settimana del calendario e il mese del
-   * riepilogo sono due domande sullo stesso dato, non due dati.
+   * Le restituisce tutte: la settimana del calendario e il mese del riepilogo
+   * sono due domande sullo stesso dato, e filtrarle in memoria è ciò che rende
+   * impossibile che divergano. In produzione questo metodo prenderà un
+   * intervallo, perché un'agenda vera non entra in una risposta —
+   * `docs/CONTRATTO-DATI.md` §6.
    */
   getProfessionalSessions(
     professionalId: string,
-    range?: DateRange,
   ): Promise<ProfessionalSession[]>;
 
   /**

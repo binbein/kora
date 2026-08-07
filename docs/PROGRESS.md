@@ -255,15 +255,17 @@ backend.
 
 **Difetti noti di M2:**
 
-- **Le pagine dell'area restano `.jsx`.** Il §3 vuole che una schermata si
-  converta a TypeScript quando la si tocca, ma i 47 componenti shadcn sono `.jsx`
-  senza tipi di prop: da un file `.tsx`, `Card` e `Badge` rifiutano `children`, e
-  tipizzarli significa toccare i file che il §3 congela. `ProNav` è passato a
-  `.tsx` perché non li usa. **La conversione è bloccata da una regola, non
-  saltata**: va sciolta decidendo se i componenti shadcn si tipizzano.
-- **Il `range` di `getProfessionalSessions` non ha chiamanti.** È nel contratto
-  perché un'agenda vera non entra in una risposta, ma oggi le schermate filtrano
-  in memoria. È dichiarato in `CONTRATTO-DATI.md` §6.
+- **Le pagine dell'area sono rimaste `.jsx`**, perché i 47 componenti shadcn non
+  dichiarano i prop e da un `.tsx` rifiutano `children`. `ProNav` è passato a
+  `.tsx` perché non li usa. **Il nodo è sciolto**: i founder hanno autorizzato il
+  07.08.2026 l'aggiunta dei tipi a `src/components/ui/` (`CLAUDE.md` §3), che è il
+  primo lavoro di M3 — prima della prima area, così le schermate si convertono
+  mentre le si migra invece che due volte.
+- ~~Il `range` di `getProfessionalSessions` non ha chiamanti~~ → il parametro è
+  stato tolto subito dopo la chiusura di M2: un'opzione che nessuno passa è ciò
+  che il §11 vieta, e dichiararla non la curava. L'informazione che serve — che
+  in produzione quel metodo un intervallo lo prenderà — è in
+  `CONTRATTO-DATI.md` §6.
 - **Il totale dell'anno nei pagamenti copre l'anno solare**, non i dodici mesi
   mobili: con la demo a settembre sono i mesi da marzo, e a gennaio sarebbe una
   riga sola. Nessuna conseguenza sulla demo, che è ambientata a settembre.
@@ -320,6 +322,14 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   due cose che erano implicite e senza le quali il §9 non era riproducibile:
   **l'arrotondamento del risparmio al centinaio** e **il periodo delle sessioni
   consumate**, che sono cumulate sui dodici mesi del monte annuo.
+
+- **07.08.2026 — Si possono tipizzare i componenti shadcn** (`CLAUDE.md` §3).
+  Eccezione esplicita al congelamento di `src/components/ui/`, limitata alle sole
+  annotazioni di tipo: nessun cambiamento di comportamento, nessuna variante
+  nuova. Senza, la regola del §3 sulla conversione delle pagine ereditate non è
+  eseguibile — i `forwardRef` dei 47 file non dichiarano i prop, quindi da un
+  `.tsx` `Card` rifiuta `children` — e M2 lo ha dimostrato fermandocisi contro. Si
+  fa in apertura di M3, prima della prima area.
 
 - **06.08.2026 — La nota privata di sessione si salva** (`CLAUDE.md` §10.D). Il
   pulsante "Salva nota" del portale professionista, che oggi chiude il dialogo e
