@@ -80,8 +80,9 @@ dato esiste, le scritture solo quando hanno un chiamante.* Le due metà non sono
 simmetriche di proposito. Una lettura senza consumatore costa un metodo che
 restituisce dati già costruiti; una scrittura senza consumatore costringe a
 indovinare la superficie di invalidazione, che è la parte del contratto in cui
-sbagliare costa di più — è il motivo per cui `saveSessionNote` c'è e
-`bookAppointment` no.
+sbagliare costa di più — è il motivo per cui in M2 arrivò `saveSessionNote` e non
+`bookAppointment`, che è nato in M3 con il suo chiamante e con la sua riga nella
+tabella del §4.
 
 Questa regola sostituisce quella più stretta con cui M2 era partita ("un metodo
 nasce con un chiamante"): con quella, tutto il dataset di §8 e §9 sarebbe rimasto
