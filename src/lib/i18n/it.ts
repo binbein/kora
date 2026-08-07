@@ -71,7 +71,9 @@ export const it = {
       week: "Settimana dal {from} al {to}",
       sessionsThisWeek: "Sedute questa settimana",
       nextSession: "Prossima seduta",
-      sessionsThisMonth: "Sedute del mese",
+      /* "in agenda" e non "del mese": i Pagamenti contano le erogate, e due
+         etichette uguali su due numeri diversi sono il difetto del §5.5 */
+      sessionsThisMonth: "In agenda questo mese",
       activePatients: "Pazienti attivi",
       noNextSession: "Nessuna",
       /** "giovedì 17:30" */
@@ -134,7 +136,7 @@ export const it = {
 
     payments: {
       title: "Pagamenti",
-      sessionsThisMonth: "Sedute del mese",
+      sessionsThisMonth: "Sedute erogate",
       feePerSession: "Tariffa a seduta",
       monthTotal: "Totale del mese",
       yearTotal: "Totale dell'anno",
