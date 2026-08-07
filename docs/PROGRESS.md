@@ -144,9 +144,10 @@ errori, `npm run lint` e `npm run typecheck` a 0.
 - **`formatCHF` separa `CHF` dalle cifre con uno spazio unificatore** (U+00A0), non
   con uno spazio normale. È la resa corretta, ma un'asserzione o un `grep` scritti
   con lo spazio da tastiera falliscono contro una stringa che sembra identica.
-- **`src/utils/index.ts` è ancora lì e non lo importa nessuno** (`createPageUrl`,
-  zero chiamanti dal primo commit). Ora che ESLint legge il TypeScript si vede; è un
-  candidato alla cancellazione, non fatta perché fuori dai passi approvati.
+- ~~**`src/utils/index.ts` è ancora lì e non lo importa nessuno**~~ →
+  cancellato in `1eb5eb3`. `createPageUrl` non aveva chiamanti dal primo commit
+  e si vedeva da quando ESLint legge il TypeScript; la rimozione è arrivata in
+  un commit suo, come vuole il §11.
 - ~~**Resta un warning di lint**, ora visibile perché lo script non usa più
   `--quiet`: `bookingStep` in `Psicologi.jsx`, stato morto di un wizard a più
   passi~~ → sparito in M3 con la riscrittura della prenotazione. Da lì
