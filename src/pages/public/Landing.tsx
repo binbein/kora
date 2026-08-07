@@ -82,6 +82,9 @@ const PREVIEW_FEATURES: PlanFeatureKey[] = [
   "virtualDoctor",
   "checkup",
   "aiPlan",
+  // la dashboard entra nell'anteprima: è la voce che distingue i tre piani dal
+  // punto di vista di chi compra, ed è a un'azienda che questa pagina parla
+  "hrDashboard",
   "extraSession",
 ];
 

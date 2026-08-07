@@ -993,11 +993,21 @@ export const it = {
         /** "Piano di prevenzione AI aggiornato ogni 6 mesi" */
         aiPlanEveryMonths:
           "Piano di prevenzione AI aggiornato ogni {months} mesi",
-        hrReportMonthly:
-          "Dashboard HR avanzata, con report mensile e call mensile col team clinico",
-        /** Cadenza diversa dal mese: oggi il §9 non ne dichiara nessuna. */
-        hrReportEveryMonths:
-          "Dashboard HR avanzata, con report e call col team clinico ogni {months} mesi",
+        /*
+         * I tre livelli della dashboard HR (§9, p.9 e p.10 del BP). Tre frasi
+         * intere e non una con un aggettivo variabile: la base dice cosa
+         * mostra, quella del Plus introduce il taglio per reparto e l'alert
+         * burnout, quella dell'Executive la cadenza mensile e la call. Rese
+         * come "dashboard base / per reparto / avanzata" direbbero che il
+         * piano più caro è lo stesso prodotto in una taglia più grande.
+         */
+        hrDashboard: {
+          base: "Dashboard HR e ROI base: utilizzo, stress anonimizzato, risparmio in CHF",
+          department:
+            "Dashboard HR per reparto con report trimestrale e alert burnout precoce",
+          advanced:
+            "Dashboard HR avanzata, con report mensile e call mensile col team clinico",
+        },
         /** "2 workshop live all'anno inclusi" */
         workshops: "{count} workshop live all'anno inclusi",
         family: "Familiari inclusi: partner e un figlio",

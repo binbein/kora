@@ -519,11 +519,21 @@ diverso di voci ma non una voce diversa. Nel codice ereditato la landing diceva
 "Coach + psichiatra" e `/pricing` "Coach + psichiatra se necessario" dello
 stesso piano.
 
-**`Plan` ha un campo nuovo**, `advancedHrReportEveryMonths`, per la dashboard
-mensile dell'Executive che chiude il terzo difetto. Ne discende una conseguenza
-dichiarata: **le card Essenziale e Plus non nominano più un livello di
-dashboard**, perché il §9 non ne trascrive nessuno per loro. È il §2.4 — se il
-Business Plan p.9 lo dà, la cifra va prima nel §9 e poi sul tipo.
+**`Plan` ha un campo nuovo**, `hrDashboard`, che chiude il terzo difetto. È
+nato come cadenza in mesi per la sola dashboard dell'Executive — l'unica che il
+§9 trascrivesse — e le card Essenziale e Plus erano rimaste senza. **I founder
+hanno trascritto le altre due dalla p.9 del BP l'08.08.2026** (§2.4), e con
+tutti e tre i piani serviti il campo è diventato **obbligatorio e
+un'enumerazione**: `base | department | advanced`.
+
+Le cadenze non ci stanno apposta. Il BP dà "trimestrale" al Plus e "mensile"
+all'Executive, mentre sulla riga dell'Essenziale "mensile" si riferisce alla
+dashboard e non a un report: un numero avrebbe costretto a decidere quel punto,
+cioè a inventarlo. I tre livelli sono tre frasi intere in `i18n`, come i due
+check-up — la base dice cosa mostra, quella del Plus introduce il taglio per
+reparto e l'alert burnout precoce (che è l'alert del §8, il pezzo su cui si
+regge la dashboard del §10.C), quella dell'Executive aggiunge report e call
+mensili.
 
 **L'hero della landing sbagliava quattro cifre su quattro**, sulla prima
 schermata che un investitore vede: 74 di punteggio dove Laura ne ha 78, un
@@ -584,18 +594,16 @@ Fachpersonen, più Anmelden e Demo vereinbaren — la barra sta su una riga a
 
 **Aperto e dichiarato:**
 
-- **Le card Essenziale e Plus non dichiarano più una dashboard HR.** Sopra il
-  perché. Se il Business Plan la dà, serve una decisione dei founder che passi
-  prima dal §9.
 - **L'animazione d'ingresso della landing non completa a scheda nascosta.**
   Verificato: con `document.visibilityState === "hidden"` il browser congela
   `requestAnimationFrame` e framer-motion resta fermo — misurato a **opacità
   0.068** dopo due secondi. A scheda visibile completa regolarmente, ed è la
   ragione per cui gli screenshot dell'hero vanno presi con la scheda in primo
-  piano. **Non è stato toccato**: il §6.2 vieta l'animazione d'ingresso sui
-  *grafici*, e il §3 tiene framer-motion apposta per questa schermata. Ma è la
-  stessa famiglia del difetto che ha prodotto quella regola, e vale la pena
-  deciderlo: durante il pitch la landing non va aperta in una scheda di sfondo.
+  piano. **Non si tocca** — il §6.2 vieta l'animazione d'ingresso sui
+  *grafici*, e il §3 tiene framer-motion apposta per questa schermata — ma la
+  conseguenza è scritta dove serve: il §10, "Come si naviga durante la demo",
+  dice ora che la landing non si pre-apre in una scheda di sfondo. È script del
+  pitch, non un difetto da correggere (founder, 08.08.2026).
 - **`FlexiblePlanCard.jsx` resta `.jsx` e senza chiamanti**, ed è voluto: il
   piano "Personalizzato" è in sospeso, e i suoi undici prezzi non stanno nel
   Business Plan, quindi non potrebbe leggere da `Plan` nemmeno volendo. È

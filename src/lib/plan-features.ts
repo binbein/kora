@@ -34,7 +34,7 @@ export type PlanFeatureKey =
   | "virtualDoctor"
   | "checkup"
   | "aiPlan"
-  | "hrReport"
+  | "hrDashboard"
   | "workshops"
   | "family"
   | "partnerExtension"
@@ -141,24 +141,14 @@ export function planFeatures(plan: Plan): PlanFeature[] {
   }
 
   /*
-   * Stessa forma del piano AI, e per la stessa ragione: "ogni mese" e "ogni 6
-   * mesi" sono due frasi, non una frase con dentro un numero — comporle
-   * concatenando è ciò che il §2.7 vieta. Oggi il §9 dichiara solo la cadenza
-   * mensile dell'Executive; il ramo sull'altra esiste perché un campo di
-   * cadenza che non renderizza nulla per un valore legittimo è incompleto
-   * (§11), non perché serva a qualcuno adesso.
+   * Senza `if`: dal 08.08.2026 il §9 dichiara una dashboard per tutti e tre i
+   * piani, quindi il campo è obbligatorio e la riga c'è sempre. I tre livelli
+   * sono tre frasi intere, come i due check-up.
    */
-  if (plan.advancedHrReportEveryMonths !== undefined) {
-    features.push({
-      key: "hrReport",
-      text:
-        plan.advancedHrReportEveryMonths === 1
-          ? f.hrReportMonthly
-          : interpolate(f.hrReportEveryMonths, {
-              months: formatNumber(plan.advancedHrReportEveryMonths),
-            }),
-    });
-  }
+  features.push({
+    key: "hrDashboard",
+    text: f.hrDashboard[plan.hrDashboard],
+  });
 
   if (plan.liveWorkshopsPerYear !== undefined) {
     features.push({
