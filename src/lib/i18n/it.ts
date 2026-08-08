@@ -797,4 +797,380 @@ export const it = {
       },
     },
   },
+
+  /*
+   * L'area pubblica (§10.A): landing, calcolatore ROI, prezzi, richiesta demo.
+   *
+   * Registro strumento (§7), e con una precisazione che vale solo qui: queste
+   * quattro schermate parlano a **un'azienda che valuta**, non a un dipendente
+   * che usa. Terza persona, metrica, niente incoraggiamento — la seconda
+   * persona calda comincia dopo l'accesso.
+   */
+  public: {
+    nav: {
+      pricing: "Piani",
+      roi: "Calcolatore ROI",
+      demo: "Demo",
+      employees: "Dipendenti",
+      hr: "HR",
+      professionals: "Professionisti",
+      login: "Accedi",
+      bookDemo: "Prenota una demo",
+      /** Nome del pulsante che apre la barra sul mobile: lo legge chi non vede l'icona. */
+      menu: "Apri il menu",
+    },
+
+    footer: {
+      tagline: "Il sistema operativo della salute per le aziende svizzere.",
+      city: "Lugano, Svizzera",
+
+      platformTitle: "Piattaforma",
+      platformPricing: "Piani e prezzi",
+      platformRoi: "Calcolatore ROI",
+      platformEmployee: "Portale dipendenti",
+      platformHr: "Portale HR",
+      platformProfessional: "Per professionisti",
+
+      /*
+       * Le voci senza destinazione. Restano come elenco di sezioni previste —
+       * l'affordance da link è stata tolta, perché un testo che si illumina al
+       * passaggio del mouse e non porta da nessuna parte è un vicolo cieco
+       * (§10), e le pagine vere sarebbero scope nuovo (§2.6). Decisione dei
+       * founder dell'08.08.2026; sono lavoro di M5.
+       */
+      companyTitle: "Azienda",
+      companyAbout: "Chi siamo",
+      companyContact: "Contatti",
+      companyCareers: "Carriere",
+      companyBlog: "Blog",
+
+      privacyTitle: "Privacy e sicurezza",
+      privacyBody:
+        "Dati sanitari protetti. Conformità GDPR e LPD. Hosting in Svizzera.",
+
+      legalPrivacy: "Privacy policy",
+      legalTerms: "Termini di servizio",
+      legalCookies: "Cookie policy",
+
+      /** "© 2026 Kora Switzerland SA. Tutti i diritti riservati." */
+      copyright: "© {year} Kora Switzerland SA. Tutti i diritti riservati.",
+    },
+
+    /*
+     * Il calcolatore ROI (§10.A.2). Risponde a "quanto stai già perdendo",
+     * mentre il simulatore di `/pricing` risponde a "quanto costa": è la
+     * ragione per cui stanno su due rotte e non condividono un campo
+     * "numero di dipendenti".
+     */
+    roi: {
+      title: "Quanto costa oggi la salute dei dipendenti",
+      subtitle:
+        "Le perdite che un'azienda svizzera sostiene ogni anno, e quanto ne recupera con Kora. Scenario conservativo.",
+
+      employeesLabel: "Numero di dipendenti",
+      /** Sotto il campo: "Da 20 a 1'000 dipendenti" */
+      employeesRange: "Da {min} a {max} dipendenti",
+
+      lossesTitle: "Perdite annue stimate",
+      loss: {
+        absenteeism: "Assenteismo",
+        presenteeism: "Presenteismo",
+        burnout: "Burnout pre-clinico",
+        turnover: "Turnover legato alla salute",
+      },
+      lossHint: {
+        /** "6.5 giorni di assenza per dipendente, a CHF 900 al giorno" */
+        absenteeism: "{days} giorni di assenza per dipendente, a {cost} al giorno",
+        /** "CHF 1'500 di produttività persa per dipendente" */
+        presenteeism: "{cost} di produttività persa per dipendente",
+        /** "30% della popolazione a rischio, 15% di produttività persa" */
+        burnout: "{share} della popolazione a rischio, {loss} di produttività persa",
+        /** "4.3% di uscite legate alla salute, più il costo di sostituzione" */
+        turnover: "{rate} di uscite legate alla salute, più il costo di sostituzione",
+      },
+      lossesTotal: "Totale perdite",
+
+      savingsTitle: "Con Kora",
+      savings: "Risparmio stimato",
+      /** "Il 15% su assenteismo e presenteismo, il 20% su burnout e turnover" */
+      savingsHint:
+        "Il {absence} su assenteismo e presenteismo, il {burnout} su burnout e turnover",
+      cost: "Costo Kora",
+      /** "Sul piano Plus, CHF 55 per dipendente al mese" */
+      costHint: "Sul piano {plan}, {price} per dipendente al mese",
+      netSavings: "Risparmio netto",
+      ratio: "Ritorno sull'investimento",
+      /** "2.35:1" */
+      ratioValue: "{ratio}:1",
+      ratioHint: "Risparmio netto per ogni franco investito",
+
+      /*
+       * La riga che sostituisce la stima "CHF 1'400–2'900 per dipendente",
+       * che il Business Plan non contiene ed è uscita in M0 (§9). Qui il
+       * numero è derivato dal modello e arrotondato al centinaio: al franco
+       * sarebbe finta precisione su una stima.
+       */
+      perEmployee: "≈ {amount} per dipendente all'anno, scenario conservativo",
+
+      /*
+       * Ogni voce è lineare nell'organico, quindi il rapporto non si muove da
+       * 20 a 1000 dipendenti. Il §9 chiede che la UI non faccia credere il
+       * contrario: chi muove il cursore deve leggerlo, non dedurlo.
+       */
+      linearityNote:
+        "Ogni voce cresce in proporzione all'organico: il rapporto resta {ratio} a qualunque numero di dipendenti.",
+
+      sources: "Scenario conservativo. Fonti: SECO, Job Stress Index.",
+
+      ctaTitle: "Questi numeri, sulla vostra azienda",
+      ctaBody:
+        "Una demo di trenta minuti sui dati del vostro settore e del vostro organico.",
+      ctaButton: "Prenota una demo",
+      ctaPricing: "Vedi i piani",
+    },
+
+    /*
+     * Il listino (§10.A.3). Le voci sono frasi complete con segnaposto e le
+     * compone `lib/plan-features.ts` da `Plan`: nessuna card elenca le proprie
+     * righe, quindi nessuna può divergere dal §9.
+     *
+     * Le fasce di organico sono copy di segmento e non un dato del piano: il
+     * §9 non le trascrive, quindi non stanno sul tipo. Restano quelle
+     * ereditate, invariate.
+     */
+    plans: {
+      title: "Piani trasparenti, valore concreto",
+      subtitle:
+        "Un abbonamento per dipendente. Nessun costo nascosto. ROI misurabile dal primo trimestre.",
+
+      target: {
+        essenziale: "Aziende 20–100 dipendenti",
+        plus: "Aziende 100–300 dipendenti",
+        executive: "Aziende 300+ dipendenti",
+      },
+
+      recommended: "Piano consigliato",
+      /** "CHF 55" accanto a "/ dipendente / mese" */
+      priceUnit: "/ dipendente / mese",
+      cta: "Richiedi preventivo",
+
+      feature: {
+        /** "10 sessioni di psicologo all'anno" */
+        sessions: "{count} sessioni di psicologo all'anno",
+        /* "una volta" è l'informazione: il §9 lo dà una sola volta, non a ogni
+           sessione, e senza il tetto si legge come un extra ricorrente. */
+        intro: "Colloquio conoscitivo gratuito, una volta",
+        /** "4 sessioni di coach all'anno" */
+        coach: "{count} sessioni di coach all'anno",
+        psychiatrist: "Psichiatra su richiesta incluso",
+        /** "4 sessioni di nutrizionista all'anno" */
+        nutritionist: "{count} sessioni di nutrizionista all'anno",
+        /*
+         * L'SLA in quattro frasi e non in due con un numero dentro: a un'ora
+         * "entro {hours} ore" dà "entro 1 ore", ed è il caso dell'Executive,
+         * cioè la card più cara. È il §2.7 nel suo caso più piccolo — la
+         * frase intera cambia, non solo il valore — e vale allo stesso modo
+         * per il tedesco, dove cambia anche l'ordine.
+         */
+        /** "Medico virtuale illimitato, risposta entro 4 ore" */
+        virtualDoctorUnlimited:
+          "Medico virtuale illimitato, risposta entro {hours} ore",
+        virtualDoctorUnlimitedOneHour:
+          "Medico virtuale illimitato, risposta entro un'ora",
+        /** "3 consulti di medico virtuale all'anno, risposta entro 12 ore" */
+        virtualDoctorCapped:
+          "{count} consulti di medico virtuale all'anno, risposta entro {hours} ore",
+        virtualDoctorCappedOneHour:
+          "{count} consulti di medico virtuale all'anno, risposta entro un'ora",
+        /* Due frasi e non una con un aggettivo variabile: i due check-up del
+           §9 non sono lo stesso check-up, e la card deve poterli distinguere. */
+        checkup: {
+          annual: "Check-up fisico annuale",
+          executive:
+            "Check-up executive completo: ECG, eco addome, oculista, sangue completo",
+        },
+        aiPlanMonthly: "Piano di prevenzione AI aggiornato ogni mese",
+        /** "Piano di prevenzione AI aggiornato ogni 6 mesi" */
+        aiPlanEveryMonths:
+          "Piano di prevenzione AI aggiornato ogni {months} mesi",
+        /*
+         * I tre livelli della dashboard HR (§9, p.9 e p.10 del BP). Tre frasi
+         * intere e non una con un aggettivo variabile: la base dice cosa
+         * mostra, quella del Plus introduce il taglio per reparto e l'alert
+         * burnout, quella dell'Executive la cadenza mensile e la call. Rese
+         * come "dashboard base / per reparto / avanzata" direbbero che il
+         * piano più caro è lo stesso prodotto in una taglia più grande.
+         */
+        hrDashboard: {
+          base: "Dashboard HR e ROI base: utilizzo, stress anonimizzato, risparmio in CHF",
+          department:
+            "Dashboard HR per reparto con report trimestrale e alert burnout precoce",
+          advanced:
+            "Dashboard HR avanzata, con report mensile e call mensile col team clinico",
+        },
+        /** "2 workshop live all'anno inclusi" */
+        workshops: "{count} workshop live all'anno inclusi",
+        family: "Familiari inclusi: partner e un figlio",
+        /** "Estensione ai familiari: + CHF 15 per dipendente al mese, opzionale" */
+        partnerExtension:
+          "Estensione ai familiari: + {price} per dipendente al mese, opzionale",
+        /** "Sessione oltre il tetto: CHF 28" */
+        extraSession: "Sessione oltre il tetto: {price}",
+      },
+    },
+
+    /* Il simulatore di costo di `/pricing`: risponde a "quanto costa", che è
+       la domanda che il calcolatore di `/roi` non fa. */
+    costSimulator: {
+      title: "Calcola il costo",
+      employeesLabel: "Numero di dipendenti",
+      planLabel: "Piano",
+      /** "Plus — CHF 55 al mese" */
+      planOption: "{plan} — {price} al mese",
+      billingLabel: "Fatturazione",
+      billingMonthly: "Mensile",
+      billingAnnual: "Annuale",
+      totalMonthly: "Totale mensile",
+      totalAnnual: "Totale annuale",
+      /** "120 dipendenti × CHF 55 × 12 mesi" */
+      breakdownAnnual: "{employees} dipendenti × {price} × 12 mesi",
+      /** "120 dipendenti × CHF 55 × 1 mese" */
+      breakdownMonthly: "{employees} dipendenti × {price} × 1 mese",
+      cta: "Prenota una demo",
+      /* Il costo non è il valore: da qui si rimanda al calcolatore, che è la
+         pagina che risponde all'altra metà della domanda (§10.A.2). */
+      roiLink: "Quanto stai già perdendo senza Kora",
+    },
+
+    /* La landing (§10.A.1). Parla a un'azienda che valuta, non a un
+       dipendente che usa: terza persona, metrica. */
+    landing: {
+      badge: "Piattaforma svizzera, privacy-first",
+      /* Il sigillo sul riquadro del prodotto. Chiave sua e non `badge`: sono
+         due elementi diversi nella stessa schermata, e la stessa frase due
+         volte a mezzo schermo di distanza si legge come un difetto. */
+      mockupSeal: "Privacy-first",
+      /* Il titolo è spezzato in due perché la seconda metà è colorata: sono
+         due parti della stessa frase, non due frasi da concatenare. */
+      heroTitleLead: "La salute aziendale,",
+      heroTitleAccent: "finalmente integrata.",
+      heroBody:
+        "Kora unisce psicologi online, medico virtuale, check-up fisici, prevenzione AI e dashboard HR anonima in un unico abbonamento per dipendente.",
+      heroCtaRoi: "Calcola il ritorno",
+      heroCtaDemo: "Prenota una demo",
+      heroCompliance: "Hosting in Svizzera. Conforme GDPR e LPD.",
+
+      /*
+       * Il riquadro dell'hero è una miniatura del prodotto e legge dal
+       * provider: nel codice ereditato dichiarava un punteggio, un dato di
+       * sonno, un'adozione e un calo di stress che il §8 non contiene — fra
+       * cui il "−8%" che la migrazione dell'area HR ha già dimostrato non
+       * riproducibile, e un "82%" che era il numero degli iscritti letto come
+       * percentuale.
+       */
+      mockup: {
+        scoreLabel: "Profilo salute",
+        scoreOutOf: "/100",
+        /** "Focus: sonno" — l'area più debole del profilo */
+        focus: "Focus: {area}",
+        nextSessionLabel: "Prossima sessione",
+        /** "gio 17:30 · Dr.ssa Meier" */
+        nextSessionValue: "{weekday} {time} · {professional}",
+        analyticsLabel: "Dashboard HR (anonima)",
+        /** "Adozione 68% · Stress −2 punti" */
+        analyticsValue: "Adozione {adoption} · Stress {trend} punti",
+        /** Quando il trimestre più vecchio non ha un precedente da cui derivare il trend. */
+        analyticsValueNoTrend: "Adozione {adoption}",
+      },
+
+      problemTitle: "Il costo nascosto della salute aziendale",
+      problem: {
+        burnout: "Burnout in aumento",
+        absenteeism: "Assenteismo costoso",
+        waitingLists: "Liste d'attesa per gli psicologi",
+        fragmented: "Benefit sanitari frammentati",
+        noData: "HR senza dati misurabili",
+      },
+
+      valueTitle: "Una piattaforma. Tre livelli di valore.",
+      value: {
+        employee: {
+          title: "Per il dipendente",
+          body: "Accesso semplice a salute mentale, medico virtuale e prevenzione. Tutto privato, tutto in un unico posto.",
+        },
+        company: {
+          title: "Per l'azienda",
+          body: "Insight anonimi, ritorno misurabile, retention migliorata e riduzione dell'assenteismo.",
+        },
+        professional: {
+          title: "Per i professionisti",
+          body: "Nuova domanda, meno burocrazia, pagamenti automatici. Collaborazione a mandato senza vincoli.",
+        },
+      },
+
+      /*
+       * Il richiamo al calcolatore. I numeri sono quelli di ancoraggio del §9,
+       * calcolati dal modello come sulla pagina `/roi`: qui il campione è
+       * dichiarato, perché un importo senza l'organico su cui è calcolato non
+       * è verificabile.
+       */
+      roiTeaser: {
+        title: "Il ritorno, prima della firma",
+        /** "Un'azienda di 100 dipendenti perde CHF 1'289'500 all'anno." */
+        losses: "Un'azienda di {employees} dipendenti perde {amount} all'anno.",
+        /** "Con Kora ne recupera CHF 155'150 netti: 2.35:1, scenario conservativo." */
+        net: "Con Kora ne recupera {amount} netti: {ratio}, scenario conservativo.",
+        cta: "Apri il calcolatore",
+      },
+
+      plansTitle: "Piani trasparenti, valore concreto",
+      plansSubtitle:
+        "Un abbonamento per dipendente. Nessun costo nascosto. Ritorno misurabile.",
+      plansAll: "Confronta i tre piani",
+
+      privacyTitleLead: "La privacy non è un dettaglio.",
+      privacyTitleAccent: "È il cuore del prodotto.",
+      privacyBody:
+        "L'azienda non vede mai dati individuali, sedute, referti o diagnosi. Solo insight aggregati e anonimi. I dati sanitari restano di chi li produce.",
+      privacyChip: {
+        hosting: "Hosting in Svizzera",
+        gdpr: "Conforme GDPR",
+        lpd: "Conforme LPD",
+        encryption: "Crittografia end-to-end",
+      },
+
+      finalTitle: "Porta Kora nella tua azienda.",
+      finalBody: "Trenta minuti per vedere la piattaforma sui vostri numeri.",
+      finalCta: "Prenota una demo",
+    },
+
+    /* La richiesta di demo (§10.A.4). La validazione vera è M5: qui bastano i
+       `required` del browser, e il form non finge di controllare altro. */
+    demoRequest: {
+      title: "Prenota una demo",
+      subtitle:
+        "Trenta minuti con il nostro team, sui numeri della vostra azienda.",
+
+      companyLabel: "Nome azienda",
+      contactLabel: "Nome e cognome",
+      emailLabel: "Email aziendale",
+      phoneLabel: "Telefono",
+      employeesLabel: "Numero di dipendenti",
+      messageLabel: "Messaggio",
+      optional: "facoltativo",
+      privacy:
+        "I dati saranno trattati in conformità alla LPD svizzera e al GDPR.",
+      submit: "Invia la richiesta",
+      submitting: "Invio in corso",
+
+      successTitle: "Richiesta ricevuta",
+      /* La conferma nomina l'azienda che ha scritto, e la legge dal record
+         restituito dalla mutation: è la prova che la scrittura è avvenuta,
+         non un cartello che compare comunque. */
+      successBody:
+        "La richiesta per {company} è registrata. Il team risponde entro un giorno lavorativo.",
+      successHome: "Torna alla home",
+      successRoi: "Intanto, calcola il ritorno",
+    },
+  },
 } as const;

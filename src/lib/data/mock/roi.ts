@@ -1,4 +1,9 @@
-import { ROI_MODEL } from "../../roi-model";
+import {
+  computeRoi,
+  DEFAULT_EMPLOYEES,
+  ROI_MODEL,
+  roundToHundreds,
+} from "../../roi-model";
 import { assertInDev } from "../guardrails";
 import {
   addQuarters,
@@ -8,7 +13,7 @@ import {
   type Quarter,
   type RoiSnapshot,
 } from "../types";
-import { COMPANY } from "./company";
+import { COMPANY, PLANS } from "./company";
 import { DEMO_TODAY } from "./demo-date";
 import { sessionsUsedThrough } from "./service-usage";
 
@@ -66,17 +71,6 @@ const SAVINGS_PER_ACTIVE = 14200 / 41;
  */
 export const ANNUAL_SESSION_ALLOWANCE =
   COMPANY.employeeCount * COMPANY.plan.sessionsPerYear;
-
-/**
- * Arrotonda al centinaio.
- *
- * Fa parte della regola del §9, non è un dettaglio di formattazione: senza,
- * gli importi dei tre trimestri precedenti non sono riproducibili, e una cifra
- * al franco su un risparmio stimato è finta precisione.
- */
-function roundToHundreds(value: number): number {
-  return Math.round(value / 100) * 100;
-}
 
 /*
  * I GIORNI DI ASSENZA EVITATI SONO UN QUOZIENTE, NON UN DATO A SÉ: il risparmio
@@ -169,4 +163,64 @@ assertInDev(
     (snapshot) => snapshot.enrolledEmployees <= COMPANY.employeeCount,
   ),
   `Un trimestre dichiara più iscritti dell'organico di ${COMPANY.employeeCount}.`,
+);
+
+/*
+ * I CINQUE NUMERI DI ANCORAGGIO DEL CALCOLATORE (§9).
+ *
+ * A cento dipendenti sul piano Plus il calcolatore deve dare esattamente le
+ * cifre del Business Plan: è il primo confronto che fa un investitore col
+ * documento in mano, e sbagliarlo a schermo non si recupera parlando.
+ *
+ * Il controllo vive qui e non in `roi-model.ts` perché servono due cose che
+ * quel file non ha e non deve avere: il **prezzo**, che il modello riceve
+ * apposta per non essere una seconda fonte della cifra, e un punto che venga
+ * valutato all'avvio come gli altri guardrail del dataset.
+ *
+ * Legge `PLANS.plus` e non `COMPANY.plan`: sono lo stesso piano oggi, ma il
+ * calcolatore è pubblico e parla a un'azienda che il piano non l'ha scelto,
+ * quindi resta sul Plus anche il giorno in cui Demo SA passasse all'Executive.
+ */
+const ANCHOR = computeRoi(
+  DEFAULT_EMPLOYEES,
+  PLANS.plus.monthlyPricePerEmployee,
+);
+
+const ANCHOR_EXPECTED = {
+  totalLossesChf: 1289500,
+  savingsChf: 221150,
+  koraCostChf: 66000,
+  netSavingsChf: 155150,
+} as const;
+
+for (const [field, expected] of Object.entries(ANCHOR_EXPECTED)) {
+  const actual = ANCHOR[field as keyof typeof ANCHOR_EXPECTED];
+  assertInDev(
+    actual === expected,
+    `Il calcolatore a ${DEFAULT_EMPLOYEES} dipendenti dà ${field} = ${actual}, il Business Plan dice ${expected} (§9).`,
+  );
+}
+
+/*
+ * Il quinto numero è un rapporto, quindi si confronta arrotondato ai due
+ * decimali con cui esce a schermo: 2.35 è ciò che l'investitore legge, e
+ * pretendere l'uguaglianza sul valore pieno (2.3507…) farebbe fallire il
+ * guardrail su una cifra che nessuno vede.
+ *
+ * DA NON CONFONDERE: 3.35 è il risparmio lordo sul costo e 19.5 è il rapporto
+ * dell'executive summary. Nessuno dei due va usato (§9).
+ */
+assertInDev(
+  Math.round(ANCHOR.roiRatio * 100) / 100 === 2.35,
+  `Il ROI a ${DEFAULT_EMPLOYEES} dipendenti esce ${ANCHOR.roiRatio}, il Business Plan dice 2.35:1 (§9).`,
+);
+
+/*
+ * Le quattro voci devono sommare al totale mostrato: chi somma a mano le righe
+ * che vede a schermo deve ottenere il numero che vede a schermo (§10.A).
+ */
+assertInDev(
+  ANCHOR.losses.reduce((sum, loss) => sum + loss.chf, 0) ===
+    ANCHOR.totalLossesChf,
+  "Le quattro voci di perdita non sommano al totale del calcolatore.",
 );

@@ -33,6 +33,7 @@ export const PLANS: Record<PlanId, Plan> = {
     // una volta sola, non uno per sessione: scritto senza il tetto si legge
     // come un extra ricorrente (§9)
     freeIntroInterview: true,
+    hrDashboard: "base",
   },
   plus: {
     id: "plus",
@@ -45,6 +46,9 @@ export const PLANS: Record<PlanId, Plan> = {
     checkup: "annual",
     aiPlanEveryMonths: 6,
     freeIntroInterview: false,
+    // per reparto, con l'alert burnout precoce: è il piano di Demo SA, ed è
+    // il livello che la dashboard del §10.C mostra davvero
+    hrDashboard: "department",
     // per dipendente al mese: scritto "+ CHF 15/mese" si legge come una tariffa
     // unica per l'azienda, che a 120 dipendenti sbaglia di due ordini di
     // grandezza (§9)
@@ -64,6 +68,10 @@ export const PLANS: Record<PlanId, Plan> = {
     // completo (§9)
     checkup: "executive",
     aiPlanEveryMonths: 1,
+    // report mensile e call mensile col team clinico (§9): è la voce che la
+    // card ereditata dava come "consulenza HR trimestrale", sottostimando il
+    // piano più caro
+    hrDashboard: "advanced",
     includesPsychiatrist: true,
     includesFamily: true,
     freeIntroInterview: false,

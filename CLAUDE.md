@@ -342,7 +342,7 @@ export interface DataProvider {
   getCompany(): Promise<Company>
   getDepartments(): Promise<Department[]>
   getStressHistory(departmentId?: string): Promise<StressRecord[]>
-  getRoiSnapshot(period: Quarter): Promise<RoiSnapshot>
+  getRoiSnapshot(period: Quarter): Promise<RoiSnapshot | null>
   bookAppointment(slot: AppointmentSlot): Promise<Appointment>
   // ...
 }
@@ -834,9 +834,12 @@ esisterà davvero.
 ## 9. Numeri ufficiali dal Business Plan (unici ammessi)
 
 Piani: **Essenziale CHF 38** (6 sessioni/anno, extra CHF 35, medico virtuale 12h con
-3 consulti/anno, colloquio conoscitivo gratuito una volta) · **Plus CHF 55** (10
+3 consulti/anno, colloquio conoscitivo gratuito una volta, dashboard HR + ROI
+base — % di utilizzo, stress anonimizzato, risparmio in CHF) · **Plus CHF 55** (10
 sessioni/anno, extra CHF 28, coach 4 sessioni/anno, medico 4h consulti illimitati,
-check-up annuale, piano AI ogni 6 mesi) · **Executive CHF 82** (16 sessioni/anno,
+check-up annuale, piano AI ogni 6 mesi, dashboard HR per reparto con report
+trimestrale e alert burnout precoce — notifica se un reparto supera la soglia di
+stress) · **Executive CHF 82** (16 sessioni/anno,
 extra CHF 22, medico 1h illimitato, nutrizionista 4/anno, coaching 6 sessioni/anno,
 psichiatra su richiesta incluso, 2 workshop live/anno inclusi, familiari inclusi,
 check-up executive completo 1 volta/anno — ECG, eco addome, oculista, sangue
@@ -848,6 +851,24 @@ Business Plan (p.10). La conseguenza era che il piano più caro risultava offrir
 meno di quanto offre, e che un difetto già noto non era chiudibile: `PROGRESS.md`
 segnala da M0 che la card dice "Consulenza HR trimestrale" mentre il BP dà mensile,
 e chi fosse andato a correggerla leggendo il §9 non avrebbe trovato la riga.
+
+**La dashboard HR mancava su Essenziale e Plus**, e per la stessa ragione delle
+tre voci qui sopra: il §9 trascriveva la sola riga dell'Executive, quindi le due
+card più economiche non potevano nominarla senza inventarla. Aggiunte dalla p.9
+del Business Plan il **08.08.2026**, su decisione dei founder ai sensi del §2.4.
+
+**I tre livelli sono tre cose diverse, non lo stesso prodotto in tre taglie**, e
+la card deve poterli distinguere come distingue i due check-up: la base dice
+*cosa* mostra (utilizzo, stress anonimizzato, risparmio), quella del Plus
+introduce il **taglio per reparto** e l'**alert burnout precoce** — che è
+l'alert del §8, cioè il pezzo su cui si regge la dashboard del §10.C — e quella
+dell'Executive aggiunge la cadenza mensile e la call col team clinico.
+
+**Le cadenze dei report non sono confrontabili fra i tre piani**, e non vanno
+messe su una scala: il BP dà "trimestrale" al Plus e "mensile" all'Executive,
+mentre sulla riga dell'Essenziale "mensile" si riferisce alla dashboard e non a
+un report. Una cadenza numerica su `Plan` costringerebbe a decidere quel punto,
+cioè a inventare: il livello è un'enumerazione e la frase intera vive in `i18n`.
 
 **I due check-up non sono lo stesso check-up.** Il Plus ha quello annuale, l'Executive
 ne ha uno più esteso: sono due voci diverse e la card deve poterle distinguere.
@@ -994,21 +1015,18 @@ M0, non correggendo tre righe di JSX che la prossima passata riaprirebbe.
 ### B. Portale dipendente — `/employee` + 5 sottopagine
 Home, Psicologi, Medico virtuale, Check-up, Piano AI, Profilo.
 
-1. **Check rapido nella home** — *da costruire, non esiste*. **Una domanda, un
-   tocco** (§8). È il segnale su cui poggia ogni dato di stress della dashboard HR,
-   e oggi la demo non lo mostra da nessuna parte: a un investitore che chiede da
-   dove arrivano quei numeri non abbiamo niente da indicare. Il Business Plan lo
-   chiama "cuore di KORA" e ne descrive tre mensili: dove i due divergono vince
-   questo file, e il documento si aggiorna.
+1. **Check rapido nella home** — costruito in M3. **Una domanda, un tocco** (§8).
+   È il segnale su cui poggia ogni dato di stress della dashboard HR, e senza di
+   esso a un investitore che chiedeva da dove arrivassero quei numeri non avevamo
+   niente da indicare. Il Business Plan lo chiama "cuore di KORA" e ne descrive
+   tre mensili: dove i due divergono vince questo file, e il documento si aggiorna.
    È una card nella home, **non una rotta nuova**: non entra nel conto delle 26.
-   Approvato dai founder il **06.08.2026** ai sensi del §2.6. È lavoro di M3, e qui
-   si approva l'esistenza della schermata e basta: la resa si decide migrando l'area.
+   Approvato dai founder il **06.08.2026** ai sensi del §2.6.
 
 **Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — la parte in
 programma del contatore sale, l'appuntamento compare in home, lo slot sparisce dalla
-disponibilità e compare nel calendario del professionista. Oggi la conferma si perde
-chiudendo il dialogo. Nessun vicolo cieco: ogni schermata ha una via d'uscita, e ogni
-voce del menu porta a una rotta che esiste.
+disponibilità e compare nel calendario del professionista. Nessun vicolo cieco: ogni
+schermata ha una via d'uscita, e ogni voce del menu porta a una rotta che esiste.
 
 **"Il contatore sale" non vuol dire che 3/10 diventa 4/10.** `used` è il conto delle
 sedute **erogate** (§5.5, e la tabella delle KPI di `docs/CONTRATTO-DATI.md` §3), e
@@ -1024,9 +1042,10 @@ le erogate, e vengono dalla serie di utilizzo (§9), non dall'agenda.
 ### C. Portale HR — `/hr` + 4 sottopagine
 Dashboard, Dipendenti, Report, Fatturazione, Privacy.
 
-1. **Dashboard**: KPI, utilizzo servizi, **stress per reparto** (da costruire),
-   **trend 12 mesi azienda vs Vendite con marker dell'alert** (da costruire),
-   **banner alert precoce** (da costruire), selettore trimestre che cambia i dati.
+1. **Dashboard**: KPI, utilizzo servizi, **stress per reparto**, **trend 12 mesi
+   azienda vs Vendite con marker dell'alert**, **banner alert precoce** — i tre
+   pezzi che base44 non aveva, costruiti in M3 — e selettore trimestre che cambia
+   i dati.
 2. **Report**: le metriche del trimestre e le raccomandazioni.
 3. **Report scaricabile** — *il pulsante esiste e non fa niente*. Il PDF non si
    scrive a mano: si genera da una pagina che legge dal provider come tutte le
@@ -1086,6 +1105,14 @@ Il provider vive in memoria: lo stato sopravvive alla navigazione interna, non a
 ricaricamento. Si parte dalla landing e si usano i link, mai la barra degli
 indirizzi.
 
+**La landing non si pre-apre in una scheda di sfondo**: l'animazione d'ingresso
+resta congelata finché la scheda non è visibile, e la prima schermata che
+l'investitore vede sarebbe quasi vuota. Il browser sospende
+`requestAnimationFrame` sulle schede nascoste, quindi non è un difetto da
+correggere ma un vincolo su come si apre la demo — misurato in M3: dopo due
+secondi a scheda nascosta l'hero sta a un'opacità di 0.07. Se la landing va
+aperta in anticipo, va **portata in primo piano** prima di cominciare.
+
 ## 11. Qualità e revisione
 
 - TypeScript senza `any` nel codice nuovo; ESLint pulito, zero warning.
@@ -1129,10 +1156,10 @@ indirizzi.
   svizzera ed è coerente con l'apostrofo delle migliaia.
 - **Nessuna data scritta a mano.** Le date si derivano da `DEMO_TODAY` e si
   formattano con `format.ts`. Le quattro coppie giorno/data sbagliate di
-  `ProSessioni.jsx` — l'anno riscritto a mano su date del 2025 — sono sparite
-  con la migrazione di M2; nelle aree non migrate le date scritte a mano ci
-  sono ancora (i mesi delle fatture HR, le iscrizioni dell'admin) e spariscono
-  con M3, area per area.
+  `ProSessioni.tsx` — l'anno riscritto a mano su date del 2025 — sono sparite
+  con la migrazione di M2, e i mesi delle fatture HR con quella di M3; nelle
+  aree non ancora migrate le date scritte a mano ci sono ancora (le iscrizioni
+  dell'admin) e spariscono chiudendo M3.
 - Accessibilità di base: contrasti AA, focus visibili, alt text. La demo si presenta
   anche da tastiera durante un pitch: i focus contano.
 - **A fine sessione**: riepilogo di cosa è stato fatto e screenshot delle schermate

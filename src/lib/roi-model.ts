@@ -124,6 +124,20 @@ const LOSS_ORDER: RoiLossId[] = [
 ];
 
 /**
+ * Arrotonda al centinaio.
+ *
+ * Fa parte della regola del §9, non è un dettaglio di formattazione: una cifra
+ * al franco su un risparmio **stimato** è finta precisione, e senza
+ * l'arrotondamento gli importi trimestrali della dashboard non sono nemmeno
+ * riproducibili. Sta qui perché la regola è del modello economico e i suoi due
+ * chiamanti stanno da due parti diverse — il risparmio per dipendente del
+ * calcolatore e il risparmio trimestrale del dataset.
+ */
+export function roundToHundreds(value: number): number {
+  return Math.round(value / 100) * 100;
+}
+
+/**
  * Riporta un numero di dipendenti dentro l'intervallo ammesso. Un campo di
  * testo accetta qualunque cosa, il modello no.
  */

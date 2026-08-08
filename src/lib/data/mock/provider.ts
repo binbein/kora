@@ -6,6 +6,8 @@ import {
   type CheckupEligibility,
   type CheckupProvider,
   type CheckupReport,
+  type DemoRequest,
+  type DemoRequestInput,
   type EmployeeDirectoryEntry,
   type HrReport,
   type Invoice,
@@ -104,6 +106,17 @@ export class MockDataProvider implements DataProvider {
    * aver già risposto.
    */
   private lastRapidCheck: RapidCheckAnswer | null = null;
+
+  /*
+   * Le richieste di demo arrivate dal form pubblico, in ordine di arrivo.
+   *
+   * Non c'è nessun seme: il §8 non contiene richieste demo e non se ne
+   * inventano (§2.4). L'elenco parte vuoto e si riempie durante la demo, ed è
+   * ciò che il back-office leggerà quando sarà migrato — il provider vive in
+   * memoria, quindi una richiesta compilata davanti a un investitore è ancora
+   * lì navigando su `/admin` (§10).
+   */
+  private readonly demoRequests: DemoRequest[] = [];
 
   /**
    * Tutte le sedute di un professionista, curate e prenotate, in ordine di
@@ -511,5 +524,28 @@ export class MockDataProvider implements DataProvider {
     };
     this.lastRapidCheck = answer;
     return Promise.resolve(answer);
+  }
+
+  /*
+   * La richiesta di demo (§10.A.4).
+   *
+   * L'id è progressivo e la data è quella della demo: nessun `Math.random()` e
+   * nessun `new Date()`, come per la prenotazione. Due invii identici restano
+   * due richieste, perché lo sono — a differenza di uno slot, che è occupato o
+   * libero.
+   */
+  submitDemoRequest(input: DemoRequestInput): Promise<DemoRequest> {
+    assertInDevOutsidePromise(
+      input.companyName.trim() !== "" && input.email.trim() !== "",
+      "Richiesta demo inviata senza azienda o senza email: il form non sta trattenendo i campi obbligatori.",
+    );
+
+    const request: DemoRequest = {
+      ...input,
+      id: `demo-request-${this.demoRequests.length + 1}`,
+      submittedAt: DEMO_TODAY,
+    };
+    this.demoRequests.push(request);
+    return Promise.resolve(request);
   }
 }

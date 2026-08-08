@@ -108,6 +108,25 @@ export type Plan = {
   checkup?: "annual" | "executive";
   /** Ogni quanti mesi il piano di prevenzione AI viene rigenerato. */
   aiPlanEveryMonths?: number;
+  /**
+   * Il livello della dashboard HR. **Obbligatorio**: dal 08.08.2026 il §9 lo
+   * dichiara per tutti e tre i piani, quindi non c'è un caso in cui il
+   * contratto commerciale non lo preveda.
+   *
+   * È un'enumerazione e non una cadenza, per la stessa ragione per cui
+   * `checkup` non è un booleano: i tre livelli sono tre cose diverse — la base
+   * mostra utilizzo, stress anonimizzato e risparmio; quella del Plus taglia
+   * per reparto e porta l'alert burnout precoce; quella dell'Executive
+   * aggiunge il report mensile e la call col team clinico — e una card che li
+   * rendesse con la stessa frase e un numero diverso direbbe che il piano più
+   * caro è lo stesso prodotto più spesso.
+   *
+   * Le cadenze **non stanno qui apposta**: il §9 le dà trimestrali sul Plus e
+   * mensili sull'Executive, mentre sulla riga dell'Essenziale "mensile" si
+   * riferisce alla dashboard e non a un report. Un numero costringerebbe a
+   * decidere quel punto, cioè a inventarlo (§2.4).
+   */
+  hrDashboard: "base" | "department" | "advanced";
   /** Psichiatra su richiesta: incluso, non a pagamento (solo Executive). */
   includesPsychiatrist?: boolean;
   /** Familiari compresi nel prezzo: partner e un figlio (solo Executive). */

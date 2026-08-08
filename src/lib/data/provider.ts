@@ -7,6 +7,8 @@ import type {
   CheckupProvider,
   CheckupReport,
   Company,
+  DemoRequest,
+  DemoRequestInput,
   Department,
   EarlyAlert,
   EmployeeDirectoryEntry,
@@ -288,4 +290,21 @@ export interface DataProvider {
 
   /** Il piano di prevenzione della persona, con le cinque aree di salute. */
   getAiHealthPlan(): Promise<AiHealthPlan>;
+
+  // --- Area pubblica (§10.A) ------------------------------------------------
+
+  /**
+   * Registra una richiesta di demo dal form pubblico.
+   *
+   * **Non invalida nessuna query, oggi**: chi legge le richieste è il
+   * back-office, che è l'ultima area da migrare. La lettura —
+   * `getDemoRequests` — nasce con il suo consumatore e con la sua riga nella
+   * tabella di `docs/CONTRATTO-DATI.md` §4, invece di essere dichiarata adesso
+   * per indovinare una superficie di invalidazione che fra un passo si sa
+   * (§2 del contratto).
+   *
+   * Il record viene comunque conservato, così l'admin lo troverà: il provider
+   * vive in memoria e lo stato sopravvive alla navigazione interna (§10).
+   */
+  submitDemoRequest(input: DemoRequestInput): Promise<DemoRequest>;
 }
