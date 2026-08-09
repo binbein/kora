@@ -111,4 +111,27 @@ export const PROFESSIONALS: Professional[] = [
     documentsVerified: true,
     mandateSigned: true,
   },
+  /*
+   * La quinta è in verifica (§8), e non è offerta in più: è il flusso di
+   * vetting messo a schermo. Documenti verificati, mandato non ancora firmato,
+   * zero sedute e nessuna valutazione — senza di lei la KPI "in verifica" del
+   * back-office mostra zero e la piattaforma sembra non controllare nessuno.
+   *
+   * Non è prenotabile, e a deciderlo è il dato: `isBookable` chiede documenti
+   * **e** mandato. È la stessa regola del Centro Diagnostico Basalto, che il
+   * back-office elenca e la prenotazione non propone.
+   */
+  {
+    id: "keller",
+    title: "Dr.ssa",
+    lastName: "Keller",
+    qualificationKey: "psychologist_f",
+    specialty: "work_stress",
+    languages: ["de", "en"],
+    rating: null,
+    sessionFee: 75,
+    totalSessions: 0,
+    documentsVerified: true,
+    mandateSigned: false,
+  },
 ];

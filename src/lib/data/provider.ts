@@ -6,7 +6,10 @@ import type {
   CheckupEligibility,
   CheckupProvider,
   CheckupReport,
+  ClientCompany,
   Company,
+  PlatformMonth,
+  PlatformUser,
   DemoRequest,
   DemoRequestInput,
   Department,
@@ -307,4 +310,41 @@ export interface DataProvider {
    * vive in memoria e lo stato sopravvive alla navigazione interna (§10).
    */
   submitDemoRequest(input: DemoRequestInput): Promise<DemoRequest>;
+
+  /**
+   * Le richieste di demo arrivate, dalla più recente.
+   *
+   * Nasce con il suo consumatore, che è il back-office: fino a M3 la scrittura
+   * non invalidava niente perché niente la leggeva, e questa è la lettura che
+   * chiude quella riga di `docs/CONTRATTO-DATI.md` §4.
+   */
+  getDemoRequests(): Promise<DemoRequest[]>;
+
+  // --- Back-office (§10.E) --------------------------------------------------
+
+  /**
+   * Le aziende clienti della piattaforma, Demo SA compresa.
+   *
+   * **Non portano il fatturato**: è organico × prezzo del piano × 12, e un
+   * campo accanto potrebbe smettere di tornare con i due da cui viene — che è
+   * il difetto del back-office ereditato, dove Demo SA dichiarava CHF 99'000
+   * su un organico che l'elenco non confermava più (§5.5).
+   */
+  getClientCompanies(): Promise<ClientCompany[]>;
+
+  /**
+   * Le dodici mensilità della piattaforma: ricavo, copertura, iscritti,
+   * sessioni per servizio.
+   *
+   * È una serie sola per tutti i grafici dell'analytics, per la stessa ragione
+   * per cui `getServiceUsage` lo è per la dashboard HR: due entità separate
+   * possono divergere, una serie letta due volte no.
+   */
+  getPlatformMonths(): Promise<PlatformMonth[]>;
+
+  /**
+   * Gli utenti della piattaforma. Nel dataset demo è un estratto di sette
+   * righe, come l'elenco dipendenti dell'HR: la schermata lo dichiara.
+   */
+  getPlatformUsers(): Promise<PlatformUser[]>;
 }

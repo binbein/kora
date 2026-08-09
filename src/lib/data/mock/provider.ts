@@ -6,9 +6,12 @@ import {
   type CheckupEligibility,
   type CheckupProvider,
   type CheckupReport,
+  type ClientCompany,
   type DemoRequest,
   type DemoRequestInput,
   type EmployeeDirectoryEntry,
+  type PlatformMonth,
+  type PlatformUser,
   type HrReport,
   type Invoice,
   type ServiceUsageMonth,
@@ -50,6 +53,11 @@ import {
 import { EMPLOYEE_DIRECTORY, HR_REPORTS, INVOICES } from "./hr";
 import { DEMO_TODAY } from "./demo-date";
 import { LAURA, PROFESSIONALS } from "./people";
+import {
+  CLIENT_COMPANIES,
+  PLATFORM_MONTHS,
+  PLATFORM_USERS,
+} from "./platform";
 import {
   entitlementFor,
   isActivePatient,
@@ -547,5 +555,24 @@ export class MockDataProvider implements DataProvider {
     };
     this.demoRequests.push(request);
     return Promise.resolve(request);
+  }
+
+  /** Dalla più recente: è l'ordine in cui il back-office le lavora. */
+  getDemoRequests(): Promise<DemoRequest[]> {
+    return Promise.resolve([...this.demoRequests].reverse());
+  }
+
+  // --- Back-office (§10.E) --------------------------------------------------
+
+  getClientCompanies(): Promise<ClientCompany[]> {
+    return Promise.resolve(CLIENT_COMPANIES);
+  }
+
+  getPlatformMonths(): Promise<PlatformMonth[]> {
+    return Promise.resolve(PLATFORM_MONTHS);
+  }
+
+  getPlatformUsers(): Promise<PlatformUser[]> {
+    return Promise.resolve(PLATFORM_USERS);
   }
 }

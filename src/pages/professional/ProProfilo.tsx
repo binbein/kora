@@ -34,10 +34,14 @@ export default function ProProfilo() {
               {t.qualification[professional.qualificationKey]}
             </p>
             <div className="flex flex-wrap gap-2 mt-3">
-              <Badge className="bg-executive/10 text-executive">
-                <Star className="w-3 h-3 mr-1" />
-                <span className="tabular-nums">{formatRating(professional.rating)}</span>
-              </Badge>
+              {professional.rating !== null ? (
+                <Badge className="bg-executive/10 text-executive">
+                  <Star className="w-3 h-3 mr-1" />
+                  <span className="tabular-nums">
+                    {formatRating(professional.rating)}
+                  </span>
+                </Badge>
+              ) : null}
               <Badge variant="outline">
                 <Award className="w-3 h-3 mr-1" />
                 <span className="tabular-nums">
