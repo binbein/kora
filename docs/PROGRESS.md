@@ -17,18 +17,24 @@ lì.
 
 ## Stato
 
-**M0, M1 e M2 chiuse.** La demo è condivisibile — non nomina soggetti reali, il marchio è
-uno solo, non ha vicoli ciechi, e le schermate mediche dichiarano di essere
-simulazioni — e il repository è nostro: niente base44, niente chiamate verso
-l'esterno, TypeScript configurato, i file puri al loro posto.
+**M0, M1, M2 e M3 chiuse.** La demo è condivisibile e **tutte e cinque le aree
+leggono dal provider**: nessuna schermata dichiara più le proprie costanti, le
+stringhe stanno in `i18n`, ogni importo passa da `format.ts` e ogni data da
+`DEMO_TODAY`. Le rotte sono 26, il repository è nostro — niente base44, zero
+richieste esterne a runtime — e `reference/` è stato cancellato, che era la
+prova che M3 fosse davvero finita.
 
 Il primo commit è l'export **intatto**, così ogni modifica successiva si legge come
-diff contro quello che base44 ha prodotto. In `reference/` c'è il sorgente della
-precedente demo Next.js — `app/`, `components/` e `lib/`, senza configurazioni né
-app eseguibile — come magazzino di sola lettura; si cancella a fine M3. Il
-repository della vecchia demo è archiviato e non si tocca. I PDF del Business Plan
+diff contro quello che base44 ha prodotto. Il magazzino della precedente demo
+Next.js è vissuto in `reference/` fino alla chiusura di M3 e resta nella storia
+di git; il suo repository è archiviato e non si tocca. I PDF del Business Plan
 stanno in `docs/` dal 07.08.2026 (decisione qui sotto), ma restano una fonte da
 consultare: le cifre ammesse sono solo quelle trascritte in `CLAUDE.md` §8 e §9.
+
+**Il prossimo passo è M4**, il report scaricabile (§10.C.3). Resta da prendere
+prima di M5 la **decisione di palette sull'accessibilità**: il bianco su
+`secondary` pieno dà 2.83:1 contro il minimo AA di 4.5, e le due strade sono
+scurire il token o portare le CTA su `primary`.
 
 ### M0 — Messa in sicurezza
 
@@ -79,13 +85,12 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
   provider: **stesse iniziali devono voler dire la stessa persona**, e due
   persone diverse non possono condividerle. `L.B.` è Laura Bernasconi in
   entrambe, ed è il caso che rende la regola non teorica.
-- **Cinque numeri d'albo inventati in `AdminProfessionisti.jsx`** — FSP-2019-4521,
-  FMH-2015-8830, ICF-ACC-3310, FSP-2021-9901, SVDE-2018-7712. Il §8 li vieta da M2:
-  un identificatore di formato plausibile su una persona inventata può collidere con
-  l'iscrizione di un professionista vero, e nessuno se ne accorge leggendo. Restano
-  fino a M3, che ripulisce quella schermata una volta sola — il roster è comunque da
-  rifare per intero (§8). Nel portale professionista la riga esce già in M2, con la
-  migrazione dell'area.
+- ~~**Cinque numeri d'albo inventati in `AdminProfessionisti.jsx`**~~ — FSP-2019-4521,
+  FMH-2015-8830, ICF-ACC-3310, FSP-2021-9901, SVDE-2018-7712 → **spariti in M3**
+  con la migrazione dell'area admin, insieme al roster inventato che li portava.
+  Il §8 li vietava da M2: un identificatore di formato plausibile su una persona
+  inventata può collidere con l'iscrizione di un professionista vero, e nessuno
+  se ne accorge leggendo. Il campo non esiste nemmeno nel tipo.
 - **L'organico resta 150, non i 120 del §8.** La divergenza si chiude portando
   il codice a 120, mai il contrario (`CLAUDE.md` §8); è lavoro di M3.
   L'inventario, verificato occorrenza per occorrenza:
@@ -613,6 +618,126 @@ Fachpersonen, più Anmelden e Demo vereinbaren — la barra sta su una riga a
   allargato, ma i punti che restano nelle aree non toccate vanno chiusi con la
   decisione di palette prima di M5.
 
+#### Il back-office (§10.E) — e la chiusura di M3
+
+L'ultima delle cinque aree. Sei rotte, e una regola sola: **i totali si ricavano
+dai dati e non si scrivono.** Era l'area che quella regola violava più di ogni
+altra — "618 utenti attivi" accanto a un tasso di attivazione che ne implicava
+767, e un fatturato mensile che non tornava con l'elenco delle aziende sulla
+schermata a fianco.
+
+**Il portafoglio clienti è stato ratificato, non ereditato.** M0 aveva congelato
+i cinque nomi; organici e piani erano ancora quelli di base44 e da loro discende
+ogni totale. I founder li hanno ratificati l'08.08.2026 insieme ai nove valori
+nuovi — cinque date di ingresso e quattro conteggi di iscritti — e hanno spostato
+**Betulla dal Plus all'Essenziale**: 85 dipendenti sul Plus contraddicevano
+`/pricing`, che quel piano lo dichiara per aziende da 100 a 300.
+
+**Da lì non si scrive più nessun numero di piattaforma.** Il ricavo di
+un'azienda è organico × prezzo × 12; il ricorrente mensile è la somma delle
+attive in quel mese, quindi una curva a gradini; l'attivazione è iscritti ÷
+coperti. **Due strade portano allo stesso numero e un guardrail lo verifica**: i
+CHF 54'414 del mese per dodici sono i CHF 652'968 dell'elenco.
+
+**Le sessioni di piattaforma non hanno richiesto nessun numero nuovo**: ogni
+cliente è la curva di adozione di Demo SA scalata sul rapporto fra gli iscritti,
+contata dal mese di ingresso, con i servizi che il piano non include azzerati.
+Demo SA entra nel totale a rapporto 1, cioè con le sue 142 sedute esatte — ed è
+un guardrail, non una speranza.
+
+**I cinque numeri d'albo inventati sono spariti**, difetto aperto da M0: al loro
+posto la qualifica e i due controlli che la piattaforma fa davvero. "Prenotabile"
+si **deriva** da `documentsVerified && mandateSigned`, senza uno stato accanto
+che possa contraddirli.
+
+**Il quinto professionista mette a schermo il vetting.** La Dr.ssa Keller ha
+documenti verificati e mandato non firmato, zero sedute e nessuna valutazione —
+`rating` è diventato `number | null`, perché uno zero si legge come la peggiore
+possibile. Non è prenotabile, con la stessa regola del Centro Diagnostico
+Basalto, e la prenotazione del dipendente filtra su `isBookable`.
+
+**Il giro della richiesta demo è chiuso.** `getDemoRequests` è nato con il suo
+consumatore e `submitDemoRequest` ora invalida: la riga "nessuna, oggi" del
+`CONTRATTO-DATI.md` §4 è diventata una chiave vera.
+
+**Verificato a schermo a 1280px:**
+
+- 4 clienti attivi, 798 dipendenti coperti, **CHF 652'968** di ricavo annuo e
+  **415 iscritti** — lo stesso 415 che l'analytics chiama utenti iscritti, e
+  un'attivazione del **52%** che è quei due divisi;
+- 5 professionisti, 4 prenotabili, 1 in verifica, **1'147 sedute erogate**, dove
+  la schermata ereditata ne scriveva 783;
+- compilando il form da `/demo` per "Ontano Logistica SA" e camminando fino a
+  `/admin` con la sola navigazione interna, la richiesta è in tabella, datata
+  23.09.2026;
+- **la Dr.ssa Keller non compare nella prenotazione** del dipendente;
+- i cinque grafici disegnano dodici mesi da ott a set, e la curva di attivazione
+  racconta l'onboarding: parte al 68% con la sola Demo SA, scende a ogni nuovo
+  cliente e si assesta al 52%;
+- **nessun numero dell'area HR si è mosso**: CHF 14'200, 16 giorni, 68%, 82 su
+  120, 41 attivi, 142 di 1'200.
+
+**Difetti trovati in questa passata:**
+
+- **La riga di KPI degli utenti ripeteva il difetto del 618/767**, in forma
+  nuova: un conteggio di piattaforma (415) accanto a tre calcolati sull'estratto
+  di sette righe. Ora ognuna dichiara su cosa è calcolata.
+- **La ripartizione per servizio mandava a capo "Medico virtuale"** sull'asse.
+
+**Aperto e dichiarato:**
+
+- **Il pulsante "Approva" del dialogo professionisti è stato rimosso**, con la
+  decisione dei founder qui sotto. La scrittura vera dell'admin arriva con le
+  guardie di ruolo di M5.
+- **I grafici recharts misurano zero a scheda nascosta.** Il difetto segnalato
+  in apertura di M3 è stato capito: non è il `ResponsiveContainer`, è che a
+  scheda nascosta `innerWidth` vale **0** e l'intera pagina misura zero. Con una
+  scheda visibile i cinque grafici disegnano correttamente. È la stessa causa
+  dell'animazione della landing che resta congelata (§10), e la conseguenza è la
+  stessa: **le verifiche a schermo si fanno con la scheda in primo piano.**
+
+#### M3 è chiusa
+
+`reference/` è stato cancellato, che è la prova che il §4 chiedeva: se fosse
+servito ancora qualcosa da lì, un'area non sarebbe stata finita. Verificato
+prima di cancellare — nessun `import` da `src/`, e ogni file di
+`reference/lib/` ha il suo corrispettivo, tranne `use-data.ts`, che è il
+provider sincrono che non doveva entrare. Le sue esclusioni escono da ESLint e
+da `tsconfig`; resta nella storia di git.
+
+**La prova finale non è stata l'area ma la demo intera**: 26 rotte percorse con
+la sola navigazione interna, **zero 404, zero schermate vuote e zero link
+morti** — ogni `href` interno di ogni pagina punta a una rotta che esiste —
+console pulita, `npm run lint` e `npm run typecheck` a zero, build che passa.
+
+#### Dopo la chiusura — il check rapido a cinque volti
+
+Richiesta dei founder dell'08.08.2026, sullo stesso branch. La card passa dalle
+cinque pillole di testo a **cinque volti da chiosco**, icone lucide da `Laugh`
+ad `Angry`. **Icone e mai emoji**: il §7 le vieta senza eccezioni, e un'icona
+vettoriale eredita colore e dimensione, cosa che un carattere emoji non fa.
+
+**I volti sono neutri e il colore sta sulla scelta, non sull'umore.** Una scala
+dal verde al rosso userebbe `destructive`, che il §6.1 riserva agli alert, e
+dipingerebbe di rosso una risposta sincera sul proprio stato d'animo — che in
+un registro consumer giudica invece di accogliere.
+
+I cinque volti **restano dopo la risposta**, con la scelta accesa: è il "già
+risposto oggi" detto mostrando *cosa* si è risposto. La riga non cambia forma
+fra i due stati, quindi la card non salta sotto le dita al tocco.
+
+**L'etichetta resta visibile e non ha un `aria-label` sopra**, ed è una scelta:
+il testo dentro il pulsante è già il suo nome accessibile, e un `aria-label` lo
+sostituirebbe — chi legge lo schermo sentirebbe una parola e chi lo vede ne
+leggerebbe un'altra. Le icone sono decorative e nascoste; i cinque pulsanti
+formano un gruppo che la domanda nomina.
+
+**Difetto trovato:** la prima stesura dava `bg-accent` al volto scelto, e a
+schermo non si vedeva — la card risposta è già `bg-accent/40`, quindi acceso e
+spenti finivano sulla stessa tinta. Il segnale è diventato **l'anello**: teal su
+un chip bianco contro il fondo menta, con l'etichetta lasciata scura perché
+`text-secondary` su bianco dà 2.9:1, sotto l'AA per un testo da 11px.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -628,9 +753,9 @@ difetto già risolto, e a non rifarne uno già dichiarato aperto. Il dettaglio �
 - nessun layer dati: ogni pagina dichiara le proprie costanti in cima al file, e le
   stesse grandezze divergono fra schermate vicine — 618 vs 767 utenti, 18 vs 6
   pazienti, 180 vs 142 sessioni, tre roster di professionisti che non si parlano.
-  **Chiuso dove l'area è migrata**: i pazienti in M2, le sessioni in M3 con la
-  dashboard HR. Restano gli utenti dell'admin e i roster, che vivono nelle aree
-  non ancora migrate;
+  **Chiuso**: i pazienti in M2, le sessioni in M3 con la dashboard HR, gli
+  utenti e i tre roster con l'area admin — che era l'ultima a tenere le proprie
+  costanti in cima al file;
 - ~~le prenotazioni non producono effetti: nessun contatore si muove, nessun
   appuntamento compare, nessuno slot si occupa~~ → chiuso in M3 con l'area
   dipendente, e con la prova a schermo sui due lati del marketplace;
@@ -638,10 +763,9 @@ difetto già risolto, e a non rifarne uno già dichiarato aperto. Il dettaglio �
   ventiseiesima rotta;
 - ~~mancano stress per reparto, alert precoce e selettore trimestre nella
   dashboard HR~~ → costruiti in M3 con la migrazione dell'area HR;
-- importi non formattati in svizzero (6 scritti a mano all'italiana, 9
-  `toLocaleString()` senza locale, che a schermo escono in formato en-US).
-  **Restano solo nell'area admin**: pubblica, dipendente, HR e professionista
-  passano tutte da `format.ts`;
+- ~~importi non formattati in svizzero (6 scritti a mano all'italiana, 9
+  `toLocaleString()` senza locale, che a schermo escono in formato en-US)~~ →
+  **chiuso a fine M3**: tutte e cinque le aree passano da `format.ts`;
 - ~~**quattro** coppie giorno/data sbagliate — non cinque — tutte in
   `ProSessioni.jsx` e tutte con lo stesso scarto di un giorno: è il calendario
   2025 con l'anno riscritto a mano~~ → sparite in M2 con la lista che le
@@ -658,7 +782,7 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 | M0 | Messa in sicurezza | **fatta** |
 | M1 | Fondamenta tecniche | **fatta** |
 | M2 | Il contratto dati | **fatta** |
-| M3 | Migrazione area per area + calcolatore ROI | **in corso** — restano l'admin e la cancellazione di `reference/` |
+| M3 | Migrazione area per area + calcolatore ROI | **fatta** |
 | M4 | Report scaricabile | da fare |
 | M5 | Verso la produzione (differibile) | da fare |
 
@@ -667,6 +791,33 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà una
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
+
+- **08.08.2026 — Il pulsante "Approva" del back-office si toglie**
+  (`CLAUDE.md` §10.E). Nel dialogo dei professionisti chiudeva il dialogo e
+  basta, come "Salva nota" prima di M2. **Non diventa una mutation**: è l'unica
+  scrittura del back-office, la scrittura vera arriverà con le guardie di ruolo
+  di M5, e un pulsante che finge di approvare un professionista è peggio di
+  nessun pulsante. Rimozione di scope, quindi la decisione è dei founder (§2.6).
+
+- **08.08.2026 — Il portafoglio clienti è ratificato, e Betulla passa
+  all'Essenziale** (`CLAUDE.md` §8). M0 aveva congelato i cinque nomi ma non
+  organici e piani, che erano ancora quelli di base44 e da cui discende ogni
+  totale del back-office. Ratificati con i nove valori nuovi — date di ingresso
+  e iscritti. Betulla lascia il Plus perché 85 dipendenti contraddicevano
+  `/pricing`, che quel piano lo dichiara per aziende da 100 a 300, e a schermo si
+  legge **"in attivazione"**: su una schermata che un investitore può vedere
+  "inattiva" si legge come abbandono, mentre il caso è un contratto firmato due
+  mesi prima della demo.
+
+- **08.08.2026 — Il quinto professionista, in verifica** (`CLAUDE.md` §8). La
+  Dr.ssa Keller esiste per mettere a schermo il **flusso di vetting**, non per
+  aggiungere offerta: senza di lei la KPI "in verifica" mostra zero e la
+  piattaforma sembra non controllare nessuno. Scegliendo il cognome è emersa una
+  regola che vale oltre il caso: **per le persone il cognome comune è più sicuro
+  di quello raro**, al contrario che per i luoghi. *Steiner* e *Balmelli* hanno
+  restituito ognuno uno psicologo FSP reale e identificabile in Ticino alla
+  prima ricerca; *Keller*, *Galli* e *Brunner* nessuno. La prova è cercare
+  cognome + professione + cantone.
 
 - **08.08.2026 — Le voci morte del footer perdono l'affordance da link**
   (`CLAUDE.md` §10). "Chi siamo", "Contatti", "Carriere", "Blog" e i tre
@@ -863,39 +1014,48 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 *(Era in sospeso anche l'emoji nel saluto della home dipendente: decisa il
 07.08.2026 — si toglie — e passata fra le decisioni chiuse.)*
 
+## Migliorie rimandate al refinement
+
+Cose **giuste in produzione e sbagliate nella demo**, che è una distinzione a
+sé: non sono difetti da chiudere né decisioni in sospeso, sono pattern che
+aspettano dati veri. Vanno riprese quando l'MVP ha la sua prima disponibilità
+reale.
+
+- **Professionisti non disponibili in grigio invece che nascosti.** Oggi chi
+  prenota vede i soli prenotabili e gli altri non compaiono; il pattern
+  corretto, con agende vere, è mostrarli **disattivati** — chi cerca una
+  persona specifica capisce che esiste ed è occupata, invece di concludere che
+  non è nella rete.
+
+  **Nella demo non si può fare**, e per due ragioni distinte. L'unico
+  professionista non prenotabile è la **Dr.ssa Keller**, che è in verifica:
+  mostrarla in grigio direbbe "occupata" di qualcuno che non è ancora nella
+  rete, cioè la cosa sbagliata. L'alternativa sarebbe inventare uno stato
+  tutto-occupato sui quattro veri, e quello **contraddice il Business Plan
+  davanti a un investitore**: la promessa è "primo appuntamento entro 24 ore,
+  nessuna lista d'attesa", e una schermata di caselle grigie la smentisce nel
+  momento in cui la si sta vendendo.
+
+  Da rifare quando esistono disponibilità reali: allora il grigio dirà una cosa
+  vera, e la promessa la sosterranno i dati invece di una schermata costruita.
+
 ## Note per chi riprende
 
-- `reference/` è il **magazzino, ma non tutto si copia.** Non si modifica, non si
-  importa: nessun file di `src/` deve avere un `import` che punta dentro
-  `reference/`. E soprattutto va distinto cosa è pronto da cosa non lo è:
-  - **Si copiano davvero**: `lib/format.ts`, `lib/dates.ts` e `lib/roi-model.ts`
-    — già trapiantati in M1 — e i dataset di `lib/data/mock/` che non toccano il
-    modello di misurazione: `people.ts`, `scheduling.ts`,
-    `professional-portal.ts`, `roi.ts`. Sono file puri, già scritti e verificati.
-  - **Si copia una chiave alla volta**: `lib/i18n/it.ts`. Sono 592 righe scritte
-    per le schermate della vecchia demo, e il §2.7 vuole che le stringhe entrino
-    mentre M3 migra la schermata che le usa. Da lì si prende la chiave che serve,
-    mai il file.
-  - **Si leggono come specifica e si riprogettano**: `lib/data/provider.ts`,
-    `lib/data/index.ts`, `lib/data/use-data.ts` e le firme dei mock. Quel provider è
-    **sincrono per scelta dichiarata** (lo dice un commento nel file) e la reattività
-    passa da `useSyncExternalStore` su un contatore di versione. `CLAUDE.md` §5.1
-    e §5.2 impongono provider asincrono e react-query: sono due modelli diversi, e
-    convertirli per copia non funziona.
+- **`reference/` non c'è più**, cancellato alla chiusura di M3: era il magazzino
+  di sola lettura della vecchia demo Next, e la sua cancellazione è la prova che
+  il §4 chiedeva. Resta nella storia di git. Quello che ne è uscito, e come:
+  `format.ts`, `dates.ts` e `roi-model.ts` copiati in M1 perché file puri già
+  verificati; `people.ts`, `scheduling.ts`, `professional-portal.ts` e `roi.ts`
+  come struttura in M2; `i18n/it.ts` **una chiave alla volta**, mentre M3
+  migrava la schermata che la usava. `provider.ts` e `types.ts` sono stati
+  **letti come specifica e riprogettati**, non copiati: quel provider era
+  sincrono per scelta e la reattività passava da un contatore di versione, che
+  con react-query non convive. `use-data.ts` non è mai entrato.
 
-    Qui stanno anche **`lib/data/types.ts`, `lib/data/mock/company.ts` e
-    `lib/data/mock/stress.ts`**: i primi due portano `respondents` su
-    `Department`, cioè sull'anagrafica — la posizione che la decisione del 05.08
-    vieta — e i loro commenti descrivono il questionario mensile, che è il
-    modello superato. `stress.ts` legge quel campo due volte, per decidere la
-    pubblicabilità e per pesare la media aziendale, quindi segue i primi due.
-  - I componenti di dominio in `components/kora/` stanno in mezzo: la resa si tiene,
-    ma sono Next/TSX e leggono dal provider sincrono, quindi si adattano.
-
-  Il rischio da evitare in M2 è **cominciare copiando** e accorgersene a metà, con
-  react-query e il contatore di versione che convivono. È lo stato in cui, secondo
-  §5.7, viene il pensiero "conviene rifarlo pulito" — cioè il segnale da riportare
-  ai founder.
+  **La lezione che vale oltre il caso**: il rischio non era copiare troppo poco,
+  era cominciare copiando e accorgersene a metà — lo stato in cui, secondo il
+  §5.7, viene il pensiero "conviene rifarlo pulito". Vale per qualunque sorgente
+  si erediti in futuro.
 - **Il passaggio alla produzione avviene in questo repository**, sostituendo
   `lib/data/mock/` con `lib/data/http/` dietro la stessa interfaccia
   (`CLAUDE.md` §5.7). Se viene il pensiero di ricominciare da capo con un repo

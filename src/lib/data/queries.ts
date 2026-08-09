@@ -294,6 +294,49 @@ export function useCheckupEligibility() {
   });
 }
 
+/*
+ * Le query del back-office (§10.E).
+ *
+ * Nessuna di queste esisteva prima: il §5.2 vuole che una lettura nasca quando
+ * il dato esiste, e il portafoglio clienti non aveva nessuno che lo leggesse
+ * finché l'area viveva sulle proprie costanti.
+ */
+
+export function useClientCompanies() {
+  return useQuery({
+    queryKey: queryKeys.platform.clients(),
+    queryFn: () => dataProvider.getClientCompanies(),
+  });
+}
+
+export function usePlatformMonths() {
+  return useQuery({
+    queryKey: queryKeys.platform.months(),
+    queryFn: () => dataProvider.getPlatformMonths(),
+  });
+}
+
+export function usePlatformUsers() {
+  return useQuery({
+    queryKey: queryKeys.platform.users(),
+    queryFn: () => dataProvider.getPlatformUsers(),
+  });
+}
+
+/**
+ * Le richieste arrivate dal form pubblico.
+ *
+ * È la lettura che chiude il giro di `submitDemoRequest`: da qui la mutation ha
+ * qualcosa da invalidare, e una richiesta compilata durante la demo compare qui
+ * senza ricaricare (`docs/CONTRATTO-DATI.md` §4).
+ */
+export function useDemoRequests() {
+  return useQuery({
+    queryKey: queryKeys.platform.demoRequests(),
+    queryFn: () => dataProvider.getDemoRequests(),
+  });
+}
+
 export function useCheckupReport(bookingId: string | undefined) {
   return useQuery({
     queryKey: queryKeys.checkup.report(bookingId ?? ""),

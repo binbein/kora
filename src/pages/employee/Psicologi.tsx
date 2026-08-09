@@ -20,6 +20,7 @@ import {
 } from "@/lib/data/queries";
 import { queryKeys } from "@/lib/data/query-keys";
 import {
+  isBookable,
   professionalDisplayName,
   serviceOf,
   type Appointment,
@@ -295,12 +296,16 @@ function ProfessionalCard({
                 {t.qualification[professional.qualificationKey]}
               </p>
             </div>
-            <div className="flex items-center gap-1 text-sm">
-              <Star className="w-3.5 h-3.5 fill-warning text-warning" />
-              <span className="font-medium tabular-nums">
-                {formatRating(professional.rating)}
-              </span>
-            </div>
+            {/* Chi non ha ancora erogato sedute non ha una valutazione: la
+                riga sparisce invece di mostrare uno zero (§11). */}
+            {professional.rating !== null ? (
+              <div className="flex items-center gap-1 text-sm">
+                <Star className="w-3.5 h-3.5 fill-warning text-warning" />
+                <span className="font-medium tabular-nums">
+                  {formatRating(professional.rating)}
+                </span>
+              </div>
+            ) : null}
           </div>
           <div className="flex flex-wrap gap-1.5 mt-2">
             <Badge variant="secondary" className="text-xs">
@@ -377,8 +382,17 @@ export default function Psicologi() {
 
   if (!professionals) return null;
 
+  /*
+   * Solo i prenotabili. Il provider restituisce il roster intero perché il
+   * back-office deve seguire chi è in verifica (§10.E), e chi prenota vede i
+   * soli professionisti con documenti **e** mandato in ordine — la stessa
+   * regola con cui la rete check-up non propone il Centro Diagnostico Basalto.
+   */
   const byService = (kind: CappedServiceKind) =>
-    professionals.filter((professional) => serviceOf(professional) === kind);
+    professionals.filter(
+      (professional) =>
+        isBookable(professional) && serviceOf(professional) === kind,
+    );
 
   return (
     <div className="space-y-6">

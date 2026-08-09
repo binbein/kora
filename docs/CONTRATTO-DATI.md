@@ -236,6 +236,38 @@ L'arrotondamento al centinaio fa parte della regola, non della formattazione:
 senza, gli importi non sono riproducibili, e una cifra al franco su un risparmio
 stimato è finta precisione.
 
+### Piattaforma — il back-office
+
+`ClientCompany` **non porta il fatturato**, ed è la stessa regola di `Invoice`:
+è organico × prezzo del piano × 12, e un campo accanto ai due da cui viene può
+smettere di tornare con loro. Il back-office ereditato lo dimostrava,
+dichiarando per Demo SA un fatturato calcolato su un organico che l'elenco
+accanto non confermava più.
+
+`ClientCompany.active` distingue **il cliente non ancora avviato** da quello con
+adozione nulla: un contratto firmato e non partito non fattura e non ha
+iscritti. In produzione la distinzione serve alla fatturazione, non solo
+all'etichetta.
+
+`PlatformMonth` è **una serie sola per tutti i grafici dell'analytics**, come
+`ServiceUsageMonth` lo è per la dashboard HR e per la stessa ragione: la
+distribuzione per servizio e il totale del mese si derivano da qui, e due
+entità separate potrebbero divergere. Ogni suo campo è derivato dal portafoglio
+clienti; nel dataset demo le sessioni di un cliente sono la curva di Demo SA
+scalata sul rapporto fra gli iscritti, **e questa è una semplificazione che
+salta in produzione** (§7).
+
+**Il tasso di attivazione non è un campo.** È iscritti ÷ dipendenti coperti,
+cioè la stessa definizione dell'adozione aziendale applicata a tutti i clienti
+attivi. Salvarlo è come il back-office ereditato è arrivato a mostrare "618
+utenti attivi" accanto a un tasso che ne implicava 767.
+
+`Professional.rating` è `number | null`: **chi non ha erogato sedute non ha una
+valutazione**, e uno zero si leggerebbe come la peggiore possibile. Chi è
+prenotabile non è un campo ma una derivazione — `documentsVerified &&
+mandateSigned` — così il back-office elenca tutti e la prenotazione filtra,
+senza uno `status` che possa contraddire i due controlli da cui verrebbe.
+
 ### Granularità
 
 Una scelta del contratto, non del mock: le serie aziendali (stress, utilizzo
@@ -255,7 +287,7 @@ compensi e pagamenti.
 | `saveSessionNote` | `["professional", professionalId]` |
 | `bookAppointment` | `["professional", professionalId]` **e** `["employee"]` |
 | `submitRapidCheck` | `["employee", "rapid-check"]` |
-| `submitDemoRequest` | nessuna, oggi — sotto |
+| `submitDemoRequest` | `["platform", "demo-requests"]` |
 
 Sono tutte le scritture del dominio: dopo l'area pubblica non ne restano fuori.
 
@@ -272,17 +304,19 @@ compare nel calendario e nelle sedute in programma del professionista.
 non muove contatori né appuntamenti, e invalidare più del necessario farebbe
 rileggere mezza schermata per un tocco.
 
-**`submitDemoRequest` non invalida niente, e non è una dimenticanza.** A leggere
-le richieste sarà il back-office, che è l'ultima area da migrare: oggi nessuna
-query le mostra, quindi non c'è niente da invalidare. La lettura —
-`getDemoRequests` — nasce con il suo consumatore e con la sua riga in questa
-tabella, che è la regola del §2 applicata al caso in cui è più facile
-disattenderla: la superficie di invalidazione è la parte del contratto in cui
-sbagliare costa di più, e indovinarla adesso non la renderebbe più vera. **In
-produzione questa scrittura invaliderà l'elenco del back-office**, ed è la riga
-che questa tabella prenderà allora.
+**`submitDemoRequest` ha aspettato il suo lettore.** Fino al blocco dell'area
+pubblica non invalidava niente, e la riga di questa tabella lo dichiarava: a
+leggere le richieste sarebbe stato il back-office, che era l'ultima area da
+migrare, quindi non c'era ancora niente da invalidare. `getDemoRequests` è nato
+con il suo consumatore, e da lì la mutation invalida `["platform",
+"demo-requests"]`.
 
-Il record si salva comunque nello stato del provider, che vive in memoria: una
+**Perché valeva la pena aspettare un blocco**: la superficie di invalidazione è
+la parte del contratto in cui sbagliare costa di più, e dichiararla in anticipo
+non l'avrebbe resa più vera — l'avrebbe solo resa più difficile da correggere.
+È il §2 applicato al caso in cui è più facile disattenderlo.
+
+Il record si salvava comunque nello stato del provider, che vive in memoria: una
 richiesta compilata davanti a un investitore è ancora lì navigando su `/admin`
 (`CLAUDE.md` §10). E non ha semi — il §8 non contiene richieste demo, quindi
 l'elenco parte vuoto invece di aprirsi su cinque righe inventate (§2.4).
@@ -373,6 +407,15 @@ invece di restare assunzioni implicite:
   psicologa, e il coach non ne ha uno. Il contratto non se ne accorge —
   `getEntitlement("coach")` ha la stessa forma — ma chi costruisce il backend
   deve saperlo, perché lì `used` si conterà da un'agenda vera.
+- **Un solo portale professionista.** L'agenda che il back-office elenca è
+  quella della Dr.ssa Meier, e la schermata lo dichiara nel sottotitolo. In
+  produzione `getProfessionalSessions` prende un intervallo e una pagina, e il
+  back-office ne aggrega molte.
+- **Le sessioni degli altri clienti sono la curva di Demo SA scalata.** È il
+  modo in cui il dataset demo tiene Demo SA *dentro* i totali di piattaforma
+  invece che accanto, e in produzione salta per intero: ogni cliente avrà le
+  sue sedute. Ciò che resta vero è la forma — una serie mensile per la
+  piattaforma, derivata e non salvata.
 - **Un solo dipendente.** `getEmployeeProfile`, `getEntitlement`,
   `getAppointments`, `getCheckupEligibility` e le altre letture del percorso non
   prendono un identificatore: la demo ha Laura Bernasconi e basta. In produzione

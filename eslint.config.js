@@ -6,10 +6,10 @@ import pluginUnusedImports from "eslint-plugin-unused-imports";
 import tseslint from "typescript-eslint";
 
 export default [
-  // Non manteniamo questo codice e non deve produrre errori: `reference/` e' il
-  // magazzino di sola lettura della vecchia demo (CLAUDE.md §3), `dist/` e' il build.
+  // `dist/` e' il build e non si lint-a. (Qui c'era anche `reference/`, il
+  // magazzino della vecchia demo: cancellato alla chiusura di M3.)
   {
-    ignores: ["reference/**", "dist/**"],
+    ignores: ["dist/**"],
   },
   // Solo parser e regole `recommended`: le varianti type-aware caricherebbero il
   // programma TypeScript a ogni lint, e con `checkJs: false` coprirebbero comunque

@@ -18,6 +18,10 @@
 export const it = {
   common: {
     appName: "Kora",
+    /* Il posto di un valore che non c'è. Una chiave sola perché è la stessa
+       cosa ovunque, e tre trattini scritti in tre punti diventano tre trattini
+       diversi alla prima revisione. */
+    none: "—",
   },
 
   plan: {
@@ -1171,6 +1175,216 @@ export const it = {
         "La richiesta per {company} è registrata. Il team risponde entro un giorno lavorativo.",
       successHome: "Torna alla home",
       successRoi: "Intanto, calcola il ritorno",
+    },
+  },
+
+  /*
+   * Il back-office (§10.E). Registro strumento: parla a chi gestisce la
+   * piattaforma, quindi terza persona e metrico, come l'area HR.
+   *
+   * Non ha valore narrativo per il pitch, ma ha valore di prodotto: serve dopo.
+   * Il banner "dati dimostrativi" resta finché la guardia di ruolo non arriva
+   * con M5.
+   */
+  admin: {
+    portalName: "Admin interno",
+    nav: {
+      companies: "Aziende",
+      users: "Utenti",
+      professionals: "Professionisti",
+      sessions: "Sessioni",
+      checkupProviders: "Provider check-up",
+      analytics: "Analytics",
+    },
+    demoBanner:
+      "Back-office interno · dati dimostrativi. Aziende, persone e strutture di questa sezione sono di fantasia e non descrivono clienti reali.",
+
+    /* L'estratto si dichiara, come per l'elenco dipendenti dell'HR: la
+       paginazione è M5, e far credere che la piattaforma abbia sette utenti
+       sarebbe peggio che dire quanti se ne stanno mostrando. */
+    extractNote: "Estratto di {shown} righe su {total}. La ricerca completa arriva con la messa in produzione.",
+
+    companies: {
+      title: "Aziende clienti",
+      kpiActive: "Clienti attivi",
+      kpiEmployees: "Dipendenti coperti",
+      kpiRevenue: "Ricavo annuo",
+      /* "Sui clienti attivi": senza, il totale sembra includere anche chi non
+         fattura ancora, che è il difetto della schermata ereditata. */
+      kpiRevenueHint: "Sui clienti attivi",
+      kpiEnrolled: "Iscritti",
+      /** "415 su 798 dipendenti coperti" */
+      kpiEnrolledHint: "{enrolled} su {covered} dipendenti coperti",
+
+      colName: "Azienda",
+      colIndustry: "Settore",
+      colEmployees: "Dipendenti",
+      colPlan: "Piano",
+      colCity: "Sede",
+      colClientSince: "Cliente da",
+      colRevenue: "Ricavo/anno",
+      colStatus: "Stato",
+
+      statusActive: "Attiva",
+      /* Non "inattiva": su una schermata che un investitore può vedere si
+         leggerebbe come abbandono, mentre il caso è un contratto firmato da
+         poco e non ancora avviato (§8). */
+      statusOnboarding: "In attivazione",
+      /** Il ricavo di un cliente non ancora avviato: potenziale, non fatturato. */
+      revenuePotential: "{amount} potenziale",
+    },
+
+    industry: {
+      finance: "Finanza",
+      pharma: "Farmaceutica",
+      legal: "Legale",
+      tech: "Tecnologia",
+      insurance: "Assicurazioni",
+    },
+
+    users: {
+      title: "Utenti",
+      searchPlaceholder: "Cerca per nome o azienda",
+      kpiTotal: "Utenti iscritti",
+      kpiTotalHint: "Su tutti i clienti attivi",
+      kpiActive: "Attivi",
+      kpiWithAssessment: "Con assessment",
+      kpiAverageScore: "Profilo salute medio",
+      /* Le tre KPI qui sopra si contano sull'estratto, la prima su tutta la
+         piattaforma: senza dirlo, quattro numeri affiancati sembrerebbero
+         parlare della stessa popolazione — che è il difetto per cui il
+         back-office ereditato metteva 618 utenti accanto a un tasso che ne
+         implicava 767. */
+      kpiOnExtract: "Sulle {shown} righe mostrate",
+
+      colName: "Nome",
+      colEmail: "Email",
+      colCompany: "Azienda",
+      colRole: "Ruolo",
+      colScore: "Profilo salute",
+      colStatus: "Stato",
+      colJoined: "Iscritto",
+
+      statusActive: "Attivo",
+      statusInactive: "Inattivo",
+      empty: "Nessun utente corrisponde alla ricerca.",
+    },
+
+    role: {
+      employee: "Dipendente",
+      hr: "HR",
+      professional: "Professionista",
+      admin: "Admin",
+    },
+
+    professionals: {
+      title: "Professionisti",
+      kpiTotal: "Nel roster",
+      kpiBookable: "Prenotabili",
+      kpiVetting: "In verifica",
+      kpiSessions: "Sedute erogate",
+
+      colName: "Nome",
+      colQualification: "Qualifica",
+      colSpecialty: "Specialità",
+      colLanguages: "Lingue",
+      colFee: "Compenso",
+      colSessions: "Sedute",
+      colDocuments: "Documenti",
+      colMandate: "Mandato",
+      colStatus: "Stato",
+
+      statusBookable: "Prenotabile",
+      statusVetting: "In verifica",
+      /* Il numero d'albo non esiste nel dominio e non si inventa (§8): quello
+         che la piattaforma verifica davvero sono i documenti e il mandato. */
+      vettingNote:
+        "Un professionista è prenotabile quando i documenti sono verificati e il mandato è firmato. Finché non lo è, non compare nella prenotazione.",
+    },
+
+    sessions: {
+      title: "Sedute",
+      /* La sola agenda della Dr.ssa Meier: il dataset demo ha un portale
+         professionista solo (`docs/CONTRATTO-DATI.md` §7). */
+      subtitle: "Agenda di {professional}",
+      kpiTotal: "Sedute",
+      kpiDelivered: "Erogate",
+      kpiScheduled: "In programma",
+      kpiVolume: "Compensi maturati",
+      kpiVolumeHint: "Solo sedute erogate",
+
+      colPatient: "Paziente",
+      colProfessional: "Professionista",
+      colDate: "Data",
+      colType: "Tipo",
+      colFee: "Compenso",
+      colStatus: "Stato",
+
+      statusScheduled: "In programma",
+      statusCompleted: "Erogata",
+      statusCancelled: "Annullata",
+      /* Le iniziali sono tutto ciò che esce del paziente, e a impedirlo è il
+         tipo: `ProfessionalSession` non ha un campo su cui un nome possa
+         arrivare (`docs/CONTRATTO-DATI.md` §3). */
+      privacyNote: "Dei pazienti escono le sole iniziali, mai il nome.",
+    },
+
+    checkupProviders: {
+      title: "Provider check-up",
+      kpiActive: "Strutture attive",
+      kpiCities: "Città coperte",
+      kpiBookings: "Check-up prenotati",
+      kpiBookingsHint: "Sui dodici mesi",
+      kpiPending: "In convenzionamento",
+
+      colName: "Struttura",
+      colCity: "Città",
+      colAddress: "Indirizzo",
+      colDistance: "Distanza",
+      colStatus: "Stato",
+
+      statusActive: "Attiva",
+      statusPending: "In convenzionamento",
+      /** "2.1 km" */
+      distance: "{km} km",
+      pendingNote:
+        "Una struttura in convenzionamento non è prenotabile dal portale dipendente.",
+    },
+
+    analytics: {
+      title: "Analytics piattaforma",
+      kpiRevenue: "Ricavo del mese",
+      /** "CHF 652'968 annualizzati" */
+      kpiRevenueHint: "{amount} annualizzati",
+      kpiSessions: "Sedute del mese",
+      kpiEnrolled: "Utenti iscritti",
+      kpiActivation: "Attivazione",
+      /** "415 su 798 dipendenti coperti" */
+      kpiActivationHint: "{enrolled} su {covered} dipendenti coperti",
+
+      revenueChart: "Ricavo ricorrente mensile",
+      sessionsChart: "Sedute erogate per mese",
+      planMixChart: "Mix piani",
+      activationChart: "Attivazione",
+      serviceMixChart: "Sedute per servizio, dodici mesi",
+
+      /** "1 azienda" / "2 aziende" — il singolare cambia la parola intera. */
+      planMixOne: "1 azienda",
+      planMixMany: "{count} aziende",
+    },
+
+    demoRequests: {
+      title: "Richieste demo",
+      /* Parte vuoto di proposito: il §8 non contiene richieste demo, quindi
+         non se ne inventano. Si riempie inviando il form da /demo. */
+      empty: "Nessuna richiesta. Le richieste inviate dal form pubblico compaiono qui.",
+      colCompany: "Azienda",
+      colContact: "Referente",
+      colEmail: "Email",
+      colEmployees: "Dipendenti",
+      colReceived: "Ricevuta",
+      /** Quando il form non dichiara l'organico. */
+      noEmployees: "—",
     },
   },
 } as const;

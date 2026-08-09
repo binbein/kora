@@ -85,6 +85,20 @@ export const queryKeys = {
   },
 
   /*
+   * Il back-office (§10.E). La radice porta con sé tutto ciò che riguarda la
+   * piattaforma, e le richieste demo stanno sotto di lei: è il back-office a
+   * leggerle, quindi una richiesta inviata dal form pubblico invalida questa
+   * radice e non quella dell'azienda cliente.
+   */
+  platform: {
+    root: () => ["platform"] as const,
+    clients: () => ["platform", "clients"] as const,
+    months: () => ["platform", "months"] as const,
+    users: () => ["platform", "users"] as const,
+    demoRequests: () => ["platform", "demo-requests"] as const,
+  },
+
+  /*
    * Il check-up sta fuori dalla radice del dipendente perché la rete non è sua:
    * è la stessa che il back-office segue, e nessuna prenotazione di seduta la
    * tocca.

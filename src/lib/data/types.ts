@@ -434,8 +434,12 @@ export type Professional = {
    * tipo e non si inventa.
    */
   qualificationKey: "psychologist_f" | "psychologist_m" | "coach_m";
-  /** 0–5, un decimale */
-  rating: number;
+  /**
+   * 0–5, un decimale. **`null` per chi non ha ancora erogato sedute**: un
+   * professionista in verifica non ha una valutazione, e uno zero si
+   * leggerebbe come la peggiore possibile invece che come assente (§11).
+   */
+  rating: number | null;
   /**
    * CHF che il professionista incassa per una sessione erogata. Il §9 fissa la
    * banda CHF 70–80; dove cade il singolo è una scelta della demo, dichiarata
@@ -464,6 +468,22 @@ export type Professional = {
 export function professionalDisplayName(professional: Professional): string {
   const { title, firstName, lastName } = professional;
   return [title, firstName, lastName].filter(Boolean).join(" ");
+}
+
+/**
+ * Se un professionista può essere prenotato.
+ *
+ * **Si deriva e non è un campo**: documenti verificati e mandato firmato sono
+ * già il fatto: uno `status` accanto sarebbe un secondo dato sulla stessa cosa,
+ * e i due potrebbero divergere (§5.5). È la stessa forma della rete check-up,
+ * dove `CheckupProvider.status` decide chi è prenotabile — lì lo stato è il
+ * dato, qui il dato sono i due controlli che lo producono.
+ *
+ * Il back-office elenca **tutti**, perché seguire chi è in verifica è il suo
+ * mestiere; la prenotazione filtra su questa funzione.
+ */
+export function isBookable(professional: Professional): boolean {
+  return professional.documentsVerified && professional.mandateSigned;
 }
 
 /**
@@ -907,12 +927,53 @@ export type PlatformUser = {
  * dichiarava CHF 99'000 su un organico che l'elenco accanto non confermava
  * (§8).
  */
+export type ClientIndustry =
+  | "finance"
+  | "pharma"
+  | "legal"
+  | "tech"
+  | "insurance";
+
 export type ClientCompany = {
   id: string;
   name: string;
-  industry: string;
+  /** Chiave del settore in `it.ts`: è una categoria, non il nome dell'azienda. */
+  industry: ClientIndustry;
   city: string;
   employeeCount: number;
   planId: PlanId;
+  /** Primo giorno del mese in cui il contratto è partito (§8). */
+  clientSince: Date;
+  /**
+   * Dipendenti che hanno attivato l'account. Vale 0 per un cliente non ancora
+   * avviato, che non è la stessa cosa di un cliente con adozione nulla — a
+   * distinguerli è `active`.
+   */
+  enrolledEmployees: number;
+  /**
+   * Se il contratto è avviato. Un cliente non attivo **non fattura e non ha
+   * iscritti**, e a schermo si legge "in attivazione", non "inattiva": il caso
+   * descritto è un contratto firmato da poco, non un abbandono (§8).
+   */
   active: boolean;
+};
+
+/**
+ * Un mese della piattaforma, per l'analytics del back-office (§10.E).
+ *
+ * Ogni campo è **derivato** dal portafoglio clienti e dalla serie di Demo SA:
+ * il §10.E chiede che i totali si ricavino dai dati, ed è il difetto che
+ * l'area aveva — "618 utenti attivi" accanto a un tasso di attivazione che ne
+ * implicava 767.
+ */
+export type PlatformMonth = {
+  month: Date;
+  /** Ricavo ricorrente del mese: somma delle aziende che fatturano */
+  recurringRevenueChf: number;
+  /** Dipendenti coperti dai contratti attivi in quel mese */
+  coveredEmployees: number;
+  /** Di quelli, quanti hanno attivato l'account */
+  enrolledEmployees: number;
+  /** Sessioni erogate nel mese, per servizio */
+  sessions: Record<AppointmentKind, number>;
 };

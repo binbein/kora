@@ -181,6 +181,26 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
       queryKey: queryKeys.professional.all(),
       queryFn: () => dataProvider.getProfessionals(),
     }),
+
+    // back-office: il portafoglio clienti, le dodici mensilità di piattaforma,
+    // gli utenti e le richieste demo — che partono da un elenco vuoto e si
+    // riempiono durante la demo
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.platform.clients(),
+      queryFn: () => dataProvider.getClientCompanies(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.platform.months(),
+      queryFn: () => dataProvider.getPlatformMonths(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.platform.users(),
+      queryFn: () => dataProvider.getPlatformUsers(),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.platform.demoRequests(),
+      queryFn: () => dataProvider.getDemoRequests(),
+    }),
     ...professionals.map((professional) =>
       queryClient.prefetchQuery({
         queryKey: queryKeys.professional.slots(professional.id),
