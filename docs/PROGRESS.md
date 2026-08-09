@@ -710,6 +710,34 @@ la sola navigazione interna, **zero 404, zero schermate vuote e zero link
 morti** — ogni `href` interno di ogni pagina punta a una rotta che esiste —
 console pulita, `npm run lint` e `npm run typecheck` a zero, build che passa.
 
+#### Dopo la chiusura — il check rapido a cinque volti
+
+Richiesta dei founder dell'08.08.2026, sullo stesso branch. La card passa dalle
+cinque pillole di testo a **cinque volti da chiosco**, icone lucide da `Laugh`
+ad `Angry`. **Icone e mai emoji**: il §7 le vieta senza eccezioni, e un'icona
+vettoriale eredita colore e dimensione, cosa che un carattere emoji non fa.
+
+**I volti sono neutri e il colore sta sulla scelta, non sull'umore.** Una scala
+dal verde al rosso userebbe `destructive`, che il §6.1 riserva agli alert, e
+dipingerebbe di rosso una risposta sincera sul proprio stato d'animo — che in
+un registro consumer giudica invece di accogliere.
+
+I cinque volti **restano dopo la risposta**, con la scelta accesa: è il "già
+risposto oggi" detto mostrando *cosa* si è risposto. La riga non cambia forma
+fra i due stati, quindi la card non salta sotto le dita al tocco.
+
+**L'etichetta resta visibile e non ha un `aria-label` sopra**, ed è una scelta:
+il testo dentro il pulsante è già il suo nome accessibile, e un `aria-label` lo
+sostituirebbe — chi legge lo schermo sentirebbe una parola e chi lo vede ne
+leggerebbe un'altra. Le icone sono decorative e nascoste; i cinque pulsanti
+formano un gruppo che la domanda nomina.
+
+**Difetto trovato:** la prima stesura dava `bg-accent` al volto scelto, e a
+schermo non si vedeva — la card risposta è già `bg-accent/40`, quindi acceso e
+spenti finivano sulla stessa tinta. Il segnale è diventato **l'anello**: teal su
+un chip bianco contro il fondo menta, con l'etichetta lasciata scura perché
+`text-secondary` su bianco dà 2.9:1, sotto l'AA per un testo da 11px.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -985,6 +1013,31 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   che l'Essenziale non ha. Verificato alla cifra.
 *(Era in sospeso anche l'emoji nel saluto della home dipendente: decisa il
 07.08.2026 — si toglie — e passata fra le decisioni chiuse.)*
+
+## Migliorie rimandate al refinement
+
+Cose **giuste in produzione e sbagliate nella demo**, che è una distinzione a
+sé: non sono difetti da chiudere né decisioni in sospeso, sono pattern che
+aspettano dati veri. Vanno riprese quando l'MVP ha la sua prima disponibilità
+reale.
+
+- **Professionisti non disponibili in grigio invece che nascosti.** Oggi chi
+  prenota vede i soli prenotabili e gli altri non compaiono; il pattern
+  corretto, con agende vere, è mostrarli **disattivati** — chi cerca una
+  persona specifica capisce che esiste ed è occupata, invece di concludere che
+  non è nella rete.
+
+  **Nella demo non si può fare**, e per due ragioni distinte. L'unico
+  professionista non prenotabile è la **Dr.ssa Keller**, che è in verifica:
+  mostrarla in grigio direbbe "occupata" di qualcuno che non è ancora nella
+  rete, cioè la cosa sbagliata. L'alternativa sarebbe inventare uno stato
+  tutto-occupato sui quattro veri, e quello **contraddice il Business Plan
+  davanti a un investitore**: la promessa è "primo appuntamento entro 24 ore,
+  nessuna lista d'attesa", e una schermata di caselle grigie la smentisce nel
+  momento in cui la si sta vendendo.
+
+  Da rifare quando esistono disponibilità reali: allora il grigio dirà una cosa
+  vera, e la promessa la sosterranno i dati invece di una schermata costruita.
 
 ## Note per chi riprende
 
