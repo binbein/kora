@@ -30,10 +30,11 @@ attacchi dell'acqua già al posto giusto; i sanitari si montano dopo il term she
 navigazione ed esperienza utente. Ci viene innestato il **layer dati, il modello
 economico e la disciplina sui numeri** della precedente demo Next.js.
 
-Il sorgente di quella demo vive in **`reference/`**: è un magazzino di sola
-lettura da cui si copia, **non si modifica e non si importa**. Nessun file di
-`src/` deve mai avere un `import` che punta là dentro. Sparisce a fine M3, quando
-non c'è più niente da prendere; resta comunque nella storia di git.
+Il sorgente di quella demo è vissuto in `reference/`, un magazzino di sola
+lettura da cui si copiava senza importare. **È stato cancellato alla chiusura di
+M3**, quando non c'era più niente da prendere: le cinque aree leggono tutte dal
+provider e ogni file di `lib/` ha il suo corrispettivo qui. Resta nella storia
+di git, che è il posto giusto per un magazzino vuoto.
 
 Dove le due divergono, la regola è: **layout e grafica di base44, logica e numeri
 della demo Next.** Le uniche eccezioni sono le regole di §6 e §11 che non sono
@@ -233,12 +234,10 @@ kora/
       roi-model.ts       ← formule del calcolatore ROI (§9)
       earnings.ts        ← righe settimanali e totali dei compensi (§10.D)
       schedule.ts        ← la griglia del calendario, costruita dalle sedute
+      plan-features.ts   ← le righe del listino, derivate da `Plan` (§10.A)
       query-client.ts    ← configurazione react-query
   base44/entities/       ← i 12 schemi del progetto originale: lista di controllo
                            della copertura del dominio (§5.3), non un vincolo
-  reference/             ← sorgente della vecchia demo Next: sola lettura, si
-                           cancella a fine M3. Contiene solo il suo `src/`:
-                           niente package.json, niente config, niente app viva
 ```
 
 `earnings.ts` e `schedule.ts` sono presentazione, non dominio: raggruppare per
@@ -246,13 +245,8 @@ settimana è una decisione della schermata e per questo non sta nel provider
 (`docs/CONTRATTO-DATI.md` §2).
 
 **Un solo `CLAUDE.md` in tutto l'albero.** È il file che orienta ogni sessione:
-averne due significa due costituzioni in conflitto, e quella della vecchia demo
-descrive Next 16, Tailwind 4 e un provider sincrono. `reference/` contiene
-sorgenti e basta, mai una seconda costituzione.
-
-`reference/` va escluso da ESLint e da `tsconfig`: è codice che non manteniamo e
-che non deve produrre errori né entrare nel build. Vite non lo tocca comunque,
-perché parte da `index.html` e da `src/`.
+averne due significa due costituzioni in conflitto. Valeva per `reference/`
+finché è esistito, e vale per qualunque sorgente si importi in futuro.
 
 **Due file di documentazione, due mestieri diversi.** Le regole stanno solo qui:
 palette, formule, dataset, definizione di "finito". `docs/PROGRESS.md` racconta
@@ -303,8 +297,9 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
   professionista è già migrato in M2 e non si ritocca. Ogni area viene
   migrata **e** rinarrata nello stesso passaggio: dati dal provider, stringhe in
   i18n, importi da `format.ts`, microcopy nel registro giusto. Toccare due volte la
-  stessa schermata è lavoro sprecato. **Chiude cancellando `reference/`**: se
-  serve ancora qualcosa da lì, l'area non è finita.
+  stessa schermata è lavoro sprecato. **Ha chiuso cancellando `reference/`**,
+  che era la prova richiesta: se serviva ancora qualcosa da lì, un'area non era
+  finita.
 
   Il calcolatore ROI passa qui da M4 per decisione dei founder del 07.08.2026:
   è il terzo dei tre pezzi che il pitch ordina per importanza — dashboard HR,
