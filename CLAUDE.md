@@ -766,6 +766,18 @@ Dr. Rossi (burnout e ansia, IT/FR, 4.8), Dr.ssa Meier (sonno, IT/DE, 4.9),
 Dr. Fontana (coaching, IT, 4.7). Foto: **avatar a iniziali**, niente foto stock di
 persone — evita questioni di licenza e sembra più pulito.
 
+**Il quinto è in verifica: Dr.ssa Keller** (stress lavorativo, DE/EN),
+approvata dai founder il 08.08.2026. Non è un professionista in più
+dell'offerta ma il **flusso di vetting messo a schermo**: documenti verificati,
+mandato non ancora firmato, zero sedute erogate e nessuna valutazione. Senza di
+lei la KPI "in verifica" del back-office mostra zero e la piattaforma sembra
+non controllare nessuno.
+
+**Non è prenotabile**, ed è la stessa regola del Centro Diagnostico Basalto: chi
+prenota vede i soli professionisti con documenti *e* mandato in ordine. Lo stato
+sta sul dato, non nella schermata — "attivo" si **deriva** da
+`documentsVerified && mandateSigned`, senza un campo che possa contraddirli.
+
 **Nomi di aziende, cliniche e strutture: solo di fantasia.** Il codice ereditato usa
 società e ospedali reali come clienti paganti e partner convenzionati. Non è una
 questione di stile: è una dichiarazione falsa su soggetti reali, e va corretta
@@ -782,6 +794,55 @@ Aziende clienti (back-office admin) — **Demo SA** (finance, Lugano, l'azienda 
 storia), **Larice Pharma SA** (pharma, Mendrisio), **Studio Legale Rovere** (legale,
 Lugano), **Genziana Tech SA** (tech, Bellinzona), **Betulla Assicurazioni SA**
 (assicurazioni, Locarno).
+
+### Il portafoglio clienti, per intero
+
+M0 aveva congelato i nomi; **organici e piani erano rimasti quelli ereditati da
+base44**, mai approvati, e da loro discende ogni totale del back-office.
+Ratificati dai founder il **08.08.2026**, insieme ai nove valori nuovi che il
+§10.E richiede.
+
+| Azienda | Organico | Piano | Cliente da | Iscritti |
+|---|---|---|---|---|
+| Demo SA | 120 | Plus | 10.2025 | 82 |
+| Larice Pharma SA | 420 | Executive | 01.2026 | 226 |
+| Genziana Tech SA | 210 | Plus | 03.2026 | 92 |
+| Studio Legale Rovere | 48 | Essenziale | 05.2026 | 15 |
+| Betulla Assicurazioni SA | 85 | Essenziale | 07.2026 | 0 |
+
+**Betulla è sull'Essenziale, non sul Plus.** Il codice ereditato la dava sul
+Plus con 85 dipendenti, mentre `/pricing` dichiara il Plus per aziende da 100 a
+300: le due schermate della stessa demo si contraddicevano, e 85 sta nella
+banda 20–100 dell'Essenziale. Il mix piani che ne esce è **2 Essenziale, 2
+Plus, 1 Executive**.
+
+**Betulla è l'unica non attiva, e a schermo si legge "in attivazione".** Il
+campo resta `active: false`; è l'etichetta a cambiare, perché "inattiva" su una
+schermata che un investitore può vedere si legge come abbandono, mentre il caso
+descritto è un contratto firmato due mesi prima della demo e non ancora
+avviato — zero iscritti, nessuna fattura.
+
+**Demo SA parte dal primo mese della finestra** perché la sua serie di stress e
+i suoi quattro trimestri ROI coprono già dodici mesi: qualunque data più recente
+contraddirebbe dati approvati.
+
+**L'adozione scende con l'anzianità** — 68%, 54%, 44%, 31% — quindi la curva di
+activation racconta l'onboarding invece di essere una scala scelta a mano.
+
+**Da qui non si scrive più nessun numero di piattaforma**, si derivano tutti:
+
+- **ricavo di un'azienda** = organico × prezzo del piano × 12;
+- **ricavo mensile ricorrente** = somma delle aziende attive in quel mese,
+  quindi una curva a gradini, uno per ingresso: 6'600 → 41'040 → 52'590 →
+  **54'414**, che moltiplicato per 12 dà i **CHF 652'968** dell'elenco. Due
+  strade, lo stesso numero;
+- **activation** = 415 iscritti ÷ 798 organico dei clienti attivi = **52%**;
+- **sessioni di piattaforma**: la serie di Demo SA (§8) è la curva di adozione
+  di riferimento, e ogni altro cliente è quella curva scalata sul rapporto fra
+  gli iscritti, contata dal suo mese di ingresso. Non serve nessun numero nuovo,
+  e Demo SA sta letteralmente dentro il totale con le sue 142 sedute. **I
+  servizi che il piano non include valgono zero**: senza, Studio Legale Rovere
+  e Betulla risulterebbero consumare coach e check-up che l'Essenziale non ha.
 
 Rete convenzionata per i check-up — **Centro Medico Ardesia** (Lugano),
 **Poliambulatorio Quarzo** (Bellinzona), **Centro Salute Onice** (Locarno),
@@ -807,6 +868,15 @@ Tre vincoli che vengono dalla verifica, non dal gusto:
 - **Anche gli indirizzi sono generici.** Una via reale con il numero civico giusto
   identifica la struttura anche dopo che il nome è cambiato: il codice ereditato
   aveva l'indirizzo esatto dell'ospedale di Mendrisio.
+- **Per le persone vale il contrario che per i luoghi: il cognome comune è più
+  sicuro di quello raro.** Emerso cercando il quinto professionista
+  (08.08.2026): due candidati dal suono ticinese, *Steiner* e *Balmelli*, hanno
+  restituito ognuno **uno psicologo FSP reale e identificabile** in Ticino alla
+  prima ricerca, perché cognome poco frequente più professione più cantone
+  puntano a una persona sola. *Keller*, *Galli* e *Brunner* non hanno restituito
+  nessuno: sono abbastanza diffusi da non identificare nessuno, ed è la stessa
+  ragione per cui Colombo, Rossi, Meier e Fontana reggono. **La prova è
+  cercare cognome + professione + cantone**, non il solo cognome.
 
 Domini email: TLD riservato **`.example`** (RFC 2606), che nessuno può registrare —
 `m.bianchi@demo-sa.example`. Si vedono solo nel back-office, che dichiara di essere
