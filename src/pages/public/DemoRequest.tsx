@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,7 @@ import { ArrowLeft, Calendar, CheckCircle2, Shield } from "lucide-react";
 import PublicNav from "@/components/public/PublicNav";
 import Footer from "@/components/public/Footer";
 import { dataProvider } from "@/lib/data";
+import { queryKeys } from "@/lib/data/query-keys";
 import type { DemoRequest as DemoRequestRecord } from "@/lib/data/types";
 import { interpolate, t } from "@/lib/i18n";
 
@@ -42,6 +43,7 @@ const EMPTY_FORM = {
 
 export default function DemoRequest() {
   const [form, setForm] = useState(EMPTY_FORM);
+  const queryClient = useQueryClient();
 
   /*
    * Lo stato di successo è **il record restituito**, non un booleano: la
@@ -65,7 +67,18 @@ export default function DemoRequest() {
         // valorizzato con il nulla
         message: form.message.trim() === "" ? undefined : form.message.trim(),
       }),
-    onSuccess: (request) => setConfirmed(request),
+    onSuccess: (request) => {
+      /*
+       * Da M3 la richiesta ha un lettore: il back-office. Fino a ieri questa
+       * mutation non invalidava niente perché niente la mostrava, ed era
+       * dichiarato nel contratto (§4); ora la riga è chiusa, e una richiesta
+       * inviata durante la demo compare in `/admin` senza ricaricare.
+       */
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.platform.demoRequests(),
+      });
+      setConfirmed(request);
+    },
   });
 
   if (confirmed) {
