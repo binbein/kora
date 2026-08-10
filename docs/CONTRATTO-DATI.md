@@ -484,9 +484,10 @@ invece di restare assunzioni implicite:
   contraddizione visibile — il totale della Dr.ssa Meier non può essere minore
   delle sedute erogate della sua agenda — ma gli altri quattro non hanno
   un'agenda dietro cui rispondere, quindi la loro somma è una cifra dichiarata
-  come i conteggi di §8. **In attesa di ratifica dei founder** (`CLAUDE.md` §2.4):
-  finché non arriva, i numeri restano quelli e nessuno ne deriva altri. In
-  produzione il totale si conta dalle sedute, come tutto il resto.
+  come i conteggi di §8. **Ratificati dai founder il 10.08.2026** e trascritti in
+  `CLAUDE.md` §8, dove le cifre ammesse vivono (§2.4): restano dichiarati, e chi
+  legge questo documento non deve prenderli per derivati. In produzione il totale
+  si conta dalle sedute, come tutto il resto.
 - **Le sessioni degli altri clienti sono la curva di Demo SA scalata.** È il
   modo in cui il dataset demo tiene Demo SA *dentro* i totali di piattaforma
   invece che accanto, e in produzione salta per intero: ogni cliente avrà le

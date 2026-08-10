@@ -801,6 +801,17 @@ prenota vede i soli professionisti con documenti *e* mandato in ordine. Lo stato
 sta sul dato, non nella schermata — "attivo" si **deriva** da
 `documentsVerified && mandateSigned`, senza un campo che possa contraddirli.
 
+**Sedute erogate in carriera, ratificate dai founder il 10.08.2026**: Colombo
+**340**, Rossi **285**, Meier **312**, Fontana **210**, Keller **0**. La somma è
+**1'147**, ed è la KPI "sedute erogate" del back-office (§10.E): il totale non si
+scrive accanto ai cinque, si somma da loro.
+
+Sono **valori dichiarati, non derivati**, e la differenza va tenuta in chiaro: un
+guardrail vincola la sola **Meier** — il suo totale non può essere minore delle
+sedute erogate della sua agenda — perché è l'unica ad avere un'agenda dietro cui
+rispondere. Gli altri quattro sono cifre del dataset come i conteggi di questa
+sezione. In produzione si contano tutti dalle sedute.
+
 **Nomi di aziende, cliniche e strutture: solo di fantasia.** Il codice ereditato usa
 società e ospedali reali come clienti paganti e partner convenzionati. Non è una
 questione di stile: è una dichiarazione falsa su soggetti reali, e va corretta
