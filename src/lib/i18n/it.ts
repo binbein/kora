@@ -22,6 +22,13 @@ export const it = {
        cosa ovunque, e tre trattini scritti in tre punti diventano tre trattini
        diversi alla prima revisione. */
     none: "—",
+    /* Il separatore di una lista in linea. Sta qui perché **cambia con la
+       lingua** (§2.7) e in pagina era un ", " scritto dentro un `.join()`.
+       `Intl.ListFormat` sarebbe la forma completa — in italiano darebbe
+       "Italiano e Deutsch" sull'ultimo elemento — ma cambierebbe ciò che si
+       legge a schermo, quindi è una decisione dei founder e non di una
+       passata di igiene. */
+    listSeparator: ", ",
   },
 
   plan: {
@@ -208,6 +215,8 @@ export const it = {
         summary: "Riepilogo",
         /** "venerdì 25.09.2026, alle 10:00" */
         summaryWhen: "{weekday} {date}, alle {time}",
+        /** Il pulsante del giorno: "venerdì 25.09.2026" */
+        dayOption: "{weekday} {date}",
         included: "Sessione inclusa nel tuo piano",
         /** "Le sessioni incluse sono finite: questa costa CHF 28" */
         overCapWithPrice: "Le sessioni incluse sono finite: questa costa {price}",
@@ -307,6 +316,10 @@ export const it = {
         "Sono le strutture in cui Kora prenota il tuo check-up, con i costi già coperti dal piano.",
       /** "2.1 km" */
       distance: "{km} km",
+      /* La virgola fra via e città è una convenzione postale, non un dettaglio
+         di JSX: in altre lingue l'ordine delle due parti cambia (§2.7). */
+      /** "Via al Parco 4, Lugano" */
+      providerAddress: "{address}, {city}",
       /** Sul pulsante, quando il prossimo check-up non è ancora aperto */
       bookFrom: "Dal {date}",
 
@@ -920,6 +933,20 @@ export const it = {
       cost: "Costo Kora",
       /** "Sul piano Plus, CHF 55 per dipendente al mese" */
       costHint: "Sul piano {plan}, {price} per dipendente al mese",
+      /*
+       * Il costo si sottrae, e il segno lo mette la frase.
+       *
+       * ATTENZIONE AL CARATTERE: è il meno tipografico U+2212 (−), non il
+       * trattino da tastiera (-). È lo stesso che `formatSigned` usa sulle KPI
+       * di trend, e sostituirlo "raddrizzando" la stringa fa uscire due segni
+       * diversi nella stessa schermata.
+       *
+       * L'alternativa sarebbe `formatCHF(-valore)` e lasciare il segno a
+       * `Intl`, che è più corretto per le lingue che lo mettono altrove — ma
+       * cambia il glifo a schermo, quindi è una decisione dei founder.
+       */
+      /** "− CHF 66'000" */
+      costValue: "− {amount}",
       netSavings: "Risparmio netto",
       ratio: "Ritorno sull'investimento",
       /** "2.35:1" */

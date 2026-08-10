@@ -65,7 +65,10 @@ function ProviderRow({
           <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
             <MapPin className="w-3.5 h-3.5" />
             <span>
-              {provider.address}, {provider.city}
+              {interpolate(t.employee.checkup.providerAddress, {
+                address: provider.address,
+                city: provider.city,
+              })}
             </span>
             <span className="text-xs bg-muted px-2 py-0.5 rounded-full tabular-nums">
               {distance(provider.distanceKm)}

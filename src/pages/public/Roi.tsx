@@ -256,7 +256,9 @@ export default function Roi() {
                     plan: t.plan[plan.id],
                     price: formatCHF(plan.monthlyPricePerEmployee),
                   })}
-                  value={`− ${formatCHF(estimate.koraCostChf)}`}
+                  value={interpolate(t.public.roi.costValue, {
+                    amount: formatCHF(estimate.koraCostChf),
+                  })}
                 />
                 <SummaryRow
                   label={t.public.roi.netSavings}
