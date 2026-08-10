@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { FileText, Save, Video } from 'lucide-react';
-import { formatDate, formatTime, formatWeekday } from '@/lib/format';
+import { formatDate, formatNumber, formatTime, formatWeekday } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import { dataProvider } from '@/lib/data';
 import { queryKeys } from '@/lib/data/query-keys';
@@ -137,13 +137,13 @@ export default function ProSessioni() {
       <Tabs defaultValue="upcoming">
         <TabsList>
           <TabsTrigger value="upcoming">
-            {interpolate(t.professional.sessions.upcoming, { n: String(upcoming.length) })}
+            {interpolate(t.professional.sessions.upcoming, { n: formatNumber(upcoming.length) })}
           </TabsTrigger>
           <TabsTrigger value="completed">
-            {interpolate(t.professional.sessions.completed, { n: String(completed.length) })}
+            {interpolate(t.professional.sessions.completed, { n: formatNumber(completed.length) })}
           </TabsTrigger>
           <TabsTrigger value="cancelled">
-            {interpolate(t.professional.sessions.cancelled, { n: String(cancelled.length) })}
+            {interpolate(t.professional.sessions.cancelled, { n: formatNumber(cancelled.length) })}
           </TabsTrigger>
         </TabsList>
         <TabsContent value="upcoming" className="space-y-3 mt-4">

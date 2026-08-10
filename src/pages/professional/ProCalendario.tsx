@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Calendar, Clock, User, Video } from 'lucide-react';
 import KPICard from '@/components/shared/KPICard';
 import { addDays, startOfWeek } from '@/lib/dates';
-import { formatDate, formatTime, formatWeekday, formatWeekdayShort } from '@/lib/format';
+import { formatDate, formatNumber, formatTime, formatWeekday, formatWeekdayShort } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import {
   slotsOfWeek,
@@ -46,7 +46,7 @@ export default function ProCalendario() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <KPICard title={t.professional.calendar.sessionsThisWeek} value={String(week.length)} icon={Calendar} />
+        <KPICard title={t.professional.calendar.sessionsThisWeek} value={formatNumber(week.length)} icon={Calendar} />
         <KPICard
           title={t.professional.calendar.nextSession}
           value={
@@ -61,10 +61,10 @@ export default function ProCalendario() {
         />
         <KPICard
           title={t.professional.calendar.sessionsThisMonth}
-          value={String(sessionsOfMonth(sessions, today).length)}
+          value={formatNumber(sessionsOfMonth(sessions, today).length)}
           icon={Video}
         />
-        <KPICard title={t.professional.calendar.activePatients} value={String(patients.length)} icon={User} />
+        <KPICard title={t.professional.calendar.activePatients} value={formatNumber(patients.length)} icon={User} />
       </div>
 
       {slots.length === 0 ? (
