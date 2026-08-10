@@ -679,7 +679,6 @@ export const it = {
 
     trendTitle: "Trend stress · ultimi {months} mesi",
     trendCompany: "Media azienda",
-    trendDepartment: "{department}",
     trendAlertMarker: "alert",
     /* Il contrasto è la frase del pitch e deve leggersi dalla legenda, senza
        che nessuno debba raccontarlo. */
@@ -722,7 +721,6 @@ export const it = {
         booked: "Prenotato",
         available: "Disponibile",
       },
-      checkupUnavailable: "—",
     },
 
     billing: {
@@ -761,7 +759,6 @@ export const it = {
       stress: "Stress medio",
       /** "−2 punti" */
       stressValue: "{points} punti",
-      stressEmpty: "—",
       savings: "Risparmio stimato",
       avoidedDays: "Giorni di assenza evitati",
       /** "16 giorni" */
@@ -1431,7 +1428,6 @@ export const it = {
       colEmployees: "Dipendenti",
       colReceived: "Ricevuta",
       /** Quando il form non dichiara l'organico. */
-      noEmployees: "—",
     },
   },
 } as const;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { t } from '@/lib/i18n';
 
 export default function KoraLogo({ size = 'md', light = false }) {
   const sizes = {
@@ -30,7 +31,7 @@ export default function KoraLogo({ size = 'md', light = false }) {
       </svg>
       <div className="flex items-baseline gap-0">
         <span className={`${s.text} font-display font-bold tracking-tight`} style={{ color }}>
-          Kora
+          {t.common.appName}
         </span>
       </div>
     </div>

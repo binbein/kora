@@ -77,7 +77,7 @@ export default function HRDipendenti() {
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">
                   {entry.checkupStatus === null
-                    ? t.hr.employees.checkupUnavailable
+                    ? t.common.none
                     : t.hr.employees.checkup[entry.checkupStatus]}
                 </TableCell>
               </TableRow>
