@@ -91,9 +91,11 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
   Il §8 li vietava da M2: un identificatore di formato plausibile su una persona
   inventata può collidere con l'iscrizione di un professionista vero, e nessuno
   se ne accorge leggendo. Il campo non esiste nemmeno nel tipo.
-- **L'organico resta 150, non i 120 del §8.** La divergenza si chiude portando
-  il codice a 120, mai il contrario (`CLAUDE.md` §8); è lavoro di M3.
-  L'inventario, verificato occorrenza per occorrenza:
+- ~~**L'organico resta 150, non i 120 del §8.**~~ → **chiuso in M3 con la
+  passata HR**, portando il codice a 120 e mai il contrario (`CLAUDE.md` §8).
+  L'inventario resta qui come storia: è il conto di ciò che la passata ha
+  toccato, e la sua ultima riga dice anche ciò che non andava toccato.
+  Verificato occorrenza per occorrenza:
   - **sei occorrenze letterali** di `150` in quattro file: il riquadro azienda
     in fondo alla sidebar di `HRNav.jsx` (navigazione condivisa dalle cinque
     rotte HR, non una schermata); tre in `HRFatturazione.jsx` (stato iniziale
@@ -110,7 +112,9 @@ compreso; `/pricing` a 1280 e 768; i due disclaimer; il banner admin.
   - **gli altri `150` non sono l'organico e non si toccano**: il valore di
     apertura del simulatore pubblico in `Pricing.jsx` e le tre soglie di sconto
     a volume del piano nascosto in `FlexiblePlanCard.jsx` (§10.A.3).
-- Il 👋 nella home dipendente resta: decisione in sospeso qui sotto.
+- ~~Il 👋 nella home dipendente resta: decisione in sospeso~~ → **tolto**, con la
+  decisione dei founder del 07.08.2026 fra quelle chiuse. Era l'ultima emoji del
+  codice, e da lì il `CLAUDE.md` §7 non ha più eccezioni.
 
 ### M1 — Fondamenta tecniche
 
@@ -241,7 +245,7 @@ backend.
   arrivano in M3 con la dashboard; i conteggi di coach, medico virtuale e
   check-up non sono nel §8 e vanno approvati allora (§2.4).
 
-### M3 — in corso
+### M3 — Area per area
 
 #### La tipizzazione del layer shadcn
 
@@ -301,8 +305,11 @@ da lì `state` resta `"expanded" | "collapsed"` invece di allargarsi a `string`.
 
 **Cosa resta aperto:**
 
-- **`App.jsx` e `main.jsx` restano `.jsx` di proposito**: `App.jsx` si converte
-  quando M3 aggiunge `/roi`, perché è la stessa riga di codice che si tocca.
+- ~~**`App.jsx` e `main.jsx` restano `.jsx` di proposito**: `App.jsx` si converte
+  quando M3 aggiunge `/roi`~~ → convertiti in `ab4d57e`, esattamente lì: è
+  l'ultimo commit a toccare `App` prima di quello che aggiunge la rotta.
+  `index.html` è andato con loro, perché `main` importa `App` e `index.html`
+  punta a `main`: sono una modifica sola, non tre.
 - **I grafici recharts si vedono schiacciati su una colonna sola** nelle
   catture del browser di sviluppo — `/admin/analytics` e la dashboard HR.
   **Non è una regressione**: verificato passando a `master` e ripetendo la
