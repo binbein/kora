@@ -1011,6 +1011,14 @@ al portale professionista: **il regime va sempre detto accanto al totale**,
 altrimenti chi ha letto il BP legge uno scarto di un ordine di grandezza come un
 errore.
 
+**Disponibilità minima: 8 ore a settimana** (BP p.11, parte C1 "Ingresso nella
+rete"). È una condizione d'ingresso alla rete, non un dato di compenso, e sta
+sulla stessa riga del BP delle altre due che la demo già racconta: iscrizione
+all'albo e firma del contratto di mandato — cioè i due controlli da cui si
+deriva "prenotabile" (§8). Il portale professionista la mostra accanto al
+regime tenuto. Trascritta il 10.08.2026 su decisione dei founder ai sensi del
+§2.4: la cifra era già nel dataset e non nell'elenco delle cifre ammesse.
+
 ### Formule del calcolatore ROI (§10.A.2), per N dipendenti
 
 - Assenteismo: `N × 6.5 giorni × CHF 900`
