@@ -247,6 +247,7 @@ kora/
       earnings.ts        ← righe settimanali e totali dei compensi (§10.D)
       schedule.ts        ← la griglia del calendario, costruita dalle sedute
       plan-features.ts   ← le righe del listino, derivate da `Plan` (§10.A)
+      platform-metrics.ts ← ricavo, attivazione e mese corrente del back-office
       query-client.ts    ← configurazione react-query
   base44/entities/       ← i 12 schemi del progetto originale: lista di controllo
                            della copertura del dominio (§5.3), non un vincolo
@@ -255,6 +256,15 @@ kora/
 `earnings.ts` e `schedule.ts` sono presentazione, non dominio: raggruppare per
 settimana è una decisione della schermata e per questo non sta nel provider
 (`docs/CONTRATTO-DATI.md` §2).
+
+**`platform-metrics.ts` è lì per la stessa ragione, più una che si tocca con
+mano**: sono conti sui dati e non dati — «il tasso di attivazione non è un
+campo» (`docs/CONTRATTO-DATI.md` §3) — e finché sono vissuti in
+`lib/data/mock/platform.ts` **nessuna schermata poteva importarli**, perché la
+regola di lint del §5.7 lo vieta. Il risultato era che le pagine del
+back-office li riscrivevano, ed è così che una divisione ripetuta in due punti
+e un `if (!plan) return 0` sono finiti nel codice. Il giorno in cui `mock/` si
+cancella, questo file non si tocca.
 
 **Un solo `CLAUDE.md` in tutto l'albero.** È il file che orienta ogni sessione:
 averne due significa due costituzioni in conflitto. Valeva per `reference/`
