@@ -517,7 +517,12 @@ export const it = {
       feePerSession: "Tariffa a seduta",
       monthTotal: "Totale del mese",
       yearTotal: "Totale dell'anno",
-      inProgress: "in corso",
+      /* La frase intera, non " · in corso" attaccato al mese: il pezzo mobile
+         non sta a destra in tutte le lingue (§2.7). La maiuscola iniziale la
+         mette il CSS sulla prima lettera, perché `formatMonthYear` restituisce
+         il mese minuscolo come vuole `Intl`. */
+      /** "settembre 2026 · in corso" */
+      monthInProgress: "{month} · in corso",
       model:
         "Pagamento per seduta erogata. Kora emette la fattura e paga entro il 5 del mese successivo.",
       /*
@@ -1384,6 +1389,8 @@ export const it = {
       /** "1 azienda" / "2 aziende" — il singolare cambia la parola intera. */
       planMixOne: "1 azienda",
       planMixMany: "{count} aziende",
+      /** L'etichetta sugli spicchi: "Plus: 2" */
+      planMixEntry: "{plan}: {count}",
     },
 
     demoRequests: {

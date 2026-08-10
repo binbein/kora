@@ -229,7 +229,10 @@ export default function AdminAnalytics() {
                   nameKey="name"
                   isAnimationActive={false}
                   label={({ name, value }) =>
-                    `${name}: ${formatNumber(Number(value))}`
+                    interpolate(t.admin.analytics.planMixEntry, {
+                      plan: String(name),
+                      count: formatNumber(Number(value)),
+                    })
                   }
                 >
                   {planMix.map((entry) => (
