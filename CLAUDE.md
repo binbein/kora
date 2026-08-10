@@ -224,6 +224,7 @@ riceve di autenticarsi, quindi non vanno mai mandati a un investitore.
 kora/
   CLAUDE.md              ← questo file: le regole, l'unica fonte
   docs/PROGRESS.md       ← cosa esiste e perché, milestone per milestone
+  docs/PITCH.md          ← lo script operativo della presentazione dal vivo
   docs/CONTRATTO-DATI.md ← output di M2: la specifica per il backend futuro
   src/
     pages/
@@ -271,10 +272,22 @@ cancella, questo file non si tocca.
 averne due significa due costituzioni in conflitto. Valeva per `reference/`
 finché è esistito, e vale per qualunque sorgente si importi in futuro.
 
-**Due file di documentazione, due mestieri diversi.** Le regole stanno solo qui:
+**Tre file di documentazione, tre mestieri diversi.** Le regole stanno solo qui:
 palette, formule, dataset, definizione di "finito". `docs/PROGRESS.md` racconta
 cosa esiste, milestone per milestone, ed è l'indice con cui ci si orienta
-riprendendo il lavoro — non decide niente e non duplica: cita e rimanda qui.
+riprendendo il lavoro. `docs/PITCH.md` è lo **script operativo della
+presentazione**: cosa si prepara prima, come si naviga durante, cosa si risponde
+alle domande — approvato dai founder il 10.08.2026.
+
+Nessuno dei due decide niente e nessuno dei due duplica: citano e rimandano qui.
+La prova che il terzo mestiere è davvero un terzo: una regola che vale per il
+codice sta qui, la sua conseguenza operativa il giorno del pitch sta in
+`PITCH.md`, e la storia di quando è stata decisa in `PROGRESS.md`. Se una riga
+starebbe bene in due dei tre, è scritta male in almeno uno.
+
+`docs/CONTRATTO-DATI.md` non è un quarto mestiere: è **l'output di M2** e la
+specifica con cui nasce il repository del backend (§5.7), quindi non parla a chi
+lavora qui ma a chi lavorerà là.
 
 **Il Business Plan sta in `docs/`, e resta una fonte da consultare, non da citare.**
 Decisione dei founder del 07.08.2026: durante la costruzione della demo più
