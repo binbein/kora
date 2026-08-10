@@ -48,10 +48,11 @@ dedicata che produce anche l'inventario dei punti — il criterio con cui si
 contano sta nella voce della riunione, ed è la parte che serve per non partire
 nella direzione sbagliata.
 
-Le altre due esecuzioni rimandate dalla stessa riunione non stanno nello stesso
-posto: la **build "demo"** in cui i guardrail loggano, con la checklist
-pre-pitch consolidata, è una passata dedicata pre-pitch e **non** è M5;
-**`Intl.ListFormat`** invece entra in M5.
+Delle altre due esecuzioni rimandate dalla stessa riunione, **una è fatta**: la
+**build "demo"** in cui i guardrail loggano e la **checklist pre-pitch** sono la
+passata del 10.08.2026, in fondo alla sezione refinement — da lì `npm run
+build:demo` è ciò che `vercel.json` deploya, e `docs/PITCH.md` è il terzo
+documento del repository. Resta **`Intl.ListFormat`**, che è dentro M5.
 
 ### M0 — Messa in sicurezza
 
@@ -913,6 +914,67 @@ nessun guardrail — le tre proprietà del §5.4 restano da rileggere a mano;
 cambiare **mese** rompe, e il commento del file dice ora dove. Il pericolo non è
 il lancio, è che **in produzione i guardrail tacciono** (§5.6): una manopola
 girata male non si vede in un build di pitch. Si gira in sviluppo e si guarda.
+
+#### La passata pre-pitch (10.08.2026)
+
+La prima passata di refinement che **esegue** una decisione invece di metterne in
+ordine gli effetti: la build "demo" e la checklist, decise dalla riunione del
+10.08.2026.
+
+**Il build del pitch era cieco, ed è la ragione per cui la passata esiste.** I
+guardrail giravano solo in `import.meta.env.DEV`, quindi ogni controllo che
+protegge i numeri era compilato via **proprio dall'unica build che qualcuno fuori
+dal team vede**. Ora i modi sono tre: sviluppo lancia, `npm run build:demo` logga
+con `console.error`, `npm run build` tace.
+
+**La decisione sta in `guardrails.ts` e in nessun altro punto.** Dopo questa
+passata **nessun file fuori da lì legge `import.meta.env`**: i 114 call site
+chiamano `assertInDev` senza sapere in che modo girano, ed è la proprietà che
+rende la modalità una cosa sola da sbagliare invece di 114. I nomi restano —
+rinominarli sarebbe un commit meccanico su 114 chiamate, che sommergerebbe il
+diff di questa (`CLAUDE.md` §5.6).
+
+**`--mode demo` non ha bisogno di nessun file `.env.demo`**, ed è l'unica strada
+percorribile: `.gitignore` esclude `.env*` (§2.5), quindi una build che ne
+dipendesse si romperebbe su una macchina appena clonata.
+
+**`vercel.json` esegue la build demo**, così l'alias condiviso serve quella in cui
+i guardrail parlano. Anche le preview di branch diventano build demo, ed è un
+beneficio: chi revisiona vede i log prima del merge.
+
+**Verificato rompendo il dataset ad arte** — la tariffa della Dr.ssa Colombo
+portata a CHF 95, fuori dalla banda del §9 — e provando i tre modi con lo stesso
+valore rotto:
+
+- **sviluppo**: lancia, schermata vuota, messaggio in console con il file e la
+  riga. È il comportamento di prima, invariato;
+- **build demo**: `[dataset] Colombo prende CHF 95 a seduta, fuori dalla banda
+  CHF 70-80 del §9.` in console, e **la landing si disegna intera** — hero,
+  riquadro profilo, entrambe le CTA;
+- **build di produzione**: **console vuota**, stesso valore rotto.
+
+Ripristinato il valore, la build demo torna a console pulita su **26 rotte
+percorse con la navigazione interna**, nessuna vuota e nessun 404.
+
+**Lo zero overhead è misurato sul bundle, non promesso**: nel bundle di
+produzione `grep` non trova né `[dataset]`, né il messaggio della cache fredda,
+né il testo di un guardrail preso a caso — Vite sostituisce il modo con un
+letterale e il minificatore porta via i rami morti insieme alle stringhe. La
+build demo costa **8 KB su ~1.1 MB**.
+
+**La conseguenza da non perdere**: la build demo **prosegue con i dati sbagliati**
+dopo il log. È il compromesso voluto — davanti a un investitore una schermata
+rotta è peggio di un numero storto — ma da lì la regola operativa di `PITCH.md`:
+qualunque log durante la prova del giorno prima è un **blocco**, si riproduce in
+sviluppo dove il guardrail lancia, si corregge, si rifà la prova.
+
+**`docs/PITCH.md` è il terzo documento del repository**, e il §3 ha acquisito il
+suo mestiere: né regole né storia, ma lo script operativo della presentazione.
+Consolida ciò che era sparso — la scheda in primo piano, il divieto di
+ricaricare, un clic per PDF — e porta le risposte pronte alle quattro domande
+che il pitch riceve: da dove viene il dato di stress, perché il ROI è 2.35:1 e
+non 19.5:1, il co-payment come meccanismo di margine, Keller e Basalto come
+vetting a schermo. Le cifre sono verificate contro §8 e §9 alla cifra.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
