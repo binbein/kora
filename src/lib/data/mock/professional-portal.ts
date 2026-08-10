@@ -9,7 +9,7 @@ import type {
 } from "../types";
 import { COMPANY } from "./company";
 import { DEMO_TODAY } from "./demo-date";
-import { FULL_CAPACITY, PROFESSIONALS } from "./people";
+import { FULL_CAPACITY, LAURA, PROFESSIONALS } from "./people";
 import { INITIAL_SLOTS, SESSION_DURATION_MINUTES } from "./scheduling";
 
 /*
@@ -31,8 +31,15 @@ import { INITIAL_SLOTS, SESSION_DURATION_MINUTES } from "./scheduling";
 
 export const PORTAL_PROFESSIONAL_ID = "meier";
 
-/** L'id del dipendente della demo, che è anche una paziente della Dr.ssa Meier. */
-export const PORTAL_PATIENT_EMPLOYEE_ID = "laura-bernasconi";
+/*
+ * L'id del dipendente della demo, che è anche una paziente della Dr.ssa Meier.
+ *
+ * Viene da `LAURA` invece di essere riscritto qui: erano due stringhe uguali in
+ * due file, e due valori che devono coincidere è meglio che siano lo stesso
+ * valore (§5.5). Se divergessero, l'agenda smetterebbe di riconoscere le sedute
+ * di Laura senza che niente si rompa a schermo.
+ */
+export const PORTAL_PATIENT_EMPLOYEE_ID = LAURA.id;
 
 type PatientSlot = {
   patientId: string;

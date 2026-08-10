@@ -62,10 +62,10 @@ export default function DemoRequest() {
         email: form.email,
         // il campo è facoltativo: vuoto vale zero, non NaN
         employeeCount: Math.max(0, Math.round(Number(form.employeeCount) || 0)),
-        // `?` e non stringa vuota: il messaggio o c'è o non pertiene (§2 del
-        // contratto), e una stringa vuota nel record sarebbe un campo
-        // valorizzato con il nulla
-        message: form.message.trim() === "" ? undefined : form.message.trim(),
+        // grezzo: a decidere che vuoto e soli spazi sono assenza è il confine
+        // della scrittura, cioè il provider (§2 del contratto). Farlo anche qui
+        // sarebbe la stessa regola in due posti
+        message: form.message,
       }),
     onSuccess: (request) => {
       /*

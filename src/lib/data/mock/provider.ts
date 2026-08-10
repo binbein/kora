@@ -245,6 +245,32 @@ export class MockDataProvider implements DataProvider {
     return Promise.resolve(PORTAL_PROFESSIONAL_ID);
   }
 
+  /**
+   * Il professionista di quell'id, o un errore.
+   *
+   * **Lancia anche in produzione, e non è una svista.** I guardrail del §5.6
+   * tacciono in produzione perché sorvegliano il dataset, che in produzione non
+   * ci sarà; questo è un invariante dell'API — un backend vero risponderebbe
+   * 404 — e un'implementazione che al suo posto inventa un dato è peggio di una
+   * promise rifiutata: il difetto smette di esistere invece di farsi vedere.
+   * Non va "corretto" in un `assertInDev`.
+   *
+   * L'assert in più serve allo sviluppo: un `throw` dentro un metodo `async`
+   * finisce nello stato di errore di react-query, dove nessuno lo guarda,
+   * mentre `assertInDevOutsidePromise` lo porta nell'overlay di Vite.
+   */
+  private async requireProfessional(id: string): Promise<Professional> {
+    const professional = await this.getProfessional(id);
+    assertInDevOutsidePromise(
+      professional !== null,
+      `"${id}" non è fra i professionisti.`,
+    );
+    if (professional === null) {
+      throw new Error(`Nessun professionista con id "${id}".`);
+    }
+    return professional;
+  }
+
   getProfessionalSessions(
     professionalId: string,
   ): Promise<ProfessionalSession[]> {
@@ -302,17 +328,13 @@ export class MockDataProvider implements DataProvider {
     professionalId: string,
     month: Date,
   ): Promise<ProfessionalEarnings> {
-    const professional = await this.getProfessional(professionalId);
-    return monthlyEarnings(
-      professionalId,
-      professional?.sessionFee ?? 0,
-      month,
-    );
+    const professional = await this.requireProfessional(professionalId);
+    return monthlyEarnings(professionalId, professional.sessionFee, month);
   }
 
   async getProfessionalPayouts(professionalId: string): Promise<Payout[]> {
-    const professional = await this.getProfessional(professionalId);
-    return payoutHistory(professional?.sessionFee ?? 0);
+    const professional = await this.requireProfessional(professionalId);
+    return payoutHistory(professional.sessionFee);
   }
 
   getSessionNote(sessionId: string): Promise<SessionNote | null> {
@@ -438,7 +460,7 @@ export class MockDataProvider implements DataProvider {
    * curato del §8.
    */
   async bookAppointment(slot: AppointmentSlot): Promise<Appointment> {
-    const professional = await this.getProfessional(slot.professionalId);
+    const professional = await this.requireProfessional(slot.professionalId);
 
     const agenda = this.sessionsOf(slot.professionalId);
 
@@ -451,11 +473,6 @@ export class MockDataProvider implements DataProvider {
      * sedute già in agenda è indipendente, e prende il caso che conta: due
      * prenotazioni sullo stesso orario, che condividono anche l'id.
      */
-    assertInDevOutsidePromise(
-      professional !== null,
-      `Prenotazione per "${slot.professionalId}", che non è fra i professionisti.`,
-    );
-
     assertInDevOutsidePromise(
       !agenda.some((session) => session.start.getTime() === slot.start.getTime()),
       "Prenotato un orario su cui c'è già una seduta: la schermata sta proponendo uno slot occupato.",
@@ -491,7 +508,7 @@ export class MockDataProvider implements DataProvider {
 
     return {
       id: session.id,
-      kind: professional === null ? "psychologist" : serviceOf(professional),
+      kind: serviceOf(professional),
       professionalId: slot.professionalId,
       start: session.start,
       durationMinutes: session.durationMinutes,
@@ -549,8 +566,14 @@ export class MockDataProvider implements DataProvider {
     );
 
     const request: DemoRequest = {
-      ...input,
       id: `demo-request-${this.demoRequests.length + 1}`,
+      companyName: input.companyName,
+      contactName: input.contactName,
+      email: input.email,
+      employeeCount: input.employeeCount,
+      // il confine normalizza: assente, vuoto e soli spazi sono la stessa cosa
+      // per chi legge, e diventano `null` una volta sola, qui
+      message: input.message?.trim() || null,
       submittedAt: DEMO_TODAY,
     };
     this.demoRequests.push(request);

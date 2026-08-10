@@ -9,13 +9,24 @@ import { DEMO_TODAY } from "./demo-date";
  * Le persone della demo (CLAUDE.md §8).
  *
  * Dei professionisti il documento fissa titolo, cognome, specialità, lingue e
- * valutazione: i nomi propri non ci sono e non si inventano, ed è per questo
- * che `Professional.firstName` è opzionale. Non ci sono numeri d'albo, e nemmeno
- * quelli si inventano — il §8 lo vieta e il tipo non ha il campo.
+ * valutazione. I nomi propri non ci sono e non si inventano: `firstName` è
+ * `null` su tutti e cinque, dichiarato invece che omesso, perché è uno slot che
+ * il dataset lascia vuoto e non un campo che al caso non pertiene — in
+ * produzione il nome esiste sempre (`docs/CONTRATTO-DATI.md` §7). Non ci sono
+ * numeri d'albo, e nemmeno quelli si inventano: il §8 lo vieta e il tipo non ha
+ * il campo.
  */
 
+/*
+ * L'id è opaco, come quello degli altri otto pazienti (gr, mb, ek…), e deve
+ * restarlo: esce sul filo in `ProfessionalSession.patientId` e in
+ * `EmployeeDirectoryEntry.employeeId`, cioè sulle due proiezioni che il
+ * contratto dichiara prive di qualunque campo su cui un nome possa arrivare
+ * (`docs/CONTRATTO-DATI.md` §3). Un id leggibile è un nome che arriva lo
+ * stesso, e sarebbe arrivato proprio della persona su cui la demo si regge.
+ */
 export const LAURA: EmployeeProfile = {
-  id: "laura-bernasconi",
+  id: "lb",
   firstName: "Laura",
   lastName: "Bernasconi",
   age: 34,
@@ -56,12 +67,17 @@ export const FULL_CAPACITY: FullCapacityReference = {
   sessionsPerWeek: 20,
   monthlyMinChf: 5600,
   monthlyMaxChf: 6400,
+  // le ore minime a settimana: **non sono trascritte nel §9**, a differenza
+  // delle tre cifre qui sopra. Stanno qui perché è dove vivono le condizioni
+  // del contratto con il professionista, non perché siano approvate
+  minHoursPerWeek: 8,
 };
 
 export const PROFESSIONALS: Professional[] = [
   {
     id: "colombo",
     title: "Dr.ssa",
+    firstName: null,
     lastName: "Colombo",
     qualificationKey: "psychologist_f",
     specialty: "work_stress",
@@ -75,6 +91,7 @@ export const PROFESSIONALS: Professional[] = [
   {
     id: "rossi",
     title: "Dr.",
+    firstName: null,
     lastName: "Rossi",
     qualificationKey: "psychologist_m",
     specialty: "burnout_anxiety",
@@ -88,6 +105,7 @@ export const PROFESSIONALS: Professional[] = [
   {
     id: "meier",
     title: "Dr.ssa",
+    firstName: null,
     lastName: "Meier",
     qualificationKey: "psychologist_f",
     specialty: "sleep",
@@ -101,6 +119,7 @@ export const PROFESSIONALS: Professional[] = [
   {
     id: "fontana",
     title: "Dr.",
+    firstName: null,
     lastName: "Fontana",
     qualificationKey: "coach_m",
     specialty: "coaching",
@@ -124,6 +143,7 @@ export const PROFESSIONALS: Professional[] = [
   {
     id: "keller",
     title: "Dr.ssa",
+    firstName: null,
     lastName: "Keller",
     qualificationKey: "psychologist_f",
     specialty: "work_stress",

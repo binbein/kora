@@ -40,9 +40,17 @@ export const queryKeys = {
       ["professional", professionalId, "earnings", month] as const,
     payouts: (professionalId: string) =>
       ["professional", professionalId, "payouts"] as const,
+    /*
+     * La nota sta sotto la radice, e non è un dettaglio di ordinamento:
+     * `saveSessionNote` invalida `["professional", id]` (CONTRATTO-DATI §4), e
+     * una chiave fuori di lì resterebbe ferma sulla nota appena scritta. Oggi
+     * nessuno legge le note — `getSessionNote` è una lettura esposta senza
+     * chiamante, che il contratto ammette (§2) — quindi il difetto non si vede:
+     * si vedrebbe al primo lettore, che è il momento peggiore per scoprirlo.
+     */
+    sessionNote: (professionalId: string, sessionId: string) =>
+      ["professional", professionalId, "session-note", sessionId] as const,
   },
-
-  sessionNote: (sessionId: string) => ["session-note", sessionId] as const,
 
   /*
    * L'area HR. La radice porta con sé tutto ciò che riguarda l'azienda, come
