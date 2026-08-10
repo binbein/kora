@@ -100,7 +100,8 @@ repository Next non dia niente per scontato.
   `Outlet` e stanno al primo commit, il logo e la 404 non si toccano dai tempi di
   M1 — cioè da prima che l'eccezione sui componenti shadcn rendesse convertibile
   una schermata che importa `Button`. La regola qui sopra è stata applicata alla
-  lettera, non disattesa: si convertono il giorno in cui qualcuno ci mette mano. Il quinto, `FlexiblePlanCard.jsx`, resta `.jsx` per un'altra ragione
+  lettera, non disattesa: si convertono il giorno in cui qualcuno ci mette mano. 
+  Il quinto, `FlexiblePlanCard.jsx`, resta `.jsx` per un'altra ragione
   ancora: il piano "Personalizzato" è in sospeso (§10.A.3) e i suoi undici prezzi
   non stanno nel Business Plan, quindi non potrebbe leggere da `Plan` nemmeno
   volendo.
