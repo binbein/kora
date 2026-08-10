@@ -378,6 +378,26 @@ for (let index = 1; index < byTenure.length; index += 1) {
 }
 
 /*
+ * GLI ISCRITTI NON POSSONO SUPERARE I COPERTI, in nessun mese.
+ *
+ * È l'invariante che l'attivazione presuppone: iscritti ÷ coperti è una
+ * percentuale solo se le due somme contano lo stesso insieme di clienti
+ * (`docs/CONTRATTO-DATI.md` §3). Rotto, dà un'attivazione sopra il 100% — un
+ * numero che a schermo si legge benissimo e non vuol dire niente.
+ *
+ * Sta a un livello diverso dal controllo sui semi qui sopra, che vieta a un
+ * cliente non avviato di dichiarare iscritti: quello sorveglia il **dataset**,
+ * questo la **serie derivata**. Il primo non vedrebbe un filtro che torna
+ * asimmetrico, che è esattamente il difetto da cui questo controllo nasce.
+ */
+for (const entry of PLATFORM_MONTHS) {
+  assertInDev(
+    entry.enrolledEmployees <= entry.coveredEmployees,
+    `Nel mese ${entry.month.getFullYear()}-${entry.month.getMonth() + 1} gli iscritti sono ${entry.enrolledEmployees} su ${entry.coveredEmployees} dipendenti coperti: l'attivazione supererebbe il 100%.`,
+  );
+}
+
+/*
  * IL RICAVO ANNUO E IL RUN-RATE DEVONO COINCIDERE. Sono due strade verso lo
  * stesso numero — la somma dell'elenco e il mensile corrente per dodici — ed è
  * il controllo che il back-office ereditato non avrebbe passato.
