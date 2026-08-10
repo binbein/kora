@@ -24,14 +24,35 @@ export default [
     ...c,
     files: ["src/**/*.{ts,tsx}"],
   })),
+  // I due preset stanno ognuno nel proprio elemento dell'array, e non e' uno
+  // stile: dentro un oggetto solo, i loro `rules` arrivano da uno spread e la
+  // chiave `rules:` scritta a mano piu' sotto li sovrascriveva **per intero**.
+  // Ne' eslint:recommended ne' react/recommended erano attivi, e il lint usciva
+  // verde perche' non stava guardando.
+  //
+  // `src/components/ui/` resta fuori da entrambi: sono i file congelati del
+  // CLAUDE.md §3, e un avviso li' e' pressione a modificarli. Restano coperti
+  // dal blocco typescript-eslint qui sopra, che e' dove sta la regola che serve.
+  {
+    ...pluginJs.configs.recommended,
+    files: ["src/**/*.{js,mjs,cjs,jsx,ts,tsx}"],
+    ignores: ["src/components/ui/**/*"],
+  },
+  {
+    ...pluginReact.configs.flat.recommended,
+    files: ["src/**/*.{js,mjs,cjs,jsx,ts,tsx}"],
+    ignores: ["src/components/ui/**/*"],
+  },
+  // Questo blocco resta **dopo** i due preset, ed e' un vincolo di ordine: e'
+  // lui a spegnere `react/prop-types` e `react/react-in-jsx-scope`, che
+  // react/recommended accende e che con il transform JSX moderno segnalerebbero
+  // ogni componente del progetto.
   {
     files: [
       "src/**/*.{js,mjs,cjs,jsx,ts,tsx}",
     ],
     // I componenti shadcn non si toccano se non per i bug di CLAUDE.md §3.
     ignores: ["src/components/ui/**/*"],
-    ...pluginJs.configs.recommended,
-    ...pluginReact.configs.flat.recommended,
     languageOptions: {
       globals: globals.browser,
       parserOptions: {
