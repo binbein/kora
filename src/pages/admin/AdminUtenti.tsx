@@ -12,7 +12,12 @@ import {
 } from "@/components/ui/table";
 import { Activity, Search, UserCheck, Users } from "lucide-react";
 import KPICard from "@/components/shared/KPICard";
-import { useClientCompanies, usePlatformUsers } from "@/lib/data/queries";
+import {
+  useClientCompanies,
+  usePlatformMonths,
+  usePlatformUsers,
+} from "@/lib/data/queries";
+import { currentPlatformMonth } from "@/lib/platform-metrics";
 import { formatMonthYear, formatNumber } from "@/lib/format";
 import { interpolate, t } from "@/lib/i18n";
 
@@ -36,8 +41,11 @@ export default function AdminUtenti() {
   const [search, setSearch] = useState("");
   const { data: users } = usePlatformUsers();
   const { data: companies } = useClientCompanies();
+  const { data: months } = usePlatformMonths();
 
-  if (!users || !companies) return null;
+  if (!users || !companies || !months) return null;
+
+  const currentMonth = currentPlatformMonth(months);
 
   const companyName = (companyId: string) =>
     companies.find((company) => company.id === companyId)?.name ?? "";
@@ -69,13 +77,17 @@ export default function AdminUtenti() {
         );
 
   /*
-   * Il denominatore dell'estratto sono gli iscritti dei clienti attivi, che è
-   * il numero che l'analytics chiama "utenti iscritti": la stessa grandezza
-   * detta due volte deve essere lo stesso numero.
+   * Il denominatore dell'estratto è il numero che l'analytics chiama "utenti
+   * iscritti", e ora è **lo stesso dato**, non un secondo conto che gli somiglia.
+   *
+   * Prima questa riga sommava gli iscritti dei soli clienti attivi, mentre la
+   * serie di piattaforma li somma tutti: due definizioni diverse che davano lo
+   * stesso numero solo perché l'unico cliente non attivo ha zero iscritti. Il
+   * giorno in cui un contratto firmato e non avviato avesse qualche iscritto,
+   * le due schermate avrebbero detto due cifre — ed è il difetto del 618/767
+   * che questa area esiste per non ripetere (§5.5).
    */
-  const totalEnrolled = companies
-    .filter((company) => company.active)
-    .reduce((sum, company) => sum + company.enrolledEmployees, 0);
+  const totalEnrolled = currentMonth?.enrolledEmployees ?? 0;
 
   const onExtract = interpolate(t.admin.users.kpiOnExtract, {
     shown: formatNumber(users.length),

@@ -16,6 +16,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3, Briefcase, TrendingUp, Users } from "lucide-react";
 import KPICard from "@/components/shared/KPICard";
 import { useClientCompanies, usePlatformMonths } from "@/lib/data/queries";
+import {
+  activationPercent,
+  currentPlatformMonth,
+} from "@/lib/platform-metrics";
 import type { AppointmentKind, PlanId } from "@/lib/data/types";
 import {
   formatCHF,
@@ -69,16 +73,15 @@ export default function AdminAnalytics() {
 
   if (!months || !companies) return null;
 
-  const current = months[months.length - 1];
+  const current = currentPlatformMonth(months);
+  if (!current) return null;
+
   const currentSessions = SERVICE_KINDS.reduce(
     (sum, kind) => sum + current.sessions[kind],
     0,
   );
 
-  const activation =
-    current.coveredEmployees === 0
-      ? 0
-      : Math.round((current.enrolledEmployees / current.coveredEmployees) * 100);
+  const activation = activationPercent(current);
 
   const series = months.map((entry) => ({
     label: formatMonthShort(entry.month),
@@ -87,10 +90,7 @@ export default function AdminAnalytics() {
       (sum, kind) => sum + entry.sessions[kind],
       0,
     ),
-    activation:
-      entry.coveredEmployees === 0
-        ? 0
-        : Math.round((entry.enrolledEmployees / entry.coveredEmployees) * 100),
+    activation: activationPercent(entry),
   }));
 
   /* Il mix piani conta le aziende, non i dipendenti: è la domanda "che taglio

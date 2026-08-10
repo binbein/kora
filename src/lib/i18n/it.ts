@@ -1288,7 +1288,13 @@ export const it = {
       title: "Utenti",
       searchPlaceholder: "Cerca per nome o azienda",
       kpiTotal: "Utenti iscritti",
-      kpiTotalHint: "Su tutti i clienti attivi",
+      /* "in portafoglio" e non "attivi": il conteggio del dominio somma gli
+         iscritti di ogni cliente il cui contratto è partito, senza escludere
+         chi non è ancora avviato. Diceva "attivi" perché la pagina rifaceva il
+         conto per conto suo con quel filtro, e le due definizioni davano lo
+         stesso numero solo perché l'unico cliente non avviato ha zero
+         iscritti. */
+      kpiTotalHint: "Su tutti i clienti in portafoglio",
       kpiActive: "Attivi",
       kpiWithAssessment: "Con assessment",
       kpiAverageScore: "Profilo salute medio",
