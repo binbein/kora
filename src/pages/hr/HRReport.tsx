@@ -161,6 +161,7 @@ export default function HRReport() {
                 await downloadReportPdf(
                   node,
                   reportFileName(company.name, selected),
+                  selected,
                 );
               } finally {
                 setGenerating(false);

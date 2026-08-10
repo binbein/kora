@@ -1,3 +1,4 @@
+import { assertInDevOutsidePromise } from "./data/guardrails";
 import type { Quarter } from "./data/types";
 
 /*
@@ -56,6 +57,11 @@ export function reportFileName(companyName: string, period: Quarter): string {
   return `kora-report-${slug(companyName)}-${period.year}-q${period.quarter}.pdf`;
 }
 
+/** Come il nodo di stampa marca il proprio periodo: `2026-Q3`. */
+export function printPeriodMark(period: Quarter): string {
+  return `${period.year}-Q${period.quarter}`;
+}
+
 /**
  * Cattura il nodo e fa scaricare il PDF.
  *
@@ -65,7 +71,30 @@ export function reportFileName(companyName: string, period: Quarter): string {
 export async function downloadReportPdf(
   node: HTMLElement,
   fileName: string,
+  period: Quarter,
 ): Promise<number> {
+  /*
+   * IL GUARDRAIL CHE IL §5.6 NOMINA PER NOME: «il trimestre del PDF diverso da
+   * quello mostrato».
+   *
+   * È il difetto che a schermo non si vede — il PDF esce, ha l'aria giusta, e
+   * porta i numeri di un altro trimestre. Può nascere in un modo solo e
+   * plausibile: il nodo di stampa si aggiorna a un ritmo diverso dallo stato
+   * che governa il nome del file, e chi scarica si ritrova "q3" nel nome e i
+   * dati del Q2 dentro.
+   *
+   * Confronta il marcatore che la vista di stampa scrive su di sé con il
+   * periodo che il chiamante dichiara: due sorgenti indipendenti, non la stessa
+   * variabile letta due volte, che non verificherebbe niente.
+   */
+  const marked = node.querySelector("[data-print-period]")?.getAttribute(
+    "data-print-period",
+  );
+  assertInDevOutsidePromise(
+    marked === printPeriodMark(period),
+    `Il PDF sta per uscire per il trimestre "${period.year}-Q${period.quarter}" ma la vista di stampa dichiara "${marked}": il documento porterebbe i numeri di un altro periodo.`,
+  );
+
   const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
     import("html2canvas"),
     import("jspdf"),
