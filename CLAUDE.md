@@ -248,6 +248,7 @@ kora/
       schedule.ts        ← la griglia del calendario, costruita dalle sedute
       plan-features.ts   ← le righe del listino, derivate da `Plan` (§10.A)
       platform-metrics.ts ← ricavo, attivazione e mese corrente del back-office
+      report-pdf.ts      ← cattura la vista di stampa e compone il PDF (M4, §10.C.3)
       query-client.ts    ← configurazione react-query
   base44/entities/       ← i 12 schemi del progetto originale: lista di controllo
                            della copertura del dominio (§5.3), non un vincolo
