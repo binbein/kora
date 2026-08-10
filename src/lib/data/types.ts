@@ -421,8 +421,16 @@ export type Professional = {
   id: string;
   /** Titolo e nome sono dati anagrafici, non stringhe di UI. */
   title: string;
-  /** Opzionale: del corpo professionale il §8 fissa solo il cognome. */
-  firstName?: string;
+  /**
+   * **Slot di valore, non campo che non pertiene**: un professionista un nome
+   * proprio ce l'ha sempre, e in produzione arriva valorizzato. È il dataset
+   * demo a lasciarlo vuoto — il §8 del `CLAUDE.md` fissa del corpo
+   * professionale il solo cognome, e inventare cinque nomi propri rifarebbe la
+   * prova di sicurezza dei nomi. La semplificazione è dichiarata in
+   * `docs/CONTRATTO-DATI.md` §7, dove sta anche il lato produzione: lì il campo
+   * si potrà stringere a obbligatorio.
+   */
+  firstName: string | null;
   lastName: string;
   specialty: ProfessionalSpecialty;
   languages: ProfessionalLanguage[];
