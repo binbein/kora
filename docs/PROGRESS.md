@@ -8,6 +8,11 @@ lì.
 ## Come si tiene aggiornato
 
 - Si scrive **alla chiusura di ogni milestone**, non a ogni commit.
+- E **alla chiusura di una passata di refinement fra due milestone**. Non sono
+  milestone e non hanno una definizione di "finito" nel `CLAUDE.md` §4, ma
+  cambiano cose che chi riprende deve sapere prima di riscoprirle — un seam che
+  non era acceso, un guardrail nuovo, un modulo che ha cambiato posto. Senza
+  questa riga il loro unico racconto è git, che ha il dettaglio e non il quadro.
 - Una decisione non ovvia va in `CLAUDE.md` con un commit `docs:` separato dal
   codice; qui si cita e si rimanda, non si duplica.
 - Ogni voce dice **cosa è stato fatto, perché quella scelta e cosa è stato
@@ -32,10 +37,12 @@ stanno in `docs/` dal 07.08.2026 (decisione qui sotto), ma restano una fonte da
 consultare: le cifre ammesse sono solo quelle trascritte in `CLAUDE.md` §8 e §9.
 
 **M4 è chiusa**: da `/hr/report` si scarica un PDF di una pagina per il
-trimestre scelto. **Il prossimo passo è M5**, e resta da prendere prima la
-**decisione di palette sull'accessibilità**: il bianco su
-`secondary` pieno dà 2.83:1 contro il minimo AA di 4.5, e le due strade sono
-scurire il token o portare le CTA su `primary`.
+trimestre scelto. Da lì il lavoro è **refinement fra le milestone** — passate
+che non aggiungono schermate e mettono in ordine layer dati, seam e dizionario;
+la sintesi sta nella sezione dedicata, sotto M4. **La prossima milestone è M5**,
+e resta da prendere prima la **decisione di palette sull'accessibilità**: il
+bianco su `secondary` pieno dà 2.83:1 contro il minimo AA di 4.5, e le due
+strade sono scurire il token o portare le CTA su `primary`.
 
 ### M0 — Messa in sicurezza
 
@@ -824,6 +831,73 @@ variabile non verificherebbe niente.
   stanno in una pagina; il trend a dodici mesi e la ciambella non ci sono, e
   aggiungerli vorrebbe dire decidere se il documento resta di una pagina. È scope,
   quindi è dei founder.
+
+### Refinement fra le milestone
+
+Cinque passate mergiate fra la chiusura di M3 e oggi: quattro nell'intervallo
+M3 → M4 (PR #15–#18) e una dopo M4 (PR #20). Non aggiungono schermate e non
+spostano un numero a schermo — sono igiene del layer dati, del seam e del
+dizionario. La sintesi sta qui perché **il dettaglio è in git e il quadro no**:
+chi riprende deve sapere che queste cose esistono prima di riscoprirle.
+
+**Il seam era dichiarato e non tutto acceso.** I due preset di ESLint —
+`eslint:recommended` e `react/recommended` — stavano nello stesso oggetto di
+configurazione della chiave `rules:` scritta a mano, che arrivando dopo li
+sovrascriveva **per intero**: nessuno dei due era attivo, e il lint usciva verde
+perché non stava guardando. Ora ognuno sta nel proprio elemento dell'array, con
+`src/components/ui/` fuori da entrambi — un avviso su un file congelato è
+pressione a modificarlo, e la regola che serve lì è quella del blocco
+typescript-eslint. Nella stessa passata il divieto di importare `mock/` ha perso
+il buco della cartella nuda, e il divieto di leggere l'orologio vero è stato
+esteso **al layer dati stesso**: `new Date()` e `Date.now()` restano leciti solo
+dove `DEMO_TODAY` nasce.
+
+**Quattro guardrail nuovi**, tutti su invarianti che a schermo non si vedono: i
+sei reparti sommano all'organico dell'azienda; i quattro totali di servizio sono
+fissati con il vincolo che tiene la ciambella (lo psicologo resta la fetta più
+grande); ogni tariffa cade dentro la banda CHF 70–80 del §9; e — dopo M4 — gli
+iscritti non superano mai i dipendenti coperti.
+
+**Il predicato dei mesi di piattaforma è diventato uno solo** (PR #20). Ricavo,
+coperti, iscritti e sedute rispondevano a domande leggermente diverse:
+`coveredEmployees` filtrava i clienti avviati e `enrolledEmployees` no, cioè
+numeratore e denominatore dell'attivazione contavano due insiemi. Nel dataset
+demo non si vedeva, perché l'unica azienda non avviata ha zero iscritti; in
+produzione quella coincidenza cade e l'attivazione può superare il 100%. Ora i
+quattro campi applicano `ClientCompany.active` una volta sola, e un guardrail
+verifica l'invariante su ogni mese (`CONTRATTO-DATI.md` §3).
+
+**`platform-metrics.ts` è nato da un vincolo del seam.** Ricavo, attivazione e
+mese corrente sono conti sui dati e non dati — «il tasso di attivazione non è un
+campo» — quindi vivevano in `lib/data/mock/platform.ts`, dove **nessuna
+schermata poteva importarli**: è il divieto del §5.7, e il risultato era che le
+pagine del back-office li riscrivevano. Da lì una divisione ripetuta in due
+punti e un `if (!plan) return 0`. Ora stanno in `lib/`, come `earnings.ts` e
+`schedule.ts`, e il giorno in cui `mock/` si cancella quel file non si tocca
+(`CLAUDE.md` §3).
+
+**Il layer dati ha chiuso quattro punti di forma.** Il dipendente demo ha un id
+opaco invece di uno parlante; la chiave della nota di sessione è passata **sotto
+la radice del professionista**, così l'invalidazione della radice se la porta
+dietro come tutto il resto (`CONTRATTO-DATI.md` §4); la proiezione letta di una
+richiesta demo e il nome proprio del professionista hanno preso la forma che il
+contratto prescrive (§2); e un id di professionista inesistente ora **lancia
+invece di restituire vuoto** — un metodo che tace su una chiave sbagliata fa
+sembrare la schermata un caso legittimo di lista vuota.
+
+**Il dizionario ha assorbito le stringhe rimaste in JSX** — etichette della
+dashboard HR, della ciambella, dei mesi, l'indirizzo, il segno, il giorno — e i
+numeri del portale professionista passano da `format.ts`. Il trattino di
+"nessun dato" è consolidato su `common.none`, che è la stessa chiave che il PDF
+di M4 verifica.
+
+**Una cosa scoperta misurando, e vale per il pitch**: `DEMO_TODAY` gira meno di
+quanto il suo commento prometteva. Cambiare **anno** funziona; cambiare
+**giorno** dentro settembre non fa lanciare niente ma non è sorvegliato da
+nessun guardrail — le tre proprietà del §5.4 restano da rileggere a mano;
+cambiare **mese** rompe, e il commento del file dice ora dove. Il pericolo non è
+il lancio, è che **in produzione i guardrail tacciono** (§5.6): una manopola
+girata male non si vede in un build di pitch. Si gira in sviluppo e si guarda.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
