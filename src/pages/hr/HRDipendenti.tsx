@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Lock } from 'lucide-react';
+import PrivacyBanner from '@/components/shared/PrivacyBanner';
 import { formatNumber } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import {
@@ -45,10 +46,7 @@ export default function HRDipendenti() {
         </p>
       </div>
 
-      <div className="flex items-center gap-3 bg-accent/60 border border-secondary/20 rounded-lg px-4 py-3">
-        <Lock className="w-5 h-5 text-secondary flex-shrink-0" />
-        <p className="text-sm text-muted-foreground">{t.hr.employees.privacyNote}</p>
-      </div>
+      <PrivacyBanner icon={Lock} message={t.hr.employees.privacyNote} />
 
       <Card>
         <Table>
@@ -77,7 +75,7 @@ export default function HRDipendenti() {
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">
                   {entry.checkupStatus === null
-                    ? t.hr.employees.checkupUnavailable
+                    ? t.common.none
                     : t.hr.employees.checkup[entry.checkupStatus]}
                 </TableCell>
               </TableRow>

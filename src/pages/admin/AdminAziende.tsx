@@ -11,7 +11,8 @@ import {
 import { Building2, Users, TrendingUp, UserCheck } from "lucide-react";
 import KPICard from "@/components/shared/KPICard";
 import { useClientCompanies, useDemoRequests, usePlans } from "@/lib/data/queries";
-import type { ClientCompany, Plan, PlanId } from "@/lib/data/types";
+import { annualRevenueOf } from "@/lib/platform-metrics";
+import type { PlanId } from "@/lib/data/types";
 import {
   formatCHF,
   formatDate,
@@ -105,12 +106,6 @@ const PLAN_BADGE: Record<PlanId, string> = {
   executive: "bg-executive/10 text-executive",
 };
 
-function annualRevenue(company: ClientCompany, plans: Plan[]): number {
-  const plan = plans.find((candidate) => candidate.id === company.planId);
-  if (!plan) return 0;
-  return company.employeeCount * plan.monthlyPricePerEmployee * 12;
-}
-
 export default function AdminAziende() {
   const { data: companies } = useClientCompanies();
   const { data: plans } = usePlans();
@@ -127,7 +122,7 @@ export default function AdminAziende() {
     0,
   );
   const revenue = active.reduce(
-    (sum, company) => sum + annualRevenue(company, plans),
+    (sum, company) => sum + annualRevenueOf(company, plans),
     0,
   );
 
@@ -205,9 +200,9 @@ export default function AdminAziende() {
                     frase lo dice invece di lasciarlo sommare con gli altri. */}
                 <TableCell className="font-medium tabular-nums whitespace-nowrap">
                   {company.active
-                    ? formatCHF(annualRevenue(company, plans))
+                    ? formatCHF(annualRevenueOf(company, plans))
                     : interpolate(t.admin.companies.revenuePotential, {
-                        amount: formatCHF(annualRevenue(company, plans)),
+                        amount: formatCHF(annualRevenueOf(company, plans)),
                       })}
                 </TableCell>
                 <TableCell>

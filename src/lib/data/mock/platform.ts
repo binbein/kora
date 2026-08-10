@@ -1,11 +1,15 @@
 import { assertInDev } from "../guardrails";
+import {
+  annualRevenueOf,
+  currentPlatformMonth,
+} from "../../platform-metrics";
 import type {
   AppointmentKind,
   ClientCompany,
   PlatformMonth,
   PlatformUser,
 } from "../types";
-import { PLANS } from "./company";
+import { PLANS, PLAN_LIST } from "./company";
 import { DEMO_TODAY } from "./demo-date";
 import { HISTORY_MONTHS } from "./measurement";
 import { SERVICE_USAGE } from "./service-usage";
@@ -101,13 +105,6 @@ export const CLIENT_COMPANIES: ClientCompany[] = [
   },
 ];
 
-/** Ricavo annuo di un cliente: organico × prezzo del piano × 12. */
-export function annualRevenueOf(company: ClientCompany): number {
-  return (
-    company.employeeCount * PLANS[company.planId].monthlyPricePerEmployee * 12
-  );
-}
-
 /** Ricavo mensile di un cliente. Zero finché il contratto non è avviato. */
 function monthlyRevenueOf(company: ClientCompany): number {
   if (!company.active) return 0;
@@ -196,23 +193,23 @@ export const PLATFORM_MONTHS: PlatformMonth[] = HISTORY_MONTHS.map(
   },
 );
 
-/** Il mese in cui cade il giorno della demo: l'ultimo della serie. */
-export const CURRENT_PLATFORM_MONTH: PlatformMonth =
-  PLATFORM_MONTHS[PLATFORM_MONTHS.length - 1];
-
-/**
- * Tasso di attivazione: iscritti ÷ dipendenti coperti, arrotondato all'intero.
- *
- * È la stessa definizione dell'adozione aziendale della dashboard HR
- * (`docs/CONTRATTO-DATI.md` §3), applicata a tutti i clienti attivi invece che
- * a uno solo. Si calcola e non si conserva: era il numero che il back-office
- * ereditato scriveva come "84%" accanto a 618 utenti, mentre 618 su quel
- * denominatore ne davano un altro.
+/*
+ * Il mese corrente e il ricavo annuo si derivano in `lib/platform-metrics.ts`,
+ * che le schermate possono importare e questo file no (§5.7): una
+ * implementazione sola, che sopravvive alla cancellazione di `mock/`.
  */
-export function activationPercent(entry: PlatformMonth): number {
-  if (entry.coveredEmployees === 0) return 0;
-  return Math.round((entry.enrolledEmployees / entry.coveredEmployees) * 100);
-}
+const CURRENT_PLATFORM_MONTH = currentPlatformMonth(PLATFORM_MONTHS);
+
+/*
+ * La serie nasce dai dodici mesi della finestra, quindi non può essere vuota —
+ * ma il tipo lo ammette, ed è il caso che regge i guardrail qui sotto: senza
+ * questo controllo il confronto sul run-rate non verrebbe fatto affatto, e un
+ * guardrail che non gira è peggio di uno che manca.
+ */
+assertInDev(
+  CURRENT_PLATFORM_MONTH !== null,
+  "La serie di piattaforma è vuota: nessun mese corrente da cui derivare i totali.",
+);
 
 /*
  * Gli utenti del back-office: un estratto, come l'elenco dipendenti dell'HR.
@@ -361,12 +358,14 @@ for (let index = 1; index < byTenure.length; index += 1) {
  * il controllo che il back-office ereditato non avrebbe passato.
  */
 const annualFromList = CLIENT_COMPANIES.filter((company) => company.active)
-  .map(annualRevenueOf)
+  .map((company) => annualRevenueOf(company, PLAN_LIST))
   .reduce((sum, value) => sum + value, 0);
 
+const runRate = (CURRENT_PLATFORM_MONTH?.recurringRevenueChf ?? 0) * 12;
+
 assertInDev(
-  annualFromList === CURRENT_PLATFORM_MONTH.recurringRevenueChf * 12,
-  `Il ricavo annuo dall'elenco è ${annualFromList} e il run-rate mensile ne dà ${CURRENT_PLATFORM_MONTH.recurringRevenueChf * 12}.`,
+  annualFromList === runRate,
+  `Il ricavo annuo dall'elenco è ${annualFromList} e il run-rate mensile ne dà ${runRate}.`,
 );
 
 /* Il ricavo ricorrente non può scendere: nessun cliente esce dalla finestra. */

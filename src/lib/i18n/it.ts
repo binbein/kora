@@ -22,6 +22,13 @@ export const it = {
        cosa ovunque, e tre trattini scritti in tre punti diventano tre trattini
        diversi alla prima revisione. */
     none: "—",
+    /* Il separatore di una lista in linea. Sta qui perché **cambia con la
+       lingua** (§2.7) e in pagina era un ", " scritto dentro un `.join()`.
+       `Intl.ListFormat` sarebbe la forma completa — in italiano darebbe
+       "Italiano e Deutsch" sull'ultimo elemento — ma cambierebbe ciò che si
+       legge a schermo, quindi è una decisione dei founder e non di una
+       passata di igiene. */
+    listSeparator: ", ",
   },
 
   plan: {
@@ -208,6 +215,8 @@ export const it = {
         summary: "Riepilogo",
         /** "venerdì 25.09.2026, alle 10:00" */
         summaryWhen: "{weekday} {date}, alle {time}",
+        /** Il pulsante del giorno: "venerdì 25.09.2026" */
+        dayOption: "{weekday} {date}",
         included: "Sessione inclusa nel tuo piano",
         /** "Le sessioni incluse sono finite: questa costa CHF 28" */
         overCapWithPrice: "Le sessioni incluse sono finite: questa costa {price}",
@@ -307,6 +316,10 @@ export const it = {
         "Sono le strutture in cui Kora prenota il tuo check-up, con i costi già coperti dal piano.",
       /** "2.1 km" */
       distance: "{km} km",
+      /* La virgola fra via e città è una convenzione postale, non un dettaglio
+         di JSX: in altre lingue l'ordine delle due parti cambia (§2.7). */
+      /** "Via al Parco 4, Lugano" */
+      providerAddress: "{address}, {city}",
       /** Sul pulsante, quando il prossimo check-up non è ancora aperto */
       bookFrom: "Dal {date}",
 
@@ -465,6 +478,8 @@ export const it = {
     sessions: {
       title: "Sedute",
       upcoming: "In programma ({n})",
+      /* Nella sua agenda: la scheda vive dentro il portale di una sola
+         professionista, e il numero e' il suo. */
       completed: "Erogate ({n})",
       cancelled: "Annullate ({n})",
       start: "Avvia",
@@ -517,7 +532,12 @@ export const it = {
       feePerSession: "Tariffa a seduta",
       monthTotal: "Totale del mese",
       yearTotal: "Totale dell'anno",
-      inProgress: "in corso",
+      /* La frase intera, non " · in corso" attaccato al mese: il pezzo mobile
+         non sta a destra in tutte le lingue (§2.7). La maiuscola iniziale la
+         mette il CSS sulla prima lettera, perché `formatMonthYear` restituisce
+         il mese minuscolo come vuole `Intl`. */
+      /** "settembre 2026 · in corso" */
+      monthInProgress: "{month} · in corso",
       model:
         "Pagamento per seduta erogata. Kora emette la fattura e paga entro il 5 del mese successivo.",
       /*
@@ -587,7 +607,16 @@ export const it = {
     quarterLabel: "{quarter}° trimestre {year}",
     /* Il trimestre in corso è parziale: senza dirlo, chi confronta le sessioni
        con quelle del trimestre chiuso legge un dato incompleto come un calo. */
-    quarterInProgress: "in corso",
+    /* La frase intera e non "{label} · in corso" composto in pagina: in tedesco
+       il pezzo mobile non sta a destra, e una lingua che lo mette altrove non
+       avrebbe dove dirlo (§2.7). */
+    /** "3° trimestre 2026 · in corso" */
+    quarterLabelInProgress: "{quarter}° trimestre {year} · in corso",
+    /* La sigla dell'asse: sta qui perché "Q" è la lettera di *quarter*, e in
+       tedesco un asse si etichetta "Q3" o "3. Quartal" a seconda dello spazio.
+       In pagina era un template literal, cioè intraducibile. */
+    /** "Q3" */
+    quarterShort: "Q{quarter}",
 
     /* La soglia è un segnaposto e non un numero: è una proprietà del cliente
        (§7), e la parola è "misurati" perché a contare è chi ha risposto al
@@ -630,6 +659,8 @@ export const it = {
     /* La ciambella è cumulata come la KPI delle sessioni: senza dirlo, accanto
        al trimestre in corso si legge come "in questo trimestre". */
     distributionSubtitle: "cumulata dall'inizio della finestra a {quarter}",
+    /** "Psicologo: 142" */
+    distributionEntry: "{service}: {count}",
 
     /* "ultimo mese" nel titolo non è pignoleria: tutto il resto della schermata
        segue il selettore del trimestre, questa tabella no — lo stress è una
@@ -642,13 +673,14 @@ export const it = {
        che hanno lo stesso organico. Senza, due righe identiche danno esiti
        diversi e sembra un errore. */
     departmentMeta: "{employees} dipendenti · {measured} misurati",
+    /** "78% · Alto" */
+    departmentScore: "{percent} · {level}",
     suppressed: "Sotto soglia",
     suppressedTooltip:
       "Sotto la soglia il dato non viene calcolato, per non renderlo riconducibile a singole persone.",
 
     trendTitle: "Trend stress · ultimi {months} mesi",
     trendCompany: "Media azienda",
-    trendDepartment: "{department}",
     trendAlertMarker: "alert",
     /* Il contrasto è la frase del pitch e deve leggersi dalla legenda, senza
        che nessuno debba raccontarlo. */
@@ -691,7 +723,6 @@ export const it = {
         booked: "Prenotato",
         available: "Disponibile",
       },
-      checkupUnavailable: "—",
     },
 
     billing: {
@@ -730,7 +761,6 @@ export const it = {
       stress: "Stress medio",
       /** "−2 punti" */
       stressValue: "{points} punti",
-      stressEmpty: "—",
       savings: "Risparmio stimato",
       avoidedDays: "Giorni di assenza evitati",
       /** "16 giorni" */
@@ -902,6 +932,20 @@ export const it = {
       cost: "Costo Kora",
       /** "Sul piano Plus, CHF 55 per dipendente al mese" */
       costHint: "Sul piano {plan}, {price} per dipendente al mese",
+      /*
+       * Il costo si sottrae, e il segno lo mette la frase.
+       *
+       * ATTENZIONE AL CARATTERE: è il meno tipografico U+2212 (−), non il
+       * trattino da tastiera (-). È lo stesso che `formatSigned` usa sulle KPI
+       * di trend, e sostituirlo "raddrizzando" la stringa fa uscire due segni
+       * diversi nella stessa schermata.
+       *
+       * L'alternativa sarebbe `formatCHF(-valore)` e lasciare il segno a
+       * `Intl`, che è più corretto per le lingue che lo mettono altrove — ma
+       * cambia il glifo a schermo, quindi è una decisione dei founder.
+       */
+      /** "− CHF 66'000" */
+      costValue: "− {amount}",
       netSavings: "Risparmio netto",
       ratio: "Ritorno sull'investimento",
       /** "2.35:1" */
@@ -1246,7 +1290,13 @@ export const it = {
       title: "Utenti",
       searchPlaceholder: "Cerca per nome o azienda",
       kpiTotal: "Utenti iscritti",
-      kpiTotalHint: "Su tutti i clienti attivi",
+      /* "in portafoglio" e non "attivi": il conteggio del dominio somma gli
+         iscritti di ogni cliente il cui contratto è partito, senza escludere
+         chi non è ancora avviato. Diceva "attivi" perché la pagina rifaceva il
+         conto per conto suo con quel filtro, e le due definizioni davano lo
+         stesso numero solo perché l'unico cliente non avviato ha zero
+         iscritti. */
+      kpiTotalHint: "Su tutti i clienti in portafoglio",
       kpiActive: "Attivi",
       kpiWithAssessment: "Con assessment",
       kpiAverageScore: "Profilo salute medio",
@@ -1282,7 +1332,13 @@ export const it = {
       kpiTotal: "Nel roster",
       kpiBookable: "Prenotabili",
       kpiVetting: "In verifica",
-      kpiSessions: "Sedute erogate",
+      /* "di carriera": e' la somma dei totali di sempre dei cinque
+         professionisti, non le sedute di un mese ne' quelle di un'agenda. Tre
+         schermate del back-office dicevano "sedute erogate" contando tre cose
+         diverse, e affiancate si leggevano come lo stesso numero sbagliato
+         (§5.5). */
+      kpiSessions: "Sedute di carriera",
+      kpiSessionsHint: "Somma di tutti i professionisti della rete",
 
       colName: "Nome",
       colQualification: "Qualifica",
@@ -1363,7 +1419,10 @@ export const it = {
       kpiActivationHint: "{enrolled} su {covered} dipendenti coperti",
 
       revenueChart: "Ricavo ricorrente mensile",
-      sessionsChart: "Sedute erogate per mese",
+      /* "di piattaforma": e' la somma su tutti i clienti, mese per mese —
+         un'altra grandezza ancora rispetto alle sedute di carriera dei
+         professionisti e a quelle di una singola agenda. */
+      sessionsChart: "Sedute di piattaforma per mese",
       planMixChart: "Mix piani",
       activationChart: "Attivazione",
       serviceMixChart: "Sedute per servizio, dodici mesi",
@@ -1371,6 +1430,8 @@ export const it = {
       /** "1 azienda" / "2 aziende" — il singolare cambia la parola intera. */
       planMixOne: "1 azienda",
       planMixMany: "{count} aziende",
+      /** L'etichetta sugli spicchi: "Plus: 2" */
+      planMixEntry: "{plan}: {count}",
     },
 
     demoRequests: {
@@ -1384,7 +1445,6 @@ export const it = {
       colEmployees: "Dipendenti",
       colReceived: "Ricevuta",
       /** Quando il form non dichiara l'organico. */
-      noEmployees: "—",
     },
   },
 } as const;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Shield } from 'lucide-react';
-import { formatCHF, formatDate } from '@/lib/format';
+import { formatCHF, formatDate, formatNumber } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import { usePortalProfessionalId, useProfessionalPatients } from '@/lib/data/queries';
 import type { SessionEntitlement } from '@/lib/data/types';
@@ -27,8 +27,8 @@ function EntitlementLine({ entitlement }: { entitlement: SessionEntitlement }) {
     return (
       <p className="text-[11px] text-muted-foreground tabular-nums">
         {interpolate(t.professional.patients.overCap, {
-          total: String(entitlement.total),
-          extra: String(extra),
+          total: formatNumber(entitlement.total),
+          extra: formatNumber(extra),
           price: formatCHF(entitlement.extraSessionPrice),
         })}
       </p>
@@ -46,8 +46,8 @@ function EntitlementLine({ entitlement }: { entitlement: SessionEntitlement }) {
   return (
     <p className="text-[11px] text-muted-foreground tabular-nums">
       {interpolate(t.professional.patients.withinCap, {
-        used: String(entitlement.used),
-        total: String(entitlement.total),
+        used: formatNumber(entitlement.used),
+        total: formatNumber(entitlement.total),
       })}
     </p>
   );
@@ -64,7 +64,7 @@ export default function ProPazienti() {
       <div>
         <h1 className="text-2xl font-bold font-display">{t.professional.patients.title}</h1>
         <p className="text-sm text-muted-foreground mt-1 tabular-nums">
-          {interpolate(t.professional.patients.count, { n: String(patients.length) })}
+          {interpolate(t.professional.patients.count, { n: formatNumber(patients.length) })}
         </p>
       </div>
 
@@ -89,7 +89,7 @@ export default function ProPazienti() {
                   </p>
                   <p className="text-xs text-muted-foreground tabular-nums">
                     {interpolate(t.professional.patients.delivered, {
-                      n: String(patient.entitlement.used),
+                      n: formatNumber(patient.entitlement.used),
                     })}
                   </p>
                 </div>

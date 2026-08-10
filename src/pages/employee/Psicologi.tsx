@@ -197,7 +197,10 @@ function BookingDialog({
                   : "border-border bg-card hover:border-secondary/50"
               }`}
             >
-              {formatWeekday(day.date)} {formatDate(day.date)}
+              {interpolate(t.employee.psychologists.dialog.dayOption, {
+                weekday: formatWeekday(day.date),
+                date: formatDate(day.date),
+              })}
             </button>
           ))}
         </div>
@@ -317,7 +320,7 @@ function ProfessionalCard({
               <Globe className="w-3 h-3" />
               {professional.languages
                 .map((language) => t.language[language])
-                .join(", ")}
+                .join(t.common.listSeparator)}
             </span>
             <span className="flex items-center gap-1 tabular-nums">
               <Video className="w-3 h-3" />

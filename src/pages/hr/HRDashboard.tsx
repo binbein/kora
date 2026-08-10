@@ -19,6 +19,7 @@ import {
   YAxis,
 } from 'recharts';
 import KPICard from '@/components/shared/KPICard';
+import PrivacyBanner from '@/components/shared/PrivacyBanner';
 import { formatCHF, formatDate, formatMonthShort, formatNumber, formatPercent, formatSigned } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import { quarterKey, quarterOf, stressLevelFromScore, type AppointmentKind, type Quarter, type StressRecord } from '@/lib/data/types';
@@ -73,17 +74,33 @@ function quarterRank(period: Quarter): number {
 }
 
 function quarterLabel(period: Quarter, current: Quarter): string {
-  const label = interpolate(t.hr.quarterLabel, {
+  const pattern =
+    quarterKey(period) === quarterKey(current)
+      ? t.hr.quarterLabelInProgress
+      : t.hr.quarterLabel;
+  return interpolate(pattern, {
     quarter: String(period.quarter),
     year: String(period.year),
   });
-  return quarterKey(period) === quarterKey(current)
-    ? `${label} · ${t.hr.quarterInProgress}`
-    : label;
 }
 
 function scoreOf(record: StressRecord): number | null {
   return record.suppressed ? null : record.score;
+}
+
+/**
+ * Il primo e l'ultimo punto pubblicabile di una serie, per la legenda.
+ *
+ * Salta i mesi soppressi invece di prendere gli estremi dell'array: un reparto
+ * sotto soglia non ha un punteggio, e leggerlo come "da null a 46" darebbe una
+ * frase rotta. `null` quando la serie non ha nemmeno due punti da confrontare.
+ */
+function extremesOf(
+  series: (number | null)[],
+): { from: number; to: number } | null {
+  const published = series.filter((value): value is number => value !== null);
+  if (published.length < 2) return null;
+  return { from: published[0], to: published[published.length - 1] };
 }
 
 export default function HRDashboard() {
@@ -167,8 +184,41 @@ export default function HRDashboard() {
   const alertPoint =
     alertIndex >= 0 && alertHistory ? scoreOf(alertHistory[alertIndex]) : null;
 
+  /*
+   * Le due frasi della legenda del trend.
+   *
+   * Il contrasto fra la media piatta e le Vendite che si staccano è la frase
+   * che il pitch pronuncia, e `it.ts` la dichiarava da M3 senza che nessuno la
+   * rendesse: la <Legend/> di recharts mostrava i soli nomi delle serie.
+   *
+   * Gli estremi si **leggono dalle serie** (§5.5): scritti a mano sarebbero il
+   * quinto e il sesto numero pinnato sugli stessi dodici mesi, e smetterebbero
+   * di corrispondere alla linea disegnata sopra di loro.
+   */
+  const companyEnds = extremesOf(trendChart.map((point) => point.company));
+  const departmentEnds = extremesOf(trendChart.map((point) => point.department));
+
+  const trendLegend: Record<string, string | null> = {
+    company: companyEnds
+      ? interpolate(t.hr.trendCompanyLegend, {
+          from: formatPercent(companyEnds.from),
+          to: formatPercent(companyEnds.to),
+        })
+      : null,
+    department:
+      departmentEnds && alertIndex >= 0
+        ? interpolate(t.hr.trendDepartmentLegend, {
+            from: formatPercent(departmentEnds.from),
+            to: formatPercent(departmentEnds.to),
+            month: formatNumber(alertIndex + 1),
+          })
+        : null,
+  };
+
   const roiChart = [...(snapshots ?? [])].reverse().map((entry) => ({
-    short: `Q${entry.period.quarter}`,
+    short: interpolate(t.hr.quarterShort, {
+      quarter: String(entry.period.quarter),
+    }),
     saved: entry.savedChf,
     selected: quarterKey(entry.period) === quarterKey(selected),
   }));
@@ -226,14 +276,12 @@ export default function HRDashboard() {
         </Card>
       )}
 
-      <div className="flex items-center gap-3 bg-accent/60 border border-secondary/20 rounded-lg px-4 py-3">
-        <Lock className="w-5 h-5 text-secondary flex-shrink-0" />
-        <p className="text-sm text-muted-foreground">
-          {interpolate(t.hr.privacyNote, {
-            threshold: formatNumber(company.anonymityThreshold),
-          })}
-        </p>
-      </div>
+      <PrivacyBanner
+        icon={Lock}
+        message={interpolate(t.hr.privacyNote, {
+          threshold: formatNumber(company.anonymityThreshold),
+        })}
+      />
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <KPICard
@@ -264,7 +312,7 @@ export default function HRDashboard() {
           title={t.hr.kpiStress}
           value={
             report.stressTrendPoints === null
-              ? '—'
+              ? t.common.none
               : interpolate(t.hr.kpiStressValue, {
                   points: formatSigned(report.stressTrendPoints),
                 })
@@ -355,11 +403,15 @@ export default function HRDashboard() {
                       className="inline-flex items-center gap-1.5 text-sm text-muted-foreground"
                       title={t.hr.suppressedTooltip}
                     >
-                      <Lock className="w-3.5 h-3.5" />—
+                      <Lock className="w-3.5 h-3.5" />
+                      {t.common.none}
                     </span>
                   ) : (
                     <span className="text-sm font-semibold tabular-nums">
-                      {formatPercent(score)} · {t.hr.stressLevel[stressLevelFromScore(score)]}
+                      {interpolate(t.hr.departmentScore, {
+                        percent: formatPercent(score),
+                        level: t.hr.stressLevel[stressLevelFromScore(score)],
+                      })}
                     </span>
                   )}
                 </div>
@@ -380,7 +432,27 @@ export default function HRDashboard() {
               <XAxis dataKey="month" tick={{ fontSize: 12 }} />
               <YAxis tick={{ fontSize: 12 }} domain={[0, 100]} />
               <Tooltip />
-              <Legend />
+              <Legend
+                content={({ payload }) => (
+                  <ul className="mt-2 space-y-1">
+                    {(payload ?? []).map((item) => (
+                      <li
+                        key={String(item.dataKey)}
+                        className="flex items-baseline gap-2 text-xs"
+                      >
+                        <span
+                          className="w-2.5 h-2.5 rounded-full flex-shrink-0 translate-y-0.5"
+                          style={{ background: item.color }}
+                        />
+                        <span className="font-medium">{item.value}</span>
+                        <span className="text-muted-foreground tabular-nums">
+                          {trendLegend[String(item.dataKey)]}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              />
               <Line
                 type="monotone"
                 dataKey="company"
@@ -460,7 +532,10 @@ export default function HRDashboard() {
             {distribution.map((entry) => (
               <div key={entry.kind} className="flex items-center gap-1.5 text-xs tabular-nums">
                 <div className="w-2.5 h-2.5 rounded-full" style={{ background: entry.color }} />
-                {entry.name}: {formatNumber(entry.value)}
+                {interpolate(t.hr.distributionEntry, {
+                  service: entry.name,
+                  count: formatNumber(entry.value),
+                })}
               </div>
             ))}
           </div>

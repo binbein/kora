@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Award, Briefcase, CheckCircle2, Globe, Star } from 'lucide-react';
-import { formatCHF, formatRating } from '@/lib/format';
+import { formatCHF, formatNumber, formatRating } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import { professionalDisplayName } from '@/lib/data/types';
 import type { Professional } from '@/lib/data/types';
@@ -46,7 +46,7 @@ export default function ProProfilo() {
                 <Award className="w-3 h-3 mr-1" />
                 <span className="tabular-nums">
                   {interpolate(t.professional.profile.totalSessions, {
-                    n: String(professional.totalSessions),
+                    n: formatNumber(professional.totalSessions),
                   })}
                 </span>
               </Badge>

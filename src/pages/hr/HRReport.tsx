@@ -99,7 +99,7 @@ export default function HRReport() {
           label={t.hr.report.stress}
           value={
             report.stressTrendPoints === null
-              ? t.hr.report.stressEmpty
+              ? t.common.none
               : interpolate(t.hr.report.stressValue, {
                   points: formatSigned(report.stressTrendPoints),
                 })
