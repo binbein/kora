@@ -19,6 +19,7 @@ import {
   YAxis,
 } from 'recharts';
 import KPICard from '@/components/shared/KPICard';
+import PrivacyBanner from '@/components/shared/PrivacyBanner';
 import { formatCHF, formatDate, formatMonthShort, formatNumber, formatPercent, formatSigned } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import { quarterKey, quarterOf, stressLevelFromScore, type AppointmentKind, type Quarter, type StressRecord } from '@/lib/data/types';
@@ -275,14 +276,12 @@ export default function HRDashboard() {
         </Card>
       )}
 
-      <div className="flex items-center gap-3 bg-accent/60 border border-secondary/20 rounded-lg px-4 py-3">
-        <Lock className="w-5 h-5 text-secondary flex-shrink-0" />
-        <p className="text-sm text-muted-foreground">
-          {interpolate(t.hr.privacyNote, {
-            threshold: formatNumber(company.anonymityThreshold),
-          })}
-        </p>
-      </div>
+      <PrivacyBanner
+        icon={Lock}
+        message={interpolate(t.hr.privacyNote, {
+          threshold: formatNumber(company.anonymityThreshold),
+        })}
+      />
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <KPICard
