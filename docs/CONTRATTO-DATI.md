@@ -27,6 +27,12 @@ nessuno.** Se durante l'implementazione del backend viene il pensiero che
 convenga rifare il frontend, è il segnale che il seam non ha tenuto: va riportato
 ai founder, non eseguito.
 
+**L'elenco completo dei metodi è l'interfaccia `DataProvider` in
+`src/lib/data/provider.ts`, che è la fonte** — come `types.ts` lo è per le entità
+(§3). Questo documento ne nomina quelli su cui c'è da dire qualcosa che il codice
+non dice da solo: chi implementa il backend prende la superficie da lì, non da
+qui, perché un elenco trascritto è un secondo elenco che può divergere dal primo.
+
 Due controlli meccanici tengono in piedi questa promessa, e girano nel lint:
 
 - nessun file fuori da `src/lib/data/` può importare `@/lib/data/mock/*`;
@@ -103,6 +109,15 @@ documento. Qui stanno solo gli invarianti che il codice non può esprimere.
 - I campi opzionali di `Plan` seguono una regola sola: **assente significa che il
   contratto commerciale non lo prevede**, non che il piano ne sia privo. Il
   listino salta la riga invece di trasformarla in una negazione.
+- **`Plan.hrDashboard` e `Plan.freeIntroInterview` sono obbligatori di
+  proposito**, ed è la riga da leggere prima di renderli opzionali per simmetria
+  con i vicini: sono slot di valore, non campi che al caso non pertengono. Tutti e
+  tre i piani hanno una dashboard HR — il §9 la trascrive per ognuno — quindi non
+  esiste il caso "il contratto commerciale non la prevede", e il campo è
+  un'enumerazione di livelli, non una cadenza. Il colloquio conoscitivo è un
+  booleano perché la domanda ha senso su tutti e tre e su due la risposta è "no":
+  un campo assente lo renderebbe indistinguibile da un piano su cui nessuno ha
+  ancora deciso.
 - `Department` **non** porta il conteggio dei misurati. Vive sul record mensile.
 
 ### Misurazione dello stress — la parte più delicata
