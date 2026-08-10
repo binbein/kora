@@ -17,7 +17,7 @@ lì.
 
 ## Stato
 
-**M0, M1, M2 e M3 chiuse.** La demo è condivisibile e **tutte e cinque le aree
+**M0, M1, M2, M3 e M4 chiuse.** La demo è condivisibile e **tutte e cinque le aree
 leggono dal provider**: nessuna schermata dichiara più le proprie costanti, le
 stringhe stanno in `i18n`, ogni importo passa da `format.ts` e ogni data da
 `DEMO_TODAY`. Le rotte sono 26, il repository è nostro — niente base44, zero
@@ -31,8 +31,9 @@ di git; il suo repository è archiviato e non si tocca. I PDF del Business Plan
 stanno in `docs/` dal 07.08.2026 (decisione qui sotto), ma restano una fonte da
 consultare: le cifre ammesse sono solo quelle trascritte in `CLAUDE.md` §8 e §9.
 
-**Il prossimo passo è M4**, il report scaricabile (§10.C.3). Resta da prendere
-prima di M5 la **decisione di palette sull'accessibilità**: il bianco su
+**M4 è chiusa**: da `/hr/report` si scarica un PDF di una pagina per il
+trimestre scelto. **Il prossimo passo è M5**, e resta da prendere prima la
+**decisione di palette sull'accessibilità**: il bianco su
 `secondary` pieno dà 2.83:1 contro il minimo AA di 4.5, e le due strade sono
 scurire il token o portare le CTA su `primary`.
 
@@ -745,6 +746,85 @@ spenti finivano sulla stessa tinta. Il segnale è diventato **l'anello**: teal s
 un chip bianco contro il fondo menta, con l'etichetta lasciata scura perché
 `text-secondary` su bianco dà 2.9:1, sotto l'AA per un testo da 11px.
 
+### M4 — Il report scaricabile
+
+Sei commit. Il pulsante del §10.C.3 smette di non fare niente: da `/hr/report`
+si scarica un PDF A4 **di una pagina** con le metriche del trimestre scelto.
+
+**Il PDF non è un documento parallelo.** `PrintableReport` riceve gli stessi
+oggetti che la schermata mostra — `HrReport` e `RoiSnapshot` del periodo
+selezionato — quindi il documento e la pagina dicono lo stesso numero perché
+leggono lo stesso dato, non perché qualcuno li ha riallineati (§5.5). Il
+generatore non sa cosa cattura, e non deve.
+
+**Il selettore del trimestre è entrato in `/hr/report`**, che prima mostrava il
+solo trimestre corrente (decisione dei founder del 10.08.2026, qui sotto). Senza,
+il guardrail del §5.6 non era eseguibile: «il trimestre del PDF è quello
+mostrato» non si verifica se il trimestre non si può cambiare.
+
+**La tecnica viene da uno spike misurato**, non da una scelta di gusto: il branch
+`spike/report-pdf` ha campionato i pixel di html2canvas 1.4.1 contro
+`getComputedStyle` e ha trovato **delta 0** su tutti i token — `bg-accent/40`,
+`bg-primary/20`, `border-primary/20` e il teal pieno — quindi nessun workaround
+sui colori. `scale: 2` e non 1, perché a scale 1 il foglio esce a ~104 dpi
+effettivi. Le due librerie si importano **dinamicamente**: la landing non paga il
+report di un'area che non visita.
+
+**La larghezza fissa in px è la scoperta che conta.** Lo spike ha corretto il
+modo in cui questo file raccontava il difetto dei grafici: non è
+`ResponsiveContainer` a misurare zero, è che a scheda nascosta `innerWidth` vale
+0 e con lui collassa **ogni catena `width: 100%`** — `documentElement`, `body`,
+qualunque contenitore che erediti. Un contenitore in px è immune, e persino un
+`ResponsiveContainer` annidato in lui misura giusto. Da qui la regola della vista
+di stampa: **non ereditare la larghezza dal viewport.**
+
+**Verificato a schermo, con la scheda in primo piano:**
+
+- il PDF esce di **una pagina** per il trimestre scelto, con nome derivato —
+  `kora-report-demo-sa-2026-q3.pdf` — e cambiando trimestre cambia con esso:
+  provati Q3 2026, Q2 2026 e Q4 2025, aperti e riletti;
+- i numeri del PDF coincidono con la dashboard su **tutti e quattro i periodi**:
+  risparmio CHF 14'200 / 11'800 / 9'400 / 6'200, adozione 68 / 59 / 48 / 33%,
+  attivi 41 / 34 / 27 / 18, sessioni 142 / 86 / 50 / 22, check-up
+  62 / 52 / 36 / 21%, e lo **stress a "—" sul trimestre più vecchio**, che è
+  `common.none` come a schermo;
+- la formattazione svizzera regge dentro il documento, verificata alla
+  codepoint: `CHF` + spazio unificatore U+00A0 + `14'200`, il meno tipografico
+  U+2212 sul trend, le date `23.09.2026`;
+- **la larghezza della vista di stampa non dipende dal viewport**: portando la
+  finestra a 400px la catena `width: 100%` la segue, il nodo di stampa resta a
+  794 e la cattura è **identica alla cifra** — stesso canvas 1588×1610, stessi
+  277'559 pixel di inchiostro;
+- la generazione non muove nessun numero a schermo, non lascia canvas né iframe
+  nel DOM, e il pulsante si riabilita;
+- 26 rotte percorse, zero schermate vuote, console pulita su scheda nuova,
+  `npm run lint` e `npm run typecheck` a zero.
+
+**Il guardrail, provato al contrario**: falsando il marcatore del periodo a
+`2026-Q2` mentre il chiamante passa Q3, la console riporta *"Il PDF sta per
+uscire per il trimestre 2026-Q3 ma la vista di stampa dichiara 2026-Q2"*.
+Confronta due sorgenti indipendenti — il marcatore che la vista scrive su di sé
+e il periodo che il chiamante dichiara — perché leggere due volte la stessa
+variabile non verificherebbe niente.
+
+**Il debito, dichiarato:**
+
+- **il testo del PDF è raster.** Non è selezionabile né cercabile, e il file pesa
+  ~200 KB contro i ~4 KB dello stesso foglio disegnato a vettori — misurato sullo
+  spike. Va bene per un allegato di pitch. Il giorno in cui il report diventerà un
+  artefatto di prodotto le strade sono due: `window.print()` con `@page`, che dà
+  testo vero e i font giusti ma non produce un file, oppure jsPDF nativo con Inter
+  e DM Sans incorporati, che costa un passo di build e il layout scritto a mano. Si
+  ridiscute allora: non è un ripiego, è una scelta con una scadenza.
+- **Il browser blocca i download automatici ravvicinati.** Generando due PDF di
+  seguito dalla stessa pagina senza un gesto in mezzo, il secondo non arriva. Non
+  riguarda l'uso vero — un clic è un gesto — ma è emerso provando due trimestri di
+  fila da console, e chi lo rifà deve saperlo.
+- **La vista di stampa non contiene grafici.** Le metriche e le raccomandazioni
+  stanno in una pagina; il trend a dodici mesi e la ciambella non ci sono, e
+  aggiungerli vorrebbe dire decidere se il documento resta di una pagina. È scope,
+  quindi è dei founder.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -790,7 +870,7 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 | M1 | Fondamenta tecniche | **fatta** |
 | M2 | Il contratto dati | **fatta** |
 | M3 | Migrazione area per area + calcolatore ROI | **fatta** |
-| M4 | Report scaricabile | da fare |
+| M4 | Report scaricabile | **fatta** |
 | M5 | Verso la produzione (differibile) | da fare |
 
 ## Decisioni chiuse
@@ -798,6 +878,25 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà una
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
+
+- **10.08.2026 — Il selettore del trimestre entra in `/hr/report`, e il PDF
+  porta anche attivi e sessioni** (`CLAUDE.md` §10.C.3). Due decisioni di scope
+  prese insieme all'apertura di M4, perché la seconda dipende dalla prima.
+
+  **Il selettore**: la pagina report mostrava il solo trimestre corrente, mentre
+  la dashboard sceglie da M3. Un report trimestrale che ne mostra uno solo è
+  monco, ed è anche la UI minima che rende eseguibile il guardrail del §5.6 —
+  «il trimestre del PDF è quello mostrato» non è verificabile se il trimestre
+  non si può cambiare. Le alternative sono state scartate con un motivo:
+  spostare il pulsante sulla dashboard contraddice il §10.C.3, che lo colloca
+  sul report; condividere la selezione fra le due schermate è architettura che
+  nessuno ha chiesto.
+
+  **Il contenuto del PDF**: le sei metriche del report **più attivi e sessioni**
+  dello snapshot. Nessun numero nuovo — è dato del provider che la dashboard già
+  mostra — e un allegato per il consiglio senza "quante persone l'hanno usato" è
+  più povero della dashboard che riassume. **La pagina a schermo non cambia**:
+  si allarga solo la vista di stampa.
 
 - **08.08.2026 — Il pulsante "Approva" del back-office si toglie**
   (`CLAUDE.md` §10.E). Nel dialogo dei professionisti chiudeva il dialogo e

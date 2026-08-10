@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Download, FileText, TrendingDown, TrendingUp } from 'lucide-react';
 import { formatCHF, formatNumber, formatPercent, formatSigned } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
-import { useCompany, useCurrentQuarter, useHrReport } from '@/lib/data/queries';
+import { quarterKey, type Quarter } from '@/lib/data/types';
+import {
+  useCompany,
+  useCurrentQuarter,
+  useHrReport,
+  useQuarters,
+  useReferenceDate,
+  useRoiSnapshot,
+} from '@/lib/data/queries';
+import PrintableReport, { PRINT_WIDTH } from '@/components/hr/PrintableReport';
+import { downloadReportPdf, reportFileName } from '@/lib/report-pdf';
 
 /*
  * Il report trimestrale (CLAUDE.md §10.C.2).
@@ -14,8 +25,29 @@ import { useCompany, useCurrentQuarter, useHrReport } from '@/lib/data/queries';
  * serie: la schermata e il PDF di M4 diranno lo stesso numero perché leggono lo
  * stesso dato, non perché qualcuno li ha riallineati.
  *
- * Il pulsante del PDF resta com'è: il report scaricabile è M4.
+ * IL SELETTORE DEL TRIMESTRE è entrato qui in M4 (decisione dei founder del
+ * 10.08.2026): un report trimestrale che mostra un trimestre solo è monco, ed è
+ * la UI minima che rende eseguibile il guardrail del §5.6 — «il trimestre del
+ * PDF è quello mostrato» non è verificabile se il trimestre non si può
+ * cambiare. Usa le stesse chiavi della dashboard, perché è lo stesso gesto.
  */
+
+/**
+ * L'etichetta del periodo, col suffisso "in corso" sul trimestre aperto.
+ *
+ * È la gemella di quella della dashboard, e come lei compone da una frase
+ * intera invece che concatenare (§2.7).
+ */
+function quarterLabel(period: Quarter, current: Quarter): string {
+  const pattern =
+    quarterKey(period) === quarterKey(current)
+      ? t.hr.quarterLabelInProgress
+      : t.hr.quarterLabel;
+  return interpolate(pattern, {
+    quarter: String(period.quarter),
+    year: String(period.year),
+  });
+}
 
 function StatRow({
   label,
@@ -56,14 +88,38 @@ function StatRow({
 export default function HRReport() {
   const { data: company } = useCompany();
   const { data: currentQuarter } = useCurrentQuarter();
-  const { data: report } = useHrReport(currentQuarter);
+  const { data: quarters } = useQuarters();
 
-  if (!company || !currentQuarter || !report) return null;
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+  const selected =
+    quarters?.find((period) => quarterKey(period) === selectedKey) ??
+    currentQuarter;
 
-  const quarterText = interpolate(t.hr.quarterLabel, {
-    quarter: String(currentQuarter.quarter),
-    year: String(currentQuarter.year),
-  });
+  const { data: report } = useHrReport(selected);
+  const { data: snapshot } = useRoiSnapshot(selected);
+  const { data: today } = useReferenceDate();
+
+  /*
+   * Il nodo che il generatore cattura. È montato sempre, e sempre fuori
+   * schermo: montarlo al clic vorrebbe dire catturare un albero appena
+   * inserito, cioè prima che i font siano applicati e i grafici disegnati.
+   */
+  const printRef = useRef<HTMLDivElement>(null);
+  const [generating, setGenerating] = useState(false);
+
+  if (
+    !company ||
+    !currentQuarter ||
+    !quarters ||
+    !selected ||
+    !report ||
+    !snapshot ||
+    !today
+  ) {
+    return null;
+  }
+
+  const quarterText = quarterLabel(selected, currentQuarter);
 
   return (
     <div className="space-y-6">
@@ -77,9 +133,44 @@ export default function HRReport() {
             })}
           </p>
         </div>
-        <Button variant="outline" size="sm">
-          <Download className="w-4 h-4 mr-1" /> {t.hr.report.download}
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <Select
+            value={quarterKey(selected)}
+            onValueChange={(value) => setSelectedKey(value)}
+          >
+            <SelectTrigger className="w-full sm:w-64" aria-label={t.hr.quarterSelectorLabel}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {quarters.map((period) => (
+                <SelectItem key={quarterKey(period)} value={quarterKey(period)}>
+                  {quarterLabel(period, currentQuarter)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={generating}
+            onClick={async () => {
+              const node = printRef.current;
+              if (!node) return;
+              setGenerating(true);
+              try {
+                await downloadReportPdf(
+                  node,
+                  reportFileName(company.name, selected),
+                  selected,
+                );
+              } finally {
+                setGenerating(false);
+              }
+            }}
+          >
+            <Download className="w-4 h-4 mr-1" /> {t.hr.report.download}
+          </Button>
+        </div>
       </div>
 
       <Card className="p-6">
@@ -132,6 +223,41 @@ export default function HRReport() {
           ))}
         </ul>
       </Card>
+
+      {/*
+        LA VISTA DI STAMPA, fuori schermo.
+
+        `position: fixed` con un offset negativo, e non `display: none` né
+        `visibility: hidden`: il primo non misura — un nodo senza layout dà un
+        canvas vuoto — e il secondo misura ma si cattura trasparente. Spostarlo
+        fuori dal viewport lo lascia disegnato e misurabile, che è ciò che
+        html2canvas legge.
+
+        `aria-hidden` perché è un duplicato della schermata: chi legge con uno
+        screen reader sentirebbe due volte gli stessi numeri.
+      */}
+      <div
+        aria-hidden
+        style={{
+          position: "fixed",
+          top: 0,
+          left: -10000,
+          width: PRINT_WIDTH,
+          pointerEvents: "none",
+        }}
+      >
+        <div ref={printRef}>
+          <PrintableReport
+            company={company}
+            plan={company.plan}
+            period={selected}
+            periodLabel={quarterText}
+            report={report}
+            snapshot={snapshot}
+            generatedOn={today}
+          />
+        </div>
+      </div>
     </div>
   );
 }
