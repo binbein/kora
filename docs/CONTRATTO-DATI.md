@@ -72,7 +72,12 @@ sostituiscono a vicenda:
   falso;
 - `ProfessionalSession.cancellationReasonKey` — assente significa che **la seduta
   non è annullata**. Un motivo di annullamento `null` su una seduta erogata
-  sarebbe un campo che non dovrebbe esistere lì, dichiarato vuoto.
+  sarebbe un campo che non dovrebbe esistere lì, dichiarato vuoto;
+- `RapidCheckAnswer.employeeId` — assente significa che **la risposta arriva dal
+  link anonimo**. Rispondere non richiede un account (`CLAUDE.md` §8), quindi la
+  persona non è un valore vuoto da riempire: è un dato che quel caso non ha. Il
+  reparto invece non è opzionale, perché senza di lui la risposta non è
+  aggregabile.
 
 Il criterio, in una domanda: *se il valore mancasse, la riga avrebbe comunque un
 posto dove metterlo?* Se sì, `| null`. Se no, `?`.
@@ -80,6 +85,26 @@ posto dove metterlo?* Se sì, `| null`. Se no, `?`.
 Per il backend la differenza è concreta: un campo `| null` **è sempre nella
 risposta**, con `null` dentro; un campo `?` **non c'è** quando non pertiene, e il
 client non deve distinguere fra assente e vuoto perché il caso non si presenta.
+
+**La regola riguarda i modelli di lettura. Sugli input di scrittura il `?` è
+legittimo**, ed è la convenzione giusta: `DemoRequestInput.message` è un campo di
+form che si può lasciare vuoto, e obbligare ogni chiamante a passare
+`message: null` sarebbe rumore su un payload in uscita. **A normalizzare è il
+confine**: il provider scrive `?? null` sul record che salva, che è esattamente
+ciò che farà il backend ricevendo la richiesta. Da lì la lettura dice `| null`
+come tutte le altre.
+
+Due punti del codice non lo rispettano ancora, ed è **lavoro di P1**, non una
+deroga di questo documento — che descrive il bersaglio, mentre il codice si
+adegua dopo:
+
+- **`DemoRequest` eredita il `?` dall'input**, perché è dichiarato come
+  intersezione di `DemoRequestInput`. È il caso in cui la scorciatoia di tipo si
+  porta dietro la convenzione sbagliata: la proiezione letta smette di essere
+  un'intersezione e dichiara `message: string | null`;
+- **`Professional.firstName` è `?` e diventa `string | null`**. Non è un campo che
+  al caso non pertiene — ogni professionista un nome proprio ce l'ha — è uno slot
+  che il dataset demo non riempie, per la ragione dichiarata in §7.
 
 **La superficie del provider cresce così**: *le letture si espongono quando il
 dato esiste, le scritture solo quando hanno un chiamante.* Le due metà non sono
@@ -426,6 +451,25 @@ invece di restare assunzioni implicite:
   quella della Dr.ssa Meier, e la schermata lo dichiara nel sottotitolo. In
   produzione `getProfessionalSessions` prende un intervallo e una pagina, e il
   back-office ne aggrega molte.
+- **I professionisti non hanno un nome proprio**, e per questo
+  `Professional.firstName` è nullable. Il `CLAUDE.md` §8 fissa del corpo
+  professionale il solo cognome, e la prova di sicurezza dei nomi è "cognome +
+  professione + cantone": un nome completo alza l'identificabilità, quindi
+  inventarne cinque vorrebbe dire rifare quella verifica e passare da una
+  decisione dei founder. Il mock non può riempirlo onestamente, e un campo che il
+  dataset lascia sempre vuoto è meglio dichiararlo che riempirlo male. **In
+  produzione il nome esiste sempre**, e il backend potrà stringere il campo a
+  obbligatorio: il contratto documenta perché qui è nullable, non che debba
+  restarlo.
+- **I totali di carriera dei professionisti sono dichiarati, non derivati.**
+  `Professional.totalSessions` è un valore del dataset, ed è ciò che sostiene la
+  KPI "sedute erogate" del back-office. Un guardrail impedisce l'unica
+  contraddizione visibile — il totale della Dr.ssa Meier non può essere minore
+  delle sedute erogate della sua agenda — ma gli altri quattro non hanno
+  un'agenda dietro cui rispondere, quindi la loro somma è una cifra dichiarata
+  come i conteggi di §8. **In attesa di ratifica dei founder** (`CLAUDE.md` §2.4):
+  finché non arriva, i numeri restano quelli e nessuno ne deriva altri. In
+  produzione il totale si conta dalle sedute, come tutto il resto.
 - **Le sessioni degli altri clienti sono la curva di Demo SA scalata.** È il
   modo in cui il dataset demo tiene Demo SA *dentro* i totali di piattaforma
   invece che accanto, e in produzione salta per intero: ogni cliente avrà le
