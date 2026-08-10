@@ -87,6 +87,21 @@ function scoreOf(record: StressRecord): number | null {
   return record.suppressed ? null : record.score;
 }
 
+/**
+ * Il primo e l'ultimo punto pubblicabile di una serie, per la legenda.
+ *
+ * Salta i mesi soppressi invece di prendere gli estremi dell'array: un reparto
+ * sotto soglia non ha un punteggio, e leggerlo come "da null a 46" darebbe una
+ * frase rotta. `null` quando la serie non ha nemmeno due punti da confrontare.
+ */
+function extremesOf(
+  series: (number | null)[],
+): { from: number; to: number } | null {
+  const published = series.filter((value): value is number => value !== null);
+  if (published.length < 2) return null;
+  return { from: published[0], to: published[published.length - 1] };
+}
+
 export default function HRDashboard() {
   const { data: company } = useCompany();
   const { data: quarters } = useQuarters();
@@ -167,6 +182,37 @@ export default function HRDashboard() {
     : -1;
   const alertPoint =
     alertIndex >= 0 && alertHistory ? scoreOf(alertHistory[alertIndex]) : null;
+
+  /*
+   * Le due frasi della legenda del trend.
+   *
+   * Il contrasto fra la media piatta e le Vendite che si staccano è la frase
+   * che il pitch pronuncia, e `it.ts` la dichiarava da M3 senza che nessuno la
+   * rendesse: la <Legend/> di recharts mostrava i soli nomi delle serie.
+   *
+   * Gli estremi si **leggono dalle serie** (§5.5): scritti a mano sarebbero il
+   * quinto e il sesto numero pinnato sugli stessi dodici mesi, e smetterebbero
+   * di corrispondere alla linea disegnata sopra di loro.
+   */
+  const companyEnds = extremesOf(trendChart.map((point) => point.company));
+  const departmentEnds = extremesOf(trendChart.map((point) => point.department));
+
+  const trendLegend: Record<string, string | null> = {
+    company: companyEnds
+      ? interpolate(t.hr.trendCompanyLegend, {
+          from: formatPercent(companyEnds.from),
+          to: formatPercent(companyEnds.to),
+        })
+      : null,
+    department:
+      departmentEnds && alertIndex >= 0
+        ? interpolate(t.hr.trendDepartmentLegend, {
+            from: formatPercent(departmentEnds.from),
+            to: formatPercent(departmentEnds.to),
+            month: formatNumber(alertIndex + 1),
+          })
+        : null,
+  };
 
   const roiChart = [...(snapshots ?? [])].reverse().map((entry) => ({
     short: interpolate(t.hr.quarterShort, {
@@ -387,7 +433,27 @@ export default function HRDashboard() {
               <XAxis dataKey="month" tick={{ fontSize: 12 }} />
               <YAxis tick={{ fontSize: 12 }} domain={[0, 100]} />
               <Tooltip />
-              <Legend />
+              <Legend
+                content={({ payload }) => (
+                  <ul className="mt-2 space-y-1">
+                    {(payload ?? []).map((item) => (
+                      <li
+                        key={String(item.dataKey)}
+                        className="flex items-baseline gap-2 text-xs"
+                      >
+                        <span
+                          className="w-2.5 h-2.5 rounded-full flex-shrink-0 translate-y-0.5"
+                          style={{ background: item.color }}
+                        />
+                        <span className="font-medium">{item.value}</span>
+                        <span className="text-muted-foreground tabular-nums">
+                          {trendLegend[String(item.dataKey)]}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              />
               <Line
                 type="monotone"
                 dataKey="company"
