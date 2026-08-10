@@ -67,6 +67,7 @@ export default function AdminProfessionisti() {
         <KPICard
           title={t.admin.professionals.kpiSessions}
           value={formatNumber(deliveredSessions)}
+          subtitle={t.admin.professionals.kpiSessionsHint}
           icon={Star}
         />
       </div>

@@ -478,6 +478,8 @@ export const it = {
     sessions: {
       title: "Sedute",
       upcoming: "In programma ({n})",
+      /* Nella sua agenda: la scheda vive dentro il portale di una sola
+         professionista, e il numero e' il suo. */
       completed: "Erogate ({n})",
       cancelled: "Annullate ({n})",
       start: "Avvia",
@@ -1330,7 +1332,13 @@ export const it = {
       kpiTotal: "Nel roster",
       kpiBookable: "Prenotabili",
       kpiVetting: "In verifica",
-      kpiSessions: "Sedute erogate",
+      /* "di carriera": e' la somma dei totali di sempre dei cinque
+         professionisti, non le sedute di un mese ne' quelle di un'agenda. Tre
+         schermate del back-office dicevano "sedute erogate" contando tre cose
+         diverse, e affiancate si leggevano come lo stesso numero sbagliato
+         (§5.5). */
+      kpiSessions: "Sedute di carriera",
+      kpiSessionsHint: "Somma di tutti i professionisti della rete",
 
       colName: "Nome",
       colQualification: "Qualifica",
@@ -1411,7 +1419,10 @@ export const it = {
       kpiActivationHint: "{enrolled} su {covered} dipendenti coperti",
 
       revenueChart: "Ricavo ricorrente mensile",
-      sessionsChart: "Sedute erogate per mese",
+      /* "di piattaforma": e' la somma su tutti i clienti, mese per mese —
+         un'altra grandezza ancora rispetto alle sedute di carriera dei
+         professionisti e a quelle di una singola agenda. */
+      sessionsChart: "Sedute di piattaforma per mese",
       planMixChart: "Mix piani",
       activationChart: "Attivazione",
       serviceMixChart: "Sedute per servizio, dodici mesi",
