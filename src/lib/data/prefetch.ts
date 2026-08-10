@@ -1,4 +1,5 @@
 import type { QueryClient } from "@tanstack/react-query";
+import { GUARDRAIL_MODE, raiseOutsideCurrentStack } from "./guardrails";
 import { dataProvider } from "./index";
 import { monthKey, queryKeys } from "./query-keys";
 import { quarterKey, type CappedServiceKind } from "./types";
@@ -229,12 +230,18 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
  * solo come un lampo di scheletro, cioè in un fotogramma, cioè quasi mai
  * mentre si lavora e sempre davanti a chi guarda.
  *
- * Lancia fuori dal ciclo di render — dentro, React lo inghiottirebbe — così
- * Vite lo mostra nel suo overlay. Non tocca il refetch dopo una mutation: lì il
- * dato precedente c'è già, ed è esattamente il caso che non deve allarmare.
+ * Segnala fuori dal ciclo di render — dentro, React lo inghiottirebbe — così in
+ * sviluppo Vite lo mostra nel suo overlay. Non tocca il refetch dopo una
+ * mutation: lì il dato precedente c'è già, ed è esattamente il caso che non
+ * deve allarmare.
+ *
+ * Il modo lo decide `guardrails.ts` e non questo file (§5.6): in build demo
+ * questo controllo logga come tutti gli altri, che è il caso in cui serve di
+ * più — uno sfarfallio di scheletro davanti a un investitore è il difetto che
+ * `prefetchDemo` esiste per evitare, ed è quello che a schermo si vede meno.
  */
 export function assertQueriesArePrewarmed(queryClient: QueryClient): void {
-  if (!import.meta.env.DEV) return;
+  if (GUARDRAIL_MODE === "off") return;
 
   queryClient.getQueryCache().subscribe((event) => {
     if (event.type !== "observerAdded") return;
@@ -254,10 +261,8 @@ export function assertQueriesArePrewarmed(queryClient: QueryClient): void {
     if (event.observer.options.enabled === false) return;
 
     const key = JSON.stringify(event.query.queryKey);
-    queueMicrotask(() => {
-      throw new Error(
-        `[query] ${key} si monta a cache fredda: aggiungila a prefetchDemo, altrimenti la schermata parte con uno scheletro.`,
-      );
-    });
+    raiseOutsideCurrentStack(
+      `[query] ${key} si monta a cache fredda: aggiungila a prefetchDemo, altrimenti la schermata parte con uno scheletro.`,
+    );
   });
 }
