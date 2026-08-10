@@ -24,6 +24,26 @@
  * calendario mostrerebbe una settimana vuota, il trimestre "in corso"
  * diventerebbe chiuso — e la demo provata non sarebbe quella presentata.
  *
- * È l'unica manopola da girare se la demo va presentata a distanza di mesi.
+ * QUANTO GIRA LA MANOPOLA. Diceva "l'unica da girare se la demo va presentata a
+ * distanza di mesi", e non è vero: **il mese deve restare settembre.** Misurato
+ * spostandola davvero, con i guardrail accesi:
+ *
+ *   cambiare **anno** funziona — 22.09.2027 disegna tutto, perché i
+ *   `clientSince` del portafoglio derivano da `DEMO_TODAY.getFullYear()` e si
+ *   spostano con lei;
+ *
+ *   cambiare **giorno** dentro settembre non fa lanciare niente, ma le tre
+ *   proprietà qui sopra non le sorveglia nessun guardrail: sono il motivo per
+ *   cui il 23 è stato scelto, e restano da rileggere a mano;
+ *
+ *   cambiare **mese** rompe. A ottobre lancia `service-usage.ts` — dodici mesi
+ *   che non finiscono con un trimestre ne coprono cinque invece di quattro — e
+ *   a dicembre lancia `platform.ts`, perché Demo SA sta esattamente sul primo
+ *   mese della finestra (§8) e la finestra le scivola sotto. Per spostarla di
+ *   mese vanno rivisti i `clientSince` di `platform.ts`.
+ *
+ * Il pericolo non è il lancio, è dove non lancia: **in produzione i guardrail
+ * tacciono** (§5.6), quindi una manopola girata male non si vede in un build
+ * di pitch. Si gira in sviluppo e si guarda.
  */
 export const DEMO_TODAY = new Date(2026, 8, 23);
