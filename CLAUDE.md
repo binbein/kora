@@ -531,8 +531,9 @@ Le due ragioni per cui è una regola e non la riparazione di quel grafico:
   (§5.1). Durante una presentazione dal vivo nessuno aspetta che una barra
   cresca.
 
-In recharts si scrive `isAnimationActive={false}` su ogni serie. **Vale per
-l'area admin**, che di grafici ne ha cinque e non è ancora migrata.
+In recharts si scrive `isAnimationActive={false}` su ogni serie. **L'area admin
+l'ha ereditata migrando in M3**: i suoi cinque grafici la dichiarano tutti. Da qui
+la regola riguarda ogni serie che si aggiunge.
 
 ### 6.3 Tipografia
 
@@ -587,15 +588,19 @@ l'area admin**, che di grafici ne ha cinque e non è ancora migrata.
 
 Azienda: **Demo SA**, Lugano, 120 dipendenti, Piano Plus (CHF 55/dip/mese).
 
-> *Il rename da "Alpine Finance SA" a **Demo SA** è già stato fatto in M0.
-> L'organico no: il codice dichiara ancora **150** in più punti, e la divergenza
-> si chiude portando il codice a 120, **mai il contrario**: tutte le cifre di
-> questa sezione e della §9 sono congelate e verificate su 120, mentre
-> allineare questo file al codice imporrebbe di riderivare gli snapshot ROI e
-> il monte sessioni — cioè rifare lavoro già approvato. A 120 la fatturazione è
-> CHF 6'600 al mese e CHF 79'200 l'anno. L'inventario esatto delle occorrenze —
-> compresa quella che un `grep 150` non trova e quelle che non vanno toccate —
-> sta nei difetti noti di `docs/PROGRESS.md`, ed è lavoro di M3.*
+> *Il rename da "Alpine Finance SA" a **Demo SA** è stato fatto in M0, l'organico
+> in M3. Il codice ereditato dichiarava **150** in più punti, e la divergenza si è
+> chiusa portando il codice a 120, **mai il contrario**: tutte le cifre di questa
+> sezione e della §9 sono congelate e verificate su 120, mentre allineare questo
+> file al codice avrebbe imposto di riderivare gli snapshot ROI e il monte
+> sessioni, cioè rifare lavoro già approvato. A 120 la fatturazione è CHF 6'600 al
+> mese e CHF 79'200 l'anno.*
+>
+> *I `150` rimasti nel codice **non sono l'organico** e non vanno toccati: il
+> valore di apertura del simulatore pubblico in `Pricing.tsx` e le tre soglie di
+> sconto a volume del piano nascosto (§10.A.3). L'inventario delle occorrenze
+> chiuse — compresa quella che un `grep 150` non trovava — resta nei difetti noti
+> di `docs/PROGRESS.md`, che è dove le passate finite vivono come storia.*
 
 6 reparti: Vendite (24), Operations (31), Finanza (18), IT (17), HR + Legale (15),
 Direzione (15). Il codice ereditato ha reparti diversi e **senza le Vendite**, che è
@@ -1161,8 +1166,9 @@ in M1 insieme all'SDK, perché dipendeva dall'auth di base44 e usarlo avrebbe ma
 al login del Builder.
 
 **Finita quando:** i totali di ogni schermata si ricavano dai dati e non sono
-scritti a mano — oggi "618 utenti attivi" convive con un tasso di attivazione che ne
-implica 767, e il fatturato del mese non torna con l'elenco delle aziende accanto.
+scritti a mano. **Soddisfatto in M3**: la schermata ereditata faceva convivere
+"618 utenti attivi" con un tasso di attivazione che ne implicava 767, e un
+fatturato del mese che non tornava con l'elenco delle aziende accanto.
 
 ### Come si naviga durante la demo
 
@@ -1222,9 +1228,9 @@ aperta in anticipo, va **portata in primo piano** prima di cominciare.
 - **Nessuna data scritta a mano.** Le date si derivano da `DEMO_TODAY` e si
   formattano con `format.ts`. Le quattro coppie giorno/data sbagliate di
   `ProSessioni.tsx` — l'anno riscritto a mano su date del 2025 — sono sparite
-  con la migrazione di M2, e i mesi delle fatture HR con quella di M3; nelle
-  aree non ancora migrate le date scritte a mano ci sono ancora (le iscrizioni
-  dell'admin) e spariscono chiudendo M3.
+  con la migrazione di M2, i mesi delle fatture HR e le iscrizioni dell'admin con
+  quella di M3. **Da lì non ne resta nessuna**, e la regola sorveglia ciò che si
+  scrive.
 - Accessibilità di base: contrasti AA, focus visibili, alt text. La demo si presenta
   anche da tastiera durante un pitch: i focus contano.
 - **A fine sessione**: riepilogo di cosa è stato fatto e screenshot delle schermate
