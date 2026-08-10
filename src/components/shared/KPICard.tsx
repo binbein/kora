@@ -2,7 +2,6 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { formatSigned } from '@/lib/format';
 
 /*
  * LA POLARITÀ: il colore segue il beneficio, la freccia segue il segno
@@ -23,18 +22,6 @@ type Polarity = {
   goodWhen: 'up' | 'down';
 };
 
-/*
- * La variazione come riga sotto il valore, per le KPI il cui valore **non** è
- * un delta: "CHF 81K" con sotto "+14% vs marzo". Stessa regola di polarità,
- * stesso `goodWhen` obbligatorio.
- */
-type Trend = {
-  percent: number;
-  goodWhen: 'up' | 'down';
-  /** Su cosa è calcolato il confronto: senza, il numero non è verificabile */
-  label: string;
-};
-
 function improvingWith(value: number, goodWhen: 'up' | 'down'): boolean | null {
   if (value === 0) return null;
   return goodWhen === 'up' ? value > 0 : value < 0;
@@ -46,7 +33,6 @@ export default function KPICard({
   subtitle,
   icon: Icon,
   polarity,
-  trend,
   variant = 'default',
 }: {
   title: string;
@@ -54,7 +40,6 @@ export default function KPICard({
   subtitle?: React.ReactNode;
   icon?: LucideIcon;
   polarity?: Polarity;
-  trend?: Trend;
   variant?: 'default' | 'primary' | 'secondary' | 'accent';
 }) {
   const bgMap = {
@@ -71,15 +56,6 @@ export default function KPICard({
 
   const toneClass =
     improving === null ? '' : improving ? 'text-secondary' : 'text-destructive';
-
-  const trendImproving =
-    trend === undefined ? null : improvingWith(trend.percent, trend.goodWhen);
-  const trendTone =
-    trendImproving === null
-      ? 'text-muted-foreground'
-      : trendImproving
-        ? 'text-secondary'
-        : 'text-destructive';
 
   return (
     <Card className={`${bgMap[variant]} p-5 relative overflow-hidden`}>
@@ -109,19 +85,6 @@ export default function KPICard({
           </div>
         )}
       </div>
-      {trend && trendImproving !== null && (
-        <div className={`flex items-center gap-1.5 mt-3 ${trendTone}`}>
-          {trend.percent > 0 ? (
-            <TrendingUp className="w-3.5 h-3.5" />
-          ) : (
-            <TrendingDown className="w-3.5 h-3.5" />
-          )}
-          <span className="text-xs font-medium tabular-nums">
-            {formatSigned(trend.percent)}%
-          </span>
-          <span className="text-xs text-muted-foreground">{trend.label}</span>
-        </div>
-      )}
     </Card>
   );
 }
