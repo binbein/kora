@@ -994,8 +994,17 @@ grandezza. L'Executive include già i familiari (partner + 1 figlio) e non ha
 l'estensione.
 
 **Compenso ai professionisti: CHF 70–80 a sessione erogata.** Il BP dà la banda, non
-la tariffa del singolo: dove cade ognuno dei quattro è una scelta della demo, da
-dichiarare nel file del dataset.
+la tariffa del singolo: dove cade ognuno è una scelta della demo, da dichiarare
+nel file del dataset.
+
+**Come si colloca dentro la banda**, ratificato dai founder il 10.08.2026: chi
+ha storico segue la **valutazione**, che è l'unico ordinamento che il §8 dà del
+roster; chi non ne ha — in verifica, zero sedute erogate, nessuna valutazione —
+prende la **tariffa d'ingresso a metà banda, CHF 75**. È la regola che spiega la
+Dr.ssa Keller: senza di essa la sua tariffa sarebbe l'unica del dataset senza un
+motivo, e con una valutazione a `null` non c'è niente da cui farla scendere o
+salire. Le cinque tariffe restano dichiarate nel dataset, e un guardrail
+verifica che nessuna esca dalla banda.
 
 **A pieno regime, 20 sessioni a settimana valgono CHF 5'600–6'400 al mese.** Serve
 al portale professionista: **il regime va sempre detto accanto al totale**,
