@@ -776,6 +776,33 @@ export const it = {
         partnerExtension:
           "Valutare l'estensione ai familiari, opzionale sul piano Plus.",
       },
+
+      /*
+       * Il documento scaricabile (§10.C.3). È **una pagina sola**: un allegato
+       * per il consiglio, non un fascicolo — quindi qui non c'è niente che la
+       * schermata non dica già, e le etichette sono le stesse.
+       *
+       * Registro strumento (§7): terza persona, metrico, sentence case.
+       */
+      pdf: {
+        /** Il titolo stampato in testa al documento */
+        documentTitle: "Report salute aziendale",
+        /** "Demo SA · 120 dipendenti · Piano Plus" */
+        documentSubtitle: "{company} · {employees} dipendenti · Piano {plan}",
+        /** "3° trimestre 2026" — il periodo, in evidenza sotto il titolo */
+        period: "Periodo · {quarter}",
+        /** "Generato il 23.09.2026" — la data viene da DEMO_TODAY, non dall'orologio */
+        generatedOn: "Generato il {date}",
+        active: "Dipendenti attivi",
+        sessions: "Sessioni usate",
+        /** "142 di 1'200 sessioni annue" */
+        sessionsValue: "{used} di {total}",
+        /* La nota chiude il documento perché è ciò che l'azienda deve poter
+           rileggere quando il PDF circola fuori dalla dashboard, dove il banner
+           non c'è più. */
+        privacyNote:
+          "Dati aggregati e anonimi. Kora non comunica all'azienda dati sanitari individuali né prenotazioni riconducibili a singole persone.",
+      },
     },
 
     privacy: {
