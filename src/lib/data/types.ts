@@ -624,6 +624,13 @@ export type FullCapacityReference = {
   sessionsPerWeek: number;
   monthlyMinChf: number;
   monthlyMaxChf: number;
+  /**
+   * Il minimo di disponibilità chiesto a chi entra nella rete. Sta qui e non
+   * nella pagina che lo mostra per la stessa ragione delle tre cifre qui sopra:
+   * è una condizione del contratto con il professionista, e una schermata non è
+   * il posto in cui vive una condizione contrattuale.
+   */
+  minHoursPerWeek: number;
 };
 
 /**

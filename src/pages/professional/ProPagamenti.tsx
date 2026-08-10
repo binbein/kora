@@ -15,9 +15,6 @@ import {
   useReferenceDate,
 } from '@/lib/data/queries';
 
-/** Ore minime a settimana chieste a un professionista (Business Plan). */
-const MIN_HOURS_PER_WEEK = 8;
-
 export default function ProPagamenti() {
   const { data: today } = useReferenceDate();
   const { data: professionalId } = usePortalProfessionalId();
@@ -83,7 +80,7 @@ export default function ProPagamenti() {
             full: formatNumber(earnings.fullCapacity.sessionsPerWeek),
             min: formatCHF(earnings.fullCapacity.monthlyMinChf),
             max: formatCHF(earnings.fullCapacity.monthlyMaxChf),
-            minHours: formatNumber(MIN_HOURS_PER_WEEK),
+            minHours: formatNumber(earnings.fullCapacity.minHoursPerWeek),
           })}
         </p>
       </Card>

@@ -67,6 +67,10 @@ export const FULL_CAPACITY: FullCapacityReference = {
   sessionsPerWeek: 20,
   monthlyMinChf: 5600,
   monthlyMaxChf: 6400,
+  // le ore minime a settimana: **non sono trascritte nel §9**, a differenza
+  // delle tre cifre qui sopra. Stanno qui perché è dove vivono le condizioni
+  // del contratto con il professionista, non perché siano approvate
+  minHoursPerWeek: 8,
 };
 
 export const PROFESSIONALS: Professional[] = [
