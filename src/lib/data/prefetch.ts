@@ -240,6 +240,18 @@ export function assertQueriesArePrewarmed(queryClient: QueryClient): void {
     if (event.type !== "observerAdded") return;
     if (event.query.state.data !== undefined) return;
     if (event.query.state.status === "error") return;
+    /*
+     * Una query disabilitata è vuota **di proposito**: `enabled: false` dice
+     * che il dato non serve ancora — un id che arriva da un'altra query, un
+     * dialogo che non è stato aperto — e prefetcharla riempirebbe la cache di
+     * risposte che nessuno ha chiesto. Segnalarla sarebbe chiedere di
+     * riparare la cosa giusta.
+     *
+     * Col dataset di oggi non capita, perché nessuna query è disabilitata: è
+     * la prima `enabled` che qualcuno scriverà a incontrare questo controllo,
+     * e la troverebbe che accusa lei invece del prefetch.
+     */
+    if (event.observer.options.enabled === false) return;
 
     const key = JSON.stringify(event.query.queryKey);
     queueMicrotask(() => {
