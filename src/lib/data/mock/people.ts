@@ -14,8 +14,16 @@ import { DEMO_TODAY } from "./demo-date";
  * quelli si inventano — il §8 lo vieta e il tipo non ha il campo.
  */
 
+/*
+ * L'id è opaco, come quello degli altri otto pazienti (gr, mb, ek…), e deve
+ * restarlo: esce sul filo in `ProfessionalSession.patientId` e in
+ * `EmployeeDirectoryEntry.employeeId`, cioè sulle due proiezioni che il
+ * contratto dichiara prive di qualunque campo su cui un nome possa arrivare
+ * (`docs/CONTRATTO-DATI.md` §3). Un id leggibile è un nome che arriva lo
+ * stesso, e sarebbe arrivato proprio della persona su cui la demo si regge.
+ */
 export const LAURA: EmployeeProfile = {
-  id: "laura-bernasconi",
+  id: "lb",
   firstName: "Laura",
   lastName: "Bernasconi",
   age: 34,
