@@ -1,3 +1,4 @@
+import { assertInDev } from "../guardrails";
 import type {
   EmployeeProfile,
   FullCapacityReference,
@@ -52,7 +53,7 @@ export const LAURA: EmployeeProfile = {
  * informativo e sarebbe stato più difficile da difendere se qualcuno lo chiede.
  * Se arrivano le tariffe vere, si sostituiscono qui.
  */
-export const SESSION_FEE_BAND = { min: 70, max: 80 } as const;
+const SESSION_FEE_BAND = { min: 70, max: 80 } as const;
 
 /*
  * Il riferimento a pieno regime del §9: con 20 sessioni a settimana un
@@ -155,3 +156,20 @@ export const PROFESSIONALS: Professional[] = [
     mandateSigned: false,
   },
 ];
+
+/*
+ * La banda del §9 non era usata da nessuno: era una costante esportata accanto
+ * a cinque tariffe che nessuno confrontava con lei, cioe' il commento qui sopra
+ * scritto due volte invece di una verifica.
+ *
+ * Una tariffa fuori banda non romperebbe niente a schermo — uscirebbe un totale
+ * mensile plausibile e sbagliato, e il "CHF 70-80 a sessione erogata" del
+ * Business Plan smetterebbe di descrivere la demo che gli sta accanto.
+ */
+PROFESSIONALS.forEach((professional) => {
+  assertInDev(
+    professional.sessionFee >= SESSION_FEE_BAND.min &&
+      professional.sessionFee <= SESSION_FEE_BAND.max,
+    `${professional.lastName} prende CHF ${professional.sessionFee} a seduta, fuori dalla banda CHF ${SESSION_FEE_BAND.min}-${SESSION_FEE_BAND.max} del §9.`,
+  );
+});
