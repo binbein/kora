@@ -1,3 +1,4 @@
+import { assertInDev } from "../guardrails";
 import type { Company, Department, Plan, PlanId } from "../types";
 import { DEMO_TODAY } from "./demo-date";
 
@@ -116,3 +117,20 @@ export const DEPARTMENTS: Department[] = [
   { id: "hr-legal", name: "HR + Legale", employeeCount: 15 },
   { id: "board", name: "Direzione", employeeCount: 15 },
 ];
+
+/*
+ * "Sommano a 120" era una promessa del commento qui sopra, e un commento non
+ * ferma nessuno. Il conto sostiene la riga "24 dipendenti · 13 misurati" di
+ * ogni riga della dashboard e il denominatore dell'adozione: se un reparto
+ * cambiasse organico, l'azienda direbbe 120 in cima e un'altra cifra sommando
+ * la tabella sotto, senza che niente si rompa.
+ */
+const departmentHeadcount = DEPARTMENTS.reduce(
+  (sum, department) => sum + department.employeeCount,
+  0,
+);
+
+assertInDev(
+  departmentHeadcount === COMPANY.employeeCount,
+  `I sei reparti sommano a ${departmentHeadcount} dipendenti, l'azienda ne dichiara ${COMPANY.employeeCount} (§8).`,
+);
