@@ -549,8 +549,14 @@ export class MockDataProvider implements DataProvider {
     );
 
     const request: DemoRequest = {
-      ...input,
       id: `demo-request-${this.demoRequests.length + 1}`,
+      companyName: input.companyName,
+      contactName: input.contactName,
+      email: input.email,
+      employeeCount: input.employeeCount,
+      // il confine normalizza: assente, vuoto e soli spazi sono la stessa cosa
+      // per chi legge, e diventano `null` una volta sola, qui
+      message: input.message?.trim() || null,
       submittedAt: DEMO_TODAY,
     };
     this.demoRequests.push(request);

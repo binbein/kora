@@ -889,6 +889,12 @@ export type HrReport = {
 // Richiesta demo (area pubblica)
 // ---------------------------------------------------------------------------
 
+/**
+ * Quello che il form manda. `message` è `?` ed è la convenzione giusta su un
+ * payload di scrittura: è un campo che si può lasciare vuoto, e obbligare ogni
+ * chiamante a passare `message: null` sarebbe rumore
+ * (`docs/CONTRATTO-DATI.md` §2).
+ */
 export type DemoRequestInput = {
   companyName: string;
   contactName: string;
@@ -897,8 +903,22 @@ export type DemoRequestInput = {
   message?: string;
 };
 
-export type DemoRequest = DemoRequestInput & {
+/**
+ * Quello che il back-office legge. **Non è un'intersezione dell'input**, ed è la
+ * differenza fra le due metà della regola: sul modello di lettura l'assenza si
+ * dice `null`, sempre presente nella risposta, perché chi legge non deve
+ * distinguere "non l'ha scritto" da "il campo non è arrivato".
+ *
+ * A normalizzare è il confine della scrittura, cioè il provider — che è dove lo
+ * farà il backend ricevendo la richiesta.
+ */
+export type DemoRequest = {
   id: string;
+  companyName: string;
+  contactName: string;
+  email: string;
+  employeeCount: number;
+  message: string | null;
   submittedAt: Date;
 };
 
