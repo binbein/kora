@@ -39,10 +39,19 @@ consultare: le cifre ammesse sono solo quelle trascritte in `CLAUDE.md` §8 e §
 **M4 è chiusa**: da `/hr/report` si scarica un PDF di una pagina per il
 trimestre scelto. Da lì il lavoro è **refinement fra le milestone** — passate
 che non aggiungono schermate e mettono in ordine layer dati, seam e dizionario;
-la sintesi sta nella sezione dedicata, sotto M4. **La prossima milestone è M5**,
-e resta da prendere prima la **decisione di palette sull'accessibilità**: il
-bianco su `secondary` pieno dà 2.83:1 contro il minimo AA di 4.5, e le due
-strade sono scurire il token o portare le CTA su `primary`.
+la sintesi sta nella sezione dedicata, sotto M4. **La prossima milestone è M5.**
+
+**La decisione di palette è presa** (riunione del 10.08.2026): il bianco su
+`secondary` pieno dà 2.83:1 contro il minimo AA di 4.5, e le CTA piene passano
+su `primary` invece di scurire il token. **Resta da eseguire**, in una passata
+dedicata che produce anche l'inventario dei punti — il criterio con cui si
+contano sta nella voce della riunione, ed è la parte che serve per non partire
+nella direzione sbagliata.
+
+Le altre due esecuzioni rimandate dalla stessa riunione non stanno nello stesso
+posto: la **build "demo"** in cui i guardrail loggano, con la checklist
+pre-pitch consolidata, è una passata dedicata pre-pitch e **non** è M5;
+**`Intl.ListFormat`** invece entra in M5.
 
 ### M0 — Messa in sicurezza
 
@@ -502,8 +511,11 @@ dataset con il messaggio giusto.
   toccato: cambiarlo è una decisione di palette dei founder, non una correzione
   di passata, e `--secondary-foreground` è bianco nei token, quindi la scelta è
   incorporata nel design system. Le due strade sono scurire `--secondary` o
-  portare le CTA su `primary`. Va deciso prima di M5, che ha
-  "accessibilità completa" in elenco.
+  portare le CTA su `primary`. ~~Va deciso prima di M5, che ha "accessibilità
+  completa" in elenco.~~ → **deciso il 10.08.2026: le CTA passano su `primary`**,
+  e resta da eseguire in una passata dedicata. I 19 punti su 11 file sono la
+  rilevazione di allora: il conteggio va rifatto con il criterio della voce di
+  riunione, che dice anche quali punti non sono correggibili.
 - **La home elenca tutti gli appuntamenti in programma**, che oggi sono tre più
   quelli che si prenotano durante la demo. È voluto — è così che si vede
   comparire quello nuovo — ma se l'elenco crescesse troppo andrebbe accorciato.
@@ -631,7 +643,10 @@ Fachpersonen, più Anmelden e Demo vereinbaren — la barra sta su una riga a
 - **Il debito AA sulla CTA verde è sceso ma non è chiuso.** Le schermate nuove e
   rifatte usano `primary` o la coppia `accent`, quindi il debito non si è
   allargato, ma i punti che restano nelle aree non toccate vanno chiusi con la
-  decisione di palette prima di M5.
+  decisione di palette. → **Presa il 10.08.2026** — CTA su `primary` — e da
+  eseguire in una passata dedicata. Che le schermate di questa passata avessero
+  già scelto `primary` è la ragione per cui la decisione costa poco: la direzione
+  era di fatto quella.
 
 #### Il back-office (§10.E) — e la chiusura di M3
 
@@ -953,6 +968,60 @@ Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà 
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
 
+- **10.08.2026 — Riunione founder: tre ratifiche e tre esecuzioni rimandate.**
+  Le regole vivono in `CLAUDE.md`, come sempre; qui restano la data e il motivo.
+
+  **Ratificati i totali di carriera dei cinque professionisti** (`CLAUDE.md`
+  §8) — 340, 285, 312, 210, 0 — che erano nel dataset e non fra le cifre
+  ammesse, e che `CONTRATTO-DATI.md` §7 dava "in attesa di ratifica". La somma
+  1'147 è la KPI del back-office e si somma dai cinque. Restano dichiarati:
+  solo la Dr.ssa Meier ha un'agenda dietro cui rispondere, e solo lei è
+  sorvegliata da un guardrail.
+
+  **Ratificata la collocazione dentro la banda dei compensi** (`CLAUDE.md` §9):
+  con una valutazione la tariffa la segue, senza valutazione è la tariffa
+  d'ingresso a metà banda, CHF 75. Serviva perché la Dr.ssa Keller ha
+  `rating: null` — da un `null` non si scende e non si sale — e la sua era
+  l'unica tariffa del dataset senza un motivo dichiarato.
+
+  **Le 8 ore settimanali minime entrano fra i numeri ufficiali** (`CLAUDE.md`
+  §9). Verificate sul Business Plan prima di trascriverle: **p.11, parte C1**,
+  *"disponibilità min. 8h/settimana"*. È un dato del BP, non una stima, e sta
+  sulla stessa riga delle due condizioni da cui la demo deriva "prenotabile".
+
+  **Il debito AA si chiude portando le CTA su `primary`** (`CLAUDE.md` §6.1), e
+  la voce esce dalle decisioni in sospeso. Scurire `--secondary` avrebbe
+  cambiato di luminosità ogni schermata già approvata, mentre spostare le CTA
+  lascia al teal il suo mestiere — dati positivi e accenti. **Si esegue in una
+  passata dedicata**, e l'inventario autoritativo dei punti lo produce lei: il
+  conteggio di oggi è **dell'ordine di 9 punti su 7 file**, contro i 19 su 11
+  della prima rilevazione, ma **dipende dal criterio** e va riletto con il
+  criterio in mano — sotto.
+
+  **In una build "demo" i guardrail loggano invece di tacere** (`CLAUDE.md`
+  §5.6). Il build che si porta al pitch è di produzione, quindi oggi tacciono
+  tutti: `DEMO_TODAY` spostata di mese è il caso che l'ha fatto emergere.
+  **Passata dedicata pre-pitch, non M5**, insieme alla checklist pre-pitch
+  consolidata.
+
+  **`Intl.ListFormat` entra in M5** (`CLAUDE.md` §4). Le liste sono la terza
+  cosa che cambia col locale dopo date e valuta, e `format.ts` non le tratta.
+
+  **Il piano "Personalizzato" resta in sospeso**: la riunione non l'ha
+  discusso, e il suo trigger è il listino a moduli.
+
+  **Il criterio con cui si contano i punti della CTA**, perché la prossima
+  rilevazione non produca un terzo numero dopo 19/11 e 9/7. Si contano i punti
+  che **rendono** bianco su teal, e si dichiara di ognuno se è correggibile:
+  i **call site** che scelgono `variant="secondary"` su `Button` e `Badge` —
+  correggibili, ed è lì che si interviene; le **definizioni** di quelle
+  varianti in `button.tsx` e `badge.tsx` — **non** correggibili, perché
+  `src/components/ui/` è congelato (§3), quindi si cambia la variante scelta e
+  non la variante; `KPICard`, che è fuori dal congelamento e la cui variante si
+  può toccare; e `FlexiblePlanCard.jsx`, **escluso**, codice morto del piano
+  nascosto. È la differenza fra contare le sorgenti e contare le occorrenze, ed
+  è ciò che ha prodotto due numeri diversi sullo stesso codice.
+
 - **10.08.2026 — Il selettore del trimestre entra in `/hr/report`, e il PDF
   porta anche attivi e sessioni** (`CLAUDE.md` §10.C.3). Due decisioni di scope
   prese insieme all'apertura di M4, perché la seconda dipende dalla prima.
@@ -1186,19 +1255,15 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 
 ## Decisioni in sospeso
 
-- **La palette e la CTA verde piena.** Bianco su `secondary` dà 2.83:1 contro il
-  minimo AA di 4.5, e le due strade sono scurire `--secondary` oppure portare le
-  CTA su `primary`. **Va decisa prima di M5**, che ha l'accessibilità completa in
-  elenco. Il conto dei punti coinvolti e il perché la scelta non è una correzione
-  di passata stanno nei difetti aperti dell'area dipendente e dell'area pubblica;
-  la regola sul contrasto è in `CLAUDE.md` §6.1.
 - **Piano "Personalizzato" della pagina prezzi.** Nascosto in M0 in attesa della
   decisione del CEO: gli undici prezzi dei moduli non sono nel Business Plan, gli
   sconti a volume nemmeno, e a 150 dipendenti la preselezione esce a **CHF 38** —
   identico all'Essenziale — offrendo medico virtuale illimitato e check-up annuale
   che l'Essenziale non ha. Verificato alla cifra.
-*(Era in sospeso anche l'emoji nel saluto della home dipendente: decisa il
-07.08.2026 — si toglie — e passata fra le decisioni chiuse.)*
+*(Erano in sospeso anche l'emoji nel saluto della home dipendente, decisa il
+07.08.2026 — si toglie — e la **palette con la CTA verde piena**, decisa il
+10.08.2026 — le CTA passano su `primary`. Entrambe fra le decisioni chiuse; la
+seconda resta da eseguire, che è un'altra cosa dall'essere in sospeso.)*
 
 ## Migliorie rimandate al refinement
 
