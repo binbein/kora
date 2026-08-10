@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -62,7 +62,7 @@ export default function Medico() {
 
   if (!company) return null;
 
-  const send = (event: React.FormEvent) => {
+  const send = (event: FormEvent) => {
     event.preventDefault();
     const question = draft.trim();
     if (!question) return;

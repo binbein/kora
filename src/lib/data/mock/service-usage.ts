@@ -114,7 +114,16 @@ export function sessionsUsedThrough(period: Quarter): number {
 // Guardrail (§5.6)
 // ---------------------------------------------------------------------------
 
+/*
+ * I quattro totali sui dodici mesi che il §8 dichiara. Erano verificati solo
+ * per lo psicologo: gli altri tre avevano un controllo sul **tetto** — che è
+ * un'altra domanda, e passa anche con la metà delle sessioni — quindi la
+ * ciambella poteva allontanarsi dal documento senza che niente lo dicesse.
+ */
 const COMPANY_SESSIONS_PER_YEAR = 142;
+const VIRTUAL_DOCTOR_PER_YEAR = 118;
+const COACH_PER_YEAR = 85;
+const CHECKUP_PER_YEAR = 51;
 
 const psychologistTotal = SERVICE_USAGE.reduce(
   (sum, entry) => sum + entry.sessions.psychologist,
@@ -123,6 +132,27 @@ const psychologistTotal = SERVICE_USAGE.reduce(
 assertInDev(
   psychologistTotal === COMPANY_SESSIONS_PER_YEAR,
   `Le sedute di psicologo sui dodici mesi sono ${psychologistTotal}, non le ${COMPANY_SESSIONS_PER_YEAR} del §8: la ciambella e la KPI direbbero due numeri diversi.`,
+);
+
+const virtualDoctorTotal = SERVICE_USAGE.reduce(
+  (sum, entry) => sum + entry.sessions.virtual_doctor,
+  0,
+);
+assertInDev(
+  virtualDoctorTotal === VIRTUAL_DOCTOR_PER_YEAR,
+  `I consulti di medico virtuale sui dodici mesi sono ${virtualDoctorTotal}, non i ${VIRTUAL_DOCTOR_PER_YEAR} del §8.`,
+);
+
+/*
+ * IL VINCOLO DELLA CIAMBELLA (§8): il medico virtuale sta **sotto** lo
+ * psicologo. La frase che il pitch pronuncia è che il supporto psicologico è
+ * la fetta più grande, e senza questo controllo un servizio illimitato e a
+ * bassa frizione la supererebbe alla prima volta che qualcuno ritocca le
+ * curve — il grafico direbbe il contrario del discorso, mentre è a schermo.
+ */
+assertInDev(
+  virtualDoctorTotal < psychologistTotal,
+  `Il medico virtuale (${virtualDoctorTotal}) supera lo psicologo (${psychologistTotal}): la ciambella smentirebbe la frase del §8 sulla fetta più grande.`,
 );
 
 /*
@@ -157,6 +187,10 @@ assertInDev(
   coachTotal <= coachAllowance,
   `Il coaching consuma ${coachTotal} sessioni su un monte di ${coachAllowance}.`,
 );
+assertInDev(
+  coachTotal === COACH_PER_YEAR,
+  `Le sessioni di coaching sui dodici mesi sono ${coachTotal}, non le ${COACH_PER_YEAR} del §8.`,
+);
 
 const checkupTotal = SERVICE_USAGE.reduce(
   (sum, entry) => sum + entry.sessions.checkup,
@@ -165,6 +199,10 @@ const checkupTotal = SERVICE_USAGE.reduce(
 assertInDev(
   checkupTotal <= COMPANY.employeeCount,
   `I check-up sono ${checkupTotal} su un organico di ${COMPANY.employeeCount}, e il piano ne dà uno a testa.`,
+);
+assertInDev(
+  checkupTotal === CHECKUP_PER_YEAR,
+  `I check-up sui dodici mesi sono ${checkupTotal}, non i ${CHECKUP_PER_YEAR} del §8.`,
 );
 
 /*
