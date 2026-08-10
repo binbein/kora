@@ -297,6 +297,21 @@ clienti; nel dataset demo le sessioni di un cliente sono la curva di Demo SA
 scalata sul rapporto fra gli iscritti, **e questa è una semplificazione che
 salta in produzione** (§7).
 
+**Tutti i campi di `PlatformMonth` contano lo stesso insieme: i clienti
+presenti in quel mese _e_ avviati.** Ricavo, dipendenti coperti, iscritti e
+sedute rispondono allo stesso predicato, e un contratto firmato e non partito
+non entra in nessuno dei quattro — è `ClientCompany.active` applicato una volta
+sola.
+
+Non è pignoleria: iscritti e coperti sono il numeratore e il denominatore
+dell'attivazione, quindi **contare due insiemi diversi ammette un'attivazione
+sopra il 100%**. È la forma esatta del difetto che il mock aveva —
+`coveredEmployees` filtrava gli attivi, `enrolledEmployees` no — e che non si
+vedeva perché nel dataset demo l'unica azienda non avviata ha zero iscritti. In
+produzione quella coincidenza cade: un contratto firmato può avere persone già
+registrate prima dell'avvio. Un guardrail verifica ora l'invariante su ogni
+mese.
+
 **Il tasso di attivazione non è un campo.** È iscritti ÷ dipendenti coperti,
 cioè la stessa definizione dell'adozione aziendale applicata a tutti i clienti
 attivi. Salvarlo è come il back-office ereditato è arrivato a mostrare "618

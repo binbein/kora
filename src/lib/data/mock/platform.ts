@@ -105,9 +105,16 @@ export const CLIENT_COMPANIES: ClientCompany[] = [
   },
 ];
 
-/** Ricavo mensile di un cliente. Zero finché il contratto non è avviato. */
+/**
+ * Ricavo mensile di un cliente.
+ *
+ * Non controlla che il contratto sia avviato, e non deve: a escludere chi non
+ * lo è ci pensa il filtro che costruisce la lista dei clienti del mese, che è
+ * il posto in cui quella regola vive **una volta sola** (§5.5). Prima il
+ * controllo era qui, e la stessa regola risultava espressa in tre modi diversi
+ * in tre punti dello stesso oggetto.
+ */
 function monthlyRevenueOf(company: ClientCompany): number {
-  if (!company.active) return 0;
   return company.employeeCount * PLANS[company.planId].monthlyPricePerEmployee;
 }
 
@@ -154,8 +161,25 @@ const SERVICE_KINDS: AppointmentKind[] = [
  */
 export const PLATFORM_MONTHS: PlatformMonth[] = HISTORY_MONTHS.map(
   (month, index) => {
-    const clients = CLIENT_COMPANIES.filter((company) =>
-      isClientIn(company, month),
+    /*
+     * I CLIENTI CHE CONTANO IN QUESTO MESE: presenti **e** avviati.
+     *
+     * Un predicato solo, applicato una volta, per tutti e quattro i campi del
+     * mese. Prima ce n'erano tre diversi: `coveredEmployees` filtrava gli
+     * attivi, `enrolledEmployees` no, le sedute nemmeno, e il ricavo li
+     * escludeva da dentro `monthlyRevenueOf`. Iscritti e coperti sono il
+     * numeratore e il denominatore dell'attivazione
+     * (`docs/CONTRATTO-DATI.md` §3): contare due insiemi diversi ammette
+     * un'attivazione sopra il 100%.
+     *
+     * A schermo non si vedeva, e per una coincidenza: l'unica azienda non
+     * avviata ha zero iscritti. È lo stesso difetto degli "utenti iscritti"
+     * della pagina utenti, un livello più sotto — e in produzione la
+     * coincidenza cade, perché un contratto firmato e non partito può avere
+     * benissimo delle persone già registrate.
+     */
+    const clients = CLIENT_COMPANIES.filter(
+      (company) => isClientIn(company, month) && company.active,
     );
 
     const sessions: Record<AppointmentKind, number> = {
@@ -181,9 +205,10 @@ export const PLATFORM_MONTHS: PlatformMonth[] = HISTORY_MONTHS.map(
         (sum, company) => sum + monthlyRevenueOf(company),
         0,
       ),
-      coveredEmployees: clients
-        .filter((company) => company.active)
-        .reduce((sum, company) => sum + company.employeeCount, 0),
+      coveredEmployees: clients.reduce(
+        (sum, company) => sum + company.employeeCount,
+        0,
+      ),
       enrolledEmployees: clients.reduce(
         (sum, company) => sum + company.enrolledEmployees,
         0,
@@ -349,6 +374,26 @@ for (let index = 1; index < byTenure.length; index += 1) {
     older.enrolledEmployees / older.employeeCount >
       newer.enrolledEmployees / newer.employeeCount,
     `${newer.name} ha un'adozione più alta di ${older.name}, che è cliente da più tempo.`,
+  );
+}
+
+/*
+ * GLI ISCRITTI NON POSSONO SUPERARE I COPERTI, in nessun mese.
+ *
+ * È l'invariante che l'attivazione presuppone: iscritti ÷ coperti è una
+ * percentuale solo se le due somme contano lo stesso insieme di clienti
+ * (`docs/CONTRATTO-DATI.md` §3). Rotto, dà un'attivazione sopra il 100% — un
+ * numero che a schermo si legge benissimo e non vuol dire niente.
+ *
+ * Sta a un livello diverso dal controllo sui semi qui sopra, che vieta a un
+ * cliente non avviato di dichiarare iscritti: quello sorveglia il **dataset**,
+ * questo la **serie derivata**. Il primo non vedrebbe un filtro che torna
+ * asimmetrico, che è esattamente il difetto da cui questo controllo nasce.
+ */
+for (const entry of PLATFORM_MONTHS) {
+  assertInDev(
+    entry.enrolledEmployees <= entry.coveredEmployees,
+    `Nel mese ${entry.month.getFullYear()}-${entry.month.getMonth() + 1} gli iscritti sono ${entry.enrolledEmployees} su ${entry.coveredEmployees} dipendenti coperti: l'attivazione supererebbe il 100%.`,
   );
 }
 
