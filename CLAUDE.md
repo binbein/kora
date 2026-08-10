@@ -93,6 +93,17 @@ repository Next non dia niente per scontato.
   le pagine ereditate si convertono quando le si tocca (§10), non tutte insieme.
   Il layer dati (§5) è TS strict senza `any` — è il contratto con l'API futura e
   in JavaScript quel contratto non esisterebbe.
+
+  **A M3 chiusa restano quattro `.jsx`, e non sono dimenticanze**: `HRLayout`,
+  `ProLayout`, `KoraLogo` e `PageNotFound`. **Nessuna migrazione di M3 li ha
+  toccati**: i due layout sono i wrapper di quindici righe che montano nav e
+  `Outlet` e stanno al primo commit, il logo e la 404 non si toccano dai tempi di
+  M1 — cioè da prima che l'eccezione sui componenti shadcn rendesse convertibile
+  una schermata che importa `Button`. La regola qui sopra è stata applicata alla
+  lettera, non disattesa: si convertono il giorno in cui qualcuno ci mette mano. Il quinto, `FlexiblePlanCard.jsx`, resta `.jsx` per un'altra ragione
+  ancora: il piano "Personalizzato" è in sospeso (§10.A.3) e i suoi undici prezzi
+  non stanno nel Business Plan, quindi non potrebbe leggere da `Plan` nemmeno
+  volendo.
 - **Tailwind CSS 3** con i token in `src/index.css` come variabili HSL, e
   `tailwind.config.js` che li mappa. **Non è Tailwind 4**: esiste ancora
   `tailwind.config.js`, non c'è il blocco `@theme`.
@@ -224,7 +235,7 @@ kora/
       ui/                ← shadcn, non si tocca se non per i bug di §3
       shared/            ← KPICard, PrivacyBanner, logo
       public|employee|hr|professional|admin/  ← layout e navigazione per area
-      kora/              ← componenti di dominio nuovi (StressBar, SessionMeter…)
+      kora/              ← componenti di dominio nuovi: oggi il solo RapidCheckCard
     lib/
       data/              ← il contratto dati e l'implementazione mock (§5),
                            più i guardrail e il prefetch della cache
