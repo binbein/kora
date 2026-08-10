@@ -108,7 +108,18 @@ export default [
         {
           patterns: [
             {
-              group: ["@/lib/data/mock/*", "**/lib/data/mock/*"],
+              // Il buco che `mock/*` lasciava aperto e' **la cartella nuda**:
+              // un `from "@/lib/data/mock"` — cioe' il barrel `mock/index.ts`,
+              // la forma piu' comoda da scrivere — non veniva segnalato.
+              // Verificato: le sottocartelle `mock/a/b` invece gia' passavano
+              // dalla regola, quindi il pattern nudo e' l'unica aggiunta che
+              // cambia qualcosa. Ci sono tutte e due per non doverlo riscoprire.
+              group: [
+                "@/lib/data/mock",
+                "@/lib/data/mock/**",
+                "**/lib/data/mock",
+                "**/lib/data/mock/**",
+              ],
               message:
                 "Il dataset finto si legge solo attraverso il provider (@/lib/data): CLAUDE.md §5.7.",
             },
