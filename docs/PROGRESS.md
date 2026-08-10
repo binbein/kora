@@ -8,6 +8,11 @@ lì.
 ## Come si tiene aggiornato
 
 - Si scrive **alla chiusura di ogni milestone**, non a ogni commit.
+- E **alla chiusura di una passata di refinement fra due milestone**. Non sono
+  milestone e non hanno una definizione di "finito" nel `CLAUDE.md` §4, ma
+  cambiano cose che chi riprende deve sapere prima di riscoprirle — un seam che
+  non era acceso, un guardrail nuovo, un modulo che ha cambiato posto. Senza
+  questa riga il loro unico racconto è git, che ha il dettaglio e non il quadro.
 - Una decisione non ovvia va in `CLAUDE.md` con un commit `docs:` separato dal
   codice; qui si cita e si rimanda, non si duplica.
 - Ogni voce dice **cosa è stato fatto, perché quella scelta e cosa è stato
@@ -32,10 +37,21 @@ stanno in `docs/` dal 07.08.2026 (decisione qui sotto), ma restano una fonte da
 consultare: le cifre ammesse sono solo quelle trascritte in `CLAUDE.md` §8 e §9.
 
 **M4 è chiusa**: da `/hr/report` si scarica un PDF di una pagina per il
-trimestre scelto. **Il prossimo passo è M5**, e resta da prendere prima la
-**decisione di palette sull'accessibilità**: il bianco su
-`secondary` pieno dà 2.83:1 contro il minimo AA di 4.5, e le due strade sono
-scurire il token o portare le CTA su `primary`.
+trimestre scelto. Da lì il lavoro è **refinement fra le milestone** — passate
+che non aggiungono schermate e mettono in ordine layer dati, seam e dizionario;
+la sintesi sta nella sezione dedicata, sotto M4. **La prossima milestone è M5.**
+
+**La decisione di palette è presa** (riunione del 10.08.2026): il bianco su
+`secondary` pieno dà 2.83:1 contro il minimo AA di 4.5, e le CTA piene passano
+su `primary` invece di scurire il token. **Resta da eseguire**, in una passata
+dedicata che produce anche l'inventario dei punti — il criterio con cui si
+contano sta nella voce della riunione, ed è la parte che serve per non partire
+nella direzione sbagliata.
+
+Le altre due esecuzioni rimandate dalla stessa riunione non stanno nello stesso
+posto: la **build "demo"** in cui i guardrail loggano, con la checklist
+pre-pitch consolidata, è una passata dedicata pre-pitch e **non** è M5;
+**`Intl.ListFormat`** invece entra in M5.
 
 ### M0 — Messa in sicurezza
 
@@ -495,8 +511,11 @@ dataset con il messaggio giusto.
   toccato: cambiarlo è una decisione di palette dei founder, non una correzione
   di passata, e `--secondary-foreground` è bianco nei token, quindi la scelta è
   incorporata nel design system. Le due strade sono scurire `--secondary` o
-  portare le CTA su `primary`. Va deciso prima di M5, che ha
-  "accessibilità completa" in elenco.
+  portare le CTA su `primary`. ~~Va deciso prima di M5, che ha "accessibilità
+  completa" in elenco.~~ → **deciso il 10.08.2026: le CTA passano su `primary`**,
+  e resta da eseguire in una passata dedicata. I 19 punti su 11 file sono la
+  rilevazione di allora: il conteggio va rifatto con il criterio della voce di
+  riunione, che dice anche quali punti non sono correggibili.
 - **La home elenca tutti gli appuntamenti in programma**, che oggi sono tre più
   quelli che si prenotano durante la demo. È voluto — è così che si vede
   comparire quello nuovo — ma se l'elenco crescesse troppo andrebbe accorciato.
@@ -624,7 +643,10 @@ Fachpersonen, più Anmelden e Demo vereinbaren — la barra sta su una riga a
 - **Il debito AA sulla CTA verde è sceso ma non è chiuso.** Le schermate nuove e
   rifatte usano `primary` o la coppia `accent`, quindi il debito non si è
   allargato, ma i punti che restano nelle aree non toccate vanno chiusi con la
-  decisione di palette prima di M5.
+  decisione di palette. → **Presa il 10.08.2026** — CTA su `primary` — e da
+  eseguire in una passata dedicata. Che le schermate di questa passata avessero
+  già scelto `primary` è la ragione per cui la decisione costa poco: la direzione
+  era di fatto quella.
 
 #### Il back-office (§10.E) — e la chiusura di M3
 
@@ -825,6 +847,73 @@ variabile non verificherebbe niente.
   aggiungerli vorrebbe dire decidere se il documento resta di una pagina. È scope,
   quindi è dei founder.
 
+### Refinement fra le milestone
+
+Cinque passate mergiate fra la chiusura di M3 e oggi: quattro nell'intervallo
+M3 → M4 (PR #15–#18) e una dopo M4 (PR #20). Non aggiungono schermate e non
+spostano un numero a schermo — sono igiene del layer dati, del seam e del
+dizionario. La sintesi sta qui perché **il dettaglio è in git e il quadro no**:
+chi riprende deve sapere che queste cose esistono prima di riscoprirle.
+
+**Il seam era dichiarato e non tutto acceso.** I due preset di ESLint —
+`eslint:recommended` e `react/recommended` — stavano nello stesso oggetto di
+configurazione della chiave `rules:` scritta a mano, che arrivando dopo li
+sovrascriveva **per intero**: nessuno dei due era attivo, e il lint usciva verde
+perché non stava guardando. Ora ognuno sta nel proprio elemento dell'array, con
+`src/components/ui/` fuori da entrambi — un avviso su un file congelato è
+pressione a modificarlo, e la regola che serve lì è quella del blocco
+typescript-eslint. Nella stessa passata il divieto di importare `mock/` ha perso
+il buco della cartella nuda, e il divieto di leggere l'orologio vero è stato
+esteso **al layer dati stesso**: `new Date()` e `Date.now()` restano leciti solo
+dove `DEMO_TODAY` nasce.
+
+**Quattro guardrail nuovi**, tutti su invarianti che a schermo non si vedono: i
+sei reparti sommano all'organico dell'azienda; i quattro totali di servizio sono
+fissati con il vincolo che tiene la ciambella (lo psicologo resta la fetta più
+grande); ogni tariffa cade dentro la banda CHF 70–80 del §9; e — dopo M4 — gli
+iscritti non superano mai i dipendenti coperti.
+
+**Il predicato dei mesi di piattaforma è diventato uno solo** (PR #20). Ricavo,
+coperti, iscritti e sedute rispondevano a domande leggermente diverse:
+`coveredEmployees` filtrava i clienti avviati e `enrolledEmployees` no, cioè
+numeratore e denominatore dell'attivazione contavano due insiemi. Nel dataset
+demo non si vedeva, perché l'unica azienda non avviata ha zero iscritti; in
+produzione quella coincidenza cade e l'attivazione può superare il 100%. Ora i
+quattro campi applicano `ClientCompany.active` una volta sola, e un guardrail
+verifica l'invariante su ogni mese (`CONTRATTO-DATI.md` §3).
+
+**`platform-metrics.ts` è nato da un vincolo del seam.** Ricavo, attivazione e
+mese corrente sono conti sui dati e non dati — «il tasso di attivazione non è un
+campo» — quindi vivevano in `lib/data/mock/platform.ts`, dove **nessuna
+schermata poteva importarli**: è il divieto del §5.7, e il risultato era che le
+pagine del back-office li riscrivevano. Da lì una divisione ripetuta in due
+punti e un `if (!plan) return 0`. Ora stanno in `lib/`, come `earnings.ts` e
+`schedule.ts`, e il giorno in cui `mock/` si cancella quel file non si tocca
+(`CLAUDE.md` §3).
+
+**Il layer dati ha chiuso quattro punti di forma.** Il dipendente demo ha un id
+opaco invece di uno parlante; la chiave della nota di sessione è passata **sotto
+la radice del professionista**, così l'invalidazione della radice se la porta
+dietro come tutto il resto (`CONTRATTO-DATI.md` §4); la proiezione letta di una
+richiesta demo e il nome proprio del professionista hanno preso la forma che il
+contratto prescrive (§2); e un id di professionista inesistente ora **lancia
+invece di restituire vuoto** — un metodo che tace su una chiave sbagliata fa
+sembrare la schermata un caso legittimo di lista vuota.
+
+**Il dizionario ha assorbito le stringhe rimaste in JSX** — etichette della
+dashboard HR, della ciambella, dei mesi, l'indirizzo, il segno, il giorno — e i
+numeri del portale professionista passano da `format.ts`. Il trattino di
+"nessun dato" è consolidato su `common.none`, che è la stessa chiave che il PDF
+di M4 verifica.
+
+**Una cosa scoperta misurando, e vale per il pitch**: `DEMO_TODAY` gira meno di
+quanto il suo commento prometteva. Cambiare **anno** funziona; cambiare
+**giorno** dentro settembre non fa lanciare niente ma non è sorvegliato da
+nessun guardrail — le tre proprietà del §5.4 restano da rileggere a mano;
+cambiare **mese** rompe, e il commento del file dice ora dove. Il pericolo non è
+il lancio, è che **in produzione i guardrail tacciono** (§5.6): una manopola
+girata male non si vede in un build di pitch. Si gira in sviluppo e si guarda.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -878,6 +967,60 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà una
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
+
+- **10.08.2026 — Riunione founder: tre ratifiche e tre esecuzioni rimandate.**
+  Le regole vivono in `CLAUDE.md`, come sempre; qui restano la data e il motivo.
+
+  **Ratificati i totali di carriera dei cinque professionisti** (`CLAUDE.md`
+  §8) — 340, 285, 312, 210, 0 — che erano nel dataset e non fra le cifre
+  ammesse, e che `CONTRATTO-DATI.md` §7 dava "in attesa di ratifica". La somma
+  1'147 è la KPI del back-office e si somma dai cinque. Restano dichiarati:
+  solo la Dr.ssa Meier ha un'agenda dietro cui rispondere, e solo lei è
+  sorvegliata da un guardrail.
+
+  **Ratificata la collocazione dentro la banda dei compensi** (`CLAUDE.md` §9):
+  con una valutazione la tariffa la segue, senza valutazione è la tariffa
+  d'ingresso a metà banda, CHF 75. Serviva perché la Dr.ssa Keller ha
+  `rating: null` — da un `null` non si scende e non si sale — e la sua era
+  l'unica tariffa del dataset senza un motivo dichiarato.
+
+  **Le 8 ore settimanali minime entrano fra i numeri ufficiali** (`CLAUDE.md`
+  §9). Verificate sul Business Plan prima di trascriverle: **p.11, parte C1**,
+  *"disponibilità min. 8h/settimana"*. È un dato del BP, non una stima, e sta
+  sulla stessa riga delle due condizioni da cui la demo deriva "prenotabile".
+
+  **Il debito AA si chiude portando le CTA su `primary`** (`CLAUDE.md` §6.1), e
+  la voce esce dalle decisioni in sospeso. Scurire `--secondary` avrebbe
+  cambiato di luminosità ogni schermata già approvata, mentre spostare le CTA
+  lascia al teal il suo mestiere — dati positivi e accenti. **Si esegue in una
+  passata dedicata**, e l'inventario autoritativo dei punti lo produce lei: il
+  conteggio di oggi è **dell'ordine di 9 punti su 7 file**, contro i 19 su 11
+  della prima rilevazione, ma **dipende dal criterio** e va riletto con il
+  criterio in mano — sotto.
+
+  **In una build "demo" i guardrail loggano invece di tacere** (`CLAUDE.md`
+  §5.6). Il build che si porta al pitch è di produzione, quindi oggi tacciono
+  tutti: `DEMO_TODAY` spostata di mese è il caso che l'ha fatto emergere.
+  **Passata dedicata pre-pitch, non M5**, insieme alla checklist pre-pitch
+  consolidata.
+
+  **`Intl.ListFormat` entra in M5** (`CLAUDE.md` §4). Le liste sono la terza
+  cosa che cambia col locale dopo date e valuta, e `format.ts` non le tratta.
+
+  **Il piano "Personalizzato" resta in sospeso**: la riunione non l'ha
+  discusso, e il suo trigger è il listino a moduli.
+
+  **Il criterio con cui si contano i punti della CTA**, perché la prossima
+  rilevazione non produca un terzo numero dopo 19/11 e 9/7. Si contano i punti
+  che **rendono** bianco su teal, e si dichiara di ognuno se è correggibile:
+  i **call site** che scelgono `variant="secondary"` su `Button` e `Badge` —
+  correggibili, ed è lì che si interviene; le **definizioni** di quelle
+  varianti in `button.tsx` e `badge.tsx` — **non** correggibili, perché
+  `src/components/ui/` è congelato (§3), quindi si cambia la variante scelta e
+  non la variante; `KPICard`, che è fuori dal congelamento e la cui variante si
+  può toccare; e `FlexiblePlanCard.jsx`, **escluso**, codice morto del piano
+  nascosto. È la differenza fra contare le sorgenti e contare le occorrenze, ed
+  è ciò che ha prodotto due numeri diversi sullo stesso codice.
 
 - **10.08.2026 — Il selettore del trimestre entra in `/hr/report`, e il PDF
   porta anche attivi e sessioni** (`CLAUDE.md` §10.C.3). Due decisioni di scope
@@ -1112,19 +1255,15 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 
 ## Decisioni in sospeso
 
-- **La palette e la CTA verde piena.** Bianco su `secondary` dà 2.83:1 contro il
-  minimo AA di 4.5, e le due strade sono scurire `--secondary` oppure portare le
-  CTA su `primary`. **Va decisa prima di M5**, che ha l'accessibilità completa in
-  elenco. Il conto dei punti coinvolti e il perché la scelta non è una correzione
-  di passata stanno nei difetti aperti dell'area dipendente e dell'area pubblica;
-  la regola sul contrasto è in `CLAUDE.md` §6.1.
 - **Piano "Personalizzato" della pagina prezzi.** Nascosto in M0 in attesa della
   decisione del CEO: gli undici prezzi dei moduli non sono nel Business Plan, gli
   sconti a volume nemmeno, e a 150 dipendenti la preselezione esce a **CHF 38** —
   identico all'Essenziale — offrendo medico virtuale illimitato e check-up annuale
   che l'Essenziale non ha. Verificato alla cifra.
-*(Era in sospeso anche l'emoji nel saluto della home dipendente: decisa il
-07.08.2026 — si toglie — e passata fra le decisioni chiuse.)*
+*(Erano in sospeso anche l'emoji nel saluto della home dipendente, decisa il
+07.08.2026 — si toglie — e la **palette con la CTA verde piena**, decisa il
+10.08.2026 — le CTA passano su `primary`. Entrambe fra le decisioni chiuse; la
+seconda resta da eseguire, che è un'altra cosa dall'essere in sospeso.)*
 
 ## Migliorie rimandate al refinement
 

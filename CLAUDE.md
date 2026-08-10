@@ -248,6 +248,7 @@ kora/
       schedule.ts        ← la griglia del calendario, costruita dalle sedute
       plan-features.ts   ← le righe del listino, derivate da `Plan` (§10.A)
       platform-metrics.ts ← ricavo, attivazione e mese corrente del back-office
+      report-pdf.ts      ← cattura la vista di stampa e compone il PDF (M4, §10.C.3)
       query-client.ts    ← configurazione react-query
   base44/entities/       ← i 12 schemi del progetto originale: lista di controllo
                            della copertura del dominio (§5.3), non un vincolo
@@ -341,8 +342,11 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
   è passato in M3.
 - **M5 — Verso la produzione.** Differibile, non blocca niente: guardie di rotta per
   ruolo, stati di errore e vuoto veri, validazione dei form, accessibilità
-  completa, le altre tre lingue. **Le schermate di M3 vanno costruite in modo da
-  poterli ospitare, non da doverli rimandare.**
+  completa, le altre tre lingue, e **`Intl.ListFormat` per le enumerazioni**
+  (founder, 10.08.2026) — le liste sono la terza cosa che cambia col locale dopo
+  date e valuta (§2.7), e oggi nessun punto di `format.ts` le tratta.
+  **Le schermate di M3 vanno costruite in modo da poterli ospitare, non da doverli
+  rimandare.**
 
 ## 5. Architettura dati — il cuore del progetto
 
@@ -460,6 +464,14 @@ mostrato, il trimestre corrente fuori dal dataset, uno snapshot mancante, un id 
 professionista inesistente. Uno svarione si deve vedere mentre si lavora, non
 durante il pitch.
 
+**In una build "demo" i guardrail loggano invece di tacere.** Oggi il silenzio in
+produzione è totale, e il build che si porta al pitch è un build di produzione:
+una manopola girata male — `DEMO_TODAY` spostata di mese è il caso vero — non si
+vede più da nessuna parte. Loggare non è lanciare: la schermata non si rompe
+davanti a un investitore, e chi prova la demo il giorno prima trova il messaggio
+in console. Deciso dai founder il 10.08.2026; **si esegue in una passata dedicata
+pre-pitch**, che non è M5.
+
 ### 5.7 Il giorno del passaggio alla produzione
 
 Non ci sarà un repository nuovo, e non ci sarà una riscrittura. **Questo è già il
@@ -516,7 +528,23 @@ Regole:
 - **Mai testo normale su `secondary` pieno.** Il teal a 39% di luminosità non regge
   il minimo AA di 4.5 con testo scuro. Le etichette vanno fuori dalla barra, oppure
   in testo grande (≥19px, o ≥14px in peso 600), dove la soglia AA scende a 3.0.
-  Testo bianco su `secondary` va verificato caso per caso.
+  Testo bianco su `secondary` va verificato caso per caso — e la verifica caso
+  per caso **resta**, perché riguarda ogni accostamento, non solo le CTA.
+- **Le CTA piene vanno su `primary`, non su `secondary`.** Bianco su `secondary`
+  dà 2.83:1 contro il minimo AA di 4.5, e le due strade erano scurire il token o
+  spostare le CTA. **Deciso dai founder il 10.08.2026: si spostano le CTA**, così
+  il teal resta la tinta dei dati positivi e degli accenti (§6.1) invece di
+  cambiare di luminosità sotto ogni schermata già approvata. **Si esegue in una
+  passata dedicata**, che produce anche l'inventario autoritativo dei punti da
+  toccare: `--secondary-foreground` è bianco nei token, quindi la scelta è
+  incorporata nel design system e la correzione non è una riga.
+
+  **Dove si corregge, e dove no.** Le varianti `secondary` di `button.tsx` e
+  `badge.tsx` sono la sorgente del bianco su teal, ma stanno in
+  `src/components/ui/`, che è congelato (§3): **si cambia la variante scelta al
+  call site, non la definizione**. `KPICard` è fuori dal congelamento e la sua
+  variante si può toccare. `FlexiblePlanCard.jsx` resta fuori dal conto: è codice
+  morto del piano nascosto (§10.A.3).
 - **Solo light mode.** `index.css` definisce una palette `.dark` completa che nessun
   componente attiva: resta lì, inerte. Nessun toggle e nessun `next-themes` finché
   non è una decisione dei founder.
@@ -800,6 +828,17 @@ prenota vede i soli professionisti con documenti *e* mandato in ordine. Lo stato
 sta sul dato, non nella schermata — "attivo" si **deriva** da
 `documentsVerified && mandateSigned`, senza un campo che possa contraddirli.
 
+**Sedute erogate in carriera, ratificate dai founder il 10.08.2026**: Colombo
+**340**, Rossi **285**, Meier **312**, Fontana **210**, Keller **0**. La somma è
+**1'147**, ed è la KPI "sedute erogate" del back-office (§10.E): il totale non si
+scrive accanto ai cinque, si somma da loro.
+
+Sono **valori dichiarati, non derivati**, e la differenza va tenuta in chiaro: un
+guardrail vincola la sola **Meier** — il suo totale non può essere minore delle
+sedute erogate della sua agenda — perché è l'unica ad avere un'agenda dietro cui
+rispondere. Gli altri quattro sono cifre del dataset come i conteggi di questa
+sezione. In produzione si contano tutti dalle sedute.
+
 **Nomi di aziende, cliniche e strutture: solo di fantasia.** Il codice ereditato usa
 società e ospedali reali come clienti paganti e partner convenzionati. Non è una
 questione di stile: è una dichiarazione falsa su soggetti reali, e va corretta
@@ -982,13 +1021,30 @@ grandezza. L'Executive include già i familiari (partner + 1 figlio) e non ha
 l'estensione.
 
 **Compenso ai professionisti: CHF 70–80 a sessione erogata.** Il BP dà la banda, non
-la tariffa del singolo: dove cade ognuno dei quattro è una scelta della demo, da
-dichiarare nel file del dataset.
+la tariffa del singolo: dove cade ognuno è una scelta della demo, da dichiarare
+nel file del dataset.
+
+**Come si colloca dentro la banda**, ratificato dai founder il 10.08.2026: chi
+ha storico segue la **valutazione**, che è l'unico ordinamento che il §8 dà del
+roster; chi non ne ha — in verifica, zero sedute erogate, nessuna valutazione —
+prende la **tariffa d'ingresso a metà banda, CHF 75**. È la regola che spiega la
+Dr.ssa Keller: senza di essa la sua tariffa sarebbe l'unica del dataset senza un
+motivo, e con una valutazione a `null` non c'è niente da cui farla scendere o
+salire. Le cinque tariffe restano dichiarate nel dataset, e un guardrail
+verifica che nessuna esca dalla banda.
 
 **A pieno regime, 20 sessioni a settimana valgono CHF 5'600–6'400 al mese.** Serve
 al portale professionista: **il regime va sempre detto accanto al totale**,
 altrimenti chi ha letto il BP legge uno scarto di un ordine di grandezza come un
 errore.
+
+**Disponibilità minima: 8 ore a settimana** (BP p.11, parte C1 "Ingresso nella
+rete"). È una condizione d'ingresso alla rete, non un dato di compenso, e sta
+sulla stessa riga del BP delle altre due che la demo già racconta: iscrizione
+all'albo e firma del contratto di mandato — cioè i due controlli da cui si
+deriva "prenotabile" (§8). Il portale professionista la mostra accanto al
+regime tenuto. Trascritta il 10.08.2026 su decisione dei founder ai sensi del
+§2.4: la cifra era già nel dataset e non nell'elenco delle cifre ammesse.
 
 ### Formule del calcolatore ROI (§10.A.2), per N dipendenti
 

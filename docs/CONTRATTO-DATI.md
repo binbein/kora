@@ -94,17 +94,19 @@ confine**: il provider scrive `?? null` sul record che salva, che è esattamente
 ciò che farà il backend ricevendo la richiesta. Da lì la lettura dice `| null`
 come tutte le altre.
 
-Due punti del codice non lo rispettano ancora, ed è **lavoro di P1**, non una
-deroga di questo documento — che descrive il bersaglio, mentre il codice si
-adegua dopo:
+**Il codice la rispetta per intero**, e i due punti che non lo facevano sono stati
+allineati dopo la chiusura di M3. Restano annotati perché sono i due casi in cui
+sbagliare è facile, e chi scrive il backend li incontrerà:
 
-- **`DemoRequest` eredita il `?` dall'input**, perché è dichiarato come
-  intersezione di `DemoRequestInput`. È il caso in cui la scorciatoia di tipo si
-  porta dietro la convenzione sbagliata: la proiezione letta smette di essere
-  un'intersezione e dichiara `message: string | null`;
-- **`Professional.firstName` è `?` e diventa `string | null`**. Non è un campo che
-  al caso non pertiene — ogni professionista un nome proprio ce l'ha — è uno slot
-  che il dataset demo non riempie, per la ragione dichiarata in §7.
+- **`DemoRequest` ereditava il `?` dall'input**, perché era dichiarato come
+  intersezione di `DemoRequestInput`: la scorciatoia di tipo si portava dietro la
+  convenzione dell'altro lato. La proiezione letta non è più un'intersezione e
+  dichiara `message: string | null`, mentre l'input tiene il suo `?`. È il caso
+  che mostra perché le due convenzioni non si sostituiscono a vicenda: **è lo
+  stesso campo, e cambia forma attraversando il confine**;
+- **`Professional.firstName` è `string | null`**. Non è un campo che al caso non
+  pertiene — ogni professionista un nome proprio ce l'ha — è uno slot che il
+  dataset demo non riempie, per la ragione dichiarata in §7.
 
 **La superficie del provider cresce così**: *le letture si espongono quando il
 dato esiste, le scritture solo quando hanno un chiamante.* Le due metà non sono
@@ -482,9 +484,10 @@ invece di restare assunzioni implicite:
   contraddizione visibile — il totale della Dr.ssa Meier non può essere minore
   delle sedute erogate della sua agenda — ma gli altri quattro non hanno
   un'agenda dietro cui rispondere, quindi la loro somma è una cifra dichiarata
-  come i conteggi di §8. **In attesa di ratifica dei founder** (`CLAUDE.md` §2.4):
-  finché non arriva, i numeri restano quelli e nessuno ne deriva altri. In
-  produzione il totale si conta dalle sedute, come tutto il resto.
+  come i conteggi di §8. **Ratificati dai founder il 10.08.2026** e trascritti in
+  `CLAUDE.md` §8, dove le cifre ammesse vivono (§2.4): restano dichiarati, e chi
+  legge questo documento non deve prenderli per derivati. In produzione il totale
+  si conta dalle sedute, come tutto il resto.
 - **Le sessioni degli altri clienti sono la curva di Demo SA scalata.** È il
   modo in cui il dataset demo tiene Demo SA *dentro* i totali di piattaforma
   invece che accanto, e in produzione salta per intero: ogni cliente avrà le
