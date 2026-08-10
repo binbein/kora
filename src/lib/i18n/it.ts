@@ -587,7 +587,16 @@ export const it = {
     quarterLabel: "{quarter}° trimestre {year}",
     /* Il trimestre in corso è parziale: senza dirlo, chi confronta le sessioni
        con quelle del trimestre chiuso legge un dato incompleto come un calo. */
-    quarterInProgress: "in corso",
+    /* La frase intera e non "{label} · in corso" composto in pagina: in tedesco
+       il pezzo mobile non sta a destra, e una lingua che lo mette altrove non
+       avrebbe dove dirlo (§2.7). */
+    /** "3° trimestre 2026 · in corso" */
+    quarterLabelInProgress: "{quarter}° trimestre {year} · in corso",
+    /* La sigla dell'asse: sta qui perché "Q" è la lettera di *quarter*, e in
+       tedesco un asse si etichetta "Q3" o "3. Quartal" a seconda dello spazio.
+       In pagina era un template literal, cioè intraducibile. */
+    /** "Q3" */
+    quarterShort: "Q{quarter}",
 
     /* La soglia è un segnaposto e non un numero: è una proprietà del cliente
        (§7), e la parola è "misurati" perché a contare è chi ha risposto al
@@ -630,6 +639,8 @@ export const it = {
     /* La ciambella è cumulata come la KPI delle sessioni: senza dirlo, accanto
        al trimestre in corso si legge come "in questo trimestre". */
     distributionSubtitle: "cumulata dall'inizio della finestra a {quarter}",
+    /** "Psicologo: 142" */
+    distributionEntry: "{service}: {count}",
 
     /* "ultimo mese" nel titolo non è pignoleria: tutto il resto della schermata
        segue il selettore del trimestre, questa tabella no — lo stress è una
@@ -642,6 +653,8 @@ export const it = {
        che hanno lo stesso organico. Senza, due righe identiche danno esiti
        diversi e sembra un errore. */
     departmentMeta: "{employees} dipendenti · {measured} misurati",
+    /** "78% · Alto" */
+    departmentScore: "{percent} · {level}",
     suppressed: "Sotto soglia",
     suppressedTooltip:
       "Sotto la soglia il dato non viene calcolato, per non renderlo riconducibile a singole persone.",

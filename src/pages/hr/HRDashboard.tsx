@@ -73,13 +73,14 @@ function quarterRank(period: Quarter): number {
 }
 
 function quarterLabel(period: Quarter, current: Quarter): string {
-  const label = interpolate(t.hr.quarterLabel, {
+  const pattern =
+    quarterKey(period) === quarterKey(current)
+      ? t.hr.quarterLabelInProgress
+      : t.hr.quarterLabel;
+  return interpolate(pattern, {
     quarter: String(period.quarter),
     year: String(period.year),
   });
-  return quarterKey(period) === quarterKey(current)
-    ? `${label} · ${t.hr.quarterInProgress}`
-    : label;
 }
 
 function scoreOf(record: StressRecord): number | null {
@@ -168,7 +169,9 @@ export default function HRDashboard() {
     alertIndex >= 0 && alertHistory ? scoreOf(alertHistory[alertIndex]) : null;
 
   const roiChart = [...(snapshots ?? [])].reverse().map((entry) => ({
-    short: `Q${entry.period.quarter}`,
+    short: interpolate(t.hr.quarterShort, {
+      quarter: String(entry.period.quarter),
+    }),
     saved: entry.savedChf,
     selected: quarterKey(entry.period) === quarterKey(selected),
   }));
@@ -264,7 +267,7 @@ export default function HRDashboard() {
           title={t.hr.kpiStress}
           value={
             report.stressTrendPoints === null
-              ? '—'
+              ? t.common.none
               : interpolate(t.hr.kpiStressValue, {
                   points: formatSigned(report.stressTrendPoints),
                 })
@@ -355,11 +358,15 @@ export default function HRDashboard() {
                       className="inline-flex items-center gap-1.5 text-sm text-muted-foreground"
                       title={t.hr.suppressedTooltip}
                     >
-                      <Lock className="w-3.5 h-3.5" />—
+                      <Lock className="w-3.5 h-3.5" />
+                      {t.common.none}
                     </span>
                   ) : (
                     <span className="text-sm font-semibold tabular-nums">
-                      {formatPercent(score)} · {t.hr.stressLevel[stressLevelFromScore(score)]}
+                      {interpolate(t.hr.departmentScore, {
+                        percent: formatPercent(score),
+                        level: t.hr.stressLevel[stressLevelFromScore(score)],
+                      })}
                     </span>
                   )}
                 </div>
@@ -460,7 +467,10 @@ export default function HRDashboard() {
             {distribution.map((entry) => (
               <div key={entry.kind} className="flex items-center gap-1.5 text-xs tabular-nums">
                 <div className="w-2.5 h-2.5 rounded-full" style={{ background: entry.color }} />
-                {entry.name}: {formatNumber(entry.value)}
+                {interpolate(t.hr.distributionEntry, {
+                  service: entry.name,
+                  count: formatNumber(entry.value),
+                })}
               </div>
             ))}
           </div>
