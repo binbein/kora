@@ -49,8 +49,15 @@ export const LAURA: EmployeeProfile = {
  *
  * Dove cade ognuno dentro la banda è quindi **una scelta di questo file**, come
  * il §9 chiede di dichiarare. Segue la valutazione, che è l'unico ordinamento
- * che il §8 dà dei quattro: distribuirle a caso avrebbe avuto lo stesso valore
+ * che il §8 dà del roster: distribuirle a caso avrebbe avuto lo stesso valore
  * informativo e sarebbe stato più difficile da difendere se qualcuno lo chiede.
+ *
+ * **Chi non ha storico non ha una valutazione da seguire**, e prende la tariffa
+ * d'ingresso a metà banda: CHF 75. Riguarda la Dr.ssa Keller, che è in verifica
+ * con zero sedute erogate e `rating: null` — da un `null` non si scende e non si
+ * sale, quindi senza questa metà della regola la sua sarebbe l'unica tariffa del
+ * file senza un motivo. Ratificata dai founder il 10.08.2026 e trascritta nel §9.
+ *
  * Se arrivano le tariffe vere, si sostituiscono qui.
  */
 const SESSION_FEE_BAND = { min: 70, max: 80 } as const;
