@@ -1013,6 +1013,12 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 
 ## Decisioni in sospeso
 
+- **La palette e la CTA verde piena.** Bianco su `secondary` dà 2.83:1 contro il
+  minimo AA di 4.5, e le due strade sono scurire `--secondary` oppure portare le
+  CTA su `primary`. **Va decisa prima di M5**, che ha l'accessibilità completa in
+  elenco. Il conto dei punti coinvolti e il perché la scelta non è una correzione
+  di passata stanno nei difetti aperti dell'area dipendente e dell'area pubblica;
+  la regola sul contrasto è in `CLAUDE.md` §6.1.
 - **Piano "Personalizzato" della pagina prezzi.** Nascosto in M0 in attesa della
   decisione del CEO: gli undici prezzi dei moduli non sono nel Business Plan, gli
   sconti a volume nemmeno, e a 150 dipendenti la preselezione esce a **CHF 38** —
