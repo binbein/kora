@@ -31,6 +31,15 @@ export const it = {
     listSeparator: ", ",
   },
 
+  /* La 404. `body` è una frase intera con segnaposto e non due pezzi cuciti
+     attorno all'indirizzo: l'ordine delle parole cambia con la lingua (§2.7),
+     e in tedesco l'indirizzo non sta dove sta qui. */
+  notFound: {
+    title: "Pagina non trovata",
+    body: "L'indirizzo {path} non corrisponde a nessuna pagina.",
+    home: "Torna alla home",
+  },
+
   plan: {
     essenziale: "Essenziale",
     plus: "Plus",
