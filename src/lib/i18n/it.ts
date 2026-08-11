@@ -29,6 +29,28 @@ export const it = {
        legge a schermo, quindi è una decisione dei founder e non di una
        passata di igiene. */
     listSeparator: ", ",
+
+    /* Gli stati che sostituiscono i dati quando i dati non ci sono (M5.b).
+       Questi sono il **registro strumento** del §7 — terza persona, asciutti —
+       e li usano l'area pubblica, HR, il professionista e il back-office. Il
+       portale dipendente ha i suoi in `employee.state`, perché lì si dà del tu.
+
+       Il corpo dice cosa fare, non cosa è successo: "non è stato possibile
+       caricare" descriverebbe il guasto a chi non può farci niente. */
+    state: {
+      retry: "Riprova",
+      error: {
+        title: "Dati non disponibili",
+        body: "Riprova fra un momento.",
+      },
+      /* Il boot fallito. È l'unico stato che non ha una schermata attorno,
+         quindi il gesto va detto per esteso: ricaricare è anche l'unico modo
+         di ripartire, visto che il provider vive in memoria (§10). */
+      boot: {
+        title: "Kora non si è avviata",
+        body: "Ricarica la pagina per riprovare. Quello che hai fatto finora non viene conservato.",
+      },
+    },
   },
 
   /* La 404. `body` è una frase intera con segnaposto e non due pezzi cuciti
@@ -116,6 +138,18 @@ export const it = {
 
     privacy:
       "La tua azienda vede solo dati aggregati e anonimi. La tua salute resta tua.",
+
+    /* Lo stato d'errore nel registro consumer (§7): seconda persona, e nessuna
+       colpa data a chi legge. È lo stesso guasto che `common.state` racconta
+       in terza persona alle altre quattro aree — a cambiare è solo come si
+       parla, che è il motivo per cui i due registri stanno in `i18n` e non
+       dentro il componente. */
+    state: {
+      error: {
+        title: "Questa parte non si è caricata",
+        body: "Riprova fra un momento.",
+      },
+    },
 
     /** I due servizi che il piano cappa, come li chiama chi li usa. */
     service: {
