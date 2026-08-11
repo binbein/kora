@@ -1,0 +1,161 @@
+import { raiseOutsideCurrentStack } from "./guardrails";
+import type { DataProvider } from "./provider";
+
+/*
+ * L'INIEZIONE DI GUASTO: il modo in cui gli stati d'errore si dimostrano a
+ * schermo (CLAUDE.md §4, blocco b di M5).
+ *
+ * Il mock risolve sempre e non fallisce mai, quindi senza questo file uno stato
+ * d'errore sarebbe codice che nessun percorso produce — cioè codice che il §11
+ * non vuole e che nessuno può verificare. È la seconda consegna del blocco, ed
+ * è la condizione della prima.
+ *
+ * COME SI USA, in sviluppo:
+ *
+ *   /hr?fail=getCompany          → `getCompany` fallisce sempre
+ *   /hr?fail=getCompany:2        → fallisce le prime due chiamate, poi riesce
+ *   /hr?fail=getCompany,getInvoices
+ *
+ * I nomi sono quelli dei **metodi del provider**, non delle chiavi di query:
+ * questo file avvolge il contratto, e il contratto è la sua superficie. Il
+ * piano si legge **una volta sola**, all'istanza; le schermate non leggono né
+ * l'ambiente né l'indirizzo, e la manopola resta in un file solo del layer
+ * dati (§5.7).
+ *
+ * LA SOGLIA `:n` ESISTE PER IL PULSANTE "RIPROVA": senza un percorso in cui
+ * riesce, sarebbe l'opzione che nessuno esercita mai (§11).
+ *
+ * ⚠︎ LA PRIMA CHIAMATA SE LA PRENDE IL PREFETCH, e il montaggio è la seconda.
+ * `prefetchDemo` scalda ogni chiave prima del primo paint (§5.1), quindi
+ * quando la schermata monta il guasto è già stato speso una volta; e una query
+ * in errore viene **rifatta al montaggio di un osservatore**, perché
+ * `retryOnMount` di react-query vale `true` di suo. Misurato: `:1` fa fallire
+ * il solo prefetch e la schermata si rimette a posto da sé montando, mentre
+ * `:2` è il valore che **mostra l'errore** e lascia riuscire il primo clic su
+ * "Riprova". Con `:n`, i montaggi coperti sono `n − 1`.
+ *
+ * Non ha niente a che vedere con `retry`, che `query-client.ts` tiene a zero
+ * per una ragione sua — che vale la pena leggere là prima di rimettercelo.
+ *
+ * ESISTE SOLO IN SVILUPPO, e non è una promessa: `index.ts` monta questo
+ * decoratore solo quando `GUARDRAIL_MODE` vale `"throw"`. Nelle altre due
+ * build quel confronto è un letterale falso, il ramo è morto e il
+ * minificatore porta via il modulo insieme ai suoi messaggi — si verifica col
+ * `grep` sul bundle, come per i guardrail (§5.6). È la ragione per cui il
+ * pitch non può inciamparci: nella build che si deploya questo codice non c'è.
+ *
+ * A MANOPOLA A RIPOSO IL COMPORTAMENTO È IDENTICO. In sviluppo il decoratore è
+ * montato sempre, anche senza `?fail`: è voluto, perché così il ramo di
+ * passaggio si esercita a ogni sessione di lavoro invece che la prima volta
+ * che qualcuno usa la manopola. Ogni metodo è legato all'istanza vera, quindi
+ * `this` dentro il provider è il provider e le chiamate interne non
+ * riattraversano il Proxy: a fallire è ciò che le schermate chiedono, non ciò
+ * che il mock si dice da sé. I guardrail passano di qui come se non ci fosse.
+ *
+ * Un `Proxy` e non un involucro scritto a mano: i metodi sono 42, e
+ * riscriverli sarebbe il secondo elenco che diverge dal primo — lo stesso
+ * difetto che il §5.5 vieta ai numeri.
+ *
+ * I messaggi sono testo per chi sviluppa e **non passano dal dizionario**,
+ * come quelli dei guardrail: ciò che la schermata mostra all'utente è un'altra
+ * cosa, e sta in `i18n`.
+ *
+ * NOTA SUL CONTEGGIO DEI GUARDRAIL (§5.6): questo file non aggiunge nessuna
+ * chiamata alle due primitive contate — usa `raiseOutsideCurrentStack`, come
+ * `prefetch.ts`, che è la terza e sta fuori dai 96 per criterio. I 96 restano
+ * 96.
+ */
+
+const FAIL_PARAM = "fail";
+
+/** Metodo del provider → quante chiamate deve ancora far fallire. */
+type FaultPlan = Map<string, number>;
+
+function parseFaultPlan(search: string, provider: DataProvider): FaultPlan {
+  const plan: FaultPlan = new Map();
+  const raw = new URLSearchParams(search).get(FAIL_PARAM);
+  if (raw === null) return plan;
+
+  for (const entry of raw.split(",")) {
+    const [rawName, rawTimes] = entry.split(":");
+    const method = rawName.trim();
+    if (method === "") continue;
+
+    /*
+     * Un nome sbagliato non romperebbe niente, e questo è il problema: la
+     * manopola sembrerebbe girata e la schermata resterebbe intera, cioè si
+     * concluderebbe che lo stato d'errore non c'è quando invece non è stato
+     * chiesto.
+     */
+    if (!(method in provider)) {
+      raiseOutsideCurrentStack(
+        `[fault] "${method}" non è un metodo di DataProvider: controlla il nome in ?${FAIL_PARAM}=.`,
+      );
+      continue;
+    }
+
+    const times =
+      rawTimes === undefined ? Number.POSITIVE_INFINITY : Number(rawTimes);
+    if (!Number.isInteger(times) && times !== Number.POSITIVE_INFINITY) {
+      raiseOutsideCurrentStack(
+        `[fault] la soglia di "${method}" deve essere un intero: "${rawTimes}" non lo è.`,
+      );
+      continue;
+    }
+    if (times < 1) {
+      raiseOutsideCurrentStack(
+        `[fault] la soglia di "${method}" è ${times}, quindi non fallirebbe nessuna chiamata.`,
+      );
+      continue;
+    }
+
+    plan.set(method, times);
+  }
+
+  return plan;
+}
+
+export function withFaultInjection(provider: DataProvider): DataProvider {
+  const plan = parseFaultPlan(window.location.search, provider);
+
+  if (plan.size > 0) {
+    // la manopola è girata: si dice, perché da qui in poi una schermata rotta
+    // è voluta e non va diagnosticata come un difetto
+    console.info(
+      `[fault] iniezione attiva su ${[...plan.keys()].join(", ")}. Esiste solo in sviluppo.`,
+    );
+  }
+
+  return new Proxy(provider, {
+    get(target, property, receiver) {
+      const value = Reflect.get(target, property, receiver);
+      if (typeof value !== "function") return value;
+
+      const name = String(property);
+      const method = value.bind(target) as (
+        ...args: unknown[]
+      ) => Promise<unknown>;
+      if (!plan.has(name)) return method;
+
+      return (...args: unknown[]) => {
+        const remaining = plan.get(name) ?? 0;
+        if (remaining <= 0) return method(...args);
+        plan.set(name, remaining - 1);
+
+        /*
+         * Si **rifiuta**, non si lancia: è la promise rifiutata che
+         * react-query cattura e trasforma nell'`isError` che le schermate
+         * mostrano. È la stessa meccanica che ai guardrail dentro una
+         * mutation faceva danno — lì il messaggio spariva dentro lo stato
+         * della mutation invece di fermare chi lavorava — e qui è
+         * esattamente ciò che si vuole: quello stato è la consegna.
+         */
+        return Promise.reject(
+          new Error(
+            `[fault] ${name} fallisce per ?${FAIL_PARAM}=. È un guasto simulato, e vive solo in sviluppo.`,
+          ),
+        );
+      };
+    },
+  });
+}

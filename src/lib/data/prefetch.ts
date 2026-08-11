@@ -24,6 +24,21 @@ const CAPPED_SERVICES: CappedServiceKind[] = ["psychologist", "coach"];
  * L'elenco cresce con le aree. È anche il suo punto debole: una chiave
  * dimenticata non rompe niente, fa uno sfarfallio — e lo fa davanti a un
  * investitore. Per questo c'è il controllo qui sotto.
+ *
+ * SEI METODI BLOCCANO IL BOOT, TUTTI GLI ALTRI NO, e la differenza è dove
+ * stanno scritti. I sei `await` qui sotto servono a **sapere le chiavi** —
+ * l'id del professionista, il reparto in allarme, chi c'è nel corpo
+ * professionale — quindi la loro risposta arriva prima che si possa chiedere
+ * il resto: se uno di loro fallisce, `prefetchDemo` rifiuta e l'albero non si
+ * monta. È il fallimento del bootstrap, e `main.tsx` lo tratta come uno stato.
+ * Tutto ciò che passa da `prefetchQuery`, invece, **non può far rifiutare
+ * niente**: react-query cattura al suo interno e lascia la query in errore,
+ * che è il caso che le schermate mostrano. Da qui la regola per chi aggiunge
+ * una chiave: se la si può chiedere senza sapere niente prima, va nel
+ * `Promise.all` e non fra gli `await`.
+ *
+ * In produzione la stessa riga si legge come un costo: sei andate e ritorni
+ * prima del primo paint.
  */
 export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
   const professionalId = await dataProvider.getPortalProfessionalId();
