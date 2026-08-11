@@ -361,6 +361,51 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
   **Le schermate di M3 vanno costruite in modo da poterli ospitare, non da doverli
   rimandare.**
 
+  **Si articola in sei blocchi**, approvati dai founder l'11.08.2026, e **ognuno
+  chiude con una demo funzionante** (§2.3) — non sono fasi di un unico cantiere
+  aperto. L'ordine non è vincolante tranne dove una dipendenza lo impone (f).
+
+  - **a) Accessibilità completa.** Il punto di partenza è il censimento del
+    debito AA in `docs/PROGRESS.md`, più ciò che non copriva: focus visibili su
+    ogni elemento interattivo, `aria` e alt dove mancano, e il percorso del
+    pitch percorribile **da sola tastiera** (§11).
+  - **b) Stati di errore e vuoto veri.** Il contratto li regge già — `| null` e
+    liste vuote sono valori legittimi (`docs/CONTRATTO-DATI.md` §5) — ma le
+    schermate non li mostrano. **Il blocco deve proporre anche come si
+    dimostrano a schermo**: il mock risolve sempre e non fallisce mai, quindi
+    uno stato che nessun percorso produce è codice che il §11 non vuole e che
+    nessuno può verificare.
+  - **c) Validazione dei form**, con `zod` e `react-hook-form`, che il §3 tiene
+    installati apposta. **Porta con sé la decisione rimandata sulla guardia di
+    `useFormField`** in `form.tsx`: il controllo sta dopo l'uso che dovrebbe
+    proteggere e il default `{}` è truthy, quindi non scatta mai. È un cambio di
+    comportamento su un file congelato, quindi è dei founder, e questo è il
+    momento — prima `form` non aveva consumatori.
+  - **d) Guardie di rotta per ruolo**, scritte da zero sui nostri ruoli: il
+    `ProtectedRoute` ereditato è stato cancellato in M1 con l'SDK. **Porta due
+    decisioni.** La prima è `react-router` 7, che chiuderebbe le due
+    vulnerabilità moderate e i due avvisi sui future flag, ed è un major che
+    cambia l'API del router. La seconda è un **vincolo nuovo**: la coreografia
+    di `docs/PITCH.md` entra in `/admin` **come prima schermata** e ci rientra
+    col tasto Indietro, quindi una guardia che intercetta quell'ingresso
+    **rompe un momento del pitch**. Il modello di impersonificazione del ruolo
+    va proposto con pro e contro all'apertura del blocco, non deciso mentre lo
+    si scrive.
+  - **e) Le altre tre lingue, DE per prima** — è quella che mette alla prova i
+    layout (§2.7: parole ~30% più lunghe). **Porta la decisione sul language
+    switcher**, che oggi il §2.7 vieta e che con quattro dizionari serve.
+    Sostituisce anche l'idioma `t.common.listSeparator` con **`Intl.ListFormat`
+    in `format.ts`**: i due call site a schermo sono già allineati al
+    separatore del dizionario, quindi il lavoro è nel formatter e non nelle
+    schermate.
+  - **f) Le pagine del footer** — privacy policy, termini, cookie policy, più
+    "Chi siamo", "Contatti", "Carriere" e "Blog", che dall'08.08.2026 sono un
+    elenco di sezioni senza affordance da link. **Dipende da due cose fuori dal
+    codice**: i testi legali dei founder, e la **decisione sulla residenza dei
+    dati** (`docs/PROGRESS.md`, decisioni in sospeso) — una privacy policy deve
+    dire dove stanno i dati, e oggi la promessa commerciale non è ratificata.
+    Per questo è l'ultimo.
+
 ## 5. Architettura dati — il cuore del progetto
 
 Principio: **le schermate non sanno che i dati sono finti.** Consumano

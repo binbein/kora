@@ -22,12 +22,25 @@ lì.
 
 ## Stato
 
-**M0, M1, M2, M3 e M4 chiuse.** La demo è condivisibile e **tutte e cinque le aree
-leggono dal provider**: nessuna schermata dichiara più le proprie costanti, le
-stringhe stanno in `i18n`, ogni importo passa da `format.ts` e ogni data da
-`DEMO_TODAY`. Le rotte sono 26, il repository è nostro — niente base44, zero
-richieste esterne a runtime — e `reference/` è stato cancellato, che era la
+**M0, M1, M2, M3 e M4 chiuse. M5 è aperta.** La demo è condivisibile e **tutte e
+cinque le aree leggono dal provider**: nessuna schermata dichiara più le proprie
+costanti, le stringhe stanno in `i18n`, ogni importo passa da `format.ts` e ogni
+data da `DEMO_TODAY`. Le rotte sono 26, il repository è nostro — niente base44,
+zero richieste esterne a runtime — e `reference/` è stato cancellato, che era la
 prova che M3 fosse davvero finita.
+
+**M5 è l'ultima milestone del piano, e si articola in sei blocchi** approvati
+dai founder l'11.08.2026 — accessibilità, stati di errore e vuoto, validazione
+dei form, guardie di rotta, le altre tre lingue, pagine del footer. Stanno in
+`CLAUDE.md` §4 con le dipendenze e le decisioni che ognuno porta con sé;
+**ognuno chiude con una demo funzionante** (§2.3), quindi non è un cantiere
+unico che resta aperto fino alla fine.
+
+**Le PR di M5 sono la milestone e non entrano nel conto delle passate di
+refinement.** Vale il criterio già scritto in quella sezione, che esclude la
+milestone: M4 è #19 e ha la sua sezione, e i blocchi di M5 hanno la loro qui
+sotto. Il conto delle passate resta fermo a undici finché non riprende il
+refinement fra le milestone — che dopo M5 vuol dire dopo il piano.
 
 Il primo commit è l'export **intatto**, così ogni modifica successiva si legge come
 diff contro quello che base44 ha prodotto. Il magazzino della precedente demo
