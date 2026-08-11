@@ -953,6 +953,217 @@ significherebbe poterlo far divergere.
 - **Le icone dentro `src/components/ui/`** non sono state dichiarate, per la
   stessa ragione.
 
+#### b) Stati di errore e vuoto veri — chiuso
+
+Undici commit. **Le 27 schermate distinguono tre casi dove ne confondevano
+uno**, e il blocco ha due consegne di cui la seconda è la condizione della
+prima: gli stati, e il modo di dimostrarli.
+
+**Il difetto era più preciso di "manca la gestione errori".** Ogni schermata
+scriveva `if (!dato) return null`, che mette insieme **in caricamento**
+(`undefined`), **legittimamente assente** (`null`, che quattro metodi
+restituiscono per contratto) e **errore**. La dashboard HR aveva un `if` a
+undici condizioni di cui due erano slot nullable: un trimestre senza dati
+usciva identico a una pagina in caricamento e a una rotta, cioè bianca. Il
+precedente giusto esisteva già dentro casa, in `RapidCheckCard`, che
+confrontava `=== undefined`.
+
+**La regola sta scritta una volta**, in `loadState` (`lib/data/queries.ts`):
+errore, poi attesa su `undefined` e solo lui, poi arrivato — e il vuoto lo
+decide la schermata. **Il classificatore non conosce le forme**, ed è la sua
+unica regola: il vuoto di una lista è `[]` e quello di uno slot è `null`, e chi
+li conoscesse tutti sarebbe il secondo elenco che diverge dal primo. L'errore
+vince sull'attesa, perché aspettare il resto lascerebbe a schermo una
+sospensione che non finisce.
+
+**Due componenti e non uno con una variante**, in `components/kora/`: un vuoto
+è un caso previsto, un errore è un guasto, e solo il secondo ha un gesto da
+offrire — `EmptyNotice` non può ricevere `onRetry`, e a impedirlo è il tipo.
+**Nessuno dei due disegna il proprio contenitore**, ed è la scelta che ha reso
+inutile il secondo componente: senza scatola non c'è raggio né densità da
+cambiare, quindi i due registri del §6.4 restano una questione di **copy**,
+scelto al call site fra `t.common.state.*` e `t.employee.state.*`.
+
+**Il ramo è per pagina, e non c'è nessun boundary.** Un `ErrorBoundary` sarebbe
+meno codice ma non vede il `null` — un'assenza legittima non è un'eccezione,
+quindi metà del blocco gli passerebbe accanto — e sostituirebbe l'area intera,
+nav compresa, fabbricando il vicolo cieco che il §10 vieta. Un boundary di
+radice catturerebbe solo errori di render, che nessun percorso produce: sarebbe
+il codice non verificabile che questo blocco esiste per non scrivere.
+
+**Dove il ramo non è di pagina, c'è una ragione scritta**: la landing tiene il
+listino su due sezioni su otto e non blocca le altre sei; il riquadro prodotto
+dell'hero e il badge della nav professionista **collassano i tre casi in "non
+disegnare"**, perché un riquadro d'errore sulla prima schermata che un
+investitore vede direbbe che il prodotto è rotto, e un errore al posto della nav
+toglierebbe la via d'uscita.
+
+**Il bootstrap è il primo errore, e sta fuori dalle schermate.**
+`prefetchDemo` attende sei metodi direttamente — le loro risposte sono le
+chiavi di tutto il resto — quindi un loro guasto faceva rifiutare il prefetch,
+`.then()` non girava e restava una **pagina bianca muta**, in tutti e tre i
+modi. Ora monta React con lo stesso componente e la stessa stringa di `i18n`,
+con resa minima e senza layout d'area (founder, §2.6): il gesto utile è
+ricaricare, che per un provider in memoria è anche il reset, e il copy lo dice.
+
+**Le quattro mutation dicono cosa non è successo**, non cosa è andato storto:
+la prenotazione dichiara che lo slot è ancora libero, la nota e il form che il
+testo è ancora nel campo. Il messaggio sta sotto il pulsante che l'ha causato e
+**non porta un "Riprova"**: a ritentare è quel pulsante.
+
+##### La dimostrazione: due manopole, e solo in sviluppo
+
+`data/fault-injection.ts` è un `Proxy` sull'implementazione mock, montato da
+`index.ts` **solo** quando `GUARDRAIL_MODE` vale `"throw"`. `?fail=metodo[:n]`
+produce il guasto, `?empty=metodo` il vuoto legittimo — e senza la seconda
+metà del blocco sarebbe indimostrabile, perché il dataset del §8 ha tutti e
+quattro i trimestri pieni e nessuna lista vuota. `?empty` svuota **la risposta
+e non la chiamata**, per forma del valore vero: lista → `[]`, resto → `null`.
+
+**Il rischio dichiarato di `?empty`**: puntata su un metodo non nullable
+fabbrica uno stato che i tipi vietano e l'app si rompe forte, spesso lontano
+dal punto. È errore d'uso, non difetto — distinguere richiederebbe l'elenco dei
+metodi nullable, cioè il secondo elenco che diverge.
+
+**A riposo è trasparente, ed è parte del criterio di accettazione**: in
+sviluppo il decoratore è montato sempre, così il ramo di passaggio si esercita
+a ogni sessione invece che la prima volta che qualcuno usa la manopola.
+
+**`retry: 1` è diventato `retry: 0`, ed è una decisione.** Era configurazione
+ereditata mai documentata e **mai esercitata** — il mock non fallisce, quindi
+non c'era niente da ritentare. Il retryer di react-query **pausa fra i
+tentativi se la scheda non è in primo piano**, e una query in pausa è
+`data === undefined`: un **quarto caso** indistinguibile dalla sospensione, che
+la regola dei tre non ammette. Costava anche l'albero intero, perché una
+`prefetchQuery` in pausa non si risolve e `Promise.all` restava appeso.
+Misurato: con `retry: 1` una query rotta non arriva mai in errore, con
+`retry: 0` ci arriva in un millisecondo. La nota per chi scriverà il backend è
+in `CONTRATTO-DATI.md` §5.
+
+**La soglia `:n` non è sparita, si è spostata.** Con la cache scaldata prima
+del paint, **la prima chiamata se la prende il prefetch**, e una query in
+errore viene rifatta al montaggio perché `retryOnMount` di react-query vale
+`true`. Quindi `:1` fa fallire il solo prefetch e la schermata si rimette a
+posto da sé, mentre **`:2` mostra l'errore e lascia riuscire il primo
+"Riprova"**: con `:n` i montaggi coperti sono `n − 1`. `retryOnMount` resta al
+default: la guarigione su navigazione è innescata da un gesto e non da un
+timer, ed è comportamento buono in produzione.
+
+**Il guardrail della cache fredda accusava le query in errore**, e il ramo non
+era mai stato esercitato perché prima di questo blocco niente poteva fallire.
+Esentava `status === "error"`, che non basta: quando un osservatore monta su
+una query in errore react-query la rifà, e per la durata di quella lettura lo
+stato torna `pending` con `error: null` — il secondo osservatore della stessa
+chiave (nav e pagina leggono entrambe l'azienda) cade lì dentro. Misurato:
+`status: pending`, `fetchStatus: fetching`, `errorUpdateCount: 1`. Ora legge
+**`errorUpdateCount`**, che sopravvive alla finestra in cui `status` mente.
+
+##### L'inventario delle 27 schermate
+
+Per ognuna: il registro, e cosa rende nei tre casi. **Il registro si decide al
+call site e niente lo forza** — una pagina del dipendente che pescasse
+`t.common.state.*` compilerebbe senza avvisi — quindi è dichiarato qui perché
+la review lo campioni invece di fidarsi.
+
+| schermata | registro | attesa | vuoto | errore |
+|---|---|---|---|---|
+| `/` landing | strumento | `null` | — | `ErrorNotice` nella sola sezione piani |
+| `/` hero preview | — | `null` | `null` | `null` (mockup: i tre collassano) |
+| `/roi` | strumento | `null` | `EmptyNotice` `public.roi.empty` | `ErrorNotice` sotto la nav |
+| `/pricing` | strumento | `null` | `EmptyNotice` `public.plans.empty` | `ErrorNotice` sotto la nav |
+| `/demo` | strumento | — | — | `ErrorNotice` `public.demoRequest.error` sotto il pulsante |
+| `/employee` home | consumer | `null` | frase esistente sugli appuntamenti | `ErrorNotice` di pagina |
+| `/employee` contatori | consumer | `null` | — | `ErrorNotice` nella sola card |
+| `/employee` check rapido | consumer | `null` | — | `ErrorNotice` `employee.rapidCheck.error` |
+| `/employee/psicologi` | consumer | `null` | frase esistente sull'elenco | `ErrorNotice` di pagina |
+| `/employee/psicologi` dialogo | consumer | `null` | frase esistente sugli slot | `ErrorNotice`, e `…dialog.error` sulla prenotazione |
+| `/employee/medico` | consumer | `null` | — | `ErrorNotice` di pagina |
+| `/employee/checkup` | consumer | `null` | `EmptyNotice` `…checkup.networkEmpty` | `ErrorNotice` di pagina, e uno nel dialogo referto |
+| `/employee/piano-ai` | consumer | `null` | — | `ErrorNotice` di pagina |
+| `/employee/profilo` | consumer | `null` | — | `ErrorNotice` di pagina |
+| `/hr` dashboard | strumento | `null` | `EmptyNotice` `hr.quarterEmpty`, **con intestazione e selettore** | `ErrorNotice` di pagina |
+| `/hr/dipendenti` | strumento | `null` | `EmptyNotice` `hr.employees.empty`; sottotitolo tolto se manca lo snapshot | `ErrorNotice` di pagina |
+| `/hr/report` | strumento | `null` | `EmptyNotice` `hr.quarterEmpty`, **senza il pulsante di download** | `ErrorNotice` di pagina |
+| `/hr/fatturazione` | strumento | `null` | `EmptyNotice` `hr.billing.invoicesEmpty` | `ErrorNotice` di pagina |
+| `/hr/privacy` | strumento | `null` | — | `ErrorNotice` di pagina |
+| `/professional` calendario | strumento | `null` | frase esistente sulla settimana | `ErrorNotice` di pagina |
+| `/professional/sessioni` | strumento | `null` | frasi esistenti sui tre pannelli | `ErrorNotice` di pagina, e `…note.error` sul salvataggio |
+| `/professional/pazienti` | strumento | `null` | — | `ErrorNotice` di pagina |
+| `/professional/pagamenti` | strumento | `null` | `EmptyNotice` `professional.profile.empty` | `ErrorNotice` di pagina |
+| `/professional/profilo` | strumento | `null` | `EmptyNotice` `professional.profile.empty` | `ErrorNotice` di pagina |
+| `/professional` badge nav | — | `null` | `null` | `null` (decorativo: i tre collassano) |
+| `/admin` aziende | strumento | `null` | `EmptyNotice` su clienti e su richieste | `ErrorNotice` sui due blocchi |
+| `/admin/utenti` | strumento | `null` | frase esistente sulla ricerca | `ErrorNotice` di pagina |
+| `/admin/professionisti` | strumento | `null` | `EmptyNotice` `admin.professionals.empty` | `ErrorNotice` di pagina |
+| `/admin/sessioni` | strumento | `null` | `EmptyNotice` `professional.profile.empty` | `ErrorNotice` di pagina |
+| `/admin/provider` | strumento | `null` | `EmptyNotice` `admin.checkupProviders.empty` | `ErrorNotice` di pagina |
+| `/admin/analytics` | strumento | `null` | `EmptyNotice` `admin.analytics.empty` | `ErrorNotice` di pagina |
+| 404 | strumento | — | — | — (non legge dal provider) |
+| bootstrap | strumento | — | — | `ErrorNotice` `common.state.boot`, senza layout |
+
+**Verificato a schermo, viewport 1280×900 e scheda in primo piano** (§11):
+
+- **27 rotte percorse sulla build demo**, zero schermate vuote, **zero stati
+  d'errore raggiungibili**, console pulita;
+- **le manopole non esistono nella build demo**: `?fail=getCompany&empty=getRoiSnapshot`
+  su `/hr` lascia CHF 14'200, 16 giorni e 68% al loro posto;
+- **il decoratore è assente da entrambi i bundle**, su sette marcatori
+  distinti; nella demo `[dataset]` c'è e in produzione no, che è la controprova
+  che il grep sta leggendo la build giusta;
+- **i numeri del pitch non si sono mossi**: CHF 14'200, 16 giorni, 68%, 82 su
+  120, 142 di 1'200, 62%, soglia 12, −2 punti; i cinque di ancoraggio del §9 a
+  N=100; CHF 652'968, 415 e 798 nel back-office; CHF 1'120 nei compensi;
+- **la coreografia di `/admin` regge sulla build demo**: tabella vuota, uscita
+  col logo, richiesta inviata, due Indietro, riga in tabella col telefono;
+- **"Riprova" riesce davvero**: `?fail=getInvoices:2` su `/hr/fatturazione`
+  mostra l'errore e un clic riporta CHF 6'600 e CHF 79'200;
+- **il vuoto tiene la via d'uscita**: `?empty=getRoiSnapshot` su `/hr` lascia
+  intestazione e selettore;
+- **la prenotazione fallita non perde niente**: giorno e ora restano
+  selezionati, il riepilogo resta, il pulsante resta premibile;
+- **contrasti** del componente nuovo sul fondo vero: titolo **5.39:1**, corpo
+  **4.90:1**, icona `aria-hidden`;
+- `lint`, `typecheck`, `build` e `build:demo` a posto; i guardrail restano
+  **90 + 6**.
+
+##### Tre lezioni, e sono la stessa
+
+**`visibilityState` ha una terza faccia.** M3 l'ha incontrata come animazioni
+congelate, M5.a come misure sbagliate — `innerWidth` a zero — e qui come
+**stati che non arrivano**: a scheda non visibile il retryer pausa, e la query
+resta in un limbo che si traveste da caricamento. Le tre vanno lette insieme,
+perché la causa è una e il sintomo cambia ogni volta.
+
+**La quarta è di metodo, e ha fatto dichiarare due volte un difetto che non
+c'era**: "Riprova" sembrava non funzionare perché il DOM veniva letto **nello
+stesso tick del clic**, prima che React ri-renderizzasse. Con 800 ms di attesa
+la pagina è piena. È la stessa famiglia — **misurare prima che lo stato
+esista** — e insieme alla trappola dello spazio unificatore di M1 forma la
+regola operativa: prima di concludere che qualcosa non c'è, verificare che lo
+strumento potesse vederlo.
+
+**I contrasti del §6.1 sono misurati su bianco puro, il fondo dell'app no.**
+`--background` è `150 20% 98%`, quindi sul fondo vero i rapporti calano di
+circa 0.2: `destructive-strong` dà **5.39** dove la tabella dichiara 5.62.
+Restano tutti sopra soglia, e lo scarto è scritto qui una volta perché la
+prossima verifica non lo legga come un errore di taratura.
+
+**Aperto e dichiarato:**
+
+- **Gli stati vuoti preesistenti non sono stati consolidati su `EmptyNotice`.**
+  Sono testo attenuato e centrato come il componente, quindi a schermo la
+  differenza è di padding e allineamento, non di resa; consolidarli sarebbe un
+  diff su schermate che già funzionano. L'inventario qui sopra li dichiara
+  riga per riga come "frase esistente", così chi vorrà unificarli sa dove
+  sono. Il solo consolidato è quello delle richieste demo, perché è il vuoto su
+  cui il pitch apre `/admin` e doveva somigliare agli altri.
+- **`?empty` non copre le liste già vuote per costruzione**: svuota la risposta
+  di un metodo, quindi un vuoto che nasce da un filtro di schermata — la
+  ricerca utenti senza risultati, gli slot di una settimana piena — si produce
+  a mano come prima.
+- **L'anello di focus sui CTA pieni resta il residuo di M5.a**, e il "Riprova"
+  non lo tocca: è un `variant="outline"`, quindi il suo anello si vede.
+
 ### Refinement fra le milestone
 
 **Undici passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
@@ -1468,7 +1679,7 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 | M2 | Il contratto dati | **fatta** |
 | M3 | Migrazione area per area + calcolatore ROI | **fatta** |
 | M4 | Report scaricabile | **fatta** |
-| M5 | Verso la produzione (differibile) | **in corso** — blocco a chiuso, prossimo b |
+| M5 | Verso la produzione (differibile) | **in corso** — blocchi a e b chiusi, prossimo c |
 
 ## Decisioni chiuse
 
