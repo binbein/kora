@@ -1430,6 +1430,38 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 
 ## Decisioni in sospeso
 
+- **Residenza dei dati: la UI la promette, la decisione commerciale non è
+  presa** (founder, 11.08.2026). Il §2.1 di *"Dubbi Business per CEO"* dà la
+  promessa come **domanda ancora aperta**: verificato aprendo il documento
+  prima di scrivere questa voce, dice che i dati si possono tenere legalmente
+  in UE, che serve l'avvocato per il minimo legale e il CEO per il minimo
+  commerciale, e che va chiarito **prima del primo pilot** — *"rinegoziare un
+  contratto firmato è molto peggio che spostare dati"*. Compare anche fra le
+  domande da chiudere in fondo al documento.
+
+  **Quante stringhe la promettono, con il criterio**, perché è la cifra che
+  servirà il giorno in cui vanno cambiate e non deve produrne una seconda:
+  in `src/lib/i18n/it.ts` sono **5** le stringhe che nominano la **residenza**
+  — "Hosting in Svizzera" o "server in Svizzera" — cioè il titolo e il corpo
+  del riquadro privacy della landing, il footer, la riga di conformità
+  dell'hero e il badge. **Altre 6 promettono conformità LPD/GDPR o
+  "piattaforma svizzera" senza dire dove stanno i dati**, fra cui
+  l'informativa in fondo alla richiesta demo: sono adiacenti e vanno rilette
+  quel giorno, ma non sono la stessa promessa e **non si sommano alle prime
+  cinque**. Sono 5 + 6, non 11, e nemmeno 6.
+
+  **Per la demo va bene così e non si tocca niente.** La promessa è coerente
+  con il prodotto che il pitch racconta, ed è la stessa coerenza per cui il §3
+  self-hosta i font invece di chiamare i server di Google: una richiesta a
+  runtime verso l'estero contraddirebbe la frase mentre la si mostra.
+
+  **La voce esiste per il momento dopo**: il primo contratto non si firma con
+  una promessa non ratificata, e chi lo scriverà deve sapere che quelle cinque
+  stringhe non sono una decisione presa. Il giorno in cui il minimo
+  commerciale è deciso, o si conferma la Svizzera o **le cinque stringhe
+  cambiano** — sono in `i18n`, quindi è un file solo, che è esattamente il
+  motivo per cui il §2.7 non le vuole cablate nei componenti.
+
 - **Piano "Personalizzato" della pagina prezzi.** Nascosto in M0 in attesa della
   decisione del CEO: gli undici prezzi dei moduli non sono nel Business Plan, gli
   sconti a volume nemmeno, e a 150 dipendenti la preselezione esce a **CHF 38** —
