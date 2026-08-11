@@ -25,6 +25,19 @@ import type { DataProvider } from "./provider";
  * `?empty` svuota **la risposta e non la chiamata**: il metodo vero viene
  * eseguito, e a essere sostituito è ciò che torna.
  *
+ * ⚠︎ `?empty` SI PUNTA SOLO SU UN METODO CHE IL CONTRATTO DICHIARA VUOTABILE —
+ * cioè su un `| null` o su una lista (`docs/CONTRATTO-DATI.md` §2).
+ * `getRoiSnapshot`, `getHrReport`, `getEarlyAlert` e tutte le letture che
+ * restituiscono un array vanno bene; `getReferenceDate`, `getCompany`,
+ * `getEmployeeProfile` e gli altri **no**. Su quelli la manopola fabbrica uno
+ * stato che i tipi vietano, la schermata riceve un `null` che non ha mai
+ * dovuto gestire e l'applicazione si rompe forte — spesso lontano dal punto in
+ * cui la manopola è stata girata. **Non è un difetto da riparare, è un errore
+ * d'uso**: il decoratore non può distinguere i due casi senza tenere l'elenco
+ * dei metodi nullable, che è esattamente il secondo elenco che diverge dal
+ * primo. Chi arriva qui dopo aver visto l'app esplodere ha trovato la
+ * spiegazione: sposta la manopola su un metodo vuotabile.
+ *
  * I nomi sono quelli dei **metodi del provider**, non delle chiavi di query:
  * questo file avvolge il contratto, e il contratto è la sua superficie. Il
  * piano si legge **una volta sola**, all'istanza; le schermate non leggono né
