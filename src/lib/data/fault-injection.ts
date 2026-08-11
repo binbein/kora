@@ -15,6 +15,15 @@ import type { DataProvider } from "./provider";
  *   /hr?fail=getCompany          → `getCompany` fallisce sempre
  *   /hr?fail=getCompany:2        → fallisce le prime due chiamate, poi riesce
  *   /hr?fail=getCompany,getInvoices
+ *   /hr?empty=getRoiSnapshot     → risponde vuoto invece che con i dati
+ *
+ * DUE MANOPOLE, PERCHÉ GLI STATI SONO DUE. `?fail` produce il **guasto**,
+ * `?empty` il **vuoto legittimo** — e senza la seconda metà del blocco
+ * resterebbe indimostrabile: il dataset del §8 ha tutti e quattro i trimestri
+ * pieni e nessuna lista vuota, quindi il ramo `null` non lo raggiungerebbe
+ * nessun percorso, che è la definizione di codice non verificabile (§11).
+ * `?empty` svuota **la risposta e non la chiamata**: il metodo vero viene
+ * eseguito, e a essere sostituito è ciò che torna.
  *
  * I nomi sono quelli dei **metodi del provider**, non delle chiavi di query:
  * questo file avvolge il contratto, e il contratto è la sua superficie. Il
@@ -67,38 +76,55 @@ import type { DataProvider } from "./provider";
  */
 
 const FAIL_PARAM = "fail";
+const EMPTY_PARAM = "empty";
 
 /** Metodo del provider → quante chiamate deve ancora far fallire. */
 type FaultPlan = Map<string, number>;
 
-function parseFaultPlan(search: string, provider: DataProvider): FaultPlan {
-  const plan: FaultPlan = new Map();
-  const raw = new URLSearchParams(search).get(FAIL_PARAM);
-  if (raw === null) return plan;
+/**
+ * I nomi di metodo dichiarati in un parametro, verificati sul provider.
+ *
+ * Un nome sbagliato non romperebbe niente, e questo è il problema: la manopola
+ * sembrerebbe girata e la schermata resterebbe intera, quindi si concluderebbe
+ * che lo stato non c'è quando invece non è stato chiesto.
+ */
+function* declaredMethods(
+  search: string,
+  param: string,
+  provider: DataProvider,
+): Generator<{ method: string; argument: string | undefined }> {
+  const raw = new URLSearchParams(search).get(param);
+  if (raw === null) return;
 
   for (const entry of raw.split(",")) {
-    const [rawName, rawTimes] = entry.split(":");
+    const [rawName, argument] = entry.split(":");
     const method = rawName.trim();
     if (method === "") continue;
 
-    /*
-     * Un nome sbagliato non romperebbe niente, e questo è il problema: la
-     * manopola sembrerebbe girata e la schermata resterebbe intera, cioè si
-     * concluderebbe che lo stato d'errore non c'è quando invece non è stato
-     * chiesto.
-     */
     if (!(method in provider)) {
       raiseOutsideCurrentStack(
-        `[fault] "${method}" non è un metodo di DataProvider: controlla il nome in ?${FAIL_PARAM}=.`,
+        `[fault] "${method}" non è un metodo di DataProvider: controlla il nome in ?${param}=.`,
       );
       continue;
     }
 
+    yield { method, argument };
+  }
+}
+
+function parseFaultPlan(search: string, provider: DataProvider): FaultPlan {
+  const plan: FaultPlan = new Map();
+
+  for (const { method, argument } of declaredMethods(
+    search,
+    FAIL_PARAM,
+    provider,
+  )) {
     const times =
-      rawTimes === undefined ? Number.POSITIVE_INFINITY : Number(rawTimes);
+      argument === undefined ? Number.POSITIVE_INFINITY : Number(argument);
     if (!Number.isInteger(times) && times !== Number.POSITIVE_INFINITY) {
       raiseOutsideCurrentStack(
-        `[fault] la soglia di "${method}" deve essere un intero: "${rawTimes}" non lo è.`,
+        `[fault] la soglia di "${method}" deve essere un intero: "${argument}" non lo è.`,
       );
       continue;
     }
@@ -115,14 +141,23 @@ function parseFaultPlan(search: string, provider: DataProvider): FaultPlan {
   return plan;
 }
 
-export function withFaultInjection(provider: DataProvider): DataProvider {
-  const plan = parseFaultPlan(window.location.search, provider);
+function parseEmptyPlan(search: string, provider: DataProvider): Set<string> {
+  const plan = new Set<string>();
+  for (const { method } of declaredMethods(search, EMPTY_PARAM, provider)) {
+    plan.add(method);
+  }
+  return plan;
+}
 
-  if (plan.size > 0) {
+export function withFaultInjection(provider: DataProvider): DataProvider {
+  const failing = parseFaultPlan(window.location.search, provider);
+  const emptying = parseEmptyPlan(window.location.search, provider);
+
+  if (failing.size > 0 || emptying.size > 0) {
     // la manopola è girata: si dice, perché da qui in poi una schermata rotta
-    // è voluta e non va diagnosticata come un difetto
+    // o vuota è voluta e non va diagnosticata come un difetto
     console.info(
-      `[fault] iniezione attiva su ${[...plan.keys()].join(", ")}. Esiste solo in sviluppo.`,
+      `[fault] iniezione attiva — guasto: ${[...failing.keys()].join(", ") || "nessuno"}; vuoto: ${[...emptying].join(", ") || "nessuno"}. Esiste solo in sviluppo.`,
     );
   }
 
@@ -135,27 +170,48 @@ export function withFaultInjection(provider: DataProvider): DataProvider {
       const method = value.bind(target) as (
         ...args: unknown[]
       ) => Promise<unknown>;
-      if (!plan.has(name)) return method;
 
-      return (...args: unknown[]) => {
-        const remaining = plan.get(name) ?? 0;
-        if (remaining <= 0) return method(...args);
-        plan.set(name, remaining - 1);
+      /* Il guasto vince sul vuoto: sono due stati diversi e uno solo si vede. */
+      if (failing.has(name)) {
+        return (...args: unknown[]) => {
+          const remaining = failing.get(name) ?? 0;
+          if (remaining <= 0) return method(...args);
+          failing.set(name, remaining - 1);
 
-        /*
-         * Si **rifiuta**, non si lancia: è la promise rifiutata che
-         * react-query cattura e trasforma nell'`isError` che le schermate
-         * mostrano. È la stessa meccanica che ai guardrail dentro una
-         * mutation faceva danno — lì il messaggio spariva dentro lo stato
-         * della mutation invece di fermare chi lavorava — e qui è
-         * esattamente ciò che si vuole: quello stato è la consegna.
-         */
-        return Promise.reject(
-          new Error(
-            `[fault] ${name} fallisce per ?${FAIL_PARAM}=. È un guasto simulato, e vive solo in sviluppo.`,
-          ),
-        );
-      };
+          /*
+           * Si **rifiuta**, non si lancia: è la promise rifiutata che
+           * react-query cattura e trasforma nell'`isError` che le schermate
+           * mostrano. È la stessa meccanica che ai guardrail dentro una
+           * mutation faceva danno — lì il messaggio spariva dentro lo stato
+           * della mutation invece di fermare chi lavorava — e qui è
+           * esattamente ciò che si vuole: quello stato è la consegna.
+           */
+          return Promise.reject(
+            new Error(
+              `[fault] ${name} fallisce per ?${FAIL_PARAM}=. È un guasto simulato, e vive solo in sviluppo.`,
+            ),
+          );
+        };
+      }
+
+      if (emptying.has(name)) {
+        return async (...args: unknown[]) => {
+          /*
+           * Si svuota **quello che il metodo restituisce davvero**, invece di
+           * tenere un elenco di quali metodi danno liste e quali slot: quello
+           * sarebbe il secondo elenco che diverge dal primo. Una lista diventa
+           * vuota, tutto il resto diventa `null` — che sono le due forme in cui
+           * il contratto dice "non c'è niente" (`docs/CONTRATTO-DATI.md` §2).
+           *
+           * Il metodo vero viene chiamato lo stesso: svuotare la risposta e non
+           * la chiamata tiene onesti i guardrail che stanno dentro il provider.
+           */
+          const real = await method(...args);
+          return Array.isArray(real) ? [] : null;
+        };
+      }
+
+      return method;
     },
   });
 }

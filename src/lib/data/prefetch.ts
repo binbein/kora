@@ -261,7 +261,25 @@ export function assertQueriesArePrewarmed(queryClient: QueryClient): void {
   queryClient.getQueryCache().subscribe((event) => {
     if (event.type !== "observerAdded") return;
     if (event.query.state.data !== undefined) return;
-    if (event.query.state.status === "error") return;
+    /*
+     * Una query che ha già sbagliato non è una cache fredda, ed è
+     * `errorUpdateCount` a dirlo — non `status`.
+     *
+     * `status === "error"` sembrava bastare, e non bastava: quando un
+     * osservatore monta su una query in errore, react-query la **rifà**
+     * (`retryOnMount`), e per la durata di quella lettura lo stato torna
+     * `pending` con `error: null`. Il secondo osservatore della stessa chiave
+     * — la nav e la pagina leggono entrambe l'azienda — arriva proprio lì
+     * dentro e vede uno stato indistinguibile da una chiave mai scaldata,
+     * quindi si prendeva l'accusa. Misurato: `status: pending`,
+     * `fetchStatus: fetching`, `errorUpdateCount: 1`.
+     *
+     * `errorUpdateCount` conta gli errori registrati e **non si azzera** alla
+     * lettura successiva, quindi sopravvive alla finestra in cui `status`
+     * mente. Il controllo non poteva sbagliare prima di M5.b, perché niente
+     * poteva fallire: è la prima volta che questo ramo viene esercitato.
+     */
+    if (event.query.state.errorUpdateCount > 0) return;
     /*
      * Una query disabilitata è vuota **di proposito**: `enabled: false` dice
      * che il dato non serve ancora — un id che arriva da un'altra query, un
