@@ -1468,7 +1468,7 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 | M2 | Il contratto dati | **fatta** |
 | M3 | Migrazione area per area + calcolatore ROI | **fatta** |
 | M4 | Report scaricabile | **fatta** |
-| M5 | Verso la produzione (differibile) | da fare |
+| M5 | Verso la produzione (differibile) | **in corso** — blocco a chiuso, prossimo b |
 
 ## Decisioni chiuse
 
