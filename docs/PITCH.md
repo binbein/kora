@@ -57,6 +57,34 @@ che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
   stessa seduta nel calendario. È un record solo visto da due lati, e si vede che
   lo slot è sparito dai liberi.
 
+  **Prenota dentro la settimana visibile** — **venerdì 25.09 alle 10:00** è lo
+  slot provato in M3 e funziona. Il calendario del professionista mostra **solo
+  la settimana corrente** (lun 21 – dom 27.09) e non ha navigazione fra
+  settimane: uno slot preso oltre il 27 compare fra le sedute in programma ma
+  **non nella griglia**, e a metà pitch si legge come un difetto invece che come
+  il limite dichiarato che è (`docs/PROGRESS.md`, area dipendente).
+
+- **La richiesta demo che compare in `/admin` non si esegue con i soli clic**, e
+  va saputo prima di prometterla a voce. `/admin` **non è linkata da nessuna
+  schermata** — zero ancore verso di lei in tutte e sei le rotte pubbliche e di
+  area — e dal suo layout **non si esce**: le sue sei ancore puntano tutte
+  dentro `/admin`, e il logo non è un link. L'unico modo di entrarci è digitare
+  l'indirizzo, cioè ricaricare, cioè azzerare il provider: la richiesta appena
+  inviata sparisce con lui, e la tabella dice "nessuna richiesta".
+
+  **Finché la via d'uscita non c'è, il momento non si mostra dal vivo.** Le
+  richieste demo restano una schermata da raccontare, non da eseguire davanti a
+  qualcuno; il giro che *si* esegue è quello del marketplace qui sopra, che è
+  anche il più forte. **Che si aggiunga o no un'uscita da `/admin` è scope, e
+  quindi una decisione dei founder** (`CLAUDE.md` §2.6): questa riga descrive il
+  vincolo di oggi, non la soluzione.
+
+- **Dopo l'invio, il form demo non si ripropone.** Resta la conferma, e cliccare
+  "Demo" nella barra **non** la sostituisce con un form vuoto: la rotta è la
+  stessa e il componente non si rimonta. Per una seconda richiesta si passa da
+  **"Torna alla home"** e si rientra da lì. È voluto, ma scoprirlo davanti a
+  qualcuno sembra una schermata bloccata.
+
 ---
 
 ## Le risposte pronte
@@ -92,6 +120,31 @@ E se arriva la domanda difficile — *"non state deducendo lo stress da chi
 prenota?"* — la risposta è no, per scelta di modello: un segnale comportamentale
 non distingue "il reparto sta peggio" da "il reparto ha adottato bene il
 prodotto", e legge come in miglioramento chi si sta ritirando.
+
+### "Nel documento la soglia di anonimato è 15, la dashboard dice 12"
+
+**Le due cifre non contano la stessa cosa**, ed è la prima da dire: la soglia
+della dashboard conta i dipendenti **misurati nel periodo** — chi ha risposto al
+check rapido — non l'organico del reparto. Il Business Plan dà "soglia min. 15
+dip" senza dire su quale dei due, e letta sull'organico non distinguerebbe i due
+reparti da 15 persone, HR + Legale e Direzione, che nella demo hanno esiti
+opposti.
+
+**E 15 non regge nemmeno sui misurati**: un reparto da 15 persone sarebbe
+pubblicabile solo con il **100% di risposte in tutti e dodici i mesi**, e
+basterebbe una persona che salta il check perché la riga sparisca dalla
+dashboard — il dataset funzionerebbe grazie a un numero implausibile. A 12 c'è
+margine sopra, e la Direzione resta sotto: è esattamente ciò che la schermata
+mostra (`CLAUDE.md` §8).
+
+**E non è una costante di piattaforma**: è una proprietà del cliente,
+`Company.anonymityThreshold`. Aziende diverse possono averne di diverse, e la
+frase che la mostra non cambia perché il numero è un segnaposto
+(`docs/CONTRATTO-DATI.md` §3).
+
+Vale la nota già usata per il check rapido (`CLAUDE.md` §10.B.1): **dove il
+Business Plan e la demo divergono vince `CLAUDE.md`, e il documento si
+aggiorna.**
 
 ### "Perché il ROI è 2.35:1? Nel documento ho letto 19.5:1"
 
