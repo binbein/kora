@@ -41,12 +41,11 @@ trimestre scelto. Da lì il lavoro è **refinement fra le milestone** — passat
 che non aggiungono schermate e mettono in ordine layer dati, seam e dizionario;
 la sintesi sta nella sezione dedicata, sotto M4. **La prossima milestone è M5.**
 
-**La decisione di palette è presa** (riunione del 10.08.2026): il bianco su
-`secondary` pieno dà 2.83:1 contro il minimo AA di 4.5, e le CTA piene passano
-su `primary` invece di scurire il token. **Resta da eseguire**, in una passata
-dedicata che produce anche l'inventario dei punti — il criterio con cui si
-contano sta nella voce della riunione, ed è la parte che serve per non partire
-nella direzione sbagliata.
+**La palette è decisa ed eseguita** (riunione del 10.08.2026): le CTA piene sono
+passate su `primary`, 13 punti su 9 file, e nessun call site usa più
+`variant="secondary"`. **Il verde pieno è chiuso; il debito AA no** — resta il
+caso inverso, testo e icone teal su fondo chiaro, censito in fondo alla sezione
+refinement con destinazione M5.
 
 Delle altre due esecuzioni rimandate dalla stessa riunione, **una è fatta**: la
 **build "demo"** in cui i guardrail loggano e la **checklist pre-pitch** sono la
@@ -513,10 +512,9 @@ dataset con il messaggio giusto.
   di passata, e `--secondary-foreground` è bianco nei token, quindi la scelta è
   incorporata nel design system. Le due strade sono scurire `--secondary` o
   portare le CTA su `primary`. ~~Va deciso prima di M5, che ha "accessibilità
-  completa" in elenco.~~ → **deciso il 10.08.2026: le CTA passano su `primary`**,
-  e resta da eseguire in una passata dedicata. I 19 punti su 11 file sono la
-  rilevazione di allora: il conteggio va rifatto con il criterio della voce di
-  riunione, che dice anche quali punti non sono correggibili.
+  completa" in elenco.~~ → **deciso ed eseguito il 10.08.2026**. I 19 punti su 11
+  file erano la rilevazione di allora; il conteggio rifatto con un criterio
+  scritto dà **13 punti su 9 file**, ed è in fondo alla sezione refinement.
 - **La home elenca tutti gli appuntamenti in programma**, che oggi sono tre più
   quelli che si prenotano durante la demo. È voluto — è così che si vede
   comparire quello nuovo — ma se l'elenco crescesse troppo andrebbe accorciato.
@@ -644,10 +642,10 @@ Fachpersonen, più Anmelden e Demo vereinbaren — la barra sta su una riga a
 - **Il debito AA sulla CTA verde è sceso ma non è chiuso.** Le schermate nuove e
   rifatte usano `primary` o la coppia `accent`, quindi il debito non si è
   allargato, ma i punti che restano nelle aree non toccate vanno chiusi con la
-  decisione di palette. → **Presa il 10.08.2026** — CTA su `primary` — e da
-  eseguire in una passata dedicata. Che le schermate di questa passata avessero
-  già scelto `primary` è la ragione per cui la decisione costa poco: la direzione
-  era di fatto quella.
+  decisione di palette. → **Presa ed eseguita il 10.08.2026** — CTA su
+  `primary`. Che le schermate di questa passata avessero già scelto `primary` è
+  la ragione per cui la decisione è costata poco: la direzione era di fatto
+  quella, e `Roi.tsx` è diventata il precedente che la passata ha seguito.
 
 #### Il back-office (§10.E) — e la chiusura di M3
 
@@ -975,6 +973,79 @@ ricaricare, un clic per PDF — e porta le risposte pronte alle quattro domande
 che il pitch riceve: da dove viene il dato di stress, perché il ROI è 2.35:1 e
 non 19.5:1, il co-payment come meccanismo di margine, Keller e Basalto come
 vetting a schermo. Le cifre sono verificate contro §8 e §9 alla cifra.
+
+#### La passata di palette (10.08.2026)
+
+La seconda passata che esegue una decisione della riunione: le CTA verdi piene
+passano su `primary` (`CLAUDE.md` §6.1). Nessun cambiamento oltre ai colori.
+
+**L'inventario autoritativo è 13 punti su 9 file**, e sostituisce i 19/11 di M3 e
+i ~9/7 della ricognizione: quelli erano stime, questo è un conteggio con un
+criterio scritto. Da 21 occorrenze grezze di `bg-secondary` pieno o
+`variant="secondary"` in 14 file:
+
+| destinazione | punti | dove |
+|---|---|---|
+| `primary` | 8 CTA | `PublicNav` ×2, `PageNotFound`, `EmployeeHome`, `Psicologi` ×3, `ProSessioni` |
+| `accent` | 2 KPI | `HRDashboard`, `ProPagamenti` |
+| coppia `accent` | 2 badge | `Psicologi`, `ProProfilo` |
+| rimossa | 1 variante | `KPICard.bgMap.secondary` |
+
+**Fuori, con la ragione**: `button.tsx`, `badge.tsx` e `sheet.tsx` (congelato);
+`FlexiblePlanCard.jsx` (codice morto); il pallino di `Medico` e i due
+riempimenti di barra di `HRDashboard` (nessun testo).
+
+**Due errori dell'inventario, trovati verificandolo invece che fidandosene.**
+Vanno tenuti perché sono il modo in cui il conteggio sbaglia:
+
+- **un `grep -v "bg-secondary/"` esclude la riga, non l'occorrenza**, quindi
+  `className="bg-secondary hover:bg-secondary/90"` — cioè *la CTA*, il caso
+  centrale — spariva dal conto perché la stessa riga contiene anche la tinta
+  trasparente. È probabilmente l'origine del ~9/7;
+- **`Medico.tsx:159` è un pulsante a sola icona** con `aria-label`, non testo.
+  Era nell'inventario approvato a 14 punti e ne è uscito: per il criterio
+  — «il debito è il testo che non passa l'AA» — un'icona non è testo. È il
+  motivo per cui `/employee/medico` conserva un pulsante teal.
+
+**Un call site non è un rendering.** Il censimento a runtime sulle 26 rotte
+conta 18 pulsanti "Avvia" su `/professional/sessioni` e tre badge di specialità
+su `/employee/psicologi`, ma sono **un** call site ciascuno. L'inventario conta i
+punti da correggere, non le volte che si vedono.
+
+**Le destinazioni non sono state scelte, sono state ereditate**: `Roi.tsx` porta
+il commento che motiva le CTA su `primary` da quando è stata costruita in M3, e
+tutte e sei le schermate admin usano `variant="accent"` per la KPI di rilievo.
+`variant="primary"` di `KPICard` non lo usava nessuno, ed è uscito in un commit
+suo come codice morto preesistente (§11).
+
+**`PageNotFound.jsx` resta `.jsx`.** Il §3 converte le pagine ereditate «il
+giorno in cui qualcuno ci mette mano», e cambiare una classe non è quel giorno:
+un diff di palette deve leggersi come palette. Stessa deroga di `KoraLogo` nella
+passata di igiene. La regola non cambia.
+
+**Verificato**: i contrasti misurati punto per punto — 2.83:1 prima, 11.45:1 su
+`primary`, 10.66:1 sulla coppia `accent`, 13.53:1 sulla KPI — 26 rotte sulla
+build demo, console pulita, `lint` e `typecheck` a zero, e screenshot prima/dopo
+delle otto schermate toccate, approvati dai founder prima del merge.
+
+**Il debito residuo, censito e non toccato.** È il caso **inverso** del verde
+pieno — testo e icone teal su fondo chiaro — e il suo rimedio **non è coperto
+dalla decisione del 10.08.2026**, che ha scelto la strada per il riempimento
+pieno. Destinazione **M5**, che ha l'accessibilità completa in elenco. Censito
+ora perché un inventario preciso è ciò che rende quella voce eseguibile senza una
+terza rilevazione:
+
+| caso | soglia | punti | file |
+|---|---|---|---|
+| **testo** `text-secondary` su fondo chiaro | 4.5 (1.4.3) | **27** | 20 |
+| **icone** teal su fondo chiaro | 3.0 (1.4.11) | **40** | 20 |
+| in `FlexiblePlanCard.jsx` | — | 3 | 1 (escluso, codice morto) |
+
+Misure: `text-secondary` su card bianca **2.83:1**, su `bg-secondary/10`
+**2.57:1**. Le icone non arrivano nemmeno alla soglia del non-testo, e fra loro
+c'è il pulsante di invio di `Medico.tsx:159` uscito dall'inventario di questa
+passata. **Il confine fra le due righe è approssimativo**: `iconClass:
+"text-secondary"` passa da una variabile e va letto a schermo, non da un grep.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
