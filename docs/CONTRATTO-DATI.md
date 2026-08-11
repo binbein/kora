@@ -493,6 +493,22 @@ invece di restare assunzioni implicite:
   invece che accanto, e in produzione salta per intero: ogni cliente avrà le
   sue sedute. Ciò che resta vero è la forma — una serie mensile per la
   piattaforma, derivata e non salvata.
+- **Un solo alert precoce alla volta, e la scansione si ferma al primo.**
+  `EarlyAlert` è un valore singolo e `getEarlyAlert` restituisce `EarlyAlert |
+  null`, mentre `computeEarlyAlert` esce **al primo reparto** che ha una
+  risalita in corso, nell'ordine in cui i reparti sono dichiarati. Con due
+  reparti in allerta simultanea il secondo sparirebbe **in silenzio**: nessun
+  guardrail se ne accorgerebbe, perché il dato non è contraddittorio — è solo
+  incompleto, ed è il tipo di difetto che a schermo si vede meno.
+
+  Nel dataset demo il caso non si presenta per costruzione: il §8 descrive un
+  alert solo, sulle Vendite al decimo mese, e tre guardrail lo fissano. **In
+  produzione l'assunzione salta subito** — due reparti sotto pressione nello
+  stesso trimestre è il caso normale, non l'eccezione — quindi il contratto
+  dovrà restituire una **lista** e la dashboard dovrà decidere come mostrarne
+  più di uno. È il motivo per cui la voce sta qui e non fra i difetti: oggi il
+  tipo è onesto rispetto ai dati che ha, domani non lo sarebbe più.
+
 - **Un solo dipendente.** `getEmployeeProfile`, `getEntitlement`,
   `getAppointments`, `getCheckupEligibility` e le altre letture del percorso non
   prendono un identificatore: la demo ha Laura Bernasconi e basta. In produzione
