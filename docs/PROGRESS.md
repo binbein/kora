@@ -56,9 +56,16 @@ la sintesi sta nella sezione dedicata, sotto M4. **La prossima milestone è M5.*
 
 **La palette è decisa ed eseguita** (riunione del 10.08.2026): le CTA piene sono
 passate su `primary`, 13 punti su 9 file, e nessun call site usa più
-`variant="secondary"`. **Il verde pieno è chiuso; il debito AA no** — resta il
-caso inverso, testo e icone teal su fondo chiaro, censito in fondo alla sezione
-refinement con destinazione M5.
+`variant="secondary"`. **Il debito AA è chiuso dal blocco a) di M5**: il caso
+inverso — testo e icone teal su fondo chiaro — era censito in fondo alla sezione
+refinement con destinazione M5, e ci è arrivato; il censimento di chiusura sta a
+zero punti informativi su 27 rotte, nella sezione M5.a.
+
+**Resta un residuo dichiarato, e non è un difetto lasciato indietro**: l'anello
+di focus è invisibile sui 12 CTA pieni — anello `primary` su fondo `primary` —
+e il rimedio sta in `button.tsx`, che è congelato. È una decisione dei founder,
+della stessa famiglia della guardia di `useFormField` che il blocco c) porta con
+sé.
 
 Delle altre due esecuzioni rimandate dalla stessa riunione, **una è fatta**: la
 **build "demo"** in cui i guardrail loggano e la **checklist pre-pitch** sono la

@@ -682,15 +682,31 @@ Regole:
   la sua variante `secondary` è stata rimossa invece che aggirata.
   `FlexiblePlanCard.jsx` resta fuori dal conto: è codice morto del piano nascosto
   (§10.A.3).
-- **Il verde pieno è chiuso sul testo, il debito AA no.** Restano il caso
+- **Il verde pieno era chiuso sul testo, il debito AA no.** Restavano il caso
   **inverso** — `text-secondary` su fondo chiaro, 2.83:1 su bianco e 2.57:1 su
   `bg-secondary/10` — le icone teal su fondo chiaro, e **un'icona chiara su teal
   pieno** (2.72:1, più bassa del testo bianco perché eredita
-  `text-primary-foreground`, che è 98%). Quest'ultima non è né l'uno né l'altro
-  caso: è il verde pieno visto dal lato del non-testo, e va tenuta a vista
-  perché due liste che parlano d'altro se la perderebbero in mezzo. Sono censiti
-  in `docs/PROGRESS.md`, e **il rimedio è la riga qui sotto**, decisa
-  l'11.08.2026 all'apertura del blocco a) di M5.
+  `text-primary-foreground`, che è 98%). Quest'ultima non era né l'uno né
+  l'altro caso: è il verde pieno visto dal lato del non-testo, e andava tenuta a
+  vista perché due liste che parlano d'altro se la perderebbero in mezzo. **Il
+  rimedio è la riga qui sotto**, decisa l'11.08.2026 all'apertura del blocco a)
+  di M5.
+
+  **Chiuso dal blocco a)**: il censimento a schermo passa da 79 punti sotto
+  soglia a **zero informativi**, su 27 rotte. La sezione M5.a di
+  `docs/PROGRESS.md` porta i conti e come ci si è arrivati, compresi i due
+  punti che questa riga non poteva prevedere: il censimento vecchio era da grep
+  e **sbagliava in difetto**, e il debito delle icone non era di colore ma di
+  `aria` — un'icona dichiarata decorativa è esente dalla 1.4.11, e qui ognuna
+  sta accanto all'etichetta che porta già il significato.
+
+  **Resta un residuo, e non è chiudibile da lì.** L'anello di focus è invisibile
+  sui CTA pieni: `--ring` è il blu di `primary` e i CTA stanno su `bg-primary`,
+  cioè **1.00:1**, su **12 pulsanti**. Il rimedio sta in
+  `src/components/ui/button.tsx`, che è congelato (§3) e la cui eccezione copre
+  le sole annotazioni di tipo, quindi **va deciso dai founder** — è la stessa
+  famiglia della guardia di `useFormField`, che il blocco c) di M5 porta con sé.
+  "Chiuso" vale per il censimento, non per questo.
 - **Due varianti di solo testo: `secondary-strong` e `destructive-strong`**
   (founder, 11.08.2026). Il colore che porta significato non può essere
   illeggibile, e i due token base non passano l'AA come testo:
