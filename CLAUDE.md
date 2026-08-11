@@ -224,6 +224,7 @@ riceve di autenticarsi, quindi non vanno mai mandati a un investitore.
 kora/
   CLAUDE.md              ← questo file: le regole, l'unica fonte
   docs/PROGRESS.md       ← cosa esiste e perché, milestone per milestone
+  docs/PITCH.md          ← lo script operativo della presentazione dal vivo
   docs/CONTRATTO-DATI.md ← output di M2: la specifica per il backend futuro
   src/
     pages/
@@ -271,10 +272,22 @@ cancella, questo file non si tocca.
 averne due significa due costituzioni in conflitto. Valeva per `reference/`
 finché è esistito, e vale per qualunque sorgente si importi in futuro.
 
-**Due file di documentazione, due mestieri diversi.** Le regole stanno solo qui:
+**Tre file di documentazione, tre mestieri diversi.** Le regole stanno solo qui:
 palette, formule, dataset, definizione di "finito". `docs/PROGRESS.md` racconta
 cosa esiste, milestone per milestone, ed è l'indice con cui ci si orienta
-riprendendo il lavoro — non decide niente e non duplica: cita e rimanda qui.
+riprendendo il lavoro. `docs/PITCH.md` è lo **script operativo della
+presentazione**: cosa si prepara prima, come si naviga durante, cosa si risponde
+alle domande — approvato dai founder il 10.08.2026.
+
+Nessuno dei due decide niente e nessuno dei due duplica: citano e rimandano qui.
+La prova che il terzo mestiere è davvero un terzo: una regola che vale per il
+codice sta qui, la sua conseguenza operativa il giorno del pitch sta in
+`PITCH.md`, e la storia di quando è stata decisa in `PROGRESS.md`. Se una riga
+starebbe bene in due dei tre, è scritta male in almeno uno.
+
+`docs/CONTRATTO-DATI.md` non è un quarto mestiere: è **l'output di M2** e la
+specifica con cui nasce il repository del backend (§5.7), quindi non parla a chi
+lavora qui ma a chi lavorerà là.
 
 **Il Business Plan sta in `docs/`, e resta una fonte da consultare, non da citare.**
 Decisione dei founder del 07.08.2026: durante la costruzione della demo più
@@ -456,21 +469,61 @@ ereditata. Vanno **calcolati, non scritti**:
 Due numeri che descrivono la stessa cosa non devono poter divergere, perché devono
 essere lo stesso numero.
 
-### 5.6 Guardrail che falliscono in sviluppo
+### 5.6 Guardrail: tre modi, una decisione sola
 
-Controlli che lanciano in `import.meta.env.DEV` e tacciono in produzione, per i
-disallineamenti che a schermo non si vedono: il trimestre del PDF diverso da quello
-mostrato, il trimestre corrente fuori dal dataset, uno snapshot mancante, un id di
-professionista inesistente. Uno svarione si deve vedere mentre si lavora, non
-durante il pitch.
+Controlli per i disallineamenti che a schermo non si vedono: il trimestre del PDF
+diverso da quello mostrato, il trimestre corrente fuori dal dataset, uno snapshot
+mancante, un id di professionista inesistente. Uno svarione si deve vedere mentre
+si lavora, non durante il pitch.
 
-**In una build "demo" i guardrail loggano invece di tacere.** Oggi il silenzio in
-produzione è totale, e il build che si porta al pitch è un build di produzione:
-una manopola girata male — `DEMO_TODAY` spostata di mese è il caso vero — non si
-vede più da nessuna parte. Loggare non è lanciare: la schermata non si rompe
-davanti a un investitore, e chi prova la demo il giorno prima trova il messaggio
-in console. Deciso dai founder il 10.08.2026; **si esegue in una passata dedicata
-pre-pitch**, che non è M5.
+| | comando | comportamento |
+|---|---|---|
+| sviluppo | `npm run dev` | **lancia** — pagina bianca, impossibile da non vedere |
+| build demo | `npm run build:demo` | **logga** con `console.error`, la schermata regge |
+| produzione | `npm run build` | **tace**, e sparisce dal bundle |
+
+**La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
+call site sono 114 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 114 posti.
+Fuori da quel file nessuno legge `import.meta.env`.
+
+**I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
+girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 114 chiamate, da
+fare il giorno in cui serve davvero e non dentro una passata che deve restare
+leggibile (founder, 10.08.2026).
+
+**La build demo esiste perché il build del pitch era cieco.** È un build di
+produzione, quindi fino al 10.08.2026 nessun guardrail vi girava: una manopola
+girata male — `DEMO_TODAY` spostata di mese è il caso vero — non si vedeva più da
+nessuna parte. `--mode demo` basta da solo e **non serve nessun file `.env.demo`**,
+il che è anche l'unica strada percorribile: `.gitignore` esclude `.env*` (§2.5),
+quindi un file d'ambiente necessario alla build romperebbe una macchina appena
+clonata.
+
+**È questa la build da deployare sull'alias che si condivide**, e
+`vercel.json` la esegue: `"buildCommand": "npm run build:demo"`. Oggi il
+repository ha un solo prodotto ed è la demo (§1.1), e una riga di documentazione
+che nessuno esegue è peggio di nessuna riga. Che anche le preview di branch
+diventino build demo è un beneficio: chi revisiona una preview vede i log in
+console prima del merge. `npm run build` resta la build silenziosa, e questa
+scelta si rivede insieme al resto il giorno del passaggio a produzione vera
+(§5.7). Deciso dai founder il 10.08.2026.
+
+**In produzione non resta niente, misurato e non promesso.** Vite sostituisce
+`import.meta.env.DEV` e `MODE` con letterali al build, quindi il modo diventa una
+costante e il minificatore butta via i rami morti **insieme ai messaggi**: nel
+bundle di produzione non si trova né il controllo né il testo che avrebbe
+stampato. La build demo costa 8 KB in più su ~1.1 MB.
+
+**Un log della build demo non autorizza a proseguire.** Dopo il log
+l'inizializzazione continua, quindi le schermate si disegnano lo stesso — con i
+numeri che il guardrail ha appena dichiarato sbagliati. È il compromesso voluto,
+perché davanti a un investitore una schermata rotta è peggio di un numero storto,
+ma ne discende che **il log dice "i numeri a schermo potrebbero essere
+sbagliati", mai "è tutto a posto"**. La regola operativa che ne segue — ci si
+ferma, si riproduce in sviluppo dove il guardrail lancia, si corregge, si rifà la
+prova — è in `docs/PITCH.md`.
 
 ### 5.7 Il giorno del passaggio alla produzione
 

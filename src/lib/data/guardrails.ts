@@ -1,32 +1,69 @@
 /*
- * I guardrail del CLAUDE.md §5.6: controlli che falliscono rumorosamente in
- * sviluppo e tacciono in produzione.
+ * I guardrail del CLAUDE.md §5.6: controlli sui disallineamenti che a schermo
+ * non si vedono — il trimestre corrente fuori dal dataset, uno snapshot
+ * mancante, una serie che sale dove dovrebbe scendere.
  *
- * Servono ai disallineamenti che a schermo non si vedono — il trimestre
- * corrente fuori dal dataset, uno snapshot mancante, una serie che sale dove
- * dovrebbe scendere. Uno svarione si deve vedere mentre si lavora, non durante
- * il pitch.
+ * Vengono chiamati mentre i moduli del dataset si inizializzano, cioè prima che
+ * qualunque schermata possa mostrare il numero sbagliato.
  *
- * Lanciano invece di registrare un avviso, e vengono chiamati mentre i moduli
- * del dataset si inizializzano: così l'errore è una pagina bianca in sviluppo,
- * cioè impossibile da non vedere. Un `console.warn` in una console che durante
- * il lavoro ne contiene altri quindici non è un guardrail.
+ * TRE MODI, E LA DECISIONE STA SOLO QUI. Ogni call site chiama `assertInDev` e
+ * non sa in quale modo gira: sono 114, e ripetere la condizione in ognuno
+ * significherebbe poterla sbagliare in 114 posti.
  *
- * DA TENERE PRESENTE: girano solo in `import.meta.env.DEV`, quindi durante il
- * pitch — che è un build di produzione — non protegge nessuno di questi. Ciò
- * che protegge il pitch è la verifica a schermo alla chiusura della milestone.
+ *   sviluppo (`vite`)                    → **lancia**
+ *   build demo (`vite build --mode demo`) → **logga** con `console.error`
+ *   build di produzione (`vite build`)    → **tace**, e sparisce dal bundle
  *
- * `import.meta.env.DEV` e non `process.env.NODE_ENV`: questa è una SPA servita
- * da Vite, e nel browser `process` non esiste. Il modulo che lo nominasse
- * esploderebbe in valutazione lasciando la pagina bianca anche in produzione.
+ * In sviluppo lancia invece di registrare un avviso, e l'errore è una pagina
+ * bianca: impossibile da non vedere. Un `console.warn` in una console che
+ * durante il lavoro ne contiene altri quindici non è un guardrail.
+ *
+ * LA BUILD DEMO PROSEGUE CON I DATI SBAGLIATI. È il punto da capire prima di
+ * fidarsi di questo modo: dopo il log l'inizializzazione continua, quindi le
+ * schermate si disegnano lo stesso, con i numeri che il guardrail ha appena
+ * dichiarato sbagliati. È voluto — davanti a un investitore una schermata rotta
+ * è peggio di una schermata con un numero storto — ma vuol dire che **un log
+ * della build demo dice "i numeri a schermo potrebbero essere sbagliati", mai
+ * "è tutto a posto"**. Chi lo trova durante la prova del giorno prima si ferma:
+ * la regola operativa è in `docs/PITCH.md`.
+ *
+ * PERCHÉ IL MODO DI PRODUZIONE SPARISCE DAVVERO. Vite sostituisce
+ * `import.meta.env.DEV` e `import.meta.env.MODE` con letterali al momento del
+ * build, quindi `GUARDRAIL_MODE` diventa una costante e il minificatore butta
+ * via i rami morti insieme ai messaggi. In produzione non resta né il controllo
+ * né il testo che avrebbe stampato: è zero overhead misurato sul bundle, non
+ * promesso.
+ *
+ * `import.meta.env` e non `process.env`: questa è una SPA servita da Vite, e nel
+ * browser `process` non esiste. Il modulo che lo nominasse esploderebbe in
+ * valutazione lasciando la pagina bianca anche in produzione.
  */
 
-/** Lancia in sviluppo se la condizione è falsa; in produzione non fa nulla. */
+type GuardrailMode = "throw" | "report" | "off";
+
+/*
+ * `--mode demo` basta da solo: Vite popola `MODE` dal flag, e **non serve un
+ * file `.env.demo`**. È anche l'unica strada percorribile, perché `.gitignore`
+ * esclude `.env*` (§2.5): un file d'ambiente necessario alla build non potrebbe
+ * stare nel repository, e la build si romperebbe su una macchina appena clonata.
+ */
+export const GUARDRAIL_MODE: GuardrailMode = import.meta.env.DEV
+  ? "throw"
+  : import.meta.env.MODE === "demo"
+    ? "report"
+    : "off";
+
+/** Lancia in sviluppo se la condizione è falsa; logga in build demo; in produzione non fa nulla. */
 export function assertInDev(condition: boolean, message: string): void {
-  if (!import.meta.env.DEV) return;
-  if (!condition) {
-    throw new Error(`[dataset] ${message}`);
+  if (GUARDRAIL_MODE === "off") return;
+  if (condition) return;
+
+  const text = `[dataset] ${message}`;
+  if (GUARDRAIL_MODE === "report") {
+    console.error(text);
+    return;
   }
+  throw new Error(text);
 }
 
 /**
@@ -34,18 +71,36 @@ export function assertInDev(condition: boolean, message: string): void {
  *
  * Un `throw` in un metodo `async` diventa una promise rifiutata, e react-query
  * la cattura nello stato della mutation: il guardrail sparirebbe dentro un
- * `isError` che nessuno guarda, invece di fermare chi sta lavorando. Rilanciare
- * da un microtask lo porta fuori dalla catena, dove Vite lo mostra nel suo
- * overlay — è lo stesso rimedio che usa il controllo sulla cache fredda in
- * `prefetch.ts`.
+ * `isError` che nessuno guarda, invece di fermare chi sta lavorando.
  */
 export function assertInDevOutsidePromise(
   condition: boolean,
   message: string,
 ): void {
-  if (!import.meta.env.DEV) return;
+  if (GUARDRAIL_MODE === "off") return;
   if (condition) return;
+  raiseOutsideCurrentStack(`[dataset] ${message}`);
+}
+
+/*
+ * Solleva il messaggio fuori dallo stack in cui siamo.
+ *
+ * Serve solo al modo `throw`, ed è il rimedio alla cattura descritta qui sopra:
+ * rilanciare da un microtask porta l'errore fuori dalla catena della promise,
+ * dove Vite lo mostra nel suo overlay. In modo `report` il rimedio non serve —
+ * `console.error` non lo cattura nessuno — quindi il messaggio esce subito, con
+ * il vantaggio di comparire in console nell'ordine in cui il difetto è successo.
+ *
+ * L'altro chiamante è il controllo sulla cache fredda in `prefetch.ts`, che ha
+ * lo stesso problema da un'altra porta: gira dentro un callback di react-query.
+ */
+export function raiseOutsideCurrentStack(text: string): void {
+  if (GUARDRAIL_MODE === "off") return;
+  if (GUARDRAIL_MODE === "report") {
+    console.error(text);
+    return;
+  }
   queueMicrotask(() => {
-    throw new Error(`[dataset] ${message}`);
+    throw new Error(text);
   });
 }
