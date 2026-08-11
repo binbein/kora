@@ -848,21 +848,24 @@ variabile non verificherebbe niente.
 
 ### Refinement fra le milestone
 
-**Nove passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
-M3 → M4 (PR #15–#18) e cinque dopo M4 (PR #20–#24). Non aggiungono schermate e
-non spostano un numero a schermo — sono igiene del layer dati, del seam e del
-dizionario, più le tre che hanno una sottosezione loro qui sotto: le due che
-**eseguono** una decisione della riunione del 10.08.2026, e l'allineamento
-documentale pre-M5. La sintesi sta qui perché **il dettaglio è in git e il
-quadro no**: chi riprende deve sapere che queste cose esistono prima di
-riscoprirle.
+**Dieci passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
+M3 → M4 (PR #15–#18) e sei dopo M4 (PR #20–#24 e #26). Non aggiungono schermate
+e non spostano un numero a schermo — sono igiene del layer dati, del seam e del
+dizionario, più le quattro che hanno una sottosezione loro qui sotto: le due che
+**eseguono** una decisione della riunione del 10.08.2026, l'allineamento
+documentale pre-M5 e i due fix pre-M5. La sintesi sta qui perché **il dettaglio
+è in git e il quadro no**: chi riprende deve sapere che queste cose esistono
+prima di riscoprirle.
+
+**Non è un intervallo, e il buco ha un motivo**: #25 è fuori per l'eccezione
+qui sotto, non per dimenticanza.
 
 **Il criterio, perché il conto sia rifacibile.** Si contano le PR mergiate dopo
 quella che chiude M3 (#14), **esclusa la milestone**: M4 è #19 e ha la sua
 sezione. Le **docs-only si contano**, e non è una scelta nuova — #15 è
-docs-only ed era già dentro i "quattro" della frase originale. Oggi è l'unica:
-#21 sembra docs-only dal nome del branch ma tocca
-`src/lib/data/mock/people.ts`.
+docs-only ed era già dentro i "quattro" della frase originale. **Oggi è l'unica
+fra quelle contate**: #25 è docs-only ma esce per l'eccezione qui sotto, e #21
+sembra docs-only dal nome del branch ma tocca `src/lib/data/mock/people.ts`.
 
 **L'unica eccezione, e chiude una ricorsione.** Una PR il cui **solo contenuto
 è la sintesi retrospettiva di una passata già mergiata** appartiene a quella
@@ -872,6 +875,12 @@ distinguere non è il tipo di file toccato ma se la PR ha un oggetto suo — #15
 non una passata. Senza questa riga il conto si insegue da solo: ogni sintesi
 scritta dopo il merge diventerebbe la passata successiva, che a sua volta
 chiederebbe la propria sintesi.
+
+**Il caso vero è #25**, che tocca solo questo file e scrive la sintesi di #24:
+è l'unica esclusa per questa regola, ed è la ragione per cui il conto salta da
+#24 a #26. Da lì la sintesi si scrive come **ultimo commit della passata
+stessa** — è quello che ha fatto #26 — così il conto d'apertura è già giusto
+al merge e non c'è una PR in più da contare.
 
 > *La frase diceva **cinque**, e si fermava a #20. Le due passate del
 > 10.08.2026 — la pre-pitch e quella di palette — erano documentate qui sotto
@@ -1170,6 +1179,67 @@ come conteggio**, ed è quello l'invariante da verificare: un `grep 114` le
 trova tutte, e non è una verifica fallita. *Il numero delle occorrenze non si
 scrive qui apposta — sarebbe la prima cifra a invecchiare, visto che è questo
 stesso testo ad aggiungerne.*
+
+#### I due fix pre-M5 (11.08.2026)
+
+Due difetti piccoli trovati dalla revisione incrociata, più una riga di
+archeologia. Tre commit, uno per fix, come vuole il §11 per ciò che si toglie.
+
+**Il form richiesta demo raccoglieva il telefono e lo buttava via.** Il campo
+era nello stato e nel markup, ma la `mutationFn` non lo passava e `DemoRequest`
+non aveva dove metterlo: input dell'utente raccolto e perso in silenzio, che è
+il difetto peggiore della famiglia — a schermo il form si comporta come se
+avesse funzionato.
+
+Collegato seguendo il percorso già documentato per `message`, che resta
+l'esempio lavorato del `CONTRATTO-DATI.md` §2: **`phone?: string` sull'input**,
+perché su un payload di scrittura un campo che si può lasciare vuoto non deve
+obbligare ogni chiamante a passare `null`; **il confine normalizza**, con
+`trim()` o `null` una volta sola nel provider, che è dove lo farà il backend
+ricevendo la richiesta; **`phone: string | null` in lettura**, sempre presente
+nella risposta. È lo stesso campo che **cambia forma attraversando il
+confine**, cioè il caso che il §2 esiste per spiegare.
+
+Si vede nel back-office come colonna sua, che è il criterio di quella tabella —
+una colonna per campo — con `common.none` sull'assente, esattamente come
+`employeeCount === 0` già faceva. **La colonna nuova non contraddice il "non
+spostano un numero a schermo" di questa sezione**: mostra un dato in più, non
+muove una metrica.
+
+**Le lingue dell'admin si univano con un `", "` cablato**, mentre la
+prenotazione del dipendente usava già `t.common.listSeparator` sulla stessa
+lista. Era l'ultimo separatore cablato a schermo: gli altri `join(", ")` stanno
+dentro i messaggi dei guardrail, che sono testo per chi sviluppa e non passano
+dal dizionario. `Intl.ListFormat` resta M5 — qui si chiude l'incoerenza
+interna, non l'enumerazione che segue il locale.
+
+**Un commento orfano è uscito dal dizionario**: *"Quando il form non dichiara
+l'organico"* descriveva una chiave che non esiste più, perché quel caso è
+passato a `common.none` e il commento è rimasto indietro. In un commit suo,
+come il §11 chiede.
+
+**Verificato a schermo**, e il caso che conta è il secondo:
+
+- inviata una richiesta **con** telefono, `Ontano Logistica SA`, e una
+  **senza**, `Sorbo Manifattura SA`: la prima porta il numero in tabella, la
+  seconda il trattino di `common.none`, entrambe datate 23.09.2026 e ordinate
+  dalla più recente. **Provare solo il caso pieno avrebbe lasciato scoperta
+  proprio la cella vuota**, che è il caso che il §11 chiede di guardare;
+- **nessun numero dell'area HR si è mosso** dopo i due invii: CHF 14'200, 16
+  giorni, 68%, 82 su 120, 41 attivi, 142 di 1'200, 62%, soglia 12, −2 punti;
+- le lingue escono `Italiano, Deutsch` e `Deutsch, English`, e chi ne ha una
+  sola — il Dr. Fontana — non mostra nessun separatore;
+- 26 rotte percorse senza ricaricare, **zero schermate vuote**, console pulita
+  su scheda nuova con i soli due avvisi `react-router` noti da M1; `lint` e
+  `typecheck` a zero.
+
+**Due cose incontrate e non toccate**, perché fuori dallo scope della passata:
+`/admin` non è linkata da nessuna schermata fuori dal suo layout, quindi
+"camminare fino a `/admin` con la sola navigazione interna" regge se "interna"
+vuol dire **senza ricaricare** — che è la proprietà che conta, visto che il
+provider vive in memoria — e non "cliccando link". E dopo l'invio, cliccare
+"Demo" nella nav non ripropone il form: la rotta è la stessa e il componente
+non si rimonta, quindi resta la conferma e si esce dal "Torna alla home".
 
 ### Punto di partenza — cosa c'è e cosa manca
 
