@@ -848,17 +848,17 @@ variabile non verificherebbe niente.
 
 ### Refinement fra le milestone
 
-**Dieci passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
-M3 → M4 (PR #15–#18) e sei dopo M4 (PR #20–#24 e #26). Non aggiungono schermate
-e non spostano un numero a schermo — sono igiene del layer dati, del seam e del
-dizionario, più le quattro che hanno una sottosezione loro qui sotto: le due che
-**eseguono** una decisione della riunione del 10.08.2026, l'allineamento
-documentale pre-M5 e i due fix pre-M5. La sintesi sta qui perché **il dettaglio
-è in git e il quadro no**: chi riprende deve sapere che queste cose esistono
-prima di riscoprirle.
+**Undici passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
+M3 → M4 (PR #15–#18) e sette dopo M4 (PR #20–#24, #26 e #28). Non aggiungono
+schermate e non spostano un numero a schermo — sono igiene del layer dati, del
+seam e del dizionario, più le cinque che hanno una sottosezione loro qui sotto:
+le due che **eseguono** una decisione della riunione del 10.08.2026,
+l'allineamento documentale pre-M5, i due fix pre-M5 e l'uscita da `/admin`. La
+sintesi sta qui perché **il dettaglio è in git e il quadro no**: chi riprende
+deve sapere che queste cose esistono prima di riscoprirle.
 
-**Non è un intervallo, e il buco ha un motivo**: #25 è fuori per l'eccezione
-qui sotto, non per dimenticanza.
+**Non è un intervallo, e i due buchi hanno un motivo**: #25 e #27 sono fuori
+per le due eccezioni qui sotto, non per dimenticanza.
 
 **Il criterio, perché il conto sia rifacibile.** Si contano le PR mergiate dopo
 quella che chiude M3 (#14), **esclusa la milestone**: M4 è #19 e ha la sua
@@ -881,6 +881,23 @@ chiederebbe la propria sintesi.
 #24 a #26. Da lì la sintesi si scrive come **ultimo commit della passata
 stessa** — è quello che ha fatto #26 — così il conto d'apertura è già giusto
 al merge e non c'è una PR in più da contare.
+
+**La seconda esclusione: le PR che toccano solo `docs/PITCH.md`.** Non sono
+passate di refinement, e non è una deroga a "le docs-only si contano": lo
+script del pitch **cambierà a ogni prova generale**, perché è il verbale di
+come si presenta e non di com'è fatto il prodotto. Contarlo qui riempirebbe di
+righe una sezione che ha un altro mestiere — raccontare cosa è cambiato nel
+codice e nel layer dati fra due milestone — e il conto smetterebbe di dire
+qualcosa.
+
+**Il caso che l'ha resa necessaria è #27**, le quattro note operative allo
+script: tocca solo `docs/PITCH.md`, e letta col criterio di allora sarebbe
+stata l'undicesima passata. È stata mergiata senza commit di chiusura proprio
+perché questa riga arriva qui, nella prima passata che conta davvero — se
+fosse arrivata in una PR sua, quella PR sarebbe stata docs-only con un oggetto
+proprio, quindi avrebbe contato, quindi avrebbe chiesto la propria sintesi.
+**È l'unico posto in cui aggiungerla senza che la contabilità conti sé
+stessa.**
 
 > *La frase diceva **cinque**, e si fermava a #20. Le due passate del
 > 10.08.2026 — la pre-pitch e quella di palette — erano documentate qui sotto
@@ -1240,6 +1257,63 @@ vuol dire **senza ricaricare** — che è la proprietà che conta, visto che il
 provider vive in memoria — e non "cliccando link". E dopo l'invio, cliccare
 "Demo" nella nav non ripropone il form: la rotta è la stessa e il componente
 non si rimonta, quindi resta la conferma e si esce dal "Torna alla home".
+
+#### L'uscita da `/admin` (11.08.2026)
+
+Otto righe di codice, e sbloccano un momento del pitch che non era eseguibile.
+
+**`/admin` era un vicolo cieco in tutti e due i sensi.** Nessuna schermata la
+linkava — zero ancore verso di lei su tutte e sette le rotte, censite a schermo
+— e dal suo layout non si usciva: le sue sei ancore puntavano tutte dentro
+`/admin`, e il logo era un `div`, non un link. L'unico modo di entrarci era
+digitare l'indirizzo, cioè ricaricare, cioè azzerare il provider.
+
+**La conseguenza non era estetica**: il momento *"la richiesta demo compilata
+davanti all'investitore compare nel back-office"* **non si poteva mostrare**. La
+richiesta si salvava, ma per vederla bisognava ricaricare, e ricaricando spariva
+con il provider che la teneva. La verifica di M3 che lo dava per fatto era stata
+condotta arrivando su `/admin` da console, che non è un gesto che si fa durante
+una presentazione.
+
+**Il logo è diventato un link nei due punti del layout**, sidebar e header
+mobile, con l'idioma che `PublicNav` usava già. `KoraLogo.jsx` non è stato
+toccato, quindi la regola del §3 sulla conversione delle pagine ereditate non
+si è attivata: il diff si legge come "il logo diventa un link" e nient'altro.
+È scope, quindi è passato dai founder (§2.6).
+
+**Da lì `docs/PITCH.md` ha una coreografia invece di un vincolo**, e l'ordine è
+obbligato: `/admin` si apre **per prima**, si esce col logo, si fa il giro con i
+link interni compresa la richiesta, si torna con Indietro. Due cose sono emerse
+solo eseguendola, e stanno nel testo: **Indietro va premuto una volta per ogni
+passo fatto**, non una in totale — dal logo diretto a `/demo` sono due passi e
+due Indietro, ed è la ragione per tenere corto quel tratto — e **il caso a
+freddo è scritto come modo di fallire**, perché digitare `/admin` alla fine
+invece di tornarci riproduce la tabella vuota di partenza e da fuori si legge
+come una scrittura che non ha funzionato.
+
+**Il criterio del conto ha una seconda esclusione**: le PR che toccano solo
+`docs/PITCH.md` non sono passate di refinement. Lo script del pitch cambierà a
+ogni prova generale, ed è il verbale di come si presenta, non di com'è fatto il
+prodotto. Il caso che l'ha resa necessaria è #27, ed è nominato lì.
+
+**Verificato a schermo con il link vero**, non con la simulazione che gli aveva
+fatto da controfigura in fase di piano:
+
+- `/admin` a freddo mostra "Nessuna richiesta" e due uscite verso `/`;
+- clic sul logo → landing, clic su "Demo" → form, richiesta inviata con
+  telefono;
+- **due Indietro** → `/admin`, con la riga in tabella —
+  `Ontano Logistica SA`, `+41 91 000 00 00`, 23.09.2026;
+- per tutto il giro il browser registra **una sola navigazione**: nessun
+  ricaricamento in nessuno dei quattro passi;
+- 26 rotte percorse, zero schermate vuote, console pulita su scheda nuova;
+  `lint`, `typecheck` e `build:demo` a posto, e nessuna KPI dell'area HR mossa.
+
+**Una trappola in cui si cade ancora**, e il file la documenta da M1: il primo
+controllo sulle KPI dava sei valori su otto assenti, perché `formatCHF` separa
+`CHF` dalle cifre con lo **spazio unificatore** U+00A0 e l'asserzione era
+scritta con lo spazio da tastiera. Normalizzando, tornano tutte. Chi scrive un
+controllo su un importo lo normalizzi prima di concludere che il numero non c'è.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
