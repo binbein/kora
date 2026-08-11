@@ -926,11 +926,21 @@ dal team vede**. Ora i modi sono tre: sviluppo lancia, `npm run build:demo` logg
 con `console.error`, `npm run build` tace.
 
 **La decisione sta in `guardrails.ts` e in nessun altro punto.** Dopo questa
-passata **nessun file fuori da lì legge `import.meta.env`**: i 114 call site
+passata **nessun file fuori da lì legge `import.meta.env`**: i 96 call site
 chiamano `assertInDev` senza sapere in che modo girano, ed è la proprietà che
-rende la modalità una cosa sola da sbagliare invece di 114. I nomi restano —
-rinominarli sarebbe un commit meccanico su 114 chiamate, che sommergerebbe il
+rende la modalità una cosa sola da sbagliare invece di 96. I nomi restano —
+rinominarli sarebbe un commit meccanico su 96 chiamate, che sommergerebbe il
 diff di questa (`CLAUDE.md` §5.6).
+
+> *La passata dichiarò **114**, ed era il numero sbagliato in tutti e tre i
+> posti che lo scrivevano — qui, in `CLAUDE.md` §5.6 e nel commento di
+> `guardrails.ts`. Corretto a **96** l'11.08.2026. Non era invecchiato: era
+> `grep -c "assertInDev"` grezzo, cioè 90 chiamate + 6 chiamate lunghe + 16
+> righe di `import` + 2 righe di prosa nei commenti. **È il difetto del 19/11
+> contro il 13/9 delle CTA, ripetuto altrove**: un conteggio senza criterio
+> scritto accanto. Il criterio ora sta in `CLAUDE.md` §5.6, e dice anche
+> perché `prefetch.ts` non entra nei 96 — un 97 futuro è un errore di
+> criterio, non una correzione.*
 
 **`--mode demo` non ha bisogno di nessun file `.env.demo`**, ed è l'unica strada
 percorribile: `.gitignore` esclude `.env*` (§2.5), quindi una build che ne

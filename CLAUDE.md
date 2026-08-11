@@ -483,13 +483,34 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 114 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 114 posti.
+call site sono 96 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 96 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
+
+**Il criterio con cui i 96 si contano**, perché una rilevazione futura non
+produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
+si contano le **chiamate** alle due primitive `assertInDev(` e
+`assertInDevOutsidePromise(` sotto `src/`, escluso `guardrails.ts` che le
+definisce. Oggi 90 + 6. Restano fuori, e sono le tre trappole del conteggio:
+le righe di `import`, la **prosa dei commenti** che le nomina, e il fatto che
+il nome lungo **contiene** quello corto, quindi un grep sul nome corto conta
+due volte le sei chiamate lunghe.
+
+**`prefetch.ts` è una categoria a parte e non entra nei 96**, benché chiami
+`raiseOutsideCurrentStack`, che è la terza primitiva del file. Il motivo non è
+il nome della funzione: è che la frase qui sopra parla di call site che **non
+sanno in che modo girano**, e `prefetch.ts` il modo lo legge da sé — importa
+`GUARDRAIL_MODE` e ci apre sopra il proprio controllo. Contarlo darebbe 97, e
+**un 97 futuro va riconosciuto come errore di criterio, non come correzione.**
+
+**Da dove veniva il 114** che questo file ha dichiarato fino all'11.08.2026: era
+`grep -c "assertInDev"` grezzo, cioè 90 chiamate + 6 chiamate lunghe + 16 righe
+di `import` + 2 righe di prosa. Non era un numero invecchiato — era un numero
+senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 114 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 96 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 
