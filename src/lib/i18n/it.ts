@@ -1469,9 +1469,9 @@ export const it = {
       colCompany: "Azienda",
       colContact: "Referente",
       colEmail: "Email",
+      colPhone: "Telefono",
       colEmployees: "Dipendenti",
       colReceived: "Ricevuta",
-      /** Quando il form non dichiara l'organico. */
     },
   },
 } as const;

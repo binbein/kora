@@ -52,6 +52,7 @@ function DemoRequests() {
               <TableHead>{t.admin.demoRequests.colCompany}</TableHead>
               <TableHead>{t.admin.demoRequests.colContact}</TableHead>
               <TableHead>{t.admin.demoRequests.colEmail}</TableHead>
+              <TableHead>{t.admin.demoRequests.colPhone}</TableHead>
               <TableHead>{t.admin.demoRequests.colEmployees}</TableHead>
               <TableHead>{t.admin.demoRequests.colReceived}</TableHead>
             </TableRow>
@@ -67,6 +68,14 @@ function DemoRequests() {
                 </TableCell>
                 <TableCell className="text-muted-foreground text-xs">
                   {request.email}
+                </TableCell>
+                {/* Niente `tabular-nums` benché sia una colonna di cifre: il
+                    §6.3 lo vuole dove le cifre ballano cambiando valore, e un
+                    numero di telefono non cambia e non si confronta in
+                    colonna. `whitespace-nowrap` sì — un prefisso mandato a
+                    capo si legge come due numeri. */}
+                <TableCell className="text-muted-foreground text-xs whitespace-nowrap">
+                  {request.phone ?? t.common.none}
                 </TableCell>
                 {/* Il campo è facoltativo nel form: zero vuol dire "non
                     dichiarato", non un'azienda senza dipendenti. */}

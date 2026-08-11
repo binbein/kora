@@ -111,7 +111,7 @@ export default function AdminProfessionisti() {
                 <TableCell className="text-xs text-muted-foreground">
                   {professional.languages
                     .map((language) => t.language[language])
-                    .join(", ")}
+                    .join(t.common.listSeparator)}
                 </TableCell>
                 <TableCell className="tabular-nums whitespace-nowrap">
                   {formatCHF(professional.sessionFee)}

@@ -905,15 +905,16 @@ export type HrReport = {
 // ---------------------------------------------------------------------------
 
 /**
- * Quello che il form manda. `message` è `?` ed è la convenzione giusta su un
- * payload di scrittura: è un campo che si può lasciare vuoto, e obbligare ogni
- * chiamante a passare `message: null` sarebbe rumore
+ * Quello che il form manda. `phone` e `message` sono `?` ed è la convenzione
+ * giusta su un payload di scrittura: sono campi che si possono lasciare vuoti,
+ * e obbligare ogni chiamante a passare `null` sarebbe rumore
  * (`docs/CONTRATTO-DATI.md` §2).
  */
 export type DemoRequestInput = {
   companyName: string;
   contactName: string;
   email: string;
+  phone?: string;
   employeeCount: number;
   message?: string;
 };
@@ -932,6 +933,7 @@ export type DemoRequest = {
   companyName: string;
   contactName: string;
   email: string;
+  phone: string | null;
   employeeCount: number;
   message: string | null;
   submittedAt: Date;
