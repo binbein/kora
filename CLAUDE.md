@@ -1472,3 +1472,13 @@ aperta in anticipo, va **portata in primo piano** prima di cominciare.
 - **A fine sessione**: riepilogo di cosa è stato fatto e screenshot delle schermate
   toccate, così i founder revisionano a colpo d'occhio. Le verifiche si fanno **a
   schermo con asserzioni concrete**, non solo con `tsc` e lint puliti.
+- **Prima di misurare: scheda in primo piano e viewport reale.** A scheda
+  nascosta il browser sospende `requestAnimationFrame` e `innerWidth` vale **0**,
+  quindi ogni catena `width: 100%` collassa: le misure non sono imprecise, sono
+  di un'altra pagina. Uno strumento che aspetta un fotogramma non riparte mai, e
+  uno che salta gli elementi invisibili li salta **tutti**, restituendo un
+  conteggio basso che sembra una buona notizia. Si controlla `innerWidth` prima
+  di fidarsi del primo numero, e **un censimento si rifà due volte**: se i due
+  giri non coincidono, a essere rotto è lo strumento. La conseguenza sta in
+  `docs/PITCH.md` per il giorno della presentazione; questa riga sta qui perché
+  è il punto in cui si sta per sbagliare (founder, 11.08.2026).
