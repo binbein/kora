@@ -311,7 +311,11 @@ function ProfessionalCard({
             ) : null}
           </div>
           <div className="flex flex-wrap gap-1.5 mt-2">
-            <Badge variant="secondary" className="text-xs">
+            {/* stessa scelta dei chip di questo file, per la stessa ragione */}
+            <Badge
+              variant="outline"
+              className="text-xs border-transparent bg-accent text-accent-foreground"
+            >
               {t.specialty[professional.specialty]}
             </Badge>
           </div>
