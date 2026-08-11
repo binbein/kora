@@ -221,6 +221,12 @@ export default function ProSessioni() {
                 ? t.professional.sessions.note.saving
                 : t.professional.sessions.note.save}
             </Button>
+            {/* Il testo scritto resta nel campo: `draft` è stato locale e la
+                mutation fallita non lo tocca, quindi ritentare non costa di
+                riscriverla. La frase lo dice. */}
+            {saveNote.isError && (
+              <ErrorNotice copy={t.professional.sessions.note.error} />
+            )}
             <p className="text-xs text-muted-foreground text-center">
               {t.professional.sessions.note.privacy}
             </p>

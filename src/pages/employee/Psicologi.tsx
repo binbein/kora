@@ -280,6 +280,16 @@ function BookingDialog({
       >
         {t.employee.psychologists.dialog.confirm}
       </Button>
+
+      {/*
+        * Il fallimento si dice sotto il pulsante che l'ha causato, e **lo slot
+        * scelto resta selezionato**: a ritentare è lo stesso pulsante, quindi
+        * non serve un "Riprova" accanto. La frase dice che la seduta non è
+        * stata presa, che è il dubbio vero dopo un errore di prenotazione.
+        */}
+      {book.isError && (
+        <ErrorNotice copy={t.employee.psychologists.dialog.error} />
+      )}
     </div>
   );
 }

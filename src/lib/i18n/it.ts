@@ -225,6 +225,12 @@ export const it = {
         4: "Non bene",
         5: "Molto male",
       },
+      /* La scrittura non è riuscita. Il registro è consumer, e la frase dice
+         che si può ritoccare: il pulsante che ha fallito è lì. */
+      error: {
+        title: "Non siamo riusciti a registrarlo",
+        body: "Tocca di nuovo per riprovare.",
+      },
       done: "Grazie, registrato.",
       doneHint: "Ti richiediamo come stai fra qualche giorno.",
     },
@@ -271,6 +277,13 @@ export const it = {
         overCapWithoutPrice:
           "Hai finito le sessioni incluse nel piano per questo servizio.",
         confirm: "Conferma la prenotazione",
+        /* La prenotazione non è riuscita. La frase dice **che cosa non è
+           successo** — lo slot è ancora libero — perché il dubbio vero, dopo
+           un errore su una prenotazione, è se sia passata a metà. */
+        error: {
+          title: "La prenotazione non è andata a buon fine",
+          body: "Lo slot è ancora libero: riprova.",
+        },
         confirmedTitle: "Prenotazione confermata",
         confirmedWith: "con {professional}",
         confirmedNote:
@@ -546,6 +559,12 @@ export const it = {
         followUpPlaceholder: "Seduta successiva consigliata fra",
         save: "Salva nota",
         saving: "Salvataggio",
+        /* La nota non è stata salvata. Registro strumento, e si dice che il
+           testo scritto non è andato perso: è ancora nel campo. */
+        error: {
+          title: "Nota non salvata",
+          body: "Il testo è ancora qui: riprova.",
+        },
         saved: "Nota salvata",
         privacy:
           "Le note sono private e non vengono condivise con l'azienda del paziente.",
@@ -1303,6 +1322,12 @@ export const it = {
         "I dati saranno trattati in conformità alla LPD svizzera e al GDPR.",
       submit: "Invia la richiesta",
       submitting: "Invio in corso",
+      /* L'invio non è riuscito. Stessa logica della nota: i dati compilati
+         restano nel form, e dirlo evita che si ricominci da capo. */
+      error: {
+        title: "Invio non riuscito",
+        body: "I dati che hai scritto sono ancora qui: riprova.",
+      },
 
       successTitle: "Richiesta ricevuta",
       /* La conferma nomina l'azienda che ha scritto, e la legge dal record
