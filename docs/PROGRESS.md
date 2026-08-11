@@ -1162,9 +1162,16 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   cambiato di luminosità ogni schermata già approvata, mentre spostare le CTA
   lascia al teal il suo mestiere — dati positivi e accenti. **Si esegue in una
   passata dedicata**, e l'inventario autoritativo dei punti lo produce lei: il
-  conteggio di oggi è **dell'ordine di 9 punti su 7 file**, contro i 19 su 11
-  della prima rilevazione, ma **dipende dal criterio** e va riletto con il
+  conteggio di oggi è ~~dell'ordine di **9 punti su 7 file**~~, contro i 19 su
+  11 della prima rilevazione, ma **dipende dal criterio** e va riletto con il
   criterio in mano — sotto.
+
+  → **L'inventario autoritativo è 13 punti su 9 file**, prodotto dalla passata
+  di palette come questa voce prevedeva: sta in "La passata di palette
+  (10.08.2026)". Il 9/7 resta barrato e non cancellato perché è la stima del
+  giorno della riunione, ed è il terzo dei tre numeri — 19/11, 9/7, 13/9 — che
+  hanno reso necessario scrivere un criterio. Una lettura veloce lo prendeva
+  per il conteggio buono.
 
   **In una build "demo" i guardrail loggano invece di tacere** (`CLAUDE.md`
   §5.6). Il build che si porta al pitch è di produzione, quindi oggi tacciono
