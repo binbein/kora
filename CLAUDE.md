@@ -105,6 +105,21 @@ repository Next non dia niente per scontato.
   ancora: il piano "Personalizzato" è in sospeso (§10.A.3) e i suoi undici prezzi
   non stanno nel Business Plan, quindi non potrebbe leggere da `Plan` nemmeno
   volendo.
+
+  **Da M5.a i convertibili sono tre**: `HRLayout`, `ProLayout` e `KoraLogo`.
+  `PageNotFound` è diventata `.tsx` con le stringhe in `i18n` perché il blocco
+  a) l'ha toccata — cioè la regola qui sopra che si applica, non un'eccezione
+  che cade. `FlexiblePlanCard.jsx` è sempre il caso a parte, e ci resta finché
+  il piano è in sospeso.
+
+  **Il criterio, prima di rifare il conto**: `find src -name "*.jsx"` ne trova
+  **quattro**, e non contraddice il tre — somma i due insiemi che questa voce
+  tiene distinti, quello che si converte al primo che ci mette mano e quello
+  che non può convertirsi. Due numeri sullo stesso albero che contano cose
+  diverse sono la trappola già costata il 19/11 contro il 13/9 delle CTA e il
+  114 contro il 96 dei guardrail (§5.6). **Questo è l'unico punto che li
+  nomina**: `docs/PROGRESS.md` cita e rimanda qui, invece di tenere un secondo
+  elenco che può divergere.
 - **Tailwind CSS 3** con i token in `src/index.css` come variabili HSL, e
   `tailwind.config.js` che li mappa. **Non è Tailwind 4**: esiste ancora
   `tailwind.config.js`, non c'è il blocco `@theme`.

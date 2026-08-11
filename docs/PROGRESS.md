@@ -912,8 +912,10 @@ vieta.
 
 **`PageNotFound` è diventata `.tsx` con le stringhe in `i18n`**, perché la
 passata l'ha toccata e il §3 non ha eccezioni. L'indirizzo ha perso lo `<span>`
-colorato: la frase è una sola con segnaposto, come vuole il §2.7. Restano
-quattro `.jsx`.
+colorato: la frase è una sola con segnaposto, come vuole il §2.7. Restano i
+`.jsx` che il `CLAUDE.md` §3 elenca — da qui tre, più il caso a parte: il conto
+lo tiene quella voce, con il criterio accanto, perché tenerne un secondo qui
+significherebbe poterlo far divergere.
 
 **Verificato a schermo, viewport 1280×900 e scheda in primo piano** (§11):
 
