@@ -52,7 +52,7 @@ export default function HRFatturazione() {
           <h3 className="font-semibold flex items-center gap-2">
             <CreditCard className="w-4 h-4 text-primary" /> {t.hr.billing.planTitle}
           </h3>
-          <Badge className="bg-secondary/10 text-secondary">
+          <Badge className="bg-secondary/10 text-secondary-strong">
             {t.plan[company.plan.id]}
           </Badge>
         </div>
@@ -105,7 +105,7 @@ export default function HRFatturazione() {
                 <span className="text-sm font-semibold tabular-nums">
                   {formatCHF(invoice.employeeCount * invoice.unitPriceChf)}
                 </span>
-                <Badge className="bg-secondary/10 text-secondary text-xs">
+                <Badge className="bg-secondary/10 text-secondary-strong text-xs">
                   {invoice.status === 'paid'
                     ? t.hr.billing.invoicePaid
                     : t.hr.billing.invoicePending}

@@ -110,7 +110,7 @@ export default function Medico() {
           </div>
           <div className="ml-auto flex items-center gap-1.5">
             <div className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-            <span className="text-xs text-secondary font-medium">
+            <span className="text-xs text-secondary-strong font-medium">
               {t.employee.doctor.online}
             </span>
           </div>

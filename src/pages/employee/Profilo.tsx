@@ -72,7 +72,7 @@ export default function Profilo() {
 
       <Card className="p-6">
         <div className="flex items-center gap-4 mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center text-xl font-bold text-secondary">
+          <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center text-xl font-bold text-secondary-strong">
             {profile.firstName[0]}
             {profile.lastName[0]}
           </div>

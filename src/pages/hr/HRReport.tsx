@@ -70,7 +70,7 @@ function StatRow({
       <span className="text-sm text-muted-foreground">{label}</span>
       <span
         className={`flex items-center gap-1.5 text-sm font-semibold tabular-nums ${
-          improving === null ? '' : improving ? 'text-secondary' : 'text-destructive'
+          improving === null ? '' : improving ? 'text-secondary-strong' : 'text-destructive-strong'
         }`}
       >
         {improving !== null &&

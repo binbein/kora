@@ -91,7 +91,7 @@ export default function ProProfilo() {
           <div className="flex items-center justify-between py-2 border-b border-border">
             <span className="text-muted-foreground">{t.professional.profile.documents}</span>
             {professional.documentsVerified && (
-              <Badge className="bg-secondary/10 text-secondary">
+              <Badge className="bg-secondary/10 text-secondary-strong">
                 <CheckCircle2 className="w-3 h-3 mr-1" /> {t.professional.profile.verified}
               </Badge>
             )}
@@ -99,7 +99,7 @@ export default function ProProfilo() {
           <div className="flex items-center justify-between py-2">
             <span className="text-muted-foreground">{t.professional.profile.mandate}</span>
             {professional.mandateSigned && (
-              <Badge className="bg-secondary/10 text-secondary">
+              <Badge className="bg-secondary/10 text-secondary-strong">
                 <CheckCircle2 className="w-3 h-3 mr-1" /> {t.professional.profile.signed}
               </Badge>
             )}

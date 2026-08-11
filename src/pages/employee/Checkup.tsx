@@ -208,7 +208,7 @@ export default function Checkup() {
                     className={
                       measurement.status === "attention"
                         ? "border-warning text-foreground flex-shrink-0"
-                        : "bg-secondary/10 text-secondary flex-shrink-0"
+                        : "bg-secondary/10 text-secondary-strong flex-shrink-0"
                     }
                   >
                     {t.employee.checkup.report.status[measurement.status]}

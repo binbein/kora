@@ -53,7 +53,7 @@ export default function KPICard({
       : improvingWith(polarity.sign, polarity.goodWhen);
 
   const toneClass =
-    improving === null ? '' : improving ? 'text-secondary' : 'text-destructive';
+    improving === null ? '' : improving ? 'text-secondary-strong' : 'text-destructive-strong';
 
   return (
     <Card className={`${bgMap[variant]} p-5 relative overflow-hidden`}>

@@ -211,7 +211,7 @@ export default function EmployeeHome() {
           <ScoreRing score={profile.healthProfile.score} />
           <div className="flex-1 w-full">
             <h2 className="font-semibold mb-2">{t.employee.home.healthTitle}</h2>
-            <Badge className="bg-secondary/10 text-secondary hover:bg-secondary/10">
+            <Badge className="bg-secondary/10 text-secondary-strong hover:bg-secondary/10">
               {t.healthSummary[profile.healthProfile.summaryKey]}
             </Badge>
             <p className="text-sm font-medium mt-3">

@@ -108,7 +108,7 @@ export default function ProCalendario() {
                       >
                         {session && (
                           <div>
-                            <p className={`font-medium ${past ? 'text-muted-foreground' : 'text-secondary'}`}>
+                            <p className={`font-medium ${past ? 'text-muted-foreground' : 'text-secondary-strong'}`}>
                               {session.patientInitials}
                             </p>
                             <p className="text-muted-foreground text-[10px]">

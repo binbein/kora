@@ -137,7 +137,7 @@ export default function AdminProfessionisti() {
                   <Badge
                     className={
                       isBookable(professional)
-                        ? "bg-secondary/10 text-secondary"
+                        ? "bg-secondary/10 text-secondary-strong"
                         : "bg-warning/20 text-foreground"
                     }
                   >

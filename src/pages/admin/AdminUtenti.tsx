@@ -185,7 +185,7 @@ export default function AdminUtenti() {
                     <Badge
                       className={
                         user.active
-                          ? "bg-secondary/10 text-secondary"
+                          ? "bg-secondary/10 text-secondary-strong"
                           : "bg-muted text-muted-foreground"
                       }
                     >

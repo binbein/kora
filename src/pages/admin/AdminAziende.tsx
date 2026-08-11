@@ -111,7 +111,7 @@ function DemoRequests() {
 
 const PLAN_BADGE: Record<PlanId, string> = {
   essenziale: "bg-muted text-muted-foreground",
-  plus: "bg-secondary/10 text-secondary",
+  plus: "bg-secondary/10 text-secondary-strong",
   executive: "bg-executive/10 text-executive",
 };
 
@@ -218,7 +218,7 @@ export default function AdminAziende() {
                   <Badge
                     className={
                       company.active
-                        ? "bg-secondary/10 text-secondary"
+                        ? "bg-secondary/10 text-secondary-strong"
                         : "bg-warning/20 text-foreground"
                     }
                   >

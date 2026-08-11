@@ -242,7 +242,7 @@ function BookingDialog({
             })}
           </p>
           {!overCap && (
-            <p className="text-secondary font-medium mt-1 flex items-center gap-1">
+            <p className="text-secondary-strong font-medium mt-1 flex items-center gap-1">
               <Check className="w-3.5 h-3.5" />
               {t.employee.psychologists.dialog.included}
             </p>
@@ -285,7 +285,7 @@ function ProfessionalCard({
     <Card className="p-5 hover:shadow-md transition-shadow">
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-shrink-0">
-          <div className="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-lg font-bold text-secondary">
+          <div className="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-lg font-bold text-secondary-strong">
             {initials(professional)}
           </div>
         </div>

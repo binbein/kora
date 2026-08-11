@@ -26,7 +26,7 @@ function SessionRow({
   onNote?: NoteHandler;
 }) {
   const tone = {
-    scheduled: 'bg-secondary/10 text-secondary',
+    scheduled: 'bg-secondary/10 text-secondary-strong',
     completed: 'bg-primary/10 text-primary',
     cancelled: 'bg-destructive/10 text-destructive',
   }[session.status];

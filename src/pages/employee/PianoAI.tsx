@@ -108,7 +108,7 @@ export default function PianoAI() {
                     key={tipKey}
                     className="text-xs text-muted-foreground flex items-start gap-2"
                   >
-                    <span className="text-secondary mt-0.5">•</span>
+                    <span className="text-secondary-strong mt-0.5">•</span>
                     {tips[tipKey]}
                   </li>
                 ))}

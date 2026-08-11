@@ -218,7 +218,7 @@ function CostSimulator({ plans }: { plans: Plan[] }) {
       <p className="text-center mt-4">
         <Link
           to="/roi"
-          className="text-sm text-secondary hover:underline font-medium"
+          className="text-sm text-secondary-strong hover:underline font-medium"
         >
           {t.public.costSimulator.roiLink}
         </Link>

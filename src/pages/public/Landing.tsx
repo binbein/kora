@@ -374,7 +374,7 @@ export default function Landing() {
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-display leading-tight text-foreground">
                 {t.public.landing.heroTitleLead}{" "}
-                <span className="text-secondary">
+                <span className="text-secondary-strong">
                   {t.public.landing.heroTitleAccent}
                 </span>
               </h1>
@@ -534,7 +534,7 @@ export default function Landing() {
           <p className="text-center mt-8">
             <Link
               to="/pricing"
-              className="text-sm text-secondary hover:underline font-medium"
+              className="text-sm text-secondary-strong hover:underline font-medium"
             >
               {t.public.landing.plansAll}
             </Link>
@@ -557,7 +557,7 @@ export default function Landing() {
             </div>
             <h2 className="text-3xl md:text-4xl font-bold font-display">
               {t.public.landing.privacyTitleLead}{" "}
-              <span className="text-secondary">
+              <span className="text-secondary-strong">
                 {t.public.landing.privacyTitleAccent}
               </span>
             </h2>
