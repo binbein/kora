@@ -848,11 +848,26 @@ variabile non verificherebbe niente.
 
 ### Refinement fra le milestone
 
-Cinque passate mergiate fra la chiusura di M3 e oggi: quattro nell'intervallo
-M3 → M4 (PR #15–#18) e una dopo M4 (PR #20). Non aggiungono schermate e non
-spostano un numero a schermo — sono igiene del layer dati, del seam e del
-dizionario. La sintesi sta qui perché **il dettaglio è in git e il quadro no**:
-chi riprende deve sapere che queste cose esistono prima di riscoprirle.
+**Otto passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
+M3 → M4 (PR #15–#18) e quattro dopo M4 (PR #20–#23). Non aggiungono schermate e
+non spostano un numero a schermo — sono igiene del layer dati, del seam e del
+dizionario, più le due che **eseguono** una decisione della riunione del
+10.08.2026 e hanno una sottosezione loro qui sotto. La sintesi sta qui perché
+**il dettaglio è in git e il quadro no**: chi riprende deve sapere che queste
+cose esistono prima di riscoprirle.
+
+**Il criterio, perché il conto sia rifacibile.** Si contano le PR mergiate dopo
+quella che chiude M3 (#14), **esclusa la milestone**: M4 è #19 e ha la sua
+sezione. Le **docs-only si contano**, e non è una scelta nuova — #15 è
+docs-only ed era già dentro i "quattro" della frase originale. Oggi è l'unica:
+#21 sembra docs-only dal nome del branch ma tocca
+`src/lib/data/mock/people.ts`.
+
+> *La frase diceva **cinque**, e si fermava a #20. Le due passate del
+> 10.08.2026 — la pre-pitch e quella di palette — erano documentate qui sotto
+> con una sottosezione ciascuna ma non entravano nel conto d'apertura, e la
+> #21 non era contata affatto: chi riprendeva ne contava cinque e ne trovava
+> otto. Corretto l'11.08.2026.*
 
 **Il seam era dichiarato e non tutto acceso.** I due preset di ESLint —
 `eslint:recommended` e `react/recommended` — stavano nello stesso oggetto di
