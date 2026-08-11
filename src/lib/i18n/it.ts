@@ -682,6 +682,12 @@ export const it = {
     kpiStressValue: "{points} punti",
     kpiStressHint: "vs trimestre precedente",
     kpiStressEmpty: "nessun trimestre precedente nella finestra",
+
+    /* Il trimestre scelto non ha snapshot né report: `null` per contratto, non
+       un guasto (`docs/CONTRATTO-DATI.md` §2). La frase nomina il selettore,
+       perché è il comando con cui si esce. */
+    quarterEmpty:
+      "Nessun dato per il trimestre selezionato. Scegline un altro dall'elenco qui sopra.",
     kpiSessions: "Sessioni usate",
     /** "142 di 1'200 sessioni annue" */
     kpiSessionsHint: "{used} di {total} sessioni annue",
@@ -753,6 +759,9 @@ export const it = {
          "6/8 attivati" accanto a una dashboard che ne dichiarava 82 su 120, e
          chi leggeva entrambe trovava due aziende diverse. */
       sampleNote: "La tabella mostra un estratto di {n} dipendenti.",
+      /* Nessun dipendente da elencare: succede a un'azienda appena attivata,
+         come Betulla nel portafoglio del back-office (§8). */
+      empty: "Nessun dipendente da mostrare.",
       privacyNote:
         "I nomi sono abbreviati. Kora non mostra mai dati sanitari individuali all'azienda.",
       columnEmployee: "Dipendente",
@@ -776,6 +785,8 @@ export const it = {
       annualContract: "Contratto annuale",
       renewal: "Scadenza",
       invoicesTitle: "Fatture recenti",
+      /* Un cliente appena attivato non ha ancora fatturato niente. */
+      invoicesEmpty: "Nessuna fattura emessa finora.",
       /** "120 dipendenti × CHF 55" */
       invoiceDetail: "{count} dipendenti × {price}",
       invoicePaid: "Pagata",

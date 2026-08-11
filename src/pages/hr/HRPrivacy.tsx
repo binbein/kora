@@ -4,7 +4,8 @@ import { CheckCircle2, Eye, EyeOff, FileText, Link2, Lock, Server, Shield } from
 import type { LucideIcon } from 'lucide-react';
 import { formatNumber } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
-import { useCompany } from '@/lib/data/queries';
+import { loadState, useCompany } from '@/lib/data/queries';
+import { ErrorNotice } from '@/components/kora/StateNotice';
 
 /*
  * Privacy e sicurezza (CLAUDE.md §10.C).
@@ -34,8 +35,16 @@ const NEVER_SEEN: (keyof typeof t.hr.privacy.neverSeen)[] = [
 ];
 
 export default function HRPrivacy() {
-  const { data: company } = useCompany();
-  if (!company) return null;
+  const companyQuery = useCompany();
+
+  /* I tre casi (M5.b). L'azienda non è nullable per contratto e la pagina non
+     ha liste: restano l'attesa e il guasto. */
+  const page = loadState([companyQuery]);
+  if (page.state === 'error') {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+  const company = companyQuery.data;
+  if (company === undefined) return null;
 
   return (
     <div className="space-y-6">
