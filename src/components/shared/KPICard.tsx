@@ -40,11 +40,10 @@ export default function KPICard({
   subtitle?: React.ReactNode;
   icon?: LucideIcon;
   polarity?: Polarity;
-  variant?: 'default' | 'primary' | 'accent';
+  variant?: 'default' | 'accent';
 }) {
   const bgMap = {
     default: 'bg-card',
-    primary: 'bg-primary text-primary-foreground',
     accent: 'bg-accent',
   };
 
