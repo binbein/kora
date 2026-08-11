@@ -47,7 +47,11 @@ export default function AdminLayout() {
     <div className="min-h-screen bg-background">
       <aside className="hidden lg:flex flex-col w-64 bg-card border-r border-border min-h-screen fixed left-0 top-0 z-40">
         <div className="p-6 border-b border-border">
-          <KoraLogo size="sm" />
+          {/* L'unica uscita dall'area: senza, da `/admin` si può solo digitare
+              un indirizzo, cioè ricaricare, cioè azzerare il provider. */}
+          <Link to="/" className="flex items-center">
+            <KoraLogo size="sm" />
+          </Link>
           <p className="text-xs text-muted-foreground mt-1">
             {t.admin.portalName}
           </p>
@@ -75,7 +79,9 @@ export default function AdminLayout() {
 
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-xl border-b border-border">
         <div className="flex items-center justify-between px-4 h-14">
-          <KoraLogo size="sm" />
+          <Link to="/" className="flex items-center flex-shrink-0">
+            <KoraLogo size="sm" />
+          </Link>
           <button
             onClick={() => setOpen(!open)}
             className="p-2"
