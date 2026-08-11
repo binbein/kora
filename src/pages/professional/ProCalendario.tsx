@@ -13,19 +13,37 @@ import {
   weekGrid,
 } from '@/lib/schedule';
 import {
+  loadState,
   usePortalProfessionalId,
   useProfessionalPatients,
   useProfessionalSessions,
   useReferenceDate,
 } from '@/lib/data/queries';
+import { ErrorNotice } from '@/components/kora/StateNotice';
 
 export default function ProCalendario() {
-  const { data: today } = useReferenceDate();
-  const { data: professionalId } = usePortalProfessionalId();
-  const { data: sessions } = useProfessionalSessions(professionalId);
-  const { data: patients } = useProfessionalPatients(professionalId);
+  const todayQuery = useReferenceDate();
+  const portalIdQuery = usePortalProfessionalId();
+  const sessionsQuery = useProfessionalSessions(portalIdQuery.data);
+  const patientsQuery = useProfessionalPatients(portalIdQuery.data);
 
-  if (!today || !sessions || !patients) return null;
+  /*
+   * I tre casi (M5.b), registro strumento. `portalIdQuery` entra nel gruppo
+   * benché la pagina non ne mostri il valore: le altre due query sono abilitate
+   * solo quando l'id è arrivato, quindi senza di lui resterebbero `undefined`
+   * per sempre e il guasto si travestirebbe da attesa.
+   */
+  const page = loadState([todayQuery, portalIdQuery, sessionsQuery, patientsQuery]);
+  if (page.state === 'error') {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+
+  const today = todayQuery.data;
+  const sessions = sessionsQuery.data;
+  const patients = patientsQuery.data;
+  if (today === undefined || sessions === undefined || patients === undefined) {
+    return null;
+  }
 
   const week = sessionsOfWeek(sessions, today);
   const slots = slotsOfWeek(week);

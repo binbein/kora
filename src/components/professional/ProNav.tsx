@@ -37,6 +37,12 @@ const navItems = [
 
 function ProfessionalBadge() {
   const { data: professional } = usePortalProfessional();
+  /*
+   * Qui i tre casi collassano di proposito (M5.b): il riquadro è decorativo, e
+   * in tutti e tre — in attesa, profilo assente, lettura fallita — la cosa
+   * giusta è non disegnarlo. La nav deve restare coi suoi link, che sono la via
+   * d'uscita: un errore al suo posto toglierebbe la navigazione all'area (§10).
+   */
   if (!professional) return null;
 
   return (

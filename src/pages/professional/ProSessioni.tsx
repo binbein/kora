@@ -12,7 +12,8 @@ import { formatDate, formatNumber, formatTime, formatWeekday } from '@/lib/forma
 import { interpolate, t } from '@/lib/i18n';
 import { dataProvider } from '@/lib/data';
 import { queryKeys } from '@/lib/data/query-keys';
-import { usePortalProfessionalId, useProfessionalSessions } from '@/lib/data/queries';
+import { loadState, usePortalProfessionalId, useProfessionalSessions } from '@/lib/data/queries';
+import { ErrorNotice } from '@/components/kora/StateNotice';
 import type { ProfessionalSession, SessionNote } from '@/lib/data/types';
 
 /** Il callback esiste solo dove le sedute possono avere una nota: le erogate. */
@@ -93,8 +94,9 @@ function SessionList({
 
 export default function ProSessioni() {
   const queryClient = useQueryClient();
-  const { data: professionalId } = usePortalProfessionalId();
-  const { data: sessions } = useProfessionalSessions(professionalId);
+  const portalIdQuery = usePortalProfessionalId();
+  const professionalId = portalIdQuery.data;
+  const sessionsQuery = useProfessionalSessions(professionalId);
 
   /*
    * Stato del dialogo, non stato del dominio (CLAUDE.md §5.2): quale seduta è
@@ -116,7 +118,13 @@ export default function ProSessioni() {
     },
   });
 
-  if (!sessions) return null;
+  /* I tre casi (M5.b), registro strumento. */
+  const page = loadState([portalIdQuery, sessionsQuery]);
+  if (page.state === 'error') {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+  const sessions = sessionsQuery.data;
+  if (sessions === undefined) return null;
 
   const upcoming = sessions.filter((session) => session.status === 'scheduled');
   const completed = sessions

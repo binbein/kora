@@ -611,6 +611,9 @@ export const it = {
 
     profile: {
       title: "Profilo professionale",
+      /* `getProfessional` è nullable per contratto: il portale può restare
+         senza il professionista di cui mostra il profilo. */
+      empty: "Nessun profilo da mostrare.",
       languages: "Lingue",
       specialty: "Specializzazione",
       collaboration: "Collaborazione",

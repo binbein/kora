@@ -6,7 +6,8 @@ import { formatCHF, formatNumber, formatRating } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import { professionalDisplayName } from '@/lib/data/types';
 import type { Professional } from '@/lib/data/types';
-import { usePortalProfessional } from '@/lib/data/queries';
+import { loadState, usePortalProfessional } from '@/lib/data/queries';
+import { EmptyNotice, ErrorNotice } from '@/components/kora/StateNotice';
 
 function initialsOf(professional: Professional) {
   return [professional.firstName, professional.lastName]
@@ -16,8 +17,23 @@ function initialsOf(professional: Professional) {
 }
 
 export default function ProProfilo() {
-  const { data: professional } = usePortalProfessional();
-  if (!professional) return null;
+  const professionalQuery = usePortalProfessional();
+
+  /* I tre casi (M5.b). `getProfessional` è nullable per contratto, quindi il
+     profilo assente è un vuoto e non un guasto. */
+  const page = loadState([professionalQuery]);
+  if (page.state === 'error') {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+  const professional = professionalQuery.data;
+  if (professional === undefined) return null;
+  if (professional === null) {
+    return (
+      <Card>
+        <EmptyNotice text={t.professional.profile.empty} />
+      </Card>
+    );
+  }
 
   return (
     <div className="space-y-6">
