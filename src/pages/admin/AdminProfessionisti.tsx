@@ -121,23 +121,23 @@ export default function AdminProfessionisti() {
                 </TableCell>
                 <TableCell>
                   {professional.documentsVerified ? (
-                    <CheckCircle2 className="w-4 h-4 text-secondary" />
+                    <CheckCircle2 className="w-4 h-4 text-secondary" aria-hidden="true" />
                   ) : (
-                    <Clock className="w-4 h-4 text-muted-foreground" />
+                    <Clock className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
                   )}
                 </TableCell>
                 <TableCell>
                   {professional.mandateSigned ? (
-                    <CheckCircle2 className="w-4 h-4 text-secondary" />
+                    <CheckCircle2 className="w-4 h-4 text-secondary" aria-hidden="true" />
                   ) : (
-                    <XCircle className="w-4 h-4 text-muted-foreground" />
+                    <XCircle className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
                   )}
                 </TableCell>
                 <TableCell>
                   <Badge
                     className={
                       isBookable(professional)
-                        ? "bg-secondary/10 text-secondary"
+                        ? "bg-secondary/10 text-secondary-strong"
                         : "bg-warning/20 text-foreground"
                     }
                   >

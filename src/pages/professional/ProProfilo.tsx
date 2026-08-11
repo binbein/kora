@@ -36,14 +36,14 @@ export default function ProProfilo() {
             <div className="flex flex-wrap gap-2 mt-3">
               {professional.rating !== null ? (
                 <Badge className="bg-executive/10 text-executive">
-                  <Star className="w-3 h-3 mr-1" />
+                  <Star className="w-3 h-3 mr-1" aria-hidden="true" />
                   <span className="tabular-nums">
                     {formatRating(professional.rating)}
                   </span>
                 </Badge>
               ) : null}
               <Badge variant="outline">
-                <Award className="w-3 h-3 mr-1" />
+                <Award className="w-3 h-3 mr-1" aria-hidden="true" />
                 <span className="tabular-nums">
                   {interpolate(t.professional.profile.totalSessions, {
                     n: formatNumber(professional.totalSessions),
@@ -58,7 +58,7 @@ export default function ProProfilo() {
       <div className="grid md:grid-cols-2 gap-4">
         <Card className="p-5">
           <h3 className="font-semibold mb-3 flex items-center gap-2">
-            <Globe className="w-4 h-4 text-primary" /> {t.professional.profile.languages}
+            <Globe className="w-4 h-4 text-primary" aria-hidden="true" /> {t.professional.profile.languages}
           </h3>
           <div className="flex flex-wrap gap-2">
             {professional.languages.map((code) => (
@@ -68,7 +68,7 @@ export default function ProProfilo() {
         </Card>
         <Card className="p-5">
           <h3 className="font-semibold mb-3 flex items-center gap-2">
-            <Star className="w-4 h-4 text-secondary" /> {t.professional.profile.specialty}
+            <Star className="w-4 h-4 text-secondary" aria-hidden="true" /> {t.professional.profile.specialty}
           </h3>
           {/* coppia `accent` e non teal pieno: il bianco su `secondary` è
               2.83:1, sotto l'AA (§6.1). La variante `secondary` di `badge.tsx`
@@ -81,7 +81,7 @@ export default function ProProfilo() {
 
       <Card className="p-5">
         <h3 className="font-semibold mb-3 flex items-center gap-2">
-          <Briefcase className="w-4 h-4 text-executive" /> {t.professional.profile.collaboration}
+          <Briefcase className="w-4 h-4 text-executive" aria-hidden="true" /> {t.professional.profile.collaboration}
         </h3>
         <div className="space-y-2 text-sm">
           <div className="flex items-center justify-between py-2 border-b border-border">
@@ -91,16 +91,16 @@ export default function ProProfilo() {
           <div className="flex items-center justify-between py-2 border-b border-border">
             <span className="text-muted-foreground">{t.professional.profile.documents}</span>
             {professional.documentsVerified && (
-              <Badge className="bg-secondary/10 text-secondary">
-                <CheckCircle2 className="w-3 h-3 mr-1" /> {t.professional.profile.verified}
+              <Badge className="bg-secondary/10 text-secondary-strong">
+                <CheckCircle2 className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.profile.verified}
               </Badge>
             )}
           </div>
           <div className="flex items-center justify-between py-2">
             <span className="text-muted-foreground">{t.professional.profile.mandate}</span>
             {professional.mandateSigned && (
-              <Badge className="bg-secondary/10 text-secondary">
-                <CheckCircle2 className="w-3 h-3 mr-1" /> {t.professional.profile.signed}
+              <Badge className="bg-secondary/10 text-secondary-strong">
+                <CheckCircle2 className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.profile.signed}
               </Badge>
             )}
           </div>

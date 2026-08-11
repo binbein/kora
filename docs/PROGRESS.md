@@ -22,12 +22,25 @@ lì.
 
 ## Stato
 
-**M0, M1, M2, M3 e M4 chiuse.** La demo è condivisibile e **tutte e cinque le aree
-leggono dal provider**: nessuna schermata dichiara più le proprie costanti, le
-stringhe stanno in `i18n`, ogni importo passa da `format.ts` e ogni data da
-`DEMO_TODAY`. Le rotte sono 26, il repository è nostro — niente base44, zero
-richieste esterne a runtime — e `reference/` è stato cancellato, che era la
+**M0, M1, M2, M3 e M4 chiuse. M5 è aperta.** La demo è condivisibile e **tutte e
+cinque le aree leggono dal provider**: nessuna schermata dichiara più le proprie
+costanti, le stringhe stanno in `i18n`, ogni importo passa da `format.ts` e ogni
+data da `DEMO_TODAY`. Le rotte sono 26, il repository è nostro — niente base44,
+zero richieste esterne a runtime — e `reference/` è stato cancellato, che era la
 prova che M3 fosse davvero finita.
+
+**M5 è l'ultima milestone del piano, e si articola in sei blocchi** approvati
+dai founder l'11.08.2026 — accessibilità, stati di errore e vuoto, validazione
+dei form, guardie di rotta, le altre tre lingue, pagine del footer. Stanno in
+`CLAUDE.md` §4 con le dipendenze e le decisioni che ognuno porta con sé;
+**ognuno chiude con una demo funzionante** (§2.3), quindi non è un cantiere
+unico che resta aperto fino alla fine.
+
+**Le PR di M5 sono la milestone e non entrano nel conto delle passate di
+refinement.** Vale il criterio già scritto in quella sezione, che esclude la
+milestone: M4 è #19 e ha la sua sezione, e i blocchi di M5 hanno la loro qui
+sotto. Il conto delle passate resta fermo a undici finché non riprende il
+refinement fra le milestone — che dopo M5 vuol dire dopo il piano.
 
 Il primo commit è l'export **intatto**, così ogni modifica successiva si legge come
 diff contro quello che base44 ha prodotto. Il magazzino della precedente demo
@@ -845,6 +858,91 @@ variabile non verificherebbe niente.
   stanno in una pagina; il trend a dodici mesi e la ciambella non ci sono, e
   aggiungerli vorrebbe dire decidere se il documento resta di una pagina. È scope,
   quindi è dei founder.
+
+### M5 — Verso la produzione
+
+Sei blocchi, in `CLAUDE.md` §4, ognuno con la sua demo funzionante.
+
+#### a) Accessibilità completa — chiuso
+
+Dodici commit. **Il censimento a schermo passa da 79 punti sotto soglia a
+zero**, su 27 rotte: le 26 più la 404.
+
+**Il censimento vecchio era da grep e sbagliava in difetto.** Diceva 27 testi e
+40 icone; a schermo, con il viewport reale, i punti distinti erano **79** — 60
+icone e 19 testi — per 259 occorrenze. Il confine testo/icone che `PROGRESS`
+dichiarava approssimativo non era l'unico problema: mancavano il **rosso**
+(`text-destructive`, 3.30:1 sulla voce attiva della nav admin), un'**icona
+`warning`** a 1.53:1, e l'**anello di focus**, che a `/50` di opacità dava
+2.83:1 — cioè il colore dell'indicatore di focus era esso stesso un difetto.
+
+**La lettura che ha riorganizzato il lavoro: nessuna icona aveva
+`aria-hidden`.** Zero su tutte. Ma un'icona dichiarata decorativa è **esente**
+dalla 1.4.11, e in questa demo ogni icona sta accanto a un'etichetta che porta
+già il significato. Quindi il debito icone non era di colore, era di `aria`:
+**114 icone dichiarate decorative**, nessuna informativa. L'esito del blocco è
+quindi *"zero punti **informativi** sotto soglia"*, che è la formulazione
+corretta della norma (founder, 11.08.2026).
+
+**Hanno richiesto un nome, non un'esenzione**, i tre pulsanti hamburger di
+`ProNav`, `HRNav` e `EmployeeNav`: avvolgevano solo un'icona e non avevano
+`aria-label`, quindi nasconderla li avrebbe lasciati **senza nome
+accessibile**. Sono nello stesso commit della stampigliatura perché nasconderle
+e nominarli sono la stessa modifica: separarli avrebbe prodotto un commit in
+cui l'app sta peggio.
+
+**Due varianti di solo testo**, `secondary-strong` e `destructive-strong`
+(`CLAUDE.md` §6.1). Servivano perché il colore che porta significato non può
+essere illeggibile: la polarità del 07.08.2026 vuole il verde sulla metrica che
+migliora, e portarlo su `primary` avrebbe chiuso il debito **spegnendo la
+regola** — sul rosso non c'era nemmeno dove spostarlo.
+
+**Si tarano sul fondo peggiore, e la prima taratura era sbagliata.** A `30%` il
+teal dava 4.56 su bianco e **4.13 su `bg-secondary/10`**: passava la misura che
+nessuno guarda e falliva quella che si vede, perché quel testo vive dentro
+badge e card tinte. Corretto a `26%` e `44%`, verificati su bianco, tinta `/10`
+e `accent` — peggior caso 4.93. **L'ha trovato il censimento di chiusura**, che
+è la ragione per cui si rifà invece di dichiarare l'inventario a memoria.
+
+**La nav admin lascia il rosso** e passa a `bg-primary/10 text-primary`, come
+`HRNav` già faceva (9.97:1). Il contrasto è la metà minore: il §6.1 riserva
+`destructive` ad alert e stati critici ed è il suo essere raro a farlo notare,
+quindi una voce di nav sempre accesa in rosso era la diluizione che quella riga
+vieta.
+
+**`PageNotFound` è diventata `.tsx` con le stringhe in `i18n`**, perché la
+passata l'ha toccata e il §3 non ha eccezioni. L'indirizzo ha perso lo `<span>`
+colorato: la frase è una sola con segnaposto, come vuole il §2.7. Restano
+quattro `.jsx`.
+
+**Verificato a schermo, viewport 1280×900 e scheda in primo piano** (§11):
+
+- **censimento di chiusura a zero** su 27 rotte, rifatto due volte;
+- **il focus si vede da tastiera**: con `Tab` reale `:focus-visible` aggancia,
+  `outline: auto` in `primary` a piena opacità, **11.93:1**;
+- **la coreografia di `/admin` regge**: tabella vuota a freddo, uscita col
+  logo, richiesta inviata, due Indietro, riga in tabella — **una sola
+  navigazione** per tutto il giro;
+- 27 rotte percorse, **zero schermate vuote**, console pulita con i soli due
+  avvisi `react-router` noti da M1;
+- **nessun numero si è mosso**: CHF 14'200, 16 giorni, 68%, 82 su 120, 41
+  attivi, 142 di 1'200, 62%, soglia 12, −2 punti — ancora verde, e ora
+  leggibile;
+- `lint`, `typecheck` e `build:demo` a posto.
+
+**Il residuo motivato, e non è chiudibile da qui:**
+
+- **L'anello di focus è invisibile sui CTA pieni.** `--ring` è il blu di
+  `primary` e i CTA sono su `bg-primary`: anello primary su fondo primary,
+  **1.00:1**. Sono **12 pulsanti** sulle rotte pubbliche e nel portale
+  dipendente. Il rimedio sta in `src/components/ui/button.tsx` — un
+  `ring-offset` o un colore d'anello diverso — e quel file è **congelato**
+  (§3), che per l'aria e per il focus non ha eccezioni. È il caso previsto
+  dalla regola del blocco: si dichiara e ci si ferma. **Va deciso dai founder**,
+  ed è la stessa famiglia di decisioni della guardia di `useFormField` che il
+  blocco c) porta con sé.
+- **Le icone dentro `src/components/ui/`** non sono state dichiarate, per la
+  stessa ragione.
 
 ### Refinement fra le milestone
 

@@ -63,7 +63,7 @@ function ProviderRow({
         <div className="flex-1">
           <h3 className="font-semibold">{provider.name}</h3>
           <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
-            <MapPin className="w-3.5 h-3.5" />
+            <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
             <span>
               {interpolate(t.employee.checkup.providerAddress, {
                 address: provider.address,
@@ -128,7 +128,7 @@ export default function Checkup() {
         >
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-secondary/10 rounded-xl">
-              <ClipboardCheck className="w-5 h-5 text-secondary" />
+              <ClipboardCheck className="w-5 h-5 text-secondary" aria-hidden="true" />
             </div>
             <div>
               <p className="text-sm font-semibold">
@@ -150,7 +150,7 @@ export default function Checkup() {
 
       {eligibility.availableFrom && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground tabular-nums">
-          <CalendarClock className="w-4 h-4 flex-shrink-0 text-secondary" />
+          <CalendarClock className="w-4 h-4 flex-shrink-0 text-secondary" aria-hidden="true" />
           <span>
             {interpolate(t.employee.checkup.nextFrom, {
               date: formatDate(eligibility.availableFrom),
@@ -208,7 +208,7 @@ export default function Checkup() {
                     className={
                       measurement.status === "attention"
                         ? "border-warning text-foreground flex-shrink-0"
-                        : "bg-secondary/10 text-secondary flex-shrink-0"
+                        : "bg-secondary/10 text-secondary-strong flex-shrink-0"
                     }
                   >
                     {t.employee.checkup.report.status[measurement.status]}
@@ -226,7 +226,7 @@ export default function Checkup() {
               </div>
 
               <div className="flex items-start gap-2 rounded-lg border border-border bg-muted px-3 py-2.5 text-xs text-foreground">
-                <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-muted-foreground" />
+                <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-muted-foreground" aria-hidden="true" />
                 <span>{t.employee.checkup.report.disclaimer}</span>
               </div>
             </div>

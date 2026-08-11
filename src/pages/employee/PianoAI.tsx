@@ -73,7 +73,7 @@ export default function PianoAI() {
           </p>
         </div>
         <Badge className="bg-accent text-accent-foreground hover:bg-accent flex-shrink-0">
-          <Sparkles className="w-3 h-3 mr-1" />
+          <Sparkles className="w-3 h-3 mr-1" aria-hidden="true" />
           {interpolate(t.employee.aiPlan.generated, {
             month: formatMonthYear(plan.generatedAt),
           })}
@@ -87,7 +87,7 @@ export default function PianoAI() {
             <Card key={area.area} className="p-5">
               <div className="flex items-center gap-3 mb-3">
                 <div className={`p-2 rounded-lg ${wrapClass}`}>
-                  <Icon className={`w-5 h-5 ${iconClass}`} />
+                  <Icon className={`w-5 h-5 ${iconClass}`} aria-hidden="true" />
                 </div>
                 <div className="flex-1">
                   <h2 className="font-semibold text-sm">
@@ -108,7 +108,7 @@ export default function PianoAI() {
                     key={tipKey}
                     className="text-xs text-muted-foreground flex items-start gap-2"
                   >
-                    <span className="text-secondary mt-0.5">•</span>
+                    <span className="text-secondary-strong mt-0.5">•</span>
                     {tips[tipKey]}
                   </li>
                 ))}

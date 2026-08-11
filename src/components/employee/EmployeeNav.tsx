@@ -81,11 +81,11 @@ export default function EmployeeNav() {
                 to={path}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   active
-                    ? "bg-secondary/10 text-secondary"
+                    ? "bg-secondary/10 text-secondary-strong"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
-                <Icon className="w-4.5 h-4.5" />
+                <Icon className="w-4.5 h-4.5" aria-hidden="true" />
                 {label}
               </Link>
             );
@@ -100,8 +100,13 @@ export default function EmployeeNav() {
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-xl border-b border-border">
         <div className="flex items-center justify-between px-4 h-14">
           <KoraLogo size="sm" />
-          <button onClick={() => setOpen(!open)} className="p-2">
-            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          <button
+            onClick={() => setOpen(!open)}
+            className="p-2"
+            aria-label={t.public.nav.menu}
+            aria-expanded={open}
+          >
+            {open ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
           </button>
         </div>
         {open && (
@@ -114,10 +119,10 @@ export default function EmployeeNav() {
                   to={path}
                   onClick={() => setOpen(false)}
                   className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium ${
-                    active ? "bg-secondary/10 text-secondary" : "text-muted-foreground"
+                    active ? "bg-secondary/10 text-secondary-strong" : "text-muted-foreground"
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-4 h-4" aria-hidden="true" />
                   {label}
                 </Link>
               );
@@ -136,10 +141,10 @@ export default function EmployeeNav() {
                 key={path}
                 to={path}
                 className={`flex flex-col items-center gap-0.5 py-1 px-2 ${
-                  active ? "text-secondary" : "text-muted-foreground"
+                  active ? "text-secondary-strong" : "text-muted-foreground"
                 }`}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className="w-5 h-5" aria-hidden="true" />
                 <span className="text-[10px] font-medium">{label}</span>
               </Link>
             );

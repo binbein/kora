@@ -65,11 +65,11 @@ export default function AdminLayout() {
                 to={path}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   active
-                    ? "bg-destructive/10 text-destructive"
+                    ? "bg-primary/10 text-primary"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
-                <Icon className="w-4.5 h-4.5 flex-shrink-0" />
+                <Icon className="w-4.5 h-4.5 flex-shrink-0" aria-hidden="true" />
                 {label}
               </Link>
             );
@@ -88,7 +88,7 @@ export default function AdminLayout() {
             aria-label={t.public.nav.menu}
             aria-expanded={open}
           >
-            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {open ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
           </button>
         </div>
         {open && (
@@ -100,11 +100,11 @@ export default function AdminLayout() {
                 onClick={() => setOpen(false)}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium ${
                   location.pathname === path
-                    ? "bg-destructive/10 text-destructive"
+                    ? "bg-primary/10 text-primary"
                     : "text-muted-foreground"
                 }`}
               >
-                <Icon className="w-4 h-4 flex-shrink-0" /> {label}
+                <Icon className="w-4 h-4 flex-shrink-0" aria-hidden="true" /> {label}
               </Link>
             ))}
           </nav>
@@ -114,7 +114,7 @@ export default function AdminLayout() {
       <main className="lg:ml-64 pt-14 lg:pt-0">
         <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
           <div className="flex items-start gap-3 bg-muted border border-border rounded-lg px-4 py-3">
-            <Info className="w-5 h-5 flex-shrink-0 text-muted-foreground" />
+            <Info className="w-5 h-5 flex-shrink-0 text-muted-foreground" aria-hidden="true" />
             <p className="text-sm text-foreground">{t.admin.demoBanner}</p>
           </div>
           <Outlet />

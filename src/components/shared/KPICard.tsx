@@ -53,7 +53,7 @@ export default function KPICard({
       : improvingWith(polarity.sign, polarity.goodWhen);
 
   const toneClass =
-    improving === null ? '' : improving ? 'text-secondary' : 'text-destructive';
+    improving === null ? '' : improving ? 'text-secondary-strong' : 'text-destructive-strong';
 
   return (
     <Card className={`${bgMap[variant]} p-5 relative overflow-hidden`}>
@@ -65,9 +65,9 @@ export default function KPICard({
           <p className={`flex items-center gap-1.5 text-2xl font-bold font-display tabular-nums ${toneClass || (variant === 'default' ? 'text-foreground' : '')}`}>
             {improving !== null &&
               (polarity!.sign > 0 ? (
-                <TrendingUp className="w-5 h-5 flex-shrink-0" />
+                <TrendingUp className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
               ) : (
-                <TrendingDown className="w-5 h-5 flex-shrink-0" />
+                <TrendingDown className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
               ))}
             {value}
           </p>
@@ -79,7 +79,7 @@ export default function KPICard({
         </div>
         {Icon && (
           <div className={`p-2.5 rounded-xl flex-shrink-0 ${variant === 'default' ? 'bg-accent' : 'bg-white/15'}`}>
-            <Icon className={`w-5 h-5 ${variant === 'default' ? 'text-secondary' : ''}`} />
+            <Icon className={`w-5 h-5 ${variant === 'default' ? 'text-secondary' : ''}`} aria-hidden="true" />
           </div>
         )}
       </div>

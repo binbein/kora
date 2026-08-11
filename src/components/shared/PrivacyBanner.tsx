@@ -24,7 +24,7 @@ export default function PrivacyBanner({
 }) {
   return (
     <div className="flex items-center gap-3 bg-accent/60 border border-secondary/20 rounded-lg px-4 py-3">
-      <Icon className="w-5 h-5 text-secondary flex-shrink-0" />
+      <Icon className="w-5 h-5 text-secondary flex-shrink-0" aria-hidden="true" />
       <p className="text-sm text-muted-foreground">{message}</p>
     </div>
   );

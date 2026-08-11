@@ -179,7 +179,7 @@ export default function PrintableReport({
       </ol>
 
       <div className="flex items-start gap-2 mt-8 pt-4 border-t border-border">
-        <Lock className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
+        <Lock className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" aria-hidden="true" />
         <p className="text-xs text-muted-foreground">
           {t.hr.report.pdf.privacyNote}
         </p>

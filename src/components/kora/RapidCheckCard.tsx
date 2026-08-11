@@ -93,7 +93,7 @@ export default function RapidCheckCard() {
     <Card className={`p-5 ${answered ? "bg-accent/40 border-secondary/20" : ""}`}>
       <div className="flex items-start gap-3">
         {answered ? (
-          <CheckCircle2 className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
+          <CheckCircle2 className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" aria-hidden="true" />
         ) : null}
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold" id="rapid-check-question">

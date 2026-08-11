@@ -47,14 +47,14 @@ export default function HRPrivacy() {
       <Card className="p-6 bg-accent/40 border-secondary/20">
         <div className="flex items-start gap-4">
           <div className="p-3 bg-secondary/10 rounded-xl flex-shrink-0">
-            <Shield className="w-8 h-8 text-secondary" />
+            <Shield className="w-8 h-8 text-secondary" aria-hidden="true" />
           </div>
           <div>
             <h2 className="text-lg font-bold mb-2">{t.hr.privacy.neverSeenTitle}</h2>
             <ul className="space-y-2 text-sm text-muted-foreground">
               {NEVER_SEEN.map((key) => (
                 <li key={key} className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-secondary flex-shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-secondary flex-shrink-0" aria-hidden="true" />
                   {t.hr.privacy.neverSeen[key]}
                 </li>
               ))}
@@ -67,7 +67,7 @@ export default function HRPrivacy() {
         <Card className="p-5">
           <div className="flex items-start gap-3">
             <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
-              <CheckCircle2 className="w-5 h-5 text-primary" />
+              <CheckCircle2 className="w-5 h-5 text-primary" aria-hidden="true" />
             </div>
             <div>
               <h3 className="font-semibold text-sm">{t.hr.privacy.measurementTitle}</h3>
@@ -80,7 +80,7 @@ export default function HRPrivacy() {
         <Card className="p-5">
           <div className="flex items-start gap-3">
             <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
-              <Link2 className="w-5 h-5 text-primary" />
+              <Link2 className="w-5 h-5 text-primary" aria-hidden="true" />
             </div>
             <div>
               <h3 className="font-semibold text-sm">{t.hr.privacy.anonymousLinkTitle}</h3>
@@ -95,7 +95,7 @@ export default function HRPrivacy() {
       <Card className="p-5">
         <div className="flex items-start gap-3">
           <div className="p-2 bg-secondary/10 rounded-lg flex-shrink-0">
-            <Lock className="w-5 h-5 text-secondary" />
+            <Lock className="w-5 h-5 text-secondary" aria-hidden="true" />
           </div>
           <div>
             <h3 className="font-semibold text-sm">{t.hr.privacy.thresholdTitle}</h3>
@@ -113,7 +113,7 @@ export default function HRPrivacy() {
           <Card key={key} className="p-5">
             <div className="flex items-start gap-3">
               <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
-                <Icon className="w-5 h-5 text-primary" />
+                <Icon className="w-5 h-5 text-primary" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="font-semibold text-sm">

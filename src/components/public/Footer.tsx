@@ -29,7 +29,7 @@ export default function Footer() {
               {t.public.footer.tagline}
             </p>
             <div className="flex items-center gap-2 text-sm opacity-60">
-              <MapPin className="w-4 h-4" />
+              <MapPin className="w-4 h-4" aria-hidden="true" />
               <span>{t.public.footer.city}</span>
             </div>
           </div>
@@ -89,7 +89,7 @@ export default function Footer() {
               {t.public.footer.privacyTitle}
             </h4>
             <div className="flex items-start gap-2">
-              <Shield className="w-4 h-4 mt-0.5 opacity-60" />
+              <Shield className="w-4 h-4 mt-0.5 opacity-60" aria-hidden="true" />
               <p className="text-sm opacity-80 leading-relaxed">
                 {t.public.footer.privacyBody}
               </p>

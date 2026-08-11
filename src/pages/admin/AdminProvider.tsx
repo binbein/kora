@@ -111,7 +111,7 @@ export default function AdminProvider() {
                   <Badge
                     className={
                       provider.status === "active"
-                        ? "bg-secondary/10 text-secondary"
+                        ? "bg-secondary/10 text-secondary-strong"
                         : "bg-warning/20 text-foreground"
                     }
                   >

@@ -50,9 +50,9 @@ export default function HRFatturazione() {
       <Card className="p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold flex items-center gap-2">
-            <CreditCard className="w-4 h-4 text-primary" /> {t.hr.billing.planTitle}
+            <CreditCard className="w-4 h-4 text-primary" aria-hidden="true" /> {t.hr.billing.planTitle}
           </h3>
-          <Badge className="bg-secondary/10 text-secondary">
+          <Badge className="bg-secondary/10 text-secondary-strong">
             {t.plan[company.plan.id]}
           </Badge>
         </div>
@@ -82,7 +82,7 @@ export default function HRFatturazione() {
 
       <Card className="p-6">
         <h3 className="font-semibold mb-4 flex items-center gap-2">
-          <FileText className="w-4 h-4 text-primary" /> {t.hr.billing.invoicesTitle}
+          <FileText className="w-4 h-4 text-primary" aria-hidden="true" /> {t.hr.billing.invoicesTitle}
         </h3>
         <div className="space-y-3">
           {invoices.map((invoice) => (
@@ -105,7 +105,7 @@ export default function HRFatturazione() {
                 <span className="text-sm font-semibold tabular-nums">
                   {formatCHF(invoice.employeeCount * invoice.unitPriceChf)}
                 </span>
-                <Badge className="bg-secondary/10 text-secondary text-xs">
+                <Badge className="bg-secondary/10 text-secondary-strong text-xs">
                   {invoice.status === 'paid'
                     ? t.hr.billing.invoicePaid
                     : t.hr.billing.invoicePending}
@@ -118,7 +118,7 @@ export default function HRFatturazione() {
 
       <Card className="p-6">
         <h3 className="font-semibold mb-4 flex items-center gap-2">
-          <Calculator className="w-4 h-4 text-secondary" /> {t.hr.billing.simulatorTitle}
+          <Calculator className="w-4 h-4 text-secondary" aria-hidden="true" /> {t.hr.billing.simulatorTitle}
         </h3>
         <div className="grid sm:grid-cols-3 gap-4 mb-6">
           <div>

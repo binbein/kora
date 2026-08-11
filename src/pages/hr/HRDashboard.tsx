@@ -258,7 +258,7 @@ export default function HRDashboard() {
       {alert && (
         <Card className="p-5 bg-warning/15 border-warning">
           <div className="flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-warning-foreground flex-shrink-0 mt-0.5" />
+            <AlertTriangle className="w-5 h-5 text-warning-foreground flex-shrink-0 mt-0.5" aria-hidden="true" />
             <div>
               <h2 className="font-semibold text-sm">
                 {interpolate(t.hr.alertTitle, {
@@ -403,7 +403,7 @@ export default function HRDashboard() {
                       className="inline-flex items-center gap-1.5 text-sm text-muted-foreground"
                       title={t.hr.suppressedTooltip}
                     >
-                      <Lock className="w-3.5 h-3.5" />
+                      <Lock className="w-3.5 h-3.5" aria-hidden="true" />
                       {t.common.none}
                     </span>
                   ) : (

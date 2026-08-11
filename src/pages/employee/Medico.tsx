@@ -90,7 +90,7 @@ export default function Medico() {
           </p>
         </div>
         <Badge className="bg-accent text-accent-foreground hover:bg-accent flex-shrink-0">
-          <Clock className="w-3 h-3 mr-1" />
+          <Clock className="w-3 h-3 mr-1" aria-hidden="true" />
           {interpolate(t.employee.doctor.sla, {
             hours: formatNumber(company.plan.virtualDoctorSlaHours),
           })}
@@ -100,7 +100,7 @@ export default function Medico() {
       <Card className="flex flex-col h-[calc(100vh-280px)] lg:h-[calc(100vh-220px)]">
         <div className="flex items-center gap-3 p-4 border-b border-border">
           <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-            <Stethoscope className="w-5 h-5 text-primary" />
+            <Stethoscope className="w-5 h-5 text-primary" aria-hidden="true" />
           </div>
           <div>
             <p className="text-sm font-semibold">{t.employee.doctor.title}</p>
@@ -110,7 +110,7 @@ export default function Medico() {
           </div>
           <div className="ml-auto flex items-center gap-1.5">
             <div className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-            <span className="text-xs text-secondary font-medium">
+            <span className="text-xs text-secondary-strong font-medium">
               {t.employee.doctor.online}
             </span>
           </div>
@@ -159,18 +159,18 @@ export default function Medico() {
             className="bg-secondary hover:bg-secondary/90"
             aria-label={t.employee.doctor.send}
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-4 h-4" aria-hidden="true" />
           </Button>
         </form>
       </Card>
 
       <div className="flex items-start gap-2 rounded-lg border border-border bg-muted px-3 py-2.5 text-xs text-foreground">
-        <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-muted-foreground" />
+        <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-muted-foreground" aria-hidden="true" />
         <span>{t.employee.doctor.disclaimer}</span>
       </div>
 
       <div className="flex items-start gap-2 text-xs text-muted-foreground">
-        <Shield className="w-3.5 h-3.5 mt-0.5 text-secondary flex-shrink-0" />
+        <Shield className="w-3.5 h-3.5 mt-0.5 text-secondary flex-shrink-0" aria-hidden="true" />
         <span>{t.employee.doctor.privacy}</span>
       </div>
     </div>

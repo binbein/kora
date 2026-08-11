@@ -361,6 +361,51 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
   **Le schermate di M3 vanno costruite in modo da poterli ospitare, non da doverli
   rimandare.**
 
+  **Si articola in sei blocchi**, approvati dai founder l'11.08.2026, e **ognuno
+  chiude con una demo funzionante** (§2.3) — non sono fasi di un unico cantiere
+  aperto. L'ordine non è vincolante tranne dove una dipendenza lo impone (f).
+
+  - **a) Accessibilità completa.** Il punto di partenza è il censimento del
+    debito AA in `docs/PROGRESS.md`, più ciò che non copriva: focus visibili su
+    ogni elemento interattivo, `aria` e alt dove mancano, e il percorso del
+    pitch percorribile **da sola tastiera** (§11).
+  - **b) Stati di errore e vuoto veri.** Il contratto li regge già — `| null` e
+    liste vuote sono valori legittimi (`docs/CONTRATTO-DATI.md` §5) — ma le
+    schermate non li mostrano. **Il blocco deve proporre anche come si
+    dimostrano a schermo**: il mock risolve sempre e non fallisce mai, quindi
+    uno stato che nessun percorso produce è codice che il §11 non vuole e che
+    nessuno può verificare.
+  - **c) Validazione dei form**, con `zod` e `react-hook-form`, che il §3 tiene
+    installati apposta. **Porta con sé la decisione rimandata sulla guardia di
+    `useFormField`** in `form.tsx`: il controllo sta dopo l'uso che dovrebbe
+    proteggere e il default `{}` è truthy, quindi non scatta mai. È un cambio di
+    comportamento su un file congelato, quindi è dei founder, e questo è il
+    momento — prima `form` non aveva consumatori.
+  - **d) Guardie di rotta per ruolo**, scritte da zero sui nostri ruoli: il
+    `ProtectedRoute` ereditato è stato cancellato in M1 con l'SDK. **Porta due
+    decisioni.** La prima è `react-router` 7, che chiuderebbe le due
+    vulnerabilità moderate e i due avvisi sui future flag, ed è un major che
+    cambia l'API del router. La seconda è un **vincolo nuovo**: la coreografia
+    di `docs/PITCH.md` entra in `/admin` **come prima schermata** e ci rientra
+    col tasto Indietro, quindi una guardia che intercetta quell'ingresso
+    **rompe un momento del pitch**. Il modello di impersonificazione del ruolo
+    va proposto con pro e contro all'apertura del blocco, non deciso mentre lo
+    si scrive.
+  - **e) Le altre tre lingue, DE per prima** — è quella che mette alla prova i
+    layout (§2.7: parole ~30% più lunghe). **Porta la decisione sul language
+    switcher**, che oggi il §2.7 vieta e che con quattro dizionari serve.
+    Sostituisce anche l'idioma `t.common.listSeparator` con **`Intl.ListFormat`
+    in `format.ts`**: i due call site a schermo sono già allineati al
+    separatore del dizionario, quindi il lavoro è nel formatter e non nelle
+    schermate.
+  - **f) Le pagine del footer** — privacy policy, termini, cookie policy, più
+    "Chi siamo", "Contatti", "Carriere" e "Blog", che dall'08.08.2026 sono un
+    elenco di sezioni senza affordance da link. **Dipende da due cose fuori dal
+    codice**: i testi legali dei founder, e la **decisione sulla residenza dei
+    dati** (`docs/PROGRESS.md`, decisioni in sospeso) — una privacy policy deve
+    dire dove stanno i dati, e oggi la promessa commerciale non è ratificata.
+    Per questo è l'ultimo.
+
 ## 5. Architettura dati — il cuore del progetto
 
 Principio: **le schermate non sanno che i dati sono finti.** Consumano
@@ -629,11 +674,42 @@ Regole:
   `text-primary-foreground`, che è 98%). Quest'ultima non è né l'uno né l'altro
   caso: è il verde pieno visto dal lato del non-testo, e va tenuta a vista
   perché due liste che parlano d'altro se la perderebbero in mezzo. Sono censiti
-  in `docs/PROGRESS.md` con destinazione **M5**,
-  che ha l'accessibilità completa in elenco: **il rimedio non è coperto dalla
-  decisione del 10.08.2026**, che ha scelto la strada per il riempimento pieno e
-  non per il testo colorato. Finché non è deciso, §6.1 dice "chiuso sul verde
-  pieno" e non "debito AA chiuso".
+  in `docs/PROGRESS.md`, e **il rimedio è la riga qui sotto**, decisa
+  l'11.08.2026 all'apertura del blocco a) di M5.
+- **Due varianti di solo testo: `secondary-strong` e `destructive-strong`**
+  (founder, 11.08.2026). Il colore che porta significato non può essere
+  illeggibile, e i due token base non passano l'AA come testo:
+
+  | token | HSL | bianco | tinta `/10` | `accent` |
+  |---|---|---|---|---|
+  | `secondary` | `172 73% 39%` | 2.83 ✗ | 2.57 ✗ | 2.53 ✗ |
+  | **`secondary-strong`** | `172 73% 26%` | **5.75** ✓ | **5.20** ✓ | **5.14** ✓ |
+  | `destructive` | `0 84.2% 60.2%` | 3.76 ✗ | 3.30 ✗ | 3.36 ✗ |
+  | **`destructive-strong`** | `0 84.2% 44%` | **5.62** ✓ | **4.93** ✓ | **5.02** ✓ |
+
+  **Si tarano sul fondo peggiore, non sul bianco.** Il testo colorato di questa
+  demo vive quasi sempre dentro un badge o una card tinta — `bg-secondary/10`,
+  `bg-accent` — e lì la soglia morde prima: a `30%` di luminosità il teal dava
+  4.56 su bianco ma **4.13 sulla tinta**, cioè passava la misura che nessuno
+  guarda e falliva quella che si vede. Una variante di testo va verificata su
+  ogni fondo su cui compare, e il censimento a schermo è ciò che li elenca.
+
+  **Si usano solo dove il colore è testo e vuol dire qualcosa.** Chip, barre,
+  riempimenti, bordi e sfondi **restano sui token base**: lì il colore non deve
+  essere letto, e cambiarlo sposterebbe la luminosità di ogni schermata già
+  approvata — che è precisamente l'opzione scartata il 10.08.2026. Un token in
+  più non è la stessa cosa di un token cambiato.
+
+  **La ragione della scelta è la polarità del 07.08.2026**, che resta intatta:
+  sulle KPI di trend il colore segue il beneficio, verde quando la metrica
+  migliora e `destructive` quando peggiora. Portare quel verde su `primary`
+  perché non passava il contrasto avrebbe chiuso il debito AA spegnendo la
+  regola — e sul rosso non esiste nemmeno un colore dove spostarlo. Le due
+  varianti tengono insieme le due cose invece di sceglierne una.
+
+  **Il rosso non era nel censimento**, che contò solo il teal: a 3.78:1 passa la
+  soglia del non-testo ma non quella del testo, quindi un inventario che lo
+  ignora dichiara "zero punti sotto soglia" senza esserlo.
 - **Solo light mode.** `index.css` definisce una palette `.dark` completa che nessun
   componente attiva: resta lì, inerte. Nessun toggle e nessun `next-themes` finché
   non è una decisione dei founder.
@@ -1403,3 +1479,13 @@ aperta in anticipo, va **portata in primo piano** prima di cominciare.
 - **A fine sessione**: riepilogo di cosa è stato fatto e screenshot delle schermate
   toccate, così i founder revisionano a colpo d'occhio. Le verifiche si fanno **a
   schermo con asserzioni concrete**, non solo con `tsc` e lint puliti.
+- **Prima di misurare: scheda in primo piano e viewport reale.** A scheda
+  nascosta il browser sospende `requestAnimationFrame` e `innerWidth` vale **0**,
+  quindi ogni catena `width: 100%` collassa: le misure non sono imprecise, sono
+  di un'altra pagina. Uno strumento che aspetta un fotogramma non riparte mai, e
+  uno che salta gli elementi invisibili li salta **tutti**, restituendo un
+  conteggio basso che sembra una buona notizia. Si controlla `innerWidth` prima
+  di fidarsi del primo numero, e **un censimento si rifà due volte**: se i due
+  giri non coincidono, a essere rotto è lo strumento. La conseguenza sta in
+  `docs/PITCH.md` per il giorno della presentazione; questa riga sta qui perché
+  è il punto in cui si sta per sbagliare (founder, 11.08.2026).

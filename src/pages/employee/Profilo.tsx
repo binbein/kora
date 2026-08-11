@@ -72,14 +72,14 @@ export default function Profilo() {
 
       <Card className="p-6">
         <div className="flex items-center gap-4 mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center text-xl font-bold text-secondary">
+          <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center text-xl font-bold text-secondary-strong">
             {profile.firstName[0]}
             {profile.lastName[0]}
           </div>
           <div>
             <h2 className="text-lg font-bold">{employeeDisplayName(profile)}</h2>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Mail className="w-3.5 h-3.5" />
+              <Mail className="w-3.5 h-3.5" aria-hidden="true" />
               {profile.email}
             </div>
           </div>
@@ -90,7 +90,7 @@ export default function Profilo() {
               {t.employee.profile.company}
             </p>
             <p className="text-sm font-medium flex items-center gap-1">
-              <Building2 className="w-3.5 h-3.5" />
+              <Building2 className="w-3.5 h-3.5" aria-hidden="true" />
               {company.name}
             </p>
           </div>
@@ -113,7 +113,7 @@ export default function Profilo() {
 
       <Card className="p-6">
         <h2 className="font-semibold mb-4 flex items-center gap-2">
-          <Heart className="w-4 h-4 text-secondary" />
+          <Heart className="w-4 h-4 text-secondary" aria-hidden="true" />
           {t.employee.profile.healthTitle}
         </h2>
         {/*
@@ -148,7 +148,7 @@ export default function Profilo() {
 
       <Card className="p-6">
         <h2 className="font-semibold mb-4 flex items-center gap-2">
-          <Brain className="w-4 h-4 text-secondary" />
+          <Brain className="w-4 h-4 text-secondary" aria-hidden="true" />
           {t.employee.profile.usageTitle}
         </h2>
         <div className="space-y-1">
@@ -180,7 +180,7 @@ export default function Profilo() {
       </Card>
 
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
-        <Shield className="w-3.5 h-3.5 text-secondary flex-shrink-0" />
+        <Shield className="w-3.5 h-3.5 text-secondary flex-shrink-0" aria-hidden="true" />
         <span>{t.employee.profile.dataNote}</span>
       </div>
     </div>
