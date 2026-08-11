@@ -882,6 +882,23 @@ chiederebbe la propria sintesi.
 stessa** — è quello che ha fatto #26 — così il conto d'apertura è già giusto
 al merge e non c'è una PR in più da contare.
 
+**La seconda esclusione: le PR che toccano solo `docs/PITCH.md`.** Non sono
+passate di refinement, e non è una deroga a "le docs-only si contano": lo
+script del pitch **cambierà a ogni prova generale**, perché è il verbale di
+come si presenta e non di com'è fatto il prodotto. Contarlo qui riempirebbe di
+righe una sezione che ha un altro mestiere — raccontare cosa è cambiato nel
+codice e nel layer dati fra due milestone — e il conto smetterebbe di dire
+qualcosa.
+
+**Il caso che l'ha resa necessaria è #27**, le quattro note operative allo
+script: tocca solo `docs/PITCH.md`, e letta col criterio di allora sarebbe
+stata l'undicesima passata. È stata mergiata senza commit di chiusura proprio
+perché questa riga arriva qui, nella prima passata che conta davvero — se
+fosse arrivata in una PR sua, quella PR sarebbe stata docs-only con un oggetto
+proprio, quindi avrebbe contato, quindi avrebbe chiesto la propria sintesi.
+**È l'unico posto in cui aggiungerla senza che la contabilità conti sé
+stessa.**
+
 > *La frase diceva **cinque**, e si fermava a #20. Le due passate del
 > 10.08.2026 — la pre-pitch e quella di palette — erano documentate qui sotto
 > con una sottosezione ciascuna ma non entravano nel conto d'apertura, e la
