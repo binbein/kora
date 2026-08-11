@@ -848,13 +848,14 @@ variabile non verificherebbe niente.
 
 ### Refinement fra le milestone
 
-**Otto passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
-M3 → M4 (PR #15–#18) e quattro dopo M4 (PR #20–#23). Non aggiungono schermate e
+**Nove passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
+M3 → M4 (PR #15–#18) e cinque dopo M4 (PR #20–#24). Non aggiungono schermate e
 non spostano un numero a schermo — sono igiene del layer dati, del seam e del
-dizionario, più le due che **eseguono** una decisione della riunione del
-10.08.2026 e hanno una sottosezione loro qui sotto. La sintesi sta qui perché
-**il dettaglio è in git e il quadro no**: chi riprende deve sapere che queste
-cose esistono prima di riscoprirle.
+dizionario, più le tre che hanno una sottosezione loro qui sotto: le due che
+**eseguono** una decisione della riunione del 10.08.2026, e l'allineamento
+documentale pre-M5. La sintesi sta qui perché **il dettaglio è in git e il
+quadro no**: chi riprende deve sapere che queste cose esistono prima di
+riscoprirle.
 
 **Il criterio, perché il conto sia rifacibile.** Si contano le PR mergiate dopo
 quella che chiude M3 (#14), **esclusa la milestone**: M4 è #19 e ha la sua
@@ -863,11 +864,21 @@ docs-only ed era già dentro i "quattro" della frase originale. Oggi è l'unica:
 #21 sembra docs-only dal nome del branch ma tocca
 `src/lib/data/mock/people.ts`.
 
+**L'unica eccezione, e chiude una ricorsione.** Una PR il cui **solo contenuto
+è la sintesi retrospettiva di una passata già mergiata** appartiene a quella
+passata e **non si conta a sé**. Non contraddice la riga qui sopra: a
+distinguere non è il tipo di file toccato ma se la PR ha un oggetto suo — #15
+è docs-only e ne ha uno, mentre una sintesi è il verbale di un'altra passata,
+non una passata. Senza questa riga il conto si insegue da solo: ogni sintesi
+scritta dopo il merge diventerebbe la passata successiva, che a sua volta
+chiederebbe la propria sintesi.
+
 > *La frase diceva **cinque**, e si fermava a #20. Le due passate del
 > 10.08.2026 — la pre-pitch e quella di palette — erano documentate qui sotto
 > con una sottosezione ciascuna ma non entravano nel conto d'apertura, e la
 > #21 non era contata affatto: chi riprendeva ne contava cinque e ne trovava
-> otto. Corretto l'11.08.2026.*
+> otto. Corretto l'11.08.2026 dalla passata di allineamento, che con il merge
+> è poi diventata lei stessa la nona.*
 
 **Il seam era dichiarato e non tutto acceso.** I due preset di ESLint —
 `eslint:recommended` e `react/recommended` — stavano nello stesso oggetto di
@@ -1081,6 +1092,84 @@ informazione.
 
 **Il confine fra le prime due righe è approssimativo**: `iconClass:
 "text-secondary"` passa da una variabile e va letto a schermo, non da un grep.
+
+#### La passata di allineamento pre-M5 (11.08.2026)
+
+L'ultima prima di M5, e la sola che non esegue una decisione né migra un'area:
+una revisione incrociata docs ↔ codice. Sette commit, sei `docs:` e uno solo
+che tocca comportamento.
+
+**La lezione che le tiene insieme, in una riga: un numero dichiarato senza il
+criterio scritto accanto produce sempre un secondo numero.** Era già la storia
+del 19/11 contro il 13/9 delle CTA; questa passata l'ha trovata ripetuta in
+altri due punti e ha attaccato il criterio a ognuno dei tre.
+
+**I 114 call site dei guardrail erano 96.** Il numero non era invecchiato: era
+`grep -c "assertInDev"` grezzo — 90 chiamate + 6 chiamate lunghe + **16 righe
+di `import` + 2 di prosa nei commenti** — e il nome lungo contiene quello
+corto, quindi le sei si contavano due volte. Stava sbagliato in otto occorrenze
+su tre file, corrette in un commit solo: è un fatto scritto in tre punti, e
+spezzarlo avrebbe lasciato due posti a dire 114 e uno 96. Il criterio ora vive
+in `CLAUDE.md` §5.6 e nomina anche l'esclusione che sorprende — `prefetch.ts`
+chiama `raiseOutsideCurrentStack` ma legge `GUARDRAIL_MODE` da sé, quindi non è
+un call site che ignora il modo: **un 97 futuro è un errore di criterio, non
+una correzione.**
+
+**Il conto delle passate diceva cinque e se ne trovavano otto**, e il 9/7 delle
+CTA era rimasto nella voce del 10.08.2026 accanto all'inventario autoritativo
+13/9 che lo aveva superato. Barrato, non cancellato: è il terzo dei tre numeri
+che hanno reso necessario un criterio.
+
+**Due semplificazioni che il codice non dichiarava.** `computeEarlyAlert` esce
+al **primo** reparto con una risalita in corso e `EarlyAlert` è un valore
+singolo: con due reparti in allerta simultanea il secondo sparirebbe in
+silenzio, e nessun guardrail se ne accorgerebbe — il dato non è
+contraddittorio, è incompleto. Nel dataset demo l'alert è uno per costruzione;
+in produzione il contratto dovrà restituire una lista, ed è in
+`CONTRATTO-DATI.md` §7. L'altra è in `hr.ts`: tutte le fatture sono `paid`,
+**compreso il mese in corso**, mentre `payoutHistory` mette il mese in corso a
+`pending`. Sono i due versi del flusso di cassa — l'azienda paga in anticipo,
+il professionista a consuntivo entro il 5 del mese dopo — ma il lato
+professionista lo dichiarava e quello HR taceva, quindi i due file letti di
+seguito si leggevano come una contraddizione.
+
+**Il guardrail sulla cache fredda aveva un varco.** react-query 5 ammette
+`enabled: (query) => boolean`, che il confronto `=== false` non vede: una query
+disabilitata così si sarebbe presa l'accusa di cache fredda, cioè **proprio ciò
+che il commento sopra quel controllo esiste per impedire**. Non lo risolve
+chiamando la funzione — il valore dipende dallo stato della query quando
+react-query la valuta, e replicarlo qui sarebbe una seconda copia che può
+divergere dalla libreria — ma si dichiara incompetente e chiede di aggiornare
+sé stesso. È costruito su `raiseOutsideCurrentStack` e non sulle due primitive
+contate, così i 96 restano esatti.
+
+**La residenza dei dati è entrata fra le decisioni in sospeso.** Cinque
+stringhe di `i18n` promettono "Hosting in Svizzera" mentre il §2.1 di *"Dubbi
+Business per CEO"* dà la promessa commerciale come domanda ancora aperta, da
+chiudere prima del primo pilot. Per la demo non cambia niente; la voce esiste
+perché il primo contratto non si firmi su una promessa non ratificata.
+
+**Verificato**, con il riconteggio fatto sull'albero finale e non durante:
+96 = 90 + 6; il conto delle passate — **otto** allora, nove da quando il merge
+ha aggiunto questa; **5 stringhe di residenza più 6 adiacenti** che promettono
+conformità LPD/GDPR senza dire dove stanno i dati, cioè 5 + 6, non 11 e nemmeno
+6. `lint` e `typecheck` a zero, `build:demo` che passa, console pulita su
+scheda nuova con i soli due avvisi `react-router` noti da M1, e nessun numero
+della dashboard HR mosso di una cifra.
+
+**Il varco di `enabled` è stato provato a due vie**, come ogni guardrail qui:
+con la forma funzione su una chiave fredda esce il messaggio nuovo, con un
+booleano sulla stessa chiave esce quello di cache fredda. Sono due rami
+distinti, non uno che copre l'altro.
+
+**Il `114` compare ancora nell'albero, ed è voluto**: `CLAUDE.md` §5.6, il
+commento di `guardrails.ts`, la passata pre-pitch che lo aveva dichiarato e
+questa sintesi ne trascrivono la scomposizione, perché spiega da dove veniva il
+numero sbagliato meglio di qualunque nota. **Nessuna occorrenza lo dichiara più
+come conteggio**, ed è quello l'invariante da verificare: un `grep 114` le
+trova tutte, e non è una verifica fallita. *Il numero delle occorrenze non si
+scrive qui apposta — sarebbe la prima cifra a invecchiare, visto che è questo
+stesso testo ad aggiungerne.*
 
 ### Punto di partenza — cosa c'è e cosa manca
 
