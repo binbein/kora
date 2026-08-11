@@ -680,12 +680,19 @@ Regole:
   (founder, 11.08.2026). Il colore che porta significato non può essere
   illeggibile, e i due token base non passano l'AA come testo:
 
-  | token | HSL | su bianco | testo (4.5) |
-  |---|---|---|---|
-  | `secondary` | `172 73% 39%` | 2.83:1 | ✗ |
-  | **`secondary-strong`** | `172 73% 30%` | **4.56:1** | ✓ |
-  | `destructive` | `0 84% 60%` | 3.78:1 | ✗ |
-  | **`destructive-strong`** | `0 84% 50%` | **4.53:1** | ✓ |
+  | token | HSL | bianco | tinta `/10` | `accent` |
+  |---|---|---|---|---|
+  | `secondary` | `172 73% 39%` | 2.83 ✗ | 2.57 ✗ | 2.53 ✗ |
+  | **`secondary-strong`** | `172 73% 26%` | **5.75** ✓ | **5.20** ✓ | **5.14** ✓ |
+  | `destructive` | `0 84.2% 60.2%` | 3.76 ✗ | 3.30 ✗ | 3.36 ✗ |
+  | **`destructive-strong`** | `0 84.2% 44%` | **5.62** ✓ | **4.93** ✓ | **5.02** ✓ |
+
+  **Si tarano sul fondo peggiore, non sul bianco.** Il testo colorato di questa
+  demo vive quasi sempre dentro un badge o una card tinta — `bg-secondary/10`,
+  `bg-accent` — e lì la soglia morde prima: a `30%` di luminosità il teal dava
+  4.56 su bianco ma **4.13 sulla tinta**, cioè passava la misura che nessuno
+  guarda e falliva quella che si vede. Una variante di testo va verificata su
+  ogni fondo su cui compare, e il censimento a schermo è ciò che li elenca.
 
   **Si usano solo dove il colore è testo e vuol dire qualcosa.** Chip, barre,
   riempimenti, bordi e sfondi **restano sui token base**: lì il colore non deve

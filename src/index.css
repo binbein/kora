@@ -27,8 +27,8 @@
     /* Varianti di SOLO testo (§6.1). Il token base non passa l'AA come parola —
        2.83:1 il teal, 3.78:1 il rosso — e il colore che porta significato non
        può essere illeggibile. Riempimenti, chip e barre restano sui base. */
-    --secondary-strong: 172 73% 30%; /* 4.56:1 su bianco */
-    --destructive-strong: 0 84.2% 50%; /* 4.53:1 su bianco */
+    --secondary-strong: 172 73% 26%; /* 5.75:1 su bianco, 5.20:1 su bg-secondary/10, 5.14:1 su accent */
+    --destructive-strong: 0 84.2% 44%; /* 5.62:1 su bianco, 4.93:1 su destructive/10, 5.02:1 su accent */
     --muted: 150 20% 95%;
     --muted-foreground: 210 15% 44%;
     --accent: 155 68% 92%;
