@@ -65,7 +65,7 @@ export default function AdminLayout() {
                 to={path}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   active
-                    ? "bg-destructive/10 text-destructive"
+                    ? "bg-primary/10 text-primary"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
@@ -100,7 +100,7 @@ export default function AdminLayout() {
                 onClick={() => setOpen(false)}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium ${
                   location.pathname === path
-                    ? "bg-destructive/10 text-destructive"
+                    ? "bg-primary/10 text-primary"
                     : "text-muted-foreground"
                 }`}
               >
