@@ -674,11 +674,35 @@ Regole:
   `text-primary-foreground`, che è 98%). Quest'ultima non è né l'uno né l'altro
   caso: è il verde pieno visto dal lato del non-testo, e va tenuta a vista
   perché due liste che parlano d'altro se la perderebbero in mezzo. Sono censiti
-  in `docs/PROGRESS.md` con destinazione **M5**,
-  che ha l'accessibilità completa in elenco: **il rimedio non è coperto dalla
-  decisione del 10.08.2026**, che ha scelto la strada per il riempimento pieno e
-  non per il testo colorato. Finché non è deciso, §6.1 dice "chiuso sul verde
-  pieno" e non "debito AA chiuso".
+  in `docs/PROGRESS.md`, e **il rimedio è la riga qui sotto**, decisa
+  l'11.08.2026 all'apertura del blocco a) di M5.
+- **Due varianti di solo testo: `secondary-strong` e `destructive-strong`**
+  (founder, 11.08.2026). Il colore che porta significato non può essere
+  illeggibile, e i due token base non passano l'AA come testo:
+
+  | token | HSL | su bianco | testo (4.5) |
+  |---|---|---|---|
+  | `secondary` | `172 73% 39%` | 2.83:1 | ✗ |
+  | **`secondary-strong`** | `172 73% 30%` | **4.56:1** | ✓ |
+  | `destructive` | `0 84% 60%` | 3.78:1 | ✗ |
+  | **`destructive-strong`** | `0 84% 50%` | **4.53:1** | ✓ |
+
+  **Si usano solo dove il colore è testo e vuol dire qualcosa.** Chip, barre,
+  riempimenti, bordi e sfondi **restano sui token base**: lì il colore non deve
+  essere letto, e cambiarlo sposterebbe la luminosità di ogni schermata già
+  approvata — che è precisamente l'opzione scartata il 10.08.2026. Un token in
+  più non è la stessa cosa di un token cambiato.
+
+  **La ragione della scelta è la polarità del 07.08.2026**, che resta intatta:
+  sulle KPI di trend il colore segue il beneficio, verde quando la metrica
+  migliora e `destructive` quando peggiora. Portare quel verde su `primary`
+  perché non passava il contrasto avrebbe chiuso il debito AA spegnendo la
+  regola — e sul rosso non esiste nemmeno un colore dove spostarlo. Le due
+  varianti tengono insieme le due cose invece di sceglierne una.
+
+  **Il rosso non era nel censimento**, che contò solo il teal: a 3.78:1 passa la
+  soglia del non-testo ma non quella del testo, quindi un inventario che lo
+  ignora dichiara "zero punti sotto soglia" senza esserlo.
 - **Solo light mode.** `index.css` definisce una palette `.dark` completa che nessun
   componente attiva: resta lì, inerte. Nessun toggle e nessun `next-themes` finché
   non è una decisione dei founder.
