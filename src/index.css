@@ -100,8 +100,16 @@
 }
 
 @layer base {
+  /*
+   * L'anello di focus a piena opacità, non al 50%.
+   *
+   * `--ring` in light mode è il blu di `primary`, che su bianco dà 11.93:1; il
+   * `/50` lo portava a 2.83:1, sotto la soglia 3.0 del non-testo. Cioè il
+   * colore di base del focus era esso stesso un difetto di accessibilità, e la
+   * demo si presenta anche da tastiera (§11).
+   */
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring;
   }
   body {
     @apply bg-background text-foreground font-inter;
