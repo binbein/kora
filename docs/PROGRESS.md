@@ -848,11 +848,26 @@ variabile non verificherebbe niente.
 
 ### Refinement fra le milestone
 
-Cinque passate mergiate fra la chiusura di M3 e oggi: quattro nell'intervallo
-M3 → M4 (PR #15–#18) e una dopo M4 (PR #20). Non aggiungono schermate e non
-spostano un numero a schermo — sono igiene del layer dati, del seam e del
-dizionario. La sintesi sta qui perché **il dettaglio è in git e il quadro no**:
-chi riprende deve sapere che queste cose esistono prima di riscoprirle.
+**Otto passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
+M3 → M4 (PR #15–#18) e quattro dopo M4 (PR #20–#23). Non aggiungono schermate e
+non spostano un numero a schermo — sono igiene del layer dati, del seam e del
+dizionario, più le due che **eseguono** una decisione della riunione del
+10.08.2026 e hanno una sottosezione loro qui sotto. La sintesi sta qui perché
+**il dettaglio è in git e il quadro no**: chi riprende deve sapere che queste
+cose esistono prima di riscoprirle.
+
+**Il criterio, perché il conto sia rifacibile.** Si contano le PR mergiate dopo
+quella che chiude M3 (#14), **esclusa la milestone**: M4 è #19 e ha la sua
+sezione. Le **docs-only si contano**, e non è una scelta nuova — #15 è
+docs-only ed era già dentro i "quattro" della frase originale. Oggi è l'unica:
+#21 sembra docs-only dal nome del branch ma tocca
+`src/lib/data/mock/people.ts`.
+
+> *La frase diceva **cinque**, e si fermava a #20. Le due passate del
+> 10.08.2026 — la pre-pitch e quella di palette — erano documentate qui sotto
+> con una sottosezione ciascuna ma non entravano nel conto d'apertura, e la
+> #21 non era contata affatto: chi riprendeva ne contava cinque e ne trovava
+> otto. Corretto l'11.08.2026.*
 
 **Il seam era dichiarato e non tutto acceso.** I due preset di ESLint —
 `eslint:recommended` e `react/recommended` — stavano nello stesso oggetto di
@@ -926,11 +941,21 @@ dal team vede**. Ora i modi sono tre: sviluppo lancia, `npm run build:demo` logg
 con `console.error`, `npm run build` tace.
 
 **La decisione sta in `guardrails.ts` e in nessun altro punto.** Dopo questa
-passata **nessun file fuori da lì legge `import.meta.env`**: i 114 call site
+passata **nessun file fuori da lì legge `import.meta.env`**: i 96 call site
 chiamano `assertInDev` senza sapere in che modo girano, ed è la proprietà che
-rende la modalità una cosa sola da sbagliare invece di 114. I nomi restano —
-rinominarli sarebbe un commit meccanico su 114 chiamate, che sommergerebbe il
+rende la modalità una cosa sola da sbagliare invece di 96. I nomi restano —
+rinominarli sarebbe un commit meccanico su 96 chiamate, che sommergerebbe il
 diff di questa (`CLAUDE.md` §5.6).
+
+> *La passata dichiarò **114**, ed era il numero sbagliato in tutti e tre i
+> posti che lo scrivevano — qui, in `CLAUDE.md` §5.6 e nel commento di
+> `guardrails.ts`. Corretto a **96** l'11.08.2026. Non era invecchiato: era
+> `grep -c "assertInDev"` grezzo, cioè 90 chiamate + 6 chiamate lunghe + 16
+> righe di `import` + 2 righe di prosa nei commenti. **È il difetto del 19/11
+> contro il 13/9 delle CTA, ripetuto altrove**: un conteggio senza criterio
+> scritto accanto. Il criterio ora sta in `CLAUDE.md` §5.6, e dice anche
+> perché `prefetch.ts` non entra nei 96 — un 97 futuro è un errore di
+> criterio, non una correzione.*
 
 **`--mode demo` non ha bisogno di nessun file `.env.demo`**, ed è l'unica strada
 percorribile: `.gitignore` esclude `.env*` (§2.5), quindi una build che ne
@@ -1137,9 +1162,16 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   cambiato di luminosità ogni schermata già approvata, mentre spostare le CTA
   lascia al teal il suo mestiere — dati positivi e accenti. **Si esegue in una
   passata dedicata**, e l'inventario autoritativo dei punti lo produce lei: il
-  conteggio di oggi è **dell'ordine di 9 punti su 7 file**, contro i 19 su 11
-  della prima rilevazione, ma **dipende dal criterio** e va riletto con il
+  conteggio di oggi è ~~dell'ordine di **9 punti su 7 file**~~, contro i 19 su
+  11 della prima rilevazione, ma **dipende dal criterio** e va riletto con il
   criterio in mano — sotto.
+
+  → **L'inventario autoritativo è 13 punti su 9 file**, prodotto dalla passata
+  di palette come questa voce prevedeva: sta in "La passata di palette
+  (10.08.2026)". Il 9/7 resta barrato e non cancellato perché è la stima del
+  giorno della riunione, ed è il terzo dei tre numeri — 19/11, 9/7, 13/9 — che
+  hanno reso necessario scrivere un criterio. Una lettura veloce lo prendeva
+  per il conteggio buono.
 
   **In una build "demo" i guardrail loggano invece di tacere** (`CLAUDE.md`
   §5.6). Il build che si porta al pitch è di produzione, quindi oggi tacciono
@@ -1397,6 +1429,38 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   92%. Le tre ragioni per esteso stanno in §5.4.
 
 ## Decisioni in sospeso
+
+- **Residenza dei dati: la UI la promette, la decisione commerciale non è
+  presa** (founder, 11.08.2026). Il §2.1 di *"Dubbi Business per CEO"* dà la
+  promessa come **domanda ancora aperta**: verificato aprendo il documento
+  prima di scrivere questa voce, dice che i dati si possono tenere legalmente
+  in UE, che serve l'avvocato per il minimo legale e il CEO per il minimo
+  commerciale, e che va chiarito **prima del primo pilot** — *"rinegoziare un
+  contratto firmato è molto peggio che spostare dati"*. Compare anche fra le
+  domande da chiudere in fondo al documento.
+
+  **Quante stringhe la promettono, con il criterio**, perché è la cifra che
+  servirà il giorno in cui vanno cambiate e non deve produrne una seconda:
+  in `src/lib/i18n/it.ts` sono **5** le stringhe che nominano la **residenza**
+  — "Hosting in Svizzera" o "server in Svizzera" — cioè il titolo e il corpo
+  del riquadro privacy della landing, il footer, la riga di conformità
+  dell'hero e il badge. **Altre 6 promettono conformità LPD/GDPR o
+  "piattaforma svizzera" senza dire dove stanno i dati**, fra cui
+  l'informativa in fondo alla richiesta demo: sono adiacenti e vanno rilette
+  quel giorno, ma non sono la stessa promessa e **non si sommano alle prime
+  cinque**. Sono 5 + 6, non 11, e nemmeno 6.
+
+  **Per la demo va bene così e non si tocca niente.** La promessa è coerente
+  con il prodotto che il pitch racconta, ed è la stessa coerenza per cui il §3
+  self-hosta i font invece di chiamare i server di Google: una richiesta a
+  runtime verso l'estero contraddirebbe la frase mentre la si mostra.
+
+  **La voce esiste per il momento dopo**: il primo contratto non si firma con
+  una promessa non ratificata, e chi lo scriverà deve sapere che quelle cinque
+  stringhe non sono una decisione presa. Il giorno in cui il minimo
+  commerciale è deciso, o si conferma la Svizzera o **le cinque stringhe
+  cambiano** — sono in `i18n`, quindi è un file solo, che è esattamente il
+  motivo per cui il §2.7 non le vuole cablate nei componenti.
 
 - **Piano "Personalizzato" della pagina prezzi.** Nascosto in M0 in attesa della
   decisione del CEO: gli undici prezzi dei moduli non sono nel Business Plan, gli

@@ -105,6 +105,18 @@ export const EMPLOYEE_DIRECTORY: EmployeeDirectoryEntry[] = [
  * I mesi si contano da `DEMO_TODAY` e non si scrivono: il codice ereditato
  * fatturava "Aprile 2026" a una demo ambientata in settembre, che è lo stesso
  * difetto delle date scritte a mano del portale professionista (§11).
+ *
+ * TUTTE E QUATTRO SONO `paid`, COMPRESO IL MESE IN CORSO, e va detto perché il
+ * lato professionista fa l'opposto: `payoutHistory` mette il mese in corso a
+ * `pending`, e chi legge i due file di seguito trova la stessa demo che dà lo
+ * stesso mese per pagato di qua e in attesa di là.
+ *
+ * Non è una contraddizione, sono i due versi del flusso di cassa: l'azienda
+ * paga l'abbonamento **in anticipo** — settembre è già fatturato e incassato al
+ * 23 del mese — mentre il professionista è pagato **a consuntivo**, entro il 5
+ * del mese successivo, perché il compenso dipende dalle sedute erogate, che a
+ * mese aperto non sono ancora tutte. È anche il margine raccontato dal lato
+ * della tesoreria: incassiamo prima di pagare.
  */
 const INVOICE_COUNT = 4;
 

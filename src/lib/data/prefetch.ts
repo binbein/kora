@@ -258,9 +258,36 @@ export function assertQueriesArePrewarmed(queryClient: QueryClient): void {
      * la prima `enabled` che qualcuno scriverà a incontrare questo controllo,
      * e la troverebbe che accusa lei invece del prefetch.
      */
-    if (event.observer.options.enabled === false) return;
+    const { enabled } = event.observer.options;
+    if (enabled === false) return;
 
     const key = JSON.stringify(event.query.queryKey);
+
+    /*
+     * react-query 5 ammette anche `enabled: (query) => boolean`, e il
+     * confronto qui sopra non la vede: una query disabilitata dalla forma
+     * funzione arriverebbe in fondo e si prenderebbe l'accusa di cache
+     * fredda, che è **esattamente** ciò che il commento qui sopra esiste per
+     * impedire — un guardrail che indica la cosa sbagliata da riparare.
+     *
+     * Non la si risolve chiamandola. Il valore dipende dallo stato della
+     * query nel momento in cui react-query la valuta, e replicare qui quella
+     * decisione vorrebbe dire tenerne una seconda copia che può divergere
+     * dalla libreria. Meglio dichiararsi incompetenti: il guardrail dice che
+     * **va aggiornato lui**, e lo dice addosso a chi ha appena introdotto la
+     * forma funzione invece che a chi la incontrerà per caso mesi dopo.
+     *
+     * Oggi non ha chiamanti: le nove `enabled` di `queries.ts` sono tutte
+     * booleane. Questo ramo è la prima cosa che si accende il giorno in cui
+     * smettono di esserlo.
+     */
+    if (typeof enabled === "function") {
+      raiseOutsideCurrentStack(
+        `[query] ${key} decide \`enabled\` con una funzione, e il controllo sulla cache fredda non sa risolverla: aggiorna assertQueriesArePrewarmed in prefetch.ts prima di fidarti di questo avviso.`,
+      );
+      return;
+    }
+
     raiseOutsideCurrentStack(
       `[query] ${key} si monta a cache fredda: aggiungila a prefetchDemo, altrimenti la schermata parte con uno scheletro.`,
     );
