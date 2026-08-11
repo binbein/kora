@@ -64,20 +64,29 @@ che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
   **non nella griglia**, e a metà pitch si legge come un difetto invece che come
   il limite dichiarato che è (`docs/PROGRESS.md`, area dipendente).
 
-- **La richiesta demo che compare in `/admin` non si esegue con i soli clic**, e
-  va saputo prima di prometterla a voce. `/admin` **non è linkata da nessuna
-  schermata** — zero ancore verso di lei in tutte e sei le rotte pubbliche e di
-  area — e dal suo layout **non si esce**: le sue sei ancore puntano tutte
-  dentro `/admin`, e il logo non è un link. L'unico modo di entrarci è digitare
-  l'indirizzo, cioè ricaricare, cioè azzerare il provider: la richiesta appena
-  inviata sparisce con lui, e la tabella dice "nessuna richiesta".
+- **La richiesta demo che compare in `/admin` ha una coreografia sola**, e va
+  fatta in quest'ordine perché `/admin` non è linkata da nessuna schermata:
+  l'unico modo di entrarci è l'indirizzo digitato, che ricarica, che azzera il
+  provider. Quindi **è la prima cosa che si apre, non l'ultima.**
 
-  **Finché la via d'uscita non c'è, il momento non si mostra dal vivo.** Le
-  richieste demo restano una schermata da raccontare, non da eseguire davanti a
-  qualcuno; il giro che *si* esegue è quello del marketplace qui sopra, che è
-  anche il più forte. **Che si aggiunga o no un'uscita da `/admin` è scope, e
-  quindi una decisione dei founder** (`CLAUDE.md` §2.6): questa riga descrive il
-  vincolo di oggi, non la soluzione.
+  1. **Apri `/admin` per prima**, come schermata iniziale della sessione. La
+     tabella richieste è vuota, ed è giusto così: è il "prima".
+  2. **Esci col logo**, in alto a sinistra, che porta alla landing. Da qui in
+     poi **non si tocca più la barra degli indirizzi**.
+  3. **Fai il giro con i link interni**, e compila la richiesta demo da
+     `/demo`.
+  4. **Torna con Indietro**, e la richiesta è in tabella.
+
+  **Indietro va premuto una volta per ogni passo fatto**, non una sola: la
+  cronologia ha un'entrata per clic. Dal logo diretto a `/demo` sono **due
+  passi, quindi due Indietro** — ed è la ragione per tenere corto il tratto fra
+  il logo e il form. In alternativa si tiene premuto Indietro e si sceglie
+  `/admin` dall'elenco.
+
+  **Non ricaricare in nessuno dei quattro passi.** Se digiti `/admin` alla fine
+  invece di tornarci con Indietro, il provider riparte e la tabella dice
+  "nessuna richiesta": è lo stesso stato del punto 1, e da fuori sembra che la
+  scrittura non abbia funzionato.
 
 - **Dopo l'invio, il form demo non si ripropone.** Resta la conferma, e cliccare
   "Demo" nella barra **non** la sostituisce con un form vuoto: la rotta è la
