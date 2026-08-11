@@ -30,7 +30,8 @@ module.exports = {
   			},
   			secondary: {
   				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
+  				foreground: 'hsl(var(--secondary-foreground))',
+  				strong: 'hsl(var(--secondary-strong))'
   			},
   			muted: {
   				DEFAULT: 'hsl(var(--muted))',
@@ -42,7 +43,8 @@ module.exports = {
   			},
   			destructive: {
   				DEFAULT: 'hsl(var(--destructive))',
-  				foreground: 'hsl(var(--destructive-foreground))'
+  				foreground: 'hsl(var(--destructive-foreground))',
+  				strong: 'hsl(var(--destructive-strong))'
   			},
         warning: {
           DEFAULT: 'hsl(var(--warning))',

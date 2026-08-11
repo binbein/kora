@@ -24,6 +24,11 @@
     --primary-foreground: 0 0% 98%;
     --secondary: 172 73% 39%;
     --secondary-foreground: 0 0% 100%;
+    /* Varianti di SOLO testo (§6.1). Il token base non passa l'AA come parola —
+       2.83:1 il teal, 3.78:1 il rosso — e il colore che porta significato non
+       può essere illeggibile. Riempimenti, chip e barre restano sui base. */
+    --secondary-strong: 172 73% 30%; /* 4.56:1 su bianco */
+    --destructive-strong: 0 84.2% 50%; /* 4.53:1 su bianco */
     --muted: 150 20% 95%;
     --muted-foreground: 210 15% 44%;
     --accent: 155 68% 92%;
