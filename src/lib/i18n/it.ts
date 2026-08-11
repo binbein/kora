@@ -357,6 +357,10 @@ export const it = {
       networkTitle: "I centri convenzionati",
       networkHint:
         "Sono le strutture in cui Kora prenota il tuo check-up, con i costi già coperti dal piano.",
+      /* Nessuna struttura prenotabile. La rete esiste ma può essere tutta in
+         convenzionamento, come il Centro Diagnostico Basalto (§8): chi prenota
+         vede le sole attive, quindi l'elenco può restare vuoto. */
+      networkEmpty: "Nessuna struttura disponibile al momento.",
       /** "2.1 km" */
       distance: "{km} km",
       /* La virgola fra via e città è una convenzione postale, non un dettaglio
