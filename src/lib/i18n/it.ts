@@ -986,6 +986,9 @@ export const it = {
      */
     roi: {
       title: "Quanto costa oggi la salute dei dipendenti",
+      /* Il listino è arrivato senza il piano su cui il calcolatore è tarato:
+         senza prezzo non c'è niente da calcolare (§9). */
+      empty: "Il calcolatore non è disponibile al momento.",
       subtitle:
         "Le perdite che un'azienda svizzera sostiene ogni anno, e quanto ne recupera con Kora. Scenario conservativo.",
 
@@ -1076,6 +1079,8 @@ export const it = {
      */
     plans: {
       title: "Piani trasparenti, valore concreto",
+      /* Listino vuoto: la pagina prezzi non ha niente da mostrare. */
+      empty: "Nessun piano da mostrare al momento.",
       subtitle:
         "Un abbonamento per dipendente. Nessun costo nascosto. ROI misurabile dal primo trimestre.",
 

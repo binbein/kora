@@ -29,6 +29,7 @@ import {
   usePlans,
   useProfessionals,
 } from "@/lib/data/queries";
+import { ErrorNotice } from "@/components/kora/StateNotice";
 import type { Plan } from "@/lib/data/types";
 import { professionalDisplayName } from "@/lib/data/types";
 import { planFeatures, type PlanFeatureKey } from "@/lib/plan-features";
@@ -106,6 +107,14 @@ function HeroProductPreview() {
   const { data: appointments } = useAppointments();
   const { data: professionals } = useProfessionals();
 
+  /*
+   * Qui i tre casi collassano di proposito (M5.b), come il riquadro della nav
+   * professionista: questo è il mockup di prodotto dentro l'hero, e in tutti e
+   * tre — in attesa, dato assente, lettura fallita — la cosa giusta è non
+   * disegnarlo. Un riquadro d'errore sulla **prima schermata che un
+   * investitore vede** direbbe che il prodotto è rotto, mentre il testo
+   * dell'hero accanto sta in piedi da solo.
+   */
   if (!profile || !company || !report || !appointments || !professionals) {
     return null;
   }
@@ -346,11 +355,17 @@ function PlanPreviewCard({ plan }: { plan: Plan }) {
 }
 
 export default function Landing() {
-  const { data: plans } = usePlans();
+  const plansQuery = usePlans();
+  const plans = plansQuery.data;
 
-  if (!plans) return null;
-
-  const plusPlan = plans.find((plan) => plan.id === "plus");
+  /*
+   * I tre casi (M5.b) **non sono di pagina**: il listino alimenta due sezioni
+   * su otto, e le altre sei — hero, problema, tre livelli di valore, privacy,
+   * CTA — non hanno bisogno di lui. Bloccare tutta la landing per una lettura
+   * che riguarda un quinto della pagina toglierebbe più di quanto il guasto
+   * abbia rotto.
+   */
+  const plusPlan = plans?.find((plan) => plan.id === "plus");
 
   return (
     <div className="min-h-screen bg-background">
@@ -526,11 +541,20 @@ export default function Landing() {
               {t.public.landing.plansSubtitle}
             </p>
           </motion.div>
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch">
-            {plans.map((plan) => (
-              <PlanPreviewCard key={plan.id} plan={plan} />
-            ))}
-          </div>
+          {plansQuery.isError ? (
+            <Card className="max-w-5xl mx-auto">
+              <ErrorNotice
+                copy={t.common.state.error}
+                onRetry={() => plansQuery.refetch()}
+              />
+            </Card>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch">
+              {(plans ?? []).map((plan) => (
+                <PlanPreviewCard key={plan.id} plan={plan} />
+              ))}
+            </div>
+          )}
           <p className="text-center mt-8">
             <Link
               to="/pricing"

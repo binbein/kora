@@ -8,7 +8,8 @@ import { Slider } from "@/components/ui/slider";
 import { ArrowRight, Calculator, Info } from "lucide-react";
 import PublicNav from "@/components/public/PublicNav";
 import Footer from "@/components/public/Footer";
-import { usePlans } from "@/lib/data/queries";
+import { loadState, usePlans } from "@/lib/data/queries";
+import { EmptyNotice, ErrorNotice } from "@/components/kora/StateNotice";
 import type { PlanId } from "@/lib/data/types";
 import {
   clampEmployees,
@@ -132,10 +133,36 @@ export default function Roi() {
    * all'uscita dal campo.
    */
   const [rawEmployees, setRawEmployees] = useState(String(DEFAULT_EMPLOYEES));
-  const { data: plans } = usePlans();
+  const plansQuery = usePlans();
 
-  const plan = plans?.find((candidate) => candidate.id === CALCULATOR_PLAN_ID);
-  if (!plan) return null;
+  /* I tre casi (M5.b), registro strumento. */
+  const page = loadState([plansQuery]);
+  if (page.state === 'error') {
+    return (
+      <div className="min-h-screen bg-background">
+        <PublicNav />
+        <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />
+      </div>
+    );
+  }
+
+  const plans = plansQuery.data;
+  if (plans === undefined) return null;
+
+  /*
+   * Il listino è arrivato e non contiene il piano su cui il calcolatore è
+   * tarato: senza prezzo non c'è niente da calcolare, e mostrare zeri sarebbe
+   * peggio di dirlo. Non è un guasto — è il §9 che non trova la sua riga.
+   */
+  const plan = plans.find((candidate) => candidate.id === CALCULATOR_PLAN_ID);
+  if (plan === undefined) {
+    return (
+      <div className="min-h-screen bg-background">
+        <PublicNav />
+        <EmptyNotice text={t.public.roi.empty} />
+      </div>
+    );
+  }
 
   const employees = clampEmployees(Number(rawEmployees));
   const estimate = computeRoi(employees, plan.monthlyPricePerEmployee);
