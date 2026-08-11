@@ -1472,7 +1472,6 @@ export const it = {
       colPhone: "Telefono",
       colEmployees: "Dipendenti",
       colReceived: "Ricevuta",
-      /** Quando il form non dichiara l'organico. */
     },
   },
 } as const;
