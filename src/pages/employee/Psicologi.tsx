@@ -160,7 +160,7 @@ function BookingDialog({
         <p className="text-xs text-muted-foreground">
           {t.employee.psychologists.dialog.confirmedNote}
         </p>
-        <Button onClick={onClose} className="bg-secondary hover:bg-secondary/90">
+        <Button onClick={onClose} className="bg-primary hover:bg-primary/90 text-primary-foreground">
           {t.employee.psychologists.dialog.close}
         </Button>
       </div>
@@ -264,7 +264,7 @@ function BookingDialog({
       )}
 
       <Button
-        className="w-full bg-secondary hover:bg-secondary/90"
+        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
         disabled={!canConfirm}
         onClick={() => selected && book.mutate(selected)}
       >
@@ -332,7 +332,7 @@ function ProfessionalCard({
         </div>
         <div className="flex-shrink-0 self-center">
           <Button
-            className="bg-secondary hover:bg-secondary/90"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground"
             onClick={onBook}
           >
             {t.employee.psychologists.book}

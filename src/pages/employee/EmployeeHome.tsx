@@ -255,7 +255,7 @@ export default function EmployeeHome() {
           scheduled={scheduledFor("psychologist")}
           iconWrapClass="bg-secondary/10"
           iconClass="text-secondary"
-          buttonClass="bg-secondary hover:bg-secondary/90"
+          buttonClass="bg-primary hover:bg-primary/90 text-primary-foreground"
           to="/employee/psicologi"
         />
         <ServiceCounter
