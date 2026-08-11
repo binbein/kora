@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/table";
 import { Building2, Users, TrendingUp, UserCheck } from "lucide-react";
 import KPICard from "@/components/shared/KPICard";
-import { useClientCompanies, useDemoRequests, usePlans } from "@/lib/data/queries";
+import { loadState, useClientCompanies, useDemoRequests, usePlans } from "@/lib/data/queries";
+import { EmptyNotice, ErrorNotice } from "@/components/kora/StateNotice";
 import { annualRevenueOf } from "@/lib/platform-metrics";
 import type { PlanId } from "@/lib/data/types";
 import {
@@ -32,9 +33,16 @@ import { interpolate, t } from "@/lib/i18n";
  * (`docs/CONTRATTO-DATI.md` §4).
  */
 function DemoRequests() {
-  const { data: requests } = useDemoRequests();
+  const requestsQuery = useDemoRequests();
 
-  if (!requests) return null;
+  /* I tre casi (M5.b): la tabella richieste ha una lettura sua, e il vuoto —
+     nessuna richiesta ancora arrivata — è lo stato in cui il pitch la apre. */
+  const block = loadState([requestsQuery]);
+  if (block.state === "error") {
+    return <ErrorNotice copy={t.common.state.error} onRetry={block.retry} />;
+  }
+  const requests = requestsQuery.data;
+  if (requests === undefined) return null;
 
   return (
     <Card className="overflow-x-auto">
@@ -42,9 +50,7 @@ function DemoRequests() {
         <h2 className="font-semibold">{t.admin.demoRequests.title}</h2>
       </div>
       {requests.length === 0 ? (
-        <p className="p-6 text-sm text-muted-foreground text-center">
-          {t.admin.demoRequests.empty}
-        </p>
+        <EmptyNotice text={t.admin.demoRequests.empty} />
       ) : (
         <Table>
           <TableHeader>
@@ -116,10 +122,17 @@ const PLAN_BADGE: Record<PlanId, string> = {
 };
 
 export default function AdminAziende() {
-  const { data: companies } = useClientCompanies();
-  const { data: plans } = usePlans();
+  const companiesQuery = useClientCompanies();
+  const plansQuery = usePlans();
 
-  if (!companies || !plans) return null;
+  /* I tre casi (M5.b), registro strumento. */
+  const page = loadState([companiesQuery, plansQuery]);
+  if (page.state === "error") {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+  const companies = companiesQuery.data;
+  const plans = plansQuery.data;
+  if (companies === undefined || plans === undefined) return null;
 
   const active = companies.filter((company) => company.active);
   const coveredEmployees = active.reduce(
@@ -171,6 +184,9 @@ export default function AdminAziende() {
       </div>
 
       <Card className="overflow-x-auto">
+        {companies.length === 0 ? (
+          <EmptyNotice text={t.admin.companies.empty} />
+        ) : (
         <Table>
           <TableHeader>
             <TableRow>
@@ -231,6 +247,7 @@ export default function AdminAziende() {
             ))}
           </TableBody>
         </Table>
+        )}
       </Card>
 
       <DemoRequests />

@@ -13,10 +13,12 @@ import {
 import { Activity, Search, UserCheck, Users } from "lucide-react";
 import KPICard from "@/components/shared/KPICard";
 import {
+  loadState,
   useClientCompanies,
   usePlatformMonths,
   usePlatformUsers,
 } from "@/lib/data/queries";
+import { ErrorNotice } from "@/components/kora/StateNotice";
 import { currentPlatformMonth } from "@/lib/platform-metrics";
 import { formatMonthYear, formatNumber } from "@/lib/format";
 import { interpolate, t } from "@/lib/i18n";
@@ -39,11 +41,23 @@ import { interpolate, t } from "@/lib/i18n";
  */
 export default function AdminUtenti() {
   const [search, setSearch] = useState("");
-  const { data: users } = usePlatformUsers();
-  const { data: companies } = useClientCompanies();
-  const { data: months } = usePlatformMonths();
+  const usersQuery = usePlatformUsers();
+  const companiesQuery = useClientCompanies();
+  const monthsQuery = usePlatformMonths();
 
-  if (!users || !companies || !months) return null;
+  /* I tre casi (M5.b), registro strumento. La lista filtrata ha già il suo
+     vuoto più sotto — è quello della ricerca senza risultati, che è un caso
+     diverso dal non avere utenti. */
+  const page = loadState([usersQuery, companiesQuery, monthsQuery]);
+  if (page.state === "error") {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+  const users = usersQuery.data;
+  const companies = companiesQuery.data;
+  const months = monthsQuery.data;
+  if (users === undefined || companies === undefined || months === undefined) {
+    return null;
+  }
 
   const currentMonth = currentPlatformMonth(months);
 

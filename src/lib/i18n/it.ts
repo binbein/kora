@@ -1342,6 +1342,8 @@ export const it = {
     extractNote: "Estratto di {shown} righe su {total}. La ricerca completa arriva con la messa in produzione.",
 
     companies: {
+      /* Portafoglio vuoto: nessun cliente ancora firmato. */
+      empty: "Nessuna azienda cliente.",
       title: "Aziende clienti",
       kpiActive: "Clienti attivi",
       kpiEmployees: "Dipendenti coperti",
@@ -1422,6 +1424,8 @@ export const it = {
 
     professionals: {
       title: "Professionisti",
+      /* Roster vuoto: nessuno è ancora entrato nella rete. */
+      empty: "Nessun professionista nel roster.",
       kpiTotal: "Nel roster",
       kpiBookable: "Prenotabili",
       kpiVetting: "In verifica",
@@ -1479,6 +1483,8 @@ export const it = {
     },
 
     checkupProviders: {
+      /* Rete convenzionata vuota. */
+      empty: "Nessuna struttura nella rete.",
       title: "Provider check-up",
       kpiActive: "Strutture attive",
       kpiCities: "Città coperte",
@@ -1502,6 +1508,9 @@ export const it = {
 
     analytics: {
       title: "Analytics piattaforma",
+      /* Serie di piattaforma senza il mese corrente: è il back-office aperto
+         prima del primo cliente, non un guasto. */
+      empty: "Nessun dato di piattaforma per il mese corrente.",
       kpiRevenue: "Ricavo del mese",
       /** "CHF 652'968 annualizzati" */
       kpiRevenueHint: "{amount} annualizzati",

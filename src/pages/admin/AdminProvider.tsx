@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/table";
 import { CheckCircle2, Clock, MapPin, Building } from "lucide-react";
 import KPICard from "@/components/shared/KPICard";
-import { useCheckupProviders, usePlatformMonths } from "@/lib/data/queries";
+import { loadState, useCheckupProviders, usePlatformMonths } from "@/lib/data/queries";
+import { EmptyNotice, ErrorNotice } from "@/components/kora/StateNotice";
 import { formatNumber } from "@/lib/format";
 import { interpolate, t } from "@/lib/i18n";
 
@@ -30,10 +31,24 @@ import { interpolate, t } from "@/lib/i18n";
  * tabella, ed è un dato che esiste davvero.
  */
 export default function AdminProvider() {
-  const { data: providers } = useCheckupProviders();
-  const { data: months } = usePlatformMonths();
+  const providersQuery = useCheckupProviders();
+  const monthsQuery = usePlatformMonths();
 
-  if (!providers || !months) return null;
+  /* I tre casi (M5.b), registro strumento. */
+  const page = loadState([providersQuery, monthsQuery]);
+  if (page.state === "error") {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+  const providers = providersQuery.data;
+  const months = monthsQuery.data;
+  if (providers === undefined || months === undefined) return null;
+  if (providers.length === 0) {
+    return (
+      <Card>
+        <EmptyNotice text={t.admin.checkupProviders.empty} />
+      </Card>
+    );
+  }
 
   const active = providers.filter((provider) => provider.status === "active");
   const cities = new Set(providers.map((provider) => provider.city));
