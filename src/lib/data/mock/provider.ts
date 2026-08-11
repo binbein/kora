@@ -573,6 +573,7 @@ export class MockDataProvider implements DataProvider {
       employeeCount: input.employeeCount,
       // il confine normalizza: assente, vuoto e soli spazi sono la stessa cosa
       // per chi legge, e diventano `null` una volta sola, qui
+      phone: input.phone?.trim() || null,
       message: input.message?.trim() || null,
       submittedAt: DEMO_TODAY,
     };
