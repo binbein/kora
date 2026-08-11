@@ -1028,8 +1028,7 @@ passata di igiene. La regola non cambia.
 build demo, console pulita, `lint` e `typecheck` a zero, e screenshot prima/dopo
 delle otto schermate toccate, approvati dai founder prima del merge.
 
-**Il debito residuo, censito e non toccato.** È il caso **inverso** del verde
-pieno — testo e icone teal su fondo chiaro — e il suo rimedio **non è coperto
+**Il debito residuo, censito e non toccato.** Il suo rimedio **non è coperto
 dalla decisione del 10.08.2026**, che ha scelto la strada per il riempimento
 pieno. Destinazione **M5**, che ha l'accessibilità completa in elenco. Censito
 ora perché un inventario preciso è ciò che rende quella voce eseguibile senza una
@@ -1039,12 +1038,23 @@ terza rilevazione:
 |---|---|---|---|
 | **testo** `text-secondary` su fondo chiaro | 4.5 (1.4.3) | **27** | 20 |
 | **icone** teal su fondo chiaro | 3.0 (1.4.11) | **40** | 20 |
+| **icona su riempimento teal pieno** | 3.0 (1.4.11) | **1** | 1 |
 | in `FlexiblePlanCard.jsx` | — | 3 | 1 (escluso, codice morto) |
 
 Misure: `text-secondary` su card bianca **2.83:1**, su `bg-secondary/10`
-**2.57:1**. Le icone non arrivano nemmeno alla soglia del non-testo, e fra loro
-c'è il pulsante di invio di `Medico.tsx:159` uscito dall'inventario di questa
-passata. **Il confine fra le due righe è approssimativo**: `iconClass:
+**2.57:1**. Le icone su fondo chiaro non arrivano alla soglia del non-testo.
+
+**La terza riga è il caso che le prime due non coprono, ed è una riga sola:** il
+pulsante di invio di `Medico.tsx:159`, uscito dall'inventario della passata
+perché non porta testo. Non è teal su chiaro — è **un'icona chiara su teal
+pieno**, cioè il verde pieno visto dal lato del non-testo, e senza una riga sua
+sarebbe scomparso fra due liste che parlano d'altro. **2.72:1** contro la soglia
+di 3.0, misurato a schermo: è più basso del 2.83 del testo bianco perché l'icona
+eredita `text-primary-foreground`, che è 98% e non bianco puro. Il pallino
+pulsante di `Medico.tsx:112` resta fuori, perché è decorativo e non veicola
+informazione.
+
+**Il confine fra le prime due righe è approssimativo**: `iconClass:
 "text-secondary"` passa da una variabile e va letto a schermo, non da un grep.
 
 ### Punto di partenza — cosa c'è e cosa manca
