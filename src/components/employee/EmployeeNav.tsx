@@ -81,7 +81,7 @@ export default function EmployeeNav() {
                 to={path}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   active
-                    ? "bg-secondary/10 text-secondary"
+                    ? "bg-secondary/10 text-secondary-strong"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
@@ -119,7 +119,7 @@ export default function EmployeeNav() {
                   to={path}
                   onClick={() => setOpen(false)}
                   className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium ${
-                    active ? "bg-secondary/10 text-secondary" : "text-muted-foreground"
+                    active ? "bg-secondary/10 text-secondary-strong" : "text-muted-foreground"
                   }`}
                 >
                   <Icon className="w-4 h-4" aria-hidden="true" />
@@ -141,7 +141,7 @@ export default function EmployeeNav() {
                 key={path}
                 to={path}
                 className={`flex flex-col items-center gap-0.5 py-1 px-2 ${
-                  active ? "text-secondary" : "text-muted-foreground"
+                  active ? "text-secondary-strong" : "text-muted-foreground"
                 }`}
               >
                 <Icon className="w-5 h-5" aria-hidden="true" />
