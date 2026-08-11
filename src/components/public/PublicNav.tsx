@@ -51,7 +51,7 @@ export default function PublicNav() {
               <Link to="/employee">{t.public.nav.login}</Link>
             </Button>
             <Button
-              className="bg-secondary hover:bg-secondary/90 text-secondary-foreground whitespace-nowrap"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground whitespace-nowrap"
               asChild
             >
               <Link to="/demo">{t.public.nav.bookDemo}</Link>
@@ -82,7 +82,7 @@ export default function PublicNav() {
             </Link>
           ))}
           <Button
-            className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground mt-2"
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground mt-2"
             asChild
           >
             <Link to="/demo">{t.public.nav.bookDemo}</Link>

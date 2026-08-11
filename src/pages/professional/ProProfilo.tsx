@@ -70,7 +70,12 @@ export default function ProProfilo() {
           <h3 className="font-semibold mb-3 flex items-center gap-2">
             <Star className="w-4 h-4 text-secondary" /> {t.professional.profile.specialty}
           </h3>
-          <Badge variant="secondary">{t.specialty[professional.specialty]}</Badge>
+          {/* coppia `accent` e non teal pieno: il bianco su `secondary` è
+              2.83:1, sotto l'AA (§6.1). La variante `secondary` di `badge.tsx`
+              è la sorgente, ma quel file è congelato: si sceglie qui */}
+          <Badge variant="outline" className="border-transparent bg-accent text-accent-foreground">
+            {t.specialty[professional.specialty]}
+          </Badge>
         </Card>
       </div>
 

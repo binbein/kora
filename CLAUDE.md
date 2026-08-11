@@ -586,18 +586,33 @@ Regole:
 - **Le CTA piene vanno su `primary`, non su `secondary`.** Bianco su `secondary`
   dà 2.83:1 contro il minimo AA di 4.5, e le due strade erano scurire il token o
   spostare le CTA. **Deciso dai founder il 10.08.2026: si spostano le CTA**, così
-  il teal resta la tinta dei dati positivi e degli accenti (§6.1) invece di
-  cambiare di luminosità sotto ogni schermata già approvata. **Si esegue in una
-  passata dedicata**, che produce anche l'inventario autoritativo dei punti da
-  toccare: `--secondary-foreground` è bianco nei token, quindi la scelta è
-  incorporata nel design system e la correzione non è una riga.
-
-  **Dove si corregge, e dove no.** Le varianti `secondary` di `button.tsx` e
-  `badge.tsx` sono la sorgente del bianco su teal, ma stanno in
+  il teal resta la tinta dei dati positivi e degli accenti invece di cambiare di
+  luminosità sotto ogni schermata già approvata. **Eseguito**: 13 punti su 9
+  file, l'inventario è in `docs/PROGRESS.md`.
+- **Il riempimento pieno ha due destinazioni, non una.** Le CTA vanno su
+  `primary` (11.45:1); **chip, badge e KPI piene vanno sulla coppia
+  `accent`/`accent-foreground`** (10.66:1, e 13.53:1 con `foreground`). Non è una
+  sfumatura di gusto: una CTA è un invito ad agire e regge il blu pieno, mentre
+  un badge di specialità in blu petrolio pesa quanto il nome che descrive.
+- **Dove si corregge il pieno, e dove no.** Le varianti `secondary` di
+  `button.tsx` e `badge.tsx` sono la sorgente del bianco su teal, ma stanno in
   `src/components/ui/`, che è congelato (§3): **si cambia la variante scelta al
-  call site, non la definizione**. `KPICard` è fuori dal congelamento e la sua
-  variante si può toccare. `FlexiblePlanCard.jsx` resta fuori dal conto: è codice
-  morto del piano nascosto (§10.A.3).
+  call site, non la definizione**. `KPICard` è fuori dal congelamento, e infatti
+  la sua variante `secondary` è stata rimossa invece che aggirata.
+  `FlexiblePlanCard.jsx` resta fuori dal conto: è codice morto del piano nascosto
+  (§10.A.3).
+- **Il verde pieno è chiuso sul testo, il debito AA no.** Restano il caso
+  **inverso** — `text-secondary` su fondo chiaro, 2.83:1 su bianco e 2.57:1 su
+  `bg-secondary/10` — le icone teal su fondo chiaro, e **un'icona chiara su teal
+  pieno** (2.72:1, più bassa del testo bianco perché eredita
+  `text-primary-foreground`, che è 98%). Quest'ultima non è né l'uno né l'altro
+  caso: è il verde pieno visto dal lato del non-testo, e va tenuta a vista
+  perché due liste che parlano d'altro se la perderebbero in mezzo. Sono censiti
+  in `docs/PROGRESS.md` con destinazione **M5**,
+  che ha l'accessibilità completa in elenco: **il rimedio non è coperto dalla
+  decisione del 10.08.2026**, che ha scelto la strada per il riempimento pieno e
+  non per il testo colorato. Finché non è deciso, §6.1 dice "chiuso sul verde
+  pieno" e non "debito AA chiuso".
 - **Solo light mode.** `index.css` definisce una palette `.dark` completa che nessun
   componente attiva: resta lì, inerte. Nessun toggle e nessun `next-themes` finché
   non è una decisione dei founder.

@@ -315,9 +315,10 @@ export default function Roi() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             {/*
              * CTA su `primary` e non su `secondary` pieno: il bianco su teal dà
-             * 2.83:1 contro il minimo AA di 4.5 (§6.1). Il debito esiste già in
-             * 19 punti ed è registrato in `PROGRESS.md`; la decisione di palette
-             * spetta ai founder, ma il codice nuovo non lo allarga.
+             * 2.83:1 contro il minimo AA di 4.5 (§6.1). Questa schermata l'ha
+             * scelto quando il debito era ancora aperto, per non allargarlo, ed
+             * è diventata il precedente che la passata del 10.08.2026 ha seguito
+             * per portarci le altre otto CTA.
              */}
             <Button
               size="lg"

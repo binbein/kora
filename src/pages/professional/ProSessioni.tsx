@@ -51,7 +51,7 @@ function SessionRow({
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
           {session.status === 'scheduled' && (
-            <Button size="sm" className="bg-secondary hover:bg-secondary/90">
+            <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">
               <Video className="w-3.5 h-3.5 mr-1" /> {t.professional.sessions.start}
             </Button>
           )}
