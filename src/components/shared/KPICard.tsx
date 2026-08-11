@@ -79,7 +79,7 @@ export default function KPICard({
         </div>
         {Icon && (
           <div className={`p-2.5 rounded-xl flex-shrink-0 ${variant === 'default' ? 'bg-accent' : 'bg-white/15'}`}>
-            <Icon className={`w-5 h-5 ${variant === 'default' ? 'text-secondary' : ''}`} />
+            <Icon className={`w-5 h-5 ${variant === 'default' ? 'text-secondary' : ''}`} aria-hidden="true" />
           </div>
         )}
       </div>

@@ -80,7 +80,7 @@ export default function ProNav() {
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
-                <Icon className="w-4.5 h-4.5" />
+                <Icon className="w-4.5 h-4.5" aria-hidden="true" />
                 {label}
               </Link>
             );
@@ -116,7 +116,7 @@ export default function ProNav() {
                     : "text-muted-foreground"
                 }`}
               >
-                <Icon className="w-4.5 h-4.5" />
+                <Icon className="w-4.5 h-4.5" aria-hidden="true" />
                 {label}
               </Link>
             ))}

@@ -85,7 +85,7 @@ export default function EmployeeNav() {
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
-                <Icon className="w-4.5 h-4.5" />
+                <Icon className="w-4.5 h-4.5" aria-hidden="true" />
                 {label}
               </Link>
             );
@@ -122,7 +122,7 @@ export default function EmployeeNav() {
                     active ? "bg-secondary/10 text-secondary" : "text-muted-foreground"
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-4 h-4" aria-hidden="true" />
                   {label}
                 </Link>
               );
@@ -144,7 +144,7 @@ export default function EmployeeNav() {
                   active ? "text-secondary" : "text-muted-foreground"
                 }`}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className="w-5 h-5" aria-hidden="true" />
                 <span className="text-[10px] font-medium">{label}</span>
               </Link>
             );

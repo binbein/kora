@@ -117,7 +117,7 @@ function ServiceCounter({
     <Card className="p-5">
       <div className="flex items-center gap-3 mb-3">
         <div className={`p-2 rounded-lg ${iconWrapClass}`}>
-          <Icon className={`w-5 h-5 ${iconClass}`} />
+          <Icon className={`w-5 h-5 ${iconClass}`} aria-hidden="true" />
         </div>
         <div>
           <p className="text-sm font-semibold">{t.employee.service[kind]}</p>
@@ -318,7 +318,7 @@ export default function EmployeeHome() {
                 </Badge>
               )}
               <div className={`p-2.5 ${color} rounded-xl w-fit mx-auto mb-2`}>
-                <Icon className="w-5 h-5" />
+                <Icon className="w-5 h-5" aria-hidden="true" />
               </div>
               <p className="text-xs font-medium">{label}</p>
             </Card>

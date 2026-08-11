@@ -69,7 +69,7 @@ export default function AdminLayout() {
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
-                <Icon className="w-4.5 h-4.5 flex-shrink-0" />
+                <Icon className="w-4.5 h-4.5 flex-shrink-0" aria-hidden="true" />
                 {label}
               </Link>
             );
@@ -104,7 +104,7 @@ export default function AdminLayout() {
                     : "text-muted-foreground"
                 }`}
               >
-                <Icon className="w-4 h-4 flex-shrink-0" /> {label}
+                <Icon className="w-4 h-4 flex-shrink-0" aria-hidden="true" /> {label}
               </Link>
             ))}
           </nav>

@@ -113,7 +113,7 @@ export default function HRPrivacy() {
           <Card key={key} className="p-5">
             <div className="flex items-start gap-3">
               <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
-                <Icon className="w-5 h-5 text-primary" />
+                <Icon className="w-5 h-5 text-primary" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="font-semibold text-sm">

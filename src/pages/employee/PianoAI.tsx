@@ -87,7 +87,7 @@ export default function PianoAI() {
             <Card key={area.area} className="p-5">
               <div className="flex items-center gap-3 mb-3">
                 <div className={`p-2 rounded-lg ${wrapClass}`}>
-                  <Icon className={`w-5 h-5 ${iconClass}`} />
+                  <Icon className={`w-5 h-5 ${iconClass}`} aria-hidden="true" />
                 </div>
                 <div className="flex-1">
                   <h2 className="font-semibold text-sm">

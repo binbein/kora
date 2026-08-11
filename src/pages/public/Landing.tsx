@@ -199,7 +199,7 @@ function ProblemCard({ icon: Icon, title }: { icon: LucideIcon; title: string })
   return (
     <Card className="p-5 hover:shadow-lg transition-shadow group">
       <div className="p-2.5 bg-destructive/10 rounded-xl w-fit mb-3 group-hover:bg-destructive/15 transition-colors">
-        <Icon className="w-5 h-5 text-destructive" />
+        <Icon className="w-5 h-5 text-destructive" aria-hidden="true" />
       </div>
       <p className="text-sm font-medium text-foreground">{title}</p>
     </Card>
@@ -230,7 +230,7 @@ function ValueCard({
   return (
     <Card className="p-6 hover:shadow-lg transition-shadow">
       <div className={`p-3 ${bgMap[color]} rounded-xl w-fit mb-4`}>
-        <Icon className={`w-6 h-6 ${textMap[color]}`} />
+        <Icon className={`w-6 h-6 ${textMap[color]}`} aria-hidden="true" />
       </div>
       <h3 className="font-semibold text-lg mb-2">{title}</h3>
       <p className="text-sm text-muted-foreground leading-relaxed">
