@@ -75,7 +75,7 @@ export default function ProPagamenti() {
       */}
       <Card className="p-5 bg-accent/40 border-secondary/20">
         <h3 className="font-semibold mb-1 flex items-center gap-2 text-sm">
-          <TrendingUp className="w-4 h-4 text-secondary" /> {t.professional.payments.capacityTitle}
+          <TrendingUp className="w-4 h-4 text-secondary" aria-hidden="true" /> {t.professional.payments.capacityTitle}
         </h3>
         <p className="text-sm text-muted-foreground">
           {interpolate(t.professional.payments.capacity, {
@@ -146,9 +146,9 @@ export default function ProPagamenti() {
                   }
                 >
                   {payout.status === 'paid' ? (
-                    <><CheckCircle2 className="w-3 h-3 mr-1" /> {t.professional.payments.paid}</>
+                    <><CheckCircle2 className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.payments.paid}</>
                   ) : (
-                    <><Clock className="w-3 h-3 mr-1" /> {t.professional.payments.pending}</>
+                    <><Clock className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.payments.pending}</>
                   )}
                 </Badge>
                 {payout.paidOn && (

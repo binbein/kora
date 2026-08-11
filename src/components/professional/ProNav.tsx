@@ -94,8 +94,13 @@ export default function ProNav() {
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-xl border-b border-border">
         <div className="flex items-center justify-between px-4 h-14">
           <KoraLogo size="sm" />
-          <button onClick={() => setOpen(!open)} className="p-2">
-            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          <button
+            onClick={() => setOpen(!open)}
+            className="p-2"
+            aria-label={t.public.nav.menu}
+            aria-expanded={open}
+          >
+            {open ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
           </button>
         </div>
         {open && (

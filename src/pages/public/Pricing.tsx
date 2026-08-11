@@ -72,7 +72,7 @@ function PlanCard({ plan }: { plan: Plan }) {
       <ul className="space-y-2 mb-6 flex-1">
         {planFeatures(plan).map((feature) => (
           <li key={feature.key} className="flex items-start gap-2 text-sm">
-            <CheckCircle2 className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" aria-hidden="true" />
             <span>{feature.text}</span>
           </li>
         ))}
@@ -113,7 +113,7 @@ function CostSimulator({ plans }: { plans: Plan[] }) {
     <Card className="p-8">
       <div className="flex items-center gap-3 mb-6">
         <div className="p-2.5 bg-secondary/10 rounded-xl">
-          <Calculator className="w-6 h-6 text-secondary" />
+          <Calculator className="w-6 h-6 text-secondary" aria-hidden="true" />
         </div>
         <h2 className="text-2xl font-bold font-display">
           {t.public.costSimulator.title}
@@ -212,7 +212,7 @@ function CostSimulator({ plans }: { plans: Plan[] }) {
       <Button className="w-full mt-6 bg-primary hover:bg-primary/90" asChild>
         <Link to="/demo">
           {t.public.costSimulator.cta}
-          <ArrowRight className="w-4 h-4 ml-2" />
+          <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
         </Link>
       </Button>
       <p className="text-center mt-4">

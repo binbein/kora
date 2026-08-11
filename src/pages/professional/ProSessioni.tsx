@@ -52,12 +52,12 @@ function SessionRow({
         <div className="flex items-center gap-2 flex-shrink-0">
           {session.status === 'scheduled' && (
             <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-              <Video className="w-3.5 h-3.5 mr-1" /> {t.professional.sessions.start}
+              <Video className="w-3.5 h-3.5 mr-1" aria-hidden="true" /> {t.professional.sessions.start}
             </Button>
           )}
           {session.status === 'completed' && (
             <Button size="sm" variant="outline" onClick={() => onNote?.(session)}>
-              <FileText className="w-3.5 h-3.5 mr-1" />
+              <FileText className="w-3.5 h-3.5 mr-1" aria-hidden="true" />
               {session.hasNote ? t.professional.sessions.editNote : t.professional.sessions.addNote}
             </Button>
           )}
@@ -208,7 +208,7 @@ export default function ProSessioni() {
                 openSession && saveNote.mutate({ sessionId: openSession.id, ...draft })
               }
             >
-              <Save className="w-4 h-4 mr-1" />
+              <Save className="w-4 h-4 mr-1" aria-hidden="true" />
               {saveNote.isPending
                 ? t.professional.sessions.note.saving
                 : t.professional.sessions.note.save}

@@ -159,7 +159,7 @@ export default function Roi() {
       <section className="pt-28 pb-10">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex p-3 bg-secondary/10 rounded-2xl mb-5">
-            <Calculator className="w-7 h-7 text-secondary" />
+            <Calculator className="w-7 h-7 text-secondary" aria-hidden="true" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold font-display mb-4">
             {t.public.roi.title}
@@ -291,7 +291,7 @@ export default function Roi() {
 
           {/* Il rapporto non reagisce all'input, e va detto (§9) */}
           <div className="flex items-start gap-3 bg-muted rounded-xl p-4">
-            <Info className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+            <Info className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" aria-hidden="true" />
             <div className="space-y-1">
               <p className="text-sm text-foreground">
                 {interpolate(t.public.roi.linearityNote, {
@@ -327,7 +327,7 @@ export default function Roi() {
             >
               <Link to="/demo">
                 {t.public.roi.ctaButton}
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
               </Link>
             </Button>
             <Button size="lg" variant="outline" className="px-8" asChild>

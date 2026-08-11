@@ -138,7 +138,7 @@ function BookingDialog({
     return (
       <div className="text-center py-6 space-y-4">
         <div className="inline-flex p-4 bg-accent rounded-2xl">
-          <CheckCircle2 className="w-10 h-10 text-secondary" />
+          <CheckCircle2 className="w-10 h-10 text-secondary" aria-hidden="true" />
         </div>
         <div>
           <p className="font-semibold">
@@ -243,7 +243,7 @@ function BookingDialog({
           </p>
           {!overCap && (
             <p className="text-secondary-strong font-medium mt-1 flex items-center gap-1">
-              <Check className="w-3.5 h-3.5" />
+              <Check className="w-3.5 h-3.5" aria-hidden="true" />
               {t.employee.psychologists.dialog.included}
             </p>
           )}
@@ -303,7 +303,7 @@ function ProfessionalCard({
                 riga sparisce invece di mostrare uno zero (§11). */}
             {professional.rating !== null ? (
               <div className="flex items-center gap-1 text-sm">
-                <Star className="w-3.5 h-3.5 fill-warning text-warning" />
+                <Star className="w-3.5 h-3.5 fill-warning text-warning" aria-hidden="true" />
                 <span className="font-medium tabular-nums">
                   {formatRating(professional.rating)}
                 </span>
@@ -321,13 +321,13 @@ function ProfessionalCard({
           </div>
           <div className="flex flex-wrap items-center gap-4 mt-3 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
-              <Globe className="w-3 h-3" />
+              <Globe className="w-3 h-3" aria-hidden="true" />
               {professional.languages
                 .map((language) => t.language[language])
                 .join(t.common.listSeparator)}
             </span>
             <span className="flex items-center gap-1 tabular-nums">
-              <Video className="w-3 h-3" />
+              <Video className="w-3 h-3" aria-hidden="true" />
               {interpolate(t.employee.psychologists.totalSessions, {
                 n: formatNumber(professional.totalSessions),
               })}

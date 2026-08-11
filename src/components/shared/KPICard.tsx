@@ -65,9 +65,9 @@ export default function KPICard({
           <p className={`flex items-center gap-1.5 text-2xl font-bold font-display tabular-nums ${toneClass || (variant === 'default' ? 'text-foreground' : '')}`}>
             {improving !== null &&
               (polarity!.sign > 0 ? (
-                <TrendingUp className="w-5 h-5 flex-shrink-0" />
+                <TrendingUp className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
               ) : (
-                <TrendingDown className="w-5 h-5 flex-shrink-0" />
+                <TrendingDown className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
               ))}
             {value}
           </p>

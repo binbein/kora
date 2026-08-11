@@ -69,7 +69,7 @@ export default function ProPazienti() {
       </div>
 
       <div className="flex items-start gap-2 text-xs text-muted-foreground bg-accent/60 border border-secondary/20 rounded-lg p-3">
-        <Shield className="w-4 h-4 mt-0.5 text-secondary flex-shrink-0" />
+        <Shield className="w-4 h-4 mt-0.5 text-secondary flex-shrink-0" aria-hidden="true" />
         <span>{t.professional.patients.privacy}</span>
       </div>
 

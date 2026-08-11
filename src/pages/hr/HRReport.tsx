@@ -75,9 +75,9 @@ function StatRow({
       >
         {improving !== null &&
           (polarity!.sign > 0 ? (
-            <TrendingUp className="w-3.5 h-3.5" />
+            <TrendingUp className="w-3.5 h-3.5" aria-hidden="true" />
           ) : (
-            <TrendingDown className="w-3.5 h-3.5" />
+            <TrendingDown className="w-3.5 h-3.5" aria-hidden="true" />
           ))}
         {value}
       </span>
@@ -168,14 +168,14 @@ export default function HRReport() {
               }
             }}
           >
-            <Download className="w-4 h-4 mr-1" /> {t.hr.report.download}
+            <Download className="w-4 h-4 mr-1" aria-hidden="true" /> {t.hr.report.download}
           </Button>
         </div>
       </div>
 
       <Card className="p-6">
         <h3 className="font-semibold mb-4 flex items-center gap-2">
-          <FileText className="w-4 h-4 text-primary" /> {t.hr.report.metricsTitle}
+          <FileText className="w-4 h-4 text-primary" aria-hidden="true" /> {t.hr.report.metricsTitle}
         </h3>
         <StatRow
           label={t.hr.report.adoption}

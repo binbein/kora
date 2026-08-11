@@ -28,7 +28,7 @@ export default function PageNotFound() {
 
                 <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
                     <Link to="/">
-                        <ArrowLeft className="w-4 h-4 mr-2" /> Torna alla home
+                        <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" /> Torna alla home
                     </Link>
                 </Button>
             </div>

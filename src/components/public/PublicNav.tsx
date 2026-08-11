@@ -64,7 +64,7 @@ export default function PublicNav() {
             aria-label={t.public.nav.menu}
             aria-expanded={open}
           >
-            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {open ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
           </button>
         </div>
       </div>

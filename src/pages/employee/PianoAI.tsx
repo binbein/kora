@@ -73,7 +73,7 @@ export default function PianoAI() {
           </p>
         </div>
         <Badge className="bg-accent text-accent-foreground hover:bg-accent flex-shrink-0">
-          <Sparkles className="w-3 h-3 mr-1" />
+          <Sparkles className="w-3 h-3 mr-1" aria-hidden="true" />
           {interpolate(t.employee.aiPlan.generated, {
             month: formatMonthYear(plan.generatedAt),
           })}

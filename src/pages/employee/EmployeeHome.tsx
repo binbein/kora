@@ -131,7 +131,7 @@ function ServiceCounter({
       <Button size="sm" className={`w-full ${buttonClass}`} asChild>
         <Link to={to}>
           {t.employee.home.book}
-          <ArrowRight className="w-3.5 h-3.5 ml-1" />
+          <ArrowRight className="w-3.5 h-3.5 ml-1" aria-hidden="true" />
         </Link>
       </Button>
     </Card>
@@ -226,7 +226,7 @@ export default function EmployeeHome() {
 
       <Card className="p-5">
         <h2 className="font-semibold mb-1 flex items-center gap-2">
-          <CalendarDays className="w-4 h-4 text-secondary" />
+          <CalendarDays className="w-4 h-4 text-secondary" aria-hidden="true" />
           {t.employee.home.appointmentsTitle}
         </h2>
         {appointments.length === 0 ? (
@@ -329,7 +329,7 @@ export default function EmployeeHome() {
       <Card className="p-5 bg-accent/40 border-secondary/20">
         <div className="flex items-start gap-3">
           <div className="p-2 bg-secondary/10 rounded-lg">
-            <Sparkles className="w-5 h-5 text-secondary" />
+            <Sparkles className="w-5 h-5 text-secondary" aria-hidden="true" />
           </div>
           <div>
             <p className="text-sm font-semibold mb-1">

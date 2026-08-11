@@ -88,7 +88,7 @@ export default function DemoRequest() {
         <PublicNav />
         <div className="pt-32 pb-20 max-w-lg mx-auto px-4 text-center space-y-6">
           <div className="inline-flex p-4 bg-accent rounded-2xl">
-            <CheckCircle2 className="w-12 h-12 text-accent-foreground" />
+            <CheckCircle2 className="w-12 h-12 text-accent-foreground" aria-hidden="true" />
           </div>
           <h1 className="text-3xl font-bold font-display">
             {t.public.demoRequest.successTitle}
@@ -103,7 +103,7 @@ export default function DemoRequest() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button variant="outline" asChild>
               <Link to="/">
-                <ArrowLeft className="w-4 h-4 mr-2" />
+                <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
                 {t.public.demoRequest.successHome}
               </Link>
             </Button>
@@ -124,7 +124,7 @@ export default function DemoRequest() {
         <div className="max-w-xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 space-y-3">
             <div className="inline-flex p-3 bg-secondary/10 rounded-2xl">
-              <Calendar className="w-8 h-8 text-secondary" />
+              <Calendar className="w-8 h-8 text-secondary" aria-hidden="true" />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold font-display">
               {t.public.demoRequest.title}
@@ -242,7 +242,7 @@ export default function DemoRequest() {
               </div>
 
               <div className="flex items-start gap-2 text-xs text-muted-foreground bg-accent/60 rounded-lg p-3">
-                <Shield className="w-4 h-4 mt-0.5 text-secondary flex-shrink-0" />
+                <Shield className="w-4 h-4 mt-0.5 text-secondary flex-shrink-0" aria-hidden="true" />
                 <span>{t.public.demoRequest.privacy}</span>
               </div>
 
