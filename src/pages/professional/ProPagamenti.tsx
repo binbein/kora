@@ -59,7 +59,7 @@ export default function ProPagamenti() {
           title={t.professional.payments.monthTotal}
           value={formatCHF(earnings.grossChf)}
           icon={CreditCard}
-          variant="secondary"
+          variant="accent"
         />
         <KPICard
           title={t.professional.payments.yearTotal}

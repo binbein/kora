@@ -291,7 +291,7 @@ export default function HRDashboard() {
             days: formatNumber(snapshot.avoidedAbsenceDays),
           })}
           icon={Calculator}
-          variant="secondary"
+          variant="accent"
         />
         <KPICard
           title={t.hr.kpiAdoption}
