@@ -149,6 +149,23 @@ repository Next non dia niente per scontato.
   validazione con `zod` e `react-hook-form`, che il §3 tiene installati apposta
   (M5).
 
+  **La previsione su `form` non si è avverata, e si corregge invece di restare
+  smentita in silenzio** (12.08.2026). Il blocco c) di M5 ha costruito la
+  validazione con `react-hook-form` e `zod` **senza** `form.tsx`: `FormMessage`
+  rende `text-destructive` e `FormLabel` colora l'etichetta in errore con lo
+  stesso token, cioè **3.76:1**, sotto l'AA per il testo (§6.1). Sul messaggio
+  si sovrascrive dal call site — `cn` usa `twMerge` — ma sull'etichetta no,
+  perché il colore è condizionato all'errore e da fuori si può solo spegnerlo
+  sempre; e cambiarlo dentro `ui/` sarebbe una terza eccezione al
+  congelamento. Usarlo avrebbe **riaperto il debito AA che il blocco a) ha
+  chiuso a zero**.
+
+  **Resta qui, e per la prima volta è davvero l'ultima copia buona che questa
+  voce dichiara di tenere**: la sua guardia è stata riparata (eccezione qui
+  sotto). È l'argomento del toast alla rovescia — lì si è rimosso perché una
+  copia rotta non è una copia buona, qui si è riparato perché la riparazione
+  costava tre righe.
+
   **L'eccezione all'eccezione: il sistema di toast è stato rimosso**, il
   07.08.2026 su decisione dei founder. `toast`, `toaster` e `use-toast` non
   erano la copia buona di niente: il `toast` ereditato non è quello di shadcn ma
@@ -182,6 +199,26 @@ repository Next non dia niente per scontato.
   **In apertura di M3, prima della prima area.** Dopo, ogni schermata si converte
   mentre la si migra; prima, non si converte affatto; in mezzo, si toccano due
   volte le stesse schermate (§11).
+
+  **La seconda eccezione: la guardia di `useFormField` in `form.tsx` è stata
+  riparata** (founder, 12.08.2026). È un **cambiamento di comportamento**,
+  quindi sta fuori dalla prima eccezione, che copre le sole annotazioni — e per
+  questo è dei founder. Il controllo stava dopo la chiamata che doveva
+  proteggere e il default del context era `{}`, cioè truthy: non scattava mai, e
+  fuori da un `<FormField>` il componente sbagliava più avanti, in un punto che
+  non lo dice. Tre righe: guardia sopra l'uso, default che può essere falso, un
+  `as` in meno.
+
+  **Il confine, dichiarato una volta**: la guardia copre il caso vero — un
+  `FormItem` dentro un `<Form>` ma fuori da un `<FormField>`. Fuori anche dal
+  `<Form>` non ci arriva, perché `useFormContext()` restituisce `null` e la
+  destrutturazione lancia prima: è comportamento di react-hook-form, e
+  restringerlo sarebbe stata una seconda modifica oltre la decisione presa.
+
+  **Non la scioglie per il resto.** Le classi, le varianti e la resa di
+  `src/components/ui/` restano congelate: le eccezioni sono due, entrambe
+  datate, ed entrambe nate perché senza di esse una regola di questo file era
+  ineseguibile.
 - **@tanstack/react-query 5** — già installato e mai usato. Diventa l'unico modo in
   cui le schermate leggono e mutano dati (§5).
 - **recharts 2** per i grafici, **lucide-react** per le icone, **framer-motion**
