@@ -29,6 +29,11 @@ data da `DEMO_TODAY`. Le rotte sono 26, il repository è nostro — niente base4
 zero richieste esterne a runtime — e `reference/` è stato cancellato, che era la
 prova che M3 fosse davvero finita.
 
+**Tre blocchi di M5 su sei sono chiusi** — accessibilità, stati di errore e
+vuoto, validazione dei form — e il prossimo è d), le guardie di rotta per
+ruolo, che porta con sé `react-router` 7 e il vincolo della coreografia di
+`/admin` (`CLAUDE.md` §4).
+
 **M5 è l'ultima milestone del piano, e si articola in sei blocchi** approvati
 dai founder l'11.08.2026 — accessibilità, stati di errore e vuoto, validazione
 dei form, guardie di rotta, le altre tre lingue, pagine del footer. Stanno in
@@ -61,11 +66,11 @@ inverso — testo e icone teal su fondo chiaro — era censito in fondo alla sez
 refinement con destinazione M5, e ci è arrivato; il censimento di chiusura sta a
 zero punti informativi su 27 rotte, nella sezione M5.a.
 
-**Resta un residuo dichiarato, e non è un difetto lasciato indietro**: l'anello
-di focus è invisibile sui 12 CTA pieni — anello `primary` su fondo `primary` —
-e il rimedio sta in `button.tsx`, che è congelato. È una decisione dei founder,
-della stessa famiglia della guardia di `useFormField` che il blocco c) porta con
-sé.
+~~**Resta un residuo dichiarato, e non è un difetto lasciato indietro**:
+l'anello di focus è invisibile sui 12 CTA pieni.~~ → **chiuso dal blocco c)**,
+insieme all'altra decisione della stessa famiglia: i founder hanno preso
+entrambe il 12.08.2026, e il blocco le ha eseguite prima di scrivere una riga
+di validazione. Le misure stanno nella sezione M5.c e in `CLAUDE.md` §6.1.
 
 Delle altre due esecuzioni rimandate dalla stessa riunione, **una è fatta**: la
 **build "demo"** in cui i guardrail loggano e la **checklist pre-pitch** sono la
@@ -950,6 +955,12 @@ significherebbe poterlo far divergere.
   dalla regola del blocco: si dichiara e ci si ferma. **Va deciso dai founder**,
   ed è la stessa famiglia di decisioni della guardia di `useFormField` che il
   blocco c) porta con sé.
+
+  → **Chiuso dal blocco c)**, con la decisione del 12.08.2026: `ring-offset-2`
+  alla base della `cva`. **La regola del blocco ha funzionato come doveva**:
+  dichiarare e fermarsi non ha rimandato il rimedio, gli ha fatto trovare una
+  decisione già presa quando è arrivato il suo turno — e il rimedio è costato
+  una riga perché il blocco a) aveva già misurato di che difetto si trattava.
 - **Le icone dentro `src/components/ui/`** non sono state dichiarate, per la
   stessa ragione.
 
@@ -1161,8 +1172,201 @@ prossima verifica non lo legga come un errore di taratura.
   di un metodo, quindi un vuoto che nasce da un filtro di schermata — la
   ricerca utenti senza risultati, gli slot di una settimana piena — si produce
   a mano come prima.
-- **L'anello di focus sui CTA pieni resta il residuo di M5.a**, e il "Riprova"
-  non lo tocca: è un `variant="outline"`, quindi il suo anello si vede.
+- ~~**L'anello di focus sui CTA pieni resta il residuo di M5.a**~~, e il
+  "Riprova" non lo toccava: è un `variant="outline"`, quindi il suo anello si
+  vedeva già. → **chiuso dal blocco c)**, e il "Riprova" è servito da controllo
+  nell'altro verso — è il pulsante chiaro su cui si è verificato che la banda
+  di offset non tolga niente a chi il focus lo mostrava già.
+
+#### c) Validazione dei form — chiuso
+
+Sei commit, e **due dei sei non sono validazione**: sono le due decisioni sui
+file congelati che il blocco portava con sé, prese dai founder il 12.08.2026 ed
+eseguite prima di scrivere una riga di schema. Sono in fondo alla sezione,
+perché la validazione è il mestiere del blocco e quelle sono il suo bagaglio.
+
+**La superficie è più piccola della milestone che la nomina, e questo è il
+primo esito.** Il §4 dice "validazione dei form", ma i punti di input sono
+tre e solo uno è un form: `/demo`. Gli altri due sono il dialogo nota del
+professionista e la chat del medico virtuale, e **nessuno dei due ha preso uno
+schema**. Il blocco vale anche per quello che non ha fatto.
+
+##### `/demo` — l'unico schema
+
+Lo schema dice quello che dice il contratto (`CONTRATTO-DATI.md` §2): azienda,
+referente ed email obbligatori, telefono, dipendenti e messaggio facoltativi.
+Non è una traduzione libera del form: è `DemoRequestInput` letto riga per riga.
+
+**Quello che non c'è è scritto accanto a quello che c'è**, perché la prossima
+passata non lo aggiunga credendo di completare un lavoro: nessun formato sul
+telefono — il tipo lo dà opzionale e nessun documento ne fissa la forma, quindi
+un pattern svizzero sarebbe una cifra inventata (§2.4); nessun tetto sui
+dipendenti, perché i 20–1000 sono il dominio del calcolatore e non di questo
+form; nessuna lunghezza sul messaggio; e nessun controllo che l'email sia
+"aziendale", che l'etichetta suggerisce e nessuna regola chiede.
+
+**Un validatore solo.** `noValidate` sul form spegne quello del browser, e i
+`required` e il `min={0}` sono usciti: due validatori sono due fonti che possono
+divergere, e la prima a farlo sarebbe quella che non conosce le nostre stringhe.
+I `type` restano — `email`, `tel`, `number` — perché scelgono la tastiera del
+telefono, non cosa passa.
+
+**Lo schema non trasforma, ed è un limite della versione installata.**
+`zodResolver` **4.1.3** ha un generico solo e restituisce
+`Resolver<z.infer<schema>>`: un `.transform()` renderebbe il tipo dei campi
+diverso da quello del risultato, e il resolver smetterebbe di tipizzare. Le
+uscite erano tre, e due sono state scartate con un motivo: zittirlo con un `as`
+è il cast che nasconde un errore vero (M3 ne accettò dieci, e nessuno zittiva
+niente), e alzare `@hookform/resolvers` alla 5 è una **decisione di dipendenza**
+che passa dal §3. Quindi *"vuoto vale zero"* — la regola che questo form ha da
+sempre — vive in `toEmployeeCount`, subito sotto lo schema. **Senza `Math.max`
+né `Math.round` attorno**: lo schema ha già escluso segno e decimali, e
+difendersene di nuovo sarebbe il ramo irraggiungibile che il §11 vieta. La riga
+è annotata nel sorgente, ed è il punto da rileggere il giorno in cui la
+dipendenza sale.
+
+##### `form.tsx` non si usa, e la previsione del §3 si corregge
+
+`CLAUDE.md` §3 teneva `form` fra i componenti conservati *"alla validazione con
+`zod` e `react-hook-form` (M5)"*. **Non è andata così**, e la riga è stata
+corretta con la sua data invece di restare smentita in silenzio.
+
+Il motivo è una misura: `FormMessage` rende `text-destructive` e `FormLabel`
+colora con lo stesso token l'etichetta in errore — **3.76:1**, sotto l'AA per il
+testo (§6.1). Sul messaggio si sovrascrive dal call site, perché `cn` usa
+`twMerge`; **sull'etichetta no**, perché il colore è condizionato all'errore e da
+fuori si può solo spegnerlo sempre. Usarlo avrebbe riaperto il debito che il
+blocco a) ha chiuso a zero, e correggerlo dentro `ui/` sarebbe stata una
+**quarta eccezione** al congelamento, che nessuno ha concesso.
+
+**È il caso in cui la regola del congelamento ha lavorato davvero**: due
+eccezioni concesse e una rifiutata nello stesso blocco. Con un form solo,
+`register` più un `<p>` costano meno di quanto costerebbe aggirare il
+componente (§11), e `FieldError` esiste perché ha quattro chiamanti — senza, la
+classe e il controllo sul vuoto starebbero scritti quattro volte.
+
+##### Il dialogo nota — nessuno schema, una regola di contratto
+
+Le tre textarea sono testo libero e `SessionNote` non pone vincoli su nessuna:
+una textarea che ammette tutto non ha regole da raccontare, quindi zod qui
+sarebbe una macchina più grande del caso.
+
+**L'unica regola che esiste non riguarda il testo ma il fatto.**
+`ProfessionalSession.hasNote` esiste perché le proiezioni sappiano che una nota
+c'è (`CONTRATTO-DATI.md` §3): salvarne una vuota lo renderebbe vero su qualcosa
+che non esiste, ed è il §5.5 applicato a un booleano invece che a un numero. Da
+qui **"Salva nota" è spento finché i tre campi sono vuoti al trim**, e **senza
+messaggio d'errore**: non c'è niente da segnalare finché non si è scritto
+niente, e un pulsante spento è il modo più quieto di dirlo (founder,
+12.08.2026).
+
+##### La chat del medico — niente da fare, e si dichiara
+
+`send` fa già `draft.trim()` ed esce sul vuoto (`Medico.tsx:74`). Dietro non c'è
+un contratto: la conversazione è una simulazione dichiarata e non scrive sul
+provider. **Il file non è stato toccato**, e sta qui perché "verificato che non
+serviva" e "dimenticato" si distinguono solo se qualcuno lo scrive.
+
+##### Le due decisioni sui file congelati
+
+**La guardia di `useFormField`** (`form.tsx`): il controllo stava dopo la
+chiamata che doveva proteggere e il default del context era `{}`, cioè truthy —
+non scattava mai. Tre righe: guardia sopra l'uso, default che può essere falso,
+**un `as` in meno**. *(I dieci `as` della passata di tipizzazione di M3 sono
+quindi nove, e i due di `form` uno solo. La voce di M3 non è stata riscritta:
+è il verbale di quella passata, e la correzione sta qui.)*
+
+**Il confine, e non è aggirabile da qui**: la guardia copre il caso vero — un
+`FormItem` dentro un `<Form>` ma fuori da un `<FormField>`. Fuori anche dal
+`<Form>` non ci arriva, perché `useFormContext()` restituisce `null` e la
+destrutturazione lancia prima. È comportamento di react-hook-form, e
+restringerlo sarebbe stata una seconda modifica oltre la decisione presa.
+
+**L'anello di focus** (`button.tsx`): `ring-offset-2` più
+`ring-offset-background` alla base della `cva`, che è **una riga alla sorgente e
+non dodici rattoppi ai call site**. L'anello si disegna ora come 2px di
+`--background` più 1px di `--ring`.
+
+| | misura |
+|---|---|
+| anello / banda di offset | **11.50:1** |
+| banda / riempimento del CTA | **11.50:1** |
+| anello / fondo dietro il pulsante | **11.50 – 11.95:1** |
+| anello / riempimento *(il difetto)* | 1.00:1, e non confinano più |
+
+**Nessun CTA pieno sta su una sezione tinta o scura**, censito su tutte le rotte
+che ne hanno: è il caso che poteva non passare, e in questa demo non esiste. La
+riga è scritta perché una schermata futura che ne metta uno sappia cosa
+rimisurare. **La base è condivisa, quindi ogni variante guadagna lo stacco**:
+sui pulsanti chiari la banda è del colore della pagina ed è invisibile, e si
+vede l'anello contro la pagina a 11.95:1 — cioè il valore che il blocco a)
+aveva già misurato.
+
+##### Verificato a schermo, viewport 1280×900 e scheda in primo piano (§11)
+
+- **invio vuoto bloccato**: tre messaggi, `aria-invalid` sui tre campi, e il
+  fuoco sul primo — "Il nome dell'azienda è obbligatorio.";
+- **email malformata bloccata**, e il suo messaggio che passa da "obbligatoria"
+  a "non sembra valido" mentre si scrive; **12.5 bloccato** sui dipendenti;
+- **il campo corretto pulisce il suo messaggio** e la sua `aria`, e gli altri
+  restano — provato campo per campo, che è il caso che un controllo sul solo
+  totale non vedrebbe;
+- **da tastiera**: `Tab` percorre i sei campi e il pulsante, e arrivando su un
+  campo in errore l'`aria-describedby` punta al messaggio visibile — provato
+  su due campi consecutivi, ognuno col proprio;
+- **la coreografia di `/admin` regge con il form nuovo**: tabella vuota a
+  freddo, uscita col logo, richiesta compilata **da sola tastiera** e inviata,
+  due Indietro, riga in tabella — `Ontano Logistica SA`, `+41 91 000 00 00`, il
+  trattino di `common.none` sui dipendenti lasciati vuoti, 23.09.2026. **Una
+  sola navigazione** per tutto il giro;
+- **il dialogo nota**: "Salva nota" spento all'apertura, spento con tre spazi,
+  acceso al primo carattere vero, e la nota che si salva senza ricaricare —
+  "aggiungi nota" da 8 a 7, come in M2;
+- **contrasto del messaggio d'errore sul fondo vero**: **5.60:1**, `14px`, peso
+  normale;
+- **27 rotte percorse**, zero schermate vuote, zero stati d'errore
+  raggiungibili, `console.error` mai chiamato;
+- **i numeri del pitch non si sono mossi**: CHF 14'200, 16 giorni, 68%, 41
+  attivi, 142 di 1'200, 62%, soglia 12; i cinque di ancoraggio a N=100; CHF
+  652'968, 415 e 798 nel back-office; CHF 1'120 nei compensi;
+- `lint`, `typecheck`, `build` e `build:demo` a posto; i guardrail restano
+  **90 + 6**.
+
+##### Due cose imparate misurando, e sono due trappole di strumento
+
+**`grep` ha mentito sul bundle, e la controprova l'ha smascherato.** Il
+controllo di M5.b — il decoratore assente da entrambe le build — rifatto senza
+`-F` dava *"`[dataset]` presente in produzione"* e *"`fault` presente in
+entrambe"*. Nessuna delle due era vera: **`[dataset]` è una classe di
+caratteri**, quindi matcha qualunque `d`, `a`, `t`, `s` o `e`, e **`fault` sta
+dentro `default`**. Con `-F` e con marcatori presi dalle stringhe vere del file
+— `[fault]`, `iniezione attiva`, `Esiste solo in sviluppo` — l'esito è quello
+di M5.b: assenti da entrambi i bundle, `[dataset]` presente nella sola demo. È
+la stessa famiglia dello spazio unificatore di M1 e del DOM letto troppo presto
+di M5.b: **prima di concludere, verificare che lo strumento potesse vedere la
+cosa giusta.**
+
+**L'`Enter` dell'automazione non invia un form**, e non è un difetto della
+pagina. Con un listener sul `keydown` l'evento arriva — `Enter@BUTTON`,
+`Enter@INPUT` — ma nessun evento `submit` parte: l'invio implicito è un'azione
+di default che il tasto sintetico non riproduce. Quindi **il percorso
+"Enter sul pulsante" non è verificato a schermo**, ed è l'unica asserzione di
+questo blocco che resta sulla parola dello standard invece che su una misura.
+Tutto il resto del giro da tastiera — `Tab`, `shift+Tab`, digitazione, `aria`
+sul campo in errore — è misurato.
+
+**Aperto e dichiarato:**
+
+- **Gli altri due punti di input non hanno uno schema**, ed è la scelta del
+  blocco, non un residuo: il giorno in cui il dialogo nota o la chat avranno
+  regole vere — un tetto di caratteri, un campo obbligatorio — è quello il
+  momento di dargliene uno, non prima.
+- **`@hookform/resolvers` resta alla 4**, e con lei il vincolo che tiene la
+  conversione fuori dallo schema. Non è urgente e non è un difetto: è una
+  dipendenza da alzare quando qualcuno la alza per altri motivi (§3).
+- **`form.tsx` non ha consumatori**, come 32 degli altri componenti di `ui/`. È
+  l'eccezione dichiarata del §3 e ora è la sua versione migliore: da questo
+  blocco è **l'ultima copia buona con la guardia che funziona**.
 
 ### Refinement fra le milestone
 
@@ -1679,13 +1883,43 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 | M2 | Il contratto dati | **fatta** |
 | M3 | Migrazione area per area + calcolatore ROI | **fatta** |
 | M4 | Report scaricabile | **fatta** |
-| M5 | Verso la produzione (differibile) | **in corso** — blocchi a e b chiusi, prossimo c |
+| M5 | Verso la produzione (differibile) | **in corso** — blocchi a, b e c chiusi, prossimo d |
 
 ## Decisioni chiuse
 
 Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà una
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
+
+- **12.08.2026 — Due cambiamenti di comportamento su `src/components/ui/`, e
+  uno rifiutato** (`CLAUDE.md` §3, §6.1). Presi all'apertura del blocco c) di
+  M5, perché **un cambiamento di comportamento su un file congelato non si
+  prende mentre lo si scrive**.
+
+  **La guardia di `useFormField` si ripara** invece di restare documentata: il
+  controllo stava dopo l'uso che doveva proteggere e il default del context era
+  truthy, quindi non scattava mai. La cornice è l'argomento del toast alla
+  rovescia — lì si rimosse perché una copia rotta non è una copia buona, qui si
+  ripara perché la riparazione costa tre righe, e `form.tsx` diventa per la
+  prima volta davvero l'ultima copia buona che il §3 dichiara di tenere.
+
+  **L'anello di focus dei CTA pieni si chiude in `button.tsx`**, con il
+  `ring-offset` e con **una modifica alla base del componente, non dodici
+  rattoppi ai call site**. Chiude il residuo del blocco a).
+
+  **La terza è stata rifiutata dallo stesso blocco**, e vale quanto le due
+  concesse: `FormMessage` e `FormLabel` rendono l'errore a 3.76:1, e invece di
+  correggerli dentro `ui/` la validazione è stata costruita **senza**
+  `form.tsx`. Da qui la previsione del §3 che dava `form` per usato in M5 è
+  corretta con la sua data.
+
+- **12.08.2026 — La nota di sessione vuota non si salva** (`CLAUDE.md` §10.D,
+  `CONTRATTO-DATI.md` §3). "Salva nota" è spento finché i tre campi sono vuoti
+  al trim, **e non c'è nessun messaggio d'errore**: non c'è niente da segnalare
+  finché non si è scritto niente. La ragione è di contratto e non di gusto —
+  `ProfessionalSession.hasNote` esiste perché le proiezioni sappiano che una
+  nota c'è, e una nota vuota lo renderebbe vero su un fatto che non esiste: è
+  il §5.5 applicato a un booleano invece che a un numero.
 
 - **10.08.2026 — Riunione founder: tre ratifiche e tre esecuzioni rimandate.**
   Le regole vivono in `CLAUDE.md`, come sempre; qui restano la data e il motivo.
