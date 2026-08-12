@@ -182,12 +182,33 @@ errori, `npm run lint` e `npm run typecheck` a 0.
 
 **Difetti noti di M1:**
 
-- **Restano 2 vulnerabilità moderate**, entrambe lo stesso open redirect di
-  `react-router` via backslash in `<Link>`. `npm audit fix` è un **no-op**: resta
-  alla 6.30.4, perché il fix è `react-router` **7**, un major che cambia l'API del
-  router. **È una modifica di scope da approvare (§2.6), non una patch**, e per una
-  demo senza URL forniti dall'utente non è sfruttabile. Si riapre quando il router
-  si tocca per altri motivi. Non lanciare `npm audit fix --force`.
+- ~~**Restano 2 vulnerabilità moderate**, entrambe lo stesso open redirect di
+  `react-router` via backslash in `<Link>`.~~ → **chiuse dal blocco d) di M5**
+  (12.08.2026), che ha portato il router alla **7.18.2**: `npm audit` esce a
+  zero. La previsione era giusta nella sostanza — *"si riapre quando il router
+  si tocca per altri motivi"* — ed è andata esattamente così: a riaprirla sono
+  state le guardie di rotta, non la sicurezza.
+
+  **Due cose che questa riga diceva e non erano esatte**, corrette qui perché
+  chi legge la storia veda anche gli sbagli:
+
+  - **non sono la stessa vulnerabilità.** La prima è l'open redirect via
+    backslash in `<Link>`; la seconda è *Arbitrary Constructor Injection via
+    `deserializeErrors()` in SSR Hydration*
+    ([CVE-2026-53666](https://github.com/advisories/GHSA-337j-9hxr-rhxg),
+    verificata dai founder prima di scrivere questa riga). **Nessuna delle due
+    ci riguardava**: la prima ha bisogno di URL forniti dall'utente, che questa
+    demo non ha, e la seconda di idratazione SSR, che una SPA non fa;
+  - **`npm audit fix` non era un no-op per la ragione scritta.** Restava alla
+    6.30.4 perché il range vulnerabile arriva fino alla **7.17.0**: il rimedio
+    non era "la 7", era una 7 che allora non esisteva ancora. Il fatto pratico
+    — non lanciare `--force` — era comunque giusto.
+
+  **Il major è costato quasi niente**, ed è la parte che vale per il futuro: la
+  superficie del router qui è `Link`, `useLocation`, `Outlet`,
+  `useSearchParams` e i tre di `App.tsx`, tutte immutate in v7. Una modifica di
+  scope va pesata su quanto codice tocca, non su quanto è grande il numero di
+  versione.
 - **La rewrite di `vercel.json` risolve il 404 sui link profondi, non lo stato.** Il
   provider vivrà in memoria (§10, "Come si naviga durante la demo"), quindi un
   ricaricamento azzera comunque la demo: `/hr/report` aperto da zero mostrerà la
@@ -204,10 +225,13 @@ errori, `npm run lint` e `npm run typecheck` a 0.
   `--quiet`: `bookingStep` in `Psicologi.jsx`, stato morto di un wizard a più
   passi~~ → sparito in M3 con la riscrittura della prenotazione. Da lì
   `npm run lint` esce **a zero warning**, non solo a zero errori.
-- **La console mostra due avvisi di `react-router`** sui future flag della 7
-  (`v7_startTransition`, `v7_relativeSplatPath`). Non sono errori e non si vedono
-  in produzione; spariscono con la stessa migrazione alla 7 che chiuderebbe le due
-  vulnerabilità, ed è la stessa decisione di scope.
+- ~~**La console mostra due avvisi di `react-router`** sui future flag della 7
+  (`v7_startTransition`, `v7_relativeSplatPath`).~~ → **spariti col major del
+  blocco d)**, e senza configurare niente: nella 7 quei due comportamenti sono
+  il default, quindi i flag non esistono più. Da qui la console di sviluppo
+  porta i soli avvisi di vite e di React DevTools. La previsione era giusta —
+  *"spariscono con la stessa migrazione"* — e la decisione di scope è arrivata
+  con le guardie di rotta, come l'altra riga qui sopra prevedeva.
 
 ### M2 — Il contratto dati
 
