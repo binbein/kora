@@ -92,6 +92,11 @@ function SessionList({
   ));
 }
 
+/** Nessuno dei tre campi dice niente: non c'è una nota da salvare. */
+function isNoteEmpty(draft: { notes: string; nextGoal: string; suggestedFollowUp: string }) {
+  return !draft.notes.trim() && !draft.nextGoal.trim() && !draft.suggestedFollowUp.trim();
+}
+
 export default function ProSessioni() {
   const queryClient = useQueryClient();
   const portalIdQuery = usePortalProfessionalId();
@@ -209,9 +214,22 @@ export default function ProSessioni() {
                 placeholder={t.professional.sessions.note.followUpPlaceholder}
               />
             </div>
+            {/*
+              * Le tre textarea non hanno uno schema: sono testo libero, e
+              * `SessionNote` non pone vincoli su nessuna delle tre. Una
+              * textarea che ammette tutto non ha regole da raccontare, quindi
+              * la macchina di zod qui sarebbe più grande del caso (§11).
+              *
+              * L'UNICA REGOLA È DI CONTRATTO, e non riguarda il testo ma il
+              * fatto: `ProfessionalSession.hasNote` esiste perché le proiezioni
+              * sappiano che una nota c'è, e salvarne una vuota lo renderebbe
+              * vero su qualcosa che non esiste — il §5.5 applicato a un
+              * booleano. Il pulsante spento è il modo più quieto di dirlo: non
+              * c'è niente da segnalare finché non si è scritto niente.
+              */}
             <Button
               className="w-full bg-executive hover:bg-executive/90"
-              disabled={saveNote.isPending}
+              disabled={saveNote.isPending || isNoteEmpty(draft)}
               onClick={() =>
                 openSession && saveNote.mutate({ sessionId: openSession.id, ...draft })
               }
