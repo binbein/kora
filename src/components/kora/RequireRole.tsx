@@ -70,30 +70,60 @@ export default function RequireRole({
    * muove nessun dato, e far rileggere altro sarebbe rileggere mezza
    * applicazione per un ruolo.
    */
+  /*
+   * IL RUOLO È LA VARIABILE DELLA MUTATION, NON UNA CHIUSURA, e questa è la
+   * riga che tiene in piedi tutto il resto del file.
+   *
+   * REACT RIUSA QUESTA ISTANZA FRA DUE PORTALI. Le quattro rotte montano lo
+   * stesso componente nella stessa posizione dell'albero, quindi passando da
+   * `/hr` a `/employee` React non rimonta: aggiorna `role` e **conserva lo
+   * stato della mutation**. Con la porta chiamata senza argomenti, quella già
+   * usata non era più `idle` e non concedeva mai il secondo ruolo: la
+   * schermata restava sull'accesso negato **per sempre**, non per un
+   * fotogramma. Misurato sulle sedici rotte di HR, professionista e admin, a
+   * 30 ms e a 2000 ms dallo stesso passaggio.
+   *
+   * Con il ruolo come variabile, `enter.variables` dice **per quale ruolo la
+   * porta ha già risposto**, e cambiare portale rende quella risposta vecchia
+   * invece di definitiva. È anche il motivo per cui non serve un `key={role}`
+   * ai call site: il meccanismo sta qui, in un posto solo.
+   */
   const enter = useMutation({
-    mutationFn: () => dataProvider.enterAs(role),
+    mutationFn: (wanted: UserRole) => dataProvider.enterAs(wanted),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.session() });
     },
   });
 
-  const session = sessionQuery.data;
+  /** La porta ha già risposto **per questo ruolo**. */
+  const asked = enter.variables === role;
+
+  /*
+   * La verità è la risposta della porta quando c'è, la cache altrimenti.
+   *
+   * Leggere solo la cache costerebbe un fotogramma di accesso negato a ogni
+   * concessione riuscita — fra la mutation conclusa e la query invalidata la
+   * sessione in cache è ancora quella di prima — e con una `fetch` vera dietro
+   * sarebbe un cartello per tutta la durata della richiesta, non un lampo.
+   */
+  const session = asked && enter.data ? enter.data : sessionQuery.data;
   const granted = session?.role === role;
 
   /*
    * La porta si apre in un effetto perché è una scrittura, e una scrittura non
    * si fa durante il render.
    *
-   * NON CICLA, e la ragione è la manopola: quando la sessione è fissata
-   * `enterAs` non la cambia, quindi `session.role` resta lo stesso e le
-   * dipendenze di questo effetto non si muovono. Senza la manopola la prima
-   * concessione riesce e `granted` diventa vero.
+   * NON CICLA, e le due ragioni sono distinte: a porta libera la concessione
+   * riesce e `granted` diventa vero; a sessione fissata dalla manopola
+   * `enterAs` non la cambia, ma `enter.variables` diventa comunque questo
+   * ruolo, quindi `asked` è vero e la condizione si spegne. È la seconda a
+   * rendere raggiungibile la negazione senza farla ciclare.
    */
   useEffect(() => {
-    if (session && session.role !== role && enter.isIdle) {
-      enter.mutate();
+    if (session && !granted && !asked) {
+      enter.mutate(role);
     }
-  }, [session, role, enter]);
+  }, [session, granted, asked, role, enter]);
 
   const page = loadState([sessionQuery]);
   if (page.state === "error") {
@@ -107,7 +137,7 @@ export default function RequireRole({
    * provider in memoria. È la stessa sospensione delle schermate — `null`,
    * niente scheletri (§5.1).
    */
-  if (session === undefined || enter.isIdle || enter.isPending) return null;
+  if (session === undefined || !asked || enter.isPending) return null;
 
   /*
    * La porta ha concesso e il ruolo è ancora un altro: la sessione è fissata,
