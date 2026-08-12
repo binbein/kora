@@ -250,12 +250,28 @@ stati rimossi in M1: pesavano sul bundle di un frontend che diventerà produzion
 La regola con cui sono stati tolti resta, perché la prossima passata di pulizia la
 rifarà: **prima di rimuovere una dipendenza, cercarla nel codice.**
 
-Due gruppi sono installati e inutilizzati **di proposito**, e non vanno tolti
-trovandoli senza `import`:
+~~Due gruppi sono installati e inutilizzati **di proposito**, e non vanno tolti
+trovandoli senza `import`:~~ → **entrambi i gruppi hanno i loro chiamanti**, e la
+riga si corregge con la data invece di restare smentita in silenzio:
 
-- `jspdf` e `html2canvas` servono al report scaricabile (§10.C.3), che è M4;
-- `zod`, `react-hook-form` e `@hookform/resolvers` serviranno alla validazione dei
-  form (§10, milestone M5).
+- `jspdf` e `html2canvas` **sono usati da M4**: `lib/report-pdf.ts` li importa
+  in modo dinamico, così la landing non paga il report di un'area che non
+  visita (§10.C.3);
+- `zod`, `react-hook-form` e `@hookform/resolvers` **sono usati da M5.c**
+  (12.08.2026): `pages/public/DemoRequest.tsx` li importa per la validazione
+  della richiesta demo. Restano gli unici tre chiamanti dell'app —
+  `ui/form.tsx` importa react-hook-form, ma nessuna schermata importa lui
+  (§3, l'eccezione sui componenti inutilizzati).
+
+**Il gruppo cambia mestiere, non sparisce.** La ragione per cui questa voce
+esisteva — *non togliere una dipendenza perché un grep non ne trova l'import* —
+oggi la sorregge la regola qui sopra da sola: prima di rimuovere, cercare nel
+codice. Con cinque dipendenze usate, la ricerca la trova.
+
+**È la previsione gemella di quella su `form.tsx`**, tre sezioni più su, e
+cade allo stesso modo: una riga che dice cosa *servirà* invecchia il giorno in
+cui serve davvero, e nessuno torna a rileggerla perché non ha smesso di essere
+vera — ha smesso di essere il tempo giusto.
 
 Prima di aggiungere qualunque dipendenza nuova: **chiedere.**
 
