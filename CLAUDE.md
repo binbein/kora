@@ -200,14 +200,17 @@ repository Next non dia niente per scontato.
   mentre la si migra; prima, non si converte affatto; in mezzo, si toccano due
   volte le stesse schermate (§11).
 
-  **La seconda eccezione: la guardia di `useFormField` in `form.tsx` è stata
-  riparata** (founder, 12.08.2026). È un **cambiamento di comportamento**,
-  quindi sta fuori dalla prima eccezione, che copre le sole annotazioni — e per
-  questo è dei founder. Il controllo stava dopo la chiamata che doveva
-  proteggere e il default del context era `{}`, cioè truthy: non scattava mai, e
-  fuori da un `<FormField>` il componente sbagliava più avanti, in un punto che
-  non lo dice. Tre righe: guardia sopra l'uso, default che può essere falso, un
-  `as` in meno.
+  **La seconda eccezione: due cambiamenti di comportamento, decisi insieme**
+  (founder, 12.08.2026, all'apertura del blocco c) di M5). Stanno fuori dalla
+  prima, che copre le sole annotazioni, e per questo sono dei founder: **un
+  cambiamento di comportamento su un file congelato non si prende mentre lo si
+  scrive.** Sono due punti nominati, non una licenza sui due file.
+
+  **`form.tsx` — la guardia di `useFormField` è stata riparata.** Il controllo
+  stava dopo la chiamata che doveva proteggere e il default del context era
+  `{}`, cioè truthy: non scattava mai, e fuori da un `<FormField>` il
+  componente sbagliava più avanti, in un punto che non lo dice. Tre righe:
+  guardia sopra l'uso, default che può essere falso, un `as` in meno.
 
   **Il confine, dichiarato una volta**: la guardia copre il caso vero — un
   `FormItem` dentro un `<Form>` ma fuori da un `<FormField>`. Fuori anche dal
@@ -215,10 +218,17 @@ repository Next non dia niente per scontato.
   destrutturazione lancia prima: è comportamento di react-hook-form, e
   restringerlo sarebbe stata una seconda modifica oltre la decisione presa.
 
-  **Non la scioglie per il resto.** Le classi, le varianti e la resa di
-  `src/components/ui/` restano congelate: le eccezioni sono due, entrambe
-  datate, ed entrambe nate perché senza di esse una regola di questo file era
-  ineseguibile.
+  **`button.tsx` — l'anello di focus ha un `ring-offset`.** È il residuo del
+  blocco a) di M5: anello `primary` a filo di un riempimento `primary`, 1.00:1
+  su dodici CTA. Una riga alla base della `cva`, e le misure stanno in §6.1,
+  dove il residuo è dichiarato chiuso.
+
+  **Non la scioglie per il resto.** Classi, varianti e resa di
+  `src/components/ui/` restano congelate. Le eccezioni sono tre, tutte datate,
+  tutte nate perché senza di esse una regola di questo file era ineseguibile —
+  e la prova che non sono una porta aperta è che il blocco c) ne ha **rifiutata
+  una quarta**: `FormMessage` e `FormLabel` rendono l'errore a 3.76:1, e invece
+  di correggerli si è costruita la validazione senza `form.tsx`.
 - **@tanstack/react-query 5** — già installato e mai usato. Diventa l'unico modo in
   cui le schermate leggono e mutano dati (§5).
 - **recharts 2** per i grafici, **lucide-react** per le icone, **framer-motion**
@@ -748,13 +758,30 @@ Regole:
   `aria` — un'icona dichiarata decorativa è esente dalla 1.4.11, e qui ognuna
   sta accanto all'etichetta che porta già il significato.
 
-  **Resta un residuo, e non è chiudibile da lì.** L'anello di focus è invisibile
-  sui CTA pieni: `--ring` è il blu di `primary` e i CTA stanno su `bg-primary`,
-  cioè **1.00:1**, su **12 pulsanti**. Il rimedio sta in
-  `src/components/ui/button.tsx`, che è congelato (§3) e la cui eccezione copre
-  le sole annotazioni di tipo, quindi **va deciso dai founder** — è la stessa
-  famiglia della guardia di `useFormField`, che il blocco c) di M5 porta con sé.
-  "Chiuso" vale per il censimento, non per questo.
+  ~~**Resta un residuo, e non è chiudibile da lì.** L'anello di focus è
+  invisibile sui CTA pieni: `--ring` è il blu di `primary` e i CTA stanno su
+  `bg-primary`, cioè **1.00:1**, su **12 pulsanti**.~~ → **chiuso dal blocco c)
+  di M5**, con la decisione dei founder del 12.08.2026 che il rimedio
+  prevedeva: è la seconda eccezione al congelamento di `src/components/ui/`
+  (§3), e sta in `button.tsx`.
+
+  **Il rimedio è `ring-offset-2` alla base della `cva`, non ai dodici call
+  site**: la sorgente era una, e dodici rattoppi sarebbero stati dodici posti
+  da sbagliare. L'anello si disegna ora come **2px di `--background` più 1px di
+  `--ring`**, e il difetto era che l'anello confinava con la stessa tinta del
+  pulsante — non che l'anello fosse sbagliato.
+
+  **Le misure, sui CTA pieni di tutta la demo**: anello/banda **11.50:1**,
+  banda/riempimento **11.50:1**, anello/fondo pagina **da 11.50 a 11.95:1**. Il
+  1.00:1 resta vero come rapporto fra anello e riempimento, e non conta più:
+  fra i due c'è la banda. **Nessun CTA pieno sta su una sezione tinta o scura**,
+  quindi il caso che poteva non passare qui non esiste — è la verifica da
+  rifare se una schermata futura ne mette uno.
+
+  **La base è condivisa, quindi la modifica tocca ogni variante.** Sui pulsanti
+  chiari la banda è del colore della pagina ed è invisibile: si vede l'anello
+  contro la pagina, **11.95:1**, cioè il valore che il blocco a) aveva già
+  misurato. Non è una resa nuova per loro, è un distacco di 2px.
 - **Due varianti di solo testo: `secondary-strong` e `destructive-strong`**
   (founder, 11.08.2026). Il colore che porta significato non può essere
   illeggibile, e i due token base non passano l'AA come testo:
