@@ -5,7 +5,15 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  /*
+   * `ring-offset-2` è l'unica aggiunta, ed è il residuo di M5.a: l'anello è
+   * `--ring`, cioè il blu di `primary`, e i CTA pieni stanno su `bg-primary`.
+   * Senza stacco l'anello confinava con la stessa tinta del pulsante — 1.00:1
+   * — quindi il focus non si vedeva proprio dove la coreografia del pitch
+   * passa da tastiera. Lo stacco è alla base e non ai call site: la sorgente
+   * era una, e dodici rattoppi sarebbero stati dodici posti da sbagliare.
+   */
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
