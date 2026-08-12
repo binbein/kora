@@ -4,7 +4,8 @@ import { Badge } from '@/components/ui/badge';
 import { Shield } from 'lucide-react';
 import { formatCHF, formatDate, formatNumber } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
-import { usePortalProfessionalId, useProfessionalPatients } from '@/lib/data/queries';
+import { loadState, usePortalProfessionalId, useProfessionalPatients } from '@/lib/data/queries';
+import { ErrorNotice } from '@/components/kora/StateNotice';
 import type { SessionEntitlement } from '@/lib/data/types';
 
 /*
@@ -54,10 +55,16 @@ function EntitlementLine({ entitlement }: { entitlement: SessionEntitlement }) {
 }
 
 export default function ProPazienti() {
-  const { data: professionalId } = usePortalProfessionalId();
-  const { data: patients } = useProfessionalPatients(professionalId);
+  const portalIdQuery = usePortalProfessionalId();
+  const patientsQuery = useProfessionalPatients(portalIdQuery.data);
 
-  if (!patients) return null;
+  /* I tre casi (M5.b), registro strumento. */
+  const page = loadState([portalIdQuery, patientsQuery]);
+  if (page.state === 'error') {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+  const patients = patientsQuery.data;
+  if (patients === undefined) return null;
 
   return (
     <div className="space-y-6">

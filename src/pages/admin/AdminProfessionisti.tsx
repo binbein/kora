@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/table";
 import { Briefcase, CheckCircle2, Clock, Star, XCircle } from "lucide-react";
 import KPICard from "@/components/shared/KPICard";
-import { useProfessionals } from "@/lib/data/queries";
+import { loadState, useProfessionals } from "@/lib/data/queries";
+import { EmptyNotice, ErrorNotice } from "@/components/kora/StateNotice";
 import { isBookable, professionalDisplayName } from "@/lib/data/types";
 import { formatCHF, formatNumber, formatRating } from "@/lib/format";
 import { t } from "@/lib/i18n";
@@ -31,9 +32,22 @@ import { t } from "@/lib/i18n";
  * la prenotazione filtra su `isBookable`.
  */
 export default function AdminProfessionisti() {
-  const { data: professionals } = useProfessionals();
+  const professionalsQuery = useProfessionals();
 
-  if (!professionals) return null;
+  /* I tre casi (M5.b), registro strumento. */
+  const page = loadState([professionalsQuery]);
+  if (page.state === "error") {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+  const professionals = professionalsQuery.data;
+  if (professionals === undefined) return null;
+  if (professionals.length === 0) {
+    return (
+      <Card>
+        <EmptyNotice text={t.admin.professionals.empty} />
+      </Card>
+    );
+  }
 
   const bookable = professionals.filter(isBookable);
   const deliveredSessions = professionals.reduce(

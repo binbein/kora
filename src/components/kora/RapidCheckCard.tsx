@@ -7,6 +7,7 @@ import { useRapidCheckAnswer } from "@/lib/data/queries";
 import { queryKeys } from "@/lib/data/query-keys";
 import type { RapidCheckAnswer } from "@/lib/data/types";
 import { t } from "@/lib/i18n";
+import { ErrorNotice } from "@/components/kora/StateNotice";
 
 /*
  * Il check rapido nella home (CLAUDE.md §8, §10.B).
@@ -152,6 +153,13 @@ export default function RapidCheckCard() {
           );
         })}
       </div>
+
+      {/*
+        * Il fallimento della scrittura si dice **dove sta il gesto**, e senza
+        * "Riprova": a ritentare è lo stesso volto, che resta toccabile. Un
+        * secondo pulsante direbbe la stessa cosa due volte (§11).
+        */}
+      {submit.isError && <ErrorNotice copy={t.employee.rapidCheck.error} />}
     </Card>
   );
 }

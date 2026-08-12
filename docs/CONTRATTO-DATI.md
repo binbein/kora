@@ -392,8 +392,17 @@ consumate si sommano dalla serie di utilizzo, che copre i dodici mesi chiusi.
 - Le schermate si sospendono su `data === undefined`, **mai su `isFetching`**:
   dopo una mutation il dato precedente è ancora a schermo, ed è il caso che non
   deve far lampeggiare nulla.
-- Stati di errore e vuoto veri sono M5. Il contratto li regge già — `| null` e
-  liste vuote sono valori legittimi — ma le schermate non li mostrano ancora.
+- **Un errore è una promise rifiutata**, e il client ne distingue tre casi: in
+  attesa (`undefined`), assente ma legittimo (`null` o lista vuota, §2), e
+  fallito. Come li *rende* è mestiere del frontend e non entra qui.
+- **Il client non ritenta automaticamente.** Un fallimento arriva a schermo così
+  com'è, e a ritentare è un gesto dell'utente. Chi reintroduce il tentativo
+  automatico il giorno di `http/` deve sapere perché è stato tolto: il retryer di
+  react-query **mette in pausa fra un tentativo e l'altro se la scheda non è in
+  primo piano**, e una query in pausa ha `data === undefined`, cioè è
+  indistinguibile da una in attesa. È un quarto caso che i tre qui sopra non
+  ammettono, e con una rete vera — dove i fallimenti sono la norma e non una
+  manopola di sviluppo — aspetta chiunque lo riaccenda senza saperlo.
 
 ## 6. Cosa è stato lasciato fuori di proposito
 

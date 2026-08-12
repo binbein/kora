@@ -16,6 +16,59 @@ import { quarterKey, type CappedServiceKind, type Quarter } from "./types";
  * altrimenti un refetch dopo una mutation farebbe lampeggiare la schermata.
  */
 
+/*
+ * LA REGOLA DEI TRE CASI, scritta una volta (CLAUDE.md §4, blocco b di M5).
+ *
+ *   data === undefined  → in attesa      (si sospende, mai su `isFetching`)
+ *   isError             → guasto         (stato d'errore, con "Riprova")
+ *   qualunque altro      → arrivato      — e può essere `null` o una lista
+ *                                          vuota, che sono valori legittimi
+ *                                          (`docs/CONTRATTO-DATI.md` §2)
+ *
+ * Fino a M5.b le schermate scrivevano `if (!dato) return null`, che confonde
+ * tutti e tre: un trimestre senza snapshot — `null` per contratto — usciva
+ * identico a un dato non ancora arrivato e a uno che non arriverà mai, cioè
+ * una pagina bianca senza spiegazione.
+ *
+ * QUESTA FUNZIONE NON CONOSCE LE FORME, ed è la sua unica regola: non sa cosa
+ * sia vuoto, perché il vuoto di una lista è `[]` e quello di uno slot è
+ * `null`, e un classificatore che li conoscesse tutti sarebbe il secondo
+ * elenco che diverge dal primo. **A decidere il vuoto è la schermata**, che
+ * quel dato lo mostra.
+ *
+ * L'errore vince sull'attesa: se qualcosa è già fallito, aspettare il resto
+ * lascerebbe a schermo una sospensione che non finisce.
+ *
+ * `retry` rilegge **le sole query rotte**, non tutte: dopo una lettura fallita
+ * non c'è ragione di far rileggere mezza schermata a chi è arrivato bene.
+ */
+export type LoadState = "loading" | "error" | "ready";
+
+/** La superficie di `useQuery` che serve a classificare, e nient'altro. */
+type QueryLike = {
+  data: unknown;
+  isError: boolean;
+  refetch: () => unknown;
+};
+
+export function loadState(queries: readonly QueryLike[]): {
+  state: LoadState;
+  retry: () => void;
+} {
+  const state: LoadState = queries.some((query) => query.isError)
+    ? "error"
+    : queries.some((query) => query.data === undefined)
+      ? "loading"
+      : "ready";
+
+  return {
+    state,
+    retry: () => {
+      for (const query of queries) if (query.isError) query.refetch();
+    },
+  };
+}
+
 export function useReferenceDate() {
   return useQuery({
     queryKey: queryKeys.referenceDate(),

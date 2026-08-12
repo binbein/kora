@@ -9,7 +9,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { MapPin, ClipboardCheck, AlertTriangle, CalendarClock } from "lucide-react";
+import { EmptyNotice, ErrorNotice } from "@/components/kora/StateNotice";
 import {
+  loadState,
   useCheckupEligibility,
   useCheckupProviders,
   useCheckupReport,
@@ -93,14 +95,30 @@ function ProviderRow({
 }
 
 export default function Checkup() {
-  const { data: eligibility } = useCheckupEligibility();
-  const { data: providers } = useCheckupProviders();
+  const eligibilityQuery = useCheckupEligibility();
+  const providersQuery = useCheckupProviders();
   const [reportOpen, setReportOpen] = useState(false);
 
-  const lastCompleted = eligibility?.lastCompleted ?? null;
-  const { data: report } = useCheckupReport(lastCompleted?.id);
+  const lastCompleted = eligibilityQuery.data?.lastCompleted ?? null;
+  const reportQuery = useCheckupReport(lastCompleted?.id);
 
-  if (!eligibility || !providers) return null;
+  /*
+   * I tre casi (M5.b), registro consumer.
+   *
+   * `reportQuery` **non entra nel gruppo**: è disabilitata finché non c'è un
+   * check-up da cui prendere l'id, e una query disabilitata resta `undefined`
+   * per sempre — dentro il gruppo direbbe "in attesa" a una pagina che non sta
+   * aspettando niente. Il referto ha il suo ramo nel dialogo che lo apre.
+   */
+  const page = loadState([eligibilityQuery, providersQuery]);
+  if (page.state === "error") {
+    return <ErrorNotice copy={t.employee.state.error} onRetry={page.retry} />;
+  }
+
+  const eligibility = eligibilityQuery.data;
+  const providers = providersQuery.data;
+  const report = reportQuery.data;
+  if (eligibility === undefined || providers === undefined) return null;
 
   const bookable = providers
     .filter((provider) => provider.status === "active")
@@ -168,13 +186,19 @@ export default function Checkup() {
             {t.employee.checkup.networkHint}
           </p>
         </div>
-        {bookable.map((provider) => (
-          <ProviderRow
-            key={provider.id}
-            provider={provider}
-            availableFrom={eligibility.availableFrom}
-          />
-        ))}
+        {bookable.length === 0 ? (
+          <Card className="rounded-2xl">
+            <EmptyNotice text={t.employee.checkup.networkEmpty} />
+          </Card>
+        ) : (
+          bookable.map((provider) => (
+            <ProviderRow
+              key={provider.id}
+              provider={provider}
+              availableFrom={eligibility.availableFrom}
+            />
+          ))
+        )}
       </div>
 
       <Dialog open={reportOpen} onOpenChange={setReportOpen}>
@@ -188,6 +212,12 @@ export default function Checkup() {
                 : ""}
             </DialogTitle>
           </DialogHeader>
+          {reportQuery.isError && (
+            <ErrorNotice
+              copy={t.employee.state.error}
+              onRetry={() => reportQuery.refetch()}
+            />
+          )}
           {report && (
             <div className="space-y-3">
               {report.measurements.map((measurement) => (

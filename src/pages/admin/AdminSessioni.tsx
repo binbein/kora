@@ -11,10 +11,12 @@ import {
 import { CalendarClock, CheckCircle2, ClipboardList, Coins } from "lucide-react";
 import KPICard from "@/components/shared/KPICard";
 import {
+  loadState,
   usePortalProfessional,
   usePortalProfessionalId,
   useProfessionalSessions,
 } from "@/lib/data/queries";
+import { EmptyNotice, ErrorNotice } from "@/components/kora/StateNotice";
 import { professionalDisplayName } from "@/lib/data/types";
 import type { AppointmentStatus } from "@/lib/data/types";
 import { formatCHF, formatDate, formatNumber, formatTime } from "@/lib/format";
@@ -51,11 +53,27 @@ const STATUS_LABEL: Record<AppointmentStatus, string> = {
 };
 
 export default function AdminSessioni() {
-  const { data: professionalId } = usePortalProfessionalId();
-  const { data: professional } = usePortalProfessional();
-  const { data: sessions } = useProfessionalSessions(professionalId);
+  const portalIdQuery = usePortalProfessionalId();
+  const professionalQuery = usePortalProfessional();
+  const sessionsQuery = useProfessionalSessions(portalIdQuery.data);
 
-  if (!professional || !sessions) return null;
+  /* I tre casi (M5.b), registro strumento. `portalIdQuery` entra nel gruppo
+     perché le altre due dipendono da lui e senza resterebbero in attesa. */
+  const page = loadState([portalIdQuery, professionalQuery, sessionsQuery]);
+  if (page.state === "error") {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+  const professional = professionalQuery.data;
+  const sessions = sessionsQuery.data;
+  if (professional === undefined || sessions === undefined) return null;
+  /* `getProfessional` è nullable per contratto. */
+  if (professional === null) {
+    return (
+      <Card>
+        <EmptyNotice text={t.professional.profile.empty} />
+      </Card>
+    );
+  }
 
   const delivered = sessions.filter(
     (session) => session.status === "completed",

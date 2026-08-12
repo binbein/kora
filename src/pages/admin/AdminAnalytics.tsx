@@ -15,7 +15,8 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3, Briefcase, TrendingUp, Users } from "lucide-react";
 import KPICard from "@/components/shared/KPICard";
-import { useClientCompanies, usePlatformMonths } from "@/lib/data/queries";
+import { loadState, useClientCompanies, usePlatformMonths } from "@/lib/data/queries";
+import { EmptyNotice, ErrorNotice } from "@/components/kora/StateNotice";
 import {
   activationPercent,
   currentPlatformMonth,
@@ -68,13 +69,31 @@ const SERVICE_KINDS: AppointmentKind[] = [
 ];
 
 export default function AdminAnalytics() {
-  const { data: months } = usePlatformMonths();
-  const { data: companies } = useClientCompanies();
+  const monthsQuery = usePlatformMonths();
+  const companiesQuery = useClientCompanies();
 
-  if (!months || !companies) return null;
+  /* I tre casi (M5.b), registro strumento. */
+  const page = loadState([monthsQuery, companiesQuery]);
+  if (page.state === "error") {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+  const months = monthsQuery.data;
+  const companies = companiesQuery.data;
+  if (months === undefined || companies === undefined) return null;
 
+  /*
+   * Serie di piattaforma senza il mese corrente: non c'è niente da mettere
+   * sulle KPI né sui cinque grafici, e non è un guasto — è una serie vuota,
+   * cioè il caso in cui il back-office apre prima del primo cliente.
+   */
   const current = currentPlatformMonth(months);
-  if (!current) return null;
+  if (!current) {
+    return (
+      <Card>
+        <EmptyNotice text={t.admin.analytics.empty} />
+      </Card>
+    );
+  }
 
   const currentSessions = SERVICE_KINDS.reduce(
     (sum, kind) => sum + current.sessions[kind],

@@ -8,7 +8,8 @@ import { CreditCard, Calculator, FileText } from 'lucide-react';
 import { formatCHF, formatMonthYear, formatNumber } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import type { PlanId } from '@/lib/data/types';
-import { useCompany, useInvoices, usePlans } from '@/lib/data/queries';
+import { loadState, useCompany, useInvoices, usePlans } from '@/lib/data/queries';
+import { EmptyNotice, ErrorNotice } from '@/components/kora/StateNotice';
 
 /*
  * La fatturazione dell'area HR (CLAUDE.md §10.C).
@@ -22,15 +23,27 @@ import { useCompany, useInvoices, usePlans } from '@/lib/data/queries';
  * locale: due listini divergono, e quello locale non lo aggiorna nessuno.
  */
 export default function HRFatturazione() {
-  const { data: company } = useCompany();
-  const { data: plans } = usePlans();
-  const { data: invoices } = useInvoices();
+  const companyQuery = useCompany();
+  const plansQuery = usePlans();
+  const invoicesQuery = useInvoices();
 
   const [employees, setEmployees] = useState<number | null>(null);
   const [planId, setPlanId] = useState<PlanId | null>(null);
   const [annual, setAnnual] = useState(true);
 
-  if (!company || !plans || !invoices) return null;
+  /* I tre casi (M5.b). Nessuno di questi tre è nullable per contratto: qui
+     l'unico vuoto possibile è una lista di fatture senza righe, ed è sotto. */
+  const page = loadState([companyQuery, plansQuery, invoicesQuery]);
+  if (page.state === 'error') {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+
+  const company = companyQuery.data;
+  const plans = plansQuery.data;
+  const invoices = invoicesQuery.data;
+  if (company === undefined || plans === undefined || invoices === undefined) {
+    return null;
+  }
 
   // il simulatore parte dai valori dell'azienda: è il caso di gran lunga più
   // frequente, e apre su un totale che chi guarda può verificare sulla card sopra
@@ -84,6 +97,9 @@ export default function HRFatturazione() {
         <h3 className="font-semibold mb-4 flex items-center gap-2">
           <FileText className="w-4 h-4 text-primary" aria-hidden="true" /> {t.hr.billing.invoicesTitle}
         </h3>
+        {invoices.length === 0 && (
+          <EmptyNotice text={t.hr.billing.invoicesEmpty} />
+        )}
         <div className="space-y-3">
           {invoices.map((invoice) => (
             <div

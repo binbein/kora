@@ -13,7 +13,9 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Check, CheckCircle2, Globe, Star, Video } from "lucide-react";
 import { dataProvider } from "@/lib/data";
+import { ErrorNotice } from "@/components/kora/StateNotice";
 import {
+  loadState,
   useAvailableSlots,
   useEntitlement,
   useProfessionals,
@@ -98,8 +100,8 @@ function BookingDialog({
 }) {
   const queryClient = useQueryClient();
   const kind = serviceOf(professional);
-  const { data: slots } = useAvailableSlots(professional.id);
-  const { data: entitlement } = useEntitlement(kind);
+  const slotsQuery = useAvailableSlots(professional.id);
+  const entitlementQuery = useEntitlement(kind);
 
   /*
    * Stato del dialogo, non stato del dominio (§5.2): quale slot è selezionato e
@@ -125,7 +127,15 @@ function BookingDialog({
     },
   });
 
-  if (!slots || !entitlement) return null;
+  /* I tre casi (M5.b) dentro il dialogo: il resto della pagina resta in piedi,
+     e chi non riesce a leggere la disponibilità può chiudere e riprovare. */
+  const dialog = loadState([slotsQuery, entitlementQuery]);
+  if (dialog.state === "error") {
+    return <ErrorNotice copy={t.employee.state.error} onRetry={dialog.retry} />;
+  }
+  const slots = slotsQuery.data;
+  const entitlement = entitlementQuery.data;
+  if (slots === undefined || entitlement === undefined) return null;
 
   const name = professionalDisplayName(professional);
   const overCap = entitlement.used >= entitlement.total;
@@ -270,6 +280,16 @@ function BookingDialog({
       >
         {t.employee.psychologists.dialog.confirm}
       </Button>
+
+      {/*
+        * Il fallimento si dice sotto il pulsante che l'ha causato, e **lo slot
+        * scelto resta selezionato**: a ritentare è lo stesso pulsante, quindi
+        * non serve un "Riprova" accanto. La frase dice che la seduta non è
+        * stata presa, che è il dubbio vero dopo un errore di prenotazione.
+        */}
+      {book.isError && (
+        <ErrorNotice copy={t.employee.psychologists.dialog.error} />
+      )}
     </div>
   );
 }
@@ -377,7 +397,7 @@ function ProfessionalList({
 
 export default function Psicologi() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data: professionals } = useProfessionals();
+  const professionalsQuery = useProfessionals();
   const [booking, setBooking] = useState<Professional | null>(null);
 
   /*
@@ -387,7 +407,14 @@ export default function Psicologi() {
    */
   const service = serviceFromParam(searchParams.get(SERVICE_PARAM));
 
-  if (!professionals) return null;
+  /* I tre casi (M5.b), registro consumer. La lista vuota ha già la sua frase
+     in `ProfessionalList`: è un caso previsto, non un guasto. */
+  const page = loadState([professionalsQuery]);
+  if (page.state === "error") {
+    return <ErrorNotice copy={t.employee.state.error} onRetry={page.retry} />;
+  }
+  const professionals = professionalsQuery.data;
+  if (professionals === undefined) return null;
 
   /*
    * Solo i prenotabili. Il provider restituisce il roster intero perché il

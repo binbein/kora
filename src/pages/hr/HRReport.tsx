@@ -8,6 +8,7 @@ import { formatCHF, formatNumber, formatPercent, formatSigned } from '@/lib/form
 import { interpolate, t } from '@/lib/i18n';
 import { quarterKey, type Quarter } from '@/lib/data/types';
 import {
+  loadState,
   useCompany,
   useCurrentQuarter,
   useHrReport,
@@ -15,6 +16,7 @@ import {
   useReferenceDate,
   useRoiSnapshot,
 } from '@/lib/data/queries';
+import { EmptyNotice, ErrorNotice } from '@/components/kora/StateNotice';
 import PrintableReport, { PRINT_WIDTH } from '@/components/hr/PrintableReport';
 import { downloadReportPdf, reportFileName } from '@/lib/report-pdf';
 
@@ -85,19 +87,47 @@ function StatRow({
   );
 }
 
+/** Il selettore del trimestre, che i due rami della pagina condividono. */
+function QuarterSelect({
+  quarters,
+  currentQuarter,
+  selected,
+  onSelect,
+}: {
+  quarters: Quarter[];
+  currentQuarter: Quarter;
+  selected: Quarter;
+  onSelect: (key: string) => void;
+}) {
+  return (
+    <Select value={quarterKey(selected)} onValueChange={onSelect}>
+      <SelectTrigger className="w-full sm:w-64" aria-label={t.hr.quarterSelectorLabel}>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {quarters.map((period) => (
+          <SelectItem key={quarterKey(period)} value={quarterKey(period)}>
+            {quarterLabel(period, currentQuarter)}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}
+
 export default function HRReport() {
-  const { data: company } = useCompany();
-  const { data: currentQuarter } = useCurrentQuarter();
-  const { data: quarters } = useQuarters();
+  const companyQuery = useCompany();
+  const currentQuarterQuery = useCurrentQuarter();
+  const quartersQuery = useQuarters();
 
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const selected =
-    quarters?.find((period) => quarterKey(period) === selectedKey) ??
-    currentQuarter;
+    quartersQuery.data?.find((period) => quarterKey(period) === selectedKey) ??
+    currentQuarterQuery.data;
 
-  const { data: report } = useHrReport(selected);
-  const { data: snapshot } = useRoiSnapshot(selected);
-  const { data: today } = useReferenceDate();
+  const reportQuery = useHrReport(selected);
+  const snapshotQuery = useRoiSnapshot(selected);
+  const todayQuery = useReferenceDate();
 
   /*
    * Il nodo che il generatore cattura. È montato sempre, e sempre fuori
@@ -107,16 +137,62 @@ export default function HRReport() {
   const printRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
 
+  /* I tre casi (M5.b): `report` e `snapshot` sono nullable per contratto. */
+  const page = loadState([
+    companyQuery,
+    currentQuarterQuery,
+    quartersQuery,
+    reportQuery,
+    snapshotQuery,
+    todayQuery,
+  ]);
+  if (page.state === 'error') {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+
+  const company = companyQuery.data;
+  const currentQuarter = currentQuarterQuery.data;
+  const quarters = quartersQuery.data;
+  const report = reportQuery.data;
+  const snapshot = snapshotQuery.data;
+  const today = todayQuery.data;
+
   if (
-    !company ||
-    !currentQuarter ||
-    !quarters ||
-    !selected ||
-    !report ||
-    !snapshot ||
-    !today
+    company === undefined ||
+    currentQuarter === undefined ||
+    quarters === undefined ||
+    selected === undefined ||
+    report === undefined ||
+    snapshot === undefined ||
+    today === undefined
   ) {
     return null;
+  }
+
+  /*
+   * Trimestre senza dati: resta il selettore, **e sparisce il pulsante di
+   * download**. Un report che non c'è non si scarica, e lasciare il pulsante
+   * genererebbe un PDF di una pagina vuota — che è peggio di non averlo.
+   */
+  if (report === null || snapshot === null) {
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+          <h1 className="text-2xl font-bold font-display">{t.hr.report.title}</h1>
+          <div className="w-full sm:w-auto">
+            <QuarterSelect
+              quarters={quarters}
+              currentQuarter={currentQuarter}
+              selected={selected}
+              onSelect={setSelectedKey}
+            />
+          </div>
+        </div>
+        <Card>
+          <EmptyNotice text={t.hr.quarterEmpty} />
+        </Card>
+      </div>
+    );
   }
 
   const quarterText = quarterLabel(selected, currentQuarter);
@@ -134,21 +210,12 @@ export default function HRReport() {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-          <Select
-            value={quarterKey(selected)}
-            onValueChange={(value) => setSelectedKey(value)}
-          >
-            <SelectTrigger className="w-full sm:w-64" aria-label={t.hr.quarterSelectorLabel}>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {quarters.map((period) => (
-                <SelectItem key={quarterKey(period)} value={quarterKey(period)}>
-                  {quarterLabel(period, currentQuarter)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <QuarterSelect
+            quarters={quarters}
+            currentQuarter={currentQuarter}
+            selected={selected}
+            onSelect={setSelectedKey}
+          />
           <Button
             variant="outline"
             size="sm"

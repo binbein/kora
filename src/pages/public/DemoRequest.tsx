@@ -13,6 +13,7 @@ import { dataProvider } from "@/lib/data";
 import { queryKeys } from "@/lib/data/query-keys";
 import type { DemoRequest as DemoRequestRecord } from "@/lib/data/types";
 import { interpolate, t } from "@/lib/i18n";
+import { ErrorNotice } from "@/components/kora/StateNotice";
 
 /*
  * La richiesta di demo (CLAUDE.md §10.A.4).
@@ -255,6 +256,12 @@ export default function DemoRequest() {
                   ? t.public.demoRequest.submitting
                   : t.public.demoRequest.submit}
               </Button>
+
+              {/* `form` è stato locale e la mutation fallita non lo svuota:
+                  chi riprova non ricompila. */}
+              {submit.isError && (
+                <ErrorNotice copy={t.public.demoRequest.error} />
+              )}
             </form>
           </Card>
         </div>

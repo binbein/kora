@@ -14,9 +14,11 @@ import {
 } from "lucide-react";
 import PrivacyBanner from "@/components/shared/PrivacyBanner";
 import RapidCheckCard from "@/components/kora/RapidCheckCard";
+import { ErrorNotice } from "@/components/kora/StateNotice";
 import { formatDate, formatNumber, formatTime, formatWeekday } from "@/lib/format";
 import { interpolate, t } from "@/lib/i18n";
 import {
+  loadState,
   useAiHealthPlan,
   useAppointments,
   useCheckupEligibility,
@@ -98,8 +100,20 @@ function ServiceCounter({
   buttonClass: string;
   to: string;
 }) {
-  const { data: entitlement } = useEntitlement(kind);
-  if (!entitlement) return null;
+  const entitlementQuery = useEntitlement(kind);
+
+  /* La card ha una lettura sua, quindi ha i suoi tre casi: un contatore che
+     non arriva non porta via la home. */
+  const card = loadState([entitlementQuery]);
+  if (card.state === "error") {
+    return (
+      <Card className="p-5 rounded-2xl">
+        <ErrorNotice copy={t.employee.state.error} onRetry={card.retry} />
+      </Card>
+    );
+  }
+  const entitlement = entitlementQuery.data;
+  if (entitlement === undefined) return null;
 
   const line =
     scheduled > 0
@@ -167,13 +181,37 @@ function AppointmentRow({
 }
 
 export default function EmployeeHome() {
-  const { data: profile } = useEmployeeProfile();
-  const { data: appointments } = useAppointments();
-  const { data: professionals } = useProfessionals();
-  const { data: plan } = useAiHealthPlan();
-  const { data: checkup } = useCheckupEligibility();
+  const profileQuery = useEmployeeProfile();
+  const appointmentsQuery = useAppointments();
+  const professionalsQuery = useProfessionals();
+  const planQuery = useAiHealthPlan();
+  const checkupQuery = useCheckupEligibility();
 
-  if (!profile || !appointments || !professionals || !plan || !checkup) {
+  /* I tre casi (M5.b), registro consumer. Gli appuntamenti vuoti sono un caso
+     previsto e hanno già la loro frase più sotto. */
+  const page = loadState([
+    profileQuery,
+    appointmentsQuery,
+    professionalsQuery,
+    planQuery,
+    checkupQuery,
+  ]);
+  if (page.state === "error") {
+    return <ErrorNotice copy={t.employee.state.error} onRetry={page.retry} />;
+  }
+
+  const profile = profileQuery.data;
+  const appointments = appointmentsQuery.data;
+  const professionals = professionalsQuery.data;
+  const plan = planQuery.data;
+  const checkup = checkupQuery.data;
+  if (
+    profile === undefined ||
+    appointments === undefined ||
+    professionals === undefined ||
+    plan === undefined ||
+    checkup === undefined
+  ) {
     return null;
   }
 

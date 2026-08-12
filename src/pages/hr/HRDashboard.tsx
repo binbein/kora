@@ -20,10 +20,12 @@ import {
 } from 'recharts';
 import KPICard from '@/components/shared/KPICard';
 import PrivacyBanner from '@/components/shared/PrivacyBanner';
+import { EmptyNotice, ErrorNotice } from '@/components/kora/StateNotice';
 import { formatCHF, formatDate, formatMonthShort, formatNumber, formatPercent, formatSigned } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
-import { quarterKey, quarterOf, stressLevelFromScore, type AppointmentKind, type Quarter, type StressRecord } from '@/lib/data/types';
+import { quarterKey, quarterOf, stressLevelFromScore, type AppointmentKind, type Company, type Quarter, type StressRecord } from '@/lib/data/types';
 import {
+  loadState,
   useCompany,
   useCurrentQuarter,
   useDepartments,
@@ -103,41 +105,165 @@ function extremesOf(
   return { from: published[0], to: published[published.length - 1] };
 }
 
+/**
+ * L'intestazione con il selettore del trimestre.
+ *
+ * Sta fuori dal corpo perché la mostra anche il ramo del trimestre senza dati:
+ * senza di lei quel ramo sarebbe un vicolo cieco, e chi ci finisce non avrebbe
+ * il comando con cui uscirne (§10).
+ */
+function DashboardHeader({
+  company,
+  quarters,
+  currentQuarter,
+  selected,
+  onSelect,
+}: {
+  company: Company;
+  quarters: Quarter[];
+  currentQuarter: Quarter;
+  selected: Quarter;
+  onSelect: (key: string) => void;
+}) {
+  return (
+    <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+      <div>
+        <h1 className="text-2xl font-bold font-display">{t.hr.dashboardTitle}</h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          {interpolate(t.hr.companySubtitle, {
+            name: company.name,
+            count: formatNumber(company.employeeCount),
+            plan: t.plan[company.plan.id],
+          })}
+        </p>
+      </div>
+      <div className="w-full sm:w-auto">
+        <Select value={quarterKey(selected)} onValueChange={onSelect}>
+          <SelectTrigger className="w-full sm:w-64" aria-label={t.hr.quarterSelectorLabel}>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {quarters.map((period) => (
+              <SelectItem key={quarterKey(period)} value={quarterKey(period)}>
+                {quarterLabel(period, currentQuarter)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  );
+}
+
 export default function HRDashboard() {
-  const { data: company } = useCompany();
-  const { data: quarters } = useQuarters();
-  const { data: currentQuarter } = useCurrentQuarter();
-  const { data: departments } = useDepartments();
-  const { data: latestStress } = useLatestStressByDepartment();
-  const { data: companyHistory } = useStressHistory();
-  const { data: alert } = useEarlyAlert();
-  const { data: usage } = useServiceUsage();
-  const { data: snapshots } = useRoiSnapshots();
+  const companyQuery = useCompany();
+  const quartersQuery = useQuarters();
+  const currentQuarterQuery = useCurrentQuarter();
+  const departmentsQuery = useDepartments();
+  const latestStressQuery = useLatestStressByDepartment();
+  const companyHistoryQuery = useStressHistory();
+  const alertQuery = useEarlyAlert();
+  const usageQuery = useServiceUsage();
+  const snapshotsQuery = useRoiSnapshots();
 
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const selected =
-    quarters?.find((period) => quarterKey(period) === selectedKey) ??
-    currentQuarter;
+    quartersQuery.data?.find((period) => quarterKey(period) === selectedKey) ??
+    currentQuarterQuery.data;
 
-  const { data: snapshot } = useRoiSnapshot(selected);
-  const { data: report } = useHrReport(selected);
-  const { data: alertHistory } = useStressHistory(alert?.departmentId);
+  const snapshotQuery = useRoiSnapshot(selected);
+  const reportQuery = useHrReport(selected);
+  const alertHistoryQuery = useStressHistory(alertQuery.data?.departmentId);
 
+  /*
+   * I TRE CASI, DISTRICATI (CLAUDE.md §4, blocco b di M5). Qui c'era un `if` a
+   * undici condizioni con `!dato`, e due di quelle condizioni erano slot che il
+   * contratto dichiara **nullable**: `getRoiSnapshot` e `getHrReport`
+   * restituiscono `null` per un trimestre che non ha dati
+   * (`docs/CONTRATTO-DATI.md` §2). Un trimestre legittimamente vuoto usciva
+   * quindi identico a una pagina in caricamento e a una rotta — cioè bianca.
+   */
+  const page = loadState([
+    companyQuery,
+    quartersQuery,
+    currentQuarterQuery,
+    departmentsQuery,
+    latestStressQuery,
+    companyHistoryQuery,
+    alertQuery,
+    alertHistoryQuery,
+    usageQuery,
+    snapshotsQuery,
+    snapshotQuery,
+    reportQuery,
+  ]);
+  if (page.state === 'error') {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+
+  const company = companyQuery.data;
+  const quarters = quartersQuery.data;
+  const currentQuarter = currentQuarterQuery.data;
+  const departments = departmentsQuery.data;
+  const latestStress = latestStressQuery.data;
+  const companyHistory = companyHistoryQuery.data;
+  const alert = alertQuery.data;
+  const usage = usageQuery.data;
+  const snapshots = snapshotsQuery.data;
+  const snapshot = snapshotQuery.data;
+  const report = reportQuery.data;
+
+  /*
+   * IN ATTESA: si guarda `undefined`, e solo lui. Il `null` non entra qui — è
+   * un valore arrivato, e sotto ha il suo ramo.
+   */
   if (
-    !company ||
-    !quarters ||
-    !currentQuarter ||
-    !selected ||
-    !departments ||
-    !latestStress ||
-    !companyHistory ||
-    !usage ||
-    !snapshots ||
-    !snapshot ||
-    !report
+    company === undefined ||
+    quarters === undefined ||
+    currentQuarter === undefined ||
+    selected === undefined ||
+    departments === undefined ||
+    latestStress === undefined ||
+    companyHistory === undefined ||
+    alert === undefined ||
+    usage === undefined ||
+    snapshots === undefined ||
+    snapshot === undefined ||
+    report === undefined
   ) {
     return null;
   }
+
+  /*
+   * VUOTO LEGITTIMO: il trimestre scelto non ha né snapshot né report. Non è un
+   * guasto e non si dice con un errore. **L'intestazione resta**, perché il
+   * selettore è il modo di uscirne: senza, cambiare trimestre porterebbe in un
+   * vicolo cieco (§10).
+   */
+  if (snapshot === null || report === null) {
+    return (
+      <div className="space-y-6">
+        <DashboardHeader
+          company={company}
+          quarters={quarters}
+          currentQuarter={currentQuarter}
+          selected={selected}
+          onSelect={setSelectedKey}
+        />
+        <Card>
+          <EmptyNotice text={t.hr.quarterEmpty} />
+        </Card>
+      </div>
+    );
+  }
+
+  /*
+   * La serie del reparto in allerta esiste solo se l'allerta esiste.
+   * `useStressHistory(undefined)` è per contratto la serie **aziendale**,
+   * quindi senza questa riga un dataset senza alert disegnerebbe due volte la
+   * stessa linea, una sopra l'altra, chiamandone una col nome di un reparto.
+   */
+  const alertHistory = alert ? alertHistoryQuery.data : undefined;
 
   const departmentName = (id: string) =>
     departments.find((department) => department.id === id)?.name ?? id;
@@ -225,35 +351,13 @@ export default function HRDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-        <div>
-          <h1 className="text-2xl font-bold font-display">{t.hr.dashboardTitle}</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            {interpolate(t.hr.companySubtitle, {
-              name: company.name,
-              count: formatNumber(company.employeeCount),
-              plan: t.plan[company.plan.id],
-            })}
-          </p>
-        </div>
-        <div className="w-full sm:w-auto">
-          <Select
-            value={quarterKey(selected)}
-            onValueChange={(value) => setSelectedKey(value)}
-          >
-            <SelectTrigger className="w-full sm:w-64" aria-label={t.hr.quarterSelectorLabel}>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {quarters.map((period) => (
-                <SelectItem key={quarterKey(period)} value={quarterKey(period)}>
-                  {quarterLabel(period, currentQuarter)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+      <DashboardHeader
+        company={company}
+        quarters={quarters}
+        currentQuarter={currentQuarter}
+        selected={selected}
+        onSelect={setSelectedKey}
+      />
 
       {alert && (
         <Card className="p-5 bg-warning/15 border-warning">

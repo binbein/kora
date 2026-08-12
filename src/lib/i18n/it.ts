@@ -29,6 +29,28 @@ export const it = {
        legge a schermo, quindi è una decisione dei founder e non di una
        passata di igiene. */
     listSeparator: ", ",
+
+    /* Gli stati che sostituiscono i dati quando i dati non ci sono (M5.b).
+       Questi sono il **registro strumento** del §7 — terza persona, asciutti —
+       e li usano l'area pubblica, HR, il professionista e il back-office. Il
+       portale dipendente ha i suoi in `employee.state`, perché lì si dà del tu.
+
+       Il corpo dice cosa fare, non cosa è successo: "non è stato possibile
+       caricare" descriverebbe il guasto a chi non può farci niente. */
+    state: {
+      retry: "Riprova",
+      error: {
+        title: "Dati non disponibili",
+        body: "Riprova fra un momento.",
+      },
+      /* Il boot fallito. È l'unico stato che non ha una schermata attorno,
+         quindi il gesto va detto per esteso: ricaricare è anche l'unico modo
+         di ripartire, visto che il provider vive in memoria (§10). */
+      boot: {
+        title: "Kora non si è avviata",
+        body: "Ricarica la pagina per riprovare. Quello che hai fatto finora non viene conservato.",
+      },
+    },
   },
 
   /* La 404. `body` è una frase intera con segnaposto e non due pezzi cuciti
@@ -117,6 +139,18 @@ export const it = {
     privacy:
       "La tua azienda vede solo dati aggregati e anonimi. La tua salute resta tua.",
 
+    /* Lo stato d'errore nel registro consumer (§7): seconda persona, e nessuna
+       colpa data a chi legge. È lo stesso guasto che `common.state` racconta
+       in terza persona alle altre quattro aree — a cambiare è solo come si
+       parla, che è il motivo per cui i due registri stanno in `i18n` e non
+       dentro il componente. */
+    state: {
+      error: {
+        title: "Questa parte non si è caricata",
+        body: "Riprova fra un momento.",
+      },
+    },
+
     /** I due servizi che il piano cappa, come li chiama chi li usa. */
     service: {
       psychologist: "Psicologo",
@@ -191,6 +225,12 @@ export const it = {
         4: "Non bene",
         5: "Molto male",
       },
+      /* La scrittura non è riuscita. Il registro è consumer, e la frase dice
+         che si può ritoccare: il pulsante che ha fallito è lì. */
+      error: {
+        title: "Non siamo riusciti a registrarlo",
+        body: "Tocca di nuovo per riprovare.",
+      },
       done: "Grazie, registrato.",
       doneHint: "Ti richiediamo come stai fra qualche giorno.",
     },
@@ -237,6 +277,13 @@ export const it = {
         overCapWithoutPrice:
           "Hai finito le sessioni incluse nel piano per questo servizio.",
         confirm: "Conferma la prenotazione",
+        /* La prenotazione non è riuscita. La frase dice **che cosa non è
+           successo** — lo slot è ancora libero — perché il dubbio vero, dopo
+           un errore su una prenotazione, è se sia passata a metà. */
+        error: {
+          title: "La prenotazione non è andata a buon fine",
+          body: "Lo slot è ancora libero: riprova.",
+        },
         confirmedTitle: "Prenotazione confermata",
         confirmedWith: "con {professional}",
         confirmedNote:
@@ -323,6 +370,10 @@ export const it = {
       networkTitle: "I centri convenzionati",
       networkHint:
         "Sono le strutture in cui Kora prenota il tuo check-up, con i costi già coperti dal piano.",
+      /* Nessuna struttura prenotabile. La rete esiste ma può essere tutta in
+         convenzionamento, come il Centro Diagnostico Basalto (§8): chi prenota
+         vede le sole attive, quindi l'elenco può restare vuoto. */
+      networkEmpty: "Nessuna struttura disponibile al momento.",
       /** "2.1 km" */
       distance: "{km} km",
       /* La virgola fra via e città è una convenzione postale, non un dettaglio
@@ -508,6 +559,12 @@ export const it = {
         followUpPlaceholder: "Seduta successiva consigliata fra",
         save: "Salva nota",
         saving: "Salvataggio",
+        /* La nota non è stata salvata. Registro strumento, e si dice che il
+           testo scritto non è andato perso: è ancora nel campo. */
+        error: {
+          title: "Nota non salvata",
+          body: "Il testo è ancora qui: riprova.",
+        },
         saved: "Nota salvata",
         privacy:
           "Le note sono private e non vengono condivise con l'azienda del paziente.",
@@ -573,6 +630,9 @@ export const it = {
 
     profile: {
       title: "Profilo professionale",
+      /* `getProfessional` è nullable per contratto: il portale può restare
+         senza il professionista di cui mostra il profilo. */
+      empty: "Nessun profilo da mostrare.",
       languages: "Lingue",
       specialty: "Specializzazione",
       collaboration: "Collaborazione",
@@ -648,6 +708,12 @@ export const it = {
     kpiStressValue: "{points} punti",
     kpiStressHint: "vs trimestre precedente",
     kpiStressEmpty: "nessun trimestre precedente nella finestra",
+
+    /* Il trimestre scelto non ha snapshot né report: `null` per contratto, non
+       un guasto (`docs/CONTRATTO-DATI.md` §2). La frase nomina il selettore,
+       perché è il comando con cui si esce. */
+    quarterEmpty:
+      "Nessun dato per il trimestre selezionato. Scegline un altro dall'elenco qui sopra.",
     kpiSessions: "Sessioni usate",
     /** "142 di 1'200 sessioni annue" */
     kpiSessionsHint: "{used} di {total} sessioni annue",
@@ -719,6 +785,9 @@ export const it = {
          "6/8 attivati" accanto a una dashboard che ne dichiarava 82 su 120, e
          chi leggeva entrambe trovava due aziende diverse. */
       sampleNote: "La tabella mostra un estratto di {n} dipendenti.",
+      /* Nessun dipendente da elencare: succede a un'azienda appena attivata,
+         come Betulla nel portafoglio del back-office (§8). */
+      empty: "Nessun dipendente da mostrare.",
       privacyNote:
         "I nomi sono abbreviati. Kora non mostra mai dati sanitari individuali all'azienda.",
       columnEmployee: "Dipendente",
@@ -742,6 +811,8 @@ export const it = {
       annualContract: "Contratto annuale",
       renewal: "Scadenza",
       invoicesTitle: "Fatture recenti",
+      /* Un cliente appena attivato non ha ancora fatturato niente. */
+      invoicesEmpty: "Nessuna fattura emessa finora.",
       /** "120 dipendenti × CHF 55" */
       invoiceDetail: "{count} dipendenti × {price}",
       invoicePaid: "Pagata",
@@ -934,6 +1005,9 @@ export const it = {
      */
     roi: {
       title: "Quanto costa oggi la salute dei dipendenti",
+      /* Il listino è arrivato senza il piano su cui il calcolatore è tarato:
+         senza prezzo non c'è niente da calcolare (§9). */
+      empty: "Il calcolatore non è disponibile al momento.",
       subtitle:
         "Le perdite che un'azienda svizzera sostiene ogni anno, e quanto ne recupera con Kora. Scenario conservativo.",
 
@@ -1024,6 +1098,8 @@ export const it = {
      */
     plans: {
       title: "Piani trasparenti, valore concreto",
+      /* Listino vuoto: la pagina prezzi non ha niente da mostrare. */
+      empty: "Nessun piano da mostrare al momento.",
       subtitle:
         "Un abbonamento per dipendente. Nessun costo nascosto. ROI misurabile dal primo trimestre.",
 
@@ -1246,6 +1322,12 @@ export const it = {
         "I dati saranno trattati in conformità alla LPD svizzera e al GDPR.",
       submit: "Invia la richiesta",
       submitting: "Invio in corso",
+      /* L'invio non è riuscito. Stessa logica della nota: i dati compilati
+         restano nel form, e dirlo evita che si ricominci da capo. */
+      error: {
+        title: "Invio non riuscito",
+        body: "I dati che hai scritto sono ancora qui: riprova.",
+      },
 
       successTitle: "Richiesta ricevuta",
       /* La conferma nomina l'azienda che ha scritto, e la legge dal record
@@ -1285,6 +1367,8 @@ export const it = {
     extractNote: "Estratto di {shown} righe su {total}. La ricerca completa arriva con la messa in produzione.",
 
     companies: {
+      /* Portafoglio vuoto: nessun cliente ancora firmato. */
+      empty: "Nessuna azienda cliente.",
       title: "Aziende clienti",
       kpiActive: "Clienti attivi",
       kpiEmployees: "Dipendenti coperti",
@@ -1365,6 +1449,8 @@ export const it = {
 
     professionals: {
       title: "Professionisti",
+      /* Roster vuoto: nessuno è ancora entrato nella rete. */
+      empty: "Nessun professionista nel roster.",
       kpiTotal: "Nel roster",
       kpiBookable: "Prenotabili",
       kpiVetting: "In verifica",
@@ -1422,6 +1508,8 @@ export const it = {
     },
 
     checkupProviders: {
+      /* Rete convenzionata vuota. */
+      empty: "Nessuna struttura nella rete.",
       title: "Provider check-up",
       kpiActive: "Strutture attive",
       kpiCities: "Città coperte",
@@ -1445,6 +1533,9 @@ export const it = {
 
     analytics: {
       title: "Analytics piattaforma",
+      /* Serie di piattaforma senza il mese corrente: è il back-office aperto
+         prima del primo cliente, non un guasto. */
+      empty: "Nessun dato di piattaforma per il mese corrente.",
       kpiRevenue: "Ricavo del mese",
       /** "CHF 652'968 annualizzati" */
       kpiRevenueHint: "{amount} annualizzati",

@@ -2,7 +2,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Shield, Building2, Mail, Heart, Brain } from "lucide-react";
 import PrivacyBanner from "@/components/shared/PrivacyBanner";
+import { ErrorNotice } from "@/components/kora/StateNotice";
 import {
+  loadState,
   useCheckupEligibility,
   useCompany,
   useEmployeeProfile,
@@ -49,14 +51,42 @@ function Row({ label, value }: { label: string; value: string }) {
 }
 
 export default function Profilo() {
-  const { data: profile } = useEmployeeProfile();
-  const { data: company } = useCompany();
-  const { data: psychologist } = useEntitlement("psychologist");
-  const { data: coach } = useEntitlement("coach");
-  const { data: checkup } = useCheckupEligibility();
-  const { data: consults } = useVirtualDoctorConsults();
+  const profileQuery = useEmployeeProfile();
+  const companyQuery = useCompany();
+  const psychologistQuery = useEntitlement("psychologist");
+  const coachQuery = useEntitlement("coach");
+  const checkupQuery = useCheckupEligibility();
+  const consultsQuery = useVirtualDoctorConsults();
 
-  if (!profile || !company || !psychologist || !coach || !checkup || !consults) {
+  /* I tre casi (M5.b), registro consumer. Nessuna di queste sei letture è
+     nullable per contratto: qui il vuoto è al massimo una lista senza righe,
+     e i consulti la mostrano come conteggio, non come elenco. */
+  const page = loadState([
+    profileQuery,
+    companyQuery,
+    psychologistQuery,
+    coachQuery,
+    checkupQuery,
+    consultsQuery,
+  ]);
+  if (page.state === "error") {
+    return <ErrorNotice copy={t.employee.state.error} onRetry={page.retry} />;
+  }
+
+  const profile = profileQuery.data;
+  const company = companyQuery.data;
+  const psychologist = psychologistQuery.data;
+  const coach = coachQuery.data;
+  const checkup = checkupQuery.data;
+  const consults = consultsQuery.data;
+  if (
+    profile === undefined ||
+    company === undefined ||
+    psychologist === undefined ||
+    coach === undefined ||
+    checkup === undefined ||
+    consults === undefined
+  ) {
     return null;
   }
 

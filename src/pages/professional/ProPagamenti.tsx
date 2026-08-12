@@ -7,6 +7,7 @@ import { earningsWeeks } from '@/lib/earnings';
 import { formatCHF, formatDate, formatMonthYear, formatNumber } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import {
+  loadState,
   usePortalProfessionalId,
   useProfessional,
   useProfessionalEarnings,
@@ -14,17 +15,61 @@ import {
   useProfessionalSessions,
   useReferenceDate,
 } from '@/lib/data/queries';
+import { EmptyNotice, ErrorNotice } from '@/components/kora/StateNotice';
 
 export default function ProPagamenti() {
-  const { data: today } = useReferenceDate();
-  const { data: professionalId } = usePortalProfessionalId();
-  const { data: professional } = useProfessional(professionalId);
-  const { data: sessions } = useProfessionalSessions(professionalId);
+  const todayQuery = useReferenceDate();
+  const portalIdQuery = usePortalProfessionalId();
+  const professionalId = portalIdQuery.data;
+  const professionalQuery = useProfessional(professionalId);
+  const sessionsQuery = useProfessionalSessions(professionalId);
+  const today = todayQuery.data;
   const month = today ? new Date(today.getFullYear(), today.getMonth(), 1) : undefined;
-  const { data: earnings } = useProfessionalEarnings(professionalId, month);
-  const { data: payouts } = useProfessionalPayouts(professionalId);
+  const earningsQuery = useProfessionalEarnings(professionalId, month);
+  const payoutsQuery = useProfessionalPayouts(professionalId);
 
-  if (!today || !professional || !sessions || !earnings || !payouts || !month) return null;
+  /*
+   * I tre casi (M5.b), registro strumento. Le due query in fondo dipendono da
+   * `today` e dall'id, quindi restano disabilitate finché quelli non arrivano:
+   * mettere nel gruppo anche le due letture da cui derivano è ciò che impedisce
+   * a un loro guasto di travestirsi da attesa che non finisce.
+   */
+  const page = loadState([
+    todayQuery,
+    portalIdQuery,
+    professionalQuery,
+    sessionsQuery,
+    earningsQuery,
+    payoutsQuery,
+  ]);
+  if (page.state === 'error') {
+    return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
+  }
+
+  const professional = professionalQuery.data;
+  const sessions = sessionsQuery.data;
+  const earnings = earningsQuery.data;
+  const payouts = payoutsQuery.data;
+  if (
+    today === undefined ||
+    month === undefined ||
+    professional === undefined ||
+    sessions === undefined ||
+    earnings === undefined ||
+    payouts === undefined
+  ) {
+    return null;
+  }
+
+  /* `getProfessional` è nullable per contratto: senza di lui non c'è la
+     tariffa con cui si compongono le righe, quindi il vuoto è di pagina. */
+  if (professional === null) {
+    return (
+      <Card>
+        <EmptyNotice text={t.professional.profile.empty} />
+      </Card>
+    );
+  }
 
   const weeks = earningsWeeks(sessions, month, earnings.feePerSession);
   const yearTotal = payouts

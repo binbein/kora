@@ -2,7 +2,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Moon, Activity, Footprints, Apple, Brain, Sparkles } from "lucide-react";
-import { useAiHealthPlan } from "@/lib/data/queries";
+import { loadState, useAiHealthPlan } from "@/lib/data/queries";
+import { ErrorNotice } from "@/components/kora/StateNotice";
 import type { HealthArea } from "@/lib/data/types";
 import { formatMonthYear, formatPercent } from "@/lib/format";
 import { interpolate, t } from "@/lib/i18n";
@@ -53,8 +54,15 @@ const goals: Record<string, string> = t.employee.aiPlan.goal;
 const tips: Record<string, string> = t.employee.aiPlan.tip;
 
 export default function PianoAI() {
-  const { data: plan } = useAiHealthPlan();
-  if (!plan) return null;
+  const planQuery = useAiHealthPlan();
+
+  /* I tre casi (M5.b), registro consumer. */
+  const page = loadState([planQuery]);
+  if (page.state === "error") {
+    return <ErrorNotice copy={t.employee.state.error} onRetry={page.retry} />;
+  }
+  const plan = planQuery.data;
+  if (plan === undefined) return null;
 
   return (
     <div className="space-y-6">

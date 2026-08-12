@@ -14,7 +14,8 @@ import {
 import { ArrowRight, Calculator, CheckCircle2 } from "lucide-react";
 import PublicNav from "@/components/public/PublicNav";
 import Footer from "@/components/public/Footer";
-import { usePlans } from "@/lib/data/queries";
+import { loadState, usePlans } from "@/lib/data/queries";
+import { EmptyNotice, ErrorNotice } from "@/components/kora/StateNotice";
 import type { Plan, PlanId } from "@/lib/data/types";
 import { planFeatures } from "@/lib/plan-features";
 import { formatCHF, formatNumber } from "@/lib/format";
@@ -228,9 +229,30 @@ function CostSimulator({ plans }: { plans: Plan[] }) {
 }
 
 export default function Pricing() {
-  const { data: plans } = usePlans();
+  const plansQuery = usePlans();
 
-  if (!plans) return null;
+  /* I tre casi (M5.b), registro strumento. Senza listino la pagina prezzi non
+     ha contenuto: qui il ramo è di pagina davvero. */
+  const page = loadState([plansQuery]);
+  if (page.state === 'error') {
+    return (
+      <div className="min-h-screen bg-background">
+        <PublicNav />
+        <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />
+      </div>
+    );
+  }
+
+  const plans = plansQuery.data;
+  if (plans === undefined) return null;
+  if (plans.length === 0) {
+    return (
+      <div className="min-h-screen bg-background">
+        <PublicNav />
+        <EmptyNotice text={t.public.plans.empty} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

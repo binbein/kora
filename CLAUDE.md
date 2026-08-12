@@ -390,6 +390,17 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
     dimostrano a schermo**: il mock risolve sempre e non fallisce mai, quindi
     uno stato che nessun percorso produce è codice che il §11 non vuole e che
     nessuno può verificare.
+
+    **Chiuso.** Le 27 schermate distinguono i tre casi — `undefined` sospende,
+    `null` e le liste vuote rendono il vuoto, `isError` rende l'errore — e la
+    regola sta scritta una volta in `loadState`, che **non conosce le forme**:
+    il vuoto lo decide la schermata. La dimostrazione è
+    `data/fault-injection.ts`, un `Proxy` con due manopole (`?fail`, `?empty`)
+    che **esiste solo in sviluppo** e sparisce da entrambe le altre build,
+    misurato col grep. Da qui `query-client.ts` non ritenta più — un tentativo
+    automatico mette in pausa la query a scheda non visibile, e una query in
+    pausa è un quarto caso indistinguibile dall'attesa. Il racconto e
+    l'inventario schermata per schermata sono in `docs/PROGRESS.md`.
   - **c) Validazione dei form**, con `zod` e `react-hook-form`, che il §3 tiene
     installati apposta. **Porta con sé la decisione rimandata sulla guardia di
     `useFormField`** in `form.tsx`: il controllo sta dopo l'uso che dovrebbe

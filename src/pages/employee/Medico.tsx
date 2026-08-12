@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Stethoscope, Send, Clock, Shield, AlertTriangle } from "lucide-react";
-import { useCompany } from "@/lib/data/queries";
+import { loadState, useCompany } from "@/lib/data/queries";
+import { ErrorNotice } from "@/components/kora/StateNotice";
 import { formatNumber } from "@/lib/format";
 import { interpolate, t } from "@/lib/i18n";
 
@@ -48,7 +49,7 @@ function replyTo(question: string): string {
 const TYPING_MS = 1500;
 
 export default function Medico() {
-  const { data: company } = useCompany();
+  const companyQuery = useCompany();
   const [messages, setMessages] = useState<Message[]>([
     { from: "doctor", text: t.employee.doctor.greeting },
   ]);
@@ -60,7 +61,13 @@ export default function Medico() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  if (!company) return null;
+  /* I tre casi (M5.b), registro consumer: qui si dà del tu. */
+  const page = loadState([companyQuery]);
+  if (page.state === "error") {
+    return <ErrorNotice copy={t.employee.state.error} onRetry={page.retry} />;
+  }
+  const company = companyQuery.data;
+  if (company === undefined) return null;
 
   const send = (event: FormEvent) => {
     event.preventDefault();
