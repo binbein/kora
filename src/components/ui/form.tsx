@@ -16,7 +16,13 @@ type FormFieldContextValue<
   name: TName
 }
 
-const FormFieldContext = React.createContext<FormFieldContextValue>({} as FormFieldContextValue)
+/*
+ * Il default è `null`, non `{}`: un valore che possa essere falso è la metà
+ * della guardia di `useFormField` che mancava. Con `{} as FormFieldContextValue`
+ * il controllo non poteva scattare mai, e il cast era ciò che il tipo doveva
+ * mentire perché la finzione stesse in piedi.
+ */
+const FormFieldContext = React.createContext<FormFieldContextValue | null>(null)
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
@@ -38,11 +44,21 @@ const useFormField = () => {
   const itemContext = React.useContext(FormItemContext)
   const { getFieldState, formState } = useFormContext()
 
-  const fieldState = getFieldState(fieldContext.name, formState)
-
+  /*
+   * La guardia sta **prima** dell'uso che protegge. Stava dopo, e con un
+   * default truthy non scattava comunque: fuori da un `<FormField>` il
+   * componente sbagliava più avanti, in un punto che non lo dice.
+   *
+   * Copre il caso vero — `FormItem` o `FormLabel` dentro un `<Form>` ma fuori
+   * da un `<FormField>`. Fuori anche dal `<Form>` non arriva: lì
+   * `useFormContext()` restituisce `null` e la destrutturazione qui sopra
+   * lancia prima, che è comportamento di react-hook-form e non nostro.
+   */
   if (!fieldContext) {
     throw new Error("useFormField should be used within <FormField>")
   }
+
+  const fieldState = getFieldState(fieldContext.name, formState)
 
   const { id } = itemContext
 
