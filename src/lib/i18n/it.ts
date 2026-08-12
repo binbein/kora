@@ -1329,6 +1329,23 @@ export const it = {
         body: "I dati che hai scritto sono ancora qui: riprova.",
       },
 
+      /* La validazione (M5.c). Registro strumento come il resto dell'area
+         pubblica, e ogni messaggio è una frase intera: comporlo dall'etichetta
+         del campo più una parola ("obbligatorio") lo romperebbe in tedesco,
+         dove l'ordine cambia (§2.7).
+
+         Sono cinque perché cinque sono le regole che il contratto dichiara.
+         Telefono e messaggio non compaiono: sono facoltativi e non hanno un
+         formato da rispettare, quindi non c'è niente da dire. */
+      validation: {
+        companyRequired: "Il nome dell'azienda è obbligatorio.",
+        contactRequired: "Il nome del referente è obbligatorio.",
+        emailRequired: "L'email è obbligatoria.",
+        emailInvalid: "L'indirizzo email non sembra valido.",
+        employeesInvalid:
+          "Il numero di dipendenti va scritto in cifre intere, oppure lasciato vuoto.",
+      },
+
       successTitle: "Richiesta ricevuta",
       /* La conferma nomina l'azienda che ha scritto, e la legge dal record
          restituito dalla mutation: è la prova che la scrittura è avvenuta,
