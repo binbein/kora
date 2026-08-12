@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -28,12 +31,77 @@ import { ErrorNotice } from "@/components/kora/StateNotice";
  * insieme, invece di essere indovinate adesso (`docs/CONTRATTO-DATI.md` §2, §4).
  * Il record però si salva davvero, quindi l'admin lo troverà.
  *
- * La validazione è quella del browser. `zod` e `react-hook-form` sono
- * installati apposta (§3) ma sono M5: un form che finge di controllare più di
- * quanto controlla è peggio di uno che dichiara i campi obbligatori e basta.
+ * LA VALIDAZIONE È QUELLA DELLO SCHEMA QUI SOTTO, ed è l'unica (M5.c). Il
+ * `noValidate` sul form spegne quella del browser: due validatori sono due
+ * fonti che possono divergere, e la prima a farlo sarebbe quella che non
+ * conosce le nostre stringhe. Restano `type="email"`, `type="tel"` e
+ * `type="number"`, che decidono la tastiera del telefono e non cosa passa.
+ *
+ * `form.tsx` di shadcn NON è usato, ed è una scelta. `FormMessage` rende
+ * `text-destructive` e `FormLabel` colora l'etichetta in errore con lo stesso
+ * token: 3.76:1, sotto l'AA per il testo (§6.1). Sul messaggio si sovrascrive
+ * dal call site, sull'etichetta no — il colore è condizionato all'errore — e
+ * cambiarlo dentro `ui/` sarebbe un'eccezione al congelamento che nessuno ha
+ * concesso. Con un form solo, `register` più un `<p>` costano meno di quanto
+ * costerebbe aggirarlo (§11). La ragione sta in `CLAUDE.md` §3, dove la
+ * previsione che dava `form` per usato in M5 è corretta con la sua data.
  */
 
-const EMPTY_FORM = {
+/*
+ * Lo schema è il contratto detto in regole (`docs/CONTRATTO-DATI.md` §2):
+ * obbligatorio ciò che `DemoRequestInput` dichiara tale, facoltativo il resto.
+ *
+ * QUELLO CHE NON C'È È DELIBERATO. Nessun formato sul telefono — il tipo lo dà
+ * opzionale e nessun documento ne fissa la forma, quindi un pattern svizzero
+ * sarebbe una regola inventata (§2.4). Nessun tetto su `employeeCount`: i
+ * 20–1000 sono il dominio del calcolatore, non di questo form. Nessuna
+ * lunghezza sul messaggio, e nessun controllo che l'email sia "aziendale",
+ * che l'etichetta suggerisce e nessuna regola chiede.
+ */
+const demoRequestSchema = z.object({
+  companyName: z.string().trim().min(1, t.public.demoRequest.validation.companyRequired),
+  contactName: z.string().trim().min(1, t.public.demoRequest.validation.contactRequired),
+  email: z
+    .string()
+    .trim()
+    .min(1, t.public.demoRequest.validation.emailRequired)
+    .email(t.public.demoRequest.validation.emailInvalid),
+  /* Grezzi: a decidere che vuoto e soli spazi sono assenza è il confine della
+     scrittura, cioè il provider (§2 del contratto). Qui si toglie lo spazio
+     accidentale e basta. */
+  phone: z.string().trim(),
+  message: z.string().trim(),
+  /* Il campo è facoltativo: o è vuoto, o è un intero non negativo. Il resto
+     della regola — **vuoto vale zero** — è `toEmployeeCount` qui sotto.
+
+     LO SCHEMA NON TRASFORMA, ed è un limite della versione installata, non una
+     scelta: `zodResolver` 4.1.3 ha un generico solo e restituisce
+     `Resolver<z.infer<schema>>`, quindi un `.transform()` renderebbe il tipo
+     dei campi diverso da quello del risultato e il resolver non tipizzerebbe
+     più. Zittirlo con un `as` sarebbe il cast che nasconde un errore vero.
+     Alzare `@hookform/resolvers` alla 5 è una decisione di dipendenza (§3), e
+     il giorno in cui la si prende questo campo è il punto da rileggere. */
+  employeeCount: z
+    .string()
+    .trim()
+    .refine(
+      (value) => value === "" || /^\d+$/.test(value),
+      t.public.demoRequest.validation.employeesInvalid,
+    ),
+});
+
+type DemoFormValues = z.infer<typeof demoRequestSchema>;
+
+/**
+ * Vuoto vale zero, che è la regola di sempre.
+ *
+ * Nessun `Math.max` e nessun `Math.round` attorno: lo schema ha già escluso il
+ * segno e i decimali, quindi difendersene qui sarebbe un ramo irraggiungibile
+ * (§11). È il modo in cui questa riga dichiara di fidarsi della validazione.
+ */
+const toEmployeeCount = (value: string) => (value === "" ? 0 : Number(value));
+
+const EMPTY_FORM: DemoFormValues = {
   companyName: "",
   contactName: "",
   email: "",
@@ -42,9 +110,44 @@ const EMPTY_FORM = {
   message: "",
 };
 
+/*
+ * Il messaggio di un campo. Ha quattro chiamanti in questa pagina, ed è ciò che
+ * lo salva dal §11: senza, la classe e il controllo sul vuoto starebbero scritti
+ * quattro volte.
+ *
+ * `destructive-strong` e non `destructive`: è testo che porta significato, e il
+ * token base dà 3.76:1 (§6.1). L'`id` è quello che il campo nomina in
+ * `aria-describedby`, quindi chi legge lo schermo sente il messaggio arrivando
+ * sul campo — che è anche dove il fuoco lo porta dopo un invio bloccato.
+ */
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null;
+
+  return (
+    <p id={id} className="mt-1.5 text-sm text-destructive-strong">
+      {message}
+    </p>
+  );
+}
+
 export default function DemoRequest() {
-  const [form, setForm] = useState(EMPTY_FORM);
   const queryClient = useQueryClient();
+
+  /*
+   * `shouldFocusError` è il default di react-hook-form, e non si tocca: dopo
+   * un invio bloccato il fuoco va sul primo campo in errore, che è il requisito
+   * di M5.a applicato a un form. Anche `reValidateMode: "onChange"` è il
+   * default, ed è ciò che fa sparire il messaggio quando il campo si corregge —
+   * senza, resterebbe a schermo su un valore ormai valido.
+   */
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<DemoFormValues>({
+    resolver: zodResolver(demoRequestSchema),
+    defaultValues: EMPTY_FORM,
+  });
 
   /*
    * Lo stato di successo è **il record restituito**, non un booleano: la
@@ -55,19 +158,16 @@ export default function DemoRequest() {
    */
   const [confirmed, setConfirmed] = useState<DemoRequestRecord | null>(null);
 
+  /*
+   * La mutation riceve i valori **già validati**, e non li rilegge dallo stato:
+   * parte solo su dati validi perché a chiamarla è `handleSubmit`, non il
+   * submit del form.
+   */
   const submit = useMutation({
-    mutationFn: () =>
+    mutationFn: (values: DemoFormValues) =>
       dataProvider.submitDemoRequest({
-        companyName: form.companyName,
-        contactName: form.contactName,
-        email: form.email,
-        // il campo è facoltativo: vuoto vale zero, non NaN
-        employeeCount: Math.max(0, Math.round(Number(form.employeeCount) || 0)),
-        // grezzi: a decidere che vuoto e soli spazi sono assenza è il confine
-        // della scrittura, cioè il provider (§2 del contratto). Farlo anche qui
-        // sarebbe la stessa regola in due posti
-        phone: form.phone,
-        message: form.message,
+        ...values,
+        employeeCount: toEmployeeCount(values.employeeCount),
       }),
     onSuccess: (request) => {
       /*
@@ -136,12 +236,11 @@ export default function DemoRequest() {
           </div>
 
           <Card className="p-6 md:p-8">
+            {/* `noValidate`: la validazione è una sola, ed è lo schema. */}
             <form
               className="space-y-5"
-              onSubmit={(event) => {
-                event.preventDefault();
-                submit.mutate();
-              }}
+              noValidate
+              onSubmit={handleSubmit((values) => submit.mutate(values))}
             >
               <div>
                 <Label htmlFor="demo-company">
@@ -150,11 +249,15 @@ export default function DemoRequest() {
                 <Input
                   id="demo-company"
                   className="mt-1.5"
-                  value={form.companyName}
-                  onChange={(event) =>
-                    setForm({ ...form, companyName: event.target.value })
+                  aria-invalid={!!errors.companyName}
+                  aria-describedby={
+                    errors.companyName ? "demo-company-error" : undefined
                   }
-                  required
+                  {...register("companyName")}
+                />
+                <FieldError
+                  id="demo-company-error"
+                  message={errors.companyName?.message}
                 />
               </div>
               <div>
@@ -164,11 +267,15 @@ export default function DemoRequest() {
                 <Input
                   id="demo-contact"
                   className="mt-1.5"
-                  value={form.contactName}
-                  onChange={(event) =>
-                    setForm({ ...form, contactName: event.target.value })
+                  aria-invalid={!!errors.contactName}
+                  aria-describedby={
+                    errors.contactName ? "demo-contact-error" : undefined
                   }
-                  required
+                  {...register("contactName")}
+                />
+                <FieldError
+                  id="demo-contact-error"
+                  message={errors.contactName?.message}
                 />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -176,15 +283,20 @@ export default function DemoRequest() {
                   <Label htmlFor="demo-email">
                     {t.public.demoRequest.emailLabel}
                   </Label>
+                  {/* `type` resta: decide la tastiera, non cosa passa. */}
                   <Input
                     id="demo-email"
                     type="email"
                     className="mt-1.5"
-                    value={form.email}
-                    onChange={(event) =>
-                      setForm({ ...form, email: event.target.value })
+                    aria-invalid={!!errors.email}
+                    aria-describedby={
+                      errors.email ? "demo-email-error" : undefined
                     }
-                    required
+                    {...register("email")}
+                  />
+                  <FieldError
+                    id="demo-email-error"
+                    message={errors.email?.message}
                   />
                 </div>
                 <div>
@@ -194,14 +306,13 @@ export default function DemoRequest() {
                       ({t.public.demoRequest.optional})
                     </span>
                   </Label>
+                  {/* Nessun messaggio: il telefono non ha regole da rispettare,
+                      quindi non ha niente da dire quando è vuoto o strano. */}
                   <Input
                     id="demo-phone"
                     type="tel"
                     className="mt-1.5"
-                    value={form.phone}
-                    onChange={(event) =>
-                      setForm({ ...form, phone: event.target.value })
-                    }
+                    {...register("phone")}
                   />
                 </div>
               </div>
@@ -216,12 +327,16 @@ export default function DemoRequest() {
                   id="demo-employees"
                   type="number"
                   inputMode="numeric"
-                  min={0}
                   className="mt-1.5 tabular-nums"
-                  value={form.employeeCount}
-                  onChange={(event) =>
-                    setForm({ ...form, employeeCount: event.target.value })
+                  aria-invalid={!!errors.employeeCount}
+                  aria-describedby={
+                    errors.employeeCount ? "demo-employees-error" : undefined
                   }
+                  {...register("employeeCount")}
+                />
+                <FieldError
+                  id="demo-employees-error"
+                  message={errors.employeeCount?.message}
                 />
               </div>
               <div>
@@ -231,14 +346,13 @@ export default function DemoRequest() {
                     ({t.public.demoRequest.optional})
                   </span>
                 </Label>
+                {/* Come il telefono: una textarea che ammette tutto non ha
+                    regole da raccontare. */}
                 <Textarea
                   id="demo-message"
                   className="mt-1.5"
                   rows={3}
-                  value={form.message}
-                  onChange={(event) =>
-                    setForm({ ...form, message: event.target.value })
-                  }
+                  {...register("message")}
                 />
               </div>
 
@@ -257,8 +371,9 @@ export default function DemoRequest() {
                   : t.public.demoRequest.submit}
               </Button>
 
-              {/* `form` è stato locale e la mutation fallita non lo svuota:
-                  chi riprova non ricompila. */}
+              {/* I valori vivono in react-hook-form e la mutation fallita non
+                  li tocca: chi riprova non ricompila. La validazione previene,
+                  non sostituisce — questo ramo resta quello di M5.b. */}
               {submit.isError && (
                 <ErrorNotice copy={t.public.demoRequest.error} />
               )}
