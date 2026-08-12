@@ -945,6 +945,30 @@ export type DemoRequest = {
 
 export type UserRole = "employee" | "hr" | "professional" | "admin";
 
+/**
+ * Chi sta usando l'applicazione, dal punto di vista dell'accesso.
+ *
+ * **`UserRole` ha due mestieri da M5.d**, e prima ne aveva uno solo: era il
+ * dato che il back-office mostra accanto a un utente. Ora è anche ciò con cui
+ * le guardie di rotta decidono. La ragione per cui sono lo stesso tipo e non
+ * due è che sono la stessa cosa — il ruolo di una persona non cambia natura a
+ * seconda di chi lo guarda — e tenerli separati avrebbe prodotto due
+ * enumerazioni da tenere allineate a mano (§5.5).
+ *
+ * `role` è `null` quando nessuna porta ha ancora concesso niente: è lo stato
+ * di chi sta sull'area pubblica, e non è un errore. Il vuoto qui si dice
+ * `null` come ovunque (`docs/CONTRATTO-DATI.md` §2).
+ *
+ * **In produzione questo oggetto lo riempie l'autenticazione**, e il tipo non
+ * cambia: `getSession()` non prende parametri per la stessa ragione per cui
+ * non ne prendono `getCompany()` e `getEmployeeProfile()` — la persona arriva
+ * dalla sessione, non da un argomento (§7 del contratto). È il §5.7 applicato
+ * al ruolo: quel giorno cambia chi risponde, non chi chiede.
+ */
+export type Session = {
+  role: UserRole | null;
+};
+
 export type PlatformUser = {
   id: string;
   firstName: string;

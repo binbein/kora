@@ -30,9 +30,11 @@ import type {
   RapidCheckAnswer,
   RoiSnapshot,
   ServiceUsageMonth,
+  Session,
   SessionEntitlement,
   SessionNote,
   StressRecord,
+  UserRole,
   VirtualDoctorConsult,
 } from "./types";
 
@@ -293,6 +295,38 @@ export interface DataProvider {
 
   /** Il piano di prevenzione della persona, con le cinque aree di salute. */
   getAiHealthPlan(): Promise<AiHealthPlan>;
+
+  // --- Sessione e ruolo (§10, guardie di rotta) -----------------------------
+
+  /**
+   * Chi sta usando l'applicazione, dal punto di vista dell'accesso.
+   *
+   * **Non prende parametri**, ed è la scelta che rende il passaggio a
+   * produzione una sostituzione invece di una riscrittura (§5.7): oggi
+   * risponde il provider in memoria, domani l'autenticazione, e chi chiede non
+   * cambia. È la stessa forma di `getCompany()` e `getEmployeeProfile()`, che
+   * il §7 del contratto dichiara già servite dalla sessione.
+   *
+   * `role` è `null` sull'area pubblica: nessuna porta ha ancora concesso
+   * niente, e non è un errore.
+   */
+  getSession(): Promise<Session>;
+
+  /**
+   * La porta di un portale concede il ruolo che quel portale richiede.
+   *
+   * **In demo è ciò che sostituisce il login**, e la sostituzione è dichiarata:
+   * senza un backend non esiste un'autenticazione da simulare onestamente
+   * (§2.5), quindi a concedere è l'ingresso. La guardia resta vera — legge la
+   * sessione e nega quando il ruolo non corrisponde — e ciò che cambia in
+   * produzione è chi la riempie.
+   *
+   * **Una sessione fissata non viene riconcessa**: è la manopola di sviluppo
+   * `?role=` a fissarla (`data/fault-injection.ts`), ed è così che la
+   * negazione diventa raggiungibile. Fuori dallo sviluppo la manopola non
+   * esiste e questo metodo concede sempre.
+   */
+  enterAs(role: UserRole): Promise<Session>;
 
   // --- Area pubblica (§10.A) ------------------------------------------------
 

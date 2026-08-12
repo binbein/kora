@@ -35,9 +35,11 @@ import {
   type Quarter,
   type RapidCheckAnswer,
   type RoiSnapshot,
+  type Session,
   type SessionEntitlement,
   type SessionNote,
   type StressRecord,
+  type UserRole,
 } from "../types";
 import { LAURA_AI_PLAN } from "./ai-plan";
 import {
@@ -125,6 +127,20 @@ export class MockDataProvider implements DataProvider {
    * lì navigando su `/admin` (§10).
    */
   private readonly demoRequests: DemoRequest[] = [];
+
+  /*
+   * Il ruolo con cui si sta guardando l'applicazione.
+   *
+   * Parte `null`, che è lo stato di chi sta sull'area pubblica, e lo muove
+   * `enterAs` — cioè la porta di un portale. Vive qui e non in un context di
+   * React perché in produzione a rispondere sarà l'autenticazione: se lo
+   * tenessimo nel client, quel giorno andrebbe spostato, ed è la riscrittura
+   * che il §5.7 esiste per evitare.
+   *
+   * Come tutto il resto dello stato del provider, **muore con un
+   * ricaricamento** — e va bene: la porta riconcede al montaggio.
+   */
+  private session: Session = { role: null };
 
   /**
    * Tutte le sedute di un professionista, curate e prenotate, in ordine di
@@ -559,6 +575,20 @@ export class MockDataProvider implements DataProvider {
    * due richieste, perché lo sono — a differenza di uno slot, che è occupato o
    * libero.
    */
+  getSession(): Promise<Session> {
+    return Promise.resolve(this.session);
+  }
+
+  enterAs(role: UserRole): Promise<Session> {
+    /*
+     * L'oggetto è nuovo a ogni concessione, non mutato in luogo: react-query
+     * confronta per riferimento, e un oggetto riscritto dentro non farebbe
+     * ri-renderizzare chi lo osserva.
+     */
+    this.session = { role };
+    return Promise.resolve(this.session);
+  }
+
   submitDemoRequest(input: DemoRequestInput): Promise<DemoRequest> {
     assertInDevOutsidePromise(
       input.companyName.trim() !== "" && input.email.trim() !== "",
