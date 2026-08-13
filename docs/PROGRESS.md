@@ -1546,17 +1546,24 @@ Indietro" nel posto sbagliato — la coreografia si prova su **scheda nuova**, c
 
 ### Refinement fra le milestone
 
-**Undici passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
-M3 → M4 (PR #15–#18) e sette dopo M4 (PR #20–#24, #26 e #28). Non aggiungono
+**Dodici passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
+M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28) e **#34**, le uscite
+dai tre portali, che arriva dopo i primi quattro blocchi di M5. Non aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
-seam e del dizionario, più le cinque che hanno una sottosezione loro qui sotto:
+seam e del dizionario, più le sei che hanno una sottosezione loro qui sotto:
 le due che **eseguono** una decisione della riunione del 10.08.2026,
-l'allineamento documentale pre-M5, i due fix pre-M5 e l'uscita da `/admin`. La
-sintesi sta qui perché **il dettaglio è in git e il quadro no**: chi riprende
-deve sapere che queste cose esistono prima di riscoprirle.
+l'allineamento documentale pre-M5, i due fix pre-M5, l'uscita da `/admin` e le
+uscite dai portali. La sintesi sta qui perché **il dettaglio è in git e il
+quadro no**: chi riprende deve sapere che queste cose esistono prima di
+riscoprirle.
 
-**Non è un intervallo, e i due buchi hanno un motivo**: #25 e #27 sono fuori
-per le due eccezioni qui sotto, non per dimenticanza.
+**Non è un intervallo, e i buchi hanno un motivo**: #25 e #27 sono fuori per le
+due eccezioni qui sotto, e **#29–#33 sono M5**, cioè la milestone, che questa
+sezione esclude per criterio.
+
+**#34 è la prova del criterio, non un'eccezione**: tocca `docs/PITCH.md`, ma
+**non solo lui** — cambia tre nav — quindi la seconda esclusione qui sotto non
+la copre, ed è scope fuori milestone. Si conta.
 
 **Il criterio, perché il conto sia rifacibile.** Si contano le PR mergiate dopo
 quella che chiude M3 (#14), **esclusa la milestone**: M4 è #19 e ha la sua
@@ -2012,6 +2019,49 @@ controllo sulle KPI dava sei valori su otto assenti, perché `formatCHF` separa
 `CHF` dalle cifre con lo **spazio unificatore** U+00A0 e l'asserzione era
 scritta con lo spazio da tastiera. Normalizzando, tornano tutte. Chi scrive un
 controllo su un importo lo normalizzi prima di concludere che il numero non c'è.
+
+#### Le uscite dai tre portali — #34 (13.08.2026)
+
+Speculare alla #28, e la chiude: quella aprì l'uscita da `/admin`, questa fa lo
+stesso per gli altri tre portali. Due commit di codice e docs, e il difetto lo
+aveva censito il blocco d) di M5 mentre verificava le guardie.
+
+**Il difetto era lo stesso di `/admin`, e nessuno lo aveva visto perché il
+pitch lo aggirava.** `/employee`, `/hr` e `/professional` non avevano **nessuna
+ancora** che uscisse dal portale: ogni `href` puntava dentro. Il giro fra i
+portali passava dal tasto Indietro, e `docs/PITCH.md` — che prescrive "solo i
+link interni" — non lo diceva, perché non c'era altro modo di farlo. **È il
+motivo per cui è emerso solo ora**: un vicolo cieco che ha una via d'uscita fuori
+dall'applicazione non si vede finché qualcuno non conta le ancore.
+
+Il logo diventa un link nei **due punti che ogni nav ha**, sidebar desktop e
+header mobile, con l'idioma di `AdminLayout`. `KoraLogo` non è stato toccato e i
+tre nav erano già `.tsx`, quindi la regola del §3 sulla conversione non si è
+attivata: il diff si legge come "il logo diventa un link". **27 inserzioni e 6
+rimozioni su tre file** — le otto righe dell'admin, per tre.
+
+**`docs/PITCH.md` è stato riscritto dopo aver percorso il giro**, non prima, che
+è l'ordine seguito dalla #28. Porta due righe che servono a non far sbagliare:
+cosa concludere se ci si ritrova a premere Indietro fra i portali — che si sta
+guardando la build vecchia — e che **le uscite non toccano la coreografia di
+`/admin`**, perché il logo porta *fuori* da un'area e lì c'era già; a mancare è
+un link che porti *dentro*, ed è la ragione per cui quella coreografia esiste.
+
+**Verificato a schermo, 1280×900:** le quattro aree hanno ora esattamente
+un'ancora che esce; il giro del pitch coi soli link — landing, dipendente, logo,
+HR, logo, professionista, logo — **sei clic, nessun Indietro, una sola
+navigazione**; la coreografia di `/admin` intatta su scheda nuova, con la riga in
+tabella; 27 rotte, zero vuote, zero negate, `console.error` mai chiamato; numeri
+del pitch fermi; `lint`, `typecheck`, `build:demo`, `npm audit` a zero, guardrail
+90 + 6.
+
+**Questa sintesi è arrivata dopo il merge, ed è uno scarto dalla regola di #26.**
+Doveva essere l'ultimo commit della passata; è rimasta indietro perché aspettava
+il numero della PR, che si conosce solo aprendola, e il merge è arrivato prima.
+**Non gonfia il conto**: è una sintesi retrospettiva, quindi ricade nella prima
+eccezione e appartiene a #34. La regola di #26 resta quella giusta — se il numero
+non si sa in tempo, la si scrive **senza il numero** e lo si aggiunge, invece di
+rimandare l'intero commit.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
