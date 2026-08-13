@@ -423,4 +423,119 @@ export const de = {
       },
     },
   },
+
+  /* Portale professionista: registro strumento, **Sie**. */
+  professional: {
+    portalName: "Portal für Fachpersonen",
+
+    nav: {
+      calendar: "Kalender",
+      sessions: "Sitzungen",
+      patients: "Patientinnen",
+      payments: "Zahlungen",
+      profile: "Profil",
+    },
+
+    feePerSession: "{fee} pro Sitzung",
+
+    calendar: {
+      title: "Kalender",
+      week: "Woche vom {from} bis {to}",
+      sessionsThisWeek: "Sitzungen diese Woche",
+      nextSession: "Nächste Sitzung",
+      sessionsThisMonth: "Diesen Monat im Kalender",
+      activePatients: "Aktive Patientinnen",
+      noNextSession: "Keine",
+      nextSessionValue: "{weekday} {time}",
+      legendBooked: "Gebucht",
+      legendFree: "Frei",
+      legendPast: "Vergangen",
+      today: "heute",
+      empty: "Keine Sitzung in dieser Woche.",
+    },
+
+    sessions: {
+      title: "Sitzungen",
+      upcoming: "Geplant ({n})",
+      completed: "Durchgeführt ({n})",
+      cancelled: "Abgesagt ({n})",
+      start: "Starten",
+      addNote: "Notiz hinzufügen",
+      editNote: "Notiz",
+      emptyUpcoming: "Keine geplante Sitzung.",
+      emptyCompleted: "Keine durchgeführte Sitzung.",
+      emptyCancelled: "Keine abgesagte Sitzung.",
+      note: {
+        title: "Private Notiz — {patient}",
+        notes: "Notizen zur Sitzung",
+        notesPlaceholder: "Private klinische Aufzeichnungen",
+        nextGoal: "Nächstes Ziel",
+        nextGoalPlaceholder: "Ziel für die nächste Sitzung",
+        followUp: "Empfohlener Folgetermin",
+        followUpPlaceholder: "Nächste Sitzung empfohlen in",
+        save: "Notiz speichern",
+        saving: "Wird gespeichert",
+        error: {
+          title: "Notiz nicht gespeichert",
+          body: "Der Text ist noch hier: versuchen Sie es erneut.",
+        },
+        saved: "Notiz gespeichert",
+        privacy:
+          "Die Notizen sind privat und werden nicht mit dem Unternehmen der Patientin geteilt.",
+      },
+    },
+
+    patients: {
+      title: "Patientinnen",
+      count: "{n} aktive Patientinnen",
+      privacy:
+        "Die Namen sind aus Datenschutzgründen abgekürzt. Die klinischen Notizen sehen nur Sie.",
+      name: "Patientin {initials}",
+      delivered: "{n} durchgeführte Sitzungen",
+      next: "Nächste: {date}",
+      noNext: "Keine geplante Sitzung",
+      new: "Neu",
+      withinCap: "{used} von {total} enthalten",
+      overCap: "{total} enthalten + {extra} zu {price}",
+      capReached: "Enthaltene Sitzungen aufgebraucht",
+    },
+
+    payments: {
+      title: "Zahlungen",
+      sessionsThisMonth: "Durchgeführte Sitzungen",
+      feePerSession: "Tarif pro Sitzung",
+      monthTotal: "Total des Monats",
+      yearTotal: "Total des Jahres",
+      monthInProgress: "{month} · laufend",
+      model:
+        "Vergütung pro durchgeführte Sitzung. Kora stellt die Rechnung und zahlt bis zum 5. des Folgemonats.",
+      capacityTitle: "Ihr Pensum",
+      capacity:
+        "Sie halten {sessions} Sitzungen pro Woche. Bei vollem Pensum sind es {full} pro Woche, die {min}–{max} im Monat ergeben: die Zusammenarbeit beginnt bei einer Mindestverfügbarkeit von {minHours} Stunden pro Woche und wächst mit dem Kalender.",
+      weeks: "Wochen des Monats",
+      weekRange: "vom {from} bis {to}",
+      weekDetail: "{sessions} Sitzungen · {minutes} Min.",
+      paid: "Bezahlt",
+      pending: "Ausstehend",
+      paidOn: "am {date}",
+      sessionsTimesFee: "{sessions} Sitzungen × {fee}",
+      empty: "Noch keine Vergütung angefallen.",
+    },
+
+    profile: {
+      title: "Berufsprofil",
+      empty: "Kein Profil anzuzeigen.",
+      languages: "Sprachen",
+      specialty: "Spezialisierung",
+      collaboration: "Zusammenarbeit",
+      fee: "Tarif pro Sitzung",
+      documents: "Dokumente",
+      verified: "Verifiziert",
+      mandate: "Auftragsvertrag",
+      signed: "Unterzeichnet",
+      totalSessions: "{n} durchgeführte Sitzungen",
+      mandateNote:
+        "Zusammenarbeit im Auftragsverhältnis. Keine Anstellung: Kora bringt die Patientinnen und übernimmt Buchungen, Video und Zahlungen.",
+    },
+  },
 };
