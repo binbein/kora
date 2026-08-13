@@ -48,13 +48,17 @@ const AREA_STYLE: Record<
   mental: { icon: Brain, iconClass: "text-secondary", wrapClass: "bg-secondary/10" },
 };
 
-// le chiavi di obiettivi e suggerimenti sono un insieme aperto sul contratto,
-// quindi le mappe si leggono come tali
-const goals: Record<string, string> = t.employee.aiPlan.goal;
-const tips: Record<string, string> = t.employee.aiPlan.tip;
-
 export default function PianoAI() {
   const planQuery = useAiHealthPlan();
+
+  /*
+   * Le chiavi di obiettivi e suggerimenti sono un insieme aperto sul contratto,
+   * quindi le mappe si leggono come tali. Stanno **dentro il componente** e non
+   * a livello di modulo (M5.e): lì `t` sarebbe valutato una volta sola, e con
+   * il cambio lingua resterebbero in italiano in silenzio.
+   */
+  const goals: Record<string, string> = t.employee.aiPlan.goal;
+  const tips: Record<string, string> = t.employee.aiPlan.tip;
 
   /* I tre casi (M5.b), registro consumer. */
   const page = loadState([planQuery]);

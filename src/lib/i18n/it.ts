@@ -22,14 +22,6 @@ export const it = {
        cosa ovunque, e tre trattini scritti in tre punti diventano tre trattini
        diversi alla prima revisione. */
     none: "—",
-    /* Il separatore di una lista in linea. Sta qui perché **cambia con la
-       lingua** (§2.7) e in pagina era un ", " scritto dentro un `.join()`.
-       `Intl.ListFormat` sarebbe la forma completa — in italiano darebbe
-       "Italiano e Deutsch" sull'ultimo elemento — ma cambierebbe ciò che si
-       legge a schermo, quindi è una decisione dei founder e non di una
-       passata di igiene. */
-    listSeparator: ", ",
-
     /* Gli stati che sostituiscono i dati quando i dati non ci sono (M5.b).
        Questi sono il **registro strumento** del §7 — terza persona, asciutti —
        e li usano l'area pubblica, HR, il professionista e il back-office. Il

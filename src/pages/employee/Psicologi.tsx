@@ -33,6 +33,7 @@ import {
 import {
   formatCHF,
   formatDate,
+  formatList,
   formatNumber,
   formatRating,
   formatTime,
@@ -342,9 +343,9 @@ function ProfessionalCard({
           <div className="flex flex-wrap items-center gap-4 mt-3 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <Globe className="w-3 h-3" aria-hidden="true" />
-              {professional.languages
-                .map((language) => t.language[language])
-                .join(t.common.listSeparator)}
+              {formatList(
+                professional.languages.map((language) => t.language[language]),
+              )}
             </span>
             <span className="flex items-center gap-1 tabular-nums">
               <Video className="w-3 h-3" aria-hidden="true" />

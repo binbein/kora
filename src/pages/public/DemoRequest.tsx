@@ -57,40 +57,48 @@ import { ErrorNotice } from "@/components/kora/StateNotice";
  * 20–1000 sono il dominio del calcolatore, non di questo form. Nessuna
  * lunghezza sul messaggio, e nessun controllo che l'email sia "aziendale",
  * che l'etichetta suggerisce e nessuna regola chiede.
+ *
+ * È UNA FUNZIONE E NON UNA COSTANTE (M5.e), e qui la differenza si vedrebbe a
+ * schermo: i messaggi vengono da `t`, e uno schema costruito a livello di
+ * modulo li catturerebbe una volta sola — dopo il cambio lingua il form
+ * tedesco segnalerebbe gli errori in italiano. Si ricostruisce a ogni render,
+ * che è il costo di cinque stringhe, e `zodResolver` prende sempre l'ultimo.
  */
-const demoRequestSchema = z.object({
-  companyName: z.string().trim().min(1, t.public.demoRequest.validation.companyRequired),
-  contactName: z.string().trim().min(1, t.public.demoRequest.validation.contactRequired),
-  email: z
-    .string()
-    .trim()
-    .min(1, t.public.demoRequest.validation.emailRequired)
-    .email(t.public.demoRequest.validation.emailInvalid),
-  /* Grezzi: a decidere che vuoto e soli spazi sono assenza è il confine della
-     scrittura, cioè il provider (§2 del contratto). Qui si toglie lo spazio
-     accidentale e basta. */
-  phone: z.string().trim(),
-  message: z.string().trim(),
-  /* Il campo è facoltativo: o è vuoto, o è un intero non negativo. Il resto
-     della regola — **vuoto vale zero** — è `toEmployeeCount` qui sotto.
+function demoRequestSchema() {
+  return z.object({
+    companyName: z.string().trim().min(1, t.public.demoRequest.validation.companyRequired),
+    contactName: z.string().trim().min(1, t.public.demoRequest.validation.contactRequired),
+    email: z
+      .string()
+      .trim()
+      .min(1, t.public.demoRequest.validation.emailRequired)
+      .email(t.public.demoRequest.validation.emailInvalid),
+    /* Grezzi: a decidere che vuoto e soli spazi sono assenza è il confine della
+       scrittura, cioè il provider (§2 del contratto). Qui si toglie lo spazio
+       accidentale e basta. */
+    phone: z.string().trim(),
+    message: z.string().trim(),
+    /* Il campo è facoltativo: o è vuoto, o è un intero non negativo. Il resto
+       della regola — **vuoto vale zero** — è `toEmployeeCount` qui sotto.
 
-     LO SCHEMA NON TRASFORMA, ed è un limite della versione installata, non una
-     scelta: `zodResolver` 4.1.3 ha un generico solo e restituisce
-     `Resolver<z.infer<schema>>`, quindi un `.transform()` renderebbe il tipo
-     dei campi diverso da quello del risultato e il resolver non tipizzerebbe
-     più. Zittirlo con un `as` sarebbe il cast che nasconde un errore vero.
-     Alzare `@hookform/resolvers` alla 5 è una decisione di dipendenza (§3), e
-     il giorno in cui la si prende questo campo è il punto da rileggere. */
-  employeeCount: z
-    .string()
-    .trim()
-    .refine(
-      (value) => value === "" || /^\d+$/.test(value),
-      t.public.demoRequest.validation.employeesInvalid,
-    ),
-});
+       LO SCHEMA NON TRASFORMA, ed è un limite della versione installata, non una
+       scelta: `zodResolver` 4.1.3 ha un generico solo e restituisce
+       `Resolver<z.infer<schema>>`, quindi un `.transform()` renderebbe il tipo
+       dei campi diverso da quello del risultato e il resolver non tipizzerebbe
+       più. Zittirlo con un `as` sarebbe il cast che nasconde un errore vero.
+       Alzare `@hookform/resolvers` alla 5 è una decisione di dipendenza (§3), e
+       il giorno in cui la si prende questo campo è il punto da rileggere. */
+    employeeCount: z
+      .string()
+      .trim()
+      .refine(
+        (value) => value === "" || /^\d+$/.test(value),
+        t.public.demoRequest.validation.employeesInvalid,
+      ),
+  });
+}
 
-type DemoFormValues = z.infer<typeof demoRequestSchema>;
+type DemoFormValues = z.infer<ReturnType<typeof demoRequestSchema>>;
 
 /**
  * Vuoto vale zero, che è la regola di sempre.
@@ -145,7 +153,7 @@ export default function DemoRequest() {
     handleSubmit,
     formState: { errors },
   } = useForm<DemoFormValues>({
-    resolver: zodResolver(demoRequestSchema),
+    resolver: zodResolver(demoRequestSchema()),
     defaultValues: EMPTY_FORM,
   });
 

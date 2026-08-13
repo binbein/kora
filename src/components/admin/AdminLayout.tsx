@@ -22,26 +22,27 @@ import { t } from "@/lib/i18n";
  * ruolo — che è M5, e va scritta da zero sui nostri ruoli — il banner è ciò che
  * impedisce di scambiarlo per un ambiente vero.
  */
-const navItems = [
-  { path: "/admin", icon: Building2, label: t.admin.nav.companies },
-  { path: "/admin/utenti", icon: Users, label: t.admin.nav.users },
-  {
-    path: "/admin/professionisti",
-    icon: Briefcase,
-    label: t.admin.nav.professionals,
-  },
-  { path: "/admin/sessioni", icon: ClipboardList, label: t.admin.nav.sessions },
-  {
-    path: "/admin/provider",
-    icon: MapPin,
-    label: t.admin.nav.checkupProviders,
-  },
-  { path: "/admin/analytics", icon: BarChart3, label: t.admin.nav.analytics },
-];
-
 export default function AdminLayout() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
+
+  /* Le etichette si leggono al render, non all'import: vedi `PublicNav`. */
+  const navItems = [
+    { path: "/admin", icon: Building2, label: t.admin.nav.companies },
+    { path: "/admin/utenti", icon: Users, label: t.admin.nav.users },
+    {
+      path: "/admin/professionisti",
+      icon: Briefcase,
+      label: t.admin.nav.professionals,
+    },
+    { path: "/admin/sessioni", icon: ClipboardList, label: t.admin.nav.sessions },
+    {
+      path: "/admin/provider",
+      icon: MapPin,
+      label: t.admin.nav.checkupProviders,
+    },
+    { path: "/admin/analytics", icon: BarChart3, label: t.admin.nav.analytics },
+  ];
 
   return (
     <div className="min-h-screen bg-background">

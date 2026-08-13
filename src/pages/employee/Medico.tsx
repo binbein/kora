@@ -25,16 +25,21 @@ import { interpolate, t } from "@/lib/i18n";
 
 type Message = { from: "doctor" | "patient"; text: string };
 
-const REPLIES = [
-  t.employee.doctor.reply.back,
-  t.employee.doctor.reply.head,
-  t.employee.doctor.reply.stress,
-  t.employee.doctor.reply.sleep,
-];
-
+/*
+ * Le risposte si leggono alla chiamata, non all'import (M5.e): a livello di
+ * modulo `t` sarebbe valutato una volta sola, e con il cambio lingua il medico
+ * continuerebbe a rispondere in italiano — in una schermata che è a video
+ * durante il pitch.
+ */
 function replyTo(question: string): string {
+  const replies = [
+    t.employee.doctor.reply.back,
+    t.employee.doctor.reply.head,
+    t.employee.doctor.reply.stress,
+    t.employee.doctor.reply.sleep,
+  ];
   const asked = question.toLowerCase();
-  const match = REPLIES.find((reply) => asked.includes(reply.keyword));
+  const match = replies.find((reply) => asked.includes(reply.keyword));
   return match?.text ?? t.employee.doctor.fallback;
 }
 
