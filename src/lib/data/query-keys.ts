@@ -17,6 +17,16 @@
 export const queryKeys = {
   referenceDate: () => ["reference-date"] as const,
 
+  /*
+   * La sessione (M5.d). Sta alla radice e non sotto nessuna area, perché non
+   * appartiene a nessuna: la leggono le guardie di tutti e quattro i portali.
+   *
+   * `enterAs` la invalida, ed è l'unica cosa che invalida — concedere un ruolo
+   * non cambia nessun dato, quindi far rileggere altro sarebbe rileggere mezza
+   * applicazione per un cambio di porta.
+   */
+  session: () => ["session"] as const,
+
   professional: {
     /** Radice di tutto ciò che riguarda un professionista: invalida il resto. */
     root: (professionalId: string) => ["professional", professionalId] as const,

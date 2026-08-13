@@ -29,10 +29,10 @@ data da `DEMO_TODAY`. Le rotte sono 26, il repository è nostro — niente base4
 zero richieste esterne a runtime — e `reference/` è stato cancellato, che era la
 prova che M3 fosse davvero finita.
 
-**Tre blocchi di M5 su sei sono chiusi** — accessibilità, stati di errore e
-vuoto, validazione dei form — e il prossimo è d), le guardie di rotta per
-ruolo, che porta con sé `react-router` 7 e il vincolo della coreografia di
-`/admin` (`CLAUDE.md` §4).
+**Quattro blocchi di M5 su sei sono chiusi** — accessibilità, stati di errore e
+vuoto, validazione dei form, guardie di rotta — e il prossimo è e), le altre
+tre lingue, che porta con sé la decisione sul language switcher e
+`Intl.ListFormat` (`CLAUDE.md` §4).
 
 **M5 è l'ultima milestone del piano, e si articola in sei blocchi** approvati
 dai founder l'11.08.2026 — accessibilità, stati di errore e vuoto, validazione
@@ -182,12 +182,33 @@ errori, `npm run lint` e `npm run typecheck` a 0.
 
 **Difetti noti di M1:**
 
-- **Restano 2 vulnerabilità moderate**, entrambe lo stesso open redirect di
-  `react-router` via backslash in `<Link>`. `npm audit fix` è un **no-op**: resta
-  alla 6.30.4, perché il fix è `react-router` **7**, un major che cambia l'API del
-  router. **È una modifica di scope da approvare (§2.6), non una patch**, e per una
-  demo senza URL forniti dall'utente non è sfruttabile. Si riapre quando il router
-  si tocca per altri motivi. Non lanciare `npm audit fix --force`.
+- ~~**Restano 2 vulnerabilità moderate**, entrambe lo stesso open redirect di
+  `react-router` via backslash in `<Link>`.~~ → **chiuse dal blocco d) di M5**
+  (12.08.2026), che ha portato il router alla **7.18.2**: `npm audit` esce a
+  zero. La previsione era giusta nella sostanza — *"si riapre quando il router
+  si tocca per altri motivi"* — ed è andata esattamente così: a riaprirla sono
+  state le guardie di rotta, non la sicurezza.
+
+  **Due cose che questa riga diceva e non erano esatte**, corrette qui perché
+  chi legge la storia veda anche gli sbagli:
+
+  - **non sono la stessa vulnerabilità.** La prima è l'open redirect via
+    backslash in `<Link>`; la seconda è *Arbitrary Constructor Injection via
+    `deserializeErrors()` in SSR Hydration*
+    ([CVE-2026-53666](https://github.com/advisories/GHSA-337j-9hxr-rhxg),
+    verificata dai founder prima di scrivere questa riga). **Nessuna delle due
+    ci riguardava**: la prima ha bisogno di URL forniti dall'utente, che questa
+    demo non ha, e la seconda di idratazione SSR, che una SPA non fa;
+  - **`npm audit fix` non era un no-op per la ragione scritta.** Restava alla
+    6.30.4 perché il range vulnerabile arriva fino alla **7.17.0**: il rimedio
+    non era "la 7", era una 7 che allora non esisteva ancora. Il fatto pratico
+    — non lanciare `--force` — era comunque giusto.
+
+  **Il major è costato quasi niente**, ed è la parte che vale per il futuro: la
+  superficie del router qui è `Link`, `useLocation`, `Outlet`,
+  `useSearchParams` e i tre di `App.tsx`, tutte immutate in v7. Una modifica di
+  scope va pesata su quanto codice tocca, non su quanto è grande il numero di
+  versione.
 - **La rewrite di `vercel.json` risolve il 404 sui link profondi, non lo stato.** Il
   provider vivrà in memoria (§10, "Come si naviga durante la demo"), quindi un
   ricaricamento azzera comunque la demo: `/hr/report` aperto da zero mostrerà la
@@ -204,10 +225,13 @@ errori, `npm run lint` e `npm run typecheck` a 0.
   `--quiet`: `bookingStep` in `Psicologi.jsx`, stato morto di un wizard a più
   passi~~ → sparito in M3 con la riscrittura della prenotazione. Da lì
   `npm run lint` esce **a zero warning**, non solo a zero errori.
-- **La console mostra due avvisi di `react-router`** sui future flag della 7
-  (`v7_startTransition`, `v7_relativeSplatPath`). Non sono errori e non si vedono
-  in produzione; spariscono con la stessa migrazione alla 7 che chiuderebbe le due
-  vulnerabilità, ed è la stessa decisione di scope.
+- ~~**La console mostra due avvisi di `react-router`** sui future flag della 7
+  (`v7_startTransition`, `v7_relativeSplatPath`).~~ → **spariti col major del
+  blocco d)**, e senza configurare niente: nella 7 quei due comportamenti sono
+  il default, quindi i flag non esistono più. Da qui la console di sviluppo
+  porta i soli avvisi di vite e di React DevTools. La previsione era giusta —
+  *"spariscono con la stessa migrazione"* — e la decisione di scope è arrivata
+  con le guardie di rotta, come l'altra riga qui sopra prevedeva.
 
 ### M2 — Il contratto dati
 
@@ -1368,6 +1392,158 @@ sul campo in errore — è misurato.
   l'eccezione dichiarata del §3 e ora è la sua versione migliore: da questo
   blocco è **l'ultima copia buona con la guardia che funziona**.
 
+#### d) Guardie di rotta per ruolo — chiuso
+
+Otto commit, e il blocco è nato **in due stadi**: una proposta approvata dai
+founder il 12.08.2026 e solo dopo l'esecuzione. È il primo blocco di M5 con
+quella forma, e il motivo sta nel primo esito.
+
+##### Il fatto che ha deciso il blocco, e si è visto solo provando a scriverlo
+
+Provando i tre modelli contro i tre vincoli del `CLAUDE.md` §4 ne è uscita una
+cosa sola: **sotto quei vincoli, in demo nessuna guardia può negare l'accesso a
+niente.** `PublicNav` porta in tutti e tre i portali con un clic, `/admin` deve
+aprirsi **come prima schermata a freddo** (`docs/PITCH.md`), e un link profondo
+dopo un ricaricamento deve servire la pagina — è ciò che M1 ha riparato con la
+rewrite di `vercel.json`. Tre porte che devono restare aperte sono tutte le
+porte che ci sono.
+
+Da lì il criterio non è stato "quanto blocca" ma **quanto rende reale e
+verificabile la guardia che servirà in produzione, senza fingere di bloccare
+oggi** — e la risposta era già in casa: è lo stesso problema del blocco b), che
+per gli stati d'errore aveva costruito le manopole invece di accontentarsi di
+codice non raggiungibile.
+
+##### Il modello scelto: la porta concede, la manopola nega
+
+**Il ruolo vive nel provider**, non in un context di React, e questa è la scelta
+che il §5.7 governa: con un context, il giorno in cui il ruolo arriva dal server
+il codice che lo legge andrebbe spostato. `getSession()` non prende parametri
+**come `getCompany()` e `getEmployeeProfile()`**, che il contratto dichiara già
+servite dalla sessione; `enterAs(role)` è la scrittura che in demo sostituisce
+il login e in produzione sparisce.
+
+**Il portale è una porta, non un muro**: entrando, la guardia concede il ruolo
+che quel portale richiede — anche a freddo, anche su un link profondo — quindi i
+tre momenti passano per costruzione e non per eccezione. Il ramo che nega resta
+vero e si raggiunge con `?role=`, la terza manopola di sviluppo.
+
+**Una schermata nuova non c'è**: lo stato di accesso negato è uno *stato*, resa
+minima e senza layout d'area, della stessa famiglia di `EmptyNotice` e
+`ErrorNotice`. Porta **due uscite** — il portale del ruolo che si ha davvero e
+la landing — perché un accesso negato senza via d'uscita è il vicolo cieco che
+il §10 vieta, e lo sarebbe anche essendo raggiungibile solo in sviluppo
+(founder, 12.08.2026).
+
+##### `react-router` 7, e il router toccato una volta sola
+
+Il major è entrato **per primo, verificato da solo**, prima di una riga di
+guardia. La superficie del router qui è cinque API — `Link`, `useLocation`,
+`Outlet`, `useSearchParams` e i tre di `App.tsx` — tutte immutate in v7, quindi
+il major è costato quasi un bump di versione. `npm audit` esce a zero e i due
+avvisi sui future flag sono spariti senza configurare niente, perché nella 7
+quei comportamenti sono il default.
+
+**Le due righe di M1 erano imprecise e sono corrette dove stavano** (sezione
+M1): le due advisory non erano la stessa, e `npm audit fix` non era un no-op per
+il motivo scritto — il range vulnerabile arriva alla 7.17.0, quindi il rimedio
+non era "la 7" ma una 7 che allora non esisteva. **Nessuna delle due ci
+riguardava** comunque, e per questo l'argomento vero non era la sicurezza: era
+non toccare il router due volte.
+
+##### Il difetto che la verifica ha trovato, e la prima diagnosi era sbagliata
+
+Alla prima passata sulla build demo **sedici rotte su ventisette erano negate** —
+HR, professionista e admin per intero.
+
+**La causa: React riusa la stessa istanza di `RequireRole` fra due portali.** Le
+quattro rotte montano lo stesso componente nella stessa posizione dell'albero,
+quindi passando da un portale all'altro non c'è rimontaggio: cambia `role` e lo
+**stato della mutation sopravvive**. Con la porta chiamata senza argomenti,
+quella già usata non era più `idle` e non concedeva mai il secondo ruolo.
+
+**La prima diagnosi diceva "lampeggia", ed era falsa.** Sembrava una corsa fra
+la mutation conclusa e la query invalidata, e a sostenerla c'era una misura
+letta male: `/hr` a 1500 ms era intera — ma quello era un **caricamento a
+freddo**, non un passaggio fra portali. Misurando il passaggio vero, la
+negazione restava a 30 ms come a 2000 ms. È la quinta volta che questo file
+annota lo stesso errore di metodo — **misurare una cosa diversa da quella che si
+sta spiegando** — dopo lo spazio unificatore di M1, il DOM letto nello stesso
+tick di M5.b, il `grep` senza `-F` di M5.c e le tre facce di `visibilityState`.
+
+**Il rimedio è il ruolo come variabile della mutation**: `enter.variables` dice
+per quale ruolo la porta ha già risposto, quindi cambiare portale rende quella
+risposta *vecchia* invece che definitiva. Sta in un posto solo, ed è la ragione
+per cui non serve un `key={role}` ai quattro call site. La decisione legge la
+risposta della porta quando c'è e la cache altrimenti: leggere solo la cache
+costerebbe un fotogramma di accesso negato a ogni concessione riuscita, e dietro
+una `fetch` vera quel fotogramma durerebbe l'intera richiesta.
+
+##### La manopola `?role=`, con la disciplina di b) per intero
+
+Letta **una volta all'istanza** nel layer dati, `GUARDRAIL_MODE` come porta,
+trasparente a riposo, nomi verificati e un valore sbagliato segnalato invece che
+ignorato in silenzio. Il pin è controllato **dopo** guasto e vuoto, quindi
+`?fail=getSession` vince: sono stati diversi e uno solo si vede.
+
+**La semantica sta scritta nel file**: una sessione fissata **non viene
+riconcessa**. `getSession` risponde con quel ruolo ed `enterAs` non lo cambia,
+il che è insieme ciò che rende raggiungibile la negazione e ciò che impedisce
+alla guardia di ciclare.
+
+L'elenco dei ruoli è un `Record<UserRole, true>` e non un array di stringhe,
+perché così **la duplicazione è verificata**: un tipo non si interroga a
+runtime, e aggiungere un ruolo all'unione ora rompe la compilazione lì, che è il
+momento giusto per accorgersene.
+
+##### Verificato a schermo, viewport 1280×900
+
+- **il router da solo, prima della guardia**: `npm audit` a zero, console senza
+  i due avvisi, 27 rotte, i tre momenti, e ogni numero del pitch alla cifra;
+- **27 rotte sulla build demo**, zero schermate vuote, **zero negate**,
+  `console.error` mai chiamato;
+- **otto passaggi fra portali di fila**, ripetizioni e sotto-rotte comprese,
+  nessuno negato — è il caso che era rotto;
+- **la coreografia di `/admin` su scheda nuova**: tabella vuota a freddo, uscita
+  col logo, richiesta inviata, due Indietro, riga in tabella con telefono e
+  `common.none` sui dipendenti vuoti. **Una sola navigazione**;
+- **link profondo a freddo**: `/professional/pagamenti` apre intera, CHF 1'120 al
+  suo posto;
+- **la negazione**: `/hr?role=employee` e `/admin?role=hr` mostrano lo stato
+  negato, restano negati, non ciclano, e "Vai alla tua area" porta al portale del
+  ruolo davvero posseduto senza ricaricare;
+- **la manopola non esiste nella build demo**: `/hr?role=employee` disegna la
+  dashboard HR con CHF 14'200 al suo posto. Assente da entrambi i bundle su
+  cinque marcatori letterali, `grep -F`;
+- **i numeri del pitch fermi**: CHF 14'200, 16 giorni, 68%, 41 attivi, 142 di
+  1'200, 62%, soglia 12; i cinque di ancoraggio a N=100; CHF 652'968, 415, 798,
+  1'147; CHF 1'120;
+- `lint`, `typecheck`, `build` e `build:demo` a posto; guardrail **90 + 6**.
+
+**Due trappole dello strumento, non del codice**, annotate perché sono costate
+tempo: `history.back()` dentro uno script del browser **interrompe la
+valutazione**, quindi la coreografia va spezzata in passi; e una scheda riusata
+porta i residui di cronologia delle prove precedenti, che fanno atterrare "due
+Indietro" nel posto sbagliato — la coreografia si prova su **scheda nuova**, che
+è anche la condizione vera del pitch.
+
+**Aperto e dichiarato:**
+
+- **I tre portali non hanno nessuna uscita verso la landing.** Censito in questa
+  passata: `/employee`, `/hr` e `/professional` non hanno **nessuna ancora** che
+  esca dal portale; solo `/admin` ce l'ha, dalla passata dell'11.08.2026. Il
+  giro del pitch funziona lo stesso, con Indietro fra un portale e l'altro — è
+  come è stato verificato — ma è lo stesso difetto che per `/admin` fu
+  riconosciuto come vicolo cieco (§10), e la sua correzione fu otto righe e
+  passò dai founder. **Non è stato toccato**: è scope (§2.6) e non è ciò che
+  questo blocco doveva fare. `docs/PITCH.md` oggi non dice che fra un portale e
+  l'altro si torna con Indietro.
+- **La guardia non nega mai in demo**, per costruzione. È l'esito voluto e non
+  un residuo, ma va riletto il giorno in cui `/admin` avesse una vera ragione di
+  essere protetto davanti a qualcuno.
+- **`enterAs` è la sola mutation che in produzione può sparire** — il ruolo lo
+  concederà l'autenticazione — ed è annotato in `CONTRATTO-DATI.md` §4 e §6.
+
 ### Refinement fra le milestone
 
 **Undici passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
@@ -1883,13 +2059,37 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 | M2 | Il contratto dati | **fatta** |
 | M3 | Migrazione area per area + calcolatore ROI | **fatta** |
 | M4 | Report scaricabile | **fatta** |
-| M5 | Verso la produzione (differibile) | **in corso** — blocchi a, b e c chiusi, prossimo d |
+| M5 | Verso la produzione (differibile) | **in corso** — blocchi a, b, c e d chiusi, prossimo e |
 
 ## Decisioni chiuse
 
 Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà una
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
+
+- **12.08.2026 — Le guardie di rotta, in due stadi** (`CLAUDE.md` §4,
+  `CONTRATTO-DATI.md` §6). La proposta prima dell'esecuzione, ed è il primo
+  blocco di M5 con quella forma: il modello di impersonificazione andava
+  scelto, non scritto mentre lo si costruiva.
+
+  **Approvato il modello della porta che concede**: entrare in un portale
+  assegna il ruolo, e la negazione si raggiunge con una manopola di sviluppo.
+  Nasce da un fatto emerso provando i modelli — sotto i tre vincoli del §4, in
+  demo **nessuna guardia può negare niente** — quindi il criterio è diventato
+  rendere vera e verificabile la guardia che servirà in produzione, invece di
+  fingere di bloccare oggi.
+
+  **Approvata `react-router` 7 subito**, prima delle guardie, con l'argomento
+  vero: il router si tocca una volta sola. Le due advisory non ci riguardavano.
+
+  **Approvata la riscrittura del §6 del contratto**, che teneva
+  l'autenticazione, i ruoli e le guardie fuori dall'interfaccia: la sessione
+  entra, `UserRole` prende un secondo mestiere, e la posizione vecchia resta
+  citata perché chi scrive il backend veda l'evoluzione e non solo l'esito.
+
+  **Lo stato di accesso negato ha due uscite**, ed è una decisione: un accesso
+  negato senza via d'uscita è il vicolo cieco del §10 anche quando solo lo
+  sviluppo può raggiungerlo.
 
 - **12.08.2026 — Due cambiamenti di comportamento su `src/components/ui/`, e
   uno rifiutato** (`CLAUDE.md` §3, §6.1). Presi all'apertura del blocco c) di

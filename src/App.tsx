@@ -2,6 +2,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from '@/pages/PageNotFound';
+import RequireRole from '@/components/kora/RequireRole';
 
 // Public pages
 import Landing from '@/pages/public/Landing';
@@ -51,8 +52,26 @@ const AppRoutes = () => (
     <Route path="/pricing" element={<Pricing />} />
     <Route path="/demo" element={<DemoRequest />} />
 
+    {/*
+      Ogni portale è dietro la sua guardia, che è **una porta che concede**: in
+      demo nessun ingresso viene negato, perché i tre momenti del pitch lo
+      richiedono. Il perché sta tutto in `RequireRole`, compreso il modo in cui
+      il ramo che nega resta raggiungibile.
+
+      La guardia avvolge il layout e non le singole rotte: il ruolo è del
+      portale, non della schermata, e ripeterla su ventisei righe sarebbe
+      ventisei posti da sbagliare.
+    */}
+
     {/* Employee portal */}
-    <Route path="/employee" element={<EmployeeLayout />}>
+    <Route
+      path="/employee"
+      element={
+        <RequireRole role="employee">
+          <EmployeeLayout />
+        </RequireRole>
+      }
+    >
       <Route index element={<EmployeeHome />} />
       <Route path="psicologi" element={<Psicologi />} />
       <Route path="medico" element={<Medico />} />
@@ -62,7 +81,14 @@ const AppRoutes = () => (
     </Route>
 
     {/* HR portal */}
-    <Route path="/hr" element={<HRLayout />}>
+    <Route
+      path="/hr"
+      element={
+        <RequireRole role="hr">
+          <HRLayout />
+        </RequireRole>
+      }
+    >
       <Route index element={<HRDashboard />} />
       <Route path="dipendenti" element={<HRDipendenti />} />
       <Route path="report" element={<HRReport />} />
@@ -71,7 +97,14 @@ const AppRoutes = () => (
     </Route>
 
     {/* Professional portal */}
-    <Route path="/professional" element={<ProLayout />}>
+    <Route
+      path="/professional"
+      element={
+        <RequireRole role="professional">
+          <ProLayout />
+        </RequireRole>
+      }
+    >
       <Route index element={<ProCalendario />} />
       <Route path="sessioni" element={<ProSessioni />} />
       <Route path="pazienti" element={<ProPazienti />} />
@@ -80,7 +113,14 @@ const AppRoutes = () => (
     </Route>
 
     {/* Admin portal */}
-    <Route path="/admin" element={<AdminLayout />}>
+    <Route
+      path="/admin"
+      element={
+        <RequireRole role="admin">
+          <AdminLayout />
+        </RequireRole>
+      }
+    >
       <Route index element={<AdminAziende />} />
       <Route path="utenti" element={<AdminUtenti />} />
       <Route path="professionisti" element={<AdminProfessionisti />} />

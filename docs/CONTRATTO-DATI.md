@@ -345,8 +345,16 @@ compensi e pagamenti.
 | `bookAppointment` | `["professional", professionalId]` **e** `["employee"]` |
 | `submitRapidCheck` | `["employee", "rapid-check"]` |
 | `submitDemoRequest` | `["platform", "demo-requests"]` |
+| `enterAs` | `["session"]` |
 
-Sono tutte le scritture del dominio: dopo l'area pubblica non ne restano fuori.
+~~Sono tutte le scritture del dominio: dopo l'area pubblica non ne restano
+fuori.~~ → **cinque da M5.d**, e la quinta è di natura diversa dalle altre
+quattro: `enterAs` non scrive un dato del dominio ma la sessione, quindi
+invalida solo sé stessa. Concedere un ruolo non muove nessun numero, e far
+rileggere altro sarebbe rileggere mezza applicazione per un cambio di porta.
+
+**È anche la sola che in produzione può sparire**: il ruolo lo concederà
+l'autenticazione (§6). Le altre quattro restano.
 
 **`bookAppointment` invalida due radici perché scrive un record solo.**
 `Appointment` e `ProfessionalSession` sono due proiezioni della stessa seduta
@@ -424,9 +432,56 @@ totale: sono due numeri che dicono la stessa cosa e non devono poter divergere
 fattura avrà rettifiche, crediti o un prezzo cambiato a metà mese — cioè quando
 smetterà di essere una moltiplicazione.
 
-**L'autenticazione, i ruoli e le guardie di rotta.** Sono M5 e non sono in questa
-interfaccia. `UserRole` esiste nei tipi perché il back-office ne ha bisogno come
-dato, non come meccanismo di accesso.
+**L'autenticazione resta fuori. La sessione è entrata** (12.08.2026, blocco d)
+di M5).
+
+~~Questa voce diceva: *"L'autenticazione, i ruoli e le guardie di rotta sono M5
+e non sono in questa interfaccia. `UserRole` esiste nei tipi perché il
+back-office ne ha bisogno come dato, non come meccanismo di accesso."*~~
+
+**Perché è cambiata.** Quella riga era esatta finché le guardie non esistevano,
+e restava in piedi su un presupposto che il blocco d) ha dovuto affrontare: che
+il ruolo potesse restare fuori dal contratto. Non poteva. Una guardia deve
+leggere il ruolo da qualche parte, e le due possibilità erano un context di
+React o il provider. Con un context, il giorno in cui il ruolo arriva dal server
+il codice che lo legge va spostato — cioè **la riscrittura che il §1 di questo
+documento esiste per escludere**. Con il provider, quel giorno cambia soltanto
+chi risponde.
+
+**Cosa c'è adesso.** `Session` porta un solo campo, `role: UserRole | null`, e
+`null` è lo stato di chi sta sull'area pubblica — un vuoto legittimo come tutti
+gli altri (§2). Due metodi:
+
+- **`getSession()`** non prende parametri, **come `getCompany()` e
+  `getEmployeeProfile()`**, e per la stessa ragione dichiarata nel §7: la
+  persona arriva dalla sessione, non da un argomento. In produzione risponde
+  l'autenticazione e la firma non cambia;
+- **`enterAs(role)`** è la scrittura che in demo sostituisce il login, ed è la
+  parte che **in produzione sparisce o diventa il login vero**. Non è un
+  mascheramento: senza un backend non esiste un'autenticazione da simulare
+  onestamente (`CLAUDE.md` §2.5), quindi a concedere il ruolo è l'ingresso nel
+  portale.
+
+**`UserRole` ha due mestieri, e sono lo stesso.** Era il dato che il
+back-office mostra accanto a un utente; ora è anche ciò con cui le guardie
+decidono. Non sono stati separati in due tipi perché il ruolo di una persona
+non cambia natura a seconda di chi lo guarda, e due enumerazioni da tenere
+allineate a mano sono il difetto che il §5.5 vieta ai numeri.
+
+**Cosa il backend deve sapere, e non si vede dai tipi.** Nella demo la guardia
+è **una porta che concede**: entrare in un portale assegna il ruolo che quel
+portale richiede, perché il giro della presentazione entra in ognuno con un
+clic e `/admin` si apre come prima schermata (`docs/PITCH.md`). **In produzione
+questa è la prima assunzione che salta**, e deve saltare: a concedere sarà
+l'autenticazione, `enterAs` non avrà più un chiamante, e il ramo che nega — che
+in demo si raggiunge solo con una manopola di sviluppo — diventerà il caso
+normale. Il controllo nella guardia è già quello definitivo: ruolo della
+sessione contro ruolo della rotta.
+
+**Cosa resta fuori davvero**: le credenziali, la loro verifica, la durata e il
+rinnovo della sessione, i permessi più fini del ruolo. Il contratto non li
+nomina, e non è un rimando a una milestone — è il confine fra questo documento
+e il servizio di autenticazione che lo servirà.
 
 **Il periodo sui metodi di lettura.** `getProfessionalSessions` restituisce tutte
 le sedute di un professionista, e le schermate filtrano in memoria: il dataset

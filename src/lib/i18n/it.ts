@@ -51,6 +51,27 @@ export const it = {
         body: "Ricarica la pagina per riprovare. Quello che hai fatto finora non viene conservato.",
       },
     },
+
+    /* L'accesso negato (M5.d). Sta in `common` e **non ha un gemello in
+       `employee.state`**, a differenza degli stati di M5.b: quelli parlano a
+       chi guarda i propri dati, questo parla a chi ha sbagliato porta, e in
+       demo lo raggiunge solo la manopola `?role=` di sviluppo. Una seconda
+       versione col tu sarebbe una chiave che nessuno usa (§11).
+
+       Il corpo non nomina il ruolo. Dirlo servirebbe a poco — chi legge sa da
+       dove è entrato — e costringerebbe questo componente a leggere le
+       etichette dei ruoli dal dizionario del back-office, che è l'unico posto
+       dove vivono.
+
+       LE DUE USCITE NON SONO ORNAMENTO: un "accesso negato" senza via d'uscita
+       è il vicolo cieco che il §10 vieta, e lo sarebbe anche essendo
+       raggiungibile solo in sviluppo. */
+    accessDenied: {
+      title: "Sezione riservata",
+      body: "Questa sezione appartiene a un altro ruolo.",
+      toPortal: "Vai alla tua area",
+      toHome: "Torna alla home",
+    },
   },
 
   /* La 404. `body` è una frase intera con segnaposto e non due pezzi cuciti

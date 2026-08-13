@@ -1,5 +1,6 @@
 import { raiseOutsideCurrentStack } from "./guardrails";
 import type { DataProvider } from "./provider";
+import type { Session, UserRole } from "./types";
 
 /*
  * L'INIEZIONE DI GUASTO: il modo in cui gli stati d'errore si dimostrano a
@@ -16,8 +17,9 @@ import type { DataProvider } from "./provider";
  *   /hr?fail=getCompany:2        → fallisce le prime due chiamate, poi riesce
  *   /hr?fail=getCompany,getInvoices
  *   /hr?empty=getRoiSnapshot     → risponde vuoto invece che con i dati
+ *   /hr?role=employee            → la sessione è fissata: la guardia nega
  *
- * DUE MANOPOLE, PERCHÉ GLI STATI SONO DUE. `?fail` produce il **guasto**,
+ * TRE MANOPOLE, PERCHÉ GLI STATI SONO TRE. `?fail` produce il **guasto**,
  * `?empty` il **vuoto legittimo** — e senza la seconda metà del blocco
  * resterebbe indimostrabile: il dataset del §8 ha tutti e quattro i trimestri
  * pieni e nessuna lista vuota, quindi il ramo `null` non lo raggiungerebbe
@@ -37,6 +39,25 @@ import type { DataProvider } from "./provider";
  * dei metodi nullable, che è esattamente il secondo elenco che diverge dal
  * primo. Chi arriva qui dopo aver visto l'app esplodere ha trovato la
  * spiegazione: sposta la manopola su un metodo vuotabile.
+ *
+ * `?role=` È LA TERZA, E ARRIVA CON IL BLOCCO d). La guardia di rotta è una
+ * **porta che concede** (`components/kora/RequireRole.tsx`): entrando in un
+ * portale il ruolo viene assegnato, perché i tre momenti del pitch lo
+ * richiedono, e da lì in demo nessun ingresso è mai negato. Il ramo che nega
+ * esisterebbe senza che nessun percorso lo raggiunga — cioè il codice non
+ * verificabile che questo file esiste per non lasciar scrivere.
+ *
+ * **La semantica del pin è tutta qui: una sessione fissata non viene
+ * riconcessa.** Con `?role=` attivo `getSession` risponde sempre con quel
+ * ruolo e `enterAs` **non lo cambia**: la porta chiama, la chiamata riesce, e
+ * il ruolo resta quello fissato. È esattamente ciò che rende raggiungibile la
+ * negazione — `/hr?role=employee` mostra lo stato di accesso negato — e anche
+ * ciò che impedisce alla guardia di ciclare, perché la sessione non si muove
+ * e l'effetto che concede non si riarma.
+ *
+ * Il ruolo si scrive come nel contratto: `employee`, `hr`, `professional`,
+ * `admin`. Un valore che non è un ruolo viene segnalato e ignorato, come un
+ * nome di metodo sbagliato.
  *
  * I nomi sono quelli dei **metodi del provider**, non delle chiavi di query:
  * questo file avvolge il contratto, e il contratto è la sua superficie. Il
@@ -90,6 +111,43 @@ import type { DataProvider } from "./provider";
 
 const FAIL_PARAM = "fail";
 const EMPTY_PARAM = "empty";
+const ROLE_PARAM = "role";
+
+/*
+ * I ruoli riconosciuti dalla manopola.
+ *
+ * È un `Record<UserRole, true>` e non un array di stringhe **perché così la
+ * duplicazione è verificata**: `UserRole` vive nel contratto, a runtime un tipo
+ * non si può interrogare, e un elenco scritto a mano sarebbe il secondo elenco
+ * che diverge dal primo (§5.5). In questa forma, aggiungere un ruolo
+ * all'unione rompe la compilazione qui, che è il momento giusto per accorgersene.
+ */
+const ROLES: Record<UserRole, true> = {
+  employee: true,
+  hr: true,
+  professional: true,
+  admin: true,
+};
+
+function isRole(value: string): value is UserRole {
+  return Object.hasOwn(ROLES, value);
+}
+
+/** Il ruolo fissato dall'indirizzo, se c'è e se è un ruolo. */
+function parseRolePin(search: string): UserRole | null {
+  const raw = new URLSearchParams(search).get(ROLE_PARAM);
+  if (raw === null) return null;
+
+  const role = raw.trim();
+  if (!isRole(role)) {
+    raiseOutsideCurrentStack(
+      `[fault] "${role}" non è un ruolo: usa employee, hr, professional o admin in ?${ROLE_PARAM}=.`,
+    );
+    return null;
+  }
+
+  return role;
+}
 
 /** Metodo del provider → quante chiamate deve ancora far fallire. */
 type FaultPlan = Map<string, number>;
@@ -165,12 +223,13 @@ function parseEmptyPlan(search: string, provider: DataProvider): Set<string> {
 export function withFaultInjection(provider: DataProvider): DataProvider {
   const failing = parseFaultPlan(window.location.search, provider);
   const emptying = parseEmptyPlan(window.location.search, provider);
+  const pinnedRole = parseRolePin(window.location.search);
 
-  if (failing.size > 0 || emptying.size > 0) {
-    // la manopola è girata: si dice, perché da qui in poi una schermata rotta
-    // o vuota è voluta e non va diagnosticata come un difetto
+  if (failing.size > 0 || emptying.size > 0 || pinnedRole !== null) {
+    // la manopola è girata: si dice, perché da qui in poi una schermata rotta,
+    // vuota o negata è voluta e non va diagnosticata come un difetto
     console.info(
-      `[fault] iniezione attiva — guasto: ${[...failing.keys()].join(", ") || "nessuno"}; vuoto: ${[...emptying].join(", ") || "nessuno"}. Esiste solo in sviluppo.`,
+      `[fault] iniezione attiva — guasto: ${[...failing.keys()].join(", ") || "nessuno"}; vuoto: ${[...emptying].join(", ") || "nessuno"}; ruolo fissato: ${pinnedRole ?? "nessuno"}. Esiste solo in sviluppo.`,
     );
   }
 
@@ -222,6 +281,22 @@ export function withFaultInjection(provider: DataProvider): DataProvider {
           const real = await method(...args);
           return Array.isArray(real) ? [] : null;
         };
+      }
+
+      /*
+       * Il pin arriva **dopo** guasto e vuoto, quindi `?fail=getSession` vince
+       * sul pin: un guasto e un ruolo fissato sono due stati diversi e uno solo
+       * si vede, e a decidere è la manopola più specifica.
+       *
+       * `enterAs` risponde con la sessione fissata senza scriverla: la porta
+       * chiama, la chiamata riesce, e il ruolo non si muove. È il punto in cui
+       * la negazione diventa raggiungibile.
+       */
+      if (pinnedRole !== null) {
+        const pinned: Session = { role: pinnedRole };
+        if (name === "getSession" || name === "enterAs") {
+          return () => Promise.resolve(pinned);
+        }
       }
 
       return method;

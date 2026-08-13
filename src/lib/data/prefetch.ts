@@ -63,6 +63,16 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
       queryKey: queryKeys.referenceDate(),
       queryFn: () => dataProvider.getReferenceDate(),
     }),
+    /*
+     * La sessione (M5.d). Sta fra le `prefetchQuery` e non fra gli `await`
+     * perché si può chiedere senza sapere niente prima, che è la regola scritta
+     * qui sopra. Scaldarla non è un'ottimizzazione: la legge la guardia di ogni
+     * portale, e a cache fredda il guardrail del §5.6 lo direbbe subito.
+     */
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.session(),
+      queryFn: () => dataProvider.getSession(),
+    }),
     queryClient.prefetchQuery({
       queryKey: queryKeys.professional.portalId(),
       queryFn: () => dataProvider.getPortalProfessionalId(),
