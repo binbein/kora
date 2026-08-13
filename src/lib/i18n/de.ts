@@ -1,23 +1,16 @@
+import type { Dictionary } from "./index";
+
 /*
  * Il dizionario tedesco (CLAUDE.md §4, blocco e di M5).
  *
- * ⚠︎ QUESTO FILE È PARZIALE: 41 chiavi su 663, i dieci namespace piccoli.
- * Mancano `employee`, `professional`, `hr`, `public` e `admin`.
+ * SI DICHIARA `Dictionary`, ED È LÌ CHE STA LA GARANZIA: la forma è quella di
+ * `it.ts`, quindi una chiave mancante o rinominata è un errore di typecheck e
+ * non una stringa italiana che sbuca in tedesco. "Stesse chiavi" smette di
+ * essere una promessa.
  *
- * PER QUESTO NON DICHIARA ANCORA `: Dictionary`. L'annotazione è la garanzia
- * del blocco — la forma è quella di `it.ts`, quindi una chiave mancante o
- * rinominata diventa un errore di typecheck invece di una stringa italiana che
- * sbuca in tedesco — ma messa qui adesso **direbbe il falso e romperebbe il
- * typecheck sull'albero**, perché `tsc` legge il filesystem e non git.
- *
- * ARRIVA COME ULTIMA RIGA DEL COMMIT CHE COMPLETA IL FILE, quando la promessa
- * è vera. È la stessa regola del numero di PR che si scrive quando lo si
- * conosce: una dichiarazione si fa quando è verificabile, non quando è
- * comoda.
- *
- * Finché manca, **nessuno importa questo file** e `DICTIONARIES` non lo
- * registra: il tedesco non è raggiungibile e non può comparire a schermo per
- * sbaglio.
+ * L'annotazione è arrivata **con il commit che ha completato il file**, non
+ * prima: su un dizionario parziale avrebbe dichiarato il falso e rotto il
+ * typecheck sull'albero, perché `tsc` legge il filesystem e non git.
  *
  * TEDESCO SVIZZERO: **doppia esse e mai l'Eszett**, ovunque — `Grösse`,
  * `heisst`, `schliessen`. È l'unico errore di registro che si trova a
@@ -54,7 +47,7 @@
  * tedesco verificabile e presentabile, non ratificato. Prima di un pitch in
  * tedesco va riletto da chi la lingua ce l'ha.
  */
-export const de = {
+export const de: Dictionary = {
   common: {
     appName: "Kora",
     none: "—",
@@ -1023,6 +1016,189 @@ export const de = {
         "Die Anfrage für {company} ist erfasst. Das Team antwortet innerhalb eines Arbeitstages.",
       successHome: "Zur Startseite",
       successRoi: "Berechnen Sie inzwischen die Rendite",
+    },
+  },
+
+  /* Back-office: registro strumento, **Sie**, come l'area HR. */
+  admin: {
+    portalName: "Internes Admin",
+    nav: {
+      companies: "Unternehmen",
+      users: "Benutzer",
+      professionals: "Fachpersonen",
+      sessions: "Sitzungen",
+      checkupProviders: "Check-up-Anbieter",
+      analytics: "Analytics",
+    },
+    demoBanner:
+      "Internes Back-office · Demonstrationsdaten. Unternehmen, Personen und Einrichtungen in diesem Bereich sind erfunden und beschreiben keine realen Kunden.",
+
+    extractNote:
+      "Auszug von {shown} Zeilen von {total}. Die vollständige Suche kommt mit dem Produktivbetrieb.",
+
+    companies: {
+      empty: "Keine Kundenunternehmen.",
+      title: "Kundenunternehmen",
+      kpiActive: "Aktive Kunden",
+      kpiEmployees: "Abgedeckte Mitarbeitende",
+      kpiRevenue: "Jahresumsatz",
+      kpiRevenueHint: "Auf den aktiven Kunden",
+      kpiEnrolled: "Angemeldet",
+      kpiEnrolledHint: "{enrolled} von {covered} abgedeckten Mitarbeitenden",
+
+      colName: "Unternehmen",
+      colIndustry: "Branche",
+      colEmployees: "Mitarbeitende",
+      colPlan: "Plan",
+      colCity: "Sitz",
+      colClientSince: "Kunde seit",
+      colRevenue: "Umsatz/Jahr",
+      colStatus: "Status",
+
+      statusActive: "Aktiv",
+      statusOnboarding: "In Aktivierung",
+      revenuePotential: "{amount} potenziell",
+    },
+
+    industry: {
+      finance: "Finanzwesen",
+      pharma: "Pharma",
+      legal: "Recht",
+      tech: "Technologie",
+      insurance: "Versicherungen",
+    },
+
+    users: {
+      title: "Benutzer",
+      searchPlaceholder: "Nach Name oder Unternehmen suchen",
+      kpiTotal: "Angemeldete Benutzer",
+      kpiTotalHint: "Über alle Kunden im Portfolio",
+      kpiActive: "Aktiv",
+      kpiWithAssessment: "Mit Assessment",
+      kpiAverageScore: "Durchschnittliches Gesundheitsprofil",
+      kpiOnExtract: "Auf den {shown} gezeigten Zeilen",
+
+      colName: "Name",
+      colEmail: "E-Mail",
+      colCompany: "Unternehmen",
+      colRole: "Rolle",
+      colScore: "Gesundheitsprofil",
+      colStatus: "Status",
+      colJoined: "Angemeldet",
+
+      statusActive: "Aktiv",
+      statusInactive: "Inaktiv",
+      empty: "Kein Benutzer entspricht der Suche.",
+    },
+
+    role: {
+      employee: "Mitarbeitende",
+      hr: "HR",
+      professional: "Fachperson",
+      admin: "Admin",
+    },
+
+    professionals: {
+      title: "Fachpersonen",
+      empty: "Keine Fachperson im Roster.",
+      kpiTotal: "Im Roster",
+      kpiBookable: "Buchbar",
+      kpiVetting: "In Prüfung",
+      kpiSessions: "Sitzungen gesamt",
+      kpiSessionsHint: "Summe aller Fachpersonen des Netzwerks",
+
+      colName: "Name",
+      colQualification: "Qualifikation",
+      colSpecialty: "Spezialität",
+      colLanguages: "Sprachen",
+      colFee: "Vergütung",
+      colSessions: "Sitzungen",
+      colDocuments: "Dokumente",
+      colMandate: "Auftrag",
+      colStatus: "Status",
+
+      statusBookable: "Buchbar",
+      statusVetting: "In Prüfung",
+      vettingNote:
+        "Eine Fachperson ist buchbar, wenn die Dokumente verifiziert und der Auftrag unterzeichnet sind. Bis dahin erscheint sie nicht in der Buchung.",
+    },
+
+    sessions: {
+      title: "Sitzungen",
+      subtitle: "Kalender von {professional}",
+      kpiTotal: "Sitzungen",
+      kpiDelivered: "Durchgeführt",
+      kpiScheduled: "Geplant",
+      kpiVolume: "Angefallene Vergütung",
+      kpiVolumeHint: "Nur durchgeführte Sitzungen",
+
+      colPatient: "Patientin",
+      colProfessional: "Fachperson",
+      colDate: "Datum",
+      colType: "Art",
+      colFee: "Vergütung",
+      colStatus: "Status",
+
+      statusScheduled: "Geplant",
+      statusCompleted: "Durchgeführt",
+      statusCancelled: "Abgesagt",
+      privacyNote:
+        "Von den Patientinnen erscheinen nur die Initialen, nie der Name.",
+    },
+
+    checkupProviders: {
+      empty: "Keine Einrichtung im Netzwerk.",
+      title: "Check-up-Anbieter",
+      kpiActive: "Aktive Einrichtungen",
+      kpiCities: "Abgedeckte Städte",
+      kpiBookings: "Gebuchte Check-ups",
+      kpiBookingsHint: "Über zwölf Monate",
+      kpiPending: "In Vertragsprüfung",
+
+      colName: "Einrichtung",
+      colCity: "Stadt",
+      colAddress: "Adresse",
+      colDistance: "Distanz",
+      colStatus: "Status",
+
+      statusActive: "Aktiv",
+      statusPending: "In Vertragsprüfung",
+      distance: "{km} km",
+      pendingNote:
+        "Eine Einrichtung in Vertragsprüfung ist über das Portal für Mitarbeitende nicht buchbar.",
+    },
+
+    analytics: {
+      title: "Plattform-Analytics",
+      empty: "Keine Plattformdaten für den laufenden Monat.",
+      kpiRevenue: "Umsatz des Monats",
+      kpiRevenueHint: "{amount} annualisiert",
+      kpiSessions: "Sitzungen des Monats",
+      kpiEnrolled: "Angemeldete Benutzer",
+      kpiActivation: "Aktivierung",
+      kpiActivationHint: "{enrolled} von {covered} abgedeckten Mitarbeitenden",
+
+      revenueChart: "Monatlich wiederkehrender Umsatz",
+      sessionsChart: "Plattformsitzungen pro Monat",
+      planMixChart: "Plan-Mix",
+      activationChart: "Aktivierung",
+      serviceMixChart: "Sitzungen nach Dienst, zwölf Monate",
+
+      planMixOne: "1 Unternehmen",
+      planMixMany: "{count} Unternehmen",
+      planMixEntry: "{plan}: {count}",
+    },
+
+    demoRequests: {
+      title: "Demo-Anfragen",
+      empty:
+        "Keine Anfrage. Die über das öffentliche Formular gesendeten Anfragen erscheinen hier.",
+      colCompany: "Unternehmen",
+      colContact: "Kontaktperson",
+      colEmail: "E-Mail",
+      colPhone: "Telefon",
+      colEmployees: "Mitarbeitende",
+      colReceived: "Erhalten",
     },
   },
 };
