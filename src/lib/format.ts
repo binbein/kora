@@ -3,13 +3,26 @@
  * (CLAUDE.md §11). Nessun componente costruisce un formato a mano.
  *
  * Il locale è sempre un parametro, mai una costante cablata: in Svizzera la
- * formattazione dipende dalla lingua, quindi il giorno in cui si aggiunge
- * DE/FR/EN non va toccata nessuna schermata. Oggi la demo è solo it-CH (§2.7).
+ * formattazione dipende dalla lingua, quindi aggiungendo DE/FR/EN non è stata
+ * toccata nessuna schermata — la promessa scritta qui da M1 è stata mantenuta
+ * da M5.e, e questo file ne è la prova.
+ *
+ * IL DEFAULT È LA LINGUA ATTIVA, non una costante (M5.e): nessuna delle 27
+ * schermate passa un locale, quindi se il default fosse rimasto `it-CH` il
+ * cambio lingua avrebbe tradotto le parole e lasciato i numeri in italiano —
+ * il caso peggiore, perché a schermo sembra funzionare. Il parametro resta,
+ * per chi un giorno dovrà formattare in una lingua diversa da quella attiva.
+ *
+ * COSA CAMBIA DAVVERO FRA I QUATTRO LOCALE, misurato e non ripetuto a memoria:
+ * fr-CH mette la **valuta dopo** il numero (`14'200 CHF`) e usa la **virgola**
+ * come separatore decimale (`2,35`); gli altri tre tengono `CHF 14'200` e il
+ * punto. L'apostrofo delle migliaia e lo spazio unificatore U+00A0 fra valuta
+ * e cifre valgono in tutti e quattro.
  */
 
-export type Locale = "it-CH" | "de-CH" | "fr-CH" | "en-CH";
+import { getLocale } from "@/lib/i18n";
+import type { Locale } from "@/lib/locale";
 
-export const DEFAULT_LOCALE: Locale = "it-CH";
 
 /*
  * CLDR dà a it-CH e de-CH `minimumGroupingDigits: 2`, quindi di suo Intl NON
@@ -31,7 +44,7 @@ const GROUPING = { useGrouping: "always" } as const;
  */
 export function formatCHF(
   amount: number,
-  locale: Locale = DEFAULT_LOCALE,
+  locale: Locale = getLocale(),
   options: { decimals?: number } = {},
 ): string {
   const decimals = options.decimals ?? 0;
@@ -47,7 +60,7 @@ export function formatCHF(
 /** Numeri senza valuta: 120 dipendenti, 142 sessioni, 31 giorni. */
 export function formatNumber(
   value: number,
-  locale: Locale = DEFAULT_LOCALE,
+  locale: Locale = getLocale(),
   options: { decimals?: number } = {},
 ): string {
   const decimals = options.decimals ?? 0;
@@ -64,7 +77,7 @@ export function formatNumber(
  */
 export function formatPercent(
   percent: number,
-  locale: Locale = DEFAULT_LOCALE,
+  locale: Locale = getLocale(),
   options: { decimals?: number } = {},
 ): string {
   const decimals = options.decimals ?? 0;
@@ -86,7 +99,7 @@ export function formatPercent(
  */
 export function formatSigned(
   value: number,
-  locale: Locale = DEFAULT_LOCALE,
+  locale: Locale = getLocale(),
   options: { decimals?: number } = {},
 ): string {
   const magnitude = formatNumber(Math.abs(value), locale, options);
@@ -98,7 +111,7 @@ export function formatSigned(
 /** Data completa: it-CH usa gg.mm.aaaa (29.07.2026). */
 export function formatDate(
   date: Date,
-  locale: Locale = DEFAULT_LOCALE,
+  locale: Locale = getLocale(),
 ): string {
   return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
@@ -110,7 +123,7 @@ export function formatDate(
 /** Solo l'ora: 17:30. */
 export function formatTime(
   date: Date,
-  locale: Locale = DEFAULT_LOCALE,
+  locale: Locale = getLocale(),
 ): string {
   return new Intl.DateTimeFormat(locale, {
     hour: "2-digit",
@@ -121,7 +134,7 @@ export function formatTime(
 /** Giorno della settimana per esteso: "giovedì". */
 export function formatWeekday(
   date: Date,
-  locale: Locale = DEFAULT_LOCALE,
+  locale: Locale = getLocale(),
 ): string {
   return new Intl.DateTimeFormat(locale, { weekday: "long" }).format(date);
 }
@@ -138,7 +151,7 @@ export function formatWeekday(
  */
 export function formatWeekdayShort(
   date: Date,
-  locale: Locale = DEFAULT_LOCALE,
+  locale: Locale = getLocale(),
 ): string {
   return new Intl.DateTimeFormat(locale, { weekday: "short" }).format(date);
 }
@@ -146,7 +159,7 @@ export function formatWeekdayShort(
 /** Mese per esteso con l'anno, per i titoli di periodo: "luglio 2026". */
 export function formatMonthYear(
   date: Date,
-  locale: Locale = DEFAULT_LOCALE,
+  locale: Locale = getLocale(),
 ): string {
   return new Intl.DateTimeFormat(locale, {
     month: "long",
@@ -157,7 +170,7 @@ export function formatMonthYear(
 /** Mese abbreviato per gli assi dei grafici: "lug". */
 export function formatMonthShort(
   date: Date,
-  locale: Locale = DEFAULT_LOCALE,
+  locale: Locale = getLocale(),
 ): string {
   return new Intl.DateTimeFormat(locale, { month: "short" }).format(date);
 }
@@ -171,7 +184,7 @@ export function formatMonthShort(
  */
 export function formatRatio(
   ratio: number,
-  locale: Locale = DEFAULT_LOCALE,
+  locale: Locale = getLocale(),
 ): string {
   return formatNumber(ratio, locale, { decimals: 2 });
 }
@@ -179,7 +192,31 @@ export function formatRatio(
 /** Valutazione dei professionisti: 4.9 (un decimale, sempre). */
 export function formatRating(
   rating: number,
-  locale: Locale = DEFAULT_LOCALE,
+  locale: Locale = getLocale(),
 ): string {
   return formatNumber(rating, locale, { decimals: 1 });
+}
+
+/**
+ * Un'enumerazione in linea: "Italiano, Deutsch e English".
+ *
+ * Le liste sono la terza cosa che cambia col locale dopo date e valuta (§2.7),
+ * e fino a M5.e questo file non le trattava: le due schermate che ne mostrano
+ * una univano con `t.common.listSeparator`, cioè un `", "` nel dizionario. Con
+ * quello, in italiano si leggeva "Italiano, Deutsch" dove si dice "Italiano e
+ * Deutsch" — la congiunzione sull'ultimo elemento non è un separatore, e
+ * nessun dizionario può fabbricarla.
+ *
+ * `Intl.ListFormat` la mette dove va in ognuna delle quattro lingue: `e`,
+ * `und`, `et`, `and`. La chiave `listSeparator` è sparita con il suo ultimo
+ * chiamante.
+ */
+export function formatList(
+  items: readonly string[],
+  locale: Locale = getLocale(),
+): string {
+  return new Intl.ListFormat(locale, {
+    style: "long",
+    type: "conjunction",
+  }).format(items);
 }

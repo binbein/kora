@@ -13,7 +13,7 @@ import KPICard from "@/components/shared/KPICard";
 import { loadState, useProfessionals } from "@/lib/data/queries";
 import { EmptyNotice, ErrorNotice } from "@/components/kora/StateNotice";
 import { isBookable, professionalDisplayName } from "@/lib/data/types";
-import { formatCHF, formatNumber, formatRating } from "@/lib/format";
+import { formatCHF, formatList, formatNumber, formatRating } from "@/lib/format";
 import { t } from "@/lib/i18n";
 
 /*
@@ -123,9 +123,11 @@ export default function AdminProfessionisti() {
                   </Badge>
                 </TableCell>
                 <TableCell className="text-xs text-muted-foreground">
-                  {professional.languages
-                    .map((language) => t.language[language])
-                    .join(t.common.listSeparator)}
+                  {formatList(
+                    professional.languages.map(
+                      (language) => t.language[language],
+                    ),
+                  )}
                 </TableCell>
                 <TableCell className="tabular-nums whitespace-nowrap">
                   {formatCHF(professional.sessionFee)}

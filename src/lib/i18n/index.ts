@@ -1,4 +1,4 @@
-import { DEFAULT_LOCALE, type Locale } from "@/lib/format";
+import { DEFAULT_LOCALE, type Locale } from "@/lib/locale";
 import { it } from "./it";
 
 /**
