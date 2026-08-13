@@ -1,4 +1,6 @@
 import { DEFAULT_LOCALE, type Locale } from "@/lib/locale";
+import { de } from "./de";
+import { assertPlaceholdersMatch } from "./placeholders";
 import { it } from "./it";
 
 /*
@@ -39,7 +41,19 @@ export type Dictionary = Translated<typeof it>;
  */
 const DICTIONARIES: Partial<Record<Locale, Dictionary>> = {
   "it-CH": it,
+  "de-CH": de,
 };
+
+/*
+ * I segnaposto di ogni traduzione si confrontano con l'italiano all'avvio
+ * (`placeholders.ts`): il tipo verifica le chiavi, non cosa c'è dentro le
+ * stringhe, e un `{anzahl}` al posto di `{n}` compila e si vede a schermo.
+ * In produzione questo ciclo non esiste.
+ */
+for (const [locale, dictionary] of Object.entries(DICTIONARIES)) {
+  if (locale === DEFAULT_LOCALE) continue;
+  assertPlaceholdersMatch(locale as Locale, dictionary);
+}
 
 /** Le lingue effettivamente disponibili, nell'ordine in cui si mostrano. */
 export const AVAILABLE_LOCALES = Object.keys(DICTIONARIES) as Locale[];
