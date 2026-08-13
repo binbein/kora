@@ -1,5 +1,7 @@
+import { useSyncExternalStore } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
+import { getLocale, subscribeLocale } from '@/lib/i18n'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from '@/pages/PageNotFound';
 import RequireRole from '@/components/kora/RequireRole';
@@ -133,11 +135,35 @@ const AppRoutes = () => (
   </Routes>
 );
 
+/*
+ * Il punto in cui il cambio lingua diventa visibile (M5.e).
+ *
+ * Si iscrive allo store del locale e, quando cambia, si rirenderizza. Poiché
+ * **crea lui** l'elemento `<AppRoutes />` invece di riceverlo come `children`,
+ * il suo re-render produce elementi nuovi e l'albero intero si ridisegna,
+ * leggendo il dizionario aggiornato da `t`.
+ *
+ * LA DIFFERENZA FRA RICEVERE E CREARE NON È UN DETTAGLIO: con
+ * `<LocaleGate>{...}</LocaleGate>` i figli sarebbero lo stesso oggetto
+ * elemento a ogni render, React salterebbe il sottoalbero e la lingua non
+ * cambierebbe da nessuna parte.
+ *
+ * NON RIMONTA NIENTE — non c'è nessun `key` — quindi lo stato locale
+ * sopravvive: la conversazione col medico virtuale, la conferma della
+ * richiesta demo, il trimestre selezionato. Il provider e la cache di
+ * react-query vivono fuori dall'albero e non si toccano: una prenotazione
+ * fatta in italiano esiste ancora in tedesco.
+ */
+function LocaleGate() {
+  useSyncExternalStore(subscribeLocale, getLocale);
+  return <AppRoutes />;
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClientInstance}>
       <Router>
-        <AppRoutes />
+        <LocaleGate />
       </Router>
     </QueryClientProvider>
   );
