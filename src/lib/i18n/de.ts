@@ -744,4 +744,285 @@ export const de = {
       },
     },
   },
+
+  /*
+   * Area pubblica: registro strumento, **Sie** — e qui il Sie è quello di
+   * cortesia rivolto a **un'azienda che valuta**, non alla persona che userà
+   * il prodotto. La seconda persona calda comincia dopo l'accesso.
+   */
+  public: {
+    nav: {
+      pricing: "Pläne",
+      roi: "ROI-Rechner",
+      demo: "Demo",
+      employees: "Mitarbeitende",
+      hr: "HR",
+      professionals: "Fachpersonen",
+      login: "Anmelden",
+      bookDemo: "Demo buchen",
+      menu: "Menü öffnen",
+    },
+
+    footer: {
+      tagline: "Das Betriebssystem für die Gesundheit Schweizer Unternehmen.",
+      city: "Lugano, Schweiz",
+
+      platformTitle: "Plattform",
+      platformPricing: "Pläne und Preise",
+      platformRoi: "ROI-Rechner",
+      platformEmployee: "Portal für Mitarbeitende",
+      platformHr: "HR-Portal",
+      platformProfessional: "Für Fachpersonen",
+
+      companyTitle: "Unternehmen",
+      companyAbout: "Über uns",
+      companyContact: "Kontakt",
+      companyCareers: "Karriere",
+      companyBlog: "Blog",
+
+      privacyTitle: "Datenschutz und Sicherheit",
+      privacyBody:
+        "Geschützte Gesundheitsdaten. DSGVO- und DSG-konform. Hosting in der Schweiz.",
+
+      legalPrivacy: "Datenschutzerklärung",
+      legalTerms: "Nutzungsbedingungen",
+      legalCookies: "Cookie-Richtlinie",
+
+      copyright: "© {year} Kora Switzerland SA. Alle Rechte vorbehalten.",
+    },
+
+    roi: {
+      title: "Was die Gesundheit der Mitarbeitenden heute kostet",
+      empty: "Der Rechner ist im Moment nicht verfügbar.",
+      subtitle:
+        "Die Verluste, die ein Schweizer Unternehmen jedes Jahr trägt, und wie viel davon mit Kora zurückkommt. Konservatives Szenario.",
+
+      employeesLabel: "Anzahl Mitarbeitende",
+      employeesRange: "Von {min} bis {max} Mitarbeitende",
+
+      lossesTitle: "Geschätzte Jahresverluste",
+      loss: {
+        absenteeism: "Absenzen",
+        presenteeism: "Präsentismus",
+        burnout: "Vorklinisches Burnout",
+        turnover: "Gesundheitsbedingte Fluktuation",
+      },
+      lossHint: {
+        absenteeism: "{days} Absenztage pro Mitarbeitende, zu {cost} pro Tag",
+        presenteeism: "{cost} verlorene Produktivität pro Mitarbeitende",
+        burnout: "{share} der Belegschaft gefährdet, {loss} verlorene Produktivität",
+        turnover: "{rate} gesundheitsbedingte Abgänge, plus die Wiederbesetzungskosten",
+      },
+      lossesTotal: "Total Verluste",
+
+      savingsTitle: "Mit Kora",
+      savings: "Geschätzte Einsparung",
+      savingsHint:
+        "{absence} auf Absenzen und Präsentismus, {burnout} auf Burnout und Fluktuation",
+      cost: "Kosten Kora",
+      costHint: "Im Plan {plan}, {price} pro Mitarbeitende und Monat",
+      costValue: "− {amount}",
+      netSavings: "Nettoeinsparung",
+      ratio: "Rendite der Investition",
+      ratioValue: "{ratio}:1",
+      ratioHint: "Nettoeinsparung pro investiertem Franken",
+
+      perEmployee:
+        "≈ {amount} pro Mitarbeitende und Jahr, konservatives Szenario",
+
+      linearityNote:
+        "Jede Position wächst proportional zur Belegschaft: das Verhältnis bleibt {ratio} bei jeder Anzahl Mitarbeitender.",
+
+      sources: "Konservatives Szenario. Quellen: SECO, Job Stress Index.",
+
+      ctaTitle: "Diese Zahlen, auf Ihr Unternehmen gerechnet",
+      ctaBody:
+        "Eine Demo von dreissig Minuten mit den Daten Ihrer Branche und Ihrer Belegschaft.",
+      ctaButton: "Demo buchen",
+      ctaPricing: "Pläne ansehen",
+    },
+
+    plans: {
+      title: "Transparente Pläne, konkreter Wert",
+      empty: "Im Moment ist kein Plan anzuzeigen.",
+      subtitle:
+        "Ein Abonnement pro Mitarbeitende. Keine versteckten Kosten. Messbarer ROI ab dem ersten Quartal.",
+
+      target: {
+        essenziale: "Unternehmen mit 20–100 Mitarbeitenden",
+        plus: "Unternehmen mit 100–300 Mitarbeitenden",
+        executive: "Unternehmen ab 300 Mitarbeitenden",
+      },
+
+      recommended: "Empfohlener Plan",
+      priceUnit: "/ Mitarbeitende / Monat",
+      cta: "Offerte anfragen",
+
+      feature: {
+        sessions: "{count} Psychologiesitzungen pro Jahr",
+        intro: "Kostenloses Erstgespräch, einmalig",
+        coach: "{count} Coaching-Sitzungen pro Jahr",
+        psychiatrist: "Psychiatrische Betreuung auf Anfrage inbegriffen",
+        nutritionist: "{count} Ernährungsberatungen pro Jahr",
+        virtualDoctorUnlimited:
+          "Virtueller Arzt unbegrenzt, Antwort innerhalb von {hours} Stunden",
+        virtualDoctorUnlimitedOneHour:
+          "Virtueller Arzt unbegrenzt, Antwort innerhalb einer Stunde",
+        virtualDoctorCapped:
+          "{count} Konsultationen beim virtuellen Arzt pro Jahr, Antwort innerhalb von {hours} Stunden",
+        virtualDoctorCappedOneHour:
+          "{count} Konsultationen beim virtuellen Arzt pro Jahr, Antwort innerhalb einer Stunde",
+        checkup: {
+          annual: "Jährlicher körperlicher Check-up",
+          executive:
+            "Vollständiger Executive-Check-up: EKG, Bauchultraschall, Augenarzt, komplettes Blutbild",
+        },
+        aiPlanMonthly: "KI-Präventionsplan, monatlich aktualisiert",
+        aiPlanEveryMonths:
+          "KI-Präventionsplan, alle {months} Monate aktualisiert",
+        hrDashboard: {
+          base: "HR-Dashboard und Basis-ROI: Nutzung, anonymisierter Stress, Einsparung in CHF",
+          department:
+            "HR-Dashboard nach Abteilung mit Quartalsbericht und Burnout-Frühwarnung",
+          advanced:
+            "Erweitertes HR-Dashboard, mit Monatsbericht und monatlichem Call mit dem klinischen Team",
+        },
+        workshops: "{count} Live-Workshops pro Jahr inbegriffen",
+        family: "Angehörige inbegriffen: Partner und ein Kind",
+        partnerExtension:
+          "Erweiterung auf Angehörige: + {price} pro Mitarbeitende und Monat, optional",
+        extraSession: "Sitzung über dem Kontingent: {price}",
+      },
+    },
+
+    costSimulator: {
+      title: "Kosten berechnen",
+      employeesLabel: "Anzahl Mitarbeitende",
+      planLabel: "Plan",
+      planOption: "{plan} — {price} pro Monat",
+      billingLabel: "Rechnungsstellung",
+      billingMonthly: "Monatlich",
+      billingAnnual: "Jährlich",
+      totalMonthly: "Total monatlich",
+      totalAnnual: "Total jährlich",
+      breakdownAnnual: "{employees} Mitarbeitende × {price} × 12 Monate",
+      breakdownMonthly: "{employees} Mitarbeitende × {price} × 1 Monat",
+      cta: "Demo buchen",
+      roiLink: "Was Sie ohne Kora bereits verlieren",
+    },
+
+    landing: {
+      badge: "Schweizer Plattform, Privacy-first",
+      mockupSeal: "Privacy-first",
+      heroTitleLead: "Unternehmensgesundheit,",
+      heroTitleAccent: "endlich integriert.",
+      heroBody:
+        "Kora vereint Online-Psychologie, virtuellen Arzt, körperliche Check-ups, KI-Prävention und ein anonymes HR-Dashboard in einem einzigen Abonnement pro Mitarbeitende.",
+      heroCtaRoi: "Rendite berechnen",
+      heroCtaDemo: "Demo buchen",
+      heroCompliance: "Hosting in der Schweiz. DSGVO- und DSG-konform.",
+
+      mockup: {
+        scoreLabel: "Gesundheitsprofil",
+        scoreOutOf: "/100",
+        focus: "Fokus: {area}",
+        nextSessionLabel: "Nächste Sitzung",
+        nextSessionValue: "{weekday} {time} · {professional}",
+        analyticsLabel: "HR-Dashboard (anonym)",
+        analyticsValue: "Nutzung {adoption} · Stress {trend} Punkte",
+        analyticsValueNoTrend: "Nutzung {adoption}",
+      },
+
+      problemTitle: "Die versteckten Kosten der Unternehmensgesundheit",
+      problem: {
+        burnout: "Zunehmendes Burnout",
+        absenteeism: "Teure Absenzen",
+        waitingLists: "Wartelisten für die Psychologie",
+        fragmented: "Zersplitterte Gesundheitsleistungen",
+        noData: "HR ohne messbare Daten",
+      },
+
+      valueTitle: "Eine Plattform. Drei Ebenen von Wert.",
+      value: {
+        employee: {
+          title: "Für die Mitarbeitenden",
+          body: "Einfacher Zugang zu psychischer Gesundheit, virtuellem Arzt und Prävention. Alles privat, alles an einem Ort.",
+        },
+        company: {
+          title: "Für das Unternehmen",
+          body: "Anonyme Erkenntnisse, messbare Rendite, bessere Bindung und weniger Absenzen.",
+        },
+        professional: {
+          title: "Für die Fachpersonen",
+          body: "Neue Nachfrage, weniger Bürokratie, automatische Zahlungen. Zusammenarbeit im Auftragsverhältnis ohne Bindung.",
+        },
+      },
+
+      roiTeaser: {
+        title: "Die Rendite, vor der Unterschrift",
+        losses:
+          "Ein Unternehmen mit {employees} Mitarbeitenden verliert {amount} pro Jahr.",
+        net: "Mit Kora kommen {amount} netto zurück: {ratio}, konservatives Szenario.",
+        cta: "Rechner öffnen",
+      },
+
+      plansTitle: "Transparente Pläne, konkreter Wert",
+      plansSubtitle:
+        "Ein Abonnement pro Mitarbeitende. Keine versteckten Kosten. Messbare Rendite.",
+      plansAll: "Die drei Pläne vergleichen",
+
+      privacyTitleLead: "Datenschutz ist kein Detail.",
+      privacyTitleAccent: "Er ist das Herz des Produkts.",
+      privacyBody:
+        "Das Unternehmen sieht nie individuelle Daten, Sitzungen, Befunde oder Diagnosen. Nur aggregierte und anonyme Erkenntnisse. Die Gesundheitsdaten bleiben bei denen, die sie erzeugen.",
+      privacyChip: {
+        hosting: "Hosting in der Schweiz",
+        gdpr: "DSGVO-konform",
+        lpd: "DSG-konform",
+        encryption: "Ende-zu-Ende-Verschlüsselung",
+      },
+
+      finalTitle: "Holen Sie Kora in Ihr Unternehmen.",
+      finalBody:
+        "Dreissig Minuten, um die Plattform mit Ihren Zahlen zu sehen.",
+      finalCta: "Demo buchen",
+    },
+
+    demoRequest: {
+      title: "Demo buchen",
+      subtitle:
+        "Dreissig Minuten mit unserem Team, mit den Zahlen Ihres Unternehmens.",
+
+      companyLabel: "Name des Unternehmens",
+      contactLabel: "Vor- und Nachname",
+      emailLabel: "Geschäftliche E-Mail",
+      phoneLabel: "Telefon",
+      employeesLabel: "Anzahl Mitarbeitende",
+      messageLabel: "Nachricht",
+      optional: "optional",
+      privacy:
+        "Die Daten werden gemäss dem Schweizer DSG und der DSGVO bearbeitet.",
+      submit: "Anfrage senden",
+      submitting: "Wird gesendet",
+      error: {
+        title: "Senden fehlgeschlagen",
+        body: "Was Sie eingegeben haben, ist noch hier: versuchen Sie es erneut.",
+      },
+
+      validation: {
+        companyRequired: "Der Name des Unternehmens ist erforderlich.",
+        contactRequired: "Der Name der Kontaktperson ist erforderlich.",
+        emailRequired: "Die E-Mail-Adresse ist erforderlich.",
+        emailInvalid: "Die E-Mail-Adresse scheint nicht gültig zu sein.",
+        employeesInvalid:
+          "Die Anzahl Mitarbeitende ist in ganzen Zahlen anzugeben oder leer zu lassen.",
+      },
+
+      successTitle: "Anfrage erhalten",
+      successBody:
+        "Die Anfrage für {company} ist erfasst. Das Team antwortet innerhalb eines Arbeitstages.",
+      successHome: "Zur Startseite",
+      successRoi: "Berechnen Sie inzwischen die Rendite",
+    },
+  },
 };
