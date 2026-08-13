@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import KoraLogo from "@/components/shared/KoraLogo";
+import LocaleSwitcher from "@/components/public/LocaleSwitcher";
 import { t } from "@/lib/i18n";
 
 /*
@@ -57,6 +58,7 @@ export default function PublicNav() {
           </div>
 
           <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+            <LocaleSwitcher />
             <Button variant="ghost" asChild>
               <Link to="/employee">{t.public.nav.login}</Link>
             </Button>
@@ -91,6 +93,9 @@ export default function PublicNav() {
               {label}
             </Link>
           ))}
+          <div className="pt-2">
+            <LocaleSwitcher />
+          </div>
           <Button
             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground mt-2"
             asChild

@@ -972,6 +972,10 @@ export const it = {
       bookDemo: "Prenota una demo",
       /** Nome del pulsante che apre la barra sul mobile: lo legge chi non vede l'icona. */
       menu: "Apri il menu",
+      /* Il nome del gruppo di sigle che cambia lingua (M5.e). Le sigle stesse
+         non stanno nel dizionario: `IT`, `DE` si scrivono uguali in tutte e
+         quattro le lingue, e si derivano dal codice del locale. */
+      language: "Lingua",
     },
 
     footer: {

@@ -754,6 +754,7 @@ export const de: Dictionary = {
       login: "Anmelden",
       bookDemo: "Demo buchen",
       menu: "Menü öffnen",
+      language: "Sprache",
     },
 
     footer: {
