@@ -168,7 +168,9 @@ export const de: Dictionary = {
     },
 
     home: {
-      greeting: "Guten Morgen {name}",
+      /* "Buongiorno" copre tutta la giornata, "Guten Morgen" solo il mattino,
+         e il saluto è statico: "Guten Tag" è la resa fedele. */
+      greeting: "Guten Tag {name}",
       subtitle: "Deine Gesundheit, an einem Ort.",
 
       healthTitle: "Dein Gesundheitszustand",
