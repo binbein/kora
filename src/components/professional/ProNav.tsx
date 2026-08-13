@@ -15,26 +15,6 @@ import { interpolate, t } from "@/lib/i18n";
 import { professionalDisplayName } from "@/lib/data/types";
 import { usePortalProfessional } from "@/lib/data/queries";
 
-const navItems = [
-  { path: "/professional", icon: Calendar, label: t.professional.nav.calendar },
-  {
-    path: "/professional/sessioni",
-    icon: ClipboardList,
-    label: t.professional.nav.sessions,
-  },
-  {
-    path: "/professional/pazienti",
-    icon: Users,
-    label: t.professional.nav.patients,
-  },
-  {
-    path: "/professional/pagamenti",
-    icon: CreditCard,
-    label: t.professional.nav.payments,
-  },
-  { path: "/professional/profilo", icon: User, label: t.professional.nav.profile },
-];
-
 function ProfessionalBadge() {
   const { data: professional } = usePortalProfessional();
   /*
@@ -63,6 +43,31 @@ function ProfessionalBadge() {
 export default function ProNav() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
+
+  /* Le etichette si leggono al render, non all'import: vedi `PublicNav`. */
+  const navItems = [
+    { path: "/professional", icon: Calendar, label: t.professional.nav.calendar },
+    {
+      path: "/professional/sessioni",
+      icon: ClipboardList,
+      label: t.professional.nav.sessions,
+    },
+    {
+      path: "/professional/pazienti",
+      icon: Users,
+      label: t.professional.nav.patients,
+    },
+    {
+      path: "/professional/pagamenti",
+      icon: CreditCard,
+      label: t.professional.nav.payments,
+    },
+    {
+      path: "/professional/profilo",
+      icon: User,
+      label: t.professional.nav.profile,
+    },
+  ];
 
   return (
     <>

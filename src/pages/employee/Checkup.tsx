@@ -38,9 +38,16 @@ import type { CheckupProvider } from "@/lib/data/types";
 /*
  * Le chiavi della spiegazione sono un insieme aperto sul contratto, quindi la
  * mappa si legge come tale invece di far finta che ne esista una sola.
+ *
+ * È una funzione e non una costante di modulo (M5.e): lì `t` sarebbe valutato
+ * una volta sola, e con il cambio lingua la spiegazione resterebbe in italiano
+ * in silenzio.
  */
-const explanations: Record<string, string> =
-  t.employee.checkup.report.explanation;
+function explanationOf(key: string): string {
+  const explanations: Record<string, string> =
+    t.employee.checkup.report.explanation;
+  return explanations[key];
+}
 
 /**
  * Le distanze si scrivono con il decimale solo quando ce l'hanno: "2.1 km" e
@@ -251,7 +258,7 @@ export default function Checkup() {
                   {t.employee.checkup.report.explanationTitle}
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  {explanations[report.explanationKey]}
+                  {explanationOf(report.explanationKey)}
                 </p>
               </div>
 

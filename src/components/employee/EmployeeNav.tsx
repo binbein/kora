@@ -15,23 +15,6 @@ import { useCompany, useEmployeeProfile } from "@/lib/data/queries";
 import { employeeDisplayName } from "@/lib/data/types";
 import { interpolate, t } from "@/lib/i18n";
 
-const navItems = [
-  { path: "/employee", icon: Home, label: t.employee.nav.home },
-  {
-    path: "/employee/psicologi",
-    icon: Brain,
-    label: t.employee.nav.psychologists,
-  },
-  { path: "/employee/medico", icon: Stethoscope, label: t.employee.nav.doctor },
-  {
-    path: "/employee/checkup",
-    icon: ClipboardCheck,
-    label: t.employee.nav.checkup,
-  },
-  { path: "/employee/piano-ai", icon: Sparkles, label: t.employee.nav.aiPlan },
-  { path: "/employee/profilo", icon: User, label: t.employee.nav.profile },
-];
-
 /*
  * Chi è connesso, in fondo alla barra.
  *
@@ -64,6 +47,24 @@ function Identity() {
 export default function EmployeeNav() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
+
+  /* Le etichette si leggono al render, non all'import: vedi `PublicNav`. */
+  const navItems = [
+    { path: "/employee", icon: Home, label: t.employee.nav.home },
+    {
+      path: "/employee/psicologi",
+      icon: Brain,
+      label: t.employee.nav.psychologists,
+    },
+    { path: "/employee/medico", icon: Stethoscope, label: t.employee.nav.doctor },
+    {
+      path: "/employee/checkup",
+      icon: ClipboardCheck,
+      label: t.employee.nav.checkup,
+    },
+    { path: "/employee/piano-ai", icon: Sparkles, label: t.employee.nav.aiPlan },
+    { path: "/employee/profilo", icon: User, label: t.employee.nav.profile },
+  ];
 
   return (
     <>

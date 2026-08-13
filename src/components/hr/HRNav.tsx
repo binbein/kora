@@ -13,18 +13,19 @@ import { useCompany } from '@/lib/data/queries';
  * diverso da quello che la dashboard accanto dichiarava. Ora viene dal provider:
  * è la stessa azienda, quindi è lo stesso numero (§5.5).
  */
-const navItems = [
-  { path: '/hr', icon: LayoutDashboard, label: t.hr.navDashboard },
-  { path: '/hr/dipendenti', icon: Users, label: t.hr.navEmployees },
-  { path: '/hr/report', icon: FileText, label: t.hr.navReport },
-  { path: '/hr/fatturazione', icon: CreditCard, label: t.hr.navBilling },
-  { path: '/hr/privacy', icon: Shield, label: t.hr.navPrivacy },
-];
-
 export default function HRNav() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const { data: company } = useCompany();
+
+  /* Le etichette si leggono al render, non all'import: vedi `PublicNav`. */
+  const navItems = [
+    { path: '/hr', icon: LayoutDashboard, label: t.hr.navDashboard },
+    { path: '/hr/dipendenti', icon: Users, label: t.hr.navEmployees },
+    { path: '/hr/report', icon: FileText, label: t.hr.navReport },
+    { path: '/hr/fatturazione', icon: CreditCard, label: t.hr.navBilling },
+    { path: '/hr/privacy', icon: Shield, label: t.hr.navPrivacy },
+  ];
 
   return (
     <>

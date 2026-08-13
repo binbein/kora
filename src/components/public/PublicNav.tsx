@@ -14,17 +14,27 @@ import { t } from "@/lib/i18n";
  * sotto `lg`, perché il §2.7 chiede un layout che regga parole tedesche circa
  * un terzo più lunghe — e la barra sta per prendere la voce del calcolatore.
  */
-const navItems = [
-  { path: "/pricing", label: t.public.nav.pricing },
-  { path: "/roi", label: t.public.nav.roi },
-  { path: "/demo", label: t.public.nav.demo },
-  { path: "/employee", label: t.public.nav.employees },
-  { path: "/hr", label: t.public.nav.hr },
-  { path: "/professional", label: t.public.nav.professionals },
-];
-
 export default function PublicNav() {
   const [open, setOpen] = useState(false);
+
+  /*
+   * LE ETICHETTE SI LEGGONO AL RENDER, NON ALL'IMPORT (M5.e). Questo array
+   * stava a livello di modulo, dove `t` viene valutato una volta sola: con il
+   * dizionario che cambia lingua, le sei voci sarebbero rimaste in italiano
+   * per sempre — e in silenzio, perché a schermo si vede una nav che
+   * funziona.
+   *
+   * Ricostruirlo a ogni render costa sei oggetti e toglie l'unico modo di
+   * sbagliare.
+   */
+  const navItems = [
+    { path: "/pricing", label: t.public.nav.pricing },
+    { path: "/roi", label: t.public.nav.roi },
+    { path: "/demo", label: t.public.nav.demo },
+    { path: "/employee", label: t.public.nav.employees },
+    { path: "/hr", label: t.public.nav.hr },
+    { path: "/professional", label: t.public.nav.professionals },
+  ];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-border/50">

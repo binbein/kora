@@ -46,11 +46,19 @@ const STATUS_BADGE: Record<AppointmentStatus, string> = {
   cancelled: "bg-muted text-muted-foreground",
 };
 
-const STATUS_LABEL: Record<AppointmentStatus, string> = {
-  scheduled: t.admin.sessions.statusScheduled,
-  completed: t.admin.sessions.statusCompleted,
-  cancelled: t.admin.sessions.statusCancelled,
-};
+/*
+ * L'etichetta si legge alla chiamata, non all'import (M5.e): una mappa
+ * costruita a livello di modulo cattura il dizionario di allora, e con il
+ * cambio lingua resterebbe in italiano in silenzio.
+ */
+function statusLabel(status: AppointmentStatus): string {
+  const labels: Record<AppointmentStatus, string> = {
+    scheduled: t.admin.sessions.statusScheduled,
+    completed: t.admin.sessions.statusCompleted,
+    cancelled: t.admin.sessions.statusCancelled,
+  };
+  return labels[status];
+}
 
 export default function AdminSessioni() {
   const portalIdQuery = usePortalProfessionalId();
@@ -164,7 +172,7 @@ export default function AdminSessioni() {
                 </TableCell>
                 <TableCell>
                   <Badge className={STATUS_BADGE[session.status]}>
-                    {STATUS_LABEL[session.status]}
+                    {statusLabel(session.status)}
                   </Badge>
                 </TableCell>
               </TableRow>
