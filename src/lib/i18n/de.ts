@@ -538,4 +538,210 @@ export const de = {
         "Zusammenarbeit im Auftragsverhältnis. Keine Anstellung: Kora bringt die Patientinnen und übernimmt Buchungen, Video und Zahlungen.",
     },
   },
+
+  /* Portale HR: registro strumento, **Sie**. */
+  hr: {
+    portalName: "HR-Portal",
+    navDashboard: "Dashboard",
+    navEmployees: "Mitarbeitende",
+    navReport: "Bericht",
+    navBilling: "Rechnungen",
+    navPrivacy: "Datenschutz",
+    navCompanyMeta: "{count} Mitarbeitende · Plan {plan}",
+
+    dashboardTitle: "HR-Dashboard",
+    companySubtitle: "{name} · {count} Mitarbeitende · Plan {plan}",
+
+    quarterSelectorLabel: "Quartal",
+    quarterLabel: "{quarter}. Quartal {year}",
+    quarterLabelInProgress: "{quarter}. Quartal {year} · laufend",
+    quarterShort: "Q{quarter}",
+
+    privacyNote:
+      "Aggregierte und anonyme Daten · Mindestschwelle {threshold} gemessene Mitarbeitende pro Abteilung",
+
+    kpiSavings: "Einsparung des Quartals",
+    kpiSavingsHint: "{days} vermiedene Absenztage",
+    kpiAdoption: "Nutzung",
+    kpiAdoptionHint: "{enrolled} von {total} angemeldet",
+    kpiActive: "Aktive Mitarbeitende",
+    kpiActiveHint: "mindestens ein Dienst im Quartal",
+    kpiStress: "Durchschnittlicher Stress",
+    kpiStressValue: "{points} Punkte",
+    kpiStressHint: "vs. Vorquartal",
+    kpiStressEmpty: "kein Vorquartal im Zeitfenster",
+
+    quarterEmpty:
+      "Keine Daten für das gewählte Quartal. Wählen Sie oben ein anderes aus.",
+    kpiSessions: "Genutzte Sitzungen",
+    kpiSessionsHint: "{used} von {total} Jahressitzungen",
+    kpiCheckup: "Abgeschlossene Check-ups",
+    kpiCheckupHint: "{done} von {enrolled} angemeldet",
+
+    alertTitle: "Frühwarnung — Abteilung {department}",
+    alertDescription:
+      "Der Stress der Abteilung liegt seit {months} aufeinanderfolgenden Monaten im hohen Bereich, seit {since}.",
+
+    usageTitle: "Nutzung der Dienste · letzte {months} Monate",
+    distributionTitle: "Verteilung der Dienste",
+    distributionSubtitle: "kumuliert vom Beginn des Zeitfensters bis {quarter}",
+    distributionEntry: "{service}: {count}",
+
+    stressByDepartment: "Stress nach Abteilung · letzter Monat",
+    departmentMeta: "{employees} Mitarbeitende · {measured} gemessen",
+    departmentScore: "{percent} · {level}",
+    suppressed: "Unter der Schwelle",
+    suppressedTooltip:
+      "Unter der Schwelle wird der Wert nicht berechnet, damit er nicht einzelnen Personen zugeordnet werden kann.",
+
+    trendTitle: "Stressverlauf · letzte {months} Monate",
+    trendCompany: "Durchschnitt Unternehmen",
+    trendAlertMarker: "Warnung",
+    trendCompanyLegend: "von {from} bis {to} · durchgehend im mittleren Bereich",
+    trendDepartmentLegend: "von {from} bis {to} · im hohen Bereich ab Monat {month}",
+
+    roiTitle: "Einsparung pro Quartal",
+
+    stressLevel: {
+      low: "Niedrig",
+      medium: "Mittel",
+      high: "Hoch",
+    },
+
+    service: {
+      psychologist: "Psychologie",
+      virtual_doctor: "Virtueller Arzt",
+      coach: "Coaching",
+      checkup: "Check-up",
+    },
+
+    employees: {
+      title: "Mitarbeitende",
+      subtitle: "{enrolled} von {total} angemeldet · nur anonyme Daten",
+      sampleNote: "Die Tabelle zeigt einen Auszug von {n} Mitarbeitenden.",
+      empty: "Keine Mitarbeitenden anzuzeigen.",
+      privacyNote:
+        "Die Namen sind abgekürzt. Kora zeigt dem Unternehmen nie individuelle Gesundheitsdaten.",
+      columnEmployee: "Mitarbeitende",
+      columnDepartment: "Abteilung",
+      columnStatus: "Status",
+      columnCheckup: "Check-up",
+      enrolled: "Aktiv",
+      notEnrolled: "Ausstehend",
+      checkup: {
+        completed: "Abgeschlossen",
+        booked: "Gebucht",
+        available: "Verfügbar",
+      },
+    },
+
+    billing: {
+      title: "Rechnungen",
+      planTitle: "Aktiver Plan",
+      employees: "Mitarbeitende",
+      monthlyCost: "Monatliche Kosten",
+      annualContract: "Jahresvertrag",
+      renewal: "Ablauf",
+      invoicesTitle: "Aktuelle Rechnungen",
+      invoicesEmpty: "Bisher keine Rechnung ausgestellt.",
+      invoiceDetail: "{count} Mitarbeitende × {price}",
+      invoicePaid: "Bezahlt",
+      invoicePending: "Ausstehend",
+      simulatorTitle: "Kostenrechner",
+      simulatorEmployees: "Mitarbeitende",
+      simulatorPlan: "Plan",
+      simulatorBilling: "Rhythmus",
+      billingMonthly: "Monatlich",
+      billingAnnual: "Jährlich",
+      totalMonthly: "Total monatlich",
+      totalAnnual: "Total jährlich",
+      planOption: "{name} ({price})",
+    },
+
+    report: {
+      title: "Bericht zur Unternehmensgesundheit",
+      subtitle: "{quarter} · {company}",
+      download: "PDF herunterladen",
+      metricsTitle: "Kennzahlen",
+      adoption: "Aktivierungsrate",
+      usage: "Sitzungen am Jahreskontingent",
+      checkup: "Abgeschlossene Check-ups",
+      stress: "Durchschnittlicher Stress",
+      stressValue: "{points} Punkte",
+      savings: "Geschätzte Einsparung",
+      avoidedDays: "Vermiedene Absenztage",
+      daysValue: "{days} Tage",
+      recommendationsTitle: "Empfehlungen",
+      recommendation: {
+        salesWorkshop:
+          "Eine Massnahme für die Abteilung Verkauf planen, seit drei Monaten im hohen Bereich.",
+        checkupPush:
+          "Den jährlichen Check-up bei allen in Erinnerung rufen, die das Konto aktiviert und ihn noch nicht gebucht haben.",
+        coachAwareness:
+          "Das Coaching bekannter machen: es ist die Leistung des Plans mit der geringsten Nutzung.",
+        partnerExtension:
+          "Die Erweiterung auf Angehörige prüfen, optional im Plan Plus.",
+      },
+
+      pdf: {
+        documentTitle: "Bericht zur Unternehmensgesundheit",
+        documentSubtitle: "{company} · {employees} Mitarbeitende · Plan {plan}",
+        period: "Zeitraum · {quarter}",
+        generatedOn: "Erstellt am {date}",
+        active: "Aktive Mitarbeitende",
+        sessions: "Genutzte Sitzungen",
+        sessionsValue: "{used} von {total}",
+        privacyNote:
+          "Aggregierte und anonyme Daten. Kora übermittelt dem Unternehmen keine individuellen Gesundheitsdaten und keine Buchungen, die einzelnen Personen zugeordnet werden können.",
+      },
+    },
+
+    privacy: {
+      title: "Datenschutz und Sicherheit",
+      subtitle: "Der Datenschutz ist das Herz von Kora.",
+      neverSeenTitle: "Das Unternehmen sieht nie:",
+      neverSeen: {
+        healthData: "Individuelle Gesundheitsdaten",
+        names: "Wer die Psychologie genutzt hat",
+        notes: "Klinische Notizen oder Befunde",
+        diagnoses: "Diagnosen oder Behandlungen",
+        bookings: "Individuelle Buchungen",
+      },
+      measurementTitle: "Woher die Stressdaten kommen",
+      measurementBody:
+        "Der Stresswert kommt aus dem Schnellcheck: eine Frage, ein Tippen, von der Person selbst angegeben. Er wird nie aus dem Verhalten abgeleitet — weder aus gebuchten Sitzungen noch aus dem Öffnen der App.",
+      anonymousLinkTitle: "Auch ohne Konto",
+      anonymousLinkBody:
+        "Der Schnellcheck wird in der App oder über einen anonymen Link beantwortet, der kein aktiviertes Konto voraussetzt. Nur die Angemeldeten zu messen hiesse, nur die bereits Erreichten zu messen — und der Wert zählt vor allem dort, wo die Nutzung noch nicht angekommen ist.",
+      thresholdTitle: "Anonymitätsschwelle",
+      thresholdBody:
+        "Der Wert einer Abteilung wird nur veröffentlicht, wenn in diesem Zeitraum mindestens {threshold} gemessene Mitarbeitende geantwortet haben. Unter der Schwelle zeigt das Dashboard einen Strich und keinen Wert.",
+      principle: {
+        noIndividual: {
+          title: "Keine individuellen Daten",
+          body: "Das Unternehmen sieht nie Sitzungen, Befunde, Diagnosen oder Gesundheitsdaten einzelner Mitarbeitender.",
+        },
+        aggregated: {
+          title: "Nur aggregierte Daten",
+          body: "Das Dashboard zeigt anonyme Statistiken, aggregiert nach Abteilung oder Unternehmen.",
+        },
+        encryption: {
+          title: "Ende-zu-Ende-Verschlüsselung",
+          body: "Die Gesundheitsdaten sind bei der Übertragung und im Ruhezustand nach AES-256 verschlüsselt.",
+        },
+        hosting: {
+          title: "Hosting in der Schweiz",
+          body: "Die Daten liegen auf Servern in der Schweiz, konform mit dem Bundesgesetz über den Datenschutz.",
+        },
+        compliance: {
+          title: "DSGVO- und DSG-Konformität",
+          body: "Kora ist konform mit der europäischen DSGVO und dem Schweizer DSG.",
+        },
+        consent: {
+          title: "Einwilligung der Mitarbeitenden",
+          body: "Jede Person bestätigt die Einwilligung bei der Aktivierung und kann sie jederzeit widerrufen.",
+        },
+      },
+    },
+  },
 };
