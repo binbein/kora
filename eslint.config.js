@@ -171,6 +171,27 @@ export default [
           message:
             "Nessuno chiama Date(): la data della demo arriva dal provider (CLAUDE.md §5.4).",
         },
+        {
+          // Il cambio lingua (M5.e) passa da un re-render dell'albero intero:
+          // `t` e' un binding vivo, e a farlo rileggere e' `LocaleGate`, che
+          // rirenderizza senza rimontare. Un componente memoizzato non viene
+          // raggiunto da quel re-render e resta nella lingua vecchia — a
+          // schermo, senza che niente segnali l'errore.
+          //
+          // La regola esiste perche' il vincolo sia **eseguibile** invece che
+          // verificato una volta: al momento in cui e' stata scritta i
+          // componenti memoizzati erano zero, e chi introduce il primo deve
+          // inciampare qui invece di rompere il cambio lingua in silenzio.
+          selector: "CallExpression[callee.property.name='memo']",
+          message:
+            "Un componente memoizzato non riceve il re-render che cambia lingua e resta nella lingua vecchia: vedi il commento su `t` in src/lib/i18n/index.ts (M5.e).",
+        },
+        {
+          // La stessa cosa importata come `memo` invece che `React.memo`.
+          selector: "CallExpression[callee.name='memo']",
+          message:
+            "Un componente memoizzato non riceve il re-render che cambia lingua e resta nella lingua vecchia: vedi il commento su `t` in src/lib/i18n/index.ts (M5.e).",
+        },
       ],
     },
   },
