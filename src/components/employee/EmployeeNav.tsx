@@ -70,7 +70,12 @@ export default function EmployeeNav() {
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex flex-col w-64 bg-card border-r border-border min-h-screen fixed left-0 top-0 z-40">
         <div className="p-6 border-b border-border">
-          <KoraLogo size="sm" />
+          {/* L'uscita dall'area: senza, da qui si torna alla landing solo col
+              tasto Indietro, e ogni ancora del portale punta dentro il portale
+              — cioè il vicolo cieco del §10, lo stesso che `/admin` aveva. */}
+          <Link to="/" className="flex items-center">
+            <KoraLogo size="sm" />
+          </Link>
         </div>
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map(({ path, icon: Icon, label }) => {
@@ -99,7 +104,9 @@ export default function EmployeeNav() {
       {/* Mobile header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-xl border-b border-border">
         <div className="flex items-center justify-between px-4 h-14">
-          <KoraLogo size="sm" />
+          <Link to="/" className="flex items-center flex-shrink-0">
+            <KoraLogo size="sm" />
+          </Link>
           <button
             onClick={() => setOpen(!open)}
             className="p-2"

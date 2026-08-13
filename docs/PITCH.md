@@ -46,6 +46,19 @@ che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
 
 - **Si parte dalla landing** e si usano **solo i link interni**. Mai la barra
   degli indirizzi.
+- **Fra un portale e l'altro si passa dal logo.** In alto a sinistra di ogni
+  portale il logo Kora riporta alla landing, e da lì la barra pubblica entra nel
+  successivo: dipendente → logo → HR → logo → professionista. **Sei clic, e non
+  serve il tasto Indietro.**
+
+  Prima della micro-passata del 13.08.2026 le uscite non c'erano — solo
+  `/admin` ne aveva una — e il giro fra i portali si faceva con Indietro senza
+  che questo file lo dicesse. Se ti ritrovi a premerlo qui, stai usando la
+  versione vecchia.
+
+  **L'unico Indietro della presentazione resta quello della coreografia di
+  `/admin`**, qui sotto, ed è un'altra cosa: lì si torna a una schermata da cui
+  si è usciti, non si entra in una nuova.
 - **Mai ricaricare.** Il provider vive in memoria: un refresh azzera tutto quello
   che hai costruito durante la demo — le prenotazioni fatte, la richiesta demo
   compilata, il check rapido (`CLAUDE.md` §10).
@@ -68,6 +81,11 @@ che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
   fatta in quest'ordine perché `/admin` non è linkata da nessuna schermata:
   l'unico modo di entrarci è l'indirizzo digitato, che ricarica, che azzera il
   provider. Quindi **è la prima cosa che si apre, non l'ultima.**
+
+  **Le uscite dai portali non cambiano niente qui**: il logo porta *fuori* da
+  un'area, e in `/admin` c'era già. A mancare è un link che porti *dentro*, e
+  non esiste da nessuna parte — è la ragione per cui questa coreografia
+  esiste.
 
   1. **Apri `/admin` per prima**, come schermata iniziale della sessione. La
      tabella richieste è vuota, ed è giusto così: è il "prima".
