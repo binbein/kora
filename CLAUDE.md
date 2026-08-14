@@ -59,9 +59,10 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
 6. **Scope congelato.** Le schermate sono quelle di §10. Nessuna schermata, feature o
    sezione nuova senza approvazione esplicita dei founder. Se un'idea sembra buona,
    proporla e fermarsi: la decisione spetta a loro.
-7. **Lingua: italiano — con architettura pronta per 4 lingue.** La piattaforma avrà
-   IT, DE, FR, EN; oggi resta SOLO italiano (it-CH: valuta CHF, numeri 14'200, date
-   gg.mm.aaaa). Niente language switcher. Ma valgono da subito:
+7. **Lingua: italiano di default — con architettura pronta per 4 lingue.** La
+   piattaforma avrà IT, DE, FR, EN; **la demo si apre in italiano in ogni build**
+   (it-CH: valuta CHF, numeri 14'200, date gg.mm.aaaa), e le altre lingue si
+   raggiungono dal selettore. Valgono da subito:
    - Stringhe UI in `src/lib/i18n/it.ts` (oggetto tipizzato, niente testo cablato
      nei componenti). Aggiungere una lingua domani = aggiungere un file con le
      stesse chiavi. **Retrofittare l'i18n su ventisei schermate dopo costa dieci volte
@@ -69,12 +70,32 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
    - **Mai concatenare stringhe per comporre frasi** (l'ordine delle parole cambia
      tra lingue). Sempre frasi complete con segnaposto:
      `"Hai usato {n} delle tue {max} sessioni"`, mai `"Hai usato " + n + ...`.
-   - `format.ts` riceve il locale come parametro (oggi fisso a `it-CH`). Il
+   - `format.ts` riceve il locale come parametro e **di default usa la lingua
+     attiva** (`getLocale()`, da M5.e): nessuna schermata ne passa uno, quindi un
+     default fisso a `it-CH` avrebbe tradotto le parole lasciando i numeri in
+     italiano — il caso peggiore, perché a schermo sembra funzionare. Il
      separatore delle migliaia è l'apostrofo in tutte le varianti svizzere secondo
      CLDR, ma date, valuta e liste cambiano — fr-CH scrive `14'200 CHF`, con la
      valuta dopo. Nessun formato numerico o di data cablato nei componenti.
    - **Layout che regge il tedesco** (parole ~30% più lunghe): niente larghezze
      fisse su etichette e pulsanti.
+
+   **Il language switcher c'è** (founder, 14.08.2026): il §4.e lo prevedeva come
+   decisione del blocco, la tranche 1b di M5.e l'ha eseguito e questa riga lo
+   ratifica. Sta **solo in `PublicNav`** — il giro del pitch attraversa comunque
+   la barra pubblica — è fatto di sigle e non di un menù, e mostra **le sole
+   lingue registrate in `DICTIONARIES`**: oggi due, quattro quando i quattro
+   dizionari esisteranno. Il default è l'italiano e **la scelta non sopravvive a
+   un ricaricamento**, perché il §5.4 vuole che la demo provata sia quella
+   presentata.
+
+   **Il divieto che stava scritto qui — "niente language switcher" — non era
+   estetica, ed è caduto per la sua stessa ragione**: con un dizionario solo uno
+   switcher è un comando che non comanda, e una sigla spenta accanto a quella
+   accesa è un'affordance morta che invita la domanda "perché è grigia?" dentro
+   trenta minuti contati. È caduto il giorno in cui il secondo dizionario è
+   esistito davvero, non prima — ed è la ragione per cui il componente continua a
+   non mostrare FR ed EN finché non ci sono.
 8. **Commit piccoli e frequenti**, messaggi in inglese, conventional commits
    (`feat: hr dashboard reads from provider`). Mai commit giganti multi-feature.
    Le decisioni non ovvie finiscono in questo file con un commit `docs:` separato
@@ -617,25 +638,53 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 96 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 96 posti.
+call site sono 97 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 97 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
-**Il criterio con cui i 96 si contano**, perché una rilevazione futura non
+**Il criterio con cui i call site si contano**, perché una rilevazione futura non
 produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
-`assertInDevOutsidePromise(` sotto `src/`, escluso `guardrails.ts` che le
-definisce. Oggi 90 + 6. Restano fuori, e sono le tre trappole del conteggio:
+`assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
+cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
+Oggi **91 + 6 = 97**. Restano fuori, e sono le tre trappole del conteggio:
 le righe di `import`, la **prosa dei commenti** che le nomina, e il fatto che
 il nome lungo **contiene** quello corto, quindi un grep sul nome corto conta
 due volte le sei chiamate lunghe.
 
-**`prefetch.ts` è una categoria a parte e non entra nei 96**, benché chiami
+**L'esclusione va per percorso perché escluderla per nome ha già mangiato un
+call site.** Il guardrail dei segnaposto di M5.e nacque in `i18n/guardrails.ts`,
+e un criterio che salta *`guardrails.ts`* lo saltava insieme al file che
+definisce le primitive: il conto continuava a dire 90 + 6 mentre le chiamate
+erano 91. Il file è stato rinominato `i18n/placeholders.ts` (la sezione M5.e di
+`docs/PROGRESS.md` racconta come è emerso).
+
+**`prefetch.ts` è una categoria a parte e non entra nel conto**, benché chiami
 `raiseOutsideCurrentStack`, che è la terza primitiva del file. Il motivo non è
 il nome della funzione: è che la frase qui sopra parla di call site che **non
 sanno in che modo girano**, e `prefetch.ts` il modo lo legge da sé — importa
-`GUARDRAIL_MODE` e ci apre sopra il proprio controllo. Contarlo darebbe 97, e
-**un 97 futuro va riconosciuto come errore di criterio, non come correzione.**
+`GUARDRAIL_MODE` e ci apre sopra il proprio controllo.
+
+**Le esclusioni sono nominate, e sono queste due.** La prima è la terza
+primitiva, `raiseOutsideCurrentStack`: le sue chiamate non entrano nel conto **da
+nessun file**, e oggi la chiamano `prefetch.ts` e `fault-injection.ts`. La
+seconda è `prefetch.ts` come categoria a parte, per la ragione qui sopra — che
+resta scritta anche se le sue chiamate sarebbero già fuori per la prima, perché
+dice **perché** quel file è diverso e non solo che non si conta.
+
+**Il numero si muove, il criterio no**, e una rilevazione che dia una cifra
+diversa da quella scritta qui va confrontata **prima col criterio e poi col
+numero**: se il criterio è stato applicato per intero, a essere invecchiata è la
+riga, e si aggiorna con la data. Un guardrail nuovo è un call site nuovo, ed è
+esattamente ciò che è successo passando da 96 a 97 con la tranche tedesca.
+
+**Perché questa forma e non quella di prima.** Fino al 14.08.2026 la riga diceva
+*"un 97 futuro va riconosciuto come errore di criterio, non come correzione"*:
+blindava **un valore**, il 97 è arrivato in un giorno per la ragione più
+ordinaria che ci sia, e la riga avrebbe fatto respingere come errore la misura
+giusta. **Le regole si scrivono sui criteri, non sui valori che i criteri
+producono** — riscriverla a 98 sarebbe stato ripetere lo stesso sbaglio con una
+cifra più alta.
 
 **Da dove veniva il 114** che questo file ha dichiarato fino all'11.08.2026: era
 `grep -c "assertInDev"` grezzo, cioè 90 chiamate + 6 chiamate lunghe + 16 righe
@@ -644,7 +693,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 96 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 97 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 
