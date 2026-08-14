@@ -371,8 +371,29 @@ export default function Landing() {
     <div className="min-h-screen bg-background">
       <PublicNav />
 
-      {/* Hero */}
-      <section className="pt-28 pb-20 lg:pt-36 lg:pb-28">
+      {/*
+        Hero.
+
+        `overflow-x-clip` contiene l'ingresso del mockup e non cambia niente di
+        quello che si vede a riposo. Il riquadro entra da destra — `x: 40` — e
+        porta con sé il sigillo, che sta a `-right-4` fuori dal suo bordo: a
+        1280px i due insieme superano il viewport di **24px** all'inizio
+        dell'animazione, e la pagina diventa scorrevole in orizzontale sulla
+        prima schermata che un investitore vede. Ad animazione conclusa il
+        sigillo rientra nel margine del contenitore e non sfonda: è
+        l'ingresso a sfondare, non la posizione.
+
+        **`clip` e non `hidden`**: `hidden` su un asse rende l'altro `auto`,
+        cioè fabbrica un contenitore di scorrimento verticale dentro l'hero.
+        `clip` taglia e basta, e lascia l'asse verticale `visible`.
+
+        Il taglio cade sui 24px che stanno oltre il bordo dello schermo, cioè
+        su pixel che oggi nessuno vede — sono raggiungibili solo scorrendo, ed
+        è esattamente lo scorrimento che si sta togliendo. L'animazione non si
+        tocca (§10: è la sola della landing, e framer-motion sta nel §3 per
+        lei).
+      */}
+      <section className="pt-28 pb-20 lg:pt-36 lg:pb-28 overflow-x-clip">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <motion.div
