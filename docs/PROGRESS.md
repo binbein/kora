@@ -1957,13 +1957,14 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Diciassette passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Diciotto passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
-quella francese di M5.e, e le quattro della **revisione del 15.08.2026**: #43 e
+quella francese di M5.e, le quattro della **revisione del 15.08.2026** — #43 e
 #44 sulla coerenza del dominio e sugli stati limite, #45 sul perimetro del
-contratto, e **questa passata**, la coda documentale che chiude la serie. Non
+contratto, #46 la coda documentale che l'ha chiusa — e **questa passata**,
+l'allineamento del `README.md`. Non
 aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
 seam e del dizionario, più le sette che hanno una sottosezione loro qui sotto:
