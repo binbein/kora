@@ -294,7 +294,7 @@ export const fr: Dictionary = {
         overCapWithPrice:
           "Les séances comprises sont épuisées : celle-ci coûte {price}",
         overCapWithoutPrice:
-          "Tu as épuisé les séances comprises dans ton plan pour ce service.",
+          "Tu as épuisé les séances de ce service comprises dans ton plan pour cette année. Pour en obtenir d'autres, parles-en à ton interlocuteur RH.",
         confirm: "Confirmer la réservation",
         error: {
           title: "La réservation n'a pas abouti",

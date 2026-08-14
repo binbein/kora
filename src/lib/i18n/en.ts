@@ -288,7 +288,7 @@ export const en: Dictionary = {
         overCapWithPrice:
           "You've used up the sessions included: this one costs {price}",
         overCapWithoutPrice:
-          "You've used up the sessions included in your plan for this service.",
+          "You've used up this year's sessions for this service included in your plan. To get more, talk to your HR contact.",
         confirm: "Confirm booking",
         error: {
           title: "The booking didn't go through",

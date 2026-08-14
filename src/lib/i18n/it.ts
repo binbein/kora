@@ -286,9 +286,14 @@ export const it = {
          * Il §9 non dà un prezzo oltre il cap per il coaching, quindi non se ne
          * offre una a pagamento: si dice che le incluse sono finite e si ferma
          * la conferma, invece di far credere che sia gratis.
+         *
+         * LA SECONDA FRASE È LA VIA D'USCITA, e non è cortesia: senza prezzo la
+         * conferma resta spenta per sempre, quindi la schermata sarebbe un
+         * vicolo cieco (§10.B). Rimanda all'HR, che è l'unico gesto che esiste
+         * davvero — nessuna azione inventata, nessun prezzo che il §9 non dà.
          */
         overCapWithoutPrice:
-          "Hai finito le sessioni incluse nel piano per questo servizio.",
+          "Hai finito le sessioni di questo servizio incluse nel piano per quest'anno. Per averne altre, parlane con il tuo referente HR.",
         confirm: "Conferma la prenotazione",
         /* La prenotazione non è riuscita. La frase dice **che cosa non è
            successo** — lo slot è ancora libero — perché il dubbio vero, dopo

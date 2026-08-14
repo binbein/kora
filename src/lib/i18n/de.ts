@@ -271,7 +271,7 @@ export const de: Dictionary = {
         overCapWithPrice:
           "Die enthaltenen Sitzungen sind aufgebraucht: diese kostet {price}",
         overCapWithoutPrice:
-          "Du hast die in deinem Plan enthaltenen Sitzungen für diesen Dienst aufgebraucht.",
+          "Du hast die in deinem Plan enthaltenen Sitzungen für diesen Dienst in diesem Jahr aufgebraucht. Für weitere sprich mit deiner HR-Ansprechperson.",
         confirm: "Buchung bestätigen",
         error: {
           title: "Die Buchung hat nicht geklappt",
