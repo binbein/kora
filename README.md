@@ -90,12 +90,33 @@ nella testata di quel file.
 ## Struttura
 
 `src/pages/` per area (`public`, `employee`, `hr`, `professional`, `admin`),
-`src/components/ui/` per shadcn (non si tocca), `src/lib/` per il layer dati.
-`reference/` è il sorgente della precedente demo Next.js: **sola lettura**, si copia
-ma non si importa, e si cancella a fine M3.
+`src/components/ui/` per shadcn (non si tocca), `src/components/kora/` per i
+componenti di dominio, `src/lib/` per il layer dati e le funzioni pure, `docs/`
+per i tre documenti qui sopra.
+
+La mappa a grana fine — file per file, con la ragione di ognuno — sta nel
+`CLAUDE.md` §3.
+
+## Lingue
+
+La demo **si apre in italiano in ogni build**, e le altre lingue si raggiungono
+dal selettore nella barra pubblica. Le regole — frasi intere con segnaposto, mai
+concatenazioni, e i formati che seguono il locale — stanno nel `CLAUDE.md` §2.7.
+
+## Deploy
+
+Vercel, collegato al repository, con una preview automatica per branch.
+`vercel.json` esegue **`npm run build:demo`**, quindi l'indirizzo condiviso serve
+la build in cui i guardrail parlano.
 
 ## Origine
 
-Fork della demo generata su base44. Il Builder non è più la fonte di verità: **git
-lo è**. Il plugin e l'SDK di base44 vengono rimossi in M1 (`CLAUDE.md` §3) — occhio
-all'alias `@/`, che oggi lo inietta il plugin e non è definito da nessun'altra parte.
+Fork della demo generata su base44. Il Builder non è più la fonte di verità:
+**git lo è**, e il plugin e l'SDK di base44 sono usciti dal repository in M1
+(`CLAUDE.md` §3) — insieme a `reference/`, il sorgente della precedente demo
+Next.js, cancellato alla chiusura di M3 quando non c'era più niente da prenderne.
+
+L'alias `@/` lo iniettava il plugin; da allora è definito in `vite.config.js`
+sotto `resolve.alias`, e **non si toglie**: Vite non legge i `paths` di
+`tsconfig.json`, quindi senza quel blocco ogni import smette di risolvere in un
+colpo solo.
