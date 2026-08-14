@@ -2590,6 +2590,90 @@ dalle cifre con U+00A0 e l'asserzione era scritta con lo spazio da tastiera.
 Normalizzando, torna. Prima di concludere che un numero non c'è, verificare che
 lo strumento potesse vederlo (§11).
 
+#### Gli stati limite delle schermate (15.08.2026)
+
+Undici commit. È il §11 applicato alla lettera — *cosa succede con zero
+elementi, con un dato assente, al primo e all'ultimo periodo del dataset* — su
+dieci punti che oggi non si vedono perché il dataset non li produce. **Nessun
+numero del §8 si muove.**
+
+| | cosa impediva |
+|---|---|
+| **Il contatore coach salta se il piano non ha il coach** | `coachEntitlement` fa `?? 0`, quindi su un Essenziale la card diceva "1 su 0" e la barra riceveva un valore non finito. Il guardrail che lo vieta vive solo in sviluppo: **nella build che si deploya si rompeva in silenzio** |
+| **Il cap coach esaurito ha una via d'uscita** | il coach non ha `extraSessionPrice` — il §9 non ne dà uno — quindi a cap finito la conferma restava spenta per sempre: il vicolo cieco che il §10.B vieta. Ora la frase rimanda all'HR, che è l'unico gesto che esiste |
+| **Il simulatore di fatturazione ha un clamp** | svuotando il campo il totale andava a CHF 0 su un contratto attivo, con un negativo diventava negativo. Il difetto vero era il vuoto: con `Number("") \|\| 0` il fallback all'organico **funzionava una volta sola**, e dalla prima modifica in poi quella riga era morta |
+| **Il download del PDF ha un `catch`** | era l'unica scrittura dell'app senza stato d'errore: un fallimento lasciava una promise rifiutata, nessun messaggio e il pulsante di nuovo attivo come se il file fosse partito |
+| **"Nota" precarica la nota esistente** | il dialogo si apriva bianco e salvando sovrascriveva quella che c'era |
+| **Quattro insiemi di chiavi i18n sono unioni** | `explanationKey`, `goalKey`, `tipKeys` e `recommendationKeys` erano `string`: una chiave sbagliata compilava e rendeva vuoto. A valle costringevano a due `as keyof typeof` e a tre `Record<string, string>`, che dichiarano `string` su un accesso che può dare `undefined` |
+| **`fault-injection.ts` non conta più i metodi** | diceva 42 e sono 44. Il numero si toglie e si rimanda al tipo: è la stessa lezione che quel file racconta di aver già imparato |
+| **Il badge di annullamento nasce col motivo** | il motivo è opzionale sul tipo, e senza usciva un rettangolo rosso vuoto |
+| **La chat del medico spegne il timer** | `setTimeout` senza cleanup: uscendo prima della risposta scattava su un componente smontato |
+| **Un mese senza compensi lo dice** | restava la sola riga "Totale del mese CHF 0". Nello stesso commit lo storico pagamenti vuoto, che apriva un riquadro bordato e vuoto |
+
+**Il regime tenuto è diventato una funzione** nel commit sui compensi della
+passata precedente; qui la conseguenza si è vista dal lato opposto, ed è il
+motivo per cui il mese vuoto era **finalmente raggiungibile**: prima, ogni
+professionista rispondeva con l'agenda della Dr.ssa Meier, quindi non esisteva
+nessun percorso che producesse un mese a zero. Una correzione ne ha resa
+verificabile un'altra.
+
+##### Come si sono visti i casi che il dataset non produce
+
+Tre casi non li raggiunge nessuna manopola — `?fail` e `?empty` producono
+guasti e vuoti di risposta, non configurazioni diverse — e due dei tre fanno
+scattare un guardrail del dataset, quindi in sviluppo darebbero una pagina
+bianca invece della schermata da guardare.
+
+Si sono visti **sulla build demo**, dove i guardrail loggano e la schermata si
+disegna lo stesso (§5.6): è il compromesso dichiarato di quella build, usato
+qui come strumento. Il dato tornava al suo posto prima del commit, e l'albero è
+stato verificato pulito.
+
+- **piano su Essenziale** → il contatore coach sparisce, resta "3 su 6 sessioni
+  usate", nessun "su 0" e una barra sola;
+- **coach a 4 su 4** → scegliendo uno slot esce *"Hai finito le sessioni di
+  questo servizio incluse nel piano per quest'anno. Per averne altre, parlane
+  con il tuo referente HR."*, con la conferma spenta;
+- **mese senza compensi** → nessun dato toccato: basta puntare il portale sulla
+  Dr.ssa Keller, che un'agenda non ce l'ha. Escono "Nessuna seduta erogata
+  questo mese." e "Nessun pagamento ancora.", con 0 sedute e CHF 0.
+
+##### Verificato a schermo, viewport 1280 e scheda in primo piano
+
+- **il simulatore di fatturazione**: vuoto → 120 e CHF 79'200, cioè il
+  contratto vero; `-5` → 1 e CHF 660; `5` → CHF 3'300, che è la domanda
+  legittima che un clamp a 20 avrebbe rifiutato;
+- **il PDF che fallisce**: con il generatore rotto ad arte esce *"Il PDF non è
+  stato creato · Riprova a scaricarlo."* e il pulsante torna premibile;
+  ripristinato, il download riesce e nessun messaggio compare;
+- **la nota**: salvata su M.B., le sedute senza nota passano da 8 a 7 — la
+  stessa asserzione di M2 — e **riaprendo quella seduta i due campi sono
+  pieni**, dove prima si apriva un foglio bianco;
+- `lint` e `typecheck` a zero; i guardrail restano **99 = 93 + 6**, invariati.
+
+**Una trappola dello strumento, la settima di questo file**: il conteggio dei
+pulsanti con `innerText` dava 7 dove `textContent` ne dà 63, perché `innerText`
+dipende dal layout e salta ciò che il modale rende invisibile. E l'etichetta di
+una nota esistente è `Nota`, non "Modifica nota": cercando la seconda si
+concludeva che il salvataggio non fosse avvenuto. Due misure che rispondevano a
+una domanda diversa da quella posta (§11).
+
+**Aperto e dichiarato:**
+
+- **La query della nota si monta a cache fredda**, e il guardrail del §5.6 lo
+  dice: `useSessionNote` è la prima lettura che nasce da un gesto e non dal
+  primo paint, e `prefetchDemo` non può scaldarla — le chiavi sono una per
+  seduta. Il controllo esenta le query `enabled: false`, che è il caso del
+  dialogo chiuso, ma non quello del dialogo appena aperto. **Va deciso**: o si
+  scaldano le note al boot, o il controllo impara a distinguere un montaggio
+  successivo al primo paint.
+- **`hasNote` è derivato e non ha una nota dietro.** 56 sedute su 63 lo
+  dichiarano vero — il paziente ha una seduta più recente — ma `getSessionNote`
+  per loro risponde `null`, quindi "Nota" apre comunque un foglio bianco. Il
+  precaricamento morde sulle note scritte davvero, e sul resto il dato dice una
+  cosa che dietro non c'è: è la famiglia "due sorgenti per lo stesso fatto", ed
+  è materia di dataset.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
