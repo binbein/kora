@@ -73,10 +73,26 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
    - `format.ts` riceve il locale come parametro e **di default usa la lingua
      attiva** (`getLocale()`, da M5.e): nessuna schermata ne passa uno, quindi un
      default fisso a `it-CH` avrebbe tradotto le parole lasciando i numeri in
-     italiano — il caso peggiore, perché a schermo sembra funzionare. Il
-     separatore delle migliaia è l'apostrofo in tutte le varianti svizzere secondo
-     CLDR, ma date, valuta e liste cambiano — fr-CH scrive `14'200 CHF`, con la
+     italiano — il caso peggiore, perché a schermo sembra funzionare. Date,
+     valuta e liste cambiano con il locale — fr-CH scrive `14'200 CHF`, con la
      valuta dopo. Nessun formato numerico o di data cablato nei componenti.
+   - **L'apostrofo delle migliaia vale in tutte e quattro le lingue, ed è una
+     decisione di stile** (founder, 14.08.2026): `14'200` in italiano, tedesco,
+     francese e inglese. **Non è un fatto di CLDR**, e fino alla tranche
+     francese di M5.e questa riga lo dichiarava tale — *"l'apostrofo in tutte le
+     varianti svizzere secondo CLDR"* — mentre ICU dà a `fr-CH` lo **spazio
+     unificatore stretto** U+202F. Era vero per due lingue su tre, e nessuno
+     poteva accorgersene finché il francese non è esistito. Lo impone
+     `format.ts` con `formatToParts`, e le ragioni stanno lì: `14'200` è la
+     convenzione finanziaria svizzera in tutte le lingue nazionali, i numeri di
+     ancoraggio del pitch tengono **una sola forma visiva** cambiando lingua, e
+     non si introduce un quinto carattere invisibile in questo codice.
+
+     **Il separatore decimale invece resta quello del locale** — punto in
+     it-CH/de-CH/en, virgola in fr-CH (§11) — e la differenza fra i due casi è
+     la ragione per cui la decisione è stata presa così: la virgola di `2,35` è
+     **correttezza** per chi legge in francese, il raggruppamento è
+     **registro**.
    - **Layout che regge il tedesco** (parole ~30% più lunghe): niente larghezze
      fisse su etichette e pulsanti.
 
@@ -1640,9 +1656,10 @@ aperta in anticipo, va **portata in primo piano** prima di cominciare.
 - **Il separatore decimale segue il locale, e non è una sola convenzione**: punto
   in it-CH, de-CH ed en (`2.35:1`), **virgola in fr-CH** (`2,35:1`). Lo decide
   CLDR e lo applica `format.ts`; nessuna schermata scrive un separatore.
-  L'apostrofo delle migliaia invece vale in tutte e quattro (§2.7), quindi in
-  francese si legge `14'200` e `2,35` nella stessa pagina — è così che si scrive
-  in Svizzera romanda, non un'incoerenza da correggere.
+  L'apostrofo delle migliaia invece vale in tutte e quattro perché **glielo
+  imponiamo noi** (§2.7), quindi in francese si legge `14'200` e `2,35` nella
+  stessa pagina — è così che si scrive in Svizzera romanda, non un'incoerenza da
+  correggere.
 
   **Fino al 14.08.2026 questa riga diceva "il separatore decimale è il punto"**,
   con la stessa motivazione — la convenzione svizzera — ed era **verificata su

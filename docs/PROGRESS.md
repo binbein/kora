@@ -1765,23 +1765,39 @@ così**, ed è una divergenza da sanare: `de.ts` traduce quella riga in
 compare con due nomi. Una parola, non toccata qui perché è la tranche
 sbagliata.
 
-###### Il difetto trovato, e non è del francese
+###### Il difetto trovato, e la decisione che ha portato
 
 **Il separatore delle migliaia in fr-CH non è l'apostrofo.** ICU dà a `fr-CH`
-lo **spazio unificatore stretto** (U+202F): a schermo il francese scrive
-`14 200 CHF`, `1 289 500 CHF`, `142 sur 1 200`. `CLAUDE.md` §2.7 dichiara invece
-*"l'apostrofo in tutte le varianti svizzere secondo CLDR"* — vero per it-CH e
-de-CH, **falso per fr-CH**, e verificato misurando `Intl` sulle tre lingue nella
-stessa pagina.
+lo **spazio unificatore stretto** (U+202F): prima della decisione qui sotto il
+francese scriveva `14 200 CHF`, `1 289 500 CHF`, `142 sur 1 200`. `CLAUDE.md`
+§2.7 dichiarava invece *"l'apostrofo in tutte le varianti svizzere secondo
+CLDR"* — vero per it-CH e de-CH, **falso per fr-CH**, e verificato misurando
+`Intl` sulle tre lingue nella stessa pagina.
 
 È **la stessa famiglia dell'errore sul decimale**, e ha la stessa origine: una
-regola scritta guardando una lingua sola e attribuita alla Svizzera intera. La
-differenza è che questa **non ha ancora una decisione dei founder**, e non se ne
-è presa una qui: la resa francese di oggi è quella di CLDR. Le due strade sono
-accettare CLDR, oppure forzare l'apostrofo in fr-CH dentro `format.ts` — che è
-quello che scrive la Cancelleria federale nei testi francesi, e che terrebbe i
-numeri del pitch identici in tutte e quattro le lingue. **Il §2.7 va corretto in
-entrambi i casi**, perché oggi dichiara una cosa che il codice non fa.
+regola scritta guardando una lingua sola e attribuita alla Svizzera intera.
+
+**I founder hanno deciso di forzare l'apostrofo** (14.08.2026), e la ragione
+separa i due casi invece di trattarli allo stesso modo: **la virgola di `2,35`
+è correttezza** — per chi legge in francese è l'unica forma giusta, e resta —
+mentre **il raggruppamento è registro**, e `14'200` è la convenzione finanziaria
+svizzera in tutte le lingue nazionali. Due ragioni in più, che valgono per
+questa demo: i numeri di ancoraggio del pitch **tengono una sola forma visiva**
+cambiando lingua, e **non si introduce U+202F**, che sarebbe il quinto carattere
+invisibile di questo codice — dopo lo spazio unificatore di `formatCHF`, il meno
+tipografico, l'apostrofo stesso e lo spazio francese davanti ai due punti — e
+**l'unico scelto da noi**.
+
+Sta in `format.ts`, in `groupWithApostrophes`, e passa da `formatToParts` invece
+che da una sostituzione sul testo: si cambia il pezzo che `Intl` dichiara
+`group`, quindi lo spazio unificatore fra cifre e valuta resta dov'è.
+**Verificato a schermo**: in francese la dashboard dice `14'200 CHF` e `142 sur
+1'200`, `/roi` dice `1'289'500 CHF` e `De 20 à 1'000 collaborateurs`, e il giro
+`FR → IT → DE → FR` sullo stesso numero dà `1'289'500` in tutte e tre con il
+rapporto che resta `2,35:1` in francese e `2.35:1` nelle altre due.
+
+**Il §2.7 è stato corretto tenendo la storia**: l'apostrofo non è più un fatto
+attribuito a CLDR ma una decisione di stile con la sua data.
 
 ###### Cosa resta a verbale
 
