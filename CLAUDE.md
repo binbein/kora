@@ -59,9 +59,10 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
 6. **Scope congelato.** Le schermate sono quelle di §10. Nessuna schermata, feature o
    sezione nuova senza approvazione esplicita dei founder. Se un'idea sembra buona,
    proporla e fermarsi: la decisione spetta a loro.
-7. **Lingua: italiano — con architettura pronta per 4 lingue.** La piattaforma avrà
-   IT, DE, FR, EN; oggi resta SOLO italiano (it-CH: valuta CHF, numeri 14'200, date
-   gg.mm.aaaa). Niente language switcher. Ma valgono da subito:
+7. **Lingua: italiano di default — con architettura pronta per 4 lingue.** La
+   piattaforma avrà IT, DE, FR, EN; **la demo si apre in italiano in ogni build**
+   (it-CH: valuta CHF, numeri 14'200, date gg.mm.aaaa), e le altre lingue si
+   raggiungono dal selettore. Valgono da subito:
    - Stringhe UI in `src/lib/i18n/it.ts` (oggetto tipizzato, niente testo cablato
      nei componenti). Aggiungere una lingua domani = aggiungere un file con le
      stesse chiavi. **Retrofittare l'i18n su ventisei schermate dopo costa dieci volte
@@ -75,6 +76,23 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      valuta dopo. Nessun formato numerico o di data cablato nei componenti.
    - **Layout che regge il tedesco** (parole ~30% più lunghe): niente larghezze
      fisse su etichette e pulsanti.
+
+   **Il language switcher c'è** (founder, 14.08.2026): il §4.e lo prevedeva come
+   decisione del blocco, la tranche 1b di M5.e l'ha eseguito e questa riga lo
+   ratifica. Sta **solo in `PublicNav`** — il giro del pitch attraversa comunque
+   la barra pubblica — è fatto di sigle e non di un menù, e mostra **le sole
+   lingue registrate in `DICTIONARIES`**: oggi due, quattro quando i quattro
+   dizionari esisteranno. Il default è l'italiano e **la scelta non sopravvive a
+   un ricaricamento**, perché il §5.4 vuole che la demo provata sia quella
+   presentata.
+
+   **Il divieto che stava scritto qui — "niente language switcher" — non era
+   estetica, ed è caduto per la sua stessa ragione**: con un dizionario solo uno
+   switcher è un comando che non comanda, e una sigla spenta accanto a quella
+   accesa è un'affordance morta che invita la domanda "perché è grigia?" dentro
+   trenta minuti contati. È caduto il giorno in cui il secondo dizionario è
+   esistito davvero, non prima — ed è la ragione per cui il componente continua a
+   non mostrare FR ed EN finché non ci sono.
 8. **Commit piccoli e frequenti**, messaggi in inglese, conventional commits
    (`feat: hr dashboard reads from provider`). Mai commit giganti multi-feature.
    Le decisioni non ovvie finiscono in questo file con un commit `docs:` separato
