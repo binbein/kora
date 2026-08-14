@@ -67,9 +67,12 @@ function SessionRow({
               {session.hasNote ? t.professional.sessions.editNote : t.professional.sessions.addNote}
             </Button>
           )}
-          {session.status === 'cancelled' && (
+          {/* Il motivo è opzionale sul tipo — assente significa che la seduta
+              non è annullata (`CONTRATTO-DATI.md` §2) — quindi il badge nasce
+              con lui: senza, usciva un rettangolo rosso vuoto. */}
+          {session.status === 'cancelled' && session.cancellationReasonKey && (
             <Badge variant="outline" className="text-destructive border-destructive/30">
-              {session.cancellationReasonKey && t.cancellationReason[session.cancellationReasonKey]}
+              {t.cancellationReason[session.cancellationReasonKey]}
             </Badge>
           )}
         </div>
