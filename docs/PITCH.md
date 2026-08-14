@@ -88,6 +88,11 @@ che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
   **non nella griglia**, e a metà pitch si legge come un difetto invece che come
   il limite dichiarato che è (`docs/PROGRESS.md`, area dipendente).
 
+  **Se chiedono di vedere la settimana successiva**, la risposta è che nella demo
+  il calendario si ferma a quella corrente: è un limite dichiarato, non qualcosa
+  che si è rotto in sala. Non cercare la navigazione a schermo — non c'è, e
+  cercarla davanti a qualcuno costa più della frase.
+
 - **La richiesta demo che compare in `/admin` ha una coreografia sola**, e va
   fatta in quest'ordine perché `/admin` non è linkata da nessuna schermata:
   l'unico modo di entrarci è l'indirizzo digitato, che ricarica, che azzera il
