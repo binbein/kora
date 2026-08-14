@@ -70,7 +70,10 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
    - **Mai concatenare stringhe per comporre frasi** (l'ordine delle parole cambia
      tra lingue). Sempre frasi complete con segnaposto:
      `"Hai usato {n} delle tue {max} sessioni"`, mai `"Hai usato " + n + ...`.
-   - `format.ts` riceve il locale come parametro (oggi fisso a `it-CH`). Il
+   - `format.ts` riceve il locale come parametro e **di default usa la lingua
+     attiva** (`getLocale()`, da M5.e): nessuna schermata ne passa uno, quindi un
+     default fisso a `it-CH` avrebbe tradotto le parole lasciando i numeri in
+     italiano — il caso peggiore, perché a schermo sembra funzionare. Il
      separatore delle migliaia è l'apostrofo in tutte le varianti svizzere secondo
      CLDR, ma date, valuta e liste cambiano — fr-CH scrive `14'200 CHF`, con la
      valuta dopo. Nessun formato numerico o di data cablato nei componenti.
