@@ -114,6 +114,38 @@ che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
 
 ---
 
+## Le quattro lingue
+
+**Decisione dei founder del 14.08.2026**, alla chiusura del blocco e) di M5: la
+demo **si presenta in italiano**, e la lingua **non si cambia durante la
+presentazione**.
+
+**Il selettore si mostra, non si usa.** Sta nella barra pubblica — `IT DE FR EN`
+— e mostra le sole lingue registrate, quindi quattro sigle accese vogliono dire
+quattro dizionari che esistono davvero. Indicarlo è già la dimostrazione che
+l'architettura c'è: è per questo che è lì, non perché serva alla presentazione.
+
+**Perché non si cambia lingua davanti a chi la parla.** Tedesco, francese e
+inglese sono **verificabili e presentabili, non ratificati**: la revisione
+madrelingua non è ancora stata fatta per nessuno dei tre (`docs/PROGRESS.md`,
+M5.e). Cambiare lingua davanti a un investitore che quella lingua ce l'ha mette a
+giudizio la formulazione invece dell'architettura, ed è l'unico modo di
+trasformare un argomento forte in una correzione ricevuta in sala.
+
+**Detto a voce, è un argomento competitivo.** Quattro lingue nazionali sono la
+condizione per vendere a un'azienda svizzera con sedi in più cantoni, e la
+piattaforma le ha **oggi**, non "le avrà": tutte e ventisette le rotte sono state
+percorse in ognuna delle quattro. È questo il modo di dirlo, non un cambio di
+lingua a schermo.
+
+**Se è l'investitore a cliccare una sigla**, la schermata regge e non c'è niente
+da riparare: si finisce il discorso, si riporta l'italiano dal selettore e si
+prosegue. **Non ricaricare per tornare in italiano** — il default è italiano a
+ogni avvio e la scelta non sopravvive a un ricaricamento (`CLAUDE.md` §2.7), ma
+ricaricare azzera la demo (§10).
+
+---
+
 ## Le risposte pronte
 
 ### "Da dove vengono i numeri di stress?"
