@@ -2674,6 +2674,60 @@ una domanda diversa da quella posta (§11).
   cosa che dietro non c'è: è la famiglia "due sorgenti per lo stesso fatto", ed
   è materia di dataset.
 
+#### Il perimetro del contratto (15.08.2026)
+
+Nove commit su `docs/CONTRATTO-DATI.md` soltanto: **nessun file di codice è stato
+toccato, e nessun tipo è cambiato.** È la passata che consegna a chi scriverà il
+backend le definizioni che il codice interpretava diversamente dal testo, e il
+perimetro di ciò che il prodotto non ha ancora.
+
+**Sei definizioni precisate**, tutte invisibili nella demo e tutte incontrate da
+chi implementa: `used` conta le erogate «dell'anno di piano» e un anno non c'è —
+in produzione un cap senza periodo non riparte mai; il conteggio autorevole è
+quello **centrale sul paziente**, e il lato professionista è una proiezione, che
+con due psicologi fa scattare il co-payment in ritardo; `bookAppointment` deve
+poter **rifiutare**, e nessun tetto governa le prenotazioni in programma; il tetto
+dei consulti del medico virtuale è dichiarato su `Plan` e **non applicato da
+nessuno**; il check rapido non ha periodo, storico né correzione; l'alert precoce
+dovrà essere una lista — e quello era **già scritto** nel §7, quindi si è aggiunto
+il rimando invece di una seconda copia.
+
+**Cinque punti raccolti dai blocchi precedenti**: l'invariante che lega i tre
+metodi del professionista allo stesso insieme di sedute — la regola che mancava,
+non la storia del difetto; `employeeCount` che chiude l'ultima eccezione alla
+convenzione `null`, e con lei la frase «il codice la rispetta per intero», che
+**era falsa dal giorno in cui è stata scritta**; il reparto senza record mensili,
+che oggi sparisce dalla tabella HR e in produzione va deciso; `getEntitlement` che
+per un servizio non previsto deve dire `null` e non un totale a zero; e `hasNote`,
+che deriva da un surrogato invece che dalle note.
+
+**Il perimetro è il §8 nuovo**, sette gruppi nell'ordine in cui vanno affrontati:
+escalation clinica, consenso e diritti dell'interessato, ciclo di vita di azienda
+e dipendente, ciclo dell'appuntamento, autorizzazione e multi-tenant, realtà del
+personale, paginazione. I primi due non sono funzioni ma **decisioni dei founder
+che cambiano l'architettura** — il protocollo clinico prima del primo utente
+attivo, titolarità del trattamento e segreto professionale prima del codice.
+
+**Il §6 ha guadagnato il criterio che lo separa dal §8**, ed è la parte che vale
+oltre questa passata: due sezioni che dicono entrambe *"qui non c'è"* divergono
+se nessuno sa in quale aggiungere la voce successiva. La domanda che smista è
+*«se il backend lo costruisse domani, staremmo violando una scelta o colmando un
+vuoto?»*. Il primo caso di confine è dichiarato: l'**autenticazione resta nel
+§6**, perché quella voce descrive la forma che il contratto ha già preso e
+spezzarla in due la renderebbe illeggibile.
+
+**La paginazione ha trovato la sua collocazione.** Il §7 del contratto la mandava
+a M5; **nessuno dei sei blocchi di M5 la contiene**, e non è una dimenticanza —
+paginare un estratto di otto righe curate non aggiunge niente alla demo. È lavoro
+dell'MVP, sta nel §8.7, e da qui smette di essere orfana fra un documento e
+l'altro.
+
+**Resta a una passata di codice**, e non è di questo blocco: la correzione di
+`hasNote` nel dataset, che oggi lo deriva da *"il paziente ha una seduta più
+recente"* — 56 sedute su 63 lo dichiarano vero e `getSessionNote` per tutte
+risponde `null` — e la decisione sul controllo della cache fredda contro
+`useSessionNote`, aperta dalla passata del 15.08.2026.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
