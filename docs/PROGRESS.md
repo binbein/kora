@@ -45,8 +45,11 @@ unico che resta aperto fino alla fine.
 **Le PR di M5 sono la milestone e non entrano nel conto delle passate di
 refinement.** Vale il criterio già scritto in quella sezione, che esclude la
 milestone: M4 è #19 e ha la sua sezione, e i blocchi di M5 hanno la loro qui
-sotto. Il conto delle passate resta fermo a undici finché non riprende il
-refinement fra le milestone — che dopo M5 vuol dire dopo il piano.
+sotto. **Il conto vive in un posto solo**, la sezione «Refinement fra le
+milestone», e oggi dice **diciassette**: questa riga ne dichiarava undici mentre
+quella ne diceva tredici, ed erano due misure dello stesso insieme prese in due
+momenti — il difetto che questo file racconta di aver già avuto con le CTA e con
+i guardrail. Qui non si ripete il numero: si rimanda.
 
 Il primo commit è l'export **intatto**, così ogni modifica successiva si legge come
 diff contro quello che base44 ha prodotto. Il magazzino della precedente demo
@@ -1938,12 +1941,14 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Tredici passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
-M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28), **#34** — le uscite
-dai tre portali, che arriva dopo i primi quattro blocchi di M5 — e
-**l'overflow della landing**, del 14.08.2026, che arriva fra la tranche tedesca
-e quella francese di M5.e (numero da aggiungere: la sintesi è stata scritta
-prima di aprire la PR, come vuole la regola di #26). Non aggiungono
+**Diciassette passate mergiate fra la chiusura di M3 e oggi**: quattro
+nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
+**#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
+M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
+quella francese di M5.e, e le quattro della **revisione del 15.08.2026**: #43 e
+#44 sulla coerenza del dominio e sugli stati limite, #45 sul perimetro del
+contratto, e **questa passata**, la coda documentale che chiude la serie. Non
+aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
 seam e del dizionario, più le sette che hanno una sottosezione loro qui sotto:
 le due che **eseguono** una decisione della riunione del 10.08.2026,
