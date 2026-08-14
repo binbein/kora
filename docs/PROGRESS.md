@@ -2758,6 +2758,34 @@ recente"* — 56 sedute su 63 lo dichiarano vero e `getSessionNote` per tutte
 risponde `null` — e la decisione sul controllo della cache fredda contro
 `useSessionNote`, aperta dalla passata del 15.08.2026.
 
+#### La coda dell'analisi, e la chiusura della revisione (15.08.2026)
+
+Diciotto commit, e **una classe sola di difetti**: sintesi di secondo livello che
+avevano smesso di descrivere il repository — la testa di questo file, la tabella
+delle milestone, alcune parentesi di chiusura, tre punti della costituzione e la
+testata di `guardrails.ts` — più **una parafrasi sbagliata fin dall'inizio**, il
+margine attribuito al co-payment, che viveva in cinque punti fra documentazione e
+commenti. Nei file di codice cambiano solo commenti.
+
+Sono tutte righe vere quando sono state scritte, tranne l'ultima: per questo si
+barrano con la data invece di sparire, che è la convenzione di questo file.
+
+**Chiude una serie di cinque passate del 14–15.08.2026**, che è la revisione
+dell'intero repository: le risposte pronte del pitch (#42), la coerenza del
+dominio (#43), gli stati limite delle schermate (#44), il perimetro del contratto
+(#45) e questa. Le prime quattro hanno la loro sezione o, per la #42, le due voci
+fra le decisioni chiuse.
+
+**Cosa resta aperto, e a chi appartiene.** Al codice, in una passata sua: la
+correzione di `hasNote` nel dataset, che oggi lo deriva da un surrogato, e la
+decisione sul controllo della cache fredda contro `useSessionNote`. Ai founder,
+nelle decisioni in sospeso qui sopra: la **residenza dei dati**, il **protocollo
+clinico**, la **revisione madrelingua**, e fuori dal repository il **cap table**
+con il CTO co-founder (§4.2 dei *Dubbi*, sesta domanda prioritaria). Senza
+risposta pronta resta il **margine lordo**, che `docs/PITCH.md` vieta di
+improvvisare: la sua è la quinta domanda prioritaria, validare la curva di
+utilizzo reale come metrica n. 1 dei pilot.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
