@@ -22,6 +22,7 @@ import {
   useAiHealthPlan,
   useAppointments,
   useCheckupEligibility,
+  useCompany,
   useEmployeeProfile,
   useEntitlement,
   useProfessionals,
@@ -186,6 +187,9 @@ export default function EmployeeHome() {
   const professionalsQuery = useProfessionals();
   const planQuery = useAiHealthPlan();
   const checkupQuery = useCheckupEligibility();
+  /* L'azienda serve per il suo piano: quali servizi cappati esistono lo dice il
+     contratto commerciale, non il contatore. Vedi i due `ServiceCounter`. */
+  const companyQuery = useCompany();
 
   /* I tre casi (M5.b), registro consumer. Gli appuntamenti vuoti sono un caso
      previsto e hanno già la loro frase più sotto. */
@@ -195,6 +199,7 @@ export default function EmployeeHome() {
     professionalsQuery,
     planQuery,
     checkupQuery,
+    companyQuery,
   ]);
   if (page.state === "error") {
     return <ErrorNotice copy={t.employee.state.error} onRetry={page.retry} />;
@@ -205,12 +210,14 @@ export default function EmployeeHome() {
   const professionals = professionalsQuery.data;
   const plan = planQuery.data;
   const checkup = checkupQuery.data;
+  const company = companyQuery.data;
   if (
     profile === undefined ||
     appointments === undefined ||
     professionals === undefined ||
     plan === undefined ||
-    checkup === undefined
+    checkup === undefined ||
+    company === undefined
   ) {
     return null;
   }
@@ -296,15 +303,31 @@ export default function EmployeeHome() {
           buttonClass="bg-primary hover:bg-primary/90 text-primary-foreground"
           to="/employee/psicologi"
         />
-        <ServiceCounter
-          kind="coach"
-          icon={Sparkles}
-          scheduled={scheduledFor("coach")}
-          iconWrapClass="bg-executive/10"
-          iconClass="text-executive"
-          buttonClass="bg-executive hover:bg-executive/90"
-          to="/employee/psicologi?servizio=coach"
-        />
+        {/*
+          * IL CONTATORE COACH ESISTE SOLO SE IL PIANO HA IL COACH.
+          *
+          * A dirlo è il piano e non il contatore: `coachSessionsPerYear`
+          * assente significa che il contratto commerciale non prevede il
+          * servizio (§9), ed è la stessa convenzione con cui le card del
+          * listino saltano le voci che il piano non ha.
+          *
+          * Senza questa riga, su un Essenziale la card diceva "1 su 0" e la
+          * barra riceveva un valore non finito — `coachEntitlement` fa
+          * `?? 0` perché il tipo vuole un numero. Il guardrail che lo vieta
+          * vive in sviluppo, quindi nella build che si deploya si sarebbe
+          * rotto in silenzio.
+          */}
+        {company.plan.coachSessionsPerYear !== undefined && (
+          <ServiceCounter
+            kind="coach"
+            icon={Sparkles}
+            scheduled={scheduledFor("coach")}
+            iconWrapClass="bg-executive/10"
+            iconClass="text-executive"
+            buttonClass="bg-executive hover:bg-executive/90"
+            to="/employee/psicologi?servizio=coach"
+          />
+        )}
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
