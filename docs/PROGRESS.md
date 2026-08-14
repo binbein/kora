@@ -2101,8 +2101,10 @@ diff di questa (`CLAUDE.md` §5.6).
 > righe di `import` + 2 righe di prosa nei commenti. **È il difetto del 19/11
 > contro il 13/9 delle CTA, ripetuto altrove**: un conteggio senza criterio
 > scritto accanto. Il criterio ora sta in `CLAUDE.md` §5.6, e dice anche
-> perché `prefetch.ts` non entra nei 96 — un 97 futuro è un errore di
-> criterio, non una correzione.*
+> perché `prefetch.ts` non entra nei 96. ~~Un 97 futuro è un errore di criterio,
+> non una correzione.~~ → **ribaltato dal `CLAUDE.md` §5.6 il 14.08.2026**: le
+> regole si scrivono sui criteri, non sui valori che i criteri producono. Il 97
+> è arrivato il giorno dopo con la tranche tedesca, e oggi il conto è **99**.*
 
 **`--mode demo` non ha bisogno di nessun file `.env.demo`**, ed è l'unica strada
 percorribile: `.gitignore` esclude `.env*` (§2.5), quindi una build che ne
@@ -2248,8 +2250,12 @@ su tre file, corrette in un commit solo: è un fatto scritto in tre punti, e
 spezzarlo avrebbe lasciato due posti a dire 114 e uno 96. Il criterio ora vive
 in `CLAUDE.md` §5.6 e nomina anche l'esclusione che sorprende — `prefetch.ts`
 chiama `raiseOutsideCurrentStack` ma legge `GUARDRAIL_MODE` da sé, quindi non è
-un call site che ignora il modo: **un 97 futuro è un errore di criterio, non
-una correzione.**
+un call site che ignora il modo. ~~Un 97 futuro è un errore di criterio, non una
+correzione.~~ → **ribaltato dal `CLAUDE.md` §5.6 il 14.08.2026**, e vale doppio
+ora che il numero vero è oltre il 97: una regola scritta su un valore fa
+respingere come errore la misura giusta, ed è esattamente quello che sarebbe
+successo — il 97 è arrivato con un guardrail nuovo, cioè per la ragione più
+ordinaria che ci sia.
 
 **Il conto delle passate diceva cinque e se ne trovavano otto**, e il 9/7 delle
 CTA era rimasto nella voce del 10.08.2026 accanto all'inventario autoritativo
