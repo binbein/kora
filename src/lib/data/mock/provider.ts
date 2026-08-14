@@ -345,12 +345,17 @@ export class MockDataProvider implements DataProvider {
     month: Date,
   ): Promise<ProfessionalEarnings> {
     const professional = await this.requireProfessional(professionalId);
-    return monthlyEarnings(professionalId, professional.sessionFee, month);
+    return monthlyEarnings(
+      professionalId,
+      this.sessionsOf(professionalId),
+      professional.sessionFee,
+      month,
+    );
   }
 
   async getProfessionalPayouts(professionalId: string): Promise<Payout[]> {
     const professional = await this.requireProfessional(professionalId);
-    return payoutHistory(professional.sessionFee);
+    return payoutHistory(this.sessionsOf(professionalId), professional.sessionFee);
   }
 
   getSessionNote(sessionId: string): Promise<SessionNote | null> {
