@@ -663,10 +663,17 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **91 + 6 = 97**. Restano fuori, e sono le tre trappole del conteggio:
-le righe di `import`, la **prosa dei commenti** che le nomina, e il fatto che
-il nome lungo **contiene** quello corto, quindi un grep sul nome corto conta
-due volte le sei chiamate lunghe.
+Oggi **93 + 6 = 99** (15.08.2026). Restano fuori, e sono le tre trappole del
+conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
+nome lungo che **contiene** quello corto.
+
+**La terza trappola vale per una forma di grep sola, e va detto quale**, perché
+scritta senza questa precisazione manda a sottrarre sei chiamate che nessuno ha
+contato due volte. `assertInDev` **nudo** aggancia anche
+`assertInDevOutsidePromise`, ed è così che nacque il 114; `assertInDev(` **con la
+parentesi** non lo aggancia, perché dopo `assertInDev` c'è una `O` e non una
+parentesi. Il criterio qui sopra dice *chiamate*, cioè con la parentesi: **è già
+immune**, e chi conta con quello non deve correggere niente.
 
 **L'esclusione va per percorso perché escluderla per nome ha già mangiato un
 call site.** Il guardrail dei segnaposto di M5.e nacque in `i18n/guardrails.ts`,
