@@ -268,6 +268,17 @@ conversazione della demo è una simulazione dichiarata e non ha trascritti da
 conservare. In produzione il tipo cresce qui — trascritto, medico che ha
 risposto, esito — non in una seconda entità.
 
+**Il tetto dei consulti è dichiarato e non è applicato.**
+`Plan.virtualDoctorConsultsPerYear` esiste — l'Essenziale ne dà 3 all'anno — e
+**nessuna schermata lo legge**, perché la demo è sul Plus, che li dà illimitati:
+un controllo scritto oggi sarebbe logica per un caso che nessun percorso può
+mostrare, cioè il ramo irraggiungibile che il §11 vieta.
+
+Ne discende che il conteggio esiste come dato e non come regola: in produzione il
+tetto va applicato dal server — è lui a dover rifiutare il quarto consulto di chi
+ne ha tre — e la schermata deve poterlo dire prima che qualcuno scriva. Vale la
+stessa domanda del cap sulle sedute qui sopra: **su quale periodo si conta**.
+
 `RapidCheckAnswer` è il segnale che alimenta ogni dato di stress della dashboard
 (§3, misurazione). La scrittura prende **il solo valore**: chi risponde è la
 persona autenticata e il reparto lo sa il server, come `getCompany()` non prende
