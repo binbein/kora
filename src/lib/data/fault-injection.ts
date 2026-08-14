@@ -103,10 +103,17 @@ import type { Session, UserRole } from "./types";
  * come quelli dei guardrail: ciò che la schermata mostra all'utente è un'altra
  * cosa, e sta in `i18n`.
  *
- * NOTA SUL CONTEGGIO DEI GUARDRAIL (§5.6): questo file non aggiunge nessuna
- * chiamata alle due primitive contate — usa `raiseOutsideCurrentStack`, come
- * `prefetch.ts`, che è la terza e sta fuori dai 96 per criterio. I 96 restano
- * 96.
+ * NOTA SUL CONTEGGIO DEI GUARDRAIL (§5.6): questo file **non lo muove**, e non
+ * perché il numero sia quello scritto altrove — perché non aggiunge nessuna
+ * chiamata alle due primitive contate. Usa `raiseOutsideCurrentStack`, che è la
+ * terza ed è nominata fra le esclusioni del criterio, come il suo altro
+ * chiamante `prefetch.ts`.
+ *
+ * QUI NON C'È UNA CIFRA APPOSTA. Questa nota ne portava una — "i 96 restano
+ * 96" — ed è invecchiata il giorno in cui `i18n/placeholders.ts` ha aggiunto un
+ * call site vero: il conto è passato a 91 + 6, e la riga continuava a dire 96
+ * parlando d'altro. Il numero corrente sta in un posto solo, il §5.6, che è
+ * anche dove sta il criterio per rifarlo.
  */
 
 const FAIL_PARAM = "fail";
