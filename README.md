@@ -27,10 +27,12 @@ Non serve nessun file `.env`: non c'è backend, e non deve essercene uno
 | | |
 |---|---|
 | `npm run dev` | server di sviluppo |
-| `npm run build` | build statico in `dist/` |
-| `npm run preview` | serve il build |
-| `npm run lint` | ESLint — deve uscire 0 |
-| `npm run typecheck` | `tsc`; oggi eredita ~421 errori dai `.jsx` non tipizzati, si sistema in M1 |
+| `npm run build` | build di produzione in `dist/` |
+| `npm run build:demo` | build di produzione **con i guardrail che parlano** — è quella che si deploya |
+| `npm run preview` | serve l'ultimo build |
+| `npm run lint` | ESLint — deve uscire a zero, warning compresi |
+| `npm run lint:fix` | ESLint con le correzioni automatiche |
+| `npm run typecheck` | `tsc` — deve uscire a zero |
 
 ## Struttura
 
