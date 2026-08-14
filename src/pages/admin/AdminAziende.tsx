@@ -83,10 +83,8 @@ function DemoRequests() {
                 <TableCell className="text-muted-foreground text-xs whitespace-nowrap">
                   {request.phone ?? t.common.none}
                 </TableCell>
-                {/* Il campo è facoltativo nel form: zero vuol dire "non
-                    dichiarato", non un'azienda senza dipendenti. */}
                 <TableCell className="tabular-nums">
-                  {request.employeeCount === 0
+                  {request.employeeCount === null
                     ? t.common.none
                     : formatNumber(request.employeeCount)}
                 </TableCell>
