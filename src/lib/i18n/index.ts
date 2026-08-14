@@ -1,5 +1,27 @@
 import { DEFAULT_LOCALE, type Locale } from "@/lib/locale";
+import { de } from "./de";
+import { assertPlaceholdersMatch } from "./placeholders";
 import { it } from "./it";
+
+/*
+ * `typeof it` non è il contratto, ed è un difetto scoperto dal primo dizionario
+ * vero (M5.e, tranche 1b).
+ *
+ * `it.ts` finisce con `as const`, quindi `typeof it` porta i **tipi letterali**
+ * dell'italiano — `readonly home: "Home"` — e non la forma. Con quello come
+ * contratto **nessuna traduzione compilerebbe**: `"Start"` non è assegnabile a
+ * `"Home"`, e il primo `de.ts` annotato sarebbe fallito su ogni singola
+ * stringa. La garanzia che la tranche 1a dichiarava non era verificabile
+ * finché una seconda lingua non esisteva, e appena è esistita si è vista.
+ *
+ * `Translated` tiene le chiavi e sostituisce i letterali con `string`: la
+ * forma resta obbligatoria — una chiave mancante o rinominata è un errore di
+ * typecheck — e il testo torna libero. `it.ts` non si tocca: il suo `as const`
+ * serve a renderlo profondamente immutabile, e resta.
+ */
+type Translated<T> = {
+  [K in keyof T]: T[K] extends string ? string : Translated<T[K]>;
+};
 
 /**
  * La forma che ogni altra lingua deve rispettare, chiave per chiave.
@@ -8,7 +30,7 @@ import { it } from "./it";
  * quindi **una chiave mancante è un errore di typecheck** e non una stringa
  * italiana che sbuca in tedesco.
  */
-export type Dictionary = typeof it;
+export type Dictionary = Translated<typeof it>;
 
 /*
  * I dizionari disponibili. Cresce di una riga per lingua, e il tipo del
@@ -19,7 +41,19 @@ export type Dictionary = typeof it;
  */
 const DICTIONARIES: Partial<Record<Locale, Dictionary>> = {
   "it-CH": it,
+  "de-CH": de,
 };
+
+/*
+ * I segnaposto di ogni traduzione si confrontano con l'italiano all'avvio
+ * (`placeholders.ts`): il tipo verifica le chiavi, non cosa c'è dentro le
+ * stringhe, e un `{anzahl}` al posto di `{n}` compila e si vede a schermo.
+ * In produzione questo ciclo non esiste.
+ */
+for (const [locale, dictionary] of Object.entries(DICTIONARIES)) {
+  if (locale === DEFAULT_LOCALE) continue;
+  assertPlaceholdersMatch(locale as Locale, dictionary);
+}
 
 /** Le lingue effettivamente disponibili, nell'ordine in cui si mostrano. */
 export const AVAILABLE_LOCALES = Object.keys(DICTIONARIES) as Locale[];

@@ -30,9 +30,9 @@ zero richieste esterne a runtime — e `reference/` è stato cancellato, che era
 prova che M3 fosse davvero finita.
 
 **Quattro blocchi di M5 su sei sono chiusi** — accessibilità, stati di errore e
-vuoto, validazione dei form, guardie di rotta — e il prossimo è e), le altre
-tre lingue, che porta con sé la decisione sul language switcher e
-`Intl.ListFormat` (`CLAUDE.md` §4).
+vuoto, validazione dei form, guardie di rotta — e **il quinto è in corso**: le
+altre tre lingue, di cui il tedesco è fatto. Restano FR ed EN, una tranche per
+lingua, e poi il blocco f) delle pagine del footer.
 
 **M5 è l'ultima milestone del piano, e si articola in sei blocchi** approvati
 dai founder l'11.08.2026 — accessibilità, stati di errore e vuoto, validazione
@@ -1544,6 +1544,139 @@ Indietro" nel posto sbagliato — la coreografia si prova su **scheda nuova**, c
 - **`enterAs` è la sola mutation che in produzione può sparire** — il ruolo lo
   concederà l'autenticazione — ed è annotato in `CONTRATTO-DATI.md` §4 e §6.
 
+#### e) Le altre tre lingue — tranche 1a e 1b, il tedesco
+
+Il blocco più voluminoso di M5, spezzato in tre tranche: **infrastruttura + DE**,
+poi FR, poi EN. La prima si è a sua volta divisa in due PR quando è stato chiaro
+che le 663 stringhe non sono un commit ma il grosso del lavoro.
+
+##### 1a — l'infrastruttura (quattro commit)
+
+**L'ostacolo non era `t`, erano i dieci file che lo leggevano a livello di
+modulo**: cinque array di nav, lo schema zod di M5.c, le risposte del medico e
+tre mappe — 43 stringhe. Nessuna meccanica di switch le raggiunge, perché
+nessuna rivaluta lo scope di modulo. Sono state spostate dentro i componenti in
+un commit suo, prima che il binding esistesse.
+
+**La meccanica scelta è il binding vivo** (`export let t`) con un solo
+sottoscrittore alla radice. `LocaleGate` **crea** `<AppRoutes />` invece di
+riceverlo come `children`: con `children` il sottoalbero sarebbe lo stesso
+oggetto elemento a ogni render, React lo salterebbe, e la lingua non cambierebbe
+da nessuna parte. Nessun `key`, quindi **nessun rimontaggio** — la chat del
+medico, la conferma della richiesta demo e il trimestre selezionato
+sopravvivono.
+
+**Il vincolo su cui poggia è diventato eseguibile**: nessun componente può
+essere memoizzato, o il re-render non lo raggiunge. È una regola di lint con due
+selettori, provata al contrario, e quando è stata scritta i componenti
+memoizzati erano **zero** — non vieta niente che esista, esiste per chi
+introdurrà il primo. Il censimento degli `useMemo` che leggono `t` ha dato lo
+stesso esito: **nessuno**, in tutto `src/`.
+
+**Il locale vive in `lib/i18n/` e non nel provider**, a differenza del ruolo di
+M5.d: le guardie leggono il ruolo come dato a ogni rotta, la lingua non la legge
+nessuno come dato, e il giorno del profilo utente è una riga di seed al boot.
+
+**`format.ts` ha il locale vero**, e `formatList` ha sostituito
+`t.common.listSeparator`. Quella chiave era **sbagliata anche in italiano**: un
+separatore non può produrre una congiunzione, e le due schermate rendevano
+"Italiano, Deutsch" dove si dice "Italiano **e** Deutsch".
+
+##### 1b — il dizionario tedesco (dieci commit)
+
+**663 chiavi, cinque namespace, un commit per namespace** perché la review
+campioni per registro. Il file era nato parziale e **senza `: Dictionary`**:
+l'annotazione è arrivata con il commit che l'ha completato, quando la promessa
+era vera — su un file parziale avrebbe dichiarato il falso e rotto il typecheck
+sull'albero.
+
+**Il contratto delle chiavi non avrebbe compilato, ed è il difetto più grosso
+del blocco.** La tranche 1a definiva `Dictionary = typeof it`, ma `it.ts`
+finisce con `as const`: `typeof it` porta i **tipi letterali** —
+`readonly home: "Home"` — non la forma. `"Start"` non è assegnabile a `"Home"`,
+quindi il primo `de.ts` annotato sarebbe fallito su ogni singola stringa. **La
+garanzia dichiarata dalla 1a era invecchiata prima di nascere**, e nessuno
+poteva accorgersene finché esisteva una lingua sola. `Translated<T>` tiene le
+chiavi e libera il testo; `it.ts` non si tocca.
+
+**Il registro segue il §7 e in tedesco diventa la distinzione T-V**: `du` in
+`employee.*`, `Sie` ovunque. **Il medico virtuale dà del Sie dentro l'area del
+du**, perché un professionista parla come parlerebbe lui — e le sue parole
+chiave sono tedesche, perché il confronto è sul testo che scrive chi legge.
+
+**Le tre stringhe che attraversano il confine sono nominali** (founder,
+13.08.2026): `Erneut versuchen`, `Zum eigenen Bereich`, `Zur Startseite`.
+L'italiano tiene l'imperativo, che sui pulsanti è la convenzione del software
+italiano ed è neutro per prassi.
+
+**Il guardrail dei segnaposto** confronta gli **insiemi** e non le sequenze — in
+tedesco i segnaposto si spostano, ed è il motivo per cui le frasi sono intere.
+Gira dentro un confronto su `GUARDRAIL_MODE`, quindi in produzione non c'è né il
+controllo né il costo di percorrere 663 chiavi.
+
+**Lo switcher mostra le sole lingue registrate.** `FR` ed `EN` non compaiono
+finché i loro dizionari non esistono: una sigla spenta che non fa niente è
+un'affordance morta, e davanti a un investitore invita la domanda "perché è
+grigia?" dentro trenta minuti contati. Compariranno da sé — il componente non
+cambia.
+
+##### Il protocollo di verifica, punto per punto
+
+| | esito |
+|---|---|
+| 1 · Eszett | **zero occorrenze**, e il carattere non compare nemmeno nei commenti: nominarlo renderebbe il controllo una lettura invece di un conteggio |
+| 3 · guardrail al contrario | `{used}` → `{genutzt}` fa uscire `employee.home.sessions: l'italiano usa [total, used], la traduzione [genutzt, total]` |
+| 4 · chiavi al contrario | tolta `hr.kpiSavings`: *"Property 'kpiSavings' is missing in type … but required in type"* |
+| 5 · DE su 27 rotte | zero troncamenti, zero overflow **causati dal tedesco** |
+| 6 · switch a metà demo | prenotazione viva, sette numeri fermi, `<html lang>` a `de` |
+
+**Il punto 5 ha trovato un overflow, e non è del tedesco.** La landing sfonda di
+24px a 1280 — `scrollWidth` 1304 — ed è **identico in italiano**: è il sigillo
+"Privacy-first" posizionato in negativo sull'hero. Preesistente, dichiarato, non
+corretto qui: una tranche di traduzione non porta una correzione di layout.
+
+**Il punto 6, per esteso**: prenotata la Dr.ssa Meier venerdì 25.09 alle 10:00
+in italiano, poi `IT → DE`. La prenotazione è ancora nella home — `Freitag
+25.09.2026, um 10:00` — il contatore dice `3 von 10 Sitzungen genutzt · 4
+geplant`, e sulla dashboard HR CHF 14'200, 16, 68%, 41, 142, 1'200 e 62% non si
+sono mossi.
+
+**I guardrail passano da 96 a 97**, ed è la prima volta che il numero si muove:
+`91 + 6`. Un guardrail nuovo è un call site nuovo, e il criterio del §5.6 dà 97
+applicando le sue stesse regole — è una misura che cambia, non il criterio che
+sbaglia.
+
+**La quarta trappola di misura**, e vale più del numero. Il file si chiamava
+`i18n/guardrails.ts`, e il criterio esclude `guardrails.ts` **per nome**: il
+call site nuovo spariva dal conto, che continuava a dire 90 + 6. Rinominato
+`placeholders.ts`. Dopo lo spazio unificatore, il `grep` senza `-F` e il DOM
+letto troppo presto, è la quarta volta che una misura risponde a una domanda
+diversa da quella posta.
+
+##### Cosa resta a verbale, e non è un difetto
+
+- **La revisione madrelingua non è stata fatta.** Il file rende il tedesco
+  verificabile e presentabile, **non ratificato**: prima di un pitch in tedesco
+  va riletto da chi la lingua ce l'ha. Sta scritto anche nell'intestazione di
+  `de.ts`, che è dove lo legge chi ci mette mano.
+- **Due errori miei sono stati corretti guardando lo schermo**, e nessuno dei
+  tre controlli automatici poteva vederli: `die Dashboard` per `das Dashboard`,
+  e `Guten Morgen` per `Guten Tag` — "Buongiorno" copre tutta la giornata, il
+  tedesco no, e il saluto è statico. È la ragione per cui il protocollo chiede
+  le 27 rotte a schermo e non solo i tre controlli.
+- **I titoli professionali non si traducono**: `Dr.ssa` è un campo del dataset
+  (`people.ts`), non una stringa del dizionario, quindi in tedesco resta
+  italiano. Correggerlo è una modifica al contratto dati — un titolo che segue
+  il locale — quindi è scope.
+- **Le scelte da portare alla revisione nativa sono nominate in testa a
+  `de.ts`**, non lasciate al diff (founder, 14.08.2026). Sono quattro, e non
+  sono errori: sono punti su cui **non siamo il giudice giusto** — `Sitzungen
+  gesamt` per "sedute di carriera", `In Vertragsprüfung` per "in
+  convenzionamento", `Guten Tag` contro `Hallo` sul saluto caldo, e le forme
+  femminili del portale professionista. La promessa generica di rilettura c'era
+  già; l'elenco la rende eseguibile, perché una revisione senza domande diventa
+  una lettura.
+
 ### Refinement fra le milestone
 
 **Dodici passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
@@ -2109,7 +2242,7 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 | M2 | Il contratto dati | **fatta** |
 | M3 | Migrazione area per area + calcolatore ROI | **fatta** |
 | M4 | Report scaricabile | **fatta** |
-| M5 | Verso la produzione (differibile) | **in corso** — blocchi a, b, c e d chiusi, prossimo e |
+| M5 | Verso la produzione (differibile) | **in corso** — a, b, c, d chiusi; e) in corso, DE fatto; resta f |
 
 ## Decisioni chiuse
 
