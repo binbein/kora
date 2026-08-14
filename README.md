@@ -25,9 +25,8 @@ npm install
 npm run dev
 ```
 
-L'app risponde su http://localhost:5173. L'indirizzo **non viene stampato**: il
-`logLevel: 'error'` in `vite.config.js` sopprime il banner di avvio insieme ai
-warning.
+Vite stampa all'avvio l'indirizzo su cui il server risponde: è quello, perché la
+porta cambia se la prima è occupata.
 
 Non serve nessun file `.env`: non c'è backend, e non deve essercene uno
 (`CLAUDE.md` §2.5).
