@@ -4,9 +4,19 @@ Piattaforma B2B di salute aziendale per il mercato svizzero. Questo repository �
 **insieme** la demo per gli investitori e il frontend dell'MVP: i dati sono finti,
 l'interfaccia no.
 
-**Le regole del progetto stanno in [`CLAUDE.md`](CLAUDE.md)** — è l'unica fonte, e va
-letto prima di toccare qualunque cosa. Lo stato di avanzamento sta in
-[`docs/PROGRESS.md`](docs/PROGRESS.md).
+**Le regole stanno in [`CLAUDE.md`](CLAUDE.md)** — è l'unica fonte, e va letto
+prima di toccare qualunque cosa. Gli altri tre documenti hanno mestieri distinti,
+e nessuno dei quattro ripete ciò che dice un altro:
+
+| | |
+|---|---|
+| [`CLAUDE.md`](CLAUDE.md) | **le regole**: palette, formule, dataset, definizione di "finito" |
+| [`docs/PROGRESS.md`](docs/PROGRESS.md) | **la storia**: cosa esiste e perché, milestone per milestone, con le decisioni prese e quelle in sospeso |
+| [`docs/PITCH.md`](docs/PITCH.md) | **lo script della presentazione**: cosa si prepara, come si naviga, cosa si risponde |
+| [`docs/CONTRATTO-DATI.md`](docs/CONTRATTO-DATI.md) | **la specifica per il backend**: gli invarianti che l'API dovrà rispettare, e il perimetro di ciò che l'MVP dovrà ancora costruire |
+
+Riprendendo il lavoro si parte da `PROGRESS.md`; scrivendo il backend, da
+`CONTRATTO-DATI.md`.
 
 ## Avvio
 
