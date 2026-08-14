@@ -796,4 +796,292 @@ export const fr = {
       },
     },
   },
+
+  /*
+   * L'area pubblica (§10.A). Registro strumento, **vous**: queste quattro
+   * schermate parlano a un'azienda che valuta, non a un collaboratore che usa.
+   *
+   * RGPD È LA SIGLA FRANCESE DEL GDPR, e LPD è già francese — *Loi fédérale sur
+   * la protection des données* — quindi la coppia resta la stessa dell'italiano
+   * senza doverla spiegare.
+   */
+  public: {
+    nav: {
+      pricing: "Plans",
+      roi: "Calculateur ROI",
+      demo: "Démo",
+      employees: "Collaborateurs",
+      hr: "RH",
+      professionals: "Professionnels",
+      login: "Se connecter",
+      bookDemo: "Réserver une démo",
+      menu: "Ouvrir le menu",
+      language: "Langue",
+    },
+
+    footer: {
+      tagline: "Le système d'exploitation de la santé pour les entreprises suisses.",
+      city: "Lugano, Suisse",
+
+      platformTitle: "Plateforme",
+      platformPricing: "Plans et tarifs",
+      platformRoi: "Calculateur ROI",
+      platformEmployee: "Portail collaborateurs",
+      platformHr: "Portail RH",
+      platformProfessional: "Pour les professionnels",
+
+      companyTitle: "Entreprise",
+      companyAbout: "À propos",
+      companyContact: "Contact",
+      companyCareers: "Carrières",
+      companyBlog: "Blog",
+
+      privacyTitle: "Confidentialité et sécurité",
+      privacyBody:
+        "Données de santé protégées. Conformité RGPD et LPD. Hébergement en Suisse.",
+
+      legalPrivacy: "Politique de confidentialité",
+      legalTerms: "Conditions de service",
+      legalCookies: "Politique de cookies",
+
+      copyright: "© {year} Kora Switzerland SA. Tous droits réservés.",
+    },
+
+    roi: {
+      title: "Ce que coûte aujourd'hui la santé des collaborateurs",
+      empty: "Le calculateur n'est pas disponible pour le moment.",
+      subtitle:
+        "Les pertes qu'une entreprise suisse supporte chaque année, et ce qu'elle en récupère avec Kora. Scénario conservateur.",
+
+      employeesLabel: "Nombre de collaborateurs",
+      employeesRange: "De {min} à {max} collaborateurs",
+
+      lossesTitle: "Pertes annuelles estimées",
+      loss: {
+        absenteeism: "Absentéisme",
+        presenteeism: "Présentéisme",
+        burnout: "Burnout pré-clinique",
+        turnover: "Rotation liée à la santé",
+      },
+      lossHint: {
+        absenteeism: "{days} jours d'absence par collaborateur, à {cost} par jour",
+        presenteeism: "{cost} de productivité perdue par collaborateur",
+        burnout: "{share} de la population à risque, {loss} de productivité perdue",
+        turnover: "{rate} de départs liés à la santé, plus le coût de remplacement",
+      },
+      lossesTotal: "Total des pertes",
+
+      savingsTitle: "Avec Kora",
+      savings: "Économies estimées",
+      savingsHint:
+        "{absence} sur l'absentéisme et le présentéisme, {burnout} sur le burnout et la rotation",
+      cost: "Coût Kora",
+      costHint: "Sur le plan {plan}, {price} par collaborateur et par mois",
+      /* Il meno è U+2212 come in italiano: è lo stesso glifo di `formatSigned`,
+         e sostituirlo col trattino da tastiera fa uscire due segni diversi
+         nella stessa schermata. */
+      costValue: "− {amount}",
+      netSavings: "Économies nettes",
+      ratio: "Retour sur investissement",
+      /* Il rapporto esce con la virgola decimale in fr-CH — `2,35:1` — ed è
+         `format.ts` a deciderlo, non questa stringa (CLAUDE.md §11). */
+      ratioValue: "{ratio}:1",
+      ratioHint: "Économies nettes pour chaque franc investi",
+
+      perEmployee:
+        "≈ {amount} par collaborateur et par an, scénario conservateur",
+
+      linearityNote:
+        "Chaque poste croît proportionnellement à l'effectif : le rapport reste {ratio} quel que soit le nombre de collaborateurs.",
+
+      sources: "Scénario conservateur. Sources : SECO, Job Stress Index.",
+
+      ctaTitle: "Ces chiffres, sur votre entreprise",
+      ctaBody:
+        "Une démo de trente minutes sur les données de votre secteur et de votre effectif.",
+      ctaButton: "Réserver une démo",
+      ctaPricing: "Voir les plans",
+    },
+
+    plans: {
+      title: "Des plans transparents, une valeur concrète",
+      empty: "Aucun plan à afficher pour le moment.",
+      subtitle:
+        "Un abonnement par collaborateur. Aucun coût caché. ROI mesurable dès le premier trimestre.",
+
+      target: {
+        essenziale: "Entreprises de 20 à 100 collaborateurs",
+        plus: "Entreprises de 100 à 300 collaborateurs",
+        executive: "Entreprises de 300 collaborateurs et plus",
+      },
+
+      recommended: "Plan conseillé",
+      priceUnit: "/ collaborateur / mois",
+      cta: "Demander une offre",
+
+      feature: {
+        sessions: "{count} séances de psychologue par an",
+        intro: "Entretien de découverte gratuit, une fois",
+        coach: "{count} séances de coach par an",
+        psychiatrist: "Psychiatre sur demande inclus",
+        nutritionist: "{count} séances de nutritionniste par an",
+        virtualDoctorUnlimited:
+          "Médecin virtuel illimité, réponse sous {hours} heures",
+        virtualDoctorUnlimitedOneHour:
+          "Médecin virtuel illimité, réponse en une heure",
+        virtualDoctorCapped:
+          "{count} consultations de médecin virtuel par an, réponse sous {hours} heures",
+        virtualDoctorCappedOneHour:
+          "{count} consultations de médecin virtuel par an, réponse en une heure",
+        checkup: {
+          annual: "Check-up physique annuel",
+          executive:
+            "Check-up executive complet : ECG, échographie abdominale, ophtalmologue, bilan sanguin complet",
+        },
+        aiPlanMonthly: "Plan de prévention IA mis à jour chaque mois",
+        aiPlanEveryMonths:
+          "Plan de prévention IA mis à jour tous les {months} mois",
+        hrDashboard: {
+          base: "Tableau de bord RH et ROI de base : utilisation, stress anonymisé, économies en CHF",
+          department:
+            "Tableau de bord RH par département, avec rapport trimestriel et alerte burnout précoce",
+          advanced:
+            "Tableau de bord RH avancé, avec rapport mensuel et call mensuel avec l'équipe clinique",
+        },
+        workshops: "{count} ateliers live par an inclus",
+        family: "Proches inclus : partenaire et un enfant",
+        partnerExtension:
+          "Extension aux proches : + {price} par collaborateur et par mois, en option",
+        extraSession: "Séance au-delà du plafond : {price}",
+      },
+    },
+
+    costSimulator: {
+      title: "Calculez le coût",
+      employeesLabel: "Nombre de collaborateurs",
+      planLabel: "Plan",
+      planOption: "{plan} — {price} par mois",
+      billingLabel: "Facturation",
+      billingMonthly: "Mensuelle",
+      billingAnnual: "Annuelle",
+      totalMonthly: "Total mensuel",
+      totalAnnual: "Total annuel",
+      breakdownAnnual: "{employees} collaborateurs × {price} × 12 mois",
+      breakdownMonthly: "{employees} collaborateurs × {price} × 1 mois",
+      cta: "Réserver une démo",
+      roiLink: "Ce que vous perdez déjà sans Kora",
+    },
+
+    landing: {
+      badge: "Plateforme suisse, privacy-first",
+      mockupSeal: "Privacy-first",
+      heroTitleLead: "La santé en entreprise,",
+      heroTitleAccent: "enfin intégrée.",
+      heroBody:
+        "Kora réunit psychologues en ligne, médecin virtuel, check-up physiques, prévention IA et tableau de bord RH anonyme dans un seul abonnement par collaborateur.",
+      heroCtaRoi: "Calculer le retour",
+      heroCtaDemo: "Réserver une démo",
+      heroCompliance: "Hébergement en Suisse. Conforme au RGPD et à la LPD.",
+
+      mockup: {
+        scoreLabel: "Profil santé",
+        scoreOutOf: "/100",
+        focus: "Focus : {area}",
+        nextSessionLabel: "Prochaine séance",
+        nextSessionValue: "{weekday} {time} · {professional}",
+        analyticsLabel: "Tableau de bord RH (anonyme)",
+        analyticsValue: "Adoption {adoption} · Stress {trend} points",
+        analyticsValueNoTrend: "Adoption {adoption}",
+      },
+
+      problemTitle: "Le coût caché de la santé en entreprise",
+      problem: {
+        burnout: "Burnout en hausse",
+        absenteeism: "Absentéisme coûteux",
+        waitingLists: "Listes d'attente chez les psychologues",
+        fragmented: "Prestations santé fragmentées",
+        noData: "RH sans données mesurables",
+      },
+
+      valueTitle: "Une plateforme. Trois niveaux de valeur.",
+      value: {
+        employee: {
+          title: "Pour le collaborateur",
+          body: "Un accès simple à la santé mentale, au médecin virtuel et à la prévention. Tout est privé, tout est au même endroit.",
+        },
+        company: {
+          title: "Pour l'entreprise",
+          body: "Des insights anonymes, un retour mesurable, une meilleure rétention et moins d'absentéisme.",
+        },
+        professional: {
+          title: "Pour les professionnels",
+          body: "Une nouvelle demande, moins de bureaucratie, des paiements automatiques. Une collaboration sous mandat, sans engagement.",
+        },
+      },
+
+      roiTeaser: {
+        title: "Le retour, avant la signature",
+        losses: "Une entreprise de {employees} collaborateurs perd {amount} par an.",
+        net: "Avec Kora, elle en récupère {amount} nets : {ratio}, scénario conservateur.",
+        cta: "Ouvrir le calculateur",
+      },
+
+      plansTitle: "Des plans transparents, une valeur concrète",
+      plansSubtitle:
+        "Un abonnement par collaborateur. Aucun coût caché. Un retour mesurable.",
+      plansAll: "Comparer les trois plans",
+
+      privacyTitleLead: "La confidentialité n'est pas un détail.",
+      privacyTitleAccent: "C'est le cœur du produit.",
+      privacyBody:
+        "L'entreprise ne voit jamais de données individuelles, de séances, de rapports ou de diagnostics. Uniquement des insights agrégés et anonymes. Les données de santé restent à qui les produit.",
+      privacyChip: {
+        hosting: "Hébergement en Suisse",
+        gdpr: "Conforme au RGPD",
+        lpd: "Conforme à la LPD",
+        encryption: "Chiffrement de bout en bout",
+      },
+
+      finalTitle: "Amenez Kora dans votre entreprise.",
+      finalBody: "Trente minutes pour voir la plateforme sur vos chiffres.",
+      finalCta: "Réserver une démo",
+    },
+
+    demoRequest: {
+      title: "Réserver une démo",
+      subtitle:
+        "Trente minutes avec notre équipe, sur les chiffres de votre entreprise.",
+
+      companyLabel: "Nom de l'entreprise",
+      contactLabel: "Nom et prénom",
+      emailLabel: "E-mail professionnel",
+      phoneLabel: "Téléphone",
+      employeesLabel: "Nombre de collaborateurs",
+      messageLabel: "Message",
+      optional: "facultatif",
+      privacy:
+        "Les données seront traitées conformément à la LPD suisse et au RGPD.",
+      submit: "Envoyer la demande",
+      submitting: "Envoi en cours",
+      error: {
+        title: "L'envoi n'a pas abouti",
+        body: "Les données que vous avez saisies sont encore là : réessayez.",
+      },
+
+      validation: {
+        companyRequired: "Le nom de l'entreprise est obligatoire.",
+        contactRequired: "Le nom de la personne de contact est obligatoire.",
+        emailRequired: "L'e-mail est obligatoire.",
+        emailInvalid: "L'adresse e-mail ne semble pas valide.",
+        employeesInvalid:
+          "Le nombre de collaborateurs doit s'écrire en chiffres entiers, ou être laissé vide.",
+      },
+
+      successTitle: "Demande reçue",
+      successBody:
+        "La demande pour {company} est enregistrée. L'équipe répond dans un jour ouvrable.",
+      successHome: "Retour à l'accueil",
+      successRoi: "En attendant, calculez le retour",
+    },
+  },
 } as const;
