@@ -2527,6 +2527,69 @@ barra di scorrimento verticale, che ne prende 15 — `innerWidth` la comprende,
 `clientWidth` no. L'uguaglianza che dice "non si scorre in orizzontale" è
 **`scrollWidth === clientWidth`**, ed è quella misurata qui.
 
+#### La coerenza del dominio (14.08.2026)
+
+Dieci commit, e **nessun numero a schermo si muove**: è una passata su difetti
+che oggi non si vedono e che il backend erediterebbe. Tocca il layer dati e i
+tre punti in cui una schermata leggeva due sorgenti per lo stesso fatto.
+
+**Il filo che tiene insieme le otto correzioni**: un dato ha una sorgente sola,
+e chi ha già quella sorgente in mano gliela passa invece di farla ricostruire.
+Cinque delle otto sono la stessa forma vista da lati diversi.
+
+| | cosa impediva |
+|---|---|
+| **I compensi ricevono le sedute, non l'id** | `monthlyEarnings` e `payoutHistory` leggevano `PORTAL_SESSIONS`, cioè l'agenda della sola Dr.ssa Meier: `getProfessionalEarnings("keller")` dichiarava **14 sedute e CHF 1'050** per chi ne ha zero e il mandato non firmato, mentre `getProfessionalSessions("keller")` restituiva la lista vuota. Due metodi dello stesso contratto che si contraddicono (§5.5) |
+| **Un guardrail incrociato fra i semi HR e quelli di piattaforma** | l'organico 120 sta in `company.ts` e in `platform.ts`, gli iscritti 82 in `roi.ts` e in `platform.ts`, e niente li confrontava: cambiandone uno, la dashboard HR e il back-office descrivevano due aziende diverse senza rompersi. È il **618 contro il 767** che M3 ha chiuso a valle, sopravvissuto un livello più sopra |
+| **L'azienda di riferimento si cerca per id** | era `CLIENT_COMPANIES[0]` e il guardrail verificava la presenza, non la posizione: riordinare l'array cambiava la base di ogni curva di piattaforma in silenzio |
+| **Una seduta annullata libera la sua fascia** | l'insieme degli orari occupati non filtrava le annullate, quindi quell'ora non tornava prenotabile da nessuno — cioè il caso che dà un senso all'annullamento |
+| **Due divisioni senza guardia sullo zero** | `usagePercent` e `checkupCompletionPercent` stampavano "∞%" su un trimestre a zero iscritti, che in produzione è il primo trimestre di ogni cliente nuovo |
+| **`getLatestStressByDepartment` senza fallback** | un reparto senza serie metteva `undefined` nell'array e la dashboard esplodeva leggendo `measuredEmployees` |
+| **Le due serie di stress si allineano per mese** | il punto del reparto si prendeva con l'indice della serie aziendale: con lunghezze diverse la schermata su cui si regge il pitch avrebbe disegnato il mese sbagliato sotto il mese giusto |
+| **`employeeCount` dice l'assenza con `null`** | usava lo **zero come sentinella** e il back-office lo ridecodificava, quindi un'azienda con zero dipendenti dichiarati era indistinguibile da una che non aveva risposto. `phone` e `message` attraversavano già il confine con `?? null` (`CONTRATTO-DATI.md` §2); questo era il terzo e non lo faceva |
+
+Più due sottrazioni: `stressTrendFor` usa l'`addQuarters` che `types.ts` già
+espone invece di rifare il conto sul confine d'anno, e `quarterRank` **resta
+duplicata** fra `mock/service-usage.ts` e `HRDashboard.tsx` con un commento che
+dice perché — condividerla vorrebbe dire spostarla, e la regola di lint del §5.7
+vieta alla schermata di importare da `mock/`. Il seam vale più di sei righe.
+
+**Il `?? []` da solo non bastava**, ed è la correzione dentro la correzione: su
+una serie vuota l'ultimo elemento resta `undefined` e il buco finisce comunque
+nell'array di ritorno. Il crash si sarebbe spostato di una riga invece di
+sparire.
+
+**Verificato a schermo, dev e build demo, viewport 1280 e scheda in primo piano:**
+
+- **in sviluppo nessun guardrail lancia** — la pagina bianca è il test, e le 27
+  rotte si disegnano tutte; sulla build demo **console senza un solo log**;
+- **nessuna delle cifre del §8 e del §9 si è mossa**: CHF 14'200, 16 giorni,
+  68%, 82 su 120, 41 attivi, 142 di 1'200, 62%, soglia 12, −2 punti; la serie
+  `53 … 46` con l'alert al decimo mese sulle Vendite e la Direzione a "—" con 11
+  misurati; Meier 14 sedute e CHF 1'120 a settembre, 63 sedute e CHF 5'040
+  nell'anno, righe settimanali 240 + 320 + 400 + 160, regime 5 su 20, 6 pazienti
+  di cui 2 sopra il cap; back-office 798 coperti, CHF 652'968, 415 iscritti,
+  52%, 1'147 sedute; ROI a N=100 con i cinque numeri di ancoraggio;
+- **il giro della richiesta demo con e senza organico**, camminando da `/admin`
+  al form e tornando con Indietro senza ricaricare: `Ontano Logistica SA` porta
+  **250** in tabella e `Sorbo Manifattura SA` il trattino di `common.none`.
+  Provare solo il caso pieno avrebbe lasciato scoperta proprio la cella che
+  questa passata cambia;
+- `lint`, `typecheck`, `build` e `build:demo` a posto.
+
+**I guardrail passano da 97 a 99**, cioè `93 + 6`: il commit sul portafoglio ne
+aggiunge **due** — organico e iscritti sono due fatti con due messaggi — e
+quello sulla lookup rialloca il controllo di presenza senza aggiungerne. Il
+criterio del §5.6 è applicato per intero, quindi a muoversi è la misura e non la
+regola.
+
+**La trappola dello spazio unificatore ha colpito di nuovo**, e vale annotarla
+perché è la sesta volta che questo file registra la stessa famiglia: il primo
+controllo su `CHF 14'200` dava assente, perché `formatCHF` separa la valuta
+dalle cifre con U+00A0 e l'asserzione era scritta con lo spazio da tastiera.
+Normalizzando, torna. Prima di concludere che un numero non c'è, verificare che
+lo strumento potesse vederlo (§11).
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
