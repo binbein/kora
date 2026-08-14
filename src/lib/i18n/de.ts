@@ -691,8 +691,13 @@ export const de: Dictionary = {
       daysValue: "{days} Tage",
       recommendationsTitle: "Empfehlungen",
       recommendation: {
+        /* Il nome del reparto viene dal dataset (`mock/company.ts`) e non si
+           traduce, come i titoli professionali: questa riga deve dire quello
+           che il banner dell'alert mostra due schermate più in là, dove
+           `{department}` rende `Vendite`. Diceva `Verkauf`, quindi lo stesso
+           reparto compariva con due nomi. */
         salesWorkshop:
-          "Eine Massnahme für die Abteilung Verkauf planen, seit drei Monaten im hohen Bereich.",
+          "Eine Massnahme für die Abteilung Vendite planen, seit drei Monaten im hohen Bereich.",
         checkupPush:
           "Den jährlichen Check-up bei allen in Erinnerung rufen, die das Konto aktiviert und ihn noch nicht gebucht haben.",
         coachAwareness:

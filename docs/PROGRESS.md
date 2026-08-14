@@ -31,8 +31,8 @@ prova che M3 fosse davvero finita.
 
 **Quattro blocchi di M5 su sei sono chiusi** — accessibilità, stati di errore e
 vuoto, validazione dei form, guardie di rotta — e **il quinto è in corso**: le
-altre tre lingue, di cui il tedesco è fatto. Restano FR ed EN, una tranche per
-lingua, e poi il blocco f) delle pagine del footer.
+altre tre lingue, di cui **tedesco e francese sono fatti**. Resta EN, una
+tranche sua, e poi il blocco f) delle pagine del footer.
 
 **M5 è l'ultima milestone del piano, e si articola in sei blocchi** approvati
 dai founder l'11.08.2026 — accessibilità, stati di errore e vuoto, validazione
@@ -1544,7 +1544,7 @@ Indietro" nel posto sbagliato — la coreografia si prova su **scheda nuova**, c
 - **`enterAs` è la sola mutation che in produzione può sparire** — il ruolo lo
   concederà l'autenticazione — ed è annotato in `CONTRATTO-DATI.md` §4 e §6.
 
-#### e) Le altre tre lingue — tranche 1a e 1b, il tedesco
+#### e) Le altre tre lingue — tranche 1a, 1b e 2: tedesco e francese
 
 Il blocco più voluminoso di M5, spezzato in tre tranche: **infrastruttura + DE**,
 poi FR, poi EN. La prima si è a sua volta divisa in due PR quando è stato chiaro
@@ -1683,6 +1683,141 @@ diversa da quella posta.
   femminili del portale professionista. La promessa generica di rilettura c'era
   già; l'elenco la rende eseguibile, perché una revisione senza domande diventa
   una lettura.
+
+##### 2 — il dizionario francese (otto commit, 14.08.2026)
+
+**663 chiavi, cinque namespace, un commit per namespace**, con la stessa
+sequenza della tranche tedesca: `: Dictionary` arriva con il commit che
+completa il file, e la registrazione in `DICTIONARIES` è un commit a sé — è
+quello che fa comparire `FR` nello switcher, senza toccare il componente.
+
+**L'infrastruttura ha retto senza una riga di modifica**, ed è la prova che la
+1a valeva: `Locale` conteneva già `fr-CH`, il guardrail dei segnaposto gira sul
+dizionario nuovo perché scorre `DICTIONARIES`, e `LocaleSwitcher` mostra `FR`
+perché legge le lingue registrate. **`EN` continua a non comparire.**
+
+**Il francese rompe due schemi che l'italiano e il tedesco condividevano**, e
+sono i due esiti che valgono oltre la traduzione.
+
+**Il primo: l'ordinale del trimestre.** L'italiano fa `3° trimestre` e il
+tedesco `3. Quartal` — stesso suffisso per tutti e quattro i valori. Il francese
+dice `1er` ma `3e`, e una stringa sola non li rende entrambi. **Il selettore
+mostra anche il primo trimestre 2026**, quindi `1e trimestre` sarebbe finito a
+schermo: la resa è `Trimestre {quarter} {year}`, corretta per tutti e quattro, e
+la sigla dell'asse diventa `T{quarter}`. È il §2.7 in un caso che le prime due
+lingue non potevano mostrare.
+
+**Il secondo: la virgola decimale**, che era già una decisione dei founder presa
+con l'approvazione della proposta di M5.e. `CLAUDE.md` §11 diceva *"il
+separatore decimale è il punto"* con la motivazione della convenzione svizzera,
+ed era **verificato su una lingua sola**: con il solo italiano a schermo,
+"svizzero" e "it-CH" non si distinguevano. Ora la regola è di locale — punto in
+it-CH, de-CH ed en, virgola in fr-CH — e a schermo `/roi` dice **2,35:1**. Il
+2.35:1 del §9 resta l'ancoraggio del Business Plan: cambia la resa, non la
+cifra.
+
+**Il registro segue il §7 e in francese diventa la distinzione tu/vous**: `tu`
+in `employee.*`, `vous` ovunque; il medico virtuale dà del vous dentro l'area
+del tu, come in tedesco. **Le tre stringhe che attraversano il confine** —
+`common.state.retry` e le due uscite di `RequireRole` — il francese le
+neutralizza con **l'infinito e la forma nominale**, che sui pulsanti sono la sua
+convenzione: `Réessayer`, `Retour à l'accueil`. Dove il possessivo era
+inevitabile usa la prima persona, `Accéder à mon espace`, che non sceglie fra
+tu e vous.
+
+**Lo spazio unificatore davanti a `:` e `?`** è la regola tipografica francese, ed
+è dichiarata in testa a `fr.ts` per la stessa ragione per cui il tedesco dichiara
+l'Eszett: è **invisibile**, e un `grep` scritto con lo spazio da tastiera non
+trova la stringa. È la trappola di `formatCHF` di M1, in un'altra lingua.
+
+###### Il protocollo di verifica, punto per punto
+
+| | esito |
+|---|---|
+| typecheck al contrario | tolta `hr.kpiSavings`: *"Property 'kpiSavings' is missing in type … but required in type"* |
+| guardrail dei segnaposto al contrario | `{used}` → `{utilisees}` fa uscire `[i18n] fr-CH non rispetta i segnaposto dell'italiano: employee.home.sessions: l'italiano usa [total, used], la traduzione [total, utilisees]` |
+| FR su 27 rotte a 1280 | tutte rese, **zero vuote, zero overflow orizzontale**, intestazioni francesi |
+| valuta posposta | dashboard `14 200 CHF`, simulatore `150 collaborateurs × 55 CHF × 12 mois`, compensi `1 120 CHF` e `14 séances × 80 CHF` |
+| PDF in francese | **una pagina**, generata chiamando la funzione vera: 546.8 pt disegnati su 785.89 disponibili, **239 pt di margine**, e **zero elementi troncati** dentro il nodo di stampa |
+| switch IT→FR a metà demo | prenotazione viva, nove numeri fermi, `<html lang>` a `fr` |
+| switcher | `IT DE FR`, e **nessun EN** |
+
+**Il PDF è il punto che il francese poteva rompere**, perché la vista di stampa
+è a larghezza fissa e la valuta posposta allarga le celle. Non le allarga
+abbastanza: il documento resta una pagina con un terzo di foglio libero, e
+nessun elemento interno ha `scrollWidth` maggiore del proprio `clientWidth`. La
+misura è stata presa chiamando `downloadReportPdf` per davvero — restituisce
+`1` — e guardando l'immagine catturata, non solo le proporzioni.
+
+**Il punto 6, per esteso**: prenotata la Dr.ssa Meier venerdì 25.09 alle 10:00
+in italiano, poi `IT → FR`. La prenotazione è ancora nella home — `vendredi
+25.09.2026, à 10:00` — il contatore dice `3 séances utilisées sur 10 · 4
+prévues`, e sulla dashboard HR CHF 14'200, 16, 68%, 82 su 120, 41, 142 di
+1'200, 62%, soglia 12 e −2 punti non si sono mossi.
+
+**I nomi dei reparti restano italiani**, perché vengono dal dataset: la tabella
+per reparto dice `Vendite`, `Finanza`, `Direzione` dentro una schermata
+francese, ed è voluto — è la stessa regola dei titoli professionali. Per questo
+la raccomandazione del report dice **"département Vendite"**: nomina il reparto
+come lo nomina il banner dell'alert due schermate più in là. **In tedesco non è
+così**, ed è una divergenza da sanare: `de.ts` traduce quella riga in
+`Abteilung Verkauf` mentre il banner mostra `Vendite`, quindi lo stesso reparto
+compare con due nomi. Una parola, non toccata qui perché è la tranche
+sbagliata.
+
+###### Il difetto trovato, e la decisione che ha portato
+
+**Il separatore delle migliaia in fr-CH non è l'apostrofo.** ICU dà a `fr-CH`
+lo **spazio unificatore stretto** (U+202F): prima della decisione qui sotto il
+francese scriveva `14 200 CHF`, `1 289 500 CHF`, `142 sur 1 200`. `CLAUDE.md`
+§2.7 dichiarava invece *"l'apostrofo in tutte le varianti svizzere secondo
+CLDR"* — vero per it-CH e de-CH, **falso per fr-CH**, e verificato misurando
+`Intl` sulle tre lingue nella stessa pagina.
+
+È **la stessa famiglia dell'errore sul decimale**, e ha la stessa origine: una
+regola scritta guardando una lingua sola e attribuita alla Svizzera intera.
+
+**I founder hanno deciso di forzare l'apostrofo** (14.08.2026), e la ragione
+separa i due casi invece di trattarli allo stesso modo: **la virgola di `2,35`
+è correttezza** — per chi legge in francese è l'unica forma giusta, e resta —
+mentre **il raggruppamento è registro**, e `14'200` è la convenzione finanziaria
+svizzera in tutte le lingue nazionali. Due ragioni in più, che valgono per
+questa demo: i numeri di ancoraggio del pitch **tengono una sola forma visiva**
+cambiando lingua, e **non si introduce U+202F**, che sarebbe il quinto carattere
+invisibile di questo codice — dopo lo spazio unificatore di `formatCHF`, il meno
+tipografico, l'apostrofo stesso e lo spazio francese davanti ai due punti — e
+**l'unico scelto da noi**.
+
+Sta in `format.ts`, in `groupWithApostrophes`, e passa da `formatToParts` invece
+che da una sostituzione sul testo: si cambia il pezzo che `Intl` dichiara
+`group`, quindi lo spazio unificatore fra cifre e valuta resta dov'è.
+**Verificato a schermo**: in francese la dashboard dice `14'200 CHF` e `142 sur
+1'200`, `/roi` dice `1'289'500 CHF` e `De 20 à 1'000 collaborateurs`, e il giro
+`FR → IT → DE → FR` sullo stesso numero dà `1'289'500` in tutte e tre con il
+rapporto che resta `2,35:1` in francese e `2.35:1` nelle altre due.
+
+**Il §2.7 è stato corretto tenendo la storia**: l'apostrofo non è più un fatto
+attribuito a CLDR ma una decisione di stile con la sua data.
+
+###### Cosa resta a verbale
+
+- **La revisione madrelingua non è stata fatta**, come per il tedesco: il file
+  rende il francese verificabile e presentabile, **non ratificato**.
+- **Le scelte da portarle sono cinque, nominate in testa a `fr.ts`**: il
+  maschile generico su pazienti e professionisti — **al contrario del tedesco**,
+  che ha scelto il femminile, e la divergenza fra i due file è essa stessa una
+  domanda per i revisori; `collaborateurs` invece di `employés` per
+  "dipendenti", che è la parola più ripetuta del dizionario; il trimestre senza
+  ordinale; `Total des séances` per "sedute di carriera", cioè lo stesso punto
+  che il tedesco ha portato con `Sitzungen gesamt`; e lo spazio fine U+202F
+  davanti a `?`, dove la regola stretta e quella corrente divergono.
+- **`tête` è la parola chiave del medico virtuale e porta l'accento**, quindi
+  chi scrive "tete" non aggancia la risposta. È lo stesso limite di `rücken` in
+  tedesco: la parola giusta è quella, e la simulazione non ha un correttore.
+- **Nessuna cifra scritta in lettere**, quindi la questione *septante/huitante*
+  — ciò che separa il francese svizzero da quello di Francia — non si pone: se
+  un giorno si porrà, è una domanda per la revisione e non una scelta da
+  prendere in un diff.
 
 ### Refinement fra le milestone
 
