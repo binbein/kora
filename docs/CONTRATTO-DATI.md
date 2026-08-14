@@ -584,6 +584,26 @@ consumate si sommano dalla serie di utilizzo, che copre i dodici mesi chiusi.
 
 ## 6. Cosa è stato lasciato fuori di proposito
 
+**Il criterio, prima dell'elenco, perché le sezioni che dicono "qui non c'è" sono
+due.** In questa vivono i **campi e i metodi che il contratto ha deliberatamente
+non**, con una ragione che vale anche in produzione: sono decisioni prese, e
+rimetterli è un errore finché la ragione tiene. Nel §8 vivono i **pezzi di
+prodotto che non esistono ancora** e che l'MVP dovrà costruire: lì l'assenza non
+è una decisione, è un lavoro non fatto.
+
+La domanda che smista, per chi aggiunge la prossima voce: *se il backend lo
+costruisse domani, staremmo violando una scelta o colmando un vuoto?* Se è una
+scelta, sta qui. Se è un vuoto, sta nel §8. Due elenchi senza un criterio
+divergono, ed è lo stesso difetto che il §5.6 di `CLAUDE.md` racconta a proposito
+di un numero.
+
+**Il caso di confine è l'autenticazione, e resta qui.** Il pezzo di prodotto —
+credenziali, durata della sessione, permessi fini — è un vuoto e sarebbe da §8;
+ma ciò che questa voce descrive è **la forma che il contratto ha già preso** per
+accoglierlo: `Session`, `getSession`, `enterAs`, e cosa di loro sopravvive al
+passaggio. Spostarla spezzerebbe quella spiegazione in due, quindi resta intera
+qui, e il §8 la nomina senza ripeterla.
+
 **Il numero di iscrizione all'albo professionale.** `Professional` non ha il
 campo, e non è una dimenticanza: nel dataset demo un identificatore di formato
 plausibile attaccato a una persona inventata potrebbe collidere con l'iscrizione
@@ -676,9 +696,11 @@ invece di restare assunzioni implicite:
   aziendale — quindi l'unica cosa che incorpora l'assunzione è un guardrail di
   sviluppo, che è il primo a rompersi quel giorno.
 - **L'elenco dipendenti è un estratto di otto righe su 120.** Un elenco vero si
-  pagina e si cerca, ed è M5. La schermata lo dichiara invece di far credere che
-  l'azienda abbia otto persone, e l'intestazione conta l'azienda e non la
-  tabella: in produzione `getEmployeeDirectory` prenderà una pagina e un filtro.
+  pagina e si cerca, ed è **lavoro dell'MVP, non della demo** (§8): questa riga
+  lo mandava a M5, e nessuno dei sei blocchi di quella milestone lo contiene. La
+  schermata lo dichiara invece di far credere che l'azienda abbia otto persone, e
+  l'intestazione conta l'azienda e non la tabella: in produzione
+  `getEmployeeDirectory` prenderà una pagina e un filtro.
 - **Un solo cliente, una sola azienda.** `getCompany()` non prende un
   identificatore: la demo ha Demo SA e basta. In produzione l'azienda viene dalla
   sessione, non da un parametro — ed è una modifica al provider, non alle
@@ -747,3 +769,139 @@ invece di restare assunzioni implicite:
   `getAppointments`, `getCheckupEligibility` e le altre letture del percorso non
   prendono un identificatore: la demo ha Laura Bernasconi e basta. In produzione
   la persona viene dalla sessione, come l'azienda.
+
+## 8. Il perimetro dell'MVP
+
+Ciò che il prodotto **non ha ancora** e che l'MVP dovrà costruire. Non è un
+elenco di desideri: ogni voce dice perché oggi non c'è, e l'ordine dei gruppi è
+quello in cui vanno affrontati — il primo è una condizione per operare, gli
+ultimi sono lavoro di prodotto.
+
+La differenza fra questa sezione e il §6 è il criterio scritto in apertura di
+quello: lì stanno le esclusioni decise, qui i vuoti da colmare.
+
+### 8.1 Escalation clinica
+
+**È la prima voce perché non è una funzione: è una condizione per avere utenti.**
+
+Non esiste nessun percorso di presa in carico urgente. Il check rapido accetta il
+valore peggiore e non succede niente; la chat del medico virtuale non rileva il
+rischio e **non espone nessun numero d'emergenza**; nessuna soglia, su nessun
+dato, produce una segnalazione a un essere umano.
+
+Non c'è perché **manca la decisione a monte**: quale protocollo si applica e chi
+è il referente clinico che risponde. Sono scelte dei founder e non di chi scrive
+il codice, e vanno prese **prima del primo utente attivo** — il giorno in cui una
+persona vera risponde "molto male" a una domanda sul proprio stato, la
+piattaforma deve già sapere cosa fa.
+
+Finché non è deciso, `docs/PITCH.md` dice la verità: il percorso non c'è e la
+demo non lo simula.
+
+### 8.2 Consenso e diritti dell'interessato
+
+**Nessun consenso viene raccolto in nessun punto** del percorso: non
+all'attivazione, non prima dell'assessment iniziale, non prima del check rapido,
+non prima del check-up. Non esistono l'export dei propri dati né la loro
+cancellazione, né come metodo del provider né come schermata.
+
+E c'è una domanda che sta **a monte** e che oggi non ha risposta: **chi è
+titolare e chi responsabile del trattamento** dei dati clinici — la piattaforma,
+l'azienda cliente, il professionista — e **come si concilia il segreto
+professionale con la conservazione della nota di sessione** sui nostri server.
+
+La risposta cambia l'architettura, non l'interfaccia: decide dove la nota può
+stare, per quanto, chi può esportarla e cosa succede quando il professionista
+lascia la rete. Va quindi presa **prima** del codice che la implementa, ed è per
+questo che sta qui e non fra le cose da fare in fondo.
+
+Il §5.5 di questo documento — la nota che non esce mai verso l'azienda — è una
+garanzia di forma, non una risposta a questa domanda: dice dove il dato **non**
+va, non chi ne risponde.
+
+### 8.3 Ciclo di vita dell'azienda e del dipendente
+
+Il dataset demo nasce già popolato, quindi nessuno di questi passaggi esiste:
+
+- **Onboarding dell'azienda**: creare un cliente, dichiararne l'organico, i
+  reparti e la soglia di anonimato. Oggi sono semi del dataset.
+- **Invito e attivazione dei dipendenti**: la differenza fra coperto e iscritto
+  è già nel contratto (§3, piattaforma) e il passaggio dall'uno all'altro no.
+- **Il link anonimo del check rapido**: `CLAUDE.md` §8 lo descrive e le schermate
+  lo promettono, ma **non esiste come oggetto** — non c'è un token, una scadenza,
+  un reparto da cui derivarlo. È la metà del modello di misurazione che rende il
+  dato indipendente dall'adozione, quindi non è un dettaglio.
+- **Offboarding**: cosa succede ai dati di chi lascia l'azienda, e cosa
+  all'azienda che disdice.
+- **Cambio piano, rinnovo del cap, disdetta**: il cap è annuale (§3) e nessun
+  metodo dice quando l'anno ricomincia; cambiare piano a metà anno cambia il
+  tetto e il prezzo della seduta extra.
+- **La fatturazione oltre la lettura**: `Invoice` si legge e basta. Mancano il
+  documento, i dati fiscali, lo stato di pagamento e la QR-fattura, che in
+  Svizzera è il modo in cui una fattura si paga.
+
+### 8.4 Ciclo dell'appuntamento
+
+`ProfessionalSession.status` ha tre valori — in programma, erogata, annullata — e
+il ciclo vero ne ha di più:
+
+- **La mancata presentazione non esiste**, ed è lo stato che decide **chi paga**:
+  una seduta che il paziente non onora è un compenso maturato per il
+  professionista e non è una seduta erogata per il cap. Senza quello stato, i due
+  numeri che il §3 tiene separati tornano a coincidere.
+- **Disdetta e riprogrammazione da entrambi i lati**, con la **policy di
+  preavviso** che decide se la disdetta è gratuita. Oggi `cancellationReasonKey`
+  dice chi ha annullato e nient'altro.
+- **La lista d'attesa**, che è la risposta alla promessa del Business Plan sul
+  primo appuntamento entro 24 ore quando gli slot finiscono.
+- **La pubblicazione della disponibilità**: gli slot sono un dato del dataset, e
+  nessun metodo permette a una professionista di dichiarare quando lavora.
+
+### 8.5 Autorizzazione e multi-tenant
+
+**`UserRole` è un'enumerazione piatta**: dice *hr*, non *HR di quale azienda*.
+Nessun metodo prende un identificatore di azienda — `getCompany()` non ne prende
+uno (§7) — e **nessun metodo consulta la sessione** per decidere cosa può
+rispondere.
+
+In produzione **l'autorizzazione sta interamente lato server**: ogni lettura
+deriva il suo perimetro dalla sessione, e due HR di due aziende diverse chiamano
+lo stesso metodo ottenendo due risposte. La guardia di rotta del frontend
+(`CLAUDE.md` §4, blocco d di M5) **non è una difesa**: decide cosa disegnare, non
+cosa si può leggere, e chiunque può chiamare l'API senza passare da lei.
+
+La forma che il contratto ha già preso per accogliere tutto questo — `Session`,
+`getSession`, `enterAs` — sta nel §6, con la ragione per cui ci sta.
+
+### 8.6 Realtà del personale
+
+Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
+
+- **Una sola sede per azienda, e nessuna sede sul reparto.** Un'azienda svizzera
+  con sedi in più cantoni è il caso che rende utili le quattro lingue.
+- **Nessuna lingua sul profilo del dipendente**, mentre il professionista ha le
+  sue e `getProfessionals` espone già un filtro che nessuno chiama. Chi prenota
+  non può quindi cercare chi parla la sua lingua, che è il primo filtro vero.
+- **Email obbligatoria**, quindi nessun canale per chi non ha una casella
+  aziendale — in un'azienda di produzione è una parte grossa dell'organico, ed è
+  la stessa popolazione che il link anonimo del check rapido dovrebbe raggiungere.
+- **I familiari sono a listino e non esistono nel dominio**: il Plus ha
+  l'estensione partner e l'Executive li include (`CLAUDE.md` §9), e nessuna
+  entità li rappresenta — quindi non hanno un profilo, un diritto alle sedute né
+  un appuntamento.
+- **L'organico è un intero.** Niente FTE, part-time, stagionali né pro-rata: il
+  prezzo è per dipendente al mese, e su un organico che cambia a metà mese la
+  fattura di oggi non saprebbe cosa dire.
+
+### 8.7 Paginazione
+
+**`getEmployeeDirectory` restituisce otto righe su 120**, e la schermata lo
+dichiara (§7). Un elenco vero si pagina e si cerca, e vale per ogni lista che in
+produzione cresce: dipendenti, sedute, pazienti, richieste demo, utenti di
+piattaforma.
+
+**Sta qui e non in una milestone della demo.** `docs/PROGRESS.md` la dava a M5,
+ma nessuno dei sei blocchi di quella milestone la contiene, e non è una
+dimenticanza: paginare un estratto di otto righe curate non aggiunge niente alla
+demo e toglie tempo a ciò che il pitch mostra. È lavoro dell'MVP, e questa riga
+gli dà la sua collocazione invece di lasciarla orfana.
