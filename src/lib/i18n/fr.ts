@@ -144,4 +144,298 @@ export const fr = {
     by_patient: "Annulée par le patient",
     by_professional: "Annulée par le professionnel",
   },
+
+  /*
+   * Percorso dipendente (§10.B). **È l'unica area che dà del tu.**
+   *
+   * IL MEDICO VIRTUALE DÀ DEL VOUS ANCHE QUI DENTRO, ed è il §7 applicato alla
+   * lettera: un professionista parla come parlerebbe lui, non come parla il
+   * prodotto. In `doctor` convivono quindi due registri — il prodotto che si
+   * rivolge a Laura (titolo, sottotitolo, campo, disclaimer) dà del tu, e i
+   * messaggi del medico (`greeting`, `reply.*.text`, `fallback`) danno del
+   * vous, dall'inizio alla fine della conversazione.
+   */
+  employee: {
+    nav: {
+      home: "Accueil",
+      psychologists: "Psychologues",
+      doctor: "Médecin",
+      checkup: "Check-up",
+      aiPlan: "Plan IA",
+      profile: "Profil",
+    },
+
+    identity: "{company} · {plan}",
+
+    privacy:
+      "Ton entreprise ne voit que des données agrégées et anonymes. Ta santé reste la tienne.",
+
+    state: {
+      error: {
+        title: "Cette partie ne s'est pas chargée",
+        body: "Réessaie dans un instant.",
+      },
+    },
+
+    service: {
+      psychologist: "Psychologue",
+      coach: "Coach",
+    },
+
+    home: {
+      /* "Bonjour" copre tutta la giornata come "Buongiorno", quindi il saluto
+         statico non ha il problema che il tedesco ha avuto con "Guten Morgen". */
+      greeting: "Bonjour {name}",
+      subtitle: "Ta santé, en un seul endroit.",
+
+      healthTitle: "Ton état de santé",
+      scoreOutOf: "/100",
+      weakestArea: {
+        sleep: "Le sommeil mérite de l'attention",
+        stress: "Le stress mérite de l'attention",
+        activity: "L'activité physique mérite de l'attention",
+        nutrition: "L'alimentation mérite de l'attention",
+        mental: "La santé mentale mérite de l'attention",
+      },
+      weakestAreaHint: "C'est le point de départ de ton plan de prévention.",
+
+      appointmentsTitle: "Tes prochains rendez-vous",
+      appointmentsEmpty: "Tu n'as aucun rendez-vous prévu.",
+      appointmentWhen: "{weekday} {date}, à {time}",
+
+      /* I segnaposto ci sono tutti e cambiano posto: in francese "sur {total}"
+         segue il sostantivo, e il guardrail confronta gli insiemi proprio per
+         questo (§2.7). */
+      sessions: "{used} séances utilisées sur {total}",
+      sessionsWithScheduled:
+        "{used} séances utilisées sur {total} · {scheduled} prévues",
+      book: "Réserver une séance",
+
+      quickAction: {
+        doctor: "Médecin virtuel",
+        checkup: "Check-up annuel",
+        aiPlan: "Plan de prévention",
+        profile: "Profil santé",
+      },
+      checkupDone: "Fait",
+
+      planTitle: "De ton plan de prévention",
+      planCta: "Voir le plan",
+    },
+
+    rapidCheck: {
+      question: "Comment te sens-tu aujourd'hui ?",
+      hint: "Une question, un geste. Ta réponse n'entre que dans la moyenne de ton département.",
+      option: {
+        1: "Très bien",
+        2: "Bien",
+        3: "Comme ci comme ça",
+        4: "Pas bien",
+        5: "Très mal",
+      },
+      error: {
+        title: "Nous n'avons pas pu l'enregistrer",
+        body: "Appuie à nouveau pour réessayer.",
+      },
+      done: "Merci, c'est enregistré.",
+      doneHint: "On te redemandera comment tu vas dans quelques jours.",
+    },
+
+    psychologists: {
+      title: "Parle à quelqu'un",
+      subtitle:
+        "Psychologues et coachs du réseau Kora. Choisis qui t'accompagne et réserve quand cela t'arrange.",
+      filter: {
+        psychologist: "Psychologues",
+        coach: "Coachs",
+      },
+      empty: "Aucun professionnel disponible pour ce service.",
+      totalSessions: "{n} séances effectuées",
+      book: "Réserver",
+
+      dialog: {
+        title: "Réserver avec {professional}",
+        chooseDay: "Choisis un jour",
+        chooseTime: "Choisis un horaire",
+        noSlots:
+          "Aucun horaire n'est libre pour le moment. Réessaie dans quelques jours.",
+        summary: "Récapitulatif",
+        summaryWhen: "{weekday} {date}, à {time}",
+        dayOption: "{weekday} {date}",
+        included: "Séance comprise dans ton plan",
+        overCapWithPrice:
+          "Les séances comprises sont épuisées : celle-ci coûte {price}",
+        overCapWithoutPrice:
+          "Tu as épuisé les séances comprises dans ton plan pour ce service.",
+        confirm: "Confirmer la réservation",
+        error: {
+          title: "La réservation n'a pas abouti",
+          body: "Le créneau est encore libre : réessaie.",
+        },
+        confirmedTitle: "Réservation confirmée",
+        confirmedWith: "avec {professional}",
+        confirmedNote:
+          "Tu la retrouves sur ton accueil. Le lien pour la vidéo t'arrive par e-mail.",
+        close: "Fermer",
+      },
+    },
+
+    doctor: {
+      title: "Médecin virtuel",
+      subtitle: "Décris tes symptômes : un médecin te répond.",
+      sla: "Réponse sous {hours} heures",
+      online: "En ligne",
+      placeholder: "Décris tes symptômes",
+      send: "Envoyer",
+      typing: "Le médecin écrit",
+
+      /*
+       * Le parole chiave sono francesi, ed è il motivo per cui stanno nel
+       * dizionario: il confronto è sul testo che scrive chi legge, e nessuno
+       * scriverebbe "schiena" in francese. Sono minuscole perché `replyTo`
+       * confronta su `toLowerCase()`.
+       *
+       * `tête` porta l'accento, quindi chi scrive "tete" non aggancia: è lo
+       * stesso limite di `rücken` in tedesco, e la parola giusta è quella.
+       *
+       * DA QUI IN GIÙ PARLA IL MEDICO, QUINDI SI DÀ DEL VOUS (§7).
+       */
+      greeting:
+        "Bonjour. Je suis le médecin de garde du service Kora. Dites-moi : quel trouble vous amène aujourd'hui ?",
+      reply: {
+        back: {
+          keyword: "dos",
+          text: "Je suis désolé pour cette douleur. Je vous pose quelques questions : la douleur descend-elle le long de la jambe ? Avez-vous de la fièvre ou des fourmillements ?",
+        },
+        head: {
+          keyword: "tête",
+          text: "Le mal de tête peut avoir plusieurs causes. Est-il localisé ou diffus ? Prenez-vous des médicaments en ce moment ?",
+        },
+        stress: {
+          keyword: "stress",
+          text: "Le stress peut se manifester de bien des façons. Je vous conseille de réserver une séance avec un psychologue depuis la section dédiée. En attendant, je peux vous aider sur les symptômes physiques.",
+        },
+        sleep: {
+          keyword: "sommeil",
+          text: "Les troubles du sommeil sont très fréquents. Depuis combien de temps avez-vous des difficultés ? Vous réveillez-vous la nuit ou avez-vous du mal à vous endormir ?",
+        },
+      },
+      fallback:
+        "Je comprends. Pouvez-vous mieux décrire le trouble ? Depuis combien de temps le ressentez-vous ?",
+
+      disclaimer:
+        "Cette conversation est une simulation de démonstration. Les réponses ne sont pas un avis médical et ne remplacent pas une consultation. En cas d'urgence, appelle le 144.",
+      privacy:
+        "Les conversations sont privées et protégées. Ton entreprise n'accède jamais à ces informations.",
+    },
+
+    checkup: {
+      title: "Check-up annuel",
+      subtitle: "Le check-up physique compris dans ton plan.",
+
+      lastTitle: "Ton dernier rapport",
+      lastDone: "Fait le {date} · {provider}",
+      lastOpen: "Appuie pour le voir",
+
+      nextFrom: "Tu peux en réserver un nouveau dès le {date}.",
+
+      networkTitle: "Les centres conventionnés",
+      networkHint:
+        "Ce sont les structures dans lesquelles Kora réserve ton check-up, avec les coûts déjà couverts par le plan.",
+      networkEmpty: "Aucune structure disponible pour le moment.",
+      distance: "{km} km",
+      providerAddress: "{address}, {city}",
+      bookFrom: "Dès le {date}",
+
+      report: {
+        title: "Rapport du {date}",
+        measurement: {
+          blood_pressure: "Tension",
+          cholesterol: "Cholestérol",
+          ecg: "ECG",
+          bmi: "IMC",
+          stress_risk: "Risque lié au stress",
+        },
+        status: {
+          normal: "Dans la norme",
+          attention: "À surveiller",
+        },
+        explanationTitle: "Ce que cela veut dire",
+        explanation: {
+          laura:
+            "Le cholestérol est légèrement au-dessus de la valeur conseillée et le risque lié au stress est modéré. Ce n'est pas une urgence : suis le plan de prévention et refais le contrôle au prochain check-up.",
+        },
+        disclaimer:
+          "Rapport de démonstration avec des valeurs d'exemple. Ce n'est pas un document clinique et il ne remplace pas le rapport du centre qui effectue le check-up.",
+      },
+    },
+
+    profile: {
+      title: "Ton profil",
+      privacy:
+        "Ta santé reste la tienne. Aucune donnée individuelle n'est partagée avec ton entreprise.",
+
+      company: "Entreprise",
+      plan: "Plan",
+      memberSince: "Inscrite depuis",
+
+      healthTitle: "Résumé santé",
+      score: "Score santé",
+      scoreValue: "{score}/100",
+      summary: "Synthèse",
+      weakest: "Point à suivre",
+
+      usageTitle: "Utilisation des services",
+      usage: {
+        psychologist: "Séances psychologue",
+        coach: "Séances coach",
+        checkup: "Check-up annuel",
+        doctor: "Consultations médecin virtuel",
+      },
+      outOf: "{used} sur {total}",
+      checkupDone: "Fait le {date}",
+      checkupToBook: "À réserver",
+      consults: "{n} cette année",
+
+      dataNote:
+        "Tes données de santé sont protégées et ne sont jamais partagées avec des tiers.",
+    },
+
+    aiPlan: {
+      title: "Plan de prévention",
+      subtitle: "Construit sur ton profil de santé.",
+      generated: "Mis à jour en {month}",
+      nextUpdate: "La prochaine mise à jour est en {month}.",
+
+      goal: {
+        sleep_hours: "Passer de 6 à 7 heures de sommeil par nuit",
+        stress_reduction: "Réduire le stress perçu de 15 % en 8 semaines",
+        activity_weekly: "Atteindre 2 séances d'activité physique par semaine",
+        nutrition_cholesterol:
+          "Ramener le cholestérol dans la norme avec une alimentation équilibrée",
+        mental_coaching: "Faire 2 séances avec le coach le mois prochain",
+      },
+
+      tip: {
+        sleep_screens: "Évite les écrans dans les 30 minutes avant de dormir",
+        sleep_schedule: "Couche-toi et lève-toi toujours à la même heure",
+        sleep_caffeine: "Pas de caféine après 14 h",
+        stress_breathing: "Consacre 10 minutes par jour à la respiration",
+        stress_breaks: "Prévois une pause toutes les 90 minutes",
+        stress_coach:
+          "Réserve une séance avec le coach pour les techniques de gestion",
+        activity_walk: "Commence par des marches de 30 minutes",
+        activity_stairs: "Prends les escaliers plutôt que l'ascenseur",
+        activity_yoga: "Essaie un cours de yoga en ligne",
+        nutrition_fibre: "Augmente les fibres et les légumes à chaque repas",
+        nutrition_fats: "Réduis les graisses saturées",
+        nutrition_recheck:
+          "Refais le contrôle du cholestérol au prochain check-up",
+        mental_continue: "Poursuis le suivi avec la psychologue",
+        mental_techniques:
+          "Utilise en dehors des séances les techniques que tu apprends",
+        mental_journal: "Note comment tu te sens les jours difficiles",
+      },
+    },
+  },
 } as const;
