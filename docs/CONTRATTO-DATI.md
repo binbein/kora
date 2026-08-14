@@ -284,6 +284,26 @@ stessa domanda del cap sulle sedute qui sopra: **su quale periodo si conta**.
 persona autenticata e il reparto lo sa il server, come `getCompany()` non prende
 un identificatore (§7). La variante su link anonimo porterà il reparto dal link.
 
+**Il check rapido non ha nozione di periodo, e gli mancano tre cose.** La lettura
+restituisce **l'ultima risposta in assoluto**, non quella del periodo corrente:
+la card mostra "già risposto" a chi ha risposto un anno fa, e nella demo non si
+vede perché di risposte ce n'è al massimo una, scritta durante la sessione.
+
+- **La cadenza non esiste.** Il §8 di `CLAUDE.md` lo chiama *ricorrente* e il
+  Business Plan ne descrive tre al mese; il contratto non dice ogni quanto si
+  chiede, quindi non può dire quando è **dovuto**. Senza cadenza non esistono né
+  l'invito né il ritardo, e il denominatore dell'adesione — i misurati del
+  periodo, da cui dipende la soglia di anonimato — non è calcolabile dal dato:
+  oggi arriva già aggregato (§3, misurazione).
+- **Lo storico non esiste.** `getRapidCheckAnswer` dà un valore, non una serie:
+  la persona non può vedere il proprio andamento, che è metà del senso di un
+  check ricorrente.
+- **La correzione non esiste.** Non c'è modo di cambiare una risposta appena
+  data, e su un tocco solo l'errore è a un dito di distanza. In produzione va
+  deciso se la seconda risposta dello stesso periodo **sostituisce** la prima o
+  se ne aggiunge una: le due producono medie diverse, e la scelta appartiene al
+  dato, non alla schermata.
+
 ### Check-up
 
 `CheckupProvider` porta lo **stato del convenzionamento**, e arriva al client
