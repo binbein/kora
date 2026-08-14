@@ -108,6 +108,20 @@ sbagliare è facile, e chi scrive il backend li incontrerà:
   pertiene — ogni professionista un nome proprio ce l'ha — è uno slot che il
   dataset demo non riempie, per la ragione dichiarata in §7.
 
+**I casi annotati erano due e le violazioni erano tre**, e la riga qui sopra è
+stata falsa dal giorno in cui è stata scritta: `DemoRequest.employeeCount` era
+obbligatorio e usava **lo zero come sentinella**, cioè diceva l'assenza con un
+valore invece che con `null`. Il back-office lo ridecodificava in "—", quindi
+un'azienda che avesse davvero dichiarato zero dipendenti sarebbe stata
+indistinguibile da una che non aveva risposto.
+
+È allineato dal 14.08.2026 — `?` sull'input, `number | null` in lettura, `?? null`
+una volta sola al confine, come `phone` e `message` — e **da lì "il codice la
+rispetta per intero" ha smesso di essere un'affermazione ottimista**. Resta
+scritto perché il caso è istruttivo: una sentinella non viola la regola in modo
+visibile come un `undefined`, quindi passa una rilettura che cerchi la forma
+sbagliata invece del significato sbagliato.
+
 **La superficie del provider cresce così**: *le letture si espongono quando il
 dato esiste, le scritture solo quando hanno un chiamante.* Le due metà non sono
 simmetriche di proposito. Una lettura senza consumatore costa un metodo che
