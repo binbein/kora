@@ -453,10 +453,20 @@ export class MockDataProvider implements DataProvider {
   }
 
   getAvailableSlots(professionalId: string): Promise<AppointmentSlot[]> {
+    /*
+     * Una seduta **annullata non occupa la sua fascia**: è il caso che dà un
+     * senso all'annullamento, e senza il filtro quell'orario non tornava
+     * prenotabile da nessuno.
+     *
+     * Il dataset di oggi non lo mostra — l'unica cancellazione è di due
+     * settimane fa e gli slot proponibili partono dal giorno dopo la demo — ma
+     * il difetto è nel contratto, non nella schermata, e in produzione un
+     * annullamento riguarda quasi sempre una seduta futura.
+     */
     const taken = new Set(
-      this.sessionsOf(professionalId).map((session) =>
-        session.start.getTime(),
-      ),
+      this.sessionsOf(professionalId)
+        .filter((session) => session.status !== "cancelled")
+        .map((session) => session.start.getTime()),
     );
     return Promise.resolve(
       INITIAL_SLOTS.filter(
@@ -493,9 +503,18 @@ export class MockDataProvider implements DataProvider {
      * rompe, la stessa rottura fa passare anche la verifica. Confrontare con le
      * sedute già in agenda è indipendente, e prende il caso che conta: due
      * prenotazioni sullo stesso orario, che condividono anche l'id.
+     *
+     * Salta le annullate con lo stesso criterio di `getAvailableSlots`: da
+     * quando quella fascia torna prenotabile, un guardrail che la contasse
+     * ancora come occupata accuserebbe la schermata di proporre uno slot che
+     * invece è libero per davvero.
      */
     assertInDevOutsidePromise(
-      !agenda.some((session) => session.start.getTime() === slot.start.getTime()),
+      !agenda.some(
+        (session) =>
+          session.status !== "cancelled" &&
+          session.start.getTime() === slot.start.getTime(),
+      ),
       "Prenotato un orario su cui c'è già una seduta: la schermata sta proponendo uno slot occupato.",
     );
 
