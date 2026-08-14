@@ -1,5 +1,6 @@
 import { assertInDev } from "../guardrails";
 import {
+  addQuarters,
   adoptionPercent,
   quarterKey,
   quarterOf,
@@ -168,11 +169,7 @@ function stressAtEndOf(period: Quarter): number | null {
  */
 function stressTrendFor(period: Quarter): number | null {
   const current = stressAtEndOf(period);
-  const previousPeriod = {
-    year: period.quarter === 1 ? period.year - 1 : period.year,
-    quarter: (period.quarter === 1 ? 4 : period.quarter - 1) as 1 | 2 | 3 | 4,
-  };
-  const previous = stressAtEndOf(previousPeriod);
+  const previous = stressAtEndOf(addQuarters(period, -1));
 
   if (current === null || previous === null) return null;
   return current - previous;
