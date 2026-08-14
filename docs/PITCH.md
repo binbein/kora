@@ -387,4 +387,15 @@ ha niente da rispondere.
   richiede una che non c'è, la risposta è che il dato si aggiunge dopo, non un
   numero inventato sul momento.
 - **Non aprire `/admin` come se fosse un cruscotto reale**: è marcato come dati
-  dimostrativi, e le guardie di ruolo sono lavoro di M5.
+  dimostrativi, ed è quel banner la difesa a schermo.
+
+  **Le guardie di ruolo esistono** — costruite il 12.08.2026 — ma in demo **non
+  negano l'accesso a niente, per costruzione**: `RequireRole` è una porta che
+  concede, perché il giro della presentazione entra in ogni portale con un clic e
+  `/admin` si apre come prima schermata della sessione. Il ramo che nega è vero e
+  si raggiunge solo con una manopola di sviluppo (`CLAUDE.md` §4, blocco d).
+
+  Quindi **non dire che `/admin` "ora è protetto"**: è una frase che chiunque
+  verifica in dieci secondi digitando l'indirizzo, e la verifica la smentisce.
+  Il consiglio pratico resta quello di sempre — è un back-office dimostrativo,
+  non un cruscotto — e a cambiare è la ragione, non la riga.
