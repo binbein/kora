@@ -233,6 +233,23 @@ restituisce**. Le altre proiezioni sanno al massimo che una nota esiste
 (`ProfessionalSession.hasNote`), mai cosa dice. La nota non esce mai verso
 l'azienda del paziente, e a impedirlo è la forma del dominio.
 
+**`hasNote` deve derivare dalle note, e oggi deriva da un surrogato.** Nel
+dataset demo è calcolato da *"il paziente ha una seduta più recente"*, cioè da
+un'euristica su **quando una nota si scriverebbe**, non dall'esistenza della
+nota. I due valori possono quindi contraddirsi, ed è il difetto che il §5.5 di
+`CLAUDE.md` vieta ai numeri applicato a un booleano.
+
+La misura: **56 sedute su 63 dichiarano `hasNote: true` e per tutte
+`getSessionNote` risponde `null`**. A schermo il pulsante dice "Nota" invece di
+"Aggiungi nota" e il dialogo si apre bianco. Non si vedeva finché nessuno leggeva
+le note: è emerso il 15.08.2026, con il primo lettore di `getSessionNote`.
+
+Per il backend la regola è una sola: **`hasNote` è `la nota esiste`**, non una
+stima di quando dovrebbe esistere. Sono lo stesso valore letto in due modi, come
+`Appointment` e `ProfessionalSession` sono la stessa seduta. La correzione del
+dataset demo resta da fare e non è di questo documento: sta fra le voci aperte di
+`docs/PROGRESS.md`.
+
 ### Percorso dipendente
 
 `getEntitlement` prende **quale servizio**, non solo lo psicologo:
@@ -372,6 +389,18 @@ sono un compenso maturato. Non porta le righe settimanali, per la ragione detta 
 `FullCapacityReference` esiste perché il totale mensile va sempre letto accanto al
 regime tenuto. Senza, un totale part-time si legge come il massimo che la
 piattaforma può dare a un professionista.
+
+**I tre metodi del professionista descrivono lo stesso insieme di sedute.**
+`getProfessionalSessions`, `getProfessionalEarnings` e `getProfessionalPayouts`
+sono tre viste dell'agenda di **quell'id**: le sedute, il loro totale in un mese,
+e i totali dei mesi precedenti. Ne discende che compensi e pagamenti si contano
+dalle sedute che il primo metodo restituirebbe, e che **i tre non possono
+contraddirsi** — un professionista con la lista vuota ha un totale a zero, non un
+totale di qualcun altro.
+
+È l'invariante che nessuna riga enunciava e nessun guardrail copre, ed è ciò che
+tiene onesto anche il regime tenuto (§3, KPI): è una media sulle stesse sedute,
+quindi appartiene al professionista di cui parla.
 
 ### KPI con una definizione, non ovvie
 
