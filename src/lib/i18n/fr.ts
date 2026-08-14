@@ -565,4 +565,235 @@ export const fr = {
         "Collaboration sous contrat de mandat (Auftrag). Aucun lien de subordination : Kora amène les patients et gère les réservations, la vidéo et les paiements.",
     },
   },
+
+  /*
+   * Portale HR (§10.C). Registro strumento: **vous**, e la schermata su cui il
+   * pitch si regge.
+   *
+   * DUE SCELTE DI QUESTO NAMESPACE, ENTRAMBE DA PORTARE ALLA REVISIONE:
+   *
+   *   - "dipendenti" è reso **collaborateurs**, che è il termine delle risorse
+   *     umane in Svizzera romanda; `employés` sarebbe più letterale e meno
+   *     idiomatico. Vale in tutte le aree, non solo qui.
+   *   - "reparto" è reso **département**, e il nome del reparto **non si
+   *     traduce**: `Vendite` è un campo del dataset (`mock/company.ts`), come
+   *     i titoli professionali. La raccomandazione del report lo nomina, quindi
+   *     dice "département Vendite" — la stessa cosa che il banner dell'alert
+   *     mostra due schermate più in là.
+   *
+   * IL TRIMESTRE NON PORTA L'ORDINALE, e non è una preferenza. L'italiano fa
+   * "3° trimestre" e il tedesco "3. Quartal" con lo stesso suffisso per tutti e
+   * quattro i valori; il francese no — si dice `1er trimestre` ma `3e
+   * trimestre`, e una stringa sola non può renderli entrambi. Il selettore
+   * mostra anche il primo trimestre 2026, quindi "1e trimestre" sarebbe uscito
+   * a schermo. `Trimestre {quarter} {year}` è corretto per tutti e quattro, e
+   * la sigla dell'asse diventa `T{quarter}`, che è come si abbrevia in
+   * francese.
+   */
+  hr: {
+    portalName: "Portail RH",
+    navDashboard: "Tableau de bord",
+    navEmployees: "Collaborateurs",
+    navReport: "Rapport",
+    navBilling: "Facturation",
+    navPrivacy: "Confidentialité",
+    navCompanyMeta: "{count} collaborateurs · Plan {plan}",
+
+    dashboardTitle: "Tableau de bord RH",
+    companySubtitle: "{name} · {count} collaborateurs · Plan {plan}",
+
+    quarterSelectorLabel: "Trimestre",
+    quarterLabel: "Trimestre {quarter} {year}",
+    quarterLabelInProgress: "Trimestre {quarter} {year} · en cours",
+    quarterShort: "T{quarter}",
+
+    privacyNote:
+      "Données agrégées et anonymes · seuil minimum de {threshold} collaborateurs mesurés par département",
+
+    kpiSavings: "Économies du trimestre",
+    kpiSavingsHint: "{days} jours d'absence évités",
+    kpiAdoption: "Adoption",
+    kpiAdoptionHint: "{enrolled} inscrits sur {total}",
+    kpiActive: "Collaborateurs actifs",
+    kpiActiveHint: "au moins un service dans le trimestre",
+    kpiStress: "Stress moyen",
+    kpiStressValue: "{points} points",
+    kpiStressHint: "vs trimestre précédent",
+    kpiStressEmpty: "aucun trimestre précédent dans la fenêtre",
+
+    quarterEmpty:
+      "Aucune donnée pour le trimestre sélectionné. Choisissez-en un autre dans la liste ci-dessus.",
+    kpiSessions: "Séances utilisées",
+    kpiSessionsHint: "{used} sur {total} séances annuelles",
+    kpiCheckup: "Check-up réalisés",
+    kpiCheckupHint: "{done} sur {enrolled} inscrits",
+
+    alertTitle: "Alerte précoce — département {department}",
+    alertDescription:
+      "Le stress du département est en zone haute depuis {months} mois consécutifs, depuis {since}.",
+
+    usageTitle: "Utilisation des services · {months} derniers mois",
+    distributionTitle: "Répartition des services",
+    distributionSubtitle:
+      "cumulée depuis le début de la fenêtre jusqu'à {quarter}",
+    distributionEntry: "{service} : {count}",
+
+    stressByDepartment: "Stress par département · dernier mois",
+    departmentMeta: "{employees} collaborateurs · {measured} mesurés",
+    departmentScore: "{percent} · {level}",
+    suppressed: "Sous le seuil",
+    suppressedTooltip:
+      "Sous le seuil, la donnée n'est pas calculée, pour qu'elle ne puisse pas être rattachée à des personnes.",
+
+    trendTitle: "Tendance du stress · {months} derniers mois",
+    trendCompany: "Moyenne entreprise",
+    trendAlertMarker: "alerte",
+    trendCompanyLegend: "de {from} à {to} · toujours en zone moyenne",
+    trendDepartmentLegend: "de {from} à {to} · en zone haute depuis le mois {month}",
+
+    roiTitle: "Économies par trimestre",
+
+    stressLevel: {
+      low: "Bas",
+      medium: "Moyen",
+      high: "Élevé",
+    },
+
+    service: {
+      psychologist: "Psychologue",
+      virtual_doctor: "Médecin virtuel",
+      coach: "Coach",
+      checkup: "Check-up",
+    },
+
+    employees: {
+      title: "Collaborateurs",
+      subtitle: "{enrolled} inscrits sur {total} · données anonymes uniquement",
+      sampleNote: "Le tableau montre un extrait de {n} collaborateurs.",
+      empty: "Aucun collaborateur à afficher.",
+      privacyNote:
+        "Les noms sont abrégés. Kora ne montre jamais de données de santé individuelles à l'entreprise.",
+      columnEmployee: "Collaborateur",
+      columnDepartment: "Département",
+      columnStatus: "Statut",
+      columnCheckup: "Check-up",
+      enrolled: "Actif",
+      notEnrolled: "En attente",
+      checkup: {
+        completed: "Réalisé",
+        booked: "Réservé",
+        available: "Disponible",
+      },
+    },
+
+    billing: {
+      title: "Facturation",
+      planTitle: "Plan actif",
+      employees: "Collaborateurs",
+      monthlyCost: "Coût mensuel",
+      annualContract: "Contrat annuel",
+      renewal: "Échéance",
+      invoicesTitle: "Factures récentes",
+      invoicesEmpty: "Aucune facture émise à ce jour.",
+      invoiceDetail: "{count} collaborateurs × {price}",
+      invoicePaid: "Payée",
+      invoicePending: "En attente",
+      simulatorTitle: "Simulateur de coûts",
+      simulatorEmployees: "Collaborateurs",
+      simulatorPlan: "Plan",
+      simulatorBilling: "Fréquence",
+      billingMonthly: "Mensuelle",
+      billingAnnual: "Annuelle",
+      totalMonthly: "Total mensuel",
+      totalAnnual: "Total annuel",
+      planOption: "{name} ({price})",
+    },
+
+    report: {
+      title: "Rapport santé d'entreprise",
+      subtitle: "{quarter} · {company}",
+      download: "Télécharger le PDF",
+      metricsTitle: "Indicateurs clés",
+      adoption: "Taux d'activation",
+      usage: "Séances sur le volume annuel",
+      checkup: "Check-up réalisés",
+      stress: "Stress moyen",
+      stressValue: "{points} points",
+      savings: "Économies estimées",
+      avoidedDays: "Jours d'absence évités",
+      daysValue: "{days} jours",
+      recommendationsTitle: "Recommandations",
+      recommendation: {
+        salesWorkshop:
+          "Programmer une intervention sur le département Vendite, en zone haute depuis trois mois.",
+        checkupPush:
+          "Rappeler le check-up annuel aux personnes qui ont activé leur compte et ne l'ont pas encore réservé.",
+        coachAwareness:
+          "Faire connaître le coach : c'est la prestation du plan la moins utilisée.",
+        partnerExtension:
+          "Évaluer l'extension aux proches, en option sur le plan Plus.",
+      },
+
+      pdf: {
+        documentTitle: "Rapport santé d'entreprise",
+        documentSubtitle:
+          "{company} · {employees} collaborateurs · Plan {plan}",
+        period: "Période · {quarter}",
+        generatedOn: "Généré le {date}",
+        active: "Collaborateurs actifs",
+        sessions: "Séances utilisées",
+        sessionsValue: "{used} sur {total}",
+        privacyNote:
+          "Données agrégées et anonymes. Kora ne communique à l'entreprise ni données de santé individuelles ni réservations rattachables à des personnes.",
+      },
+    },
+
+    privacy: {
+      title: "Confidentialité et sécurité",
+      subtitle: "La confidentialité est au cœur de Kora.",
+      neverSeenTitle: "L'entreprise ne voit jamais :",
+      neverSeen: {
+        healthData: "Données de santé individuelles",
+        names: "Qui a consulté un psychologue",
+        notes: "Notes cliniques ou rapports",
+        diagnoses: "Diagnostics ou traitements",
+        bookings: "Réservations individuelles",
+      },
+      measurementTitle: "D'où viennent les données de stress",
+      measurementBody:
+        "La donnée de stress vient du check rapide : une question, un geste, auto-déclarée par le collaborateur. Elle ne se déduit jamais du comportement — ni des séances réservées, ni des ouvertures de l'application.",
+      anonymousLinkTitle: "Même sans compte",
+      anonymousLinkBody:
+        "Le check rapide se répond dans l'application ou depuis un lien anonyme, qui ne demande pas d'avoir activé un compte. Mesurer uniquement les personnes inscrites reviendrait à mesurer uniquement celles déjà engagées, alors que la donnée sert surtout là où l'adoption n'est pas encore arrivée.",
+      thresholdTitle: "Seuil d'anonymat",
+      thresholdBody:
+        "La donnée d'un département n'est publiée que si, sur cette période, au moins {threshold} collaborateurs mesurés ont répondu. Sous le seuil, le tableau de bord affiche un tiret et non un score.",
+      principle: {
+        noIndividual: {
+          title: "Aucune donnée individuelle",
+          body: "L'entreprise ne voit jamais les séances, rapports, diagnostics ou données de santé de collaborateurs identifiés.",
+        },
+        aggregated: {
+          title: "Uniquement des données agrégées",
+          body: "Le tableau de bord montre des statistiques anonymes, agrégées par département ou par entreprise.",
+        },
+        encryption: {
+          title: "Chiffrement de bout en bout",
+          body: "Les données de santé sont chiffrées en transit et au repos, avec le standard AES-256.",
+        },
+        hosting: {
+          title: "Hébergement en Suisse",
+          body: "Les données résident sur des serveurs en Suisse, conformes à la Loi fédérale sur la protection des données.",
+        },
+        compliance: {
+          title: "Conformité RGPD et LPD",
+          body: "Kora est conforme au RGPD européen et à la LPD suisse.",
+        },
+        consent: {
+          title: "Consentement du collaborateur",
+          body: "Chaque collaborateur confirme son consentement lors de l'activation et peut le révoquer à tout moment.",
+        },
+      },
+    },
+  },
 } as const;
