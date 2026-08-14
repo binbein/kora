@@ -438,4 +438,131 @@ export const fr = {
       },
     },
   },
+
+  /*
+   * Portale professionista (§10.D). Registro strumento: **vous**, dalla prima
+   * riga all'ultima.
+   *
+   * È il portale della Dr.ssa Meier, ma il titolo resta un campo del dataset
+   * (`people.ts`) e non una stringa di qui: in francese non si traduce, come in
+   * tedesco. Dei pazienti si conoscono le sole iniziali, quindi le forme sono
+   * al maschile generico come in italiano — la scelta è dichiarata in
+   * `cancellationReason` e va alla revisione madrelingua.
+   */
+  professional: {
+    portalName: "Portail professionnels",
+
+    nav: {
+      calendar: "Calendrier",
+      sessions: "Séances",
+      patients: "Patients",
+      payments: "Paiements",
+      profile: "Profil",
+    },
+
+    feePerSession: "{fee} par séance",
+
+    calendar: {
+      title: "Calendrier",
+      week: "Semaine du {from} au {to}",
+      sessionsThisWeek: "Séances cette semaine",
+      nextSession: "Prochaine séance",
+      sessionsThisMonth: "À l'agenda ce mois-ci",
+      activePatients: "Patients actifs",
+      noNextSession: "Aucune",
+      nextSessionValue: "{weekday} {time}",
+      legendBooked: "Réservée",
+      legendFree: "Libre",
+      legendPast: "Passée",
+      today: "aujourd'hui",
+      empty: "Aucune séance cette semaine.",
+    },
+
+    sessions: {
+      title: "Séances",
+      upcoming: "Prévues ({n})",
+      completed: "Effectuées ({n})",
+      cancelled: "Annulées ({n})",
+      start: "Démarrer",
+      addNote: "Ajouter une note",
+      editNote: "Note",
+      emptyUpcoming: "Aucune séance prévue.",
+      emptyCompleted: "Aucune séance effectuée.",
+      emptyCancelled: "Aucune séance annulée.",
+      note: {
+        title: "Note privée — {patient}",
+        notes: "Notes de la séance",
+        notesPlaceholder: "Notes cliniques privées",
+        nextGoal: "Prochain objectif",
+        nextGoalPlaceholder: "Objectif pour la séance suivante",
+        followUp: "Suivi suggéré",
+        followUpPlaceholder: "Séance suivante conseillée dans",
+        save: "Enregistrer la note",
+        saving: "Enregistrement",
+        error: {
+          title: "Note non enregistrée",
+          body: "Le texte est encore là : réessayez.",
+        },
+        saved: "Note enregistrée",
+        privacy:
+          "Les notes sont privées et ne sont pas partagées avec l'entreprise du patient.",
+      },
+    },
+
+    patients: {
+      title: "Patients",
+      count: "{n} patients actifs",
+      privacy:
+        "Les noms sont abrégés pour des raisons de confidentialité. Les notes cliniques ne sont visibles que par vous.",
+      name: "Patient {initials}",
+      delivered: "{n} séances effectuées",
+      next: "Prochaine : {date}",
+      noNext: "Aucune séance prévue",
+      new: "Nouveau",
+      withinCap: "{used} sur {total} comprises",
+      overCap: "{total} comprises + {extra} à {price}",
+      capReached: "Séances comprises épuisées",
+    },
+
+    payments: {
+      title: "Paiements",
+      sessionsThisMonth: "Séances effectuées",
+      feePerSession: "Tarif par séance",
+      monthTotal: "Total du mois",
+      yearTotal: "Total de l'année",
+      monthInProgress: "{month} · en cours",
+      model:
+        "Paiement par séance effectuée. Kora émet la facture et paie avant le 5 du mois suivant.",
+      capacityTitle: "Votre régime",
+      capacity:
+        "Vous tenez {sessions} séances par semaine. À plein régime, ce sont {full} par semaine, qui valent {min}–{max} par mois : la collaboration démarre avec une disponibilité minimale de {minHours} heures par semaine et croît avec l'agenda.",
+      weeks: "Semaines du mois",
+      weekRange: "du {from} au {to}",
+      weekDetail: "{sessions} séances · {minutes} min",
+      paid: "Payé",
+      pending: "En attente",
+      paidOn: "le {date}",
+      sessionsTimesFee: "{sessions} séances × {fee}",
+      empty: "Aucune rémunération à ce jour.",
+    },
+
+    profile: {
+      title: "Profil professionnel",
+      empty: "Aucun profil à afficher.",
+      languages: "Langues",
+      specialty: "Spécialisation",
+      collaboration: "Collaboration",
+      fee: "Tarif par séance",
+      documents: "Documents",
+      verified: "Vérifiés",
+      mandate: "Contrat de mandat",
+      signed: "Signé",
+      totalSessions: "{n} séances effectuées",
+      /* "(Auftrag)" resta: l'italiano nomina apposta l'istituto del CO, e in
+         francese il mandato è lo stesso articolo di legge visto dall'altra
+         lingua nazionale. */
+      mandateNote:
+        "Collaboration sous contrat de mandat (Auftrag). Aucun lien de subordination : Kora amène les patients et gère les réservations, la vidéo et les paiements.",
+    },
+  },
 } as const;
