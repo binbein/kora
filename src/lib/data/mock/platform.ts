@@ -9,9 +9,11 @@ import type {
   PlatformMonth,
   PlatformUser,
 } from "../types";
-import { PLANS, PLAN_LIST } from "./company";
+import { sameQuarter } from "../types";
+import { COMPANY, PLANS, PLAN_LIST } from "./company";
 import { DEMO_TODAY } from "./demo-date";
 import { HISTORY_MONTHS } from "./measurement";
+import { CURRENT_QUARTER, ROI_SNAPSHOTS } from "./roi";
 import { SERVICE_USAGE } from "./service-usage";
 
 /*
@@ -337,9 +339,35 @@ export const PLATFORM_USERS: PlatformUser[] = [
 // Guardrail (§5.6)
 // ---------------------------------------------------------------------------
 
+/*
+ * I DUE LATI DELLA STESSA AZIENDA DEVONO DIRE LO STESSO NUMERO.
+ *
+ * L'organico di Demo SA è scritto in `company.ts` e qui; i suoi iscritti in
+ * `roi.ts` — il seme del trimestre corrente — e qui. Sono quattro valori per due
+ * fatti, e fino a questo controllo **niente li confrontava**: cambiandone uno
+ * solo, la dashboard HR e il back-office descrivevano due aziende diverse senza
+ * che si rompesse niente.
+ *
+ * È il difetto del 618 contro il 767 che M3 ha chiuso a valle, sopravvissuto un
+ * livello più sopra: lì erano due conteggi nella stessa schermata, qui sono due
+ * semi in due file.
+ *
+ * Il messaggio è quello che stava sul controllo di presenza di `demo-sa`, e ci
+ * sta meglio: quella riga diceva "descriverebbero due aziende diverse" per
+ * un'assenza, mentre il caso che davvero le fa divergere è questo.
+ */
+const DEMO_SA_ENROLLED = ROI_SNAPSHOTS.find((snapshot) =>
+  sameQuarter(snapshot.period, CURRENT_QUARTER),
+)?.enrolledEmployees;
+
 assertInDev(
-  CLIENT_COMPANIES.some((company) => company.id === "demo-sa"),
-  "Demo SA non è nel portafoglio clienti: il back-office e la dashboard HR descriverebbero due aziende diverse.",
+  REFERENCE.employeeCount === COMPANY.employeeCount,
+  `Il portafoglio dà a ${REFERENCE.name} ${REFERENCE.employeeCount} dipendenti e la dashboard HR ${COMPANY.employeeCount}: il back-office e l'area HR descrivono due aziende diverse.`,
+);
+
+assertInDev(
+  DEMO_SA_ENROLLED === REFERENCE.enrolledEmployees,
+  `Il portafoglio dà a ${REFERENCE.name} ${REFERENCE.enrolledEmployees} iscritti e lo snapshot del trimestre corrente ${DEMO_SA_ENROLLED}: il back-office e l'area HR descrivono due aziende diverse.`,
 );
 
 for (const company of CLIENT_COMPANIES) {
