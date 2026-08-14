@@ -12,7 +12,12 @@ import { formatDate, formatNumber, formatTime, formatWeekday } from '@/lib/forma
 import { interpolate, t } from '@/lib/i18n';
 import { dataProvider } from '@/lib/data';
 import { queryKeys } from '@/lib/data/query-keys';
-import { loadState, usePortalProfessionalId, useProfessionalSessions } from '@/lib/data/queries';
+import {
+  loadState,
+  usePortalProfessionalId,
+  useProfessionalSessions,
+  useSessionNote,
+} from '@/lib/data/queries';
 import { ErrorNotice } from '@/components/kora/StateNotice';
 import type { ProfessionalSession, SessionNote } from '@/lib/data/types';
 
@@ -92,8 +97,12 @@ function SessionList({
   ));
 }
 
+type NoteDraft = { notes: string; nextGoal: string; suggestedFollowUp: string };
+
+const EMPTY_DRAFT: NoteDraft = { notes: '', nextGoal: '', suggestedFollowUp: '' };
+
 /** Nessuno dei tre campi dice niente: non c'è una nota da salvare. */
-function isNoteEmpty(draft: { notes: string; nextGoal: string; suggestedFollowUp: string }) {
+function isNoteEmpty(draft: NoteDraft) {
   return !draft.notes.trim() && !draft.nextGoal.trim() && !draft.suggestedFollowUp.trim();
 }
 
@@ -109,7 +118,32 @@ export default function ProSessioni() {
    * scrive la mutation e lo rilegge la query.
    */
   const [openSession, setOpenSession] = useState<ProfessionalSession | null>(null);
-  const [draft, setDraft] = useState({ notes: '', nextGoal: '', suggestedFollowUp: '' });
+
+  /*
+   * `null` vuol dire "non ha ancora scritto niente", e non è la stessa cosa di
+   * tre campi vuoti: finché è `null` a schermo c'è la nota salvata, dal primo
+   * tasto in poi vince quello che sta scrivendo.
+   *
+   * È il motivo per cui qui non serve nessun effetto che semini la bozza quando
+   * la nota arriva — e un effetto del genere avrebbe dovuto ricordarsi per
+   * quale seduta l'aveva già fatto, per non sovrascrivere il testo appena
+   * digitato.
+   */
+  const [draft, setDraft] = useState<NoteDraft | null>(null);
+
+  /* Il primo lettore di `getSessionNote`: "Modifica nota" apriva un foglio
+     bianco e salvando sovrascriveva quella che c'era. */
+  const noteQuery = useSessionNote(professionalId, openSession?.id);
+  const stored = noteQuery.data;
+  const current: NoteDraft =
+    draft ??
+    (stored
+      ? {
+          notes: stored.notes,
+          nextGoal: stored.nextGoal,
+          suggestedFollowUp: stored.suggestedFollowUp,
+        }
+      : EMPTY_DRAFT);
 
   const saveNote = useMutation({
     mutationFn: (note: Omit<SessionNote, "updatedAt">) =>
@@ -139,7 +173,7 @@ export default function ProSessioni() {
   const cancelled = sessions.filter((session) => session.status === 'cancelled');
 
   const openNote: NoteHandler = (session) => {
-    setDraft({ notes: '', nextGoal: '', suggestedFollowUp: '' });
+    setDraft(null);
     setOpenSession(session);
   };
 
@@ -189,8 +223,8 @@ export default function ProSessioni() {
               <Textarea
                 className="mt-1.5"
                 rows={4}
-                value={draft.notes}
-                onChange={(e) => setDraft({ ...draft, notes: e.target.value })}
+                value={current.notes}
+                onChange={(e) => setDraft({ ...current, notes: e.target.value })}
                 placeholder={t.professional.sessions.note.notesPlaceholder}
               />
             </div>
@@ -199,8 +233,8 @@ export default function ProSessioni() {
               <Textarea
                 className="mt-1.5"
                 rows={2}
-                value={draft.nextGoal}
-                onChange={(e) => setDraft({ ...draft, nextGoal: e.target.value })}
+                value={current.nextGoal}
+                onChange={(e) => setDraft({ ...current, nextGoal: e.target.value })}
                 placeholder={t.professional.sessions.note.nextGoalPlaceholder}
               />
             </div>
@@ -209,8 +243,8 @@ export default function ProSessioni() {
               <Textarea
                 className="mt-1.5"
                 rows={2}
-                value={draft.suggestedFollowUp}
-                onChange={(e) => setDraft({ ...draft, suggestedFollowUp: e.target.value })}
+                value={current.suggestedFollowUp}
+                onChange={(e) => setDraft({ ...current, suggestedFollowUp: e.target.value })}
                 placeholder={t.professional.sessions.note.followUpPlaceholder}
               />
             </div>
@@ -229,9 +263,9 @@ export default function ProSessioni() {
               */}
             <Button
               className="w-full bg-executive hover:bg-executive/90"
-              disabled={saveNote.isPending || isNoteEmpty(draft)}
+              disabled={saveNote.isPending || isNoteEmpty(current)}
               onClick={() =>
-                openSession && saveNote.mutate({ sessionId: openSession.id, ...draft })
+                openSession && saveNote.mutate({ sessionId: openSession.id, ...current })
               }
             >
               <Save className="w-4 h-4 mr-1" aria-hidden="true" />
