@@ -1,5 +1,6 @@
 import { DEFAULT_LOCALE, type Locale } from "@/lib/locale";
 import { de } from "./de";
+import { en } from "./en";
 import { fr } from "./fr";
 import { assertPlaceholdersMatch } from "./placeholders";
 import { it } from "./it";
@@ -34,16 +35,25 @@ type Translated<T> = {
 export type Dictionary = Translated<typeof it>;
 
 /*
- * I dizionari disponibili. Cresce di una riga per lingua, e il tipo del
- * record impone che ci siano tutte: togliere una voce non compila.
+ * I dizionari disponibili, ed è l'unico posto in cui si vede quali lingue
+ * l'applicazione ha davvero.
  *
- * Finché una lingua non esiste, `it` resta la sola registrata — e questo è
- * l'unico posto in cui si vede quali lingue l'applicazione ha davvero.
+ * **DA `Partial` A `Record` PIENO, CON L'ULTIMA TRANCHE DI M5.e.** Finché le
+ * lingue erano meno di quattro il tipo doveva essere parziale, perché una voce
+ * mancava davvero; ora ci sono tutte, e il record pieno rende **verificata** la
+ * promessa che quel commento faceva a parole: aggiungere un locale all'unione
+ * di `Locale` senza il suo dizionario non compila più, e il posto in cui si
+ * rompe è questo, che è quello giusto.
+ *
+ * Ne discende che `DICTIONARIES[locale]` non è più `undefined` per nessun
+ * `Locale`, e la guardia di `setLocale` che lo controllava è sparita: era il
+ * ramo irraggiungibile che il §11 vieta.
  */
-const DICTIONARIES: Partial<Record<Locale, Dictionary>> = {
+const DICTIONARIES: Record<Locale, Dictionary> = {
   "it-CH": it,
   "de-CH": de,
   "fr-CH": fr,
+  "en-CH": en,
 };
 
 /*
@@ -118,11 +128,8 @@ export function getLocale(): Locale {
 export function setLocale(next: Locale): void {
   if (next === currentLocale) return;
 
-  const dictionary = DICTIONARIES[next];
-  if (!dictionary) return;
-
   currentLocale = next;
-  t = dictionary;
+  t = DICTIONARIES[next];
 
   /*
    * L'attributo `lang` del documento segue la lingua, ed è accessibilità e non

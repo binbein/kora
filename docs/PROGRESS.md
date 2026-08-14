@@ -29,10 +29,11 @@ data da `DEMO_TODAY`. Le rotte sono 26, il repository è nostro — niente base4
 zero richieste esterne a runtime — e `reference/` è stato cancellato, che era la
 prova che M3 fosse davvero finita.
 
-**Quattro blocchi di M5 su sei sono chiusi** — accessibilità, stati di errore e
-vuoto, validazione dei form, guardie di rotta — e **il quinto è in corso**: le
-altre tre lingue, di cui **tedesco e francese sono fatti**. Resta EN, una
-tranche sua, e poi il blocco f) delle pagine del footer.
+**Cinque blocchi di M5 su sei sono chiusi** — accessibilità, stati di errore e
+vuoto, validazione dei form, guardie di rotta e **le altre tre lingue**: la
+demo parla italiano, tedesco, francese e inglese, e il selettore le mostra
+tutte e quattro. **Resta il solo blocco f)**, le pagine del footer, che dipende
+dai testi legali dei founder e dalla decisione sulla residenza dei dati.
 
 **M5 è l'ultima milestone del piano, e si articola in sei blocchi** approvati
 dai founder l'11.08.2026 — accessibilità, stati di errore e vuoto, validazione
@@ -1544,11 +1545,55 @@ Indietro" nel posto sbagliato — la coreografia si prova su **scheda nuova**, c
 - **`enterAs` è la sola mutation che in produzione può sparire** — il ruolo lo
   concederà l'autenticazione — ed è annotato in `CONTRATTO-DATI.md` §4 e §6.
 
-#### e) Le altre tre lingue — tranche 1a, 1b e 2: tedesco e francese
+#### e) Le altre tre lingue — chiuso
 
-Il blocco più voluminoso di M5, spezzato in tre tranche: **infrastruttura + DE**,
-poi FR, poi EN. La prima si è a sua volta divisa in due PR quando è stato chiaro
-che le 663 stringhe non sono un commit ma il grosso del lavoro.
+**Trentatré commit su quattro PR.** Il blocco più voluminoso di M5, spezzato in
+tre tranche — **infrastruttura + DE**, poi **FR**, poi **EN** — di cui la prima
+si è a sua volta divisa in due PR quando è stato chiaro che le 663 stringhe non
+sono un commit ma il grosso del lavoro. **La demo parla quattro lingue**, il
+selettore le mostra tutte e quattro, e ogni schermata è stata percorsa in
+ognuna.
+
+**Le sei decisioni che il blocco ha preso**, e nessuna era scritta prima:
+
+1. **Il language switcher esiste** — il §2.7 lo vietava, il §4.e prevedeva che
+   il blocco decidesse. È caduto per la sua stessa ragione: con un dizionario
+   solo è un comando che non comanda, e una sigla spenta è un'affordance morta.
+   Mostra **le sole lingue registrate**, quindi è passato da due sigle a
+   quattro senza che nessuno lo toccasse.
+2. **Il contratto delle chiavi non era il tipo che sembrava.** `Dictionary =
+   typeof it` portava i **letterali** italiani — `readonly home: "Home"` — e
+   nessuna traduzione avrebbe compilato. `Translated<T>` tiene le chiavi e
+   libera il testo; è il difetto più grosso del blocco, ed era invisibile
+   finché esisteva una lingua sola.
+3. **Il separatore decimale segue il locale** (§11): punto in it-CH, de-CH ed
+   en-CH, **virgola in fr-CH**. La regola precedente era vera e verificata su
+   una lingua sola.
+4. **L'apostrofo delle migliaia è una decisione di stile, non un fatto CLDR**
+   (§2.7): ICU dà a fr-CH lo spazio stretto U+202F, e `format.ts` lo riporta
+   all'apostrofo in tutte e quattro. La virgola è correttezza, il raggruppamento
+   è registro.
+5. **Il registro del §7 si rende con lo strumento che ogni lingua ha**: T-V in
+   tedesco (`du`/`Sie`) e in francese (`tu`/`vous`), **lessico e contrazioni**
+   in inglese, che il T-V non ce l'ha. Le tre stringhe che attraversano il
+   confine sono nominali in tedesco, infinito e forma nominale in francese, e in
+   inglese non pongono il problema.
+6. **Il medico virtuale cambia registro dentro l'area del dipendente**, in tutte
+   e tre le lingue: dà del `Sie`, del `vous`, e in inglese perde le contrazioni.
+   È il §7 applicato alla lettera — un professionista parla come parlerebbe lui.
+
+**Tre cose che il francese e l'inglese hanno trovato e che l'italiano non poteva
+mostrare**: l'ordinale del trimestre, che in quelle due lingue non ha un
+suffisso solo; il separatore delle migliaia, che CLDR non uniforma; e i nomi
+dei reparti, che vengono dal dataset e non si traducono — la riga tedesca che li
+traduceva è stata corretta dopo, quando il francese l'ha resa visibile.
+
+**La revisione madrelingua resta da fare per tutte e tre le lingue**, ed è la
+sola cosa che questo blocco lascia aperta di proposito: i tre file sono
+**verificabili e presentabili, non ratificati**. Le scelte da portare a quella
+revisione sono nominate in testa a ogni dizionario — quattro in `de.ts`, cinque
+in `fr.ts`, cinque in `en.ts` — perché una revisione senza domande diventa una
+lettura.
 
 ##### 1a — l'infrastruttura (quattro commit)
 
@@ -1818,6 +1863,78 @@ attribuito a CLDR ma una decisione di stile con la sua data.
   — ciò che separa il francese svizzero da quello di Francia — non si pone: se
   un giorno si porrà, è una domanda per la revisione e non una scelta da
   prendere in un diff.
+
+##### 3 — il dizionario inglese (sette commit, 14.08.2026)
+
+L'ultima tranche, e quella che ha chiuso il blocco. Stessa sequenza delle altre
+due: un namespace per commit, `: Dictionary` con il commit che completa il file,
+registrazione a parte.
+
+**`en-CH` è un locale di formato svizzero, e la scelta è tutto.** Misurato prima
+di scrivere una riga: `en-CH` rende `CHF 14'200`, `24.09.2026`, `17:30` e
+`2.35`, mentre `en-GB` darebbe `CHF 14,200` e `24/09/2026`. Le date restano
+puntate, la valuta sta prima del numero come in italiano e tedesco, il decimale
+è il punto. **L'inglese è britannico** — `organisation`, `centre`, `speciality`,
+`cancelled`, `fibre`, `lift` — perché è la variante che si scrive in Svizzera.
+
+**Il registro non passa dai pronomi, perché l'inglese non ha il T-V**, ed è
+l'esito che vale oltre questa lingua: la distinzione del §7 si è fatta con il
+**lessico e la forma della frase**. `employee.*` usa la seconda persona e le
+**contrazioni** — *"You've used 3 of your 10 sessions"* — e le aree strumento
+usano forme nominali senza contrazioni — *"3 of 10 sessions used"*. Il medico
+virtuale, che in tedesco e in francese passa a `Sie` e `vous`, qui **perde le
+contrazioni**: *"I am sorry about the pain"*, non *"I'm sorry"*.
+
+**Ne discende che le tre stringhe di confine qui non sono un problema**:
+`Try again`, `Go to your area`, `Back to home` sono imperativi piani, e
+l'imperativo inglese non prende posizione. Il vincolo che ha costretto tedesco e
+francese alla forma nominale **non esiste in questa lingua**, e dichiararlo vale
+quanto risolverlo.
+
+**Il trimestre non porta l'ordinale, per la seconda volta e con un'altra
+grammatica**: l'inglese dice `1st`, `2nd`, `3rd`, `4th`, quindi un suffisso
+fisso ne sbaglierebbe tre su quattro. `Quarter {quarter} {year}`, come in
+francese, e `Q{quarter}` sull'asse — dove in inglese la sigla è quella naturale.
+
+**Con la quarta lingua `DICTIONARIES` ha smesso di essere `Partial`.** Il
+commento prometteva a parole che «il tipo impone che ci siano tutte» mentre il
+tipo era parziale, perché una lingua mancava davvero; ora il record è pieno e la
+promessa è verificata — aggiungere un locale all'unione senza il suo dizionario
+non compila, e si rompe lì. Ne è discesa la sparizione della guardia
+`if (!dictionary) return` in `setLocale`, che era diventata il ramo
+irraggiungibile che il §11 vieta.
+
+###### Il protocollo di verifica, punto per punto
+
+| | esito |
+|---|---|
+| typecheck al contrario | tolta `hr.kpiSavings`: *"Property 'kpiSavings' is missing in type … but required in type"* |
+| guardrail dei segnaposto al contrario | `{used}` → `{count}` fa uscire `[i18n] en-CH … l'italiano usa [total, used], la traduzione [count, total]` |
+| EN su 27 rotte a 1280 | tutte rese, **zero vuote, zero overflow orizzontale** |
+| switch IT→EN a metà demo | prenotazione viva — `Friday 25.09.2026 at 10:00` — contatore `You've used 3 of your 10 sessions · 4 scheduled`, dieci numeri fermi |
+| `<html lang>` | `en` |
+| switcher | **`IT DE FR EN`**, tutte e quattro |
+| PDF di `/hr/report` in EN | **una pagina**: 546.8 pt su 785.89 disponibili, zero elementi troncati, `downloadReportPdf` restituisce `1` |
+| lint, typecheck | a zero |
+| guardrail | **97 = 91 + 6**, invariati |
+
+**I numeri del pitch in inglese**: CHF 14'200, 16 absence days avoided, 68%, 82
+enrolled of 120, 41 active, 142 of 1'200 annual sessions, 62%, soglia 12, −2
+points, `Quarter 3 2026 · in progress`. E l'alert dice **"Early alert — Vendite
+department"**, cioè il nome del reparto come lo scrive il dataset.
+
+###### Cosa resta a verbale, per l'inglese
+
+- **Le cinque scelte in testa a `en.ts`**: `Hello {name}` per "Buongiorno" —
+  stesso inciampo del tedesco, perché "Good morning" mente sull'ora; **LPD →
+  FADP**, che è il nome inglese della stessa legge e compare in sei stringhe;
+  `company` nel copy commerciale contro `organisation` nelle promesse di
+  privacy, dove l'italiano ha una parola sola; il trimestre senza ordinale; e le
+  scelte di casa dell'inglese britannico, `speciality` contro `specialty`.
+- **Le parole chiave del medico sono corte e comuni** — `back`, `head` — quindi
+  agganciano anche dove non dovrebbero: *"come back"*, *"ahead"*. È un limite
+  del confronto per sottostringa, non del dizionario, e in inglese morde più
+  che nelle altre due lingue.
 
 ### Refinement fra le milestone
 
