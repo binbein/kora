@@ -1810,11 +1810,17 @@ prévues`, e sulla dashboard HR CHF 14'200, 16, 68%, 82 su 120, 41, 142 di
 per reparto dice `Vendite`, `Finanza`, `Direzione` dentro una schermata
 francese, ed è voluto — è la stessa regola dei titoli professionali. Per questo
 la raccomandazione del report dice **"département Vendite"**: nomina il reparto
-come lo nomina il banner dell'alert due schermate più in là. **In tedesco non è
-così**, ed è una divergenza da sanare: `de.ts` traduce quella riga in
-`Abteilung Verkauf` mentre il banner mostra `Vendite`, quindi lo stesso reparto
-compare con due nomi. Una parola, non toccata qui perché è la tranche
-sbagliata.
+come lo nomina il banner dell'alert due schermate più in là. **In tedesco non era
+così**: `de.ts` traduceva quella riga in `Abteilung Verkauf` mentre il banner
+mostra `Vendite`, quindi lo stesso reparto compariva con due nomi.
+
+~~Una parola, non toccata qui perché è la tranche sbagliata.~~ → **sanata lo
+stesso giorno e dentro questa stessa PR**, dal commit `9716004`, che porta la
+raccomandazione tedesca a dire `Vendite` con il commento che spiega la regola.
+La riga è rimasta a dichiararla aperta per le ore fra la stesura della sintesi e
+il commit — ed è **l'esempio più netto del difetto che la coda documentale del
+15.08.2026 ha chiuso**: una prosa che sopravvive al codice che descriveva, e che
+a distanza di ore ha fatto segnalare come da fare qualcosa di già fatto.
 
 ###### Il difetto trovato, e la decisione che ha portato
 
