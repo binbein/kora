@@ -76,8 +76,9 @@ type PatientSlot = {
  * si fermano tutti a 10 si leggerebbero come generati.
  *
  * Due pazienti stanno **sopra** il cap, e la schermata lo dice con il
- * co-payment: è il meccanismo su cui il Business Plan regge il margine, e
- * mostrarlo a schermo vale più della riga che costa.
+ * co-payment: è il **deterrente** che tiene il consumo dentro il cap, mentre il
+ * margine viene dal gap fra sessioni incluse ed erogate (Business Plan §5).
+ * Mostrarlo a schermo vale più della riga che costa.
  */
 const PATIENTS: PatientSlot[] = [
   { patientId: "gr", initials: "G.R.", weekday: 1, hour: 10, minute: 0, fromWeeksAgo: 10 },
@@ -479,10 +480,10 @@ assertInDev(
 /*
  * NESSUN PAZIENTE SUPERA IL CAP SENZA CHE LA SCHERMATA LO DICA.
  *
- * Il cap annuale con co-payment è il meccanismo su cui il Business Plan regge il
- * margine, quindi un conteggio che lo sfonda in silenzio non è un difetto
- * interno: contraddice il documento che l'investitore ha in mano mentre guarda
- * lo schermo. Chi sta sopra il cap deve comparire nell'elenco pazienti, che è
+ * Il margine viene dal gap fra sessioni incluse ed erogate (Business Plan §5) e
+ * il cap è ciò che lo tiene, con il co-payment come deterrente: un conteggio che
+ * sfonda il cap in silenzio non è quindi un difetto interno, contraddice il
+ * documento che l'investitore ha in mano mentre guarda lo schermo. Chi sta sopra il cap deve comparire nell'elenco pazienti, che è
  * l'unico posto in cui il co-payment si vede.
  */
 for (const slot of PATIENTS) {

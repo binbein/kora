@@ -45,8 +45,11 @@ unico che resta aperto fino alla fine.
 **Le PR di M5 sono la milestone e non entrano nel conto delle passate di
 refinement.** Vale il criterio già scritto in quella sezione, che esclude la
 milestone: M4 è #19 e ha la sua sezione, e i blocchi di M5 hanno la loro qui
-sotto. Il conto delle passate resta fermo a undici finché non riprende il
-refinement fra le milestone — che dopo M5 vuol dire dopo il piano.
+sotto. **Il conto vive in un posto solo**, la sezione «Refinement fra le
+milestone», e oggi dice **diciassette**: questa riga ne dichiarava undici mentre
+quella ne diceva tredici, ed erano due misure dello stesso insieme prese in due
+momenti — il difetto che questo file racconta di aver già avuto con le CTA e con
+i guardrail. Qui non si ripete il numero: si rimanda.
 
 Il primo commit è l'export **intatto**, così ogni modifica successiva si legge come
 diff contro quello che base44 ha prodotto. Il magazzino della precedente demo
@@ -77,7 +80,10 @@ Delle altre due esecuzioni rimandate dalla stessa riunione, **una è fatta**: la
 **build "demo"** in cui i guardrail loggano e la **checklist pre-pitch** sono la
 passata del 10.08.2026, in fondo alla sezione refinement — da lì `npm run
 build:demo` è ciò che `vercel.json` deploya, e `docs/PITCH.md` è il terzo
-documento del repository. Resta **`Intl.ListFormat`**, che è dentro M5.
+documento del repository. ~~Resta **`Intl.ListFormat`**, che è dentro M5.~~ →
+**fatto da M5.e**: `formatList` in `format.ts` chiama `Intl.ListFormat`, e con lui
+è sparita la chiave `t.common.listSeparator`. Le tre esecuzioni rimandate dalla
+riunione del 10.08.2026 sono quindi **tutte fatte**.
 
 ### M0 — Messa in sicurezza
 
@@ -257,8 +263,13 @@ backend.
   massimo 60 sedute l'anno: un'agenda da cinque sedute settimanali descrive molti
   percorsi brevi che si avvicendano, non sei percorsi lunghi. Da qui tre percorsi
   conclusi, che stanno fuori dall'elenco pazienti e dentro lo storico compensi, e
-  due pazienti sopra il cap che mostrano il co-payment — il meccanismo su cui il
-  Business Plan regge il margine, messo a schermo.
+  due pazienti sopra il cap che mostrano il co-payment — il **deterrente** che
+  tiene il consumo dentro il cap, messo a schermo. *(Questa riga diceva «il
+  meccanismo su cui il Business Plan regge il margine»: era una parafrasi
+  sbagliata fin dall'inizio. Il §5 del BP, riquadro «Principio fondamentale», dà
+  come fonte principale del margine **il gap fra sessioni incluse ed erogate**, e
+  il §9 mette il co-payment fra gli stream con margine «—» e funzione di
+  fidelizzazione. Corretta il 15.08.2026.)*
 - **L'appuntamento di Laura è un record solo**, proiettato da due lati. Il
   contatore del dipendente è il conto delle sue sedute erogate, non un numero a
   parte: in M3 la prenotazione lo farà salire come conseguenza.
@@ -468,7 +479,9 @@ Operations; le date di fatturazione ferme ad aprile su una demo di settembre.
   aggregati trimestrali. Il titolo lo dice. Se un giorno dovrà seguirlo, serve un
   metodo nuovo sul provider.
 - **L'elenco dipendenti è un estratto di otto righe su 120**, dichiarato a
-  schermo e in `CONTRATTO-DATI.md` §7. La paginazione è M5.
+  schermo e in `CONTRATTO-DATI.md` §7. ~~La paginazione è M5.~~ → **non era di
+  M5**, e nessuno dei sei blocchi la contiene: è lavoro dell'MVP, dichiarato in
+  `CONTRATTO-DATI.md` §8.7 dalla passata del 15.08.2026.
 
 #### L'area dipendente (§10.B)
 
@@ -1804,11 +1817,17 @@ prévues`, e sulla dashboard HR CHF 14'200, 16, 68%, 82 su 120, 41, 142 di
 per reparto dice `Vendite`, `Finanza`, `Direzione` dentro una schermata
 francese, ed è voluto — è la stessa regola dei titoli professionali. Per questo
 la raccomandazione del report dice **"département Vendite"**: nomina il reparto
-come lo nomina il banner dell'alert due schermate più in là. **In tedesco non è
-così**, ed è una divergenza da sanare: `de.ts` traduce quella riga in
-`Abteilung Verkauf` mentre il banner mostra `Vendite`, quindi lo stesso reparto
-compare con due nomi. Una parola, non toccata qui perché è la tranche
-sbagliata.
+come lo nomina il banner dell'alert due schermate più in là. **In tedesco non era
+così**: `de.ts` traduceva quella riga in `Abteilung Verkauf` mentre il banner
+mostra `Vendite`, quindi lo stesso reparto compariva con due nomi.
+
+~~Una parola, non toccata qui perché è la tranche sbagliata.~~ → **sanata lo
+stesso giorno e dentro questa stessa PR**, dal commit `9716004`, che porta la
+raccomandazione tedesca a dire `Vendite` con il commento che spiega la regola.
+La riga è rimasta a dichiararla aperta per le ore fra la stesura della sintesi e
+il commit — ed è **l'esempio più netto del difetto che la coda documentale del
+15.08.2026 ha chiuso**: una prosa che sopravvive al codice che descriveva, e che
+a distanza di ore ha fatto segnalare come da fare qualcosa di già fatto.
 
 ###### Il difetto trovato, e la decisione che ha portato
 
@@ -1938,12 +1957,14 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Tredici passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
-M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28), **#34** — le uscite
-dai tre portali, che arriva dopo i primi quattro blocchi di M5 — e
-**l'overflow della landing**, del 14.08.2026, che arriva fra la tranche tedesca
-e quella francese di M5.e (numero da aggiungere: la sintesi è stata scritta
-prima di aprire la PR, come vuole la regola di #26). Non aggiungono
+**Diciassette passate mergiate fra la chiusura di M3 e oggi**: quattro
+nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
+**#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
+M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
+quella francese di M5.e, e le quattro della **revisione del 15.08.2026**: #43 e
+#44 sulla coerenza del dominio e sugli stati limite, #45 sul perimetro del
+contratto, e **questa passata**, la coda documentale che chiude la serie. Non
+aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
 seam e del dizionario, più le sette che hanno una sottosezione loro qui sotto:
 le due che **eseguono** una decisione della riunione del 10.08.2026,
@@ -2096,8 +2117,10 @@ diff di questa (`CLAUDE.md` §5.6).
 > righe di `import` + 2 righe di prosa nei commenti. **È il difetto del 19/11
 > contro il 13/9 delle CTA, ripetuto altrove**: un conteggio senza criterio
 > scritto accanto. Il criterio ora sta in `CLAUDE.md` §5.6, e dice anche
-> perché `prefetch.ts` non entra nei 96 — un 97 futuro è un errore di
-> criterio, non una correzione.*
+> perché `prefetch.ts` non entra nei 96. ~~Un 97 futuro è un errore di criterio,
+> non una correzione.~~ → **ribaltato dal `CLAUDE.md` §5.6 il 14.08.2026**: le
+> regole si scrivono sui criteri, non sui valori che i criteri producono. Il 97
+> è arrivato il giorno dopo con la tranche tedesca, e oggi il conto è **99**.*
 
 **`--mode demo` non ha bisogno di nessun file `.env.demo`**, ed è l'unica strada
 percorribile: `.gitignore` esclude `.env*` (§2.5), quindi una build che ne
@@ -2138,7 +2161,9 @@ suo mestiere: né regole né storia, ma lo script operativo della presentazione.
 Consolida ciò che era sparso — la scheda in primo piano, il divieto di
 ricaricare, un clic per PDF — e porta le risposte pronte alle quattro domande
 che il pitch riceve: da dove viene il dato di stress, perché il ROI è 2.35:1 e
-non 19.5:1, il co-payment come meccanismo di margine, Keller e Basalto come
+non 19.5:1, il co-payment come deterrente che tiene il consumo dentro il cap —
+la riga diceva «meccanismo di margine», ed è la stessa parafrasi sbagliata
+corretta il 15.08.2026 — Keller e Basalto come
 vetting a schermo. Le cifre sono verificate contro §8 e §9 alla cifra.
 
 #### La passata di palette (10.08.2026)
@@ -2243,8 +2268,12 @@ su tre file, corrette in un commit solo: è un fatto scritto in tre punti, e
 spezzarlo avrebbe lasciato due posti a dire 114 e uno 96. Il criterio ora vive
 in `CLAUDE.md` §5.6 e nomina anche l'esclusione che sorprende — `prefetch.ts`
 chiama `raiseOutsideCurrentStack` ma legge `GUARDRAIL_MODE` da sé, quindi non è
-un call site che ignora il modo: **un 97 futuro è un errore di criterio, non
-una correzione.**
+un call site che ignora il modo. ~~Un 97 futuro è un errore di criterio, non una
+correzione.~~ → **ribaltato dal `CLAUDE.md` §5.6 il 14.08.2026**, e vale doppio
+ora che il numero vero è oltre il 97: una regola scritta su un valore fa
+respingere come errore la misura giusta, ed è esattamente quello che sarebbe
+successo — il 97 è arrivato con un guardrail nuovo, cioè per la ragione più
+ordinaria che ci sia.
 
 **Il conto delle passate diceva cinque e se ne trovavano otto**, e il 9/7 delle
 CTA era rimasto nella voce del 10.08.2026 accanto all'inventario autoritativo
@@ -2332,8 +2361,9 @@ muove una metrica.
 prenotazione del dipendente usava già `t.common.listSeparator` sulla stessa
 lista. Era l'ultimo separatore cablato a schermo: gli altri `join(", ")` stanno
 dentro i messaggi dei guardrail, che sono testo per chi sviluppa e non passano
-dal dizionario. `Intl.ListFormat` resta M5 — qui si chiude l'incoerenza
-interna, non l'enumerazione che segue il locale.
+dal dizionario. ~~`Intl.ListFormat` resta M5~~ — qui si chiudeva l'incoerenza
+interna, non l'enumerazione che segue il locale, e **quella l'ha chiusa M5.e**
+sostituendo la chiave con `formatList`.
 
 **Un commento orfano è uscito dal dizionario**: *"Quando il form non dichiara
 l'organico"* descriveva una chiave che non esiste più, perché quel caso è
@@ -2728,6 +2758,34 @@ recente"* — 56 sedute su 63 lo dichiarano vero e `getSessionNote` per tutte
 risponde `null` — e la decisione sul controllo della cache fredda contro
 `useSessionNote`, aperta dalla passata del 15.08.2026.
 
+#### La coda dell'analisi, e la chiusura della revisione (15.08.2026)
+
+Diciotto commit, e **una classe sola di difetti**: sintesi di secondo livello che
+avevano smesso di descrivere il repository — la testa di questo file, la tabella
+delle milestone, alcune parentesi di chiusura, tre punti della costituzione e la
+testata di `guardrails.ts` — più **una parafrasi sbagliata fin dall'inizio**, il
+margine attribuito al co-payment, che viveva in cinque punti fra documentazione e
+commenti. Nei file di codice cambiano solo commenti.
+
+Sono tutte righe vere quando sono state scritte, tranne l'ultima: per questo si
+barrano con la data invece di sparire, che è la convenzione di questo file.
+
+**Chiude una serie di cinque passate del 14–15.08.2026**, che è la revisione
+dell'intero repository: le risposte pronte del pitch (#42), la coerenza del
+dominio (#43), gli stati limite delle schermate (#44), il perimetro del contratto
+(#45) e questa. Le prime quattro hanno la loro sezione o, per la #42, le due voci
+fra le decisioni chiuse.
+
+**Cosa resta aperto, e a chi appartiene.** Al codice, in una passata sua: la
+correzione di `hasNote` nel dataset, che oggi lo deriva da un surrogato, e la
+decisione sul controllo della cache fredda contro `useSessionNote`. Ai founder,
+nelle decisioni in sospeso qui sopra: la **residenza dei dati**, il **protocollo
+clinico**, la **revisione madrelingua**, e fuori dal repository il **cap table**
+con il CTO co-founder (§4.2 dei *Dubbi*, sesta domanda prioritaria). Senza
+risposta pronta resta il **margine lordo**, che `docs/PITCH.md` vieta di
+improvvisare: la sua è la quinta domanda prioritaria, validare la curva di
+utilizzo reale come metrica n. 1 dei pilot.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -2774,13 +2832,30 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 | M2 | Il contratto dati | **fatta** |
 | M3 | Migrazione area per area + calcolatore ROI | **fatta** |
 | M4 | Report scaricabile | **fatta** |
-| M5 | Verso la produzione (differibile) | **in corso** — a, b, c, d chiusi; e) in corso, DE fatto; resta f |
+| M5 | Verso la produzione (differibile) | **in corso** — a–e chiusi; f in attesa di input dei founder sulla residenza dei dati |
 
 ## Decisioni chiuse
 
 Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà una
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
+
+- **14.08.2026 — La risposta sul margine si riscrive sul divario fra sessioni
+  incluse ed erogate** (`docs/PITCH.md`). Diceva che il margine viene dal
+  co-payment e teneva nella stessa frase i CHF 28 incassati e i CHF 70–80 pagati
+  al professionista: chi ascolta fa la sottrazione e sente l'opposto di ciò che
+  la frase vuole dire. Ora è il **12%** — 142 sedute su un monte di 1'200 — che è
+  anche l'unico dei tre numeri già a schermo, e il co-payment è il deterrente che
+  tiene il consumo dentro il cap. Il testo sta in `PITCH.md`, che è il suo
+  mestiere; qui restano la data e il motivo. La stessa parafrasi viveva in cinque
+  punti fra documentazione e commenti, corretti il 15.08.2026.
+
+- **14.08.2026 — La demo si presenta in italiano, e il selettore si mostra senza
+  usarlo** (`docs/PITCH.md`). Quattro sigle accese sono la prova che
+  l'architettura a quattro lingue esiste, e indicarle basta: cambiare lingua
+  davanti a un investitore che quella lingua la parla mette a giudizio la
+  formulazione invece dell'architettura, e DE, FR ed EN non sono ratificati da
+  una revisione madrelingua — che è la voce aperta qui sopra.
 
 - **12.08.2026 — Le guardie di rotta, in due stadi** (`CLAUDE.md` §4,
   `CONTRATTO-DATI.md` §6). La proposta prima dell'esecuzione, ed è il primo
@@ -2881,6 +2956,9 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 
   **`Intl.ListFormat` entra in M5** (`CLAUDE.md` §4). Le liste sono la terza
   cosa che cambia col locale dopo date e valuta, e `format.ts` non le tratta.
+  → **Eseguito da M5.e**, tranche 1a: `formatList` lo chiama e la chiave
+  `t.common.listSeparator` è sparita con il suo ultimo chiamante — era sbagliata
+  anche in italiano, perché un separatore non produce una congiunzione.
 
   **Il piano "Personalizzato" resta in sospeso**: la riunione non l'ha
   discusso, e il suo trigger è il listino a moduli.
@@ -3130,6 +3208,51 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 
 ## Decisioni in sospeso
 
+- **Il protocollo clinico e il referente non esistono, e il prodotto ne ha
+  bisogno prima degli utenti** (15.08.2026). Il §2.6 di *"Dubbi Business per
+  CEO"* — verificato aprendo il documento prima di scrivere questa voce — è la
+  **quarta delle sei domande prioritarie** e la pone così: l'Head Medical
+  Network è previsto a T2 mentre i pilot con pazienti veri partono in Fase 1,
+  quindi «dal primo giorno in cui un dipendente parla con uno psicologo tramite
+  KORA, qualcuno deve essere responsabile della qualità clinica e dei protocolli
+  di emergenza (es. ideazione suicidaria durante una sessione: chi viene
+  allertato, con quale procedura?)».
+
+  **Cosa manca nel prodotto**: nessun percorso di presa in carico urgente, il
+  check rapido accetta il valore peggiore senza che succeda niente, la chat del
+  medico non rileva il rischio e non espone numeri d'emergenza. Il perimetro sta
+  in `CONTRATTO-DATI.md` §8.1, che lo mette **primo** perché non è una funzione
+  ma una condizione per operare.
+
+  **Il trigger è prima del primo utente attivo**, non prima del primo contratto,
+  ed è la formula del documento stesso: il rischio nasce con la prima persona
+  che parla con uno psicologo attraverso la piattaforma, non con la firma. Serve
+  «almeno un medico/psicologo senior come advisor con questo ruolo formalizzato».
+
+  Questa voce esiste perché `docs/PITCH.md` dichiara già che il percorso non c'è
+  e che la demo non lo simula: era un'affermazione senza corrispettivo nel
+  repository, ed è la stessa asimmetria che questa serie ha chiuso altrove.
+
+- **La revisione madrelingua dei tre dizionari non è stata fatta, e non ha né
+  proprietario né data** (15.08.2026). Le tre tranche di M5.e dichiarano tedesco,
+  francese e inglese **verificabili e presentabili, non ratificati**, e nessuna
+  dice da chi né quando: con quattro lingue a schermo e un selettore pubblico è
+  la voce aperta con l'esposizione più alta.
+
+  **Proprietario: i founder** — è una scelta di lingua e di registro, non di
+  codice, e le domande da portare alla revisione sono già nominate in testa a
+  ogni dizionario (quattro in `de.ts`, cinque in `fr.ts`, cinque in `en.ts`).
+
+  **Il trigger: prima di qualunque presentazione non in italiano.** Finché non è
+  fatta, `docs/PITCH.md` dice cosa si fa in sala — il selettore si mostra come
+  prova che l'architettura esiste, la lingua non si cambia.
+
+  **Il blocco sugli stati limite ha aggiunto chiavi dopo le tranche**, e vanno
+  lette insieme al resto: `overCapWithoutPrice` riscritta, più
+  `hr.report.downloadError`, `professional.payments.weeksEmpty` e `.payoutsEmpty`
+  nuove, in tutte e quattro le lingue. L'elenco con il testo sta nella sintesi di
+  quella passata.
+
 - **Residenza dei dati: la UI la promette, la decisione commerciale non è
   presa** (founder, 11.08.2026). Il §2.1 di *"Dubbi Business per CEO"* dà la
   promessa come **domanda ancora aperta**: verificato aprendo il documento
@@ -3169,8 +3292,10 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   che l'Essenziale non ha. Verificato alla cifra.
 *(Erano in sospeso anche l'emoji nel saluto della home dipendente, decisa il
 07.08.2026 — si toglie — e la **palette con la CTA verde piena**, decisa il
-10.08.2026 — le CTA passano su `primary`. Entrambe fra le decisioni chiuse; la
-seconda resta da eseguire, che è un'altra cosa dall'essere in sospeso.)*
+10.08.2026 — le CTA passano su `primary`. Entrambe fra le decisioni chiuse, ed
+entrambe **eseguite**: la palette dalla passata dedicata dello stesso 10.08.2026,
+13 punti su 9 file. ~~La seconda resta da eseguire~~ era vero per le poche ore
+che separano la riunione dalla passata.)*
 
 ## Migliorie rimandate al refinement
 

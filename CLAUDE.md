@@ -100,18 +100,21 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
    decisione del blocco, la tranche 1b di M5.e l'ha eseguito e questa riga lo
    ratifica. Sta **solo in `PublicNav`** — il giro del pitch attraversa comunque
    la barra pubblica — è fatto di sigle e non di un menù, e mostra **le sole
-   lingue registrate in `DICTIONARIES`**: oggi due, quattro quando i quattro
-   dizionari esisteranno. Il default è l'italiano e **la scelta non sopravvive a
-   un ricaricamento**, perché il §5.4 vuole che la demo provata sia quella
-   presentata.
+   lingue registrate in `DICTIONARIES`**, che dalla chiusura di M5.e sono
+   **quattro**: `IT DE FR EN`. Il default è l'italiano e **la scelta non
+   sopravvive a un ricaricamento**, perché il §5.4 vuole che la demo provata sia
+   quella presentata.
 
    **Il divieto che stava scritto qui — "niente language switcher" — non era
    estetica, ed è caduto per la sua stessa ragione**: con un dizionario solo uno
    switcher è un comando che non comanda, e una sigla spenta accanto a quella
    accesa è un'affordance morta che invita la domanda "perché è grigia?" dentro
    trenta minuti contati. È caduto il giorno in cui il secondo dizionario è
-   esistito davvero, non prima — ed è la ragione per cui il componente continua a
-   non mostrare FR ed EN finché non ci sono.
+   esistito davvero, non prima. La regola che ne discendeva — mostrare le sole
+   lingue registrate — non è cambiata: è il registro che si è riempito, e il
+   componente è passato da due sigle a quattro **senza che nessuno lo toccasse**.
+   Fino al 14.08.2026 questa riga aggiungeva che «continua a non mostrare FR ed
+   EN finché non ci sono», ed era vera il giorno in cui è stata scritta.
 8. **Commit piccoli e frequenti**, messaggi in inglese, conventional commits
    (`feat: hr dashboard reads from provider`). Mai commit giganti multi-feature.
    Le decisioni non ovvie finiscono in questo file con un commit `docs:` separato
@@ -352,11 +355,15 @@ kora/
       ui/                ← shadcn, non si tocca se non per i bug di §3
       shared/            ← KPICard, PrivacyBanner, logo
       public|employee|hr|professional|admin/  ← layout e navigazione per area
-      kora/              ← componenti di dominio nuovi: oggi il solo RapidCheckCard
+      kora/              ← componenti di dominio nuovi: RapidCheckCard (M3),
+                           StateNotice (M5.b), RequireRole (M5.d)
     lib/
       data/              ← il contratto dati e l'implementazione mock (§5),
                            più i guardrail e il prefetch della cache
-      i18n/it.ts         ← tutte le stringhe UI
+      i18n/              ← i quattro dizionari (it, de, fr, en), il registro
+                           delle lingue e la guardia dei segnaposto
+      locale.ts          ← il tipo `Locale` e il default: modulo foglia, perché
+                           lo leggono sia `format.ts` sia `i18n`
       format.ts          ← formatCHF, formatDate, formatPercent — unico punto
       dates.ts           ← aritmetica sui giorni: calcola, non formatta
       roi-model.ts       ← formule del calcolatore ROI (§9)
@@ -373,6 +380,14 @@ kora/
 `earnings.ts` e `schedule.ts` sono presentazione, non dominio: raggruppare per
 settimana è una decisione della schermata e per questo non sta nel provider
 (`docs/CONTRATTO-DATI.md` §2).
+
+**`src/lib/utils.ts` manca da questa lista di proposito**, ed è l'unico file di
+`lib/` che non compare: contiene il solo `cn()` — `clsx` più `twMerge` — e
+appartiene al **layer shadcn**, non al dominio. Lo genera `shadcn` insieme ai
+componenti, e la passata di tipizzazione di M3 lo trattò come tale
+(`docs/PROGRESS.md`). Questa riga esiste perché una lista che nomina i file uno
+per uno fa leggere ogni omissione come un'assenza, e la prossima rilettura non
+debba rifare la domanda.
 
 **`platform-metrics.ts` è lì per la stessa ragione, più una che si tocca con
 mano**: sono conti sui dati e non dati — «il tasso di attivazione non è un
@@ -663,10 +678,17 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **91 + 6 = 97**. Restano fuori, e sono le tre trappole del conteggio:
-le righe di `import`, la **prosa dei commenti** che le nomina, e il fatto che
-il nome lungo **contiene** quello corto, quindi un grep sul nome corto conta
-due volte le sei chiamate lunghe.
+Oggi **93 + 6 = 99** (15.08.2026). Restano fuori, e sono le tre trappole del
+conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
+nome lungo che **contiene** quello corto.
+
+**La terza trappola vale per una forma di grep sola, e va detto quale**, perché
+scritta senza questa precisazione manda a sottrarre sei chiamate che nessuno ha
+contato due volte. `assertInDev` **nudo** aggancia anche
+`assertInDevOutsidePromise`, ed è così che nacque il 114; `assertInDev(` **con la
+parentesi** non lo aggancia, perché dopo `assertInDev` c'è una `O` e non una
+parentesi. Il criterio qui sopra dice *chiamate*, cioè con la parentesi: **è già
+immune**, e chi conta con quello non deve correggere niente.
 
 **L'esclusione va per percorso perché escluderla per nome ha già mangiato un
 call site.** Il guardrail dei segnaposto di M5.e nacque in `i18n/guardrails.ts`,
@@ -1590,10 +1612,20 @@ Aziende, Utenti, Professionisti, Sessioni, Provider check-up, Analytics.
 
 Non ha valore narrativo diretto ma ha valore di prodotto: serve dopo. **Va protetto
 o marcato come dati dimostrativi**: M0 lo marca con un banner, perché chiunque abbia
-il link vede il back-office con l'elenco dei "clienti". La guardia vera è M5 e va
-scritta da zero sui nostri ruoli: il `ProtectedRoute` ereditato è stato cancellato
-in M1 insieme all'SDK, perché dipendeva dall'auth di base44 e usarlo avrebbe mandato
-al login del Builder.
+il link vede il back-office con l'elenco dei "clienti".
+
+**Le guardie di ruolo esistono dal 12.08.2026** — blocco d) di M5, scritte da zero
+sui nostri ruoli, perché il `ProtectedRoute` ereditato era stato cancellato in M1
+insieme all'SDK e usarlo avrebbe mandato al login del Builder. **Ma in demo non
+negano l'accesso a niente, per costruzione**: `RequireRole` è una porta che
+concede, e il ramo che nega si raggiunge solo con una manopola di sviluppo (§4,
+blocco d). Quindi a proteggere `/admin` davanti a chi ha il link **resta il banner
+dei dati dimostrativi**, e la riga che segue vale intera.
+
+Fino al 15.08.2026 questa voce diceva *«la guardia vera è M5 e va scritta da
+zero»*, ed era vera fino al giorno in cui è stata scritta. La stessa correzione,
+con la stessa formulazione, è in `docs/PITCH.md`: se le due divergessero il
+difetto tornerebbe da qui, perché è questa la fonte.
 
 **Finita quando:** i totali di ogni schermata si ricavano dai dati e non sono
 scritti a mano. **Soddisfatto in M3**: la schermata ereditata faceva convivere
