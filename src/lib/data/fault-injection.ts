@@ -95,9 +95,12 @@ import type { Session, UserRole } from "./types";
  * riattraversano il Proxy: a fallire è ciò che le schermate chiedono, non ciò
  * che il mock si dice da sé. I guardrail passano di qui come se non ci fosse.
  *
- * Un `Proxy` e non un involucro scritto a mano: i metodi sono 42, e
- * riscriverli sarebbe il secondo elenco che diverge dal primo — lo stesso
- * difetto che il §5.5 vieta ai numeri.
+ * Un `Proxy` e non un involucro scritto a mano: riscrivere a mano i metodi di
+ * `DataProvider` sarebbe il secondo elenco che diverge dal primo — lo stesso
+ * difetto che il §5.5 vieta ai numeri. **Quanti siano lo dice l'interfaccia**,
+ * ed è l'unico posto che può dirlo senza invecchiare: questa riga ne dichiarava
+ * 42 quando erano già 44, che è lo stesso errore che questo file racconta di
+ * aver già fatto una volta con una propria cifra.
  *
  * I messaggi sono testo per chi sviluppa e **non passano dal dizionario**,
  * come quelli dei guardrail: ciò che la schermata mostra all'utente è un'altra
