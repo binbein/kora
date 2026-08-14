@@ -79,7 +79,7 @@ function demoRequestSchema() {
     phone: z.string().trim(),
     message: z.string().trim(),
     /* Il campo è facoltativo: o è vuoto, o è un intero non negativo. Il resto
-       della regola — **vuoto vale zero** — è `toEmployeeCount` qui sotto.
+       della regola — **vuoto è assenza** — è `toEmployeeCount` qui sotto.
 
        LO SCHEMA NON TRASFORMA, ed è un limite della versione installata, non una
        scelta: `zodResolver` 4.1.3 ha un generico solo e restituisce
@@ -101,13 +101,20 @@ function demoRequestSchema() {
 type DemoFormValues = z.infer<ReturnType<typeof demoRequestSchema>>;
 
 /**
- * Vuoto vale zero, che è la regola di sempre.
+ * Vuoto è **assenza**, e si dice non passando il campo.
+ *
+ * Valeva zero, ed era uno zero-sentinella: il back-office lo ridecodificava in
+ * "—", quindi un'azienda che avesse davvero dichiarato zero dipendenti sarebbe
+ * stata indistinguibile da chi non ha risposto. `phone` e `message` attraversano
+ * già questo confine come `undefined` e tornano `null` in lettura
+ * (`docs/CONTRATTO-DATI.md` §2); questo campo era il terzo e non lo faceva.
  *
  * Nessun `Math.max` e nessun `Math.round` attorno: lo schema ha già escluso il
  * segno e i decimali, quindi difendersene qui sarebbe un ramo irraggiungibile
  * (§11). È il modo in cui questa riga dichiara di fidarsi della validazione.
  */
-const toEmployeeCount = (value: string) => (value === "" ? 0 : Number(value));
+const toEmployeeCount = (value: string) =>
+  value === "" ? undefined : Number(value);
 
 const EMPTY_FORM: DemoFormValues = {
   companyName: "",

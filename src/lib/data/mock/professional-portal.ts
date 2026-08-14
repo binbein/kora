@@ -299,8 +299,11 @@ function sameMonth(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
 }
 
-function deliveredIn(month: Date): ProfessionalSession[] {
-  return PORTAL_SESSIONS.filter(
+function deliveredIn(
+  sessions: ProfessionalSession[],
+  month: Date,
+): ProfessionalSession[] {
+  return sessions.filter(
     (session) => session.status === "completed" && sameMonth(session.start, month),
   );
 }
@@ -313,15 +316,21 @@ function deliveredIn(month: Date): ProfessionalSession[] {
  * numero fisso resterebbe fermo mentre l'agenda cambia. La settimana corrente
  * resta fuori perché non è finita, e includerla farebbe sempre sembrare il
  * regime più basso di quello che è.
+ *
+ * Riceve le sedute per la stessa ragione delle due funzioni qui sotto: era una
+ * costante di modulo calcolata su `PORTAL_SESSIONS`, quindi il regime della
+ * Dr.ssa Meier veniva dichiarato di chiunque.
  */
-export const SESSIONS_PER_WEEK = Math.round(
-  PORTAL_SESSIONS.filter(
-    (session) =>
-      session.status === "completed" &&
-      session.start >= addDays(startOfWeek(DEMO_TODAY), -28) &&
-      session.start < startOfWeek(DEMO_TODAY),
-  ).length / 4,
-);
+function sessionsPerWeek(sessions: ProfessionalSession[]): number {
+  return Math.round(
+    sessions.filter(
+      (session) =>
+        session.status === "completed" &&
+        session.start >= addDays(startOfWeek(DEMO_TODAY), -28) &&
+        session.start < startOfWeek(DEMO_TODAY),
+    ).length / 4,
+  );
+}
 
 /**
  * Riepilogo compensi di un mese.
@@ -332,14 +341,25 @@ export const SESSIONS_PER_WEEK = Math.round(
  *
  * Non produce le righe settimanali: la settimana è un raggruppamento di
  * presentazione e si costruisce dalle stesse sedute in `lib/earnings.ts`, così
- * che "le righe sommano al totale" sia un'identità e non un controllo.
+ * che "le righe sommano al totale" sia un'identità e non un controllo. **Era
+ * un'identità a metà**: le righe si costruivano dalla lista del provider e
+ * `grossChf` da `PORTAL_SESSIONS`, quindi tornavano per coincidenza.
+ *
+ * RICEVE LE SEDUTE E NON L'ID, come `entitlementFor` qui sopra e per la stessa
+ * ragione: chi chiama ha già la lista completa. Leggendo la costante di modulo
+ * questa funzione rispondeva con l'agenda della Dr.ssa Meier a **qualunque**
+ * professionista le si chiedesse — `getProfessionalEarnings("keller")`
+ * dichiarava 14 sedute per chi non ne ha nessuna, mentre
+ * `getProfessionalSessions("keller")` restituiva la lista vuota. Due metodi
+ * dello stesso contratto che si contraddicono (§5.5).
  */
 export function monthlyEarnings(
   professionalId: string,
+  sessions: ProfessionalSession[],
   feePerSession: number,
   month: Date,
 ): ProfessionalEarnings {
-  const delivered = deliveredIn(month);
+  const delivered = deliveredIn(sessions, month);
   return {
     professionalId,
     month,
@@ -349,7 +369,7 @@ export function monthlyEarnings(
       (total, session) => total + session.durationMinutes,
       0,
     ),
-    sessionsPerWeek: SESSIONS_PER_WEEK,
+    sessionsPerWeek: sessionsPerWeek(sessions),
     feePerSession,
     grossChf: delivered.length * feePerSession,
     fullCapacity: FULL_CAPACITY,
@@ -363,22 +383,32 @@ export function monthlyEarnings(
  * attesa e i precedenti sono pagati. I mesi senza sedute non compaiono: una riga
  * da CHF 0 non è un pagamento mancato, è un mese in cui non si è lavorato, e in
  * un elenco di compensi si legge come un errore.
+ *
+ * Riceve le sedute per la ragione detta su `monthlyEarnings` — qui il difetto
+ * era anche peggiore, perché l'id non lo prendeva nemmeno.
+ *
+ * **Le vuole in ordine cronologico**, perché la prima dice da dove far partire
+ * la scansione all'indietro. I due chiamanti lo garantiscono: `PORTAL_SESSIONS`
+ * nasce ordinata e `sessionsOf` riordina dopo aver aggiunto le prenotazioni.
  */
-export function payoutHistory(feePerSession: number): Payout[] {
+export function payoutHistory(
+  sessions: ProfessionalSession[],
+  feePerSession: number,
+): Payout[] {
   const payouts: Payout[] = [];
-  const oldest = PORTAL_SESSIONS[0]?.start ?? DEMO_TODAY;
+  const oldest = sessions[0]?.start ?? DEMO_TODAY;
 
   const cursor = new Date(DEMO_TODAY.getFullYear(), DEMO_TODAY.getMonth(), 1);
   while (cursor >= new Date(oldest.getFullYear(), oldest.getMonth(), 1)) {
     const month = new Date(cursor);
-    const sessions = deliveredIn(month).length;
-    if (sessions > 0) {
+    const delivered = deliveredIn(sessions, month).length;
+    if (delivered > 0) {
       const pending = sameMonth(DEMO_TODAY, month);
       payouts.push({
         month,
-        sessions,
+        sessions: delivered,
         feePerSession,
-        grossChf: sessions * feePerSession,
+        grossChf: delivered * feePerSession,
         status: pending ? "pending" : "paid",
         paidOn: pending
           ? null

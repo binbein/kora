@@ -188,10 +188,22 @@ export class MockDataProvider implements DataProvider {
   }
 
   getLatestStressByDepartment(): Promise<StressRecord[]> {
+    /*
+     * Il `?? []` è quello di `getStressHistory` qui sopra, e da solo non
+     * basterebbe: su una serie vuota l'ultimo elemento è `undefined`, quindi il
+     * buco finirebbe **dentro l'array di ritorno** e la dashboard esploderebbe
+     * una riga più in là, leggendo `measuredEmployees` di niente.
+     *
+     * Un reparto senza record esce dall'elenco invece di comparire con una riga
+     * inventata: la funzione promette l'ultimo record di ogni reparto, e senza
+     * record non c'è un ultimo record. Fabbricarne uno soppresso vorrebbe dire
+     * dichiarare un dato che il provider non ha.
+     */
     return Promise.resolve(
-      DEPARTMENTS.map((department) => {
-        const series = DEPARTMENT_STRESS_HISTORY[department.id];
-        return series[series.length - 1];
+      DEPARTMENTS.flatMap((department) => {
+        const series = DEPARTMENT_STRESS_HISTORY[department.id] ?? [];
+        const latest = series[series.length - 1];
+        return latest === undefined ? [] : [latest];
       }),
     );
   }
@@ -345,12 +357,17 @@ export class MockDataProvider implements DataProvider {
     month: Date,
   ): Promise<ProfessionalEarnings> {
     const professional = await this.requireProfessional(professionalId);
-    return monthlyEarnings(professionalId, professional.sessionFee, month);
+    return monthlyEarnings(
+      professionalId,
+      this.sessionsOf(professionalId),
+      professional.sessionFee,
+      month,
+    );
   }
 
   async getProfessionalPayouts(professionalId: string): Promise<Payout[]> {
     const professional = await this.requireProfessional(professionalId);
-    return payoutHistory(professional.sessionFee);
+    return payoutHistory(this.sessionsOf(professionalId), professional.sessionFee);
   }
 
   getSessionNote(sessionId: string): Promise<SessionNote | null> {
@@ -448,10 +465,20 @@ export class MockDataProvider implements DataProvider {
   }
 
   getAvailableSlots(professionalId: string): Promise<AppointmentSlot[]> {
+    /*
+     * Una seduta **annullata non occupa la sua fascia**: è il caso che dà un
+     * senso all'annullamento, e senza il filtro quell'orario non tornava
+     * prenotabile da nessuno.
+     *
+     * Il dataset di oggi non lo mostra — l'unica cancellazione è di due
+     * settimane fa e gli slot proponibili partono dal giorno dopo la demo — ma
+     * il difetto è nel contratto, non nella schermata, e in produzione un
+     * annullamento riguarda quasi sempre una seduta futura.
+     */
     const taken = new Set(
-      this.sessionsOf(professionalId).map((session) =>
-        session.start.getTime(),
-      ),
+      this.sessionsOf(professionalId)
+        .filter((session) => session.status !== "cancelled")
+        .map((session) => session.start.getTime()),
     );
     return Promise.resolve(
       INITIAL_SLOTS.filter(
@@ -488,9 +515,18 @@ export class MockDataProvider implements DataProvider {
      * rompe, la stessa rottura fa passare anche la verifica. Confrontare con le
      * sedute già in agenda è indipendente, e prende il caso che conta: due
      * prenotazioni sullo stesso orario, che condividono anche l'id.
+     *
+     * Salta le annullate con lo stesso criterio di `getAvailableSlots`: da
+     * quando quella fascia torna prenotabile, un guardrail che la contasse
+     * ancora come occupata accuserebbe la schermata di proporre uno slot che
+     * invece è libero per davvero.
      */
     assertInDevOutsidePromise(
-      !agenda.some((session) => session.start.getTime() === slot.start.getTime()),
+      !agenda.some(
+        (session) =>
+          session.status !== "cancelled" &&
+          session.start.getTime() === slot.start.getTime(),
+      ),
       "Prenotato un orario su cui c'è già una seduta: la schermata sta proponendo uno slot occupato.",
     );
 
@@ -600,9 +636,9 @@ export class MockDataProvider implements DataProvider {
       companyName: input.companyName,
       contactName: input.contactName,
       email: input.email,
-      employeeCount: input.employeeCount,
       // il confine normalizza: assente, vuoto e soli spazi sono la stessa cosa
       // per chi legge, e diventano `null` una volta sola, qui
+      employeeCount: input.employeeCount ?? null,
       phone: input.phone?.trim() || null,
       message: input.message?.trim() || null,
       submittedAt: DEMO_TODAY,

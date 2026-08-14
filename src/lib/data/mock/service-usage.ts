@@ -72,7 +72,15 @@ export const SERVICE_USAGE: ServiceUsageMonth[] = HISTORY_MONTHS.map(
   }),
 );
 
-/** Ordine totale sui trimestri, per confrontarli senza passare dalle date. */
+/*
+ * Ordine totale sui trimestri, per confrontarli senza passare dalle date.
+ *
+ * **Sta anche in `HRDashboard.tsx`, ed è voluto.** Condividerla vorrebbe dire
+ * spostarla, perché la regola di lint del §5.7 vieta alle schermate di importare
+ * da `lib/data/mock/`: il seam vale più di sei righe di duplicazione. Il giorno
+ * in cui una terza copia servisse, il posto è `types.ts` accanto ad
+ * `addQuarters` e `sameQuarter` — non un file nuovo.
+ */
 function quarterRank(period: Quarter): number {
   return period.year * 4 + period.quarter;
 }
