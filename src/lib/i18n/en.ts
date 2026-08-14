@@ -558,6 +558,8 @@ export const en: Dictionary = {
       capacity:
         "You hold {sessions} sessions a week. At full capacity that is {full} a week, worth {min}–{max} a month: the collaboration starts from a minimum availability of {minHours} hours a week and grows with the calendar.",
       weeks: "Weeks of the month",
+      weeksEmpty: "No sessions delivered this month.",
+      payoutsEmpty: "No payments yet.",
       weekRange: "from {from} to {to}",
       weekDetail: "{sessions} sessions · {minutes} min",
       paid: "Paid",

@@ -531,6 +531,8 @@ export const de: Dictionary = {
       capacity:
         "Sie halten {sessions} Sitzungen pro Woche. Bei vollem Pensum sind es {full} pro Woche, die {min}–{max} im Monat ergeben: die Zusammenarbeit beginnt bei einer Mindestverfügbarkeit von {minHours} Stunden pro Woche und wächst mit dem Kalender.",
       weeks: "Wochen des Monats",
+      weeksEmpty: "In diesem Monat wurden keine Sitzungen durchgeführt.",
+      payoutsEmpty: "Noch keine Zahlungen.",
       weekRange: "vom {from} bis {to}",
       weekDetail: "{sessions} Sitzungen · {minutes} Min.",
       paid: "Bezahlt",

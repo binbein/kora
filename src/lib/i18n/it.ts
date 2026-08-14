@@ -633,6 +633,11 @@ export const it = {
       capacity:
         "Tieni {sessions} sedute a settimana. A pieno regime sono {full} a settimana, che valgono {min}–{max} al mese: la collaborazione parte da una disponibilità minima di {minHours} ore a settimana e cresce con l'agenda.",
       weeks: "Settimane del mese",
+      /* Un mese senza sedute erogate non è un errore: è un mese in cui non si è
+         lavorato, e la frase lo dice invece di lasciare un totale a zero da
+         interpretare. */
+      weeksEmpty: "Nessuna seduta erogata questo mese.",
+      payoutsEmpty: "Nessun pagamento ancora.",
       /** "dal 21.09.2026 al 27.09.2026" */
       weekRange: "dal {from} al {to}",
       /** "5 sedute · 250 min" */
