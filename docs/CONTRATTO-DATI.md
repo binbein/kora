@@ -815,8 +815,8 @@ stare, per quanto, chi può esportarla e cosa succede quando il professionista
 lascia la rete. Va quindi presa **prima** del codice che la implementa, ed è per
 questo che sta qui e non fra le cose da fare in fondo.
 
-Il §5.5 di questo documento — la nota che non esce mai verso l'azienda — è una
-garanzia di forma, non una risposta a questa domanda: dice dove il dato **non**
+La garanzia del §3 — la nota che non esce mai verso l'azienda, e a impedirlo è la
+forma del dominio — non è una risposta a questa domanda: dice dove il dato **non**
 va, non chi ne risponde.
 
 ### 8.3 Ciclo di vita dell'azienda e del dipendente
