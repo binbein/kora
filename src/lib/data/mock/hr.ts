@@ -184,13 +184,23 @@ function toReport(snapshot: RoiSnapshot): HrReport {
   return {
     period: snapshot.period,
     adoptionPercent: adoptionPercent(COMPANY, snapshot),
+    /*
+     * I due denominatori sono guardati come fa `adoptionPercent` due righe
+     * sopra, e per lo stesso motivo: una divisione per zero stampa "∞%" in una
+     * dashboard. Il monte annuo è zero se il piano non dà sedute, gli iscritti
+     * di un trimestre lo sono prima che qualcuno attivi l'account — cioè al
+     * primo trimestre di un cliente nuovo, che in produzione è il caso
+     * ordinario e non un caso di scuola.
+     */
     // sessioni consumate sul monte annuo: il 12% del §8, non una percentuale nuova
-    usagePercent: Math.round(
-      (snapshot.sessionsUsed / ANNUAL_SESSION_ALLOWANCE) * 100,
-    ),
-    checkupCompletionPercent: Math.round(
-      (usage.checkup / snapshot.enrolledEmployees) * 100,
-    ),
+    usagePercent:
+      ANNUAL_SESSION_ALLOWANCE === 0
+        ? 0
+        : Math.round((snapshot.sessionsUsed / ANNUAL_SESSION_ALLOWANCE) * 100),
+    checkupCompletionPercent:
+      snapshot.enrolledEmployees === 0
+        ? 0
+        : Math.round((usage.checkup / snapshot.enrolledEmployees) * 100),
     stressTrendPoints: stressTrendFor(snapshot.period),
     savedChf: snapshot.savedChf,
     avoidedAbsenceDays: snapshot.avoidedAbsenceDays,
