@@ -1,3 +1,5 @@
+import type { Dictionary } from "./index";
+
 /*
  * Il dizionario inglese (CLAUDE.md §4, blocco e di M5, tranche 3 — l'ultima).
  *
@@ -60,8 +62,31 @@
  * LA REVISIONE MADRELINGUA RESTA DA FARE, ed è a verbale per tutte e tre le
  * lingue: questo file rende l'inglese verificabile e presentabile, non
  * ratificato.
+ *
+ * DA PORTARE A QUELLA REVISIONE, nominate qui perché non si perdano nel diff.
+ * Non sono errori: sono scelte su cui **non siamo il giudice giusto**.
+ *
+ *   1. `employee.home.greeting` — `Hello {name}`. "Buongiorno" copre tutta la
+ *      giornata e "Good morning" no: è lo stesso inciampo del tedesco, e la
+ *      resa che non mente sull'ora è questa. Se in un registro caldo si dica
+ *      piuttosto `Hi` è una scelta di tono.
+ *   2. **LPD → FADP**, e la legge per esteso *Federal Act on Data Protection*.
+ *      È il nome inglese della stessa legge, non una sigla inventata, ma
+ *      compare in sei stringhe fra landing, footer, privacy HR e richiesta
+ *      demo: se l'inglese di casa preferisse tenere `LPD`, si cambia lì.
+ *   3. **`company` e `organisation` per lo stesso soggetto**: il copy
+ *      commerciale dice `company`, le promesse di privacy dicono
+ *      `organisation`. In italiano è "azienda" in entrambi i casi, quindi la
+ *      distinzione è nostra e va confermata.
+ *   4. `hr.quarterLabel` — `Quarter 3 2026` invece dell'ordinale, perché
+ *      l'inglese dice `1st`, `2nd`, `3rd`, `4th` e il selettore li mostra tutti
+ *      e quattro. È lo stesso esito del francese con un'altra grammatica; la
+ *      revisione può preferire `Q3 2026`.
+ *   5. **L'inglese britannico ha delle scelte di casa**: `speciality` contro
+ *      `specialty`, `anonymised`, `organisation`. Sono coerenti in tutto il
+ *      file, e cambiarle è un trova-e-sostituisci, non una riscrittura.
  */
-export const en = {
+export const en: Dictionary = {
   common: {
     appName: "Kora",
     none: "—",
@@ -1070,4 +1095,196 @@ export const en = {
       successRoi: "In the meantime, calculate the return",
     },
   },
-} as const;
+
+  /*
+   * Il back-office (§10.E). Registro strumento: parla a chi gestisce la
+   * piattaforma.
+   */
+  admin: {
+    portalName: "Internal admin",
+    nav: {
+      companies: "Companies",
+      users: "Users",
+      professionals: "Professionals",
+      sessions: "Sessions",
+      checkupProviders: "Check-up providers",
+      analytics: "Analytics",
+    },
+    demoBanner:
+      "Internal back office · demonstration data. The companies, people and centres in this section are fictional and do not describe real clients.",
+
+    extractNote:
+      "Extract of {shown} rows out of {total}. Full search arrives with the move to production.",
+
+    companies: {
+      empty: "No client company.",
+      title: "Client companies",
+      kpiActive: "Active clients",
+      kpiEmployees: "Employees covered",
+      kpiRevenue: "Annual revenue",
+      kpiRevenueHint: "On active clients",
+      kpiEnrolled: "Enrolled",
+      kpiEnrolledHint: "{enrolled} of {covered} employees covered",
+
+      colName: "Company",
+      colIndustry: "Sector",
+      colEmployees: "Employees",
+      colPlan: "Plan",
+      colCity: "Head office",
+      colClientSince: "Client since",
+      colRevenue: "Revenue/year",
+      colStatus: "Status",
+
+      statusActive: "Active",
+      /* Non "inactive": su una schermata che un investitore può vedere si
+         leggerebbe come abbandono, mentre il caso è un contratto firmato da
+         poco e non ancora avviato (§8). */
+      statusOnboarding: "Onboarding",
+      revenuePotential: "{amount} potential",
+    },
+
+    industry: {
+      finance: "Finance",
+      pharma: "Pharmaceutical",
+      legal: "Legal",
+      tech: "Technology",
+      insurance: "Insurance",
+    },
+
+    users: {
+      title: "Users",
+      searchPlaceholder: "Search by name or company",
+      kpiTotal: "Enrolled users",
+      kpiTotalHint: "Across all clients in the portfolio",
+      kpiActive: "Active",
+      kpiWithAssessment: "With assessment",
+      kpiAverageScore: "Average health profile",
+      kpiOnExtract: "On the {shown} rows shown",
+
+      colName: "Name",
+      colEmail: "Email",
+      colCompany: "Company",
+      colRole: "Role",
+      colScore: "Health profile",
+      colStatus: "Status",
+      colJoined: "Joined",
+
+      statusActive: "Active",
+      statusInactive: "Inactive",
+      empty: "No user matches the search.",
+    },
+
+    role: {
+      employee: "Employee",
+      hr: "HR",
+      professional: "Professional",
+      admin: "Admin",
+    },
+
+    professionals: {
+      title: "Professionals",
+      empty: "No professional in the network.",
+      kpiTotal: "In the network",
+      kpiBookable: "Bookable",
+      kpiVetting: "In vetting",
+      /* "Sedute di carriera" ha in inglese un aggettivo che le altre due lingue
+         non avevano: `lifetime` dice il totale di sempre senza evocare una
+         storia d'impiego, quindi il sottotitolo qui conferma invece di
+         supplire. */
+      kpiSessions: "Lifetime sessions",
+      kpiSessionsHint: "Sum across all professionals in the network",
+
+      colName: "Name",
+      colQualification: "Qualification",
+      colSpecialty: "Speciality",
+      colLanguages: "Languages",
+      colFee: "Fee",
+      colSessions: "Sessions",
+      colDocuments: "Documents",
+      colMandate: "Mandate",
+      colStatus: "Status",
+
+      statusBookable: "Bookable",
+      statusVetting: "In vetting",
+      vettingNote:
+        "A professional is bookable when the documents are verified and the mandate is signed. Until then, they do not appear in booking.",
+    },
+
+    sessions: {
+      title: "Sessions",
+      subtitle: "Calendar of {professional}",
+      kpiTotal: "Sessions",
+      kpiDelivered: "Delivered",
+      kpiScheduled: "Scheduled",
+      kpiVolume: "Fees earned",
+      kpiVolumeHint: "Delivered sessions only",
+
+      colPatient: "Patient",
+      colProfessional: "Professional",
+      colDate: "Date",
+      colType: "Type",
+      colFee: "Fee",
+      colStatus: "Status",
+
+      statusScheduled: "Scheduled",
+      statusCompleted: "Delivered",
+      statusCancelled: "Cancelled",
+      privacyNote: "Only the initials of patients are shown, never the name.",
+    },
+
+    checkupProviders: {
+      empty: "No centre in the network.",
+      title: "Check-up providers",
+      kpiActive: "Active centres",
+      kpiCities: "Cities covered",
+      kpiBookings: "Check-ups booked",
+      kpiBookingsHint: "Over the twelve months",
+      kpiPending: "Under agreement",
+
+      colName: "Centre",
+      colCity: "City",
+      colAddress: "Address",
+      colDistance: "Distance",
+      colStatus: "Status",
+
+      statusActive: "Active",
+      statusPending: "Under agreement",
+      distance: "{km} km",
+      pendingNote:
+        "A centre under agreement cannot be booked from the employee portal.",
+    },
+
+    analytics: {
+      title: "Platform analytics",
+      empty: "No platform data for the current month.",
+      kpiRevenue: "Revenue this month",
+      kpiRevenueHint: "{amount} annualised",
+      kpiSessions: "Sessions this month",
+      kpiEnrolled: "Enrolled users",
+      kpiActivation: "Activation",
+      kpiActivationHint: "{enrolled} of {covered} employees covered",
+
+      revenueChart: "Monthly recurring revenue",
+      sessionsChart: "Platform sessions per month",
+      planMixChart: "Plan mix",
+      activationChart: "Activation",
+      serviceMixChart: "Sessions by service, twelve months",
+
+      planMixOne: "1 company",
+      planMixMany: "{count} companies",
+      planMixEntry: "{plan}: {count}",
+    },
+
+    demoRequests: {
+      title: "Demo requests",
+      empty:
+        "No request. Requests sent from the public form appear here.",
+      colCompany: "Company",
+      colContact: "Contact",
+      colEmail: "Email",
+      colPhone: "Phone",
+      colEmployees: "Employees",
+      colReceived: "Received",
+    },
+  },
+};
