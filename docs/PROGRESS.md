@@ -3180,8 +3180,10 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   che l'Essenziale non ha. Verificato alla cifra.
 *(Erano in sospeso anche l'emoji nel saluto della home dipendente, decisa il
 07.08.2026 — si toglie — e la **palette con la CTA verde piena**, decisa il
-10.08.2026 — le CTA passano su `primary`. Entrambe fra le decisioni chiuse; la
-seconda resta da eseguire, che è un'altra cosa dall'essere in sospeso.)*
+10.08.2026 — le CTA passano su `primary`. Entrambe fra le decisioni chiuse, ed
+entrambe **eseguite**: la palette dalla passata dedicata dello stesso 10.08.2026,
+13 punti su 9 file. ~~La seconda resta da eseguire~~ era vero per le poche ore
+che separano la riunione dalla passata.)*
 
 ## Migliorie rimandate al refinement
 
