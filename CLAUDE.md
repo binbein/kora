@@ -663,9 +663,14 @@ erano 91. Il file è stato rinominato `i18n/placeholders.ts` (la sezione M5.e di
 `raiseOutsideCurrentStack`, che è la terza primitiva del file. Il motivo non è
 il nome della funzione: è che la frase qui sopra parla di call site che **non
 sanno in che modo girano**, e `prefetch.ts` il modo lo legge da sé — importa
-`GUARDRAIL_MODE` e ci apre sopra il proprio controllo. **Le due esclusioni sono
-queste due, nominate**: la terza primitiva `raiseOutsideCurrentStack` e il suo
-unico chiamante `prefetch.ts`.
+`GUARDRAIL_MODE` e ci apre sopra il proprio controllo.
+
+**Le esclusioni sono nominate, e sono queste due.** La prima è la terza
+primitiva, `raiseOutsideCurrentStack`: le sue chiamate non entrano nel conto **da
+nessun file**, e oggi la chiamano `prefetch.ts` e `fault-injection.ts`. La
+seconda è `prefetch.ts` come categoria a parte, per la ragione qui sopra — che
+resta scritta anche se le sue chiamate sarebbero già fuori per la prima, perché
+dice **perché** quel file è diverso e non solo che non si conta.
 
 **Il numero si muove, il criterio no**, e una rilevazione che dia una cifra
 diversa da quella scritta qui va confrontata **prima col criterio e poi col
