@@ -1668,11 +1668,14 @@ diversa da quella posta.
   (`people.ts`), non una stringa del dizionario, quindi in tedesco resta
   italiano. Correggerlo è una modifica al contratto dati — un titolo che segue
   il locale — quindi è scope.
-- **Due rese da pesare in revisione**: `Sitzungen gesamt` per "sedute di
-  carriera", perché il tedesco non ha un composto corto che non suoni come
-  storia d'impiego, e la distinzione si sposta tutta nel sottotitolo; e
-  `In Vertragsprüfung` per "in convenzionamento", che non ha equivalente in una
-  parola.
+- **Le scelte da portare alla revisione nativa sono nominate in testa a
+  `de.ts`**, non lasciate al diff (founder, 14.08.2026). Sono quattro, e non
+  sono errori: sono punti su cui **non siamo il giudice giusto** — `Sitzungen
+  gesamt` per "sedute di carriera", `In Vertragsprüfung` per "in
+  convenzionamento", `Guten Tag` contro `Hallo` sul saluto caldo, e le forme
+  femminili del portale professionista. La promessa generica di rilettura c'era
+  già; l'elenco la rende eseguibile, perché una revisione senza domande diventa
+  una lettura.
 
 ### Refinement fra le milestone
 

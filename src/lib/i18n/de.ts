@@ -46,6 +46,29 @@ import type { Dictionary } from "./index";
  * LA REVISIONE MADRELINGUA RESTA DA FARE, ed è a verbale: questo file rende il
  * tedesco verificabile e presentabile, non ratificato. Prima di un pitch in
  * tedesco va riletto da chi la lingua ce l'ha.
+ *
+ * DA PORTARE A QUELLA REVISIONE, nominate qui perché non si perdano nel diff.
+ * Non sono errori: sono scelte su cui **non siamo il giudice giusto**, e la
+ * revisione nativa è l'unico posto in cui la domanda ha una risposta vera
+ * (founder, 14.08.2026).
+ *
+ *   1. `admin.professionals.kpiSessions` — "sedute di carriera" è reso
+ *      `Sitzungen gesamt`. L'italiano ha coniato un'espressione per separare
+ *      questo totale da altri due conteggi su schermate vicine; il tedesco non
+ *      ha un composto corto che non suoni come storia d'impiego, quindi la
+ *      distinzione si sposta tutta nel sottotitolo sotto la KPI.
+ *   2. `admin.checkupProviders.statusPending` — "in convenzionamento" è reso
+ *      `In Vertragsprüfung`. Nomina un istituto sanitario svizzero che in
+ *      tedesco non ha un equivalente in una parola: la resa dice cosa lo stato
+ *      **è**, cioè che il contratto è in esame.
+ *   3. `employee.home.greeting` — `Guten Tag {name}` è la resa fedele di
+ *      "Buongiorno", che copre tutta la giornata mentre `Guten Morgen` no. In
+ *      un registro caldo un madrelingua potrebbe preferire `Hallo`: è una
+ *      scelta di tono, non di significato.
+ *   4. Le forme femminili di `professional.*` — `Patientinnen`,
+ *      `Patientin {initials}`. L'italiano le usa perché il portale è quello
+ *      della Dr.ssa Meier; il tedesco costringe a scegliere, e il maschile
+ *      generico avrebbe cambiato in silenzio di chi parla la demo.
  */
 export const de: Dictionary = {
   common: {
