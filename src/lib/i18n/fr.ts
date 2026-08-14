@@ -1,3 +1,5 @@
+import type { Dictionary } from "./index";
+
 /*
  * Il dizionario francese (CLAUDE.md §4, blocco e di M5, tranche 2).
  *
@@ -51,8 +53,34 @@
  * LA REVISIONE MADRELINGUA RESTA DA FARE, ed è a verbale: questo file rende il
  * francese verificabile e presentabile, non ratificato. Prima di un pitch in
  * francese va riletto da chi la lingua ce l'ha.
+ *
+ * DA PORTARE A QUELLA REVISIONE, nominate qui perché non si perdano nel diff.
+ * Non sono errori: sono scelte su cui **non siamo il giudice giusto**.
+ *
+ *   1. `cancellationReason.*`, `professional.patients.*` — le forme sono al
+ *      **maschile generico**, come in italiano e **al contrario del tedesco**,
+ *      che qui ha scelto il femminile. Dei pazienti si conoscono le sole
+ *      iniziali e il genere non sta nel dominio: una forma marcata direbbe a
+ *      schermo qualcosa che il dataset non dice. Se la revisione preferisse
+ *      l'epicena, in francese costa una riformulazione per ogni riga.
+ *   2. "dipendenti" è reso **collaborateurs** ovunque, che è il termine delle
+ *      risorse umane in Svizzera romanda; `employés` è più letterale e meno
+ *      idiomatico. È la parola più ripetuta del file, quindi cambiarla dopo
+ *      costa in proporzione.
+ *   3. `hr.quarterLabel` — `Trimestre 3 2026` invece dell'ordinale. Il francese
+ *      dice `1er` e `3e`, quindi una stringa sola non li rende entrambi e il
+ *      selettore mostra anche il primo trimestre (vedi il commento su `hr`). La
+ *      revisione può preferire `T3 2026`; quello che non si può fare è
+ *      l'ordinale con un suffisso solo.
+ *   4. `admin.professionals.kpiSessions` — "sedute di carriera" è reso `Total
+ *      des séances`, e la distinzione dagli altri due conteggi si sposta nel
+ *      sottotitolo. È lo stesso punto che il tedesco ha portato alla sua
+ *      revisione con `Sitzungen gesamt`.
+ *   5. Lo **spazio prima di `?`** è l'unificatore U+00A0; la regola stretta
+ *      vuole l'espace fine U+202F. Davanti ai due punti U+00A0 è corretto in
+ *      entrambe le scuole.
  */
-export const fr = {
+export const fr: Dictionary = {
   common: {
     appName: "Kora",
     none: "—",
@@ -1084,4 +1112,192 @@ export const fr = {
       successRoi: "En attendant, calculez le retour",
     },
   },
-} as const;
+
+  /*
+   * Il back-office (§10.E). Registro strumento, **vous**: parla a chi gestisce
+   * la piattaforma.
+   */
+  admin: {
+    portalName: "Admin interne",
+    nav: {
+      companies: "Entreprises",
+      users: "Utilisateurs",
+      professionals: "Professionnels",
+      sessions: "Séances",
+      checkupProviders: "Prestataires check-up",
+      analytics: "Analytics",
+    },
+    demoBanner:
+      "Back-office interne · données de démonstration. Les entreprises, les personnes et les structures de cette section sont fictives et ne décrivent pas des clients réels.",
+
+    extractNote:
+      "Extrait de {shown} lignes sur {total}. La recherche complète arrive avec la mise en production.",
+
+    companies: {
+      empty: "Aucune entreprise cliente.",
+      title: "Entreprises clientes",
+      kpiActive: "Clients actifs",
+      kpiEmployees: "Collaborateurs couverts",
+      kpiRevenue: "Revenu annuel",
+      kpiRevenueHint: "Sur les clients actifs",
+      kpiEnrolled: "Inscrits",
+      kpiEnrolledHint: "{enrolled} sur {covered} collaborateurs couverts",
+
+      colName: "Entreprise",
+      colIndustry: "Secteur",
+      colEmployees: "Collaborateurs",
+      colPlan: "Plan",
+      colCity: "Siège",
+      colClientSince: "Client depuis",
+      colRevenue: "Revenu/an",
+      colStatus: "Statut",
+
+      statusActive: "Active",
+      statusOnboarding: "En activation",
+      revenuePotential: "{amount} potentiel",
+    },
+
+    industry: {
+      finance: "Finance",
+      pharma: "Pharmaceutique",
+      legal: "Juridique",
+      tech: "Technologie",
+      insurance: "Assurances",
+    },
+
+    users: {
+      title: "Utilisateurs",
+      searchPlaceholder: "Rechercher par nom ou entreprise",
+      kpiTotal: "Utilisateurs inscrits",
+      kpiTotalHint: "Sur tous les clients en portefeuille",
+      kpiActive: "Actifs",
+      kpiWithAssessment: "Avec assessment",
+      kpiAverageScore: "Profil santé moyen",
+      kpiOnExtract: "Sur les {shown} lignes affichées",
+
+      colName: "Nom",
+      colEmail: "E-mail",
+      colCompany: "Entreprise",
+      colRole: "Rôle",
+      colScore: "Profil santé",
+      colStatus: "Statut",
+      colJoined: "Inscrit",
+
+      statusActive: "Actif",
+      statusInactive: "Inactif",
+      empty: "Aucun utilisateur ne correspond à la recherche.",
+    },
+
+    role: {
+      employee: "Collaborateur",
+      hr: "RH",
+      professional: "Professionnel",
+      admin: "Admin",
+    },
+
+    professionals: {
+      title: "Professionnels",
+      empty: "Aucun professionnel dans le réseau.",
+      kpiTotal: "Dans le réseau",
+      kpiBookable: "Réservables",
+      kpiVetting: "En vérification",
+      /* "Sedute di carriera" non ha un composto corto in francese che non
+         suoni come storia d'impiego: la distinzione dagli altri due conteggi
+         si sposta tutta nel sottotitolo, come in tedesco. */
+      kpiSessions: "Total des séances",
+      kpiSessionsHint: "Somme de tous les professionnels du réseau",
+
+      colName: "Nom",
+      colQualification: "Qualification",
+      colSpecialty: "Spécialité",
+      colLanguages: "Langues",
+      colFee: "Rémunération",
+      colSessions: "Séances",
+      colDocuments: "Documents",
+      colMandate: "Mandat",
+      colStatus: "Statut",
+
+      statusBookable: "Réservable",
+      statusVetting: "En vérification",
+      vettingNote:
+        "Un professionnel est réservable quand ses documents sont vérifiés et son mandat signé. Tant que ce n'est pas le cas, il n'apparaît pas dans la réservation.",
+    },
+
+    sessions: {
+      title: "Séances",
+      subtitle: "Agenda de {professional}",
+      kpiTotal: "Séances",
+      kpiDelivered: "Effectuées",
+      kpiScheduled: "Prévues",
+      kpiVolume: "Rémunérations acquises",
+      kpiVolumeHint: "Uniquement les séances effectuées",
+
+      colPatient: "Patient",
+      colProfessional: "Professionnel",
+      colDate: "Date",
+      colType: "Type",
+      colFee: "Rémunération",
+      colStatus: "Statut",
+
+      statusScheduled: "Prévue",
+      statusCompleted: "Effectuée",
+      statusCancelled: "Annulée",
+      privacyNote: "Des patients ne sortent que les initiales, jamais le nom.",
+    },
+
+    checkupProviders: {
+      empty: "Aucune structure dans le réseau.",
+      title: "Prestataires check-up",
+      kpiActive: "Structures actives",
+      kpiCities: "Villes couvertes",
+      kpiBookings: "Check-up réservés",
+      kpiBookingsHint: "Sur les douze mois",
+      kpiPending: "En conventionnement",
+
+      colName: "Structure",
+      colCity: "Ville",
+      colAddress: "Adresse",
+      colDistance: "Distance",
+      colStatus: "Statut",
+
+      statusActive: "Active",
+      statusPending: "En conventionnement",
+      distance: "{km} km",
+      pendingNote:
+        "Une structure en conventionnement n'est pas réservable depuis le portail collaborateur.",
+    },
+
+    analytics: {
+      title: "Analytics plateforme",
+      empty: "Aucune donnée de plateforme pour le mois en cours.",
+      kpiRevenue: "Revenu du mois",
+      kpiRevenueHint: "{amount} annualisés",
+      kpiSessions: "Séances du mois",
+      kpiEnrolled: "Utilisateurs inscrits",
+      kpiActivation: "Activation",
+      kpiActivationHint: "{enrolled} sur {covered} collaborateurs couverts",
+
+      revenueChart: "Revenu récurrent mensuel",
+      sessionsChart: "Séances de plateforme par mois",
+      planMixChart: "Mix des plans",
+      activationChart: "Activation",
+      serviceMixChart: "Séances par service, douze mois",
+
+      planMixOne: "1 entreprise",
+      planMixMany: "{count} entreprises",
+      planMixEntry: "{plan} : {count}",
+    },
+
+    demoRequests: {
+      title: "Demandes de démo",
+      empty:
+        "Aucune demande. Les demandes envoyées depuis le formulaire public apparaissent ici.",
+      colCompany: "Entreprise",
+      colContact: "Personne de contact",
+      colEmail: "E-mail",
+      colPhone: "Téléphone",
+      colEmployees: "Collaborateurs",
+      colReceived: "Reçue",
+    },
+  },
+};
