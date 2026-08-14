@@ -326,6 +326,43 @@ CHF 35 · Plus 10, extra CHF 28 · Executive 16, extra CHF 22** (`CLAUDE.md` §9
 > ciò che la frase voleva dire. Il divario fra incluse ed erogate regge da sé, e
 > il suo numero è l'unico dei tre che l'investitore ha già davanti agli occhi.
 
+### "Quindi sulle sedute extra ci rimettete?"
+
+È il seguito immediato della risposta sul margine: dire che il co-payment è un
+deterrente e non un ricavo invita la domanda, dove la formulazione vecchia non la
+invitava. È il prezzo della correzione, e si paga rispondendo — non schivando.
+
+**Sì, per unità, ed è voluto.** Il co-payment è tarato per **scoraggiare l'uso
+oltre il tetto**, non per coprirne il costo. Un prezzo a copertura vorrebbe dire
+chiedere al dipendente la tariffa del mercato privato — i **CHF 70–80** che
+prende il professionista (`CLAUDE.md` §9) — e a quel punto il tetto non sarebbe
+più un tetto: la seduta oltre il cap smetterebbe di essere una scelta consapevole
+per diventare una barriera economica.
+
+**Il volume è marginale, e si vede a schermo.** Nell'elenco pazienti del portale
+professionista **due dei sei pazienti** sono sopra il cap. È la stessa prova
+della risposta precedente letta dall'altro lato: lì dice che il tetto è reale,
+qui dice quanti lo superano — e sono due righe da contare, non una cifra da
+prendere per buona.
+
+**A proteggere l'economia è il cap, non il prezzo dell'extra.** Il monte è annuo e
+rigido, e il co-payment è ciò che tiene il consumo dentro il monte senza che la
+piattaforma debba dire di no a nessuno. Se il co-payment sparisse, a cambiare non
+sarebbe il margine ma **la frizione** — ed è esattamente per questo che il numero
+della risposta sul margine è il 12%, e non i CHF 28.
+
+**Il tetto scala col piano al contrario del co-payment**: Essenziale 6 sedute con
+extra a CHF 35, Executive 16 con extra a CHF 22 (`CLAUDE.md` §9). Chi ha più
+sedute incluse paga **meno** l'extra, perché al tetto ci arriva avendone già
+usate di più. Detto così è coerenza del modello, non una stranezza da
+giustificare.
+
+**Se la domanda arriva a *"e se uno ne facesse trenta?"***: oggi non c'è nessun
+tetto al numero di sedute oltre cap prenotabili, il caso non si è mai presentato,
+e il monitoraggio del consumo è parte di ciò che i pilot devono produrre — la
+stessa linea della risposta qui sotto. **Non descrivere una difesa che il
+prodotto non ha.**
+
 ### "E se ne usassero il 40%?"
 
 È il seguito naturale della domanda sul margine e arriva quasi sempre, perché il
