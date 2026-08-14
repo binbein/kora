@@ -16,8 +16,9 @@
  * COSA CAMBIA DAVVERO FRA I QUATTRO LOCALE, misurato e non ripetuto a memoria:
  * fr-CH mette la **valuta dopo** il numero (`14'200 CHF`) e usa la **virgola**
  * come separatore decimale (`2,35`); gli altri tre tengono `CHF 14'200` e il
- * punto. L'apostrofo delle migliaia e lo spazio unificatore U+00A0 fra valuta
- * e cifre valgono in tutti e quattro.
+ * punto. Lo spazio unificatore U+00A0 fra valuta e cifre vale in tutti e
+ * quattro, e l'apostrofo delle migliaia pure — ma in francese **glielo imponiamo
+ * noi**: vedi `groupWithApostrophes`.
  */
 
 import { getLocale } from "@/lib/i18n";
@@ -36,6 +37,50 @@ import type { Locale } from "@/lib/locale";
  */
 const GROUPING = { useGrouping: "always" } as const;
 
+/*
+ * L'APOSTROFO DELLE MIGLIAIA ANCHE IN FRANCESE, E GLIELO IMPONIAMO NOI
+ * (founder, 14.08.2026).
+ *
+ * ICU dà a `fr-CH` lo **spazio unificatore stretto** U+202F come separatore di
+ * gruppo: senza questa funzione il francese scriverebbe `14 200 CHF` dove le
+ * altre tre lingue scrivono `14'200`. Non è un difetto di ICU — è la
+ * convenzione tipografica francese — ed è il motivo per cui il `CLAUDE.md` §2.7
+ * ha smesso di attribuire l'apostrofo a CLDR: fino a M5.e lo dichiarava come
+ * fatto di "tutte le varianti svizzere", ed era vero per due lingue su tre.
+ *
+ * PERCHÉ SI FORZA, e perché **non è la stessa domanda del decimale**. La
+ * virgola di `2,35` è correttezza: per chi legge in francese è l'unica forma
+ * giusta, e infatti resta. Il raggruppamento è **registro**, e `14'200` è la
+ * convenzione finanziaria svizzera in tutte le lingue nazionali — la scrivono
+ * così i bilanci e i testi federali in francese.
+ *
+ * Due ragioni in più, che valgono per questa demo in particolare:
+ *
+ *   - **i numeri di ancoraggio del pitch tengono una sola forma visiva nelle
+ *     quattro lingue.** CHF 14'200, CHF 1'289'500, 1'200 sessioni sono i numeri
+ *     che l'investitore ha letto sul Business Plan: cambiarne la sagoma
+ *     cambiando lingua li fa sembrare altri numeri;
+ *   - **non si introduce U+202F.** Sarebbe il quinto carattere invisibile di
+ *     questo codice — dopo lo spazio unificatore di `formatCHF`, il meno
+ *     tipografico, l'apostrofo stesso e lo spazio francese davanti a `:` — e
+ *     l'unico che avremmo scelto noi. Ogni `grep` scritto con lo spazio da
+ *     tastiera sarebbe fallito su un numero che a schermo sembra normale.
+ *
+ * SI PASSA DA `formatToParts` E NON DA UNA SOSTITUZIONE SUL TESTO: il pezzo da
+ * cambiare è quello che `Intl` dichiara `group`, quindi lo spazio unificatore
+ * fra cifre e valuta — che è un altro pezzo, e va lasciato dov'è — non si tocca
+ * per sbaglio.
+ */
+function groupWithApostrophes(
+  formatter: Intl.NumberFormat,
+  value: number,
+): string {
+  return formatter
+    .formatToParts(value)
+    .map((part) => (part.type === "group" ? "'" : part.value))
+    .join("");
+}
+
 /**
  * Importi in franchi. Di default senza decimali: le cifre della demo sono
  * grandezze di bilancio (CHF 14'200), non prezzi al centesimo.
@@ -48,13 +93,16 @@ export function formatCHF(
   options: { decimals?: number } = {},
 ): string {
   const decimals = options.decimals ?? 0;
-  return new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency: "CHF",
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-    ...GROUPING,
-  }).format(amount);
+  return groupWithApostrophes(
+    new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: "CHF",
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+      ...GROUPING,
+    }),
+    amount,
+  );
 }
 
 /** Numeri senza valuta: 120 dipendenti, 142 sessioni, 31 giorni. */
@@ -64,11 +112,14 @@ export function formatNumber(
   options: { decimals?: number } = {},
 ): string {
   const decimals = options.decimals ?? 0;
-  return new Intl.NumberFormat(locale, {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-    ...GROUPING,
-  }).format(value);
+  return groupWithApostrophes(
+    new Intl.NumberFormat(locale, {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+      ...GROUPING,
+    }),
+    value,
+  );
 }
 
 /**
