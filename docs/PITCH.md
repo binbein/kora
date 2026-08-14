@@ -230,6 +230,23 @@ CHF 35 · Plus 10, extra CHF 28 · Executive 16, extra CHF 22** (`CLAUDE.md` §9
 > ciò che la frase voleva dire. Il divario fra incluse ed erogate regge da sé, e
 > il suo numero è l'unico dei tre che l'investitore ha già davanti agli occhi.
 
+### "E se ne usassero il 40%?"
+
+È il seguito naturale della domanda sul margine e arriva quasi sempre, perché il
+12% è il numero su cui poggia la risposta precedente.
+
+**Non lo sappiamo ancora, e validare la curva di utilizzo reale è la metrica
+numero uno dei pilot.** È il primo dato che un pilot serve a produrre, e finché
+non esiste qualunque cifra sarebbe inventata sul momento (`CLAUDE.md` §2.4).
+
+Detta così è più forte di una proiezione: dice che sappiamo qual è la variabile
+da cui dipende il modello e che l'abbiamo messa in cima a ciò che andiamo a
+misurare — invece di rispondere con un numero che il primo pilot smentirebbe.
+
+**Non improvvisare il margine lordo**, che è la domanda dopo: oggi non c'è una
+risposta pronta, e costruirne una a voce significa consegnare all'investitore una
+cifra che nessun documento sostiene.
+
 ### "Chi controlla i professionisti? E le strutture?"
 
 Il vetting è **a schermo**, non a parole, e in due punti:
