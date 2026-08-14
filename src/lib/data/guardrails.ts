@@ -7,18 +7,15 @@
  * qualunque schermata possa mostrare il numero sbagliato.
  *
  * TRE MODI, E LA DECISIONE STA SOLO QUI. Ogni call site chiama `assertInDev` e
- * non sa in quale modo gira: sono 96, e ripetere la condizione in ognuno
- * significherebbe poterla sbagliare in 96 posti.
+ * non sa in quale modo gira, e ripetere la condizione in ognuno significherebbe
+ * poterla sbagliare in altrettanti posti.
  *
- * COME SI CONTANO I 96, perché la prossima rilevazione non produca un terzo
- * numero: sono le **chiamate** a `assertInDev(` e `assertInDevOutsidePromise(`
- * sotto `src/`, escluso questo file che le definisce — oggi 90 + 6. Non si
- * contano le righe di `import`, non si conta la prosa dei commenti che le
- * nomina, e si tiene presente che il nome lungo **contiene** quello corto.
- * `prefetch.ts` sta fuori benché chiami `raiseOutsideCurrentStack`: legge
- * `GUARDRAIL_MODE` da sé, quindi non è un call site che ignora il modo. Il
- * 114 dichiarato fino all'11.08.2026 era il grep grezzo — 90 + 6 + 16 import
- * + 2 righe di prosa — cioè un numero senza criterio (`CLAUDE.md` §5.6).
+ * QUANTI SIANO, E COME SI CONTANO, STA NEL `CLAUDE.md` §5.6 E SOLO LÌ. Questa
+ * testata ne dichiarava il numero e lo ha sbagliato due volte — 114 prima,
+ * 96 poi — perché una cifra ripetuta in due file invecchia nel più
+ * dimenticato dei due. È la stessa ragione per cui `fault-injection.ts` ha
+ * smesso di contare i metodi del provider, e per cui il §5.6 è scritto sul
+ * criterio invece che sul valore.
  *
  *   sviluppo (`vite`)                    → **lancia**
  *   build demo (`vite build --mode demo`) → **logga** con `console.error`
