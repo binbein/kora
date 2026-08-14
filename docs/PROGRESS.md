@@ -479,7 +479,9 @@ Operations; le date di fatturazione ferme ad aprile su una demo di settembre.
   aggregati trimestrali. Il titolo lo dice. Se un giorno dovrà seguirlo, serve un
   metodo nuovo sul provider.
 - **L'elenco dipendenti è un estratto di otto righe su 120**, dichiarato a
-  schermo e in `CONTRATTO-DATI.md` §7. La paginazione è M5.
+  schermo e in `CONTRATTO-DATI.md` §7. ~~La paginazione è M5.~~ → **non era di
+  M5**, e nessuno dei sei blocchi la contiene: è lavoro dell'MVP, dichiarato in
+  `CONTRATTO-DATI.md` §8.7 dalla passata del 15.08.2026.
 
 #### L'area dipendente (§10.B)
 
