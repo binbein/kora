@@ -1,5 +1,6 @@
 import { DEFAULT_LOCALE, type Locale } from "@/lib/locale";
 import { de } from "./de";
+import { fr } from "./fr";
 import { assertPlaceholdersMatch } from "./placeholders";
 import { it } from "./it";
 
@@ -42,6 +43,7 @@ export type Dictionary = Translated<typeof it>;
 const DICTIONARIES: Partial<Record<Locale, Dictionary>> = {
   "it-CH": it,
   "de-CH": de,
+  "fr-CH": fr,
 };
 
 /*
