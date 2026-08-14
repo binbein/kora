@@ -617,25 +617,48 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 96 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 96 posti.
+call site sono 97 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 97 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
-**Il criterio con cui i 96 si contano**, perché una rilevazione futura non
+**Il criterio con cui i call site si contano**, perché una rilevazione futura non
 produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
-`assertInDevOutsidePromise(` sotto `src/`, escluso `guardrails.ts` che le
-definisce. Oggi 90 + 6. Restano fuori, e sono le tre trappole del conteggio:
+`assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
+cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
+Oggi **91 + 6 = 97**. Restano fuori, e sono le tre trappole del conteggio:
 le righe di `import`, la **prosa dei commenti** che le nomina, e il fatto che
 il nome lungo **contiene** quello corto, quindi un grep sul nome corto conta
 due volte le sei chiamate lunghe.
 
-**`prefetch.ts` è una categoria a parte e non entra nei 96**, benché chiami
+**L'esclusione va per percorso perché escluderla per nome ha già mangiato un
+call site.** Il guardrail dei segnaposto di M5.e nacque in `i18n/guardrails.ts`,
+e un criterio che salta *`guardrails.ts`* lo saltava insieme al file che
+definisce le primitive: il conto continuava a dire 90 + 6 mentre le chiamate
+erano 91. Il file è stato rinominato `i18n/placeholders.ts` (la sezione M5.e di
+`docs/PROGRESS.md` racconta come è emerso).
+
+**`prefetch.ts` è una categoria a parte e non entra nel conto**, benché chiami
 `raiseOutsideCurrentStack`, che è la terza primitiva del file. Il motivo non è
 il nome della funzione: è che la frase qui sopra parla di call site che **non
 sanno in che modo girano**, e `prefetch.ts` il modo lo legge da sé — importa
-`GUARDRAIL_MODE` e ci apre sopra il proprio controllo. Contarlo darebbe 97, e
-**un 97 futuro va riconosciuto come errore di criterio, non come correzione.**
+`GUARDRAIL_MODE` e ci apre sopra il proprio controllo. **Le due esclusioni sono
+queste due, nominate**: la terza primitiva `raiseOutsideCurrentStack` e il suo
+unico chiamante `prefetch.ts`.
+
+**Il numero si muove, il criterio no**, e una rilevazione che dia una cifra
+diversa da quella scritta qui va confrontata **prima col criterio e poi col
+numero**: se il criterio è stato applicato per intero, a essere invecchiata è la
+riga, e si aggiorna con la data. Un guardrail nuovo è un call site nuovo, ed è
+esattamente ciò che è successo passando da 96 a 97 con la tranche tedesca.
+
+**Perché questa forma e non quella di prima.** Fino al 14.08.2026 la riga diceva
+*"un 97 futuro va riconosciuto come errore di criterio, non come correzione"*:
+blindava **un valore**, il 97 è arrivato in un giorno per la ragione più
+ordinaria che ci sia, e la riga avrebbe fatto respingere come errore la misura
+giusta. **Le regole si scrivono sui criteri, non sui valori che i criteri
+producono** — riscriverla a 98 sarebbe stato ripetere lo stesso sbaglio con una
+cifra più alta.
 
 **Da dove veniva il 114** che questo file ha dichiarato fino all'11.08.2026: era
 `grep -c "assertInDev"` grezzo, cioè 90 chiamate + 6 chiamate lunghe + 16 righe
@@ -644,7 +667,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 96 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 97 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 
