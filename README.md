@@ -34,6 +34,49 @@ Non serve nessun file `.env`: non c'è backend, e non deve essercene uno
 | `npm run lint:fix` | ESLint con le correzioni automatiche |
 | `npm run typecheck` | `tsc` — deve uscire a zero |
 
+## I tre modi, e cosa fanno i guardrail
+
+I guardrail sono controlli sui disallineamenti che a schermo non si vedono — un
+trimestre fuori dal dataset, due schermate che dicono lo stesso numero in modo
+diverso. Girano mentre il dataset si inizializza, e **si comportano in tre modi
+diversi a seconda di come parte l'applicazione**:
+
+| | | |
+|---|---|---|
+| `npm run dev` | **lanciano** | pagina bianca: impossibile da non vedere |
+| `npm run build:demo` | **loggano** con `console.error` | la schermata si disegna lo stesso |
+| `npm run build` | **tacciono** | spariscono dal bundle insieme ai messaggi |
+
+È il motivo per cui `build:demo` esiste: un build di produzione è muto, quindi
+una manopola girata male non si vedrebbe più da nessuna parte — ed è di
+produzione anche il build che si porta al pitch.
+
+**Un log della build demo non autorizza a proseguire**: dopo il log
+l'inizializzazione continua, quindi le schermate si disegnano con i numeri che il
+guardrail ha appena dichiarato sbagliati. Le ragioni della scelta, il criterio con
+cui i call site si contano e la regola operativa stanno nel `CLAUDE.md` §5.6.
+
+## Le manopole di sviluppo
+
+Tre parametri di query fanno succedere cose che il dataset, da solo, non produce
+mai — il mock risolve sempre e non fallisce mai. Chi lavora sulle schermate non ha
+altro modo di vedere l'errore, il vuoto e l'accesso negato:
+
+| | |
+|---|---|
+| `?fail=metodo` | quel metodo del provider fallisce; `?fail=metodo:2` fallisce le prime due chiamate e poi riesce |
+| `?empty=metodo` | quel metodo risponde vuoto invece che con i dati |
+| `?role=ruolo` | fissa la sessione su quel ruolo, così la guardia di rotta nega |
+
+Si combinano (`?fail=…&empty=…`) e si accumulano separandoli con la virgola.
+
+**Esistono solo in sviluppo.** Il decoratore che le implementa
+(`src/lib/data/fault-injection.ts`) è montato solo quando i guardrail lanciano, e
+sparisce da entrambe le altre build: in `build:demo` e in `build` quei parametri
+non fanno niente. Le cautele d'uso — `?empty` puntato su un metodo che il
+contratto non dichiara vuotabile fabbrica uno stato che i tipi vietano — stanno
+nella testata di quel file.
+
 ## Struttura
 
 `src/pages/` per area (`public`, `employee`, `hr`, `professional`, `admin`),
