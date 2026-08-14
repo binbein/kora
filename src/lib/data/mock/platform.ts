@@ -143,7 +143,34 @@ function includesService(
   return true;
 }
 
-const REFERENCE = CLIENT_COMPANIES[0];
+/*
+ * L'azienda da cui si scalano tutte le curve, cercata **per id**.
+ *
+ * Era `CLIENT_COMPANIES[0]`, e il guardrail in fondo al file verificava che
+ * `demo-sa` fosse nell'elenco — non che fosse in prima posizione. Riordinare
+ * l'array avrebbe cambiato la base di ogni curva di piattaforma in silenzio,
+ * senza che nessun controllo se ne accorgesse. Cercandola per id la dipendenza
+ * posizionale sparisce, e con lei la cosa da sorvegliare.
+ *
+ * L'asserzione sta **qui e non in fondo**, perché `REFERENCE` viene
+ * dereferenziato poche righe sotto: un controllo a valle lascerebbe l'assenza
+ * arrivare al calcolo, e in produzione — dove i guardrail tacciono (§5.6) —
+ * diventerebbe un `TypeError` lontano dal punto in cui si capisce. Il `throw`
+ * accanto è lo stesso idioma di `requireProfessional` in `provider.ts`: il
+ * guardrail spiega in sviluppo, il lancio ferma ovunque nel posto giusto.
+ */
+const reference = CLIENT_COMPANIES.find((company) => company.id === "demo-sa");
+
+assertInDev(
+  reference !== undefined,
+  "Demo SA non è nel portafoglio clienti: è l'azienda da cui si scalano tutte le curve di piattaforma.",
+);
+
+if (reference === undefined) {
+  throw new Error("Nessun cliente con id \"demo-sa\" nel portafoglio.");
+}
+
+const REFERENCE = reference;
 
 const SERVICE_KINDS: AppointmentKind[] = [
   "psychologist",
