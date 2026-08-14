@@ -10,11 +10,22 @@ finzione costruita ad arte (`CLAUDE.md` §8 e §9): servono a raccontare una sto
 in trenta minuti, non a vincolare l'API. Dove una scelta del dataset ha
 conseguenze sul contratto, è detto esplicitamente.
 
+**Come si leggono i rimandi**, perché qui se ne incrociano di due documenti:
+`§N` da solo è **una sezione di questo documento**, che ne ha otto e nessuna
+sottosezione numerata; i rimandi a `CLAUDE.md` portano **sempre il nome del
+file**.
+
+La regola era applicata a metà e si scioglieva per esclusione, perché i numeri
+alti non potevano che essere della costituzione. **Il §8 di questo documento
+l'ha resa viva**, e c'è una ragione che vale più di quella: questo file **nasce
+nel repository del backend** (`CLAUDE.md` §3, §5.7), dove `CLAUDE.md` potrebbe
+non esserci — lì un `§11` non si risolve per esclusione né in nessun altro modo.
+
 ## 1. La forma
 
 ```
 src/lib/data/
-  types.ts     ← le entità: coprono tutto il §10
+  types.ts     ← le entità: coprono tutto il §10 di `CLAUDE.md`
   provider.ts  ← l'interfaccia: ogni metodo restituisce una Promise
   index.ts     ← una riga che sceglie l'implementazione
   mock/        ← oggi. Si cancella il giorno del passaggio
@@ -132,9 +143,9 @@ sbagliare costa di più — è il motivo per cui in M2 arrivò `saveSessionNote`
 tabella del §4.
 
 Questa regola sostituisce quella più stretta con cui M2 era partita ("un metodo
-nasce con un chiamante"): con quella, tutto il dataset di §8 e §9 sarebbe rimasto
+nasce con un chiamante"): con quella, tutto il dataset di `CLAUDE.md` §8 e §9 sarebbe rimasto
 irraggiungibile e questo documento non avrebbe descritto niente. **Va letta prima
-di applicare il §11 a `provider.ts`**: i metodi senza chiamante che ci trovate non
+di applicare il §11 di `CLAUDE.md` a `provider.ts`**: i metodi senza chiamante che ci trovate non
 sono dimenticanze.
 
 ## 3. Le entità
@@ -153,7 +164,8 @@ documento. Qui stanno solo gli invarianti che il codice non può esprimere.
 - **`Plan.hrDashboard` e `Plan.freeIntroInterview` sono obbligatori di
   proposito**, ed è la riga da leggere prima di renderli opzionali per simmetria
   con i vicini: sono slot di valore, non campi che al caso non pertengono. Tutti e
-  tre i piani hanno una dashboard HR — il §9 la trascrive per ognuno — quindi non
+  tre i piani hanno una dashboard HR — il §9 di `CLAUDE.md` la trascrive per
+  ognuno — quindi non
   esiste il caso "il contratto commerciale non la prevede", e il campo è
   un'enumerazione di livelli, non una cadenza. Il colloquio conoscitivo è un
   booleano perché la domanda ha senso su tutti e tre e su due la risposta è "no":
@@ -281,7 +293,7 @@ resterebbe oltre il tetto per sempre.
 `SessionEntitlement` avrà quindi bisogno di un periodo, come `CheckupEligibility`
 ce l'ha già — è la stessa domanda, *da quando ricomincio a contare*, e lì è
 risolta. Il campo non esiste oggi perché nessuna schermata lo leggerebbe, e un
-campo che nessuno legge è ciò che il §11 vieta.
+campo che nessuno legge è ciò che il §11 di `CLAUDE.md` vieta.
 
 **Il conteggio autorevole è quello centrale, sul paziente.** Il portale del
 dipendente conta le sedute su **tutti** gli psicologi; quello del professionista
@@ -326,7 +338,7 @@ risposto, esito — non in una seconda entità.
 `Plan.virtualDoctorConsultsPerYear` esiste — l'Essenziale ne dà 3 all'anno — e
 **nessuna schermata lo legge**, perché la demo è sul Plus, che li dà illimitati:
 un controllo scritto oggi sarebbe logica per un caso che nessun percorso può
-mostrare, cioè il ramo irraggiungibile che il §11 vieta.
+mostrare, cioè il ramo irraggiungibile che il §11 di `CLAUDE.md` vieta.
 
 Ne discende che il conteggio esiste come dato e non come regola: in produzione il
 tetto va applicato dal server — è lui a dover rifiutare il quarto consulto di chi
@@ -553,8 +565,9 @@ non l'avrebbe resa più vera — l'avrebbe solo resa più difficile da corregger
 
 Il record si salvava comunque nello stato del provider, che vive in memoria: una
 richiesta compilata davanti a un investitore è ancora lì navigando su `/admin`
-(`CLAUDE.md` §10). E non ha semi — il §8 non contiene richieste demo, quindi
-l'elenco parte vuoto invece di aprirsi su cinque righe inventate (§2.4).
+(`CLAUDE.md` §10). E non ha semi — il §8 di `CLAUDE.md` non contiene richieste
+demo, quindi l'elenco parte vuoto invece di aprirsi su cinque righe inventate
+(`CLAUDE.md` §2.4).
 
 **Una prenotazione non fa salire `used`.** Il diritto alle sedute conta le
 erogate (§3) e la seduta nasce `scheduled`: a muoversi è la parte in programma.
@@ -618,7 +631,7 @@ dominio, non come vincolo di forma. Il contratto è nostro.
 
 **Il totale sulla fattura.** `Invoice` porta organico e prezzo unitario, non il
 totale: sono due numeri che dicono la stessa cosa e non devono poter divergere
-(§5.5). **In produzione il totale diventerà un campo** il giorno in cui una
+(`CLAUDE.md` §5.5). **In produzione il totale diventerà un campo** il giorno in cui una
 fattura avrà rettifiche, crediti o un prezzo cambiato a metà mese — cioè quando
 smetterà di essere una moltiplicazione.
 
@@ -656,7 +669,7 @@ gli altri (§2). Due metodi:
 back-office mostra accanto a un utente; ora è anche ciò con cui le guardie
 decidono. Non sono stati separati in due tipi perché il ruolo di una persona
 non cambia natura a seconda di chi lo guarda, e due enumerazioni da tenere
-allineate a mano sono il difetto che il §5.5 vieta ai numeri.
+allineate a mano sono il difetto che il §5.5 di `CLAUDE.md` vieta ai numeri.
 
 **Cosa il backend deve sapere, e non si vede dai tipi.** Nella demo la guardia
 è **una porta che concede**: entrare in un portale assegna il ruolo che quel
@@ -683,7 +696,7 @@ entra in una risposta. L'implementazione HTTP dovrà accettarlo e probabilmente
 paginare, e il client dovrà smettere di filtrare in memoria — il che ricade sul
 calendario e sul riepilogo compensi, che oggi condividono una fetch sola. Il
 parametro non è nell'interfaccia oggi: dichiararlo senza chiamanti non lo
-renderebbe più vero, e sarebbe un'opzione che nessuno passa (§11).
+renderebbe più vero, e sarebbe un'opzione che nessuno passa (`CLAUDE.md` §11).
 
 ## 7. Semplificazioni del dataset demo, non del contratto
 
@@ -710,7 +723,8 @@ invece di restare assunzioni implicite:
   contratto insieme al §1.1 di `CLAUDE.md`.
 - **Il check rapido non alimenta gli aggregati.** `submitRapidCheck` salva la
   risposta e la rilegge, e basta: le dodici curve della dashboard sono la storia
-  curata del §8, e un tocco fatto davanti a un investitore non deve poterla
+  curata del `CLAUDE.md` §8, e un tocco fatto davanti a un investitore non deve
+  poterla
   muovere. **In produzione è esattamente il contrario** — quella scrittura è
   ciò che alimenta le serie di `DepartmentMonth`, e questa è la semplificazione
   che salta per prima il giorno del passaggio.
@@ -740,8 +754,9 @@ invece di restare assunzioni implicite:
   contraddizione visibile — il totale della Dr.ssa Meier non può essere minore
   delle sedute erogate della sua agenda — ma gli altri quattro non hanno
   un'agenda dietro cui rispondere, quindi la loro somma è una cifra dichiarata
-  come i conteggi di §8. **Ratificati dai founder il 10.08.2026** e trascritti in
-  `CLAUDE.md` §8, dove le cifre ammesse vivono (§2.4): restano dichiarati, e chi
+  come i conteggi di `CLAUDE.md` §8. **Ratificati dai founder il 10.08.2026** e
+  trascritti in `CLAUDE.md` §8, dove le cifre ammesse vivono (`CLAUDE.md` §2.4):
+  restano dichiarati, e chi
   legge questo documento non deve prenderli per derivati. In produzione il totale
   si conta dalle sedute, come tutto il resto.
 - **Le sessioni degli altri clienti sono la curva di Demo SA scalata.** È il
@@ -757,7 +772,8 @@ invece di restare assunzioni implicite:
   guardrail se ne accorgerebbe, perché il dato non è contraddittorio — è solo
   incompleto, ed è il tipo di difetto che a schermo si vede meno.
 
-  Nel dataset demo il caso non si presenta per costruzione: il §8 descrive un
+  Nel dataset demo il caso non si presenta per costruzione: il §8 di `CLAUDE.md`
+  descrive un
   alert solo, sulle Vendite al decimo mese, e tre guardrail lo fissano. **In
   produzione l'assunzione salta subito** — due reparti sotto pressione nello
   stesso trimestre è il caso normale, non l'eccezione — quindi il contratto
