@@ -852,6 +852,13 @@ export const it = {
       /** "3° trimestre 2026 · Demo SA" */
       subtitle: "{quarter} · {company}",
       download: "Scarica PDF",
+      /* Dice **che cosa non è successo** — il file non è stato creato — come le
+         altre frasi d'errore delle scritture (M5.b). Il gesto per ritentare è
+         il pulsante sopra, quindi la frase non ne offre un altro. */
+      downloadError: {
+        title: "Il PDF non è stato creato",
+        body: "Riprova a scaricarlo.",
+      },
       metricsTitle: "Metriche chiave",
       adoption: "Tasso di attivazione",
       usage: "Sessioni sul monte annuo",

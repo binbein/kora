@@ -730,6 +730,10 @@ export const en: Dictionary = {
       title: "Company health report",
       subtitle: "{quarter} · {company}",
       download: "Download PDF",
+      downloadError: {
+        title: "The PDF was not created",
+        body: "Try the download again.",
+      },
       metricsTitle: "Key metrics",
       adoption: "Activation rate",
       usage: "Sessions of the annual volume",

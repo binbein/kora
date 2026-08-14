@@ -741,6 +741,10 @@ export const fr: Dictionary = {
       title: "Rapport santé d'entreprise",
       subtitle: "{quarter} · {company}",
       download: "Télécharger le PDF",
+      downloadError: {
+        title: "Le PDF n'a pas été créé",
+        body: "Réessayez le téléchargement.",
+      },
       metricsTitle: "Indicateurs clés",
       adoption: "Taux d'activation",
       usage: "Séances sur le volume annuel",

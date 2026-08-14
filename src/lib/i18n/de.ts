@@ -680,6 +680,10 @@ export const de: Dictionary = {
       title: "Bericht zur Unternehmensgesundheit",
       subtitle: "{quarter} · {company}",
       download: "PDF herunterladen",
+      downloadError: {
+        title: "Das PDF wurde nicht erstellt",
+        body: "Versuchen Sie den Download erneut.",
+      },
       metricsTitle: "Kennzahlen",
       adoption: "Aktivierungsrate",
       usage: "Sitzungen am Jahreskontingent",
