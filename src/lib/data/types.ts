@@ -604,10 +604,14 @@ export type PatientSummary = {
    * successiva se il cap è esaurito.
    *
    * È lo stesso tipo che porta il contatore del dipendente, e non per comodità:
-   * sono lo stesso fatto visto dai due lati del marketplace. Il cap annuale con
-   * co-payment è il meccanismo su cui il Business Plan regge il margine (§9), e
-   * un paziente che lo supera senza che la schermata lo dica contraddice il
-   * documento che l'investitore ha in mano.
+   * sono lo stesso fatto visto dai due lati del marketplace.
+   *
+   * **Il margine viene dal gap fra sessioni incluse ed erogate** — Business Plan
+   * §5, riquadro «Principio fondamentale» — e il cap è ciò che lo tiene: il
+   * co-payment è il **deterrente** che trattiene il consumo dentro il cap, non
+   * una fonte di ricavo (BP §9: margine «—», funzione di fidelizzazione). Un
+   * paziente che supera il cap senza che la schermata lo dica contraddice quindi
+   * il documento che l'investitore ha in mano.
    */
   entitlement: SessionEntitlement;
 };

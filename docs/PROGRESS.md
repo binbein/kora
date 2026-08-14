@@ -263,8 +263,13 @@ backend.
   massimo 60 sedute l'anno: un'agenda da cinque sedute settimanali descrive molti
   percorsi brevi che si avvicendano, non sei percorsi lunghi. Da qui tre percorsi
   conclusi, che stanno fuori dall'elenco pazienti e dentro lo storico compensi, e
-  due pazienti sopra il cap che mostrano il co-payment — il meccanismo su cui il
-  Business Plan regge il margine, messo a schermo.
+  due pazienti sopra il cap che mostrano il co-payment — il **deterrente** che
+  tiene il consumo dentro il cap, messo a schermo. *(Questa riga diceva «il
+  meccanismo su cui il Business Plan regge il margine»: era una parafrasi
+  sbagliata fin dall'inizio. Il §5 del BP, riquadro «Principio fondamentale», dà
+  come fonte principale del margine **il gap fra sessioni incluse ed erogate**, e
+  il §9 mette il co-payment fra gli stream con margine «—» e funzione di
+  fidelizzazione. Corretta il 15.08.2026.)*
 - **L'appuntamento di Laura è un record solo**, proiettato da due lati. Il
   contatore del dipendente è il conto delle sue sedute erogate, non un numero a
   parte: in M3 la prenotazione lo farà salire come conseguenza.
@@ -2154,7 +2159,9 @@ suo mestiere: né regole né storia, ma lo script operativo della presentazione.
 Consolida ciò che era sparso — la scheda in primo piano, il divieto di
 ricaricare, un clic per PDF — e porta le risposte pronte alle quattro domande
 che il pitch riceve: da dove viene il dato di stress, perché il ROI è 2.35:1 e
-non 19.5:1, il co-payment come meccanismo di margine, Keller e Basalto come
+non 19.5:1, il co-payment come deterrente che tiene il consumo dentro il cap —
+la riga diceva «meccanismo di margine», ed è la stessa parafrasi sbagliata
+corretta il 15.08.2026 — Keller e Basalto come
 vetting a schermo. Le cifre sono verificate contro §8 e §9 alla cifra.
 
 #### La passata di palette (10.08.2026)
