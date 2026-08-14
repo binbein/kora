@@ -300,7 +300,7 @@ export default function HRReport() {
               <Badge variant="outline" className="mt-0.5 flex-shrink-0 tabular-nums">
                 {formatNumber(index + 1)}
               </Badge>
-              {t.hr.report.recommendation[key as keyof typeof t.hr.report.recommendation]}
+              {t.hr.report.recommendation[key]}
             </li>
           ))}
         </ul>

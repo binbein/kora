@@ -232,9 +232,7 @@ export default function EmployeeHome() {
    * check-up l'ha già fatto a marzo.
    */
   const weakest = plan.areas[0];
-  // le chiavi degli obiettivi sono un insieme aperto sul contratto, quindi la
-  // mappa si legge come tale invece di far finta che siano cinque note
-  const goals: Record<string, string> = t.employee.aiPlan.goal;
+  const goals = t.employee.aiPlan.goal;
 
   return (
     <div className="space-y-6">

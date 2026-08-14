@@ -169,11 +169,7 @@ export default function PrintableReport({
             <span className="tabular-nums font-semibold text-foreground">
               {formatNumber(index + 1)}.
             </span>
-            {
-              t.hr.report.recommendation[
-                key as keyof typeof t.hr.report.recommendation
-              ]
-            }
+            {t.hr.report.recommendation[key]}
           </li>
         ))}
       </ol>

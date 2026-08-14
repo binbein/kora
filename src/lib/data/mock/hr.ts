@@ -143,7 +143,7 @@ export const INVOICES: Invoice[] = Array.from(
  * perché una frase in italiano dentro il dataset è testo cablato quanto una
  * dentro un componente (§2.7).
  */
-const RECOMMENDATION_KEYS = [
+const RECOMMENDATION_KEYS: HrReport["recommendationKeys"] = [
   "salesWorkshop",
   "checkupPush",
   "coachAwareness",
