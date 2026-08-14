@@ -435,4 +435,130 @@ export const en = {
       },
     },
   },
+
+  /*
+   * Portale professionista (§10.D). Registro strumento: forme nominali, terza
+   * persona, **niente contrazioni**.
+   *
+   * Il titolo `Dr.ssa` resta un campo del dataset (`people.ts`) e non si
+   * traduce, come nelle altre due lingue. Dei pazienti si conoscono le sole
+   * iniziali, e in inglese la questione del genere non si pone: `patient` non
+   * lo porta.
+   */
+  professional: {
+    portalName: "Professionals portal",
+
+    nav: {
+      calendar: "Calendar",
+      sessions: "Sessions",
+      patients: "Patients",
+      payments: "Payments",
+      profile: "Profile",
+    },
+
+    feePerSession: "{fee} per session",
+
+    calendar: {
+      title: "Calendar",
+      week: "Week from {from} to {to}",
+      sessionsThisWeek: "Sessions this week",
+      nextSession: "Next session",
+      sessionsThisMonth: "Scheduled this month",
+      activePatients: "Active patients",
+      noNextSession: "None",
+      nextSessionValue: "{weekday} {time}",
+      legendBooked: "Booked",
+      legendFree: "Free",
+      legendPast: "Past",
+      today: "today",
+      empty: "No session this week.",
+    },
+
+    sessions: {
+      title: "Sessions",
+      upcoming: "Scheduled ({n})",
+      completed: "Delivered ({n})",
+      cancelled: "Cancelled ({n})",
+      start: "Start",
+      addNote: "Add note",
+      editNote: "Note",
+      emptyUpcoming: "No session scheduled.",
+      emptyCompleted: "No session delivered.",
+      emptyCancelled: "No session cancelled.",
+      note: {
+        title: "Private note — {patient}",
+        notes: "Session notes",
+        notesPlaceholder: "Private clinical notes",
+        nextGoal: "Next goal",
+        nextGoalPlaceholder: "Goal for the next session",
+        followUp: "Suggested follow-up",
+        followUpPlaceholder: "Next session recommended in",
+        save: "Save note",
+        saving: "Saving",
+        error: {
+          title: "Note not saved",
+          body: "The text is still here: try again.",
+        },
+        saved: "Note saved",
+        privacy:
+          "Notes are private and are not shared with the patient's organisation.",
+      },
+    },
+
+    patients: {
+      title: "Patients",
+      count: "{n} active patients",
+      privacy:
+        "Names are abbreviated for privacy. Clinical notes are visible to you only.",
+      name: "Patient {initials}",
+      delivered: "{n} sessions delivered",
+      next: "Next: {date}",
+      noNext: "No session scheduled",
+      new: "New",
+      withinCap: "{used} of {total} included",
+      overCap: "{total} included + {extra} at {price}",
+      capReached: "Included sessions used up",
+    },
+
+    payments: {
+      title: "Payments",
+      sessionsThisMonth: "Sessions delivered",
+      feePerSession: "Fee per session",
+      monthTotal: "Month total",
+      yearTotal: "Year total",
+      monthInProgress: "{month} · in progress",
+      model:
+        "Payment per session delivered. Kora issues the invoice and pays by the 5th of the following month.",
+      capacityTitle: "Your workload",
+      capacity:
+        "You hold {sessions} sessions a week. At full capacity that is {full} a week, worth {min}–{max} a month: the collaboration starts from a minimum availability of {minHours} hours a week and grows with the calendar.",
+      weeks: "Weeks of the month",
+      weekRange: "from {from} to {to}",
+      weekDetail: "{sessions} sessions · {minutes} min",
+      paid: "Paid",
+      pending: "Pending",
+      paidOn: "on {date}",
+      sessionsTimesFee: "{sessions} sessions × {fee}",
+      empty: "No fee earned yet.",
+    },
+
+    profile: {
+      title: "Professional profile",
+      empty: "No profile to show.",
+      languages: "Languages",
+      specialty: "Specialisation",
+      collaboration: "Collaboration",
+      fee: "Fee per session",
+      documents: "Documents",
+      verified: "Verified",
+      mandate: "Mandate contract",
+      signed: "Signed",
+      totalSessions: "{n} sessions delivered",
+      /* "(Auftrag)" resta, come in francese: l'italiano nomina apposta
+         l'istituto del Codice delle obbligazioni, e il mandato inglese non è
+         la stessa figura giuridica. */
+      mandateNote:
+        "Collaboration under a mandate contract (Auftrag). No employment tie: Kora brings the patients and handles bookings, video and payments.",
+    },
+  },
 } as const;
