@@ -294,7 +294,7 @@ export const fr: Dictionary = {
         overCapWithPrice:
           "Les séances comprises sont épuisées : celle-ci coûte {price}",
         overCapWithoutPrice:
-          "Tu as épuisé les séances comprises dans ton plan pour ce service.",
+          "Tu as épuisé les séances de ce service comprises dans ton plan pour cette année. Pour en obtenir d'autres, parles-en à ton interlocuteur RH.",
         confirm: "Confirmer la réservation",
         error: {
           title: "La réservation n'a pas abouti",
@@ -565,6 +565,8 @@ export const fr: Dictionary = {
       capacity:
         "Vous tenez {sessions} séances par semaine. À plein régime, ce sont {full} par semaine, qui valent {min}–{max} par mois : la collaboration démarre avec une disponibilité minimale de {minHours} heures par semaine et croît avec l'agenda.",
       weeks: "Semaines du mois",
+      weeksEmpty: "Aucune séance effectuée ce mois-ci.",
+      payoutsEmpty: "Aucun paiement pour le moment.",
       weekRange: "du {from} au {to}",
       weekDetail: "{sessions} séances · {minutes} min",
       paid: "Payé",
@@ -741,6 +743,10 @@ export const fr: Dictionary = {
       title: "Rapport santé d'entreprise",
       subtitle: "{quarter} · {company}",
       download: "Télécharger le PDF",
+      downloadError: {
+        title: "Le PDF n'a pas été créé",
+        body: "Réessayez le téléchargement.",
+      },
       metricsTitle: "Indicateurs clés",
       adoption: "Taux d'activation",
       usage: "Séances sur le volume annuel",

@@ -57,8 +57,8 @@ export default function PianoAI() {
    * a livello di modulo (M5.e): lì `t` sarebbe valutato una volta sola, e con
    * il cambio lingua resterebbero in italiano in silenzio.
    */
-  const goals: Record<string, string> = t.employee.aiPlan.goal;
-  const tips: Record<string, string> = t.employee.aiPlan.tip;
+  const goals = t.employee.aiPlan.goal;
+  const tips = t.employee.aiPlan.tip;
 
   /* I tre casi (M5.b), registro consumer. */
   const page = loadState([planQuery]);

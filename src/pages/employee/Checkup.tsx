@@ -18,7 +18,7 @@ import {
 } from "@/lib/data/queries";
 import { formatDate, formatNumber } from "@/lib/format";
 import { interpolate, t } from "@/lib/i18n";
-import type { CheckupProvider } from "@/lib/data/types";
+import type { CheckupProvider, CheckupReport } from "@/lib/data/types";
 
 /*
  * Il check-up (CLAUDE.md §10.B).
@@ -43,10 +43,8 @@ import type { CheckupProvider } from "@/lib/data/types";
  * una volta sola, e con il cambio lingua la spiegazione resterebbe in italiano
  * in silenzio.
  */
-function explanationOf(key: string): string {
-  const explanations: Record<string, string> =
-    t.employee.checkup.report.explanation;
-  return explanations[key];
+function explanationOf(key: CheckupReport["explanationKey"]): string {
+  return t.employee.checkup.report.explanation[key];
 }
 
 /**

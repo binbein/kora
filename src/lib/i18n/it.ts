@@ -286,9 +286,14 @@ export const it = {
          * Il §9 non dà un prezzo oltre il cap per il coaching, quindi non se ne
          * offre una a pagamento: si dice che le incluse sono finite e si ferma
          * la conferma, invece di far credere che sia gratis.
+         *
+         * LA SECONDA FRASE È LA VIA D'USCITA, e non è cortesia: senza prezzo la
+         * conferma resta spenta per sempre, quindi la schermata sarebbe un
+         * vicolo cieco (§10.B). Rimanda all'HR, che è l'unico gesto che esiste
+         * davvero — nessuna azione inventata, nessun prezzo che il §9 non dà.
          */
         overCapWithoutPrice:
-          "Hai finito le sessioni incluse nel piano per questo servizio.",
+          "Hai finito le sessioni di questo servizio incluse nel piano per quest'anno. Per averne altre, parlane con il tuo referente HR.",
         confirm: "Conferma la prenotazione",
         /* La prenotazione non è riuscita. La frase dice **che cosa non è
            successo** — lo slot è ancora libero — perché il dubbio vero, dopo
@@ -628,6 +633,11 @@ export const it = {
       capacity:
         "Tieni {sessions} sedute a settimana. A pieno regime sono {full} a settimana, che valgono {min}–{max} al mese: la collaborazione parte da una disponibilità minima di {minHours} ore a settimana e cresce con l'agenda.",
       weeks: "Settimane del mese",
+      /* Un mese senza sedute erogate non è un errore: è un mese in cui non si è
+         lavorato, e la frase lo dice invece di lasciare un totale a zero da
+         interpretare. */
+      weeksEmpty: "Nessuna seduta erogata questo mese.",
+      payoutsEmpty: "Nessun pagamento ancora.",
       /** "dal 21.09.2026 al 27.09.2026" */
       weekRange: "dal {from} al {to}",
       /** "5 sedute · 250 min" */
@@ -847,6 +857,13 @@ export const it = {
       /** "3° trimestre 2026 · Demo SA" */
       subtitle: "{quarter} · {company}",
       download: "Scarica PDF",
+      /* Dice **che cosa non è successo** — il file non è stato creato — come le
+         altre frasi d'errore delle scritture (M5.b). Il gesto per ritentare è
+         il pulsante sopra, quindi la frase non ne offre un altro. */
+      downloadError: {
+        title: "Il PDF non è stato creato",
+        body: "Riprova a scaricarlo.",
+      },
       metricsTitle: "Metriche chiave",
       adoption: "Tasso di attivazione",
       usage: "Sessioni sul monte annuo",

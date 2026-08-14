@@ -131,6 +131,29 @@ export function useProfessionalPatients(professionalId: string | undefined) {
   });
 }
 
+/**
+ * La nota privata di una seduta, per riaprirla dove la si era lasciata.
+ *
+ * È **il primo lettore di `getSessionNote`**, che il contratto esponeva senza
+ * chiamanti (§2). La chiave sta sotto la radice del professionista, quindi
+ * `saveSessionNote` — che invalida la radice — se la porta dietro: è la ragione
+ * per cui il commento di `query-keys.ts` la mise lì, e questo è il momento in
+ * cui quella scelta si dimostra invece di restare una precauzione.
+ */
+export function useSessionNote(
+  professionalId: string | undefined,
+  sessionId: string | undefined,
+) {
+  return useQuery({
+    queryKey: queryKeys.professional.sessionNote(
+      professionalId ?? "",
+      sessionId ?? "",
+    ),
+    queryFn: () => dataProvider.getSessionNote(sessionId ?? ""),
+    enabled: professionalId !== undefined && sessionId !== undefined,
+  });
+}
+
 export function useProfessionalEarnings(
   professionalId: string | undefined,
   month: Date | undefined,

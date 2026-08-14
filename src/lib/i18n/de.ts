@@ -271,7 +271,7 @@ export const de: Dictionary = {
         overCapWithPrice:
           "Die enthaltenen Sitzungen sind aufgebraucht: diese kostet {price}",
         overCapWithoutPrice:
-          "Du hast die in deinem Plan enthaltenen Sitzungen für diesen Dienst aufgebraucht.",
+          "Du hast die in deinem Plan enthaltenen Sitzungen für diesen Dienst in diesem Jahr aufgebraucht. Für weitere sprich mit deiner HR-Ansprechperson.",
         confirm: "Buchung bestätigen",
         error: {
           title: "Die Buchung hat nicht geklappt",
@@ -531,6 +531,8 @@ export const de: Dictionary = {
       capacity:
         "Sie halten {sessions} Sitzungen pro Woche. Bei vollem Pensum sind es {full} pro Woche, die {min}–{max} im Monat ergeben: die Zusammenarbeit beginnt bei einer Mindestverfügbarkeit von {minHours} Stunden pro Woche und wächst mit dem Kalender.",
       weeks: "Wochen des Monats",
+      weeksEmpty: "In diesem Monat wurden keine Sitzungen durchgeführt.",
+      payoutsEmpty: "Noch keine Zahlungen.",
       weekRange: "vom {from} bis {to}",
       weekDetail: "{sessions} Sitzungen · {minutes} Min.",
       paid: "Bezahlt",
@@ -680,6 +682,10 @@ export const de: Dictionary = {
       title: "Bericht zur Unternehmensgesundheit",
       subtitle: "{quarter} · {company}",
       download: "PDF herunterladen",
+      downloadError: {
+        title: "Das PDF wurde nicht erstellt",
+        body: "Versuchen Sie den Download erneut.",
+      },
       metricsTitle: "Kennzahlen",
       adoption: "Aktivierungsrate",
       usage: "Sitzungen am Jahreskontingent",

@@ -757,8 +757,17 @@ export type CheckupMeasurement = {
 export type CheckupReport = {
   bookingId: string;
   measurements: CheckupMeasurement[];
-  /** Chiave della spiegazione in `it.ts` */
-  explanationKey: string;
+  /**
+   * Chiave della spiegazione in `i18n`.
+   *
+   * **Un'unione e non `string`**, come `qualificationKey`: con `string`
+   * qualunque chiave compilava e rendeva vuoto a schermo, e la schermata era
+   * costretta ad allargare il dizionario a `Record<string, string>` — cioè a
+   * dichiarare un accesso sicuro dove poteva uscire `undefined`. Un membro solo
+   * non è una stranezza: dice che l'insieme è chiuso, che è l'informazione che
+   * mancava. In produzione se ne aggiungono, qui.
+   */
+  explanationKey: "laura";
 };
 
 /**
@@ -767,11 +776,35 @@ export type CheckupReport = {
  */
 export type AiPlanArea = {
   area: HealthArea;
-  goalKey: string;
+  /** Unione e non `string`, per la ragione detta su `CheckupReport`. */
+  goalKey:
+    | "sleep_hours"
+    | "stress_reduction"
+    | "activity_weekly"
+    | "nutrition_cholesterol"
+    | "mental_coaching";
   /** 0–100 */
   progressPercent: number;
-  tipKeys: string[];
+  tipKeys: AiPlanTipKey[];
 };
+
+/** Le chiavi dei suggerimenti in `i18n`, tre per ognuna delle cinque aree. */
+export type AiPlanTipKey =
+  | "sleep_screens"
+  | "sleep_schedule"
+  | "sleep_caffeine"
+  | "stress_breathing"
+  | "stress_breaks"
+  | "stress_coach"
+  | "activity_walk"
+  | "activity_stairs"
+  | "activity_yoga"
+  | "nutrition_fibre"
+  | "nutrition_fats"
+  | "nutrition_recheck"
+  | "mental_continue"
+  | "mental_techniques"
+  | "mental_journal";
 
 /**
  * Il piano di prevenzione (§10.B).
@@ -896,8 +929,15 @@ export type HrReport = {
   stressTrendPoints: number | null;
   savedChf: number;
   avoidedAbsenceDays: number;
-  /** Chiavi delle raccomandazioni in `it.ts` */
-  recommendationKeys: string[];
+  /** Chiavi delle raccomandazioni in `i18n`, unione per la ragione detta su
+      `CheckupReport`: con `string` la schermata e la vista di stampa avevano
+      ognuna il proprio `as keyof typeof`. */
+  recommendationKeys: (
+    | "salesWorkshop"
+    | "checkupPush"
+    | "coachAwareness"
+    | "partnerExtension"
+  )[];
 };
 
 // ---------------------------------------------------------------------------

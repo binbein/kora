@@ -136,6 +136,7 @@ export default function HRReport() {
    */
   const printRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   /* I tre casi (M5.b): `report` e `snapshot` sono nullable per contratto. */
   const page = loadState([
@@ -224,12 +225,22 @@ export default function HRReport() {
               const node = printRef.current;
               if (!node) return;
               setGenerating(true);
+              setFailed(false);
               try {
                 await downloadReportPdf(
                   node,
                   reportFileName(company.name, selected),
                   selected,
                 );
+              } catch {
+                /*
+                 * Il `catch` mancava, ed era l'unica scrittura dell'app senza
+                 * uno stato d'errore (M5.b): un import dinamico che non arriva
+                 * o una cattura che fallisce producevano una promise rifiutata
+                 * e nessun messaggio, con il pulsante che tornava attivo come
+                 * se il file fosse partito.
+                 */
+                setFailed(true);
               } finally {
                 setGenerating(false);
               }
@@ -239,6 +250,10 @@ export default function HRReport() {
           </Button>
         </div>
       </div>
+
+      {/* Sotto il pulsante che l'ha causato, e senza "Riprova": a ritentare è
+          quel pulsante, come per le altre scritture (M5.b). */}
+      {failed && <ErrorNotice copy={t.hr.report.downloadError} />}
 
       <Card className="p-6">
         <h3 className="font-semibold mb-4 flex items-center gap-2">
@@ -285,7 +300,7 @@ export default function HRReport() {
               <Badge variant="outline" className="mt-0.5 flex-shrink-0 tabular-nums">
                 {formatNumber(index + 1)}
               </Badge>
-              {t.hr.report.recommendation[key as keyof typeof t.hr.report.recommendation]}
+              {t.hr.report.recommendation[key]}
             </li>
           ))}
         </ul>

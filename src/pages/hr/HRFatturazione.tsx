@@ -22,6 +22,29 @@ import { EmptyNotice, ErrorNotice } from '@/components/kora/StateNotice';
  * Il simulatore legge i tre piani dal provider invece di tenersi un listino
  * locale: due listini divergono, e quello locale non lo aggiorna nessuno.
  */
+/**
+ * Il numero di dipendenti del simulatore, o `null` per "torna all'organico".
+ *
+ * IL VUOTO DEVE TORNARE `null`, ed è più di un clamp: `simulatedEmployees` è
+ * `employees ?? company.employeeCount`, quindi con `Number("") || 0` quel
+ * fallback funzionava **una volta sola** — dopo il primo tasto `employees` non
+ * era più `null` e svuotare il campo portava il totale a CHF 0 su un contratto
+ * attivo. La riga era morta dal primo tasto in poi.
+ *
+ * Il pavimento è 1 come l'attributo `min`, che da solo è decorativo: un negativo
+ * digitato dava un totale negativo.
+ *
+ * NON CONDIVIDE IL CORPO con `clampEmployees` di `roi-model.ts`, che riporta
+ * nell'intervallo 20–1000: è il dominio di validità del **modello ROI**, e qui
+ * sarebbe semanticamente falso — un'azienda da 120 dipendenti che simula il
+ * costo per 5 persone sta facendo una domanda legittima, e un clamp a 20 le
+ * risponderebbe con un numero che non ha chiesto.
+ */
+function toSimulated(raw: string): number | null {
+  if (raw.trim() === "") return null;
+  return Math.max(1, Math.round(Number(raw) || 1));
+}
+
 export default function HRFatturazione() {
   const companyQuery = useCompany();
   const plansQuery = usePlans();
@@ -143,7 +166,7 @@ export default function HRFatturazione() {
               type="number"
               min={1}
               value={simulatedEmployees}
-              onChange={(event) => setEmployees(Number(event.target.value) || 0)}
+              onChange={(event) => setEmployees(toSimulated(event.target.value))}
               className="mt-1 tabular-nums"
             />
           </div>

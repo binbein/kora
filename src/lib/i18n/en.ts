@@ -288,7 +288,7 @@ export const en: Dictionary = {
         overCapWithPrice:
           "You've used up the sessions included: this one costs {price}",
         overCapWithoutPrice:
-          "You've used up the sessions included in your plan for this service.",
+          "You've used up this year's sessions for this service included in your plan. To get more, talk to your HR contact.",
         confirm: "Confirm booking",
         error: {
           title: "The booking didn't go through",
@@ -558,6 +558,8 @@ export const en: Dictionary = {
       capacity:
         "You hold {sessions} sessions a week. At full capacity that is {full} a week, worth {min}–{max} a month: the collaboration starts from a minimum availability of {minHours} hours a week and grows with the calendar.",
       weeks: "Weeks of the month",
+      weeksEmpty: "No sessions delivered this month.",
+      payoutsEmpty: "No payments yet.",
       weekRange: "from {from} to {to}",
       weekDetail: "{sessions} sessions · {minutes} min",
       paid: "Paid",
@@ -730,6 +732,10 @@ export const en: Dictionary = {
       title: "Company health report",
       subtitle: "{quarter} · {company}",
       download: "Download PDF",
+      downloadError: {
+        title: "The PDF was not created",
+        body: "Try the download again.",
+      },
       metricsTitle: "Key metrics",
       adoption: "Activation rate",
       usage: "Sessions of the annual volume",

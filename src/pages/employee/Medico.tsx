@@ -62,9 +62,26 @@ export default function Medico() {
   const [typing, setTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  /*
+   * Il timer della risposta del medico, tenuto per poterlo spegnere.
+   *
+   * Senza il cleanup, uscendo dalla chat prima che la risposta arrivi il
+   * `setTimeout` scatta su un componente smontato: React lo segnala e, con una
+   * simulazione più lunga, sarebbe una risposta che si scrive da sola dopo che
+   * si è cambiata schermata.
+   */
+  const replyTimer = useRef<number | null>(null);
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(
+    () => () => {
+      if (replyTimer.current !== null) window.clearTimeout(replyTimer.current);
+    },
+    [],
+  );
 
   /* I tre casi (M5.b), registro consumer: qui si dà del tu. */
   const page = loadState([companyQuery]);
@@ -84,7 +101,8 @@ export default function Medico() {
     setTyping(true);
 
     const answer = replyTo(question);
-    setTimeout(() => {
+    replyTimer.current = window.setTimeout(() => {
+      replyTimer.current = null;
       setMessages((previous) => [...previous, { from: "doctor", text: answer }]);
       setTyping(false);
     }, TYPING_MS);

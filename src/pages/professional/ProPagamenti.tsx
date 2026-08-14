@@ -136,6 +136,12 @@ export default function ProPagamenti() {
       <div>
         <h2 className="text-sm font-semibold mb-3">{t.professional.payments.weeks}</h2>
         <Card>
+          {/* Un mese senza sedute erogate lasciava la sola riga "Totale del mese
+              CHF 0", senza una frase che lo spiegasse: le fatture dell'area HR
+              hanno il loro `EmptyNotice` e questa non ce l'aveva. */}
+          {weeks.length === 0 && (
+            <EmptyNotice text={t.professional.payments.weeksEmpty} />
+          )}
           <div className="divide-y divide-border">
             {weeks.map((week) => (
               <div key={week.start.toISOString()} className="p-4 flex items-center justify-between gap-4">
@@ -169,6 +175,12 @@ export default function ProPagamenti() {
       </Card>
 
       <Card>
+        {/* Stesso caso della card sopra, un piano più in là: un professionista
+            senza storico — chi è appena entrato nella rete — apriva un riquadro
+            bordato e vuoto. */}
+        {payouts.length === 0 && (
+          <EmptyNotice text={t.professional.payments.payoutsEmpty} />
+        )}
         <div className="divide-y divide-border">
           {payouts.map((payout) => (
             <div key={payout.month.toISOString()} className="p-4 flex items-center justify-between gap-4">
