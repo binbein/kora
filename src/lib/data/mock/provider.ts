@@ -188,10 +188,22 @@ export class MockDataProvider implements DataProvider {
   }
 
   getLatestStressByDepartment(): Promise<StressRecord[]> {
+    /*
+     * Il `?? []` è quello di `getStressHistory` qui sopra, e da solo non
+     * basterebbe: su una serie vuota l'ultimo elemento è `undefined`, quindi il
+     * buco finirebbe **dentro l'array di ritorno** e la dashboard esploderebbe
+     * una riga più in là, leggendo `measuredEmployees` di niente.
+     *
+     * Un reparto senza record esce dall'elenco invece di comparire con una riga
+     * inventata: la funzione promette l'ultimo record di ogni reparto, e senza
+     * record non c'è un ultimo record. Fabbricarne uno soppresso vorrebbe dire
+     * dichiarare un dato che il provider non ha.
+     */
     return Promise.resolve(
-      DEPARTMENTS.map((department) => {
-        const series = DEPARTMENT_STRESS_HISTORY[department.id];
-        return series[series.length - 1];
+      DEPARTMENTS.flatMap((department) => {
+        const series = DEPARTMENT_STRESS_HISTORY[department.id] ?? [];
+        const latest = series[series.length - 1];
+        return latest === undefined ? [] : [latest];
       }),
     );
   }
