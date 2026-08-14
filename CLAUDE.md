@@ -1637,8 +1637,24 @@ aperta in anticipo, va **portata in primo piano** prima di cominciare.
   `minimumGroupingDigits: 2`, quindi Intl di suo NON separa i numeri di quattro
   cifre: `14'200` ma `6200`. In una dashboard dove il selettore fa passare dall'uno
   all'altro la differenza si legge come un difetto.
-- **Il separatore decimale è il punto**: `2.35:1`, non `2,35:1`. È la convenzione
-  svizzera ed è coerente con l'apostrofo delle migliaia.
+- **Il separatore decimale segue il locale, e non è una sola convenzione**: punto
+  in it-CH, de-CH ed en (`2.35:1`), **virgola in fr-CH** (`2,35:1`). Lo decide
+  CLDR e lo applica `format.ts`; nessuna schermata scrive un separatore.
+  L'apostrofo delle migliaia invece vale in tutte e quattro (§2.7), quindi in
+  francese si legge `14'200` e `2,35` nella stessa pagina — è così che si scrive
+  in Svizzera romanda, non un'incoerenza da correggere.
+
+  **Fino al 14.08.2026 questa riga diceva "il separatore decimale è il punto"**,
+  con la stessa motivazione — la convenzione svizzera — ed era **verificata su
+  una lingua sola**: con il solo italiano a schermo, "svizzero" e "it-CH" non si
+  distinguevano. La tranche francese di M5.e li ha separati, e la regola si è
+  corretta con la sua data invece di restare smentita da `/roi` (founder,
+  14.08.2026, con l'approvazione della proposta di M5.e).
+
+  **Il 2.35:1 del §9 non cambia**: è il numero del Business Plan, che è scritto
+  in italiano e resta l'ancoraggio con cui si verifica il modello. In francese lo
+  stesso valore si scrive `2,35:1` — cambia la resa, non la cifra, ed è la
+  differenza che questa riga esiste per tenere ferma.
 - **Nessuna data scritta a mano.** Le date si derivano da `DEMO_TODAY` e si
   formattano con `format.ts`. Le quattro coppie giorno/data sbagliate di
   `ProSessioni.tsx` — l'anno riscritto a mano su date del 2025 — sono sparite
