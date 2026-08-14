@@ -183,6 +183,24 @@ Tre invarianti che il backend deve garantire:
    Un punteggio non pubblicabile non può rientrare da una porta di servizio dentro
    un aggregato da cui si potrebbe risalire.
 
+**Un reparto senza record mensili esce dall'elenco, e va deciso se è giusto.**
+`getLatestStressByDepartment` promette l'ultimo record di ogni reparto, e senza
+record non c'è un ultimo record: fabbricarne uno soppresso dichiarerebbe un dato
+che il provider non ha, ed è la ragione per cui oggi quel reparto **non compare**.
+
+In produzione la conseguenza è concreta e va guardata prima di ereditarla: un
+reparto **appena creato** — nessuno ha ancora risposto al check rapido — sparisce
+dalla tabella dell'HR **senza lasciare traccia**, e chi guarda non sa che esiste.
+È diverso dal reparto sotto soglia, che compare con il trattino e il lucchetto:
+lì l'assenza del punteggio è un'informazione, qui l'assenza della riga non lo è.
+
+Le due strade sono distinguere i due casi nel tipo — un terzo ramo di
+`StressRecord` che dice *"reparto senza rilevazioni"*, con i misurati a zero — o
+lasciare che l'elenco dei reparti e le loro rilevazioni siano due letture
+separate, e che a comporle sia la schermata. **La scelta è del backend**, e
+questo documento la nomina invece di lasciarla scoprire alla prima azienda che
+crea un reparto a metà trimestre.
+
 `EarlyAlert` è **derivato dalla scansione delle serie**, non un record salvato: un
 alert memorizzato smette di corrispondere ai punteggi da cui è nato. Segnala solo
 una risalita ancora in corso all'ultimo rilevamento.
