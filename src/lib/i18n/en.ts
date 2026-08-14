@@ -373,7 +373,7 @@ export const en = {
       privacy:
         "Your health stays yours. No individual data is shared with your organisation.",
 
-      company: "Organisation",
+      company: "Company",
       plan: "Plan",
       memberSince: "Member since",
 
@@ -785,6 +785,289 @@ export const en = {
           body: "Every employee confirms consent during activation and can withdraw it at any time.",
         },
       },
+    },
+  },
+
+  /*
+   * L'area pubblica (§10.A). Registro strumento: parla a un'azienda che valuta.
+   *
+   * DUE PAROLE PER LO STESSO SOGGETTO, ED È UNA SCELTA: `company` nel copy
+   * commerciale, che è chi compra, e `organisation` nelle promesse di privacy,
+   * che è il termine con cui la protezione dei dati nomina il titolare. In
+   * italiano è "azienda" in entrambi i casi, e la distinzione va confermata
+   * dalla revisione madrelingua.
+   */
+  public: {
+    nav: {
+      pricing: "Plans",
+      roi: "ROI calculator",
+      demo: "Demo",
+      employees: "Employees",
+      hr: "HR",
+      professionals: "Professionals",
+      login: "Log in",
+      bookDemo: "Book a demo",
+      menu: "Open the menu",
+      language: "Language",
+    },
+
+    footer: {
+      tagline: "The health operating system for Swiss companies.",
+      city: "Lugano, Switzerland",
+
+      platformTitle: "Platform",
+      platformPricing: "Plans and pricing",
+      platformRoi: "ROI calculator",
+      platformEmployee: "Employee portal",
+      platformHr: "HR portal",
+      platformProfessional: "For professionals",
+
+      companyTitle: "Company",
+      companyAbout: "About us",
+      companyContact: "Contact",
+      companyCareers: "Careers",
+      companyBlog: "Blog",
+
+      privacyTitle: "Privacy and security",
+      privacyBody:
+        "Protected health data. GDPR and FADP compliant. Hosting in Switzerland.",
+
+      legalPrivacy: "Privacy policy",
+      legalTerms: "Terms of service",
+      legalCookies: "Cookie policy",
+
+      copyright: "© {year} Kora Switzerland SA. All rights reserved.",
+    },
+
+    roi: {
+      title: "What employee health costs today",
+      empty: "The calculator is not available at the moment.",
+      subtitle:
+        "The losses a Swiss company carries every year, and how much of that comes back with Kora. Conservative scenario.",
+
+      employeesLabel: "Number of employees",
+      employeesRange: "From {min} to {max} employees",
+
+      lossesTitle: "Estimated annual losses",
+      loss: {
+        absenteeism: "Absenteeism",
+        presenteeism: "Presenteeism",
+        burnout: "Pre-clinical burnout",
+        turnover: "Health-related turnover",
+      },
+      lossHint: {
+        absenteeism: "{days} absence days per employee, at {cost} a day",
+        presenteeism: "{cost} of lost productivity per employee",
+        burnout: "{share} of the population at risk, {loss} of lost productivity",
+        turnover:
+          "{rate} of health-related departures, plus the replacement cost",
+      },
+      lossesTotal: "Total losses",
+
+      savingsTitle: "With Kora",
+      savings: "Estimated savings",
+      savingsHint:
+        "{absence} on absenteeism and presenteeism, {burnout} on burnout and turnover",
+      cost: "Kora cost",
+      costHint: "On the {plan} plan, {price} per employee a month",
+      /* Il meno è U+2212 come nelle altre tre lingue. */
+      costValue: "− {amount}",
+      netSavings: "Net savings",
+      ratio: "Return on investment",
+      ratioValue: "{ratio}:1",
+      ratioHint: "Net savings for every franc invested",
+
+      perEmployee: "≈ {amount} per employee a year, conservative scenario",
+
+      linearityNote:
+        "Every item grows in proportion to headcount: the ratio stays {ratio} at any number of employees.",
+
+      sources: "Conservative scenario. Sources: SECO, Job Stress Index.",
+
+      ctaTitle: "These figures, on your company",
+      ctaBody:
+        "A thirty-minute demo on the data of your sector and your headcount.",
+      ctaButton: "Book a demo",
+      ctaPricing: "See the plans",
+    },
+
+    plans: {
+      title: "Transparent plans, concrete value",
+      empty: "No plan to show at the moment.",
+      subtitle:
+        "One subscription per employee. No hidden costs. ROI measurable from the first quarter.",
+
+      target: {
+        essenziale: "Companies with 20–100 employees",
+        plus: "Companies with 100–300 employees",
+        executive: "Companies with 300+ employees",
+      },
+
+      recommended: "Recommended plan",
+      priceUnit: "/ employee / month",
+      cta: "Request a quote",
+
+      feature: {
+        sessions: "{count} psychologist sessions a year",
+        intro: "Free introductory consultation, once",
+        coach: "{count} coach sessions a year",
+        psychiatrist: "Psychiatrist on request included",
+        nutritionist: "{count} nutritionist sessions a year",
+        virtualDoctorUnlimited:
+          "Unlimited virtual doctor, reply within {hours} hours",
+        virtualDoctorUnlimitedOneHour:
+          "Unlimited virtual doctor, reply within one hour",
+        virtualDoctorCapped:
+          "{count} virtual doctor consultations a year, reply within {hours} hours",
+        virtualDoctorCappedOneHour:
+          "{count} virtual doctor consultations a year, reply within one hour",
+        checkup: {
+          annual: "Annual physical check-up",
+          executive:
+            "Full executive check-up: ECG, abdominal ultrasound, eye test, complete blood panel",
+        },
+        aiPlanMonthly: "AI prevention plan updated every month",
+        aiPlanEveryMonths: "AI prevention plan updated every {months} months",
+        hrDashboard: {
+          base: "Basic HR dashboard and ROI: usage, anonymised stress, savings in CHF",
+          department:
+            "HR dashboard by department, with quarterly report and early burnout alert",
+          advanced:
+            "Advanced HR dashboard, with monthly report and monthly call with the clinical team",
+        },
+        workshops: "{count} live workshops a year included",
+        family: "Family included: partner and one child",
+        partnerExtension:
+          "Extension to family members: + {price} per employee a month, optional",
+        extraSession: "Session beyond the cap: {price}",
+      },
+    },
+
+    costSimulator: {
+      title: "Calculate the cost",
+      employeesLabel: "Number of employees",
+      planLabel: "Plan",
+      planOption: "{plan} — {price} a month",
+      billingLabel: "Billing",
+      billingMonthly: "Monthly",
+      billingAnnual: "Annual",
+      totalMonthly: "Monthly total",
+      totalAnnual: "Annual total",
+      breakdownAnnual: "{employees} employees × {price} × 12 months",
+      breakdownMonthly: "{employees} employees × {price} × 1 month",
+      cta: "Book a demo",
+      roiLink: "What you are already losing without Kora",
+    },
+
+    landing: {
+      badge: "Swiss platform, privacy-first",
+      mockupSeal: "Privacy-first",
+      heroTitleLead: "Workplace health,",
+      heroTitleAccent: "finally integrated.",
+      heroBody:
+        "Kora brings together online psychologists, a virtual doctor, physical check-ups, AI prevention and an anonymous HR dashboard in a single subscription per employee.",
+      heroCtaRoi: "Calculate the return",
+      heroCtaDemo: "Book a demo",
+      heroCompliance: "Hosting in Switzerland. GDPR and FADP compliant.",
+
+      mockup: {
+        scoreLabel: "Health profile",
+        scoreOutOf: "/100",
+        focus: "Focus: {area}",
+        nextSessionLabel: "Next session",
+        nextSessionValue: "{weekday} {time} · {professional}",
+        analyticsLabel: "HR dashboard (anonymous)",
+        analyticsValue: "Adoption {adoption} · Stress {trend} points",
+        analyticsValueNoTrend: "Adoption {adoption}",
+      },
+
+      problemTitle: "The hidden cost of workplace health",
+      problem: {
+        burnout: "Burnout on the rise",
+        absenteeism: "Costly absenteeism",
+        waitingLists: "Waiting lists for psychologists",
+        fragmented: "Fragmented health benefits",
+        noData: "HR without measurable data",
+      },
+
+      valueTitle: "One platform. Three levels of value.",
+      value: {
+        employee: {
+          title: "For the employee",
+          body: "Simple access to mental health, a virtual doctor and prevention. All private, all in one place.",
+        },
+        company: {
+          title: "For the company",
+          body: "Anonymous insight, measurable return, better retention and less absenteeism.",
+        },
+        professional: {
+          title: "For professionals",
+          body: "New demand, less paperwork, automatic payments. Mandate-based collaboration with no tie.",
+        },
+      },
+
+      roiTeaser: {
+        title: "The return, before the signature",
+        losses: "A company of {employees} employees loses {amount} a year.",
+        net: "With Kora it recovers {amount} net: {ratio}, conservative scenario.",
+        cta: "Open the calculator",
+      },
+
+      plansTitle: "Transparent plans, concrete value",
+      plansSubtitle:
+        "One subscription per employee. No hidden costs. Measurable return.",
+      plansAll: "Compare the three plans",
+
+      privacyTitleLead: "Privacy is not a detail.",
+      privacyTitleAccent: "It is the heart of the product.",
+      privacyBody:
+        "The company never sees individual data, sessions, reports or diagnoses. Only aggregated, anonymous insight. Health data stays with the people who produce it.",
+      privacyChip: {
+        hosting: "Hosting in Switzerland",
+        gdpr: "GDPR compliant",
+        lpd: "FADP compliant",
+        encryption: "End-to-end encryption",
+      },
+
+      finalTitle: "Bring Kora into your company.",
+      finalBody: "Thirty minutes to see the platform on your figures.",
+      finalCta: "Book a demo",
+    },
+
+    demoRequest: {
+      title: "Book a demo",
+      subtitle: "Thirty minutes with our team, on your company's figures.",
+
+      companyLabel: "Company name",
+      contactLabel: "Full name",
+      emailLabel: "Work email",
+      phoneLabel: "Phone",
+      employeesLabel: "Number of employees",
+      messageLabel: "Message",
+      optional: "optional",
+      privacy:
+        "Data will be processed in line with the Swiss FADP and the GDPR.",
+      submit: "Send the request",
+      submitting: "Sending",
+      error: {
+        title: "The request was not sent",
+        body: "The details entered are still here: try again.",
+      },
+
+      validation: {
+        companyRequired: "The company name is required.",
+        contactRequired: "The contact name is required.",
+        emailRequired: "The email is required.",
+        emailInvalid: "The email address does not look valid.",
+        employeesInvalid:
+          "The number of employees must be written in whole figures, or left empty.",
+      },
+
+      successTitle: "Request received",
+      successBody:
+        "The request for {company} is registered. The team replies within one working day.",
+      successHome: "Back to home",
+      successRoi: "In the meantime, calculate the return",
     },
   },
 } as const;
