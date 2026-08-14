@@ -561,4 +561,230 @@ export const en = {
         "Collaboration under a mandate contract (Auftrag). No employment tie: Kora brings the patients and handles bookings, video and payments.",
     },
   },
+
+  /*
+   * Portale HR (§10.C). Registro strumento, e la schermata su cui il pitch si
+   * regge.
+   *
+   * IL TRIMESTRE NON PORTA L'ORDINALE, per la stessa ragione del francese e con
+   * un'altra grammatica: l'inglese dice `1st`, `2nd`, `3rd`, `4th`, quindi una
+   * stringa sola con un suffisso fisso ne sbaglierebbe tre su quattro, e il
+   * selettore li mostra tutti. `Quarter {quarter} {year}`, e `Q{quarter}`
+   * sull'asse.
+   *
+   * IL NOME DEL REPARTO NON SI TRADUCE: `Vendite` è un campo del dataset
+   * (`mock/company.ts`), quindi la raccomandazione del report lo nomina come
+   * lo mostra il banner dell'alert. È la regola che il francese ha applicato e
+   * che in tedesco è stata corretta dopo.
+   *
+   * LPD DIVENTA FADP, che è il nome inglese della stessa legge — *Federal Act
+   * on Data Protection*. È una traduzione, non una sigla nuova, ma è la sola
+   * di questo file che valga la pena di far confermare (vedi in testa).
+   */
+  hr: {
+    portalName: "HR portal",
+    navDashboard: "Dashboard",
+    navEmployees: "Employees",
+    navReport: "Report",
+    navBilling: "Billing",
+    navPrivacy: "Privacy",
+    navCompanyMeta: "{count} employees · {plan} plan",
+
+    dashboardTitle: "HR dashboard",
+    companySubtitle: "{name} · {count} employees · {plan} plan",
+
+    quarterSelectorLabel: "Quarter",
+    quarterLabel: "Quarter {quarter} {year}",
+    quarterLabelInProgress: "Quarter {quarter} {year} · in progress",
+    quarterShort: "Q{quarter}",
+
+    privacyNote:
+      "Aggregated, anonymous data · minimum threshold of {threshold} measured employees per department",
+
+    kpiSavings: "Savings this quarter",
+    kpiSavingsHint: "{days} absence days avoided",
+    kpiAdoption: "Adoption",
+    kpiAdoptionHint: "{enrolled} enrolled of {total}",
+    kpiActive: "Active employees",
+    kpiActiveHint: "at least one service in the quarter",
+    kpiStress: "Average stress",
+    kpiStressValue: "{points} points",
+    kpiStressHint: "vs previous quarter",
+    kpiStressEmpty: "no previous quarter in the window",
+
+    quarterEmpty:
+      "No data for the selected quarter. Choose another one from the list above.",
+    kpiSessions: "Sessions used",
+    kpiSessionsHint: "{used} of {total} annual sessions",
+    kpiCheckup: "Check-ups completed",
+    kpiCheckupHint: "{done} of {enrolled} enrolled",
+
+    alertTitle: "Early alert — {department} department",
+    alertDescription:
+      "The stress of the department has been in the high band for {months} consecutive months, since {since}.",
+
+    usageTitle: "Service usage · last {months} months",
+    distributionTitle: "Service distribution",
+    distributionSubtitle:
+      "cumulative from the start of the window to {quarter}",
+    distributionEntry: "{service}: {count}",
+
+    stressByDepartment: "Stress by department · last month",
+    departmentMeta: "{employees} employees · {measured} measured",
+    departmentScore: "{percent} · {level}",
+    suppressed: "Below threshold",
+    suppressedTooltip:
+      "Below the threshold the figure is not calculated, so that it cannot be traced back to individuals.",
+
+    trendTitle: "Stress trend · last {months} months",
+    trendCompany: "Company average",
+    trendAlertMarker: "alert",
+    trendCompanyLegend: "from {from} to {to} · always in the medium band",
+    trendDepartmentLegend:
+      "from {from} to {to} · in the high band from month {month}",
+
+    roiTitle: "Savings per quarter",
+
+    stressLevel: {
+      low: "Low",
+      medium: "Medium",
+      high: "High",
+    },
+
+    service: {
+      psychologist: "Psychologist",
+      virtual_doctor: "Virtual doctor",
+      coach: "Coach",
+      checkup: "Check-up",
+    },
+
+    employees: {
+      title: "Employees",
+      subtitle: "{enrolled} enrolled of {total} · anonymous data only",
+      sampleNote: "The table shows an extract of {n} employees.",
+      empty: "No employee to show.",
+      privacyNote:
+        "Names are abbreviated. Kora never shows individual health data to the organisation.",
+      columnEmployee: "Employee",
+      columnDepartment: "Department",
+      columnStatus: "Status",
+      columnCheckup: "Check-up",
+      enrolled: "Active",
+      notEnrolled: "Pending",
+      checkup: {
+        completed: "Completed",
+        booked: "Booked",
+        available: "Available",
+      },
+    },
+
+    billing: {
+      title: "Billing",
+      planTitle: "Active plan",
+      employees: "Employees",
+      monthlyCost: "Monthly cost",
+      annualContract: "Annual contract",
+      renewal: "Renewal",
+      invoicesTitle: "Recent invoices",
+      invoicesEmpty: "No invoice issued so far.",
+      invoiceDetail: "{count} employees × {price}",
+      invoicePaid: "Paid",
+      invoicePending: "Pending",
+      simulatorTitle: "Cost simulator",
+      simulatorEmployees: "Employees",
+      simulatorPlan: "Plan",
+      simulatorBilling: "Frequency",
+      billingMonthly: "Monthly",
+      billingAnnual: "Annual",
+      totalMonthly: "Monthly total",
+      totalAnnual: "Annual total",
+      planOption: "{name} ({price})",
+    },
+
+    report: {
+      title: "Company health report",
+      subtitle: "{quarter} · {company}",
+      download: "Download PDF",
+      metricsTitle: "Key metrics",
+      adoption: "Activation rate",
+      usage: "Sessions of the annual volume",
+      checkup: "Check-ups completed",
+      stress: "Average stress",
+      stressValue: "{points} points",
+      savings: "Estimated savings",
+      avoidedDays: "Absence days avoided",
+      daysValue: "{days} days",
+      recommendationsTitle: "Recommendations",
+      recommendation: {
+        salesWorkshop:
+          "Plan an intervention for the Vendite department, in the high band for three months.",
+        checkupPush:
+          "Remind the people who have activated their account and not yet booked about the annual check-up.",
+        coachAwareness:
+          "Raise awareness of the coach: it is the least used item in the plan.",
+        partnerExtension:
+          "Consider the extension to family members, optional on the Plus plan.",
+      },
+
+      pdf: {
+        documentTitle: "Company health report",
+        documentSubtitle: "{company} · {employees} employees · {plan} plan",
+        period: "Period · {quarter}",
+        generatedOn: "Generated on {date}",
+        active: "Active employees",
+        sessions: "Sessions used",
+        sessionsValue: "{used} of {total}",
+        privacyNote:
+          "Aggregated, anonymous data. Kora does not pass individual health data, or bookings traceable to individuals, to the organisation.",
+      },
+    },
+
+    privacy: {
+      title: "Privacy and security",
+      subtitle: "Privacy is at the heart of Kora.",
+      neverSeenTitle: "The organisation never sees:",
+      neverSeen: {
+        healthData: "Individual health data",
+        names: "Who has seen a psychologist",
+        notes: "Clinical notes or reports",
+        diagnoses: "Diagnoses or treatments",
+        bookings: "Individual bookings",
+      },
+      measurementTitle: "Where the stress data comes from",
+      measurementBody:
+        "The stress figure comes from the quick check: one question, one tap, self-reported by the employee. It is never inferred from behaviour — not from booked sessions, not from app opens.",
+      anonymousLinkTitle: "Even without an account",
+      anonymousLinkBody:
+        "The quick check is answered in the app or through an anonymous link, which does not require an activated account. Measuring only the people who enrolled would mean measuring only those already engaged, while the figure matters most where adoption has not arrived yet.",
+      thresholdTitle: "Anonymity threshold",
+      thresholdBody:
+        "The figure for a department is published only if at least {threshold} measured employees answered in that period. Below the threshold the dashboard shows a dash, not a score.",
+      principle: {
+        noIndividual: {
+          title: "No individual data",
+          body: "The organisation never sees sessions, reports, diagnoses or health data of identifiable employees.",
+        },
+        aggregated: {
+          title: "Aggregated data only",
+          body: "The dashboard shows anonymous statistics, aggregated by department or by organisation.",
+        },
+        encryption: {
+          title: "End-to-end encryption",
+          body: "Health data is encrypted in transit and at rest, to the AES-256 standard.",
+        },
+        hosting: {
+          title: "Hosting in Switzerland",
+          body: "Data resides on servers in Switzerland, compliant with the Federal Act on Data Protection.",
+        },
+        compliance: {
+          title: "GDPR and FADP compliance",
+          body: "Kora complies with the European GDPR and the Swiss FADP.",
+        },
+        consent: {
+          title: "Employee consent",
+          body: "Every employee confirms consent during activation and can withdraw it at any time.",
+        },
+      },
+    },
+  },
 } as const;
