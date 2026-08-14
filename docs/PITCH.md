@@ -173,6 +173,38 @@ Vale la nota già usata per il check rapido (`CLAUDE.md` §10.B.1): **dove il
 Business Plan e la demo divergono vince `CLAUDE.md`, e il documento si
 aggiorna.**
 
+### "L'HR vedrà che vado dallo psicologo?"
+
+**No — e non perché ci fidiamo di una schermata: perché il dato non arriva.** È
+la domanda commercialmente più pericolosa che il prodotto riceve, visto che se la
+risposta non convince il dipendente l'adozione non parte, ed è quella che la demo
+risponde meglio. Tre fatti, tutti verificabili:
+
+1. **La soppressione sotto soglia avviene nel provider, non nella schermata.** Il
+   punteggio di un reparto sotto soglia non è nascosto in interfaccia: **non
+   arriva al client**, e a garantirlo è la forma del dato — il record soppresso
+   non ha nemmeno il campo del punteggio. A uscire su entrambi i rami è il
+   conteggio dei misurati, perché la riga deve poter dire quante persone hanno
+   risposto (`docs/CONTRATTO-DATI.md` §3).
+2. **La nota privata di sessione non esce mai verso l'azienda.** Il testo vive
+   solo sulle proiezioni che il professionista riceve, e **nessun tipo che l'area
+   HR o l'admin possano leggere ha un campo su cui possa arrivare**: a impedirlo
+   è la forma del dominio, non la JSX. Le altre proiezioni sanno al massimo che
+   una nota esiste, mai cosa dice (`CLAUDE.md` §10.D).
+3. **La soglia conta i dipendenti misurati nel periodo, non gli iscritti.** È la
+   stessa cifra della risposta precedente e qui dice un'altra cosa: sotto soglia
+   non c'è da nessuna parte un dato più fine da andare a prendere, c'è il
+   trattino con il lucchetto che si vede sulla Direzione.
+
+La stessa garanzia vale dal lato dell'azienda: l'elenco dipendenti porta iniziali
+e reparto e **non ha nessun campo su cui un nome possa arrivare**, e lo stato del
+check-up dice se è stato fatto, mai cosa ha detto (`docs/CONTRATTO-DATI.md` §3).
+
+**Va detto come il punto più forte del prodotto, non come una rassicurazione**:
+qui la privacy non è una promessa scritta nell'informativa, è una proprietà della
+forma dei dati — la stessa disciplina per cui i font sono self-hostati e le
+richieste esterne a runtime sono zero (`CLAUDE.md` §3).
+
 ### "Perché il ROI è 2.35:1? Nel documento ho letto 19.5:1"
 
 Perché sono **tre rapporti diversi**, e noi mostriamo il più conservativo dei tre.
