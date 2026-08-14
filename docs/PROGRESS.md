@@ -1635,6 +1635,13 @@ cambia.
 "Privacy-first" posizionato in negativo sull'hero. Preesistente, dichiarato, non
 corretto qui: una tranche di traduzione non porta una correzione di layout.
 
+→ **Chiuso dalla passata del 14.08.2026** (sezione refinement), che ha anche
+corretto la diagnosi: il sigillo da solo non sfonda, a sfondare è l'ingresso del
+mockup che se lo porta dietro — quindi il difetto **si vede solo mentre
+l'animazione corre**, e resta stabile su una scheda in secondo piano, dove
+`requestAnimationFrame` è sospeso. Il 1304 di questo censimento è coerente: è la
+stessa misura presa dove la barra di scorrimento non toglie i suoi 15px.
+
 **Il punto 6, per esteso**: prenotata la Dr.ssa Meier venerdì 25.09 alle 10:00
 in italiano, poi `IT → DE`. La prenotazione è ancora nella home — `Freitag
 25.09.2026, um 10:00` — il contatore dice `3 von 10 Sitzungen genutzt · 4
@@ -1679,16 +1686,24 @@ diversa da quella posta.
 
 ### Refinement fra le milestone
 
-**Dodici passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
-M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28) e **#34**, le uscite
-dai tre portali, che arriva dopo i primi quattro blocchi di M5. Non aggiungono
+**Tredici passate mergiate fra la chiusura di M3 e oggi**: quattro nell'intervallo
+M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28), **#34** — le uscite
+dai tre portali, che arriva dopo i primi quattro blocchi di M5 — e
+**l'overflow della landing**, del 14.08.2026, che arriva fra la tranche tedesca
+e quella francese di M5.e (numero da aggiungere: la sintesi è stata scritta
+prima di aprire la PR, come vuole la regola di #26). Non aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
-seam e del dizionario, più le sei che hanno una sottosezione loro qui sotto:
+seam e del dizionario, più le sette che hanno una sottosezione loro qui sotto:
 le due che **eseguono** una decisione della riunione del 10.08.2026,
-l'allineamento documentale pre-M5, i due fix pre-M5, l'uscita da `/admin` e le
-uscite dai portali. La sintesi sta qui perché **il dettaglio è in git e il
-quadro no**: chi riprende deve sapere che queste cose esistono prima di
-riscoprirle.
+l'allineamento documentale pre-M5, i due fix pre-M5, l'uscita da `/admin`, le
+uscite dai portali e l'overflow della landing. La sintesi sta qui perché **il
+dettaglio è in git e il quadro no**: chi riprende deve sapere che queste cose
+esistono prima di riscoprirle.
+
+**La PR docs-only del 14.08.2026 sulla costituzione non è la quattordicesima**:
+allinea `CLAUDE.md` a ciò che la tranche 1b ha cambiato — conteggio dei
+guardrail, language switcher, default di `format.ts` — quindi è **contabilità di
+M5.e**, e la milestone questa sezione la esclude per criterio.
 
 **Non è un intervallo, e i buchi hanno un motivo**: #25 e #27 sono fuori per le
 due eccezioni qui sotto, e **#29–#33 sono M5**, cioè la milestone, che questa
@@ -2195,6 +2210,70 @@ il numero della PR, che si conosce solo aprendola, e il merge è arrivato prima.
 eccezione e appartiene a #34. La regola di #26 resta quella giusta — se il numero
 non si sa in tempo, la si scrive **senza il numero** e lo si aggiunge, invece di
 rimandare l'intero commit.
+
+#### L'overflow orizzontale della landing (14.08.2026)
+
+Un commit di codice, una riga di classe. Il difetto lo aveva censito la verifica
+tedesca della tranche 1b — *"la landing sfonda di 24px a 1280, ed è identico in
+italiano"* — che lo dichiarò senza correggerlo, perché una tranche di traduzione
+non porta una correzione di layout.
+
+**La causa non era quella scritta, e si è vista solo misurando.** Il censimento
+la attribuiva al sigillo "Privacy-first", posizionato in negativo sul mockup
+dell'hero. Il sigillo sta a `-right-4`, cioè 16px fuori dal bordo della card, e
+**da solo non sfonda niente**: a 1280 il suo bordo destro cade a 1249 dentro un
+viewport di 1265. A sfondare è **l'ingresso**, non la posizione — il mockup entra
+da destra con `x: 40`, e per la durata dell'animazione porta se stesso e il
+sigillo 24px oltre il bordo dello schermo.
+
+| stato | pre | post |
+|---|---|---|
+| inizio animazione (`x: 40`) | scrollWidth 1289 su 1265 → **24px** | 1265 → **0** |
+| animazione conclusa | 1265 → 0 | 1265 → 0 |
+| bordo destro del sigillo | 1249 a riposo, 1289 all'ingresso | **identici** |
+
+**Ne discende una cosa che vale più della correzione**: il difetto è
+**permanente su una scheda in secondo piano**, dove `requestAnimationFrame` è
+sospeso e l'animazione resta ferma al suo primo fotogramma. È la quarta faccia
+di `visibilityState` — dopo le animazioni congelate di M3, `innerWidth` a zero di
+M5.a e le query in pausa di M5.b — e stavolta il sintomo è una barra di
+scorrimento orizzontale sulla prima schermata che un investitore vede. Il §10 e
+`docs/PITCH.md` vietano già di pre-aprire la landing in una scheda di sfondo, e
+questa è una ragione in più che quelle righe non nominavano.
+
+**`overflow-x-clip` sulla sezione hero, e non `hidden`.** `hidden` su un asse
+rende l'altro `auto`, cioè fabbricherebbe un contenitore di scorrimento
+verticale dentro l'hero; `clip` taglia e lascia l'asse verticale `visible`. Il
+taglio cade su pixel che stanno **fuori dal viewport** — raggiungibili solo con
+lo scorrimento che si sta togliendo — quindi la resa approvata non cambia in
+nessuno dei due stati, ed è il criterio con cui la passata era stata autorizzata.
+L'animazione non è stata toccata.
+
+**Verificato a 1280 e 1440, in italiano e in tedesco**, con gli stati imposti
+esplicitamente invece che attesi: `scrollWidth === clientWidth` in tutti e
+quattro i casi, sigillo alla stessa coordinata prima e dopo, console pulita,
+`lint` e `typecheck` a zero, un solo file toccato. A 1440 non sfondava nemmeno
+prima — il difetto è di 1280 e delle larghezze sotto — ed è servito da controllo.
+A 768 la correzione toglie anche i 32px che il mockup a colonna singola
+produceva all'ingresso, e il sigillo resta interamente dentro il viewport: il
+`clip` non taglia niente di visibile a nessuna delle larghezze provate.
+
+**Due cose sullo strumento, e sono la quinta e la sesta del filone.** Il pannello
+del browser di questa sessione riporta `visibilityState: hidden` **anche con la
+scheda in primo piano e il focus attivo**, quindi l'animazione non parte e non è
+stato possibile guardarla scorrere: le misure sono di **geometria imposta** —
+inizio e fine dell'animazione scritti a mano sull'elemento — e gli screenshot
+sono presi nello stato finale forzato. È la lettura più onesta disponibile qui,
+e va rifatta su un browser vero prima della prova generale del pitch. E una
+misura intermedia era stata presa in uno stato che credevo congelato e non lo
+era più: il numero tornava lo stesso della resa conclusa, cioè lo strumento
+rispondeva a un'altra domanda — di nuovo (`CLAUDE.md` §11).
+
+**Una nota sul criterio di accettazione**, perché la prossima verifica non lo
+riscriva sbagliato: `scrollWidth === innerWidth` non può valere quando c'è una
+barra di scorrimento verticale, che ne prende 15 — `innerWidth` la comprende,
+`clientWidth` no. L'uguaglianza che dice "non si scorre in orizzontale" è
+**`scrollWidth === clientWidth`**, ed è quella misurata qui.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
