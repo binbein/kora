@@ -37,6 +37,17 @@ un'opacità di 0.07 — cioè la prima schermata che l'investitore vede sarebbe 
 vuota. Se la apri in anticipo, portala davanti prima di cominciare (`CLAUDE.md`
 §10). Per la stessa ragione a scheda nascosta i grafici misurano zero.
 
+**Rimisura l'overflow orizzontale della landing su un browser vero.** La
+correzione del 14.08.2026 è stata verificata su **geometria imposta** — inizio e
+fine dell'animazione scritti a mano sull'elemento — perché il pannello del
+browser di quella sessione riportava `visibilityState: hidden` anche a scheda in
+primo piano, quindi l'animazione d'ingresso non partiva e nessuno ha potuto
+guardarla scorrere (`docs/PROGRESS.md`). Prima della prova generale va rifatta
+guardandola: **scheda in primo piano e viewport reale prima di fidarsi di
+qualunque misura** (`CLAUDE.md` §11). Il criterio è `scrollWidth ===
+clientWidth`, non `innerWidth`, che comprende i 15px della barra di scorrimento
+verticale.
+
 **Tieni la console su uno schermo di servizio**, non su quello proiettato: è lì
 che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
 
@@ -77,6 +88,11 @@ che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
   **non nella griglia**, e a metà pitch si legge come un difetto invece che come
   il limite dichiarato che è (`docs/PROGRESS.md`, area dipendente).
 
+  **Se chiedono di vedere la settimana successiva**, la risposta è che nella demo
+  il calendario si ferma a quella corrente: è un limite dichiarato, non qualcosa
+  che si è rotto in sala. Non cercare la navigazione a schermo — non c'è, e
+  cercarla davanti a qualcuno costa più della frase.
+
 - **La richiesta demo che compare in `/admin` ha una coreografia sola**, e va
   fatta in quest'ordine perché `/admin` non è linkata da nessuna schermata:
   l'unico modo di entrarci è l'indirizzo digitato, che ricarica, che azzera il
@@ -111,6 +127,38 @@ che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
   stessa e il componente non si rimonta. Per una seconda richiesta si passa da
   **"Torna alla home"** e si rientra da lì. È voluto, ma scoprirlo davanti a
   qualcuno sembra una schermata bloccata.
+
+---
+
+## Le quattro lingue
+
+**Decisione dei founder del 14.08.2026**, alla chiusura del blocco e) di M5: la
+demo **si presenta in italiano**, e la lingua **non si cambia durante la
+presentazione**.
+
+**Il selettore si mostra, non si usa.** Sta nella barra pubblica — `IT DE FR EN`
+— e mostra le sole lingue registrate, quindi quattro sigle accese vogliono dire
+quattro dizionari che esistono davvero. Indicarlo è già la dimostrazione che
+l'architettura c'è: è per questo che è lì, non perché serva alla presentazione.
+
+**Perché non si cambia lingua davanti a chi la parla.** Tedesco, francese e
+inglese sono **verificabili e presentabili, non ratificati**: la revisione
+madrelingua non è ancora stata fatta per nessuno dei tre (`docs/PROGRESS.md`,
+M5.e). Cambiare lingua davanti a un investitore che quella lingua ce l'ha mette a
+giudizio la formulazione invece dell'architettura, ed è l'unico modo di
+trasformare un argomento forte in una correzione ricevuta in sala.
+
+**Detto a voce, è un argomento competitivo.** Quattro lingue nazionali sono la
+condizione per vendere a un'azienda svizzera con sedi in più cantoni, e la
+piattaforma le ha **oggi**, non "le avrà": tutte e ventisette le rotte sono state
+percorse in ognuna delle quattro. È questo il modo di dirlo, non un cambio di
+lingua a schermo.
+
+**Se è l'investitore a cliccare una sigla**, la schermata regge e non c'è niente
+da riparare: si finisce il discorso, si riporta l'italiano dal selettore e si
+prosegue. **Non ricaricare per tornare in italiano** — il default è italiano a
+ogni avvio e la scelta non sopravvive a un ricaricamento (`CLAUDE.md` §2.7), ma
+ricaricare azzera la demo (§10).
 
 ---
 
@@ -173,6 +221,54 @@ Vale la nota già usata per il check rapido (`CLAUDE.md` §10.B.1): **dove il
 Business Plan e la demo divergono vince `CLAUDE.md`, e il documento si
 aggiorna.**
 
+### "L'HR vedrà che vado dallo psicologo?"
+
+**No — e non perché ci fidiamo di una schermata: perché il dato non arriva.** È
+la domanda commercialmente più pericolosa che il prodotto riceve, visto che se la
+risposta non convince il dipendente l'adozione non parte, ed è quella che la demo
+risponde meglio. Tre fatti, tutti verificabili:
+
+1. **La soppressione sotto soglia avviene nel provider, non nella schermata.** Il
+   punteggio di un reparto sotto soglia non è nascosto in interfaccia: **non
+   arriva al client**, e a garantirlo è la forma del dato — il record soppresso
+   non ha nemmeno il campo del punteggio. A uscire su entrambi i rami è il
+   conteggio dei misurati, perché la riga deve poter dire quante persone hanno
+   risposto (`docs/CONTRATTO-DATI.md` §3).
+2. **La nota privata di sessione non esce mai verso l'azienda.** Il testo vive
+   solo sulle proiezioni che il professionista riceve, e **nessun tipo che l'area
+   HR o l'admin possano leggere ha un campo su cui possa arrivare**: a impedirlo
+   è la forma del dominio, non la JSX. Le altre proiezioni sanno al massimo che
+   una nota esiste, mai cosa dice (`CLAUDE.md` §10.D).
+3. **La soglia conta i dipendenti misurati nel periodo, non gli iscritti.** È la
+   stessa cifra della risposta precedente e qui dice un'altra cosa: sotto soglia
+   non c'è da nessuna parte un dato più fine da andare a prendere, c'è il
+   trattino con il lucchetto che si vede sulla Direzione.
+
+La stessa garanzia vale dal lato dell'azienda: l'elenco dipendenti porta iniziali
+e reparto e **non ha nessun campo su cui un nome possa arrivare**, e lo stato del
+check-up dice se è stato fatto, mai cosa ha detto (`docs/CONTRATTO-DATI.md` §3).
+
+**Va detto come il punto più forte del prodotto, non come una rassicurazione**:
+qui la privacy non è una promessa scritta nell'informativa, è una proprietà della
+forma dei dati — la stessa disciplina per cui i font sono self-hostati e le
+richieste esterne a runtime sono zero (`CLAUDE.md` §3).
+
+### "Se rispondo al check rapido, la dashboard si muove?"
+
+**No, ed è voluto.** La risposta si salva e si rilegge — la card mostra il volto
+scelto — ma le curve della dashboard non si spostano: gli aggregati di reparto
+sono **mensili** (`CLAUDE.md` §5.3), e una risposta sola non muove una media
+pesata sui dipendenti misurati.
+
+**Dirlo prima, non farlo scoprire.** Se durante la demo si tocca un volto e poi
+si passa alla dashboard HR aspettandosi un movimento, l'assenza di movimento si
+legge come un difetto invece che come la granularità del dato — e la domanda
+arriva nel momento peggiore, cioè sulla schermata su cui si regge il pitch.
+
+In produzione è esattamente il contrario: quella scrittura è ciò che alimenta le
+serie mensili dei reparti, ed è la semplificazione della demo che salta per prima
+il giorno del passaggio (`docs/CONTRATTO-DATI.md` §7).
+
 ### "Perché il ROI è 2.35:1? Nel documento ho letto 19.5:1"
 
 Perché sono **tre rapporti diversi**, e noi mostriamo il più conservativo dei tre.
@@ -198,13 +294,91 @@ mostralo muovendo il campo.
 
 ### "Come fate margine se le sedute costano?"
 
-Il **co-payment oltre il cap**. Il piano Plus dà 10 sedute di psicologo l'anno;
-dall'undicesima il dipendente paga **CHF 28** a seduta, contro un compenso al
-professionista di **CHF 70–80** (`CLAUDE.md` §9). Non è teoria messa in una
-slide: nell'elenco pazienti del portale professionista **due pazienti sono sopra
-il cap**, e il meccanismo si vede a schermo.
+**Dal divario fra sessioni incluse ed erogate**, e il numero che lo sostiene è
+già a schermo: il monte annuo di Demo SA è di **1'200 sedute** — 120 dipendenti
+per le 10 del piano Plus — e ne sono state usate **142**, cioè il **12%**
+(`CLAUDE.md` §8). È la KPI "142 di 1'200" della dashboard HR, quindi è una cifra
+che si indica mentre la si dice, non un conto fatto a voce.
 
-L'Essenziale ha 6 sedute e extra a CHF 35, l'Executive 16 e extra a CHF 22.
+**Il costo da leggere accanto è quello di una seduta erogata: CHF 70–80** al
+professionista (`CLAUDE.md` §9). Senza un costo unitario il 12% è un dato e non
+un argomento; con il costo accanto al monte e al consumo, **la moltiplicazione la
+fa chi ascolta**. Va lasciata fare: la tariffa è una banda e non un punto, quindi
+un totale detto a voce diventa un numero da difendere che nessuno ha chiesto.
+
+**Il cap annuale è il freno, e il co-payment è il deterrente che lo tiene** — non
+un ricavo. Oltre le sedute incluse il dipendente paga di tasca sua, e questo
+tiene il consumo dentro il monte **senza che la piattaforma debba dire di no a
+nessuno**: è la differenza fra un tetto che si spiega e una lista d'attesa che si
+subisce.
+
+Non è teoria messa in una slide: nell'elenco pazienti del portale professionista
+**due pazienti sono sopra il cap**, e a schermo si vede che il tetto è reale e
+gestito.
+
+I tetti scalano col piano, e il co-payment con loro: **Essenziale 6 sedute, extra
+CHF 35 · Plus 10, extra CHF 28 · Executive 16, extra CHF 22** (`CLAUDE.md` §9).
+
+> **Risposta riscritta su decisione dei founder del 14.08.2026.** Diceva che il
+> margine viene dal co-payment, e metteva nella stessa frase i CHF 28 incassati e
+> i CHF 70–80 pagati: chi ascolta fa la sottrazione e sente dire che ogni seduta
+> oltre il cap costa alla piattaforma più di quanto le renda, cioè l'opposto di
+> ciò che la frase voleva dire. Il divario fra incluse ed erogate regge da sé, e
+> il suo numero è l'unico dei tre che l'investitore ha già davanti agli occhi.
+
+### "Quindi sulle sedute extra ci rimettete?"
+
+È il seguito immediato della risposta sul margine: dire che il co-payment è un
+deterrente e non un ricavo invita la domanda, dove la formulazione vecchia non la
+invitava. È il prezzo della correzione, e si paga rispondendo — non schivando.
+
+**Sì, per unità, ed è voluto.** Il co-payment è tarato per **scoraggiare l'uso
+oltre il tetto**, non per coprirne il costo. Un prezzo a copertura vorrebbe dire
+chiedere al dipendente la tariffa del mercato privato — i **CHF 70–80** che
+prende il professionista (`CLAUDE.md` §9) — e a quel punto il tetto non sarebbe
+più un tetto: la seduta oltre il cap smetterebbe di essere una scelta consapevole
+per diventare una barriera economica.
+
+**Il volume è marginale, e si vede a schermo.** Nell'elenco pazienti del portale
+professionista **due dei sei pazienti** sono sopra il cap. È la stessa prova
+della risposta precedente letta dall'altro lato: lì dice che il tetto è reale,
+qui dice quanti lo superano — e sono due righe da contare, non una cifra da
+prendere per buona.
+
+**A proteggere l'economia è il cap, non il prezzo dell'extra.** Il monte è annuo e
+rigido, e il co-payment è ciò che tiene il consumo dentro il monte senza che la
+piattaforma debba dire di no a nessuno. Se il co-payment sparisse, a cambiare non
+sarebbe il margine ma **la frizione** — ed è esattamente per questo che il numero
+della risposta sul margine è il 12%, e non i CHF 28.
+
+**Il tetto scala col piano al contrario del co-payment**: Essenziale 6 sedute con
+extra a CHF 35, Executive 16 con extra a CHF 22 (`CLAUDE.md` §9). Chi ha più
+sedute incluse paga **meno** l'extra, perché al tetto ci arriva avendone già
+usate di più. Detto così è coerenza del modello, non una stranezza da
+giustificare.
+
+**Se la domanda arriva a *"e se uno ne facesse trenta?"***: oggi non c'è nessun
+tetto al numero di sedute oltre cap prenotabili, il caso non si è mai presentato,
+e il monitoraggio del consumo è parte di ciò che i pilot devono produrre — la
+stessa linea della risposta qui sotto. **Non descrivere una difesa che il
+prodotto non ha.**
+
+### "E se ne usassero il 40%?"
+
+È il seguito naturale della domanda sul margine e arriva quasi sempre, perché il
+12% è il numero su cui poggia la risposta precedente.
+
+**Non lo sappiamo ancora, e validare la curva di utilizzo reale è la metrica
+numero uno dei pilot.** È il primo dato che un pilot serve a produrre, e finché
+non esiste qualunque cifra sarebbe inventata sul momento (`CLAUDE.md` §2.4).
+
+Detta così è più forte di una proiezione: dice che sappiamo qual è la variabile
+da cui dipende il modello e che l'abbiamo messa in cima a ciò che andiamo a
+misurare — invece di rispondere con un numero che il primo pilot smentirebbe.
+
+**Non improvvisare il margine lordo**, che è la domanda dopo: oggi non c'è una
+risposta pronta, e costruirne una a voce significa consegnare all'investitore una
+cifra che nessun documento sostiene.
 
 ### "Chi controlla i professionisti? E le strutture?"
 
@@ -222,6 +396,23 @@ Il vetting è **a schermo**, non a parole, e in due punti:
 Se serve la frase corta: *la piattaforma elenca tutti, e propone solo chi ha
 superato i controlli.*
 
+### "E se qualcuno sta male davvero?"
+
+**Il percorso di escalation non c'è, e la demo non lo simula.** È la risposta da
+dare per intero e senza attenuarla: il check rapido accetta anche la risposta
+peggiore e non succede niente, e la chat del medico virtuale non rileva il
+rischio e non espone numeri d'emergenza.
+
+**Il referente clinico e il protocollo si definiscono prima del primo utente
+attivo.** È il momento in cui la domanda smette di essere teorica, ed è lì che va
+chiusa.
+
+Non dire "è in roadmap" e non descrivere come funzionerà: sarebbe promettere una
+funzione che non esiste, cioè ciò che la sezione qui sotto vieta. E qui
+l'onestà è anche l'unica cosa che regge la domanda successiva, che è *"e chi
+risponde alle tre di notte?"* — a cui una funzione descritta e non costruita non
+ha niente da rispondere.
+
 ---
 
 ## Cosa non promettere
@@ -233,4 +424,15 @@ superato i controlli.*
   richiede una che non c'è, la risposta è che il dato si aggiunge dopo, non un
   numero inventato sul momento.
 - **Non aprire `/admin` come se fosse un cruscotto reale**: è marcato come dati
-  dimostrativi, e le guardie di ruolo sono lavoro di M5.
+  dimostrativi, ed è quel banner la difesa a schermo.
+
+  **Le guardie di ruolo esistono** — costruite il 12.08.2026 — ma in demo **non
+  negano l'accesso a niente, per costruzione**: `RequireRole` è una porta che
+  concede, perché il giro della presentazione entra in ogni portale con un clic e
+  `/admin` si apre come prima schermata della sessione. Il ramo che nega è vero e
+  si raggiunge solo con una manopola di sviluppo (`CLAUDE.md` §4, blocco d).
+
+  Quindi **non dire che `/admin` "ora è protetto"**: è una frase che chiunque
+  verifica in dieci secondi digitando l'indirizzo, e la verifica la smentisce.
+  Il consiglio pratico resta quello di sempre — è un back-office dimostrativo,
+  non un cruscotto — e a cambiare è la ragione, non la riga.
