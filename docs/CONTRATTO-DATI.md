@@ -212,6 +212,56 @@ lo psicologo e non ne dà nessuno per il coaching. Le schermate saltano la riga:
 il portale professionista non mostra il co-payment, la prenotazione non offre una
 seduta a pagamento.
 
+#### Il diritto alle sedute: tre cose che il tipo non dice
+
+Sono le tre in cui l'implementazione di oggi e questo testo divergono, e nessuna
+si vede nella demo. Chi scrive il backend le incontra tutte e tre.
+
+**`used` conta le erogate dell'anno di piano, e oggi non c'è un anno.** La
+definizione nella tabella delle KPI (§3) dice «nell'anno di piano»;
+l'implementazione conta tutte le sedute erogate del paziente, senza finestra.
+Nella demo coincidono perché l'agenda è più corta di un anno, ma **in produzione
+un cap che non ha un periodo non riparte mai**: al tredicesimo mese il dipendente
+resterebbe oltre il tetto per sempre.
+
+`SessionEntitlement` avrà quindi bisogno di un periodo, come `CheckupEligibility`
+ce l'ha già — è la stessa domanda, *da quando ricomincio a contare*, e lì è
+risolta. Il campo non esiste oggi perché nessuna schermata lo leggerebbe, e un
+campo che nessuno legge è ciò che il §11 vieta.
+
+**Il conteggio autorevole è quello centrale, sul paziente.** Il portale del
+dipendente conta le sedute su **tutti** gli psicologi; quello del professionista
+conta le proprie. Oggi coincidono perché la paziente della demo ne vede uno solo,
+e con due psicologi divergerebbero: il co-payment scatterebbe in ritardo, cioè si
+erogherebbe a tariffa piena una seduta che il piano non copre più, e a pagarla
+sarebbe la piattaforma.
+
+Il backend deve calcolarlo **una volta sola sul paziente**, attraverso tutti i
+suoi professionisti. Ciò che il portale del professionista mostra è una
+**proiezione** di quel conteggio, come `ProfessionalSession` lo è della seduta
+(§3, appuntamenti): serve a far vedere il co-payment al professionista, non a
+deciderlo.
+
+**Il piano viene dall'azienda del paziente.** La funzione che calcola il diritto
+legge oggi il piano dell'azienda della demo per **tutti** i pazienti, ed è la
+stessa semplificazione dell'azienda unica (§7). In produzione una professionista
+serve più aziende clienti, quindi il cap e il prezzo della seduta extra cambiano
+da paziente a paziente: sono due dati del contratto commerciale di **quella**
+azienda, non della piattaforma.
+
+**Un servizio che il piano non prevede vale `null`, non un totale a zero.** Oggi
+`getEntitlement("coach")` su un piano senza coach risponde con un diritto da
+`0` sedute, e a saltare la riga è la schermata, che legge il piano dall'azienda.
+Funziona, e dice una cosa falsa: un totale a zero afferma *«hai diritto a zero
+sedute»*, mentre il fatto è *«questo diritto non ce l'hai»* — la differenza fra
+un cap esaurito e un servizio che non è nel contratto.
+
+Il valore giusto è `SessionEntitlement | null`, che è la forma che il §5 già
+ammette per le assenze legittime. Il tipo oggi non lo prevede perché cambiarlo
+sarebbe stato un cambio di contratto dentro una passata di schermate, e in
+produzione va cambiato: con `null` la schermata salta la riga su un valore, senza
+dover andare a leggere il piano per sapere se il diritto esiste.
+
 `VirtualDoctorConsult` esiste perché il conto dei consulti si prende **dalla
 lista**, non da uno scalare accanto. Porta la sola data di apertura: la
 conversazione della demo è una simulazione dichiarata e non ha trascritti da
