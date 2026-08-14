@@ -2812,6 +2812,23 @@ Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà 
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
 
+- **14.08.2026 — La risposta sul margine si riscrive sul divario fra sessioni
+  incluse ed erogate** (`docs/PITCH.md`). Diceva che il margine viene dal
+  co-payment e teneva nella stessa frase i CHF 28 incassati e i CHF 70–80 pagati
+  al professionista: chi ascolta fa la sottrazione e sente l'opposto di ciò che
+  la frase vuole dire. Ora è il **12%** — 142 sedute su un monte di 1'200 — che è
+  anche l'unico dei tre numeri già a schermo, e il co-payment è il deterrente che
+  tiene il consumo dentro il cap. Il testo sta in `PITCH.md`, che è il suo
+  mestiere; qui restano la data e il motivo. La stessa parafrasi viveva in cinque
+  punti fra documentazione e commenti, corretti il 15.08.2026.
+
+- **14.08.2026 — La demo si presenta in italiano, e il selettore si mostra senza
+  usarlo** (`docs/PITCH.md`). Quattro sigle accese sono la prova che
+  l'architettura a quattro lingue esiste, e indicarle basta: cambiare lingua
+  davanti a un investitore che quella lingua la parla mette a giudizio la
+  formulazione invece dell'architettura, e DE, FR ed EN non sono ratificati da
+  una revisione madrelingua — che è la voce aperta qui sopra.
+
 - **12.08.2026 — Le guardie di rotta, in due stadi** (`CLAUDE.md` §4,
   `CONTRATTO-DATI.md` §6). La proposta prima dell'esecuzione, ed è il primo
   blocco di M5 con quella forma: il modello di impersonificazione andava
