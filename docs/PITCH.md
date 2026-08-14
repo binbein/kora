@@ -205,6 +205,22 @@ qui la privacy non è una promessa scritta nell'informativa, è una proprietà d
 forma dei dati — la stessa disciplina per cui i font sono self-hostati e le
 richieste esterne a runtime sono zero (`CLAUDE.md` §3).
 
+### "Se rispondo al check rapido, la dashboard si muove?"
+
+**No, ed è voluto.** La risposta si salva e si rilegge — la card mostra il volto
+scelto — ma le curve della dashboard non si spostano: gli aggregati di reparto
+sono **mensili** (`CLAUDE.md` §5.3), e una risposta sola non muove una media
+pesata sui dipendenti misurati.
+
+**Dirlo prima, non farlo scoprire.** Se durante la demo si tocca un volto e poi
+si passa alla dashboard HR aspettandosi un movimento, l'assenza di movimento si
+legge come un difetto invece che come la granularità del dato — e la domanda
+arriva nel momento peggiore, cioè sulla schermata su cui si regge il pitch.
+
+In produzione è esattamente il contrario: quella scrittura è ciò che alimenta le
+serie mensili dei reparti, ed è la semplificazione della demo che salta per prima
+il giorno del passaggio (`docs/CONTRATTO-DATI.md` §7).
+
 ### "Perché il ROI è 2.35:1? Nel documento ho letto 19.5:1"
 
 Perché sono **tre rapporti diversi**, e noi mostriamo il più conservativo dei tre.
