@@ -415,6 +415,29 @@ appuntamenti e contatori. La prova a schermo esiste: prenotando dal portale
 dipendente lo slot sparisce, l'appuntamento compare in home e la stessa seduta
 compare nel calendario e nelle sedute in programma del professionista.
 
+**`bookAppointment` deve poter rifiutare, e oggi non lo fa mai.** La firma
+promette un `Appointment`: nella demo la prenotazione riesce sempre, perché
+l'unica scrittrice è la schermata e gli slot che propone sono liberi per
+costruzione. In produzione **due persone chiedono lo stesso slot nello stesso
+secondo**, e il secondo tentativo va rifiutato — un `409` sul confine HTTP, un
+errore sul confine dell'interfaccia. Il client sa già che una mutation può
+fallire (§5) e la schermata dice che lo slot è ancora libero, quindi il caso ha
+già la sua resa: a mancare è il rifiuto, non il modo di mostrarlo.
+
+**Nessun tetto governa le prenotazioni in programma.** Il diritto alle sedute
+conta le **erogate** — è la definizione della tabella qui sopra, ed è la ragione
+per cui prenotare non fa salire `used` — ma da questo discende che si può
+prenotare **oltre il cap** senza che niente lo dica: il tetto morde al momento
+dell'erogazione, e nel frattempo l'agenda accetta. Nella demo non si vede, perché
+gli slot proponibili sono pochi e il cap è lontano.
+
+In produzione va deciso **dove** il tetto si applica: al momento della
+prenotazione — e allora `bookAppointment` rifiuta anche per questa ragione, con
+un motivo distinto da quello dello slot occupato — oppure alla conferma della
+seduta, e allora il dipendente va avvertito prima. Il contratto non lo dice
+perché la demo non lo esercita, ma è una scelta di prodotto e non un dettaglio:
+cambia cosa vede chi prenota l'undicesima seduta.
+
 **`submitRapidCheck` invalida solo la risposta**, non la radice: il check rapido
 non muove contatori né appuntamenti, e invalidare più del necessario farebbe
 rileggere mezza schermata per un tocco.
