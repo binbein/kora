@@ -100,18 +100,21 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
    decisione del blocco, la tranche 1b di M5.e l'ha eseguito e questa riga lo
    ratifica. Sta **solo in `PublicNav`** — il giro del pitch attraversa comunque
    la barra pubblica — è fatto di sigle e non di un menù, e mostra **le sole
-   lingue registrate in `DICTIONARIES`**: oggi due, quattro quando i quattro
-   dizionari esisteranno. Il default è l'italiano e **la scelta non sopravvive a
-   un ricaricamento**, perché il §5.4 vuole che la demo provata sia quella
-   presentata.
+   lingue registrate in `DICTIONARIES`**, che dalla chiusura di M5.e sono
+   **quattro**: `IT DE FR EN`. Il default è l'italiano e **la scelta non
+   sopravvive a un ricaricamento**, perché il §5.4 vuole che la demo provata sia
+   quella presentata.
 
    **Il divieto che stava scritto qui — "niente language switcher" — non era
    estetica, ed è caduto per la sua stessa ragione**: con un dizionario solo uno
    switcher è un comando che non comanda, e una sigla spenta accanto a quella
    accesa è un'affordance morta che invita la domanda "perché è grigia?" dentro
    trenta minuti contati. È caduto il giorno in cui il secondo dizionario è
-   esistito davvero, non prima — ed è la ragione per cui il componente continua a
-   non mostrare FR ed EN finché non ci sono.
+   esistito davvero, non prima. La regola che ne discendeva — mostrare le sole
+   lingue registrate — non è cambiata: è il registro che si è riempito, e il
+   componente è passato da due sigle a quattro **senza che nessuno lo toccasse**.
+   Fino al 14.08.2026 questa riga aggiungeva che «continua a non mostrare FR ed
+   EN finché non ci sono», ed era vera il giorno in cui è stata scritta.
 8. **Commit piccoli e frequenti**, messaggi in inglese, conventional commits
    (`feat: hr dashboard reads from provider`). Mai commit giganti multi-feature.
    Le decisioni non ovvie finiscono in questo file con un commit `docs:` separato
