@@ -355,11 +355,15 @@ kora/
       ui/                ← shadcn, non si tocca se non per i bug di §3
       shared/            ← KPICard, PrivacyBanner, logo
       public|employee|hr|professional|admin/  ← layout e navigazione per area
-      kora/              ← componenti di dominio nuovi: oggi il solo RapidCheckCard
+      kora/              ← componenti di dominio nuovi: RapidCheckCard (M3),
+                           StateNotice (M5.b), RequireRole (M5.d)
     lib/
       data/              ← il contratto dati e l'implementazione mock (§5),
                            più i guardrail e il prefetch della cache
-      i18n/it.ts         ← tutte le stringhe UI
+      i18n/              ← i quattro dizionari (it, de, fr, en), il registro
+                           delle lingue e la guardia dei segnaposto
+      locale.ts          ← il tipo `Locale` e il default: modulo foglia, perché
+                           lo leggono sia `format.ts` sia `i18n`
       format.ts          ← formatCHF, formatDate, formatPercent — unico punto
       dates.ts           ← aritmetica sui giorni: calcola, non formatta
       roi-model.ts       ← formule del calcolatore ROI (§9)
@@ -376,6 +380,14 @@ kora/
 `earnings.ts` e `schedule.ts` sono presentazione, non dominio: raggruppare per
 settimana è una decisione della schermata e per questo non sta nel provider
 (`docs/CONTRATTO-DATI.md` §2).
+
+**`src/lib/utils.ts` manca da questa lista di proposito**, ed è l'unico file di
+`lib/` che non compare: contiene il solo `cn()` — `clsx` più `twMerge` — e
+appartiene al **layer shadcn**, non al dominio. Lo genera `shadcn` insieme ai
+componenti, e la passata di tipizzazione di M3 lo trattò come tale
+(`docs/PROGRESS.md`). Questa riga esiste perché una lista che nomina i file uno
+per uno fa leggere ogni omissione come un'assenza, e la prossima rilettura non
+debba rifare la domanda.
 
 **`platform-metrics.ts` è lì per la stessa ragione, più una che si tocca con
 mano**: sono conti sui dati e non dati — «il tasso di attivazione non è un
