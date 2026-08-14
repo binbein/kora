@@ -80,7 +80,10 @@ Delle altre due esecuzioni rimandate dalla stessa riunione, **una è fatta**: la
 **build "demo"** in cui i guardrail loggano e la **checklist pre-pitch** sono la
 passata del 10.08.2026, in fondo alla sezione refinement — da lì `npm run
 build:demo` è ciò che `vercel.json` deploya, e `docs/PITCH.md` è il terzo
-documento del repository. Resta **`Intl.ListFormat`**, che è dentro M5.
+documento del repository. ~~Resta **`Intl.ListFormat`**, che è dentro M5.~~ →
+**fatto da M5.e**: `formatList` in `format.ts` chiama `Intl.ListFormat`, e con lui
+è sparita la chiave `t.common.listSeparator`. Le tre esecuzioni rimandate dalla
+riunione del 10.08.2026 sono quindi **tutte fatte**.
 
 ### M0 — Messa in sicurezza
 
@@ -2343,8 +2346,9 @@ muove una metrica.
 prenotazione del dipendente usava già `t.common.listSeparator` sulla stessa
 lista. Era l'ultimo separatore cablato a schermo: gli altri `join(", ")` stanno
 dentro i messaggi dei guardrail, che sono testo per chi sviluppa e non passano
-dal dizionario. `Intl.ListFormat` resta M5 — qui si chiude l'incoerenza
-interna, non l'enumerazione che segue il locale.
+dal dizionario. ~~`Intl.ListFormat` resta M5~~ — qui si chiudeva l'incoerenza
+interna, non l'enumerazione che segue il locale, e **quella l'ha chiusa M5.e**
+sostituendo la chiave con `formatList`.
 
 **Un commento orfano è uscito dal dizionario**: *"Quando il form non dichiara
 l'organico"* descriveva una chiave che non esiste più, perché quel caso è
@@ -2892,6 +2896,9 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 
   **`Intl.ListFormat` entra in M5** (`CLAUDE.md` §4). Le liste sono la terza
   cosa che cambia col locale dopo date e valuta, e `format.ts` non le tratta.
+  → **Eseguito da M5.e**, tranche 1a: `formatList` lo chiama e la chiave
+  `t.common.listSeparator` è sparita con il suo ultimo chiamante — era sbagliata
+  anche in italiano, perché un separatore non produce una congiunzione.
 
   **Il piano "Personalizzato" resta in sospeso**: la riunione non l'ha
   discusso, e il suo trigger è il listino a moduli.
