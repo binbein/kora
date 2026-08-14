@@ -37,6 +37,17 @@ un'opacità di 0.07 — cioè la prima schermata che l'investitore vede sarebbe 
 vuota. Se la apri in anticipo, portala davanti prima di cominciare (`CLAUDE.md`
 §10). Per la stessa ragione a scheda nascosta i grafici misurano zero.
 
+**Rimisura l'overflow orizzontale della landing su un browser vero.** La
+correzione del 14.08.2026 è stata verificata su **geometria imposta** — inizio e
+fine dell'animazione scritti a mano sull'elemento — perché il pannello del
+browser di quella sessione riportava `visibilityState: hidden` anche a scheda in
+primo piano, quindi l'animazione d'ingresso non partiva e nessuno ha potuto
+guardarla scorrere (`docs/PROGRESS.md`). Prima della prova generale va rifatta
+guardandola: **scheda in primo piano e viewport reale prima di fidarsi di
+qualunque misura** (`CLAUDE.md` §11). Il criterio è `scrollWidth ===
+clientWidth`, non `innerWidth`, che comprende i 15px della barra di scorrimento
+verticale.
+
 **Tieni la console su uno schermo di servizio**, non su quello proiettato: è lì
 che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
 
