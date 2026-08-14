@@ -296,19 +296,44 @@ export default function HRDashboard() {
     ...entry.sessions,
   }));
 
-  const trendChart = companyHistory.map((record, index) => ({
-    month: formatMonthShort(record.month),
-    company: scoreOf(record),
-    department: alertHistory ? scoreOf(alertHistory[index]) : null,
-  }));
+  /*
+   * LE DUE SERIE SI ALLINEANO PER MESE, NON PER POSIZIONE.
+   *
+   * Il punto del reparto si prendeva con l'indice della serie aziendale, che
+   * vale finché le due hanno la stessa lunghezza — cosa che il contratto non
+   * promette da nessuna parte. Un reparto entrato in azienda a metà finestra ha
+   * meno record, e la schermata su cui si regge il pitch disegnerebbe il mese
+   * sbagliato sotto il mese giusto, o leggerebbe un record che non c'è.
+   *
+   * La chiave è il tempo del mese, cioè la stessa con cui `alertIndex` qui
+   * sotto trova il mese dell'alert: quel calcolo era già per mese, ed è la
+   * ragione per cui il difetto si vedeva solo di lato — l'indice giusto veniva
+   * poi usato per pescare da un'altra serie. `alertIndex` resta un indice
+   * perché indicizza `trendChart`, che nasce da `companyHistory` uno a uno.
+   */
+  const departmentByMonth = new Map(
+    (alertHistory ?? []).map((record) => [record.month.getTime(), record]),
+  );
+
+  const trendChart = companyHistory.map((record) => {
+    const department = departmentByMonth.get(record.month.getTime());
+    return {
+      month: formatMonthShort(record.month),
+      company: scoreOf(record),
+      department: department ? scoreOf(department) : null,
+    };
+  });
 
   const alertIndex = alert
     ? companyHistory.findIndex(
         (record) => record.month.getTime() === alert.triggeredAt.getTime(),
       )
     : -1;
-  const alertPoint =
-    alertIndex >= 0 && alertHistory ? scoreOf(alertHistory[alertIndex]) : null;
+
+  const alertRecord = alert
+    ? departmentByMonth.get(alert.triggeredAt.getTime())
+    : undefined;
+  const alertPoint = alertRecord ? scoreOf(alertRecord) : null;
 
   /*
    * Le due frasi della legenda del trend.
