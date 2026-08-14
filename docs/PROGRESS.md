@@ -3163,6 +3163,51 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 
 ## Decisioni in sospeso
 
+- **Il protocollo clinico e il referente non esistono, e il prodotto ne ha
+  bisogno prima degli utenti** (15.08.2026). Il §2.6 di *"Dubbi Business per
+  CEO"* — verificato aprendo il documento prima di scrivere questa voce — è la
+  **quarta delle sei domande prioritarie** e la pone così: l'Head Medical
+  Network è previsto a T2 mentre i pilot con pazienti veri partono in Fase 1,
+  quindi «dal primo giorno in cui un dipendente parla con uno psicologo tramite
+  KORA, qualcuno deve essere responsabile della qualità clinica e dei protocolli
+  di emergenza (es. ideazione suicidaria durante una sessione: chi viene
+  allertato, con quale procedura?)».
+
+  **Cosa manca nel prodotto**: nessun percorso di presa in carico urgente, il
+  check rapido accetta il valore peggiore senza che succeda niente, la chat del
+  medico non rileva il rischio e non espone numeri d'emergenza. Il perimetro sta
+  in `CONTRATTO-DATI.md` §8.1, che lo mette **primo** perché non è una funzione
+  ma una condizione per operare.
+
+  **Il trigger è prima del primo utente attivo**, non prima del primo contratto,
+  ed è la formula del documento stesso: il rischio nasce con la prima persona
+  che parla con uno psicologo attraverso la piattaforma, non con la firma. Serve
+  «almeno un medico/psicologo senior come advisor con questo ruolo formalizzato».
+
+  Questa voce esiste perché `docs/PITCH.md` dichiara già che il percorso non c'è
+  e che la demo non lo simula: era un'affermazione senza corrispettivo nel
+  repository, ed è la stessa asimmetria che questa serie ha chiuso altrove.
+
+- **La revisione madrelingua dei tre dizionari non è stata fatta, e non ha né
+  proprietario né data** (15.08.2026). Le tre tranche di M5.e dichiarano tedesco,
+  francese e inglese **verificabili e presentabili, non ratificati**, e nessuna
+  dice da chi né quando: con quattro lingue a schermo e un selettore pubblico è
+  la voce aperta con l'esposizione più alta.
+
+  **Proprietario: i founder** — è una scelta di lingua e di registro, non di
+  codice, e le domande da portare alla revisione sono già nominate in testa a
+  ogni dizionario (quattro in `de.ts`, cinque in `fr.ts`, cinque in `en.ts`).
+
+  **Il trigger: prima di qualunque presentazione non in italiano.** Finché non è
+  fatta, `docs/PITCH.md` dice cosa si fa in sala — il selettore si mostra come
+  prova che l'architettura esiste, la lingua non si cambia.
+
+  **Il blocco sugli stati limite ha aggiunto chiavi dopo le tranche**, e vanno
+  lette insieme al resto: `overCapWithoutPrice` riscritta, più
+  `hr.report.downloadError`, `professional.payments.weeksEmpty` e `.payoutsEmpty`
+  nuove, in tutte e quattro le lingue. L'elenco con il testo sta nella sintesi di
+  quella passata.
+
 - **Residenza dei dati: la UI la promette, la decisione commerciale non è
   presa** (founder, 11.08.2026). Il §2.1 di *"Dubbi Business per CEO"* dà la
   promessa come **domanda ancora aperta**: verificato aprendo il documento
