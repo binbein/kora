@@ -173,6 +173,11 @@ Tre invarianti che il backend deve garantire:
 alert memorizzato smette di corrispondere ai punteggi da cui è nato. Segnala solo
 una risalita ancora in corso all'ultimo rilevamento.
 
+**È un valore singolo, e in produzione dovrà essere una lista**: la ragione, e
+perché oggi il tipo è onesto rispetto ai dati che ha, stanno fra le
+semplificazioni del §7. Il rimando è qui perché chi legge le entità decide la
+forma leggendo questo paragrafo, non tre sezioni più in là.
+
 ### Appuntamenti — due proiezioni, una entità
 
 `Appointment` (lato dipendente) e `ProfessionalSession` (lato professionista) sono
