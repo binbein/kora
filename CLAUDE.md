@@ -1612,10 +1612,20 @@ Aziende, Utenti, Professionisti, Sessioni, Provider check-up, Analytics.
 
 Non ha valore narrativo diretto ma ha valore di prodotto: serve dopo. **Va protetto
 o marcato come dati dimostrativi**: M0 lo marca con un banner, perché chiunque abbia
-il link vede il back-office con l'elenco dei "clienti". La guardia vera è M5 e va
-scritta da zero sui nostri ruoli: il `ProtectedRoute` ereditato è stato cancellato
-in M1 insieme all'SDK, perché dipendeva dall'auth di base44 e usarlo avrebbe mandato
-al login del Builder.
+il link vede il back-office con l'elenco dei "clienti".
+
+**Le guardie di ruolo esistono dal 12.08.2026** — blocco d) di M5, scritte da zero
+sui nostri ruoli, perché il `ProtectedRoute` ereditato era stato cancellato in M1
+insieme all'SDK e usarlo avrebbe mandato al login del Builder. **Ma in demo non
+negano l'accesso a niente, per costruzione**: `RequireRole` è una porta che
+concede, e il ramo che nega si raggiunge solo con una manopola di sviluppo (§4,
+blocco d). Quindi a proteggere `/admin` davanti a chi ha il link **resta il banner
+dei dati dimostrativi**, e la riga che segue vale intera.
+
+Fino al 15.08.2026 questa voce diceva *«la guardia vera è M5 e va scritta da
+zero»*, ed era vera fino al giorno in cui è stata scritta. La stessa correzione,
+con la stessa formulazione, è in `docs/PITCH.md`: se le due divergessero il
+difetto tornerebbe da qui, perché è questa la fonte.
 
 **Finita quando:** i totali di ogni schermata si ricavano dai dati e non sono
 scritti a mano. **Soddisfatto in M3**: la schermata ereditata faceva convivere
