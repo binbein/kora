@@ -198,13 +198,37 @@ mostralo muovendo il campo.
 
 ### "Come fate margine se le sedute costano?"
 
-Il **co-payment oltre il cap**. Il piano Plus dà 10 sedute di psicologo l'anno;
-dall'undicesima il dipendente paga **CHF 28** a seduta, contro un compenso al
-professionista di **CHF 70–80** (`CLAUDE.md` §9). Non è teoria messa in una
-slide: nell'elenco pazienti del portale professionista **due pazienti sono sopra
-il cap**, e il meccanismo si vede a schermo.
+**Dal divario fra sessioni incluse ed erogate**, e il numero che lo sostiene è
+già a schermo: il monte annuo di Demo SA è di **1'200 sedute** — 120 dipendenti
+per le 10 del piano Plus — e ne sono state usate **142**, cioè il **12%**
+(`CLAUDE.md` §8). È la KPI "142 di 1'200" della dashboard HR, quindi è una cifra
+che si indica mentre la si dice, non un conto fatto a voce.
 
-L'Essenziale ha 6 sedute e extra a CHF 35, l'Executive 16 e extra a CHF 22.
+**Il costo da leggere accanto è quello di una seduta erogata: CHF 70–80** al
+professionista (`CLAUDE.md` §9). Senza un costo unitario il 12% è un dato e non
+un argomento; con il costo accanto al monte e al consumo, **la moltiplicazione la
+fa chi ascolta**. Va lasciata fare: la tariffa è una banda e non un punto, quindi
+un totale detto a voce diventa un numero da difendere che nessuno ha chiesto.
+
+**Il cap annuale è il freno, e il co-payment è il deterrente che lo tiene** — non
+un ricavo. Oltre le sedute incluse il dipendente paga di tasca sua, e questo
+tiene il consumo dentro il monte **senza che la piattaforma debba dire di no a
+nessuno**: è la differenza fra un tetto che si spiega e una lista d'attesa che si
+subisce.
+
+Non è teoria messa in una slide: nell'elenco pazienti del portale professionista
+**due pazienti sono sopra il cap**, e a schermo si vede che il tetto è reale e
+gestito.
+
+I tetti scalano col piano, e il co-payment con loro: **Essenziale 6 sedute, extra
+CHF 35 · Plus 10, extra CHF 28 · Executive 16, extra CHF 22** (`CLAUDE.md` §9).
+
+> **Risposta riscritta su decisione dei founder del 14.08.2026.** Diceva che il
+> margine viene dal co-payment, e metteva nella stessa frase i CHF 28 incassati e
+> i CHF 70–80 pagati: chi ascolta fa la sottrazione e sente dire che ogni seduta
+> oltre il cap costa alla piattaforma più di quanto le renda, cioè l'opposto di
+> ciò che la frase voleva dire. Il divario fra incluse ed erogate regge da sé, e
+> il suo numero è l'unico dei tre che l'investitore ha già davanti agli occhi.
 
 ### "Chi controlla i professionisti? E le strutture?"
 
