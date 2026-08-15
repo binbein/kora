@@ -74,14 +74,25 @@ export default function Footer() {
             <h4 className="font-semibold text-sm uppercase tracking-wider opacity-60">
               {t.public.footer.companyTitle}
             </h4>
-            <p className="text-sm opacity-80">{t.public.footer.companyAbout}</p>
-            <p className="text-sm opacity-80">
+            {/*
+             * `opacity-70` e non `opacity-80`: a 0.8 queste quattro righe
+             * rendevano **identiche** ai cinque `<Link>` della colonna accanto
+             * — stessa dimensione, stesso peso, stessa opacità, stessa altezza
+             * e stessa larghezza — e a distinguerle restava il solo puntatore,
+             * cioè un'informazione che arriva dopo il gesto. In questo footer
+             * 0.8 è il livello dei link e nient'altro; la prosa a 14px sta a
+             * 0.7, come la tagline qui sopra. Non si scende a 0.6: è il livello
+             * degli `<h4>`, e le quattro finirebbero alla stessa opacità del
+             * titolo che le nomina.
+             */}
+            <p className="text-sm opacity-70">{t.public.footer.companyAbout}</p>
+            <p className="text-sm opacity-70">
               {t.public.footer.companyContact}
             </p>
-            <p className="text-sm opacity-80">
+            <p className="text-sm opacity-70">
               {t.public.footer.companyCareers}
             </p>
-            <p className="text-sm opacity-80">{t.public.footer.companyBlog}</p>
+            <p className="text-sm opacity-70">{t.public.footer.companyBlog}</p>
           </div>
 
           <div className="space-y-3">
