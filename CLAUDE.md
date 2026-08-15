@@ -577,13 +577,29 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
     in `format.ts`**: i due call site a schermo sono già allineati al
     separatore del dizionario, quindi il lavoro è nel formatter e non nelle
     schermate.
-  - **f) Le pagine del footer** — privacy policy, termini, cookie policy, più
-    "Chi siamo", "Contatti", "Carriere" e "Blog", che dall'08.08.2026 sono un
-    elenco di sezioni senza affordance da link. **Dipende da due cose fuori dal
-    codice**: i testi legali dei founder, e la **decisione sulla residenza dei
-    dati** (`docs/PROGRESS.md`, decisioni in sospeso) — una privacy policy deve
-    dire dove stanno i dati, e oggi la promessa commerciale non è ratificata.
-    Per questo è l'ultimo.
+  - **f) Le pagine del footer — ritirato dallo scope della demo** (founder,
+    15.08.2026), **e il lavoro è passato al perimetro dell'MVP**, dove ha la sua
+    sezione in `docs/PROGRESS.md`. Non è cancellato: ha cambiato milestone.
+    Privacy policy, termini, cookie policy, più "Chi siamo", "Contatti",
+    "Carriere" e "Blog" **restano com'è oggi**, cioè l'elenco di sezioni senza
+    affordance da link dell'08.08.2026. Nessuna delle sette si costruisce qui.
+
+    **Perché ritirato e non rimandato dentro M5.** Le due dipendenze fuori dal
+    codice non sono ritardi che una passata diligente può assorbire: sono
+    **condizioni di verità del documento**. Una privacy policy che non sa dire
+    dove stanno i dati non è una bozza da rifinire — è **un documento che afferma
+    il falso su una schermata che un cliente firmerà**, e sbagliarla costa più che
+    non averla. Vale identico per i testi legali: un segnaposto in una privacy
+    policy è la cosa che sopravvive più a lungo di tutte. Da qui il divieto che ne
+    discende, ed è il motivo per cui questa riga è scritta così: **nessuna passata
+    futura si porta avanti** scrivendo testo legale provvisorio.
+
+    **Le dipendenze restano tre, e valgono il giorno in cui si costruisce**: i
+    testi legali dei founder; la **decisione sulla residenza dei dati**
+    (`docs/PROGRESS.md`, decisioni in sospeso); e la terza, che il ritiro rende
+    visibile — **la scelta di scope su quali delle sette voci esistono davvero**.
+    Oggi non è presa, e **non va presa adesso**: è la decisione che questa
+    milestone prepara invece di anticiparla.
 
 ## 5. Architettura dati — il cuore del progetto
 
