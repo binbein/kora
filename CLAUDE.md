@@ -360,8 +360,19 @@ kora/
       kora/              ← componenti di dominio nuovi: RapidCheckCard (M3),
                            StateNotice (M5.b), RequireRole (M5.d)
     lib/
-      data/              ← il contratto dati e l'implementazione mock (§5),
-                           più i guardrail e il prefetch della cache
+      data/
+        provider.ts      ← l'interfaccia: il contratto che il backend erediterà
+        types.ts         ← le entità del dominio (§5.3)
+        index.ts         ← la riga che sceglie l'implementazione (§5.7)
+        queries.ts       ← le query react-query e `loadState`, che distingue
+                           attesa, vuoto ed errore (M5.b)
+        query-keys.ts    ← le chiavi gerarchiche, cioè la superficie di
+                           invalidazione (`docs/CONTRATTO-DATI.md` §4)
+        guardrails.ts    ← le tre primitive, e l'unico punto che legge il modo (§5.6)
+        prefetch.ts      ← la cache scaldata prima del primo paint
+        fault-injection.ts ← le manopole `?fail` e `?empty`, solo in sviluppo (M5.b)
+        mock/            ← l'implementazione finta: il dataset di §8 e §9, che si
+                           cancella il giorno di `http/` (§5.7)
       i18n/              ← i quattro dizionari (it, de, fr, en), il registro
                            delle lingue e la guardia dei segnaposto
       locale.ts          ← il tipo `Locale` e il default: modulo foglia, perché
@@ -382,6 +393,20 @@ kora/
 `earnings.ts` e `schedule.ts` sono presentazione, non dominio: raggruppare per
 settimana è una decisione della schermata e per questo non sta nel provider
 (`docs/CONTRATTO-DATI.md` §2).
+
+**Il criterio dell'albero, perché la prossima aggiunta non riapra la domanda:
+l'albero nomina *ogni* file di `lib/` e di `lib/data/`, e ogni omissione si
+motiva** — l'unica che c'è, `utils.ts`, ha la sua riga qui sotto. Le cartelle restano
+cartelle quando il loro contenuto non è codice da orientarsi ma materiale:
+`mock/` è il dataset, `i18n/` sono i dizionari, `base44/entities/` sono schemi.
+Chi aggiunge un file a `lib/data/` aggiunge una riga qui, e chi ne trova uno che
+non c'è ha trovato un difetto, non una scelta.
+
+Fino al 15.08.2026 la glossa di `data/` ne nominava **due su otto** — i guardrail
+e il prefetch — e le altre sei si leggevano come assenze: è lo stesso meccanismo
+che le due righe qui sotto esistono per disinnescare, applicato per distrazione
+proprio dove la regola era già scritta. I tre non nominati erano
+`fault-injection.ts`, `queries.ts` e `query-keys.ts`, arrivati con M5.b.
 
 **`src/lib/utils.ts` manca da questa lista di proposito**, ed è l'unico file di
 `lib/` che non compare: contiene il solo `cn()` — `clsx` più `twMerge` — e
