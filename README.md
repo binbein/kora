@@ -28,6 +28,17 @@ npm run dev
 Vite stampa all'avvio l'indirizzo su cui il server risponde: è quello, perché la
 porta cambia se la prima è occupata.
 
+**Per vedere la build demo servono due comandi**, perché il primo produce `dist/`
+e finisce:
+
+```
+npm run build:demo
+npm run preview
+```
+
+Serve quando si prova il giro del pitch, o si controlla una preview di branch
+prima del merge: è la build che viene deployata, e in sviluppo non si vede.
+
 Non serve nessun file `.env`: non c'è backend, e non deve essercene uno
 (`CLAUDE.md` §2.5).
 
