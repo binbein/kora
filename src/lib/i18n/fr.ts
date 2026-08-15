@@ -427,7 +427,7 @@ export const fr: Dictionary = {
       consults: "{n} cette année",
 
       dataNote:
-        "Tes données de santé sont protégées et ne sont jamais partagées avec des tiers.",
+        "Tes données de santé sont visibles par les professionnels que tu choisis.",
     },
 
     aiPlan: {

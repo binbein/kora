@@ -470,7 +470,7 @@ export const it = {
       consults: "{n} quest'anno",
 
       dataNote:
-        "I tuoi dati sanitari sono protetti e non vengono mai condivisi con terzi.",
+        "I tuoi dati sanitari li vedono i professionisti che scegli tu.",
     },
 
     aiPlan: {

@@ -422,7 +422,7 @@ export const en: Dictionary = {
       consults: "{n} this year",
 
       dataNote:
-        "Your health data is protected and is never shared with third parties.",
+        "Your health data is visible to the professionals you choose.",
     },
 
     aiPlan: {

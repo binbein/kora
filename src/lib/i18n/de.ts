@@ -402,7 +402,7 @@ export const de: Dictionary = {
       consults: "{n} in diesem Jahr",
 
       dataNote:
-        "Deine Gesundheitsdaten sind geschützt und werden nie an Dritte weitergegeben.",
+        "Deine Gesundheitsdaten sehen die Fachpersonen, die du auswählst.",
     },
 
     aiPlan: {
