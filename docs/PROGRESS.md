@@ -2025,7 +2025,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Ventitré passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Ventiquattro passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2034,7 +2034,8 @@ quella francese di M5.e, le quattro della **revisione del 15.08.2026** — #43 e
 contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
 `README.md`, il residuo della nota di sessione, gli slot sovrapposti e i periodi
 non dichiarati, i fatti corretti nei documenti, il perimetro e le promesse in
-sospeso, e **questa passata**, il footer fuori dalla demo. Non
+sospeso, il footer fuori dalla demo, e **questa passata**, i terzi e la
+simmetria del footer. Non
 aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
 seam e del dizionario. **Quelle che hanno una sottosezione loro sono le
@@ -3510,6 +3511,125 @@ difetto originale. Chi farà la prossima passata mista sa che tocca a lui.
 **La clausola aggiunta ieri ha funzionato al primo giro**: il numero di questa
 sottosezione è stato scritto `n + 1` sapendo di predirlo, e sarebbe stato da
 aggiornare se la passata avesse guadagnato un nono commit.
+
+#### I terzi e la simmetria del footer (15.08.2026)
+
+**Sei commit: tre di codice** — `fix:` ×3 — **e tre di documenti**. È la **prima
+passata di codice dopo cinque di documenti**, e la prima con commit di entrambi i
+tipi. `lint` e `typecheck` a zero, nessun `any`, e i guardrail restano **102**: la
+riga datata del §5.6 non si muove.
+
+Due correzioni sole, entrambe **misurate dalla passata precedente**, che non le
+poteva fare perché toccava solo documenti.
+
+##### La stringa: il contesto ha cambiato la domanda
+
+`employee.profile.dataNote` diceva *"non vengono mai condivisi con terzi"* ed era
+falsa. La domanda posta era se **nominare il destinatario** valesse la frase in
+più; a rispondere è stato il contesto, non l'argomento: **cento pixel più su, sulla
+stessa schermata, il `PrivacyBanner` dice già che nessun dato individuale arriva
+all'azienda**. Riscrivere `dataNote` su quella stessa affermazione l'avrebbe
+duplicata, e il §11 direbbe di togliere la riga, non di riscriverla. Nominare il
+destinatario non è "più forte": **è ciò che le fa guadagnare il posto.**
+
+> *"I tuoi dati sanitari li vedono i professionisti che scegli tu."*
+
+**Senza esclusività, e la ragione è la stessa per cui la voce esisteva.** *"Solo"*
+sarebbe vero sul prodotto — nessun metodo HR o admin restituisce `SessionNote` o
+`CheckupReport` — e **lasco in diritto**, perché Kora quei dati li conserva ed è
+la parte che la privacy policy dovrà nominare come titolare. Sostituire una
+promessa falsa in diritto con una lasca nello stesso diritto sarebbe stato lo
+stesso errore una tacca più piccolo, **dentro la passata che esiste per
+chiuderlo**. Va scartata proprio perché suona meglio.
+
+##### Il footer: due correzioni, e la seconda è un'estensione di scope
+
+**Le quattro voci "Azienda" passano da `opacity-80` a `opacity-70`.** In questo
+footer **0.8 è il livello dei link e di nient'altro** — ogni altro testo non-link
+a 14px sta a 0.6 o 0.7 — quindi le quattro erano l'unica cosa non interattiva al
+livello interattivo. Non si scende a 0.6: è il livello degli `<h4>`, e le quattro
+finirebbero alla stessa opacità del titolo che le nomina, cioè una colonna piatta
+al posto di due colonne gemelle.
+
+**Le tre voci legali e il copyright passano da `opacity-50` a `opacity-60`**, ed è
+scope aggiunto dai founder **dopo la misura**: 0.5 su quel fondo dà **4.08:1**
+contro la soglia di 4.5, e 12px è testo normale. La riga precedente diceva "non si
+toccano", ed è stata scritta prima che qualcuno le misurasse.
+
+| | prima | dopo |
+|---|---|---|
+| i cinque `<Link>` | 0.8 — 7.92:1 | **invariati** |
+| le quattro "Azienda" | 0.8 — 7.92:1 | 0.7 — **6.46:1** |
+| tre legali e copyright | 0.5 — **4.08:1** | 0.6 — **5.18:1** |
+
+##### Il buco non era nelle quattro righe, era nel metodo
+
+È la parte che vale più della correzione, e serve alla prossima passata di
+accessibilità **prima** che ricominci dalle stesse assunzioni.
+
+**Un censimento che confronta il colore calcolato con il fondo non vede la
+proprietà `opacity`**, perché l'opacità non sta nel colore: sta sull'elemento, e
+`getComputedStyle` la restituisce a parte. Misurato sui **20 nodi di testo** di
+quel footer: **leggendo il solo colore passano tutti a 11.45:1**, e quattro di
+loro stanno a 4.08.
+
+**Il caso di opacità che M5.a aveva colto è l'altra cosa.** L'anello di focus a
+`/50` è **alpha dentro il token**, quindi il colore calcolato la porta e un
+censimento sul colore la vede — ed è per questo che quel difetto fu trovato e
+questi no. Due sintassi che si somigliano nel nome della classe e che uno
+strumento distingue.
+
+**La portata, censita**: fuori da `src/components/ui/` — congelato, e i suoi
+`opacity-50` sono stati disabilitati, che la norma esenta — la proprietà `opacity`
+sul testo vive in **tre file soli**: `Footer.tsx` (25 usi), `KPICard.tsx` (2) e
+`Landing.tsx` (1). I quattro nodi sotto soglia erano tutti nel footer; **gli altri
+tre sono stati rimisurati col metodo giusto e passano** — 7.36:1, 5.37:1 e 7.92:1.
+Il `CLAUDE.md` §6.1 porta la correzione con la sua data: quello "zero" è stato
+falso di quattro nodi **dall'11.08.2026 al 15.08.2026**.
+
+##### Verificato a schermo, e cosa passa a un umano
+
+**Sulla build demo, viewport 1280 con `innerWidth` verificato** — e la verifica è
+stata rifatta su scheda nuova perché la prima è diventata cieca a metà sessione,
+`innerWidth` a **0**, cioè la trappola che il §11 descrive: le misure non erano
+imprecise, erano di un'altra pagina.
+
+- **la simmetria è rotta alla misura**: l'asserzione `stiliIdentici` fra il primo
+  link e la prima voce, che la passata precedente aveva trovato **vera**, ora è
+  **falsa**;
+- **i link sono intatti**: cinque ancore, cinque elementi focalizzabili, `cursor:
+  pointer`, 0.8;
+- **zero nodi sotto soglia** sui 20 del footer, misurati con l'opacità composta;
+- **la stringa in tutte e quattro le lingue, una riga e nessun troncamento**:
+  it 316px, de 388px, fr 412px, en 332px in un contenitore da 832 — il francese è
+  il più lungo, non il tedesco, e nessuna delle quattro sfiora il bordo;
+- **il footer tedesco tiene**: le quattro voci restano su una riga ciascuna, zero
+  overflow di pagina.
+
+**Due asserzioni passano a un umano**, e sono quelle che si giudicano a occhio:
+**il footer intero guardato di colpo** — le due colonne devono smettere di
+leggersi come la stessa cosa — e **il puntatore che passa da "Portale HR" a "Chi
+siamo"**, che è il gesto che ha rivelato il difetto. Il pannello non le poteva
+prendere: dopo lo scorrimento la pagina non ridipinge e il raster del footer esce
+bianco. **Se a 0.7 la lettura non cambia, la ricaduta è 0.6 e la colonna piatta è
+il prezzo**, dichiarato qui perché la scelta resti ricostruibile.
+
+##### Il criterio di conteggio, alla prova che mancava
+
+Tre passate di fila avevano dichiarato che la metà che discrimina non era stata
+esercitata. **Questa la esercita: tre `fix:` e tre `docs:`.**
+
+**Ha retto, e nessun commit è stato ambiguo da classificare** — ma la ragione
+merita di essere scritta, perché non è quella che sembra: **il criterio classifica
+sul prefisso, non sul contenuto**, quindi la domanda *"cambiare quattro stringhe di
+dizionario è codice o documenti?"* non si pone mai in fase di conteggio. Si pone
+**a monte**, quando si sceglie il prefisso.
+
+Ed è lì che è rimasto il giudizio: la riscrittura di `dataNote` tocca solo testo, e
+`docs:` sarebbe stato difendibile a parole. È `fix:` perché **corregge
+un'affermazione falsa del prodotto**, non un documento — e il prodotto è ciò che
+quella stringa rende a schermo. **Il criterio decide la colonna; a scegliere il
+prefisso resta chi scrive**, ed è utile saperlo prima della prossima passata mista.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
