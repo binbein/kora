@@ -3704,6 +3704,96 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 
 ## Decisioni in sospeso
 
+**Tre delle voci qui sotto sono la stessa classe di rischio, ed è quella che la
+residenza dei dati ha inaugurato**: una **promessa di meccanismo** scritta in una
+schermata che un cliente firmerà, mentre il meccanismo non esiste e nessuno ha
+ratificato la frase. Si riconoscono da una prova sola — *se un cliente ci
+chiedesse di dimostrarla domani, cosa gli mostreremmo?* — e per questo portano
+tutte il conto delle stringhe con il criterio accanto: **il giorno in cui si
+decide, quelle stringhe o si confermano o si cambiano**, e chi lo farà deve
+sapere quante sono senza rifare la ricerca.
+
+- **La crittografia end-to-end è promessa a schermo e non è verificabile**
+  (15.08.2026). La pagina privacy dell'HR dichiara *"i dati sanitari sono
+  crittografati in transito e a riposo con standard AES-256"*, e la landing porta
+  lo stesso claim come chip accanto a "Hosting in Svizzera".
+
+  **Quante stringhe la promettono, con il criterio**: in `src/lib/i18n/it.ts`
+  sono **3** — cercando le stringhe che nominano la cifratura — cioè il **titolo
+  e il corpo** del principio nel riquadro privacy HR
+  (`hr.privacy.principle.encryption`) e il **chip della landing**
+  (`public.landing.privacyChip.encryption`). Ognuna ha le sue tre traduzioni,
+  quindi a cambiare sarebbero dodici stringhe su quattro file, ma **il conto che
+  conta è tre**: sono tre punti a schermo, ed è quello il numero da rileggere.
+
+  **Il chip della landing è il punto più esposto e non è quello che si
+  guarderebbe per primo**: la pagina privacy HR la vede un cliente che sta
+  valutando, il chip lo vede **chiunque apra la demo**, investitori compresi, ed
+  è nel percorso del pitch.
+
+  **Perché è una decisione e non un compito.** "End-to-end" ha un significato
+  tecnico preciso — solo gli estremi possono leggere — e con un backend che
+  calcola aggregati per reparto, deriva il diritto alle sedute e conserva le note
+  di sessione, *quel* significato non è compatibile con l'architettura descritta
+  in questo documento. Cifratura in transito e a riposo lo è, ma è un'altra
+  affermazione. Quindi o la frase si riscrive su ciò che si farà davvero, o
+  l'architettura deve cambiare — e la seconda è una decisione che cambia il §8.2
+  del contratto, non una riga di `i18n`.
+
+  **Proprietario: i founder**, insieme a chi scriverà il backend — è una scelta
+  di architettura prima che di copy. **Il trigger è il primo dato sanitario
+  vero**, cioè lo stesso del protocollo clinico: il giorno in cui esiste un
+  referto di una persona reale, la frase o è vera o è una dichiarazione falsa a
+  un cliente.
+
+- **Il consenso è promesso come già raccolto, e non esiste** (15.08.2026). La
+  stessa pagina dichiara *"ogni dipendente conferma il consenso durante
+  l'attivazione e può revocarlo in ogni momento"*. Il `CONTRATTO-DATI.md` §8.2
+  dice l'opposto alla lettera: **nessun consenso viene raccolto in nessun punto**
+  del percorso, e non esistono né l'export dei propri dati né la loro
+  cancellazione.
+
+  **Quante stringhe, con il criterio**: in `src/lib/i18n/it.ts` sono **2** —
+  cercando le stringhe che nominano il consenso o la revoca — il **titolo e il
+  corpo** di `hr.privacy.principle.consent`. Vivono in un punto solo, la pagina
+  privacy HR, e non hanno un equivalente sulla landing.
+
+  **È la più grave delle tre, e non per il numero.** Le altre due promettono un
+  meccanismo che manca; questa afferma un **fatto giuridico compiuto** — che il
+  consenso è stato dato — su una schermata rivolta al titolare del trattamento,
+  cioè a chi su quella base tratterà i dati dei propri dipendenti. E promette una
+  **revoca** che non ha nessun percorso: né un metodo del provider né una
+  schermata.
+
+  **Proprietario: i founder con il legale**, ed è la stessa decisione del §8.2 —
+  chi è titolare e chi responsabile del trattamento — vista dal lato della frase
+  che la anticipa. **Il trigger è prima del primo utente attivo**, come il
+  protocollo clinico: il consenso o si raccoglie prima del primo dato, o non lo
+  si raccoglie mai per quel dato.
+
+- **Il `doneHint` del check rapido promette una cadenza che il contratto non ha**
+  (15.08.2026). Dopo aver risposto, la card dice *"ti richiediamo come stai fra
+  qualche giorno"*. Il `CONTRATTO-DATI.md` §3 dichiara esplicitamente che **la
+  cadenza non esiste**: il contratto non dice ogni quanto si chiede, quindi non
+  può dire quando la risposta è dovuta, e non esistono né l'invito né il ritardo.
+
+  **Quante stringhe**: **1**, `employee.rapidCheck.doneHint`, più le sue tre
+  traduzioni. È l'unica del prodotto che affermi una ricorrenza.
+
+  **È la minore delle tre e va nominata comunque**, perché il difetto ha una
+  forma che le altre due non hanno: **una stringa a schermo sta decidendo ciò che
+  il contratto lascia indeciso.** "Fra qualche giorno" non è vago per prudenza —
+  esclude già la cadenza mensile e quella settimanale, cioè restringe una scelta
+  di prodotto che nessuno ha fatto, e la restringe nel punto in cui il §2.7 vuole
+  frasi intere e non decisioni nascoste nel copy.
+
+  **Proprietario: i founder**, ed è una decisione di prodotto piccola con una
+  conseguenza di dominio grande — la cadenza è ciò da cui dipendono i misurati
+  del periodo, quindi la soglia di anonimato (`CLAUDE.md` §8). **Il trigger è il
+  primo pilot**, che è anche il momento in cui il check rapido smette di essere
+  un tocco in una demo e diventa la sorgente dei dati di stress veri. Fino ad
+  allora la frase non fa danno, e non va confermata per inerzia.
+
 - **Il protocollo clinico e il referente non esistono, e il prodotto ne ha
   bisogno prima degli utenti** (15.08.2026). Il §2.6 di *"Dubbi Business per
   CEO"* — verificato aprendo il documento prima di scrivere questa voce — è la
