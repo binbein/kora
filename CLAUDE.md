@@ -669,8 +669,8 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 97 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 97 posti.
+call site sono 102 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 102 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
 **Il criterio con cui i call site si contano**, perché una rilevazione futura non
@@ -716,6 +716,15 @@ numero**: se il criterio è stato applicato per intero, a essere invecchiata è 
 riga, e si aggiorna con la data. Un guardrail nuovo è un call site nuovo, ed è
 esattamente ciò che è successo passando da 96 a 97 con la tranche tedesca.
 
+**Il numero compare in questa sezione più di una volta, e una sola porta la
+data.** È quella del criterio, qui sopra; le altre tre — le due che aprono la
+sezione e quella sui nomi — sono prosa. Sono invecchiate **due volte in due
+giorni**, mentre la riga datata veniva aggiornata da entrambe le passate che
+muovevano il conto: non è distrazione, è che una cifra senza il criterio accanto
+non chiede di essere riletta. Ne discendono due obblighi opposti e ugualmente
+brevi: chi muove il numero **le muove tutte**, e chi ne trova una che non torna
+guarda **prima** la riga datata (founder, 15.08.2026).
+
 **Perché questa forma e non quella di prima.** Fino al 14.08.2026 la riga diceva
 *"un 97 futuro va riconosciuto come errore di criterio, non come correzione"*:
 blindava **un valore**, il 97 è arrivato in un giorno per la ragione più
@@ -731,7 +740,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 97 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 102 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 
