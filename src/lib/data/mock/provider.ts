@@ -550,6 +550,40 @@ export class MockDataProvider implements DataProvider {
       "Prenotata una seduta nel fine settimana.",
     );
 
+    /*
+     * IL TERZO CONTROLLO GUARDA L'AGENDA DEL PAZIENTE, non quella del
+     * professionista, ed è l'unica che possa rispondere alla domanda: il
+     * dipendente ha già qualcosa in quella fascia?
+     *
+     * I due controlli qui sopra non lo vedono, e per costruzione: guardano un
+     * professionista alla volta, mentre chi prenota può avere sedute con
+     * chiunque. Due slot di professionisti diversi che si accavallano passavano
+     * entrambi, e la home elencava due sedute sovrapposte — è successo, ed è la
+     * ragione per cui questo controllo esiste (`scheduling.ts` ha il gemello
+     * statico sugli slot proponibili).
+     *
+     * **Intervalli e non istanti**: sullo stesso inizio rispondeva già il primo
+     * controllo, e il caso vero era uno slot che ne invade un altro di venti
+     * minuti. Vale la stessa esenzione delle annullate: quella fascia è tornata
+     * libera davvero.
+     */
+    const endsAt = slot.start.getTime() + slot.durationMinutes * 60_000;
+    const patientAgenda = PROFESSIONALS.flatMap((professional) =>
+      sessionsOfPatient(
+        PORTAL_PATIENT_EMPLOYEE_ID,
+        this.sessionsOf(professional.id),
+      ),
+    );
+    assertInDevOutsidePromise(
+      !patientAgenda.some((session) => {
+        if (session.status === "cancelled") return false;
+        const sessionEndsAt =
+          session.start.getTime() + session.durationMinutes * 60_000;
+        return slot.start.getTime() < sessionEndsAt && session.start.getTime() < endsAt;
+      }),
+      "Prenotata una seduta che si sovrappone a un'altra dello stesso dipendente: la schermata sta proponendo una fascia già occupata.",
+    );
+
     const mine = sessionsOfPatient(PORTAL_PATIENT_EMPLOYEE_ID, agenda);
 
     const session: StoredSession = {

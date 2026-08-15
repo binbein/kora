@@ -43,7 +43,11 @@ const SLOT_PLAN: Record<string, [day: number, hour: number, minute: number][]> =
     ],
     rossi: [
       [1, 12, 0],
-      [2, 9, 30],
+      // le 09:00 e non le 09:30: a 09:30 questo slot finiva alle 10:20 e si
+      // sovrapponeva per venti minuti a quello della Dr.ssa Meier delle 10:00,
+      // che è **lo slot che `docs/PITCH.md` prescrive di prenotare**. Chi li
+      // prenotava entrambi si ritrovava due sedute accavallate nella home.
+      [2, 9, 0],
       [5, 13, 0],
       [6, 17, 0],
     ],
@@ -83,4 +87,28 @@ for (const slot of INITIAL_SLOTS) {
     slot.start.getDay() !== 0 && slot.start.getDay() !== 6,
     `Uno slot di ${slot.professionalId} cade nel fine settimana.`,
   );
+}
+
+/*
+ * DUE SLOT PROPONIBILI NON SI SOVRAPPONGONO, nemmeno fra professionisti diversi.
+ *
+ * A prenotarli è **una persona sola**, quindi due fasce che si accavallano sono
+ * due sedute che non può fare — e la demo le proponeva entrambe: lo slot delle
+ * 09:30 del Dr. Rossi finiva alle 10:20, dentro quello delle 10:00 della
+ * Dr.ssa Meier che `docs/PITCH.md` prescrive di prenotare.
+ *
+ * Confronta **intervalli e non istanti**: sullo stesso istante di inizio il
+ * difetto si vede, venti minuti dopo no. È il controllo che avrebbe trovato
+ * quella coppia da solo, e serve a chi cambierà un orario del piano senza
+ * ricalcolare a mente le sedici fasce.
+ */
+for (const [index, slot] of INITIAL_SLOTS.entries()) {
+  const endsAt = slot.start.getTime() + slot.durationMinutes * 60_000;
+  for (const other of INITIAL_SLOTS.slice(index + 1)) {
+    const otherEndsAt = other.start.getTime() + other.durationMinutes * 60_000;
+    assertInDev(
+      slot.start.getTime() >= otherEndsAt || other.start.getTime() >= endsAt,
+      `Gli slot di ${slot.professionalId} e ${other.professionalId} si sovrappongono: chi prenota è la stessa persona e non può fare entrambe le sedute.`,
+    );
+  }
 }

@@ -1957,14 +1957,15 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Diciannove passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Venti passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
 quella francese di M5.e, le quattro della **revisione del 15.08.2026** — #43 e
 #44 sulla coerenza del dominio e sugli stati limite, #45 sul perimetro del
 contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
-`README.md` e **questa passata**, il residuo della nota di sessione. Non
+`README.md`, il residuo della nota di sessione e **questa passata**, gli slot
+sovrapposti e i periodi non dichiarati. Non
 aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
 seam e del dizionario, più le sette che hanno una sottosezione loro qui sotto:
@@ -2957,6 +2958,175 @@ throttled a **~388 ms reali** — un campionatore scritto a 1 ms non risolve
 niente. Gli input arrivano su alcune schede e non su altre, e la scheda iniziale
 del pannello non li consegnava affatto. I due punti del salvataggio sono stati
 eseguiti **su un browser vero dai founder**, non qui.
+
+#### Slot sovrapposti e periodi non dichiarati (15.08.2026)
+
+Sei commit di codice e quattro di documenti. Cinque difetti verificati, nessuno
+dei quali rompeva la demo — ma **il primo era a un clic dal giro che apre il
+pitch**. Nessun numero del §8 e del §9 si muove.
+
+##### Due slot prenotabili si sovrapponevano, e uno era quello del pitch
+
+Lo slot del venerdì del Dr. Rossi andava 09:30→10:20, dentro quello della Dr.ssa
+Meier delle 10:00→10:50 — cioè **lo slot che `docs/PITCH.md` prescrive di
+prenotare durante la demo**. Chi li prenotava entrambi si ritrovava due sedute
+accavallate nella home di Laura, e non parlava nessuno. Misurato: **una sola
+coppia su sedici**.
+
+Lo slot passa alle **09:00**, e rimisurando escono **zero coppie sovrapposte**.
+Ma il dataset corretto non impedisce il prossimo, quindi arrivano **due
+controlli, e sono due cose diverse**:
+
+- **il gemello statico, in `scheduling.ts`**: nessuna coppia di slot proponibili
+  si sovrappone, **nemmeno fra professionisti diversi**, perché a prenotarli è
+  una persona sola. È quello che avrebbe trovato la coppia da solo, e sta accanto
+  al controllo sul fine settimana che c'era già;
+- **il controllo sull'agenda del paziente, in `bookAppointment`**: i due che
+  c'erano guardano **un professionista alla volta**, quindi nessuno dei due
+  poteva rispondere alla domanda che conta — il dipendente ha già qualcosa in
+  quella fascia? Due slot di professionisti diversi passavano entrambi.
+
+Tutti e due confrontano **intervalli e non istanti**: sullo stesso istante di
+inizio rispondeva già il controllo esistente, e il caso vero era una fascia che
+ne invade un'altra di venti minuti.
+
+**La trappola del prossimo che tocca la durata, misurata e lasciata scritta.** Il
+gemello statico confronta gli slot **fra loro**, non gli slot con le sedute già
+in agenda del paziente. Oggi il caso più stretto è lo slot Fontana del giovedì,
+16:30→17:20, contro la seduta di Laura delle 17:30: **dieci minuti di margine**.
+Portando `SESSION_DURATION_MINUTES` da 50 a 60 il margine si azzera esattamente —
+16:30 + 60 = 17:30, si toccano — e la sovrapposizione comincia a **61**. Il
+controllo a runtime lo prende, ma **solo se qualcuno prenota davvero** quello
+slot; quello statico non può prenderlo, perché importare `PORTAL_SESSIONS` in
+`scheduling.ts` sarebbe un ciclo — `professional-portal.ts` importa
+`SESSION_DURATION_MINUTES` da lì. Non è stato cambiato niente: è scritto perché
+60 è l'ultimo valore sicuro, e chi lo supera non ha un controllo statico che lo
+avverta.
+
+##### "Compenso" voleva dire due cose nella stessa schermata
+
+In `/admin/sessioni` la colonna stampava la tariffa anche sulle sedute **in
+programma**, mentre la KPI accanto somma le erogate e porta il sottotitolo "solo
+sedute erogate" — e il commento sopra quella KPI dichiarava che «due schermate
+che contano lo stesso denaro devono contarlo allo stesso modo» senza vedere che
+le due schermate erano la stessa. Chi sommava la colonna non otteneva la KPI.
+
+Ora l'importo sta solo sulle erogate, con il trattino che le annullate già
+usavano: quello era **metà del caso**.
+
+##### Il banner dell'alert precoce non dichiarava il suo periodo
+
+Selezionando il trimestre più vecchio, la dashboard mostrava "Alert precoce —
+reparto Vendite" con `triggeredAt` al **01.07.2026**, cioè un evento datato sette
+mesi dopo la fine del periodo scelto, in cima alla schermata su cui si regge il
+pitch. La tabella accanto dice già "ultimo mese" e i due grafici "ultimi 12
+mesi": il banner era **l'unico dei tre che taceva**.
+
+**Etichettato, non nascosto** (founder, 15.08.2026). Nascondere sui trimestri
+vecchi sembrava più pulito e sarebbe stata una finzione: `getEarlyAlert()` non
+prende un periodo, quindi l'alert corrente è l'unico che esista e la dashboard
+non ne conosce di storici. Un banner assente si legge come *"in quel trimestre
+non c'era un alert"*, che è una cosa che questa schermata **non è in grado di
+affermare**. Misurato, il costo sarebbe stato: banner visibile su **un trimestre
+su quattro**, cioè solo sul corrente.
+
+Dice **"ultimo rilevamento"** e non "in corso", che su questa schermata vuol già
+dire un'altra cosa — il trimestre parziale del selettore, `3° trimestre 2026 · in
+corso`. Il qualificatore sta **nel titolo**, dove le altre due lo tengono.
+
+##### Due stati limite latenti, gemelli di due chiusi lo stesso giorno
+
+- **`Checkup.tsx`**: con `availableFrom === null` — piano senza check-up — il
+  pulsante disabilitato usciva **senza nome accessibile**, cioè `: ""`. Gemello
+  del contatore coach: stessa ipotesi di piano, schermata accanto.
+- **`ProProfilo.tsx`**: `documentsVerified` e `mandateSigned` rendevano il badge
+  solo a `true`, lasciando l'etichetta a sinistra e **il nulla a destra**.
+  Gemello del badge di annullamento senza motivo. Il non-ancora è **neutro e non
+  `destructive`**: il §6.1 riserva quel token agli alert, e un mandato da firmare
+  è un passo del vetting, non un guasto.
+
+Tre stringhe nuove in tutte e quattro le lingue.
+
+##### I guardrail passano da 100 a 102
+
+Due call site, e **sono due controlli distinti**, non lo stesso in due posti: il
+gemello statico sugli slot proponibili e il controllo sull'agenda del paziente in
+`bookAppointment`. Il primo guarda il dataset a freddo, il secondo guarda ciò che
+succede mentre qualcuno prenota, e nessuno dei due copre l'altro — la nota sulla
+durata qui sopra dice esattamente dove il primo non arriva.
+
+##### Verificato
+
+**Il punto 1 provato nei due versi, sullo stesso codice:**
+
+| dataset | esito |
+|---|---|
+| rossi 09:30, rotto ad arte | il gemello statico parla all'inizializzazione, e quello della prenotazione parla al secondo slot prenotato |
+| rossi 09:00 | tutti e tre gli slot del venerdì si prenotano, **nessuno dei due parla** |
+
+**A schermo, build demo, viewport 1280×900 e scheda in primo piano:**
+
+- il dialogo di Rossi offre **09:00**, e prenotandolo la conferma dice *"venerdì
+  25.09.2026, alle 09:00"* — console muta; quello di Meier offre **10:00**, con
+  la stessa data e la console muta;
+- **`/admin/sessioni`: la somma della colonna è CHF 5'040 e la KPI dice CHF
+  5'040.** 82 righe, 63 con importo — tutte "Erogata" — e 19 col trattino, 18 in
+  programma più l'annullata;
+- **il banner regge il tedesco**: `Frühwarnung — Abteilung Vendite · letzte
+  Erhebung` sta su **una riga**, 675px di testo in una card da 960, zero overflow
+  di pagina. Il nome del reparto resta `Vendite`, che è la regola di M5.e;
+- **la più lunga delle tre stringhe nuove è il francese**, `En cours de
+  vérification`: una riga, badge da 175px in una riga da 918, zero overflow. Non
+  si vede col dataset di oggi — nessun professionista ha i documenti non
+  verificati — quindi è stata misurata girando il flag della Dr.ssa Keller;
+- **il punto 5 riprodotto prima di correggerlo**, puntando
+  `PORTAL_PROFESSIONAL_ID` sulla Dr.ssa Keller, che è la stessa manopola usata
+  per il mese senza compensi: prima la riga "Contratto a mandato" aveva **zero
+  badge**, dopo dice "Da firmare". Ripristinata la manopola, Meier torna a
+  "Verificati" e "Firmato";
+- `lint`, `typecheck` e `build:demo` a posto.
+
+**Due asserzioni le ha eseguite un umano**, perché il pannello del browser non
+poteva — la ragione è qui sotto, e non è una scusa: sono le due che chiudono i
+punti 1 e 2, quindi il modo in cui sono state prese va scritto accanto all'esito.
+
+- **le due prenotazioni del venerdì nella stessa sessione** — Rossi 09:00 e Meier
+  10:00 — compaiono **entrambe** nella home, console muta. È il caso che prima si
+  accavallava, visto dal lato del dipendente;
+- **la vista Q4 2025 col banner etichettato**: il qualificatore "· ultimo
+  rilevamento" fa il suo lavoro, e la data di luglio 2026 non salta all'occhio.
+
+##### Due cose sullo strumento, e insieme dicono una regola
+
+**Il pannello del browser non apre due dialoghi nella stessa scheda.** Il secondo
+resta un guscio vuoto con il solo pulsante di chiusura: la scheda riporta
+`visibilityState: hidden`, non ridipinge, e l'animazione di uscita di Radix non
+completa. Per la stessa ragione non si apre il popover del selettore del
+trimestre. **Sono le due asserzioni passate a un umano** qui sopra: il pannello
+non poteva prenderle, e ciò che poteva dare — le due prenotazioni una per scheda,
+e il testo del banner in italiano e in tedesco — non era la stessa cosa. Il
+provider era comunque provato headless, che è lo stesso codice; a mancare era
+**la schermata**, ed è esattamente ciò che un umano ha guardato.
+
+**Il primo script che misurava le sovrapposizioni è crollato**, perché passava lo
+*slot* dove la funzione voleva la *data*. Ed è la **coppia esatta** dell'errore
+della passata precedente: là lo strumento rispose *"nessuna differenza"*
+confrontando due file vuoti, qui si è denunciato da solo. Le due insieme dicono
+la cosa che serve, ed è più utile di ciascuna: **uno strumento che risponde
+quello che speravi va rifatto, uno che crolla si è già denunciato.** Il pericoloso
+è il primo.
+
+##### Aperto e dichiarato
+
+- **Su un trimestre vecchio il banner mostra ancora una data di luglio 2026.**
+  L'etichetta chiude l'errore di categoria — dice che il banner non parla del
+  trimestre scelto — e **la stranezza temporale resta a schermo**: è il prezzo
+  accettato per non affermare un'assenza che il provider non può sostenere. Vive
+  accanto al limite gemello di questa stessa schermata, la **tabella stress che
+  non segue il selettore**: sono i due punti in cui la dashboard mostra un
+  periodo diverso da quello scelto, ed entrambi lo dicono nel titolo. Il giorno
+  in cui il contratto avrà alert storici — `getEarlyAlert(period)` — la scelta si
+  rifà, e allora nascondere smetterebbe di essere una finzione.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

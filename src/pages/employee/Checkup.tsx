@@ -87,12 +87,18 @@ function ProviderRow({
          * lascerebbe una scheda senza esito, e un pulsante che si preme senza
          * conseguenze sarebbe il vicolo cieco che il §10.B vieta.
          */}
+        {/*
+         * `availableFrom` è `null` quando il piano non comprende il check-up
+         * (`docs/CONTRATTO-DATI.md` §3), e non è una data lontana: senza questa
+         * riga il pulsante disabilitato usciva **senza nome accessibile**, cioè
+         * un bersaglio muto per chi legge lo schermo.
+         */}
         <Button variant="outline" className="self-center tabular-nums" disabled>
           {availableFrom
             ? interpolate(t.employee.checkup.bookFrom, {
                 date: formatDate(availableFrom),
               })
-            : ""}
+            : t.employee.checkup.notInPlan}
         </Button>
       </div>
     </Card>

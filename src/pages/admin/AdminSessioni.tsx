@@ -163,12 +163,17 @@ export default function AdminSessioni() {
                 <TableCell>
                   <Badge variant="outline">{t.sessionType[session.type]}</Badge>
                 </TableCell>
-                {/* Una seduta annullata non matura compenso: la riga mostra un
-                    trattino invece di un importo che nessuno incassa. */}
+                {/* Il compenso lo matura la seduta **erogata**, e la riga porta
+                    l'importo solo lì: la KPI accanto somma le erogate e dice
+                    "solo sedute erogate", quindi chi somma questa colonna deve
+                    ottenere quel numero. Con l'importo anche sulle sedute in
+                    programma le due cifre divergevano nella stessa schermata,
+                    che è ciò che il §5.5 vieta — e l'annullata, che il trattino
+                    già mostrava, era solo metà del caso. */}
                 <TableCell className="tabular-nums whitespace-nowrap">
-                  {session.status === "cancelled"
-                    ? t.common.none
-                    : formatCHF(professional.sessionFee)}
+                  {session.status === "completed"
+                    ? formatCHF(professional.sessionFee)
+                    : t.common.none}
                 </TableCell>
                 <TableCell>
                   <Badge className={STATUS_BADGE[session.status]}>

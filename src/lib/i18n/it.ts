@@ -400,6 +400,10 @@ export const it = {
       providerAddress: "{address}, {city}",
       /** Sul pulsante, quando il prossimo check-up non è ancora aperto */
       bookFrom: "Dal {date}",
+      /* `availableFrom` è `null` quando il piano non comprende il check-up
+         (`docs/CONTRATTO-DATI.md` §3): il pulsante resta disabilitato e deve
+         comunque avere un nome, o è un bersaglio muto. */
+      notInPlan: "Non incluso nel piano",
 
       report: {
         /** "Referto del 15.03.2026" */
@@ -662,8 +666,10 @@ export const it = {
       fee: "Tariffa a seduta",
       documents: "Documenti",
       verified: "Verificati",
+      documentsPending: "In verifica",
       mandate: "Contratto a mandato",
       signed: "Firmato",
+      mandatePending: "Da firmare",
       /** "312 sedute erogate" */
       totalSessions: "{n} sedute erogate",
       mandateNote:
@@ -748,7 +754,12 @@ export const it = {
     /** "51 su 82 iscritti" */
     kpiCheckupHint: "{done} su {enrolled} iscritti",
 
-    alertTitle: "Alert precoce — reparto {department}",
+    /* Il qualificatore sta nel titolo come per la tabella e i due grafici: il
+       banner non segue il selettore del trimestre — `getEarlyAlert` non prende
+       un periodo — e senza dirlo, chi apre il Q4 2025 legge in cima un alert
+       datato luglio 2026. Dice "ultimo rilevamento" e non "in corso", che su
+       questa schermata vuol già dire un'altra cosa: il trimestre parziale. */
+    alertTitle: "Alert precoce — reparto {department} · ultimo rilevamento",
     alertDescription:
       "Lo stress del reparto è in fascia alta da {months} mesi consecutivi, da {since}.",
 

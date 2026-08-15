@@ -374,6 +374,7 @@ export const fr: Dictionary = {
       distance: "{km} km",
       providerAddress: "{address}, {city}",
       bookFrom: "Dès le {date}",
+      notInPlan: "Non inclus dans le forfait",
 
       report: {
         title: "Rapport du {date}",
@@ -585,8 +586,10 @@ export const fr: Dictionary = {
       fee: "Tarif par séance",
       documents: "Documents",
       verified: "Vérifiés",
+      documentsPending: "En cours de vérification",
       mandate: "Contrat de mandat",
       signed: "Signé",
+      mandatePending: "À signer",
       totalSessions: "{n} séances effectuées",
       /* "(Auftrag)" resta: l'italiano nomina apposta l'istituto del CO, e in
          francese il mandato è lo stesso articolo di legge visto dall'altra
@@ -658,7 +661,7 @@ export const fr: Dictionary = {
     kpiCheckup: "Check-up réalisés",
     kpiCheckupHint: "{done} sur {enrolled} inscrits",
 
-    alertTitle: "Alerte précoce — département {department}",
+    alertTitle: "Alerte précoce — département {department} · dernier relevé",
     alertDescription:
       "Le stress du département est en zone haute depuis {months} mois consécutifs, depuis {since}.",
 

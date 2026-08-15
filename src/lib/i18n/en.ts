@@ -369,6 +369,7 @@ export const en: Dictionary = {
       distance: "{km} km",
       providerAddress: "{address}, {city}",
       bookFrom: "From {date}",
+      notInPlan: "Not included in your plan",
 
       report: {
         title: "Report of {date}",
@@ -578,8 +579,10 @@ export const en: Dictionary = {
       fee: "Fee per session",
       documents: "Documents",
       verified: "Verified",
+      documentsPending: "Under review",
       mandate: "Mandate contract",
       signed: "Signed",
+      mandatePending: "To be signed",
       totalSessions: "{n} sessions delivered",
       /* "(Auftrag)" resta, come in francese: l'italiano nomina apposta
          l'istituto del Codice delle obbligazioni, e il mandato inglese non è
@@ -646,7 +649,7 @@ export const en: Dictionary = {
     kpiCheckup: "Check-ups completed",
     kpiCheckupHint: "{done} of {enrolled} enrolled",
 
-    alertTitle: "Early alert — {department} department",
+    alertTitle: "Early alert — {department} department · latest reading",
     alertDescription:
       "The stress of the department has been in the high band for {months} consecutive months, since {since}.",
 

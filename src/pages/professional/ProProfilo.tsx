@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Award, Briefcase, CheckCircle2, Globe, Star } from 'lucide-react';
+import { Award, Briefcase, CheckCircle2, Clock, Globe, Star } from 'lucide-react';
 import { formatCHF, formatNumber, formatRating } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import { professionalDisplayName } from '@/lib/data/types';
@@ -104,19 +104,38 @@ export default function ProProfilo() {
             <span className="text-muted-foreground">{t.professional.profile.fee}</span>
             <span className="font-semibold tabular-nums">{formatCHF(professional.sessionFee)}</span>
           </div>
+          {/*
+           * I DUE BADGE RENDONO ANCHE IL `false`. Prima uscivano solo a `true`, e
+           * il ramo mancante non è teorico: la Dr.ssa Keller ha i documenti
+           * verificati e il mandato **non** firmato (§8), quindi la riga
+           * mostrava l'etichetta a sinistra e il nulla a destra — che si legge
+           * come un dato mancante invece che come lo stato che è.
+           *
+           * Il non-ancora è neutro e non `destructive`: il §6.1 riserva quel
+           * token ad alert e stati critici, e un mandato da firmare è un passo
+           * del vetting, non un guasto.
+           */}
           <div className="flex items-center justify-between py-2 border-b border-border">
             <span className="text-muted-foreground">{t.professional.profile.documents}</span>
-            {professional.documentsVerified && (
+            {professional.documentsVerified ? (
               <Badge className="bg-secondary/10 text-secondary-strong">
                 <CheckCircle2 className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.profile.verified}
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="text-muted-foreground">
+                <Clock className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.profile.documentsPending}
               </Badge>
             )}
           </div>
           <div className="flex items-center justify-between py-2">
             <span className="text-muted-foreground">{t.professional.profile.mandate}</span>
-            {professional.mandateSigned && (
+            {professional.mandateSigned ? (
               <Badge className="bg-secondary/10 text-secondary-strong">
                 <CheckCircle2 className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.profile.signed}
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="text-muted-foreground">
+                <Clock className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.profile.mandatePending}
               </Badge>
             )}
           </div>

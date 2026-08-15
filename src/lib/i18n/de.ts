@@ -349,6 +349,7 @@ export const de: Dictionary = {
       distance: "{km} km",
       providerAddress: "{address}, {city}",
       bookFrom: "Ab {date}",
+      notInPlan: "Nicht im Plan enthalten",
 
       report: {
         title: "Befund vom {date}",
@@ -551,8 +552,10 @@ export const de: Dictionary = {
       fee: "Tarif pro Sitzung",
       documents: "Dokumente",
       verified: "Verifiziert",
+      documentsPending: "In Prüfung",
       mandate: "Auftragsvertrag",
       signed: "Unterzeichnet",
+      mandatePending: "Zu unterzeichnen",
       totalSessions: "{n} durchgeführte Sitzungen",
       mandateNote:
         "Zusammenarbeit im Auftragsverhältnis. Keine Anstellung: Kora bringt die Patientinnen und übernimmt Buchungen, Video und Zahlungen.",
@@ -598,7 +601,7 @@ export const de: Dictionary = {
     kpiCheckup: "Abgeschlossene Check-ups",
     kpiCheckupHint: "{done} von {enrolled} angemeldet",
 
-    alertTitle: "Frühwarnung — Abteilung {department}",
+    alertTitle: "Frühwarnung — Abteilung {department} · letzte Erhebung",
     alertDescription:
       "Der Stress der Abteilung liegt seit {months} aufeinanderfolgenden Monaten im hohen Bereich, seit {since}.",
 
