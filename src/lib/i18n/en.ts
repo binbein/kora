@@ -579,8 +579,10 @@ export const en: Dictionary = {
       fee: "Fee per session",
       documents: "Documents",
       verified: "Verified",
+      documentsPending: "Under review",
       mandate: "Mandate contract",
       signed: "Signed",
+      mandatePending: "To be signed",
       totalSessions: "{n} sessions delivered",
       /* "(Auftrag)" resta, come in francese: l'italiano nomina apposta
          l'istituto del Codice delle obbligazioni, e il mandato inglese non è

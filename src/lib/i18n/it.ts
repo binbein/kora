@@ -666,8 +666,10 @@ export const it = {
       fee: "Tariffa a seduta",
       documents: "Documenti",
       verified: "Verificati",
+      documentsPending: "In verifica",
       mandate: "Contratto a mandato",
       signed: "Firmato",
+      mandatePending: "Da firmare",
       /** "312 sedute erogate" */
       totalSessions: "{n} sedute erogate",
       mandateNote:

@@ -586,8 +586,10 @@ export const fr: Dictionary = {
       fee: "Tarif par séance",
       documents: "Documents",
       verified: "Vérifiés",
+      documentsPending: "En cours de vérification",
       mandate: "Contrat de mandat",
       signed: "Signé",
+      mandatePending: "À signer",
       totalSessions: "{n} séances effectuées",
       /* "(Auftrag)" resta: l'italiano nomina apposta l'istituto del CO, e in
          francese il mandato è lo stesso articolo di legge visto dall'altra

@@ -552,8 +552,10 @@ export const de: Dictionary = {
       fee: "Tarif pro Sitzung",
       documents: "Dokumente",
       verified: "Verifiziert",
+      documentsPending: "In Prüfung",
       mandate: "Auftragsvertrag",
       signed: "Unterzeichnet",
+      mandatePending: "Zu unterzeichnen",
       totalSessions: "{n} durchgeführte Sitzungen",
       mandateNote:
         "Zusammenarbeit im Auftragsverhältnis. Keine Anstellung: Kora bringt die Patientinnen und übernimmt Buchungen, Video und Zahlungen.",
