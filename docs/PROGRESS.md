@@ -20,6 +20,29 @@ lì.
 - Se una milestone chiude con difetti noti e accettati, si scrivono qui: è il posto
   in cui chi riprende scopre cosa non deve rifare da capo.
 
+### Come una passata conta i propri commit
+
+Quasi ogni voce di questo file si apre dichiarando quanti commit ha, e finora
+quel conteggio non aveva un criterio scritto — a differenza dei call site
+(`CLAUDE.md` §5.6) e dei `.jsx` (`CLAUDE.md` §3), che ce l'hanno e per questo
+hanno smesso di divergere. Il criterio, deciso dai founder il 15.08.2026:
+
+- **codice** è `feat:`, `fix:` e `refactor:`; **documenti** è `docs:`. Non ci
+  sono altre categorie, e un commit sta in una sola;
+- **si conta sul branch, a chiusura avvenuta**, non a memoria e non durante:
+  `git log --format='%s' <merge>^..<merge>^2` elenca esattamente i commit della
+  passata, e `| sed 's/:.*//' | sort | uniq -c` ne dà la ripartizione;
+- **se si scrive la ripartizione si scrive anche il totale, dalla stessa
+  misura.** È la parte che vale più delle altre due: il difetto che ha fatto
+  scrivere questa regola aveva il **totale giusto e la ripartizione sbagliata**
+  — «cinque commit di codice e uno di documenti» su un branch di tre e tre — ed
+  è la firma di due numeri presi in due momenti. Un solo comando, due numeri che
+  non possono divergere.
+
+Vale da questa passata in avanti. Le voci più vecchie non si riscrivono: sono
+verbali, e un conteggio sbagliato che qualcuno trova si corregge lì con la sua
+data, come è stato fatto per quello del residuo della nota di sessione.
+
 ## Stato
 
 **M0, M1, M2, M3 e M4 chiuse. M5 è aperta.** La demo è condivisibile e **tutte e
