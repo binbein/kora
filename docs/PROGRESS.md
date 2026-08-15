@@ -966,6 +966,13 @@ zero**, su **27 schermate** — il criterio che distingue rotte e schermate sta 
 criterio — "27 rotte: le 26 più la 404" — e stava nel file che non decide: dal
 15.08.2026 lo dichiara la costituzione e qui si rimanda.)*
 
+> **Quello zero era falso di quattro nodi, dall'11.08.2026 al 15.08.2026.** I tre
+> link legali e il copyright del footer stavano a `opacity-50` su `bg-primary`:
+> **4.08:1** contro 4.5, e 12px è testo normale. Il verbale resta com'è perché è
+> il resoconto di ciò che quel censimento misurò; a essere sbagliata non era la
+> conta, era **ciò che lo strumento poteva vedere**. La spiegazione, la misura e
+> la correzione stanno nella passata del 15.08.2026, in fondo ai refinement.
+
 **Il censimento vecchio era da grep e sbagliava in difetto.** Diceva 27 testi e
 40 icone; a schermo, con il viewport reale, i punti distinti erano **79** — 60
 icone e 19 testi — per 259 occorrenze. Il confine testo/icone che `PROGRESS`
@@ -2018,7 +2025,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Ventitré passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Ventiquattro passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2027,7 +2034,8 @@ quella francese di M5.e, le quattro della **revisione del 15.08.2026** — #43 e
 contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
 `README.md`, il residuo della nota di sessione, gli slot sovrapposti e i periodi
 non dichiarati, i fatti corretti nei documenti, il perimetro e le promesse in
-sospeso, e **questa passata**, il footer fuori dalla demo. Non
+sospeso, il footer fuori dalla demo, e **questa passata**, i terzi e la
+simmetria del footer. Non
 aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
 seam e del dizionario. **Quelle che hanno una sottosezione loro sono le
@@ -3504,6 +3512,125 @@ difetto originale. Chi farà la prossima passata mista sa che tocca a lui.
 sottosezione è stato scritto `n + 1` sapendo di predirlo, e sarebbe stato da
 aggiornare se la passata avesse guadagnato un nono commit.
 
+#### I terzi e la simmetria del footer (15.08.2026)
+
+**Sei commit: tre di codice** — `fix:` ×3 — **e tre di documenti**. È la **prima
+passata di codice dopo cinque di documenti**, e la prima con commit di entrambi i
+tipi. `lint` e `typecheck` a zero, nessun `any`, e i guardrail restano **102**: la
+riga datata del §5.6 non si muove.
+
+Due correzioni sole, entrambe **misurate dalla passata precedente**, che non le
+poteva fare perché toccava solo documenti.
+
+##### La stringa: il contesto ha cambiato la domanda
+
+`employee.profile.dataNote` diceva *"non vengono mai condivisi con terzi"* ed era
+falsa. La domanda posta era se **nominare il destinatario** valesse la frase in
+più; a rispondere è stato il contesto, non l'argomento: **cento pixel più su, sulla
+stessa schermata, il `PrivacyBanner` dice già che nessun dato individuale arriva
+all'azienda**. Riscrivere `dataNote` su quella stessa affermazione l'avrebbe
+duplicata, e il §11 direbbe di togliere la riga, non di riscriverla. Nominare il
+destinatario non è "più forte": **è ciò che le fa guadagnare il posto.**
+
+> *"I tuoi dati sanitari li vedono i professionisti che scegli tu."*
+
+**Senza esclusività, e la ragione è la stessa per cui la voce esisteva.** *"Solo"*
+sarebbe vero sul prodotto — nessun metodo HR o admin restituisce `SessionNote` o
+`CheckupReport` — e **lasco in diritto**, perché Kora quei dati li conserva ed è
+la parte che la privacy policy dovrà nominare come titolare. Sostituire una
+promessa falsa in diritto con una lasca nello stesso diritto sarebbe stato lo
+stesso errore una tacca più piccolo, **dentro la passata che esiste per
+chiuderlo**. Va scartata proprio perché suona meglio.
+
+##### Il footer: due correzioni, e la seconda è un'estensione di scope
+
+**Le quattro voci "Azienda" passano da `opacity-80` a `opacity-70`.** In questo
+footer **0.8 è il livello dei link e di nient'altro** — ogni altro testo non-link
+a 14px sta a 0.6 o 0.7 — quindi le quattro erano l'unica cosa non interattiva al
+livello interattivo. Non si scende a 0.6: è il livello degli `<h4>`, e le quattro
+finirebbero alla stessa opacità del titolo che le nomina, cioè una colonna piatta
+al posto di due colonne gemelle.
+
+**Le tre voci legali e il copyright passano da `opacity-50` a `opacity-60`**, ed è
+scope aggiunto dai founder **dopo la misura**: 0.5 su quel fondo dà **4.08:1**
+contro la soglia di 4.5, e 12px è testo normale. La riga precedente diceva "non si
+toccano", ed è stata scritta prima che qualcuno le misurasse.
+
+| | prima | dopo |
+|---|---|---|
+| i cinque `<Link>` | 0.8 — 7.92:1 | **invariati** |
+| le quattro "Azienda" | 0.8 — 7.92:1 | 0.7 — **6.46:1** |
+| tre legali e copyright | 0.5 — **4.08:1** | 0.6 — **5.18:1** |
+
+##### Il buco non era nelle quattro righe, era nel metodo
+
+È la parte che vale più della correzione, e serve alla prossima passata di
+accessibilità **prima** che ricominci dalle stesse assunzioni.
+
+**Un censimento che confronta il colore calcolato con il fondo non vede la
+proprietà `opacity`**, perché l'opacità non sta nel colore: sta sull'elemento, e
+`getComputedStyle` la restituisce a parte. Misurato sui **20 nodi di testo** di
+quel footer: **leggendo il solo colore passano tutti a 11.45:1**, e quattro di
+loro stanno a 4.08.
+
+**Il caso di opacità che M5.a aveva colto è l'altra cosa.** L'anello di focus a
+`/50` è **alpha dentro il token**, quindi il colore calcolato la porta e un
+censimento sul colore la vede — ed è per questo che quel difetto fu trovato e
+questi no. Due sintassi che si somigliano nel nome della classe e che uno
+strumento distingue.
+
+**La portata, censita**: fuori da `src/components/ui/` — congelato, e i suoi
+`opacity-50` sono stati disabilitati, che la norma esenta — la proprietà `opacity`
+sul testo vive in **tre file soli**: `Footer.tsx` (25 usi), `KPICard.tsx` (2) e
+`Landing.tsx` (1). I quattro nodi sotto soglia erano tutti nel footer; **gli altri
+tre sono stati rimisurati col metodo giusto e passano** — 7.36:1, 5.37:1 e 7.92:1.
+Il `CLAUDE.md` §6.1 porta la correzione con la sua data: quello "zero" è stato
+falso di quattro nodi **dall'11.08.2026 al 15.08.2026**.
+
+##### Verificato a schermo, e cosa passa a un umano
+
+**Sulla build demo, viewport 1280 con `innerWidth` verificato** — e la verifica è
+stata rifatta su scheda nuova perché la prima è diventata cieca a metà sessione,
+`innerWidth` a **0**, cioè la trappola che il §11 descrive: le misure non erano
+imprecise, erano di un'altra pagina.
+
+- **la simmetria è rotta alla misura**: l'asserzione `stiliIdentici` fra il primo
+  link e la prima voce, che la passata precedente aveva trovato **vera**, ora è
+  **falsa**;
+- **i link sono intatti**: cinque ancore, cinque elementi focalizzabili, `cursor:
+  pointer`, 0.8;
+- **zero nodi sotto soglia** sui 20 del footer, misurati con l'opacità composta;
+- **la stringa in tutte e quattro le lingue, una riga e nessun troncamento**:
+  it 316px, de 388px, fr 412px, en 332px in un contenitore da 832 — il francese è
+  il più lungo, non il tedesco, e nessuna delle quattro sfiora il bordo;
+- **il footer tedesco tiene**: le quattro voci restano su una riga ciascuna, zero
+  overflow di pagina.
+
+**Due asserzioni passano a un umano**, e sono quelle che si giudicano a occhio:
+**il footer intero guardato di colpo** — le due colonne devono smettere di
+leggersi come la stessa cosa — e **il puntatore che passa da "Portale HR" a "Chi
+siamo"**, che è il gesto che ha rivelato il difetto. Il pannello non le poteva
+prendere: dopo lo scorrimento la pagina non ridipinge e il raster del footer esce
+bianco. **Se a 0.7 la lettura non cambia, la ricaduta è 0.6 e la colonna piatta è
+il prezzo**, dichiarato qui perché la scelta resti ricostruibile.
+
+##### Il criterio di conteggio, alla prova che mancava
+
+Tre passate di fila avevano dichiarato che la metà che discrimina non era stata
+esercitata. **Questa la esercita: tre `fix:` e tre `docs:`.**
+
+**Ha retto, e nessun commit è stato ambiguo da classificare** — ma la ragione
+merita di essere scritta, perché non è quella che sembra: **il criterio classifica
+sul prefisso, non sul contenuto**, quindi la domanda *"cambiare quattro stringhe di
+dizionario è codice o documenti?"* non si pone mai in fase di conteggio. Si pone
+**a monte**, quando si sceglie il prefisso.
+
+Ed è lì che è rimasto il giudizio: la riscrittura di `dataNote` tocca solo testo, e
+`docs:` sarebbe stato difendibile a parole. È `fix:` perché **corregge
+un'affermazione falsa del prodotto**, non un documento — e il prodotto è ciò che
+quella stringa rende a schermo. **Il criterio decide la colonna; a scegliere il
+prefisso resta chi scrive**, ed è utile saperlo prima della prossima passata mista.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -3939,50 +4066,35 @@ tutte il conto delle stringhe con il criterio accanto: **il giorno in cui si
 decide, quelle stringhe o si confermano o si cambiano**, e chi lo farà deve
 sapere quante sono senza rifare la ricerca.
 
-**La prima voce dell'elenco è di una classe diversa e peggiore**, ed è detto lì:
-non promette un meccanismo che manca, afferma un fatto che è **già falso oggi**.
+~~**La prima voce dell'elenco era di una classe diversa e peggiore**: non
+prometteva un meccanismo che manca, affermava un fatto già falso.~~ →
+**chiusa il 15.08.2026**, ed è l'unica delle quattro che si sia chiusa
+scrivendo codice invece che prendendo una decisione, come la voce stessa
+prevedeva.
 
-- **«Non vengono mai condivisi con terzi» è falso, e lo dice il portale del
-  dipendente** (15.08.2026). La pagina Profilo dichiara *"i tuoi dati sanitari
-  sono protetti e non vengono mai condivisi con terzi"*. Il modello la smentisce
-  in due punti, e uno dei due lo dichiara **la stessa applicazione**: lo psicologo
-  è un **collaboratore a mandato** — *"Collaborazione a mandato (Auftrag). Nessun
-  vincolo di assunzione"*, nel portale professionista — quindi un professionista
-  indipendente, non un dipendente di Kora; e le **strutture convenzionate** del
-  check-up sono soggetti distinti che producono il referto, cioè quello che il
-  `CONTRATTO-DATI.md` §3 chiama **l'unico dato sanitario individuale del
-  dominio**. Sono terzi per qualunque definizione giuridica.
-
-  **Quante stringhe, con il criterio**: **1**, `employee.profile.dataNote`, più
-  le sue tre traduzioni — e cercando *"con terzi"*, *"a terzi"* e *"terze parti"*
-  sulle 728 chiavi stringa di `src/lib/i18n/it.ts` **è l'unica occorrenza del
-  prodotto**. Nessun'altra schermata nomina i terzi, né per promettere né per
-  dichiarare.
-
-  **Perché è peggiore delle tre qui sotto.** Crittografia, consenso e residenza
-  promettono cose che **non esistono ancora**: sono debiti, e si pagano
-  costruendo o riscrivendo. Questa afferma un fatto **già falso mentre lo si
-  legge**, ed è un errore. E lo afferma nel **portale del dipendente**, cioè alla
-  persona che ha più diritto di leggerlo esatto e meno modo di verificarlo: chi
-  legge quella riga sta per raccontare a uno psicologo cose che non racconta al
-  proprio datore di lavoro.
-
-  **È anche l'unica delle quattro che non aspetta una decisione, ma una
-  passata.** Il rimedio è noto e costa quattro stringhe: la riformulazione giusta
-  **è già l'argomento più forte del prodotto**. *"Non con la tua azienda"* è
-  vero, lo sostiene la forma del dominio (`CONTRATTO-DATI.md` §3) ed è ciò che
-  altre **21 stringhe** dicono in coro. Vale la pena valutare se **nominare anche
-  il destinatario** — il professionista che il dipendente sceglie — perché una
-  promessa che dice *con chi* il dato è condiviso è più forte di una che dice
-  solo chi resta fuori, e qui il destinatario è una persona che l'utente ha
-  scelto lui. La stringa non si scrive qui: è `src/`.
-
-  **Proprietario: i founder**, e la formulazione va portata alla stessa revisione
-  legale della privacy policy — è la frase che quella policy dovrà sostenere.
-  **Il trigger è la prima passata che tocca `i18n`**, non una decisione da
-  attendere: a differenza delle altre tre non c'è niente da decidere prima, e
-  ogni giorno in cui resta è un giorno in cui la schermata dice una cosa non
-  vera. Al più tardi **prima del primo dipendente vero**.
+> ~~**«Non vengono mai condivisi con terzi» è falso, e lo dice il portale del
+> dipendente** (15.08.2026). La pagina Profilo dichiarava *"i tuoi dati sanitari
+> sono protetti e non vengono mai condivisi con terzi"*, mentre lo psicologo è un
+> collaboratore a mandato e le strutture del check-up sono soggetti distinti che
+> producono il referto: terzi per qualunque definizione giuridica. Una stringa,
+> `employee.profile.dataNote`, e cercando *"con terzi"*, *"a terzi"* e *"terze
+> parti"* sulle 728 chiavi di `it.ts` era l'unica occorrenza del prodotto.~~
+>
+> → **Riscritta in tutte e quattro le lingue** (founder, 15.08.2026): *"i tuoi
+> dati sanitari li vedono i professionisti che scegli tu."* **Nomina il
+> destinatario invece di ripetere chi è escluso**, ed è la forma che le fa
+> guadagnare il posto: il `PrivacyBanner` cento pixel più su dice già che nessun
+> dato individuale arriva all'azienda, quindi una riscrittura su quella
+> affermazione l'avrebbe duplicata nella stessa schermata — e il §11 direbbe di
+> togliere la riga, non di riscriverla.
+>
+> **Senza esclusività, e per la stessa ragione per cui la voce esisteva.**
+> *"Solo"* sarebbe vero sul prodotto — nessun metodo HR o admin restituisce
+> `SessionNote` o `CheckupReport` (`CONTRATTO-DATI.md` §3) — e **lasco sul piano
+> giuridico**, perché Kora quei dati li conserva ed è la parte che la privacy
+> policy dovrà nominare come titolare. Sostituire una promessa falsa in diritto
+> con una lasca nello stesso diritto sarebbe stato lo stesso errore una tacca più
+> piccolo, dentro la passata che esiste per chiuderlo.
 
 - **La crittografia end-to-end è promessa a schermo e non è verificabile**
   (15.08.2026). La pagina privacy dell'HR dichiara *"i dati sanitari sono
@@ -4282,13 +4394,16 @@ perché sono i punti a schermo**.
 | crittografia | **3** | meccanismo | ha già la sua voce |
 | consenso | **2** | meccanismo | ha già la sua voce |
 | **cosa l'azienda non vede** | **21** | **fatto, e vero** | il lato in positivo |
-| **terzi** | **1** | **fatto, e falso** | ha la sua voce, la quarta |
+| **terzi** | **1** | **fatto** | era falsa, **riscritta il 15.08.2026**: nomina il destinatario |
 | conservazione, cancellazione, diritti | **0** | — | terreno libero |
 
-Le prime tre e la quinta hanno una voce fra le decisioni in sospeso e **qui si
-citano senza duplicarle**: l'inventario serve a trovare le altre.
+**Le prime tre hanno una voce fra le decisioni in sospeso** e qui si citano senza
+duplicarle; **la quinta ce l'aveva e si è chiusa il 15.08.2026**, riscrivendo la
+stringa. L'inventario serve a trovare le altre.
 
-**Le 21 sono il lato in positivo, e valgono quanto la promessa falsa.** Sono ciò
+**Le 21 sono il lato in positivo, e valgono quanto valeva la promessa falsa** —
+tanto che sono state **la riformulazione già pronta** per la stringa che l'ha
+sostituita. Sono ciò
 che la policy potrà affermare **senza rischi**, perché non sono promesse di
 intenzione: le sostiene la forma del dominio, e il `CONTRATTO-DATI.md` §3 le
 garantisce una per una — l'elenco dipendenti non ha nessun campo su cui un nome

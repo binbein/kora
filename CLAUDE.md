@@ -923,7 +923,25 @@ Regole:
   di M5.
 
   **Chiuso dal blocco a)**: il censimento a schermo passa da 79 punti sotto
-  soglia a **zero informativi**, su 27 rotte. La sezione M5.a di
+  soglia a **zero informativi**, su 27 rotte.
+
+  **Quello "zero" era falso di quattro nodi, e lo è stato dall'11.08.2026 al
+  15.08.2026** — non si riscrive la riga come se avesse sempre detto il vero, si
+  corregge con la sua data. I tre link legali e il copyright del footer stavano a
+  `opacity-50` su `bg-primary`, cioè **4.08:1** contro la soglia di 4.5, e 12px è
+  testo normale. Portati a `opacity-60`, **5.18:1**, il 15.08.2026.
+
+  **Il buco non era nelle quattro righe, era nel metodo**, ed è la parte che
+  serve alla prossima passata di accessibilità: un censimento che confronta il
+  **colore** calcolato con il fondo **non vede la proprietà `opacity`**, che non
+  sta nel colore ma sull'elemento. Misurato sui 20 nodi di testo di quel footer:
+  leggendo il solo colore **passano tutti a 11.45:1**, e quattro di loro stanno
+  a 4.08. Il caso che M5.a *aveva* colto — l'anello di focus a `/50` — è l'altra
+  cosa: lì l'alpha è **dentro il token**, quindi il colore calcolato la porta e
+  un censimento sul colore la vede. Due sintassi che si somigliano e che uno
+  strumento distingue. Il racconto sta in `docs/PROGRESS.md`.
+
+  La sezione M5.a di
   `docs/PROGRESS.md` porta i conti e come ci si è arrivati, compresi i due
   punti che questa riga non poteva prevedere: il censimento vecchio era da grep
   e **sbagliava in difetto**, e il debito delle icone non era di colore ma di

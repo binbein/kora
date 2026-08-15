@@ -74,14 +74,25 @@ export default function Footer() {
             <h4 className="font-semibold text-sm uppercase tracking-wider opacity-60">
               {t.public.footer.companyTitle}
             </h4>
-            <p className="text-sm opacity-80">{t.public.footer.companyAbout}</p>
-            <p className="text-sm opacity-80">
+            {/*
+             * `opacity-70` e non `opacity-80`: a 0.8 queste quattro righe
+             * rendevano **identiche** ai cinque `<Link>` della colonna accanto
+             * — stessa dimensione, stesso peso, stessa opacità, stessa altezza
+             * e stessa larghezza — e a distinguerle restava il solo puntatore,
+             * cioè un'informazione che arriva dopo il gesto. In questo footer
+             * 0.8 è il livello dei link e nient'altro; la prosa a 14px sta a
+             * 0.7, come la tagline qui sopra. Non si scende a 0.6: è il livello
+             * degli `<h4>`, e le quattro finirebbero alla stessa opacità del
+             * titolo che le nomina.
+             */}
+            <p className="text-sm opacity-70">{t.public.footer.companyAbout}</p>
+            <p className="text-sm opacity-70">
               {t.public.footer.companyContact}
             </p>
-            <p className="text-sm opacity-80">
+            <p className="text-sm opacity-70">
               {t.public.footer.companyCareers}
             </p>
-            <p className="text-sm opacity-80">{t.public.footer.companyBlog}</p>
+            <p className="text-sm opacity-70">{t.public.footer.companyBlog}</p>
           </div>
 
           <div className="space-y-3">
@@ -98,8 +109,16 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+          {/*
+           * `opacity-60` e non `opacity-50`: su questo fondo lo 0.5 dà 4.08:1,
+           * sotto la soglia AA di 4.5 — e 12px è testo normale, quindi non c'è
+           * la soglia larga a salvarlo. Lo 0.6 dà 5.18:1 ed è un livello che il
+           * footer già usa. Il censimento di M5.a non li vide perché confronta
+           * il colore col fondo, e la proprietà `opacity` non è nel colore
+           * (`docs/PROGRESS.md`, la passata del 15.08.2026).
+           */}
           {/* L'anno viene dalla data della demo: nessun componente chiama new Date() (§5.4). */}
-          <p className="text-xs opacity-50">
+          <p className="text-xs opacity-60">
             {referenceDate
               ? interpolate(t.public.footer.copyright, {
                   year: String(referenceDate.getFullYear()),
@@ -107,9 +126,9 @@ export default function Footer() {
               : null}
           </p>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            <p className="text-xs opacity-50">{t.public.footer.legalPrivacy}</p>
-            <p className="text-xs opacity-50">{t.public.footer.legalTerms}</p>
-            <p className="text-xs opacity-50">{t.public.footer.legalCookies}</p>
+            <p className="text-xs opacity-60">{t.public.footer.legalPrivacy}</p>
+            <p className="text-xs opacity-60">{t.public.footer.legalTerms}</p>
+            <p className="text-xs opacity-60">{t.public.footer.legalCookies}</p>
           </div>
         </div>
       </div>
