@@ -46,10 +46,16 @@ unico che resta aperto fino alla fine.
 refinement.** Vale il criterio già scritto in quella sezione, che esclude la
 milestone: M4 è #19 e ha la sua sezione, e i blocchi di M5 hanno la loro qui
 sotto. **Il conto vive in un posto solo**, la sezione «Refinement fra le
-milestone», e oggi dice **diciassette**: questa riga ne dichiarava undici mentre
-quella ne diceva tredici, ed erano due misure dello stesso insieme prese in due
-momenti — il difetto che questo file racconta di aver già avuto con le CTA e con
-i guardrail. Qui non si ripete il numero: si rimanda.
+milestone», ed è lì che si legge: questa riga non lo ripete.
+
+**Ha già sbagliato due volte a ripeterlo**, ed è la ragione per cui ora non lo
+fa. Dichiarava **undici** mentre la sezione diceva tredici; corretta a
+**diciassette**, è tornata a divergere in tre giorni, perché la sezione è salita
+a venti e nessuno è risalito fin qui. Erano ogni volta due misure dello stesso
+insieme prese in due momenti — il difetto che questo file racconta di aver già
+avuto con le CTA e con i guardrail — e la seconda correzione lo ha ripetuto
+mentre scriveva, nella stessa frase, che il numero non si ripete. **Il rimedio
+non era allinearlo meglio: era toglierlo** (founder, 15.08.2026).
 
 Il primo commit è l'export **intatto**, così ogni modifica successiva si legge come
 diff contro quello che base44 ha prodotto. Il magazzino della precedente demo
