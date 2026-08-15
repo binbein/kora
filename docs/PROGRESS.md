@@ -53,22 +53,28 @@ data, come è stato fatto per quello del residuo della nota di sessione.
 
 ## Stato
 
-**M0, M1, M2, M3 e M4 chiuse. M5 è aperta.** La demo è condivisibile e **tutte e
+**M0, M1, M2, M3, M4 e M5 sono chiuse: il piano non ha più milestone aperte.** La
+demo è condivisibile e **tutte e
 cinque le aree leggono dal provider**: nessuna schermata dichiara più le proprie
 costanti, le stringhe stanno in `i18n`, ogni importo passa da `format.ts` e ogni
 data da `DEMO_TODAY`. Le rotte sono 26, il repository è nostro — niente base44,
 zero richieste esterne a runtime — e `reference/` è stato cancellato, che era la
 prova che M3 fosse davvero finita.
 
-**Cinque blocchi di M5 su sei sono chiusi** — accessibilità, stati di errore e
-vuoto, validazione dei form, guardie di rotta e **le altre tre lingue**: la
-demo parla italiano, tedesco, francese e inglese, e il selettore le mostra
-tutte e quattro. **Resta il solo blocco f)**, le pagine del footer, che dipende
-dai testi legali dei founder e dalla decisione sulla residenza dei dati.
+**Cinque blocchi di M5 su sei sono stati eseguiti** — accessibilità, stati di
+errore e vuoto, validazione dei form, guardie di rotta e **le altre tre lingue**:
+la demo parla italiano, tedesco, francese e inglese, e il selettore le mostra
+tutte e quattro. **Il sesto, le pagine del footer, è stato ritirato dallo scope
+della demo** il 15.08.2026, **e il suo lavoro è passato al perimetro dell'MVP**,
+che ha la sua sezione in fondo ai refinement: non è cancellato, ha cambiato
+milestone. Da lì **M5 è chiusa e non ha più niente di aperto a schermo**.
 
 **M5 è l'ultima milestone del piano, e si articola in sei blocchi** approvati
 dai founder l'11.08.2026 — accessibilità, stati di errore e vuoto, validazione
-dei form, guardie di rotta, le altre tre lingue, pagine del footer. Stanno in
+dei form, guardie di rotta, le altre tre lingue, pagine del footer. **I blocchi
+restano sei**: è così che la milestone è stata approvata, ed è il numero su cui
+altre righe di questo file e del contratto dati hanno misurato davvero. A
+cambiare non è il conto, è che uno dei sei **non si costruisce qui**. Stanno in
 `CLAUDE.md` §4 con le dipendenze e le decisioni che ognuno porta con sé;
 **ognuno chiude con una demo funzionante** (§2.3), quindi non è un cantiere
 unico che resta aperto fino alla fine.
@@ -719,9 +725,11 @@ Fachpersonen, più Anmelden e Demo vereinbaren — la barra sta su una riga a
 - **Le voci morte del footer** erano `<p>` con `cursor-pointer` e hover su tutte
   e quattro le rotte pubbliche: si comportavano da link e non portavano da
   nessuna parte. Tolta l'affordance, il testo resta come elenco di sezioni —
-  decisione dei founder dell'08.08.2026. **Privacy policy, termini e cookie
+  decisione dei founder dell'08.08.2026. ~~**Privacy policy, termini e cookie
   policy veri sono lavoro di M5**, insieme a "Chi siamo", "Contatti", "Carriere"
-  e "Blog".
+  e "Blog".~~ → **non più di M5** dal 15.08.2026: il blocco f) è stato ritirato
+  dallo scope della demo e **il lavoro è passato al perimetro dell'MVP**, che ha
+  la sua sezione in fondo ai refinement. L'elenco di sezioni resta com'era.
 
 **Aperto e dichiarato:**
 
@@ -2010,7 +2018,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Ventidue passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Ventitré passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2018,8 +2026,8 @@ quella francese di M5.e, le quattro della **revisione del 15.08.2026** — #43 e
 #44 sulla coerenza del dominio e sugli stati limite, #45 sul perimetro del
 contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
 `README.md`, il residuo della nota di sessione, gli slot sovrapposti e i periodi
-non dichiarati, i fatti corretti nei documenti, e **questa passata**, il
-perimetro e le promesse in sospeso. Non
+non dichiarati, i fatti corretti nei documenti, il perimetro e le promesse in
+sospeso, e **questa passata**, il footer fuori dalla demo. Non
 aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
 seam e del dizionario. **Quelle che hanno una sottosezione loro sono le
@@ -3417,6 +3425,85 @@ chiusura è **l'unico che non si può misurare mentre lo si scrive**: si scrive
 invecchiata appena la passata ne ha guadagnato un settimo. La clausola che chiude
 il buco è ora nel criterio, e questo commit è il primo ad applicarla.
 
+#### Il footer fuori dalla demo, e l'inventario delle promesse (15.08.2026)
+
+**Otto commit: otto di documenti e zero di codice** — totale e ripartizione dalla
+stessa misura, `git log --format='%s' master..HEAD`. Nessun file sotto `src/`,
+nessun tipo cambiato, `lint` e `typecheck` a zero. Registra una decisione dei
+founder e ne ricava il perimetro; non costruisce niente.
+
+**Conta fra i refinement anche se chiude una milestone**, e il criterio regge
+senza deroghe: esclude **il lavoro della milestone**, e questa passata non è un
+blocco di M5 — è la decisione che ne ritira uno.
+
+##### La decisione, e la forma che le è stata data
+
+**Nessuna delle sette voci del footer si costruisce nella demo.** Il blocco f)
+esce dallo scope e **il lavoro passa al perimetro dell'MVP**, che ha ora la sua
+sezione in fondo a questo file. La ragione è scritta nel `CLAUDE.md` §4 perché
+impedisca a una passata futura di portarsi avanti: **una privacy policy che non
+sa dire dove stanno i dati non è una bozza da rifinire, è un documento che afferma
+il falso su una schermata che un cliente firmerà.**
+
+**M5 è chiusa con il sesto blocco ritirato, non con cinque blocchi.** Fra le tre
+forme possibili è stata scelta quella che **non rende retroattivamente falso
+nessun verbale**: "si articola in sei blocchi" resta vero in tre punti che quel
+numero l'hanno misurato davvero — il `CLAUDE.md` §4 e le due righe del contratto
+sulla paginazione — e rinumerare a cinque li avrebbe smentiti. Costava sette
+punti in tre file contro i dieci della rinumerazione, e **non rompe nessun
+rimando**: l'unico a «M5.f», nel §10, è stato riformulato sull'attribuzione nuova.
+
+**«Ritirato» non viaggia mai da solo** (founder, 15.08.2026): ogni punto in cui
+compare dice **dove è andato il lavoro**, perché letto fra sei mesi si leggerebbe
+come "cancellato", e il lavoro non è cancellato — ha cambiato milestone.
+
+##### La scoperta: una promessa che il modello smentisce
+
+**«I tuoi dati sanitari non vengono mai condivisi con terzi»**, nel portale del
+dipendente. È falsa: lo psicologo è un collaboratore **a mandato**, e lo dichiara
+la stessa applicazione due schermate più in là; le strutture del check-up sono
+soggetti distinti che producono il referto. Ha la sua voce fra le decisioni in
+sospeso, ed è **di una classe peggiore delle altre tre**: quelle promettono cose
+che non esistono ancora e sono debiti, questa afferma un fatto **già falso mentre
+lo si legge**, ed è un errore.
+
+**Il lato in positivo vale quanto quello**: **21 stringhe** promettono cosa
+l'azienda non vede, e sono **promesse di fatto, vere**, sostenute dalla forma del
+dominio. Sono ciò che la policy futura potrà affermare senza rischi — e sono anche
+la riformulazione già pronta per la stringa falsa, perché *"non con la tua
+azienda"* è ciò che dicono in coro.
+
+**E lo zero della sesta famiglia è un risultato**: nessuna schermata promette
+niente su conservazione, cancellazione o diritti dell'interessato, quindi su quel
+terreno la policy è libera di dire ciò che sarà vero invece di rincorrere una
+frase già pubblicata.
+
+##### Il footer, e il criterio delle rotte
+
+**Il footer è stato guardato, non corretto.** L'affordance sull'elemento non c'è e
+non ha lasciato residui, e nessuna delle sette voci è un bersaglio muto da
+tastiera. Il difetto è **di simmetria di colonna** — quattro `<p>` resi in modo
+identico ai cinque link veri, stesso asse, stessa larghezza, 314px a fianco — e la
+misura sta nella sezione del perimetro con la nota che **il trattamento giusto
+esiste già nello stesso footer**, e ce l'hanno tre voci su sette.
+
+**Il criterio delle rotte del §10 regge senza riscritture** quando f) aggiungerà
+pagine: aggiungere `n` voci porta le rotte a `26 + n` e le schermate a `27 + n`
+per applicazione della definizione. Verificato, ed è il primo criterio di questo
+repository a essere messo alla prova contro l'evento per cui era stato scritto.
+
+##### Il criterio di conteggio alla sua terza passata
+
+**La metà che discrimina non è ancora provata**, ed è la seconda volta che va
+detto: la passata precedente aveva segnalato che la distinzione fra codice e
+documenti non era stata esercitata, e qui succede di nuovo — **otto commit su
+otto sono `docs:`**. Tre usi, zero prove sulla parte che aveva prodotto il
+difetto originale. Chi farà la prossima passata mista sa che tocca a lui.
+
+**La clausola aggiunta ieri ha funzionato al primo giro**: il numero di questa
+sottosezione è stato scritto `n + 1` sapendo di predirlo, e sarebbe stato da
+aggiornare se la passata avesse guadagnato un nono commit.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -3463,7 +3550,7 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 | M2 | Il contratto dati | **fatta** |
 | M3 | Migrazione area per area + calcolatore ROI | **fatta** |
 | M4 | Report scaricabile | **fatta** |
-| M5 | Verso la produzione (differibile) | **in corso** — a–e chiusi; f in attesa di input dei founder sulla residenza dei dati |
+| M5 | Verso la produzione (differibile) | **fatta** — a–e eseguiti; f ritirato dallo scope della demo il 15.08.2026, e il suo lavoro è nel perimetro dell'MVP |
 
 ## Decisioni chiuse
 
@@ -3659,8 +3746,12 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   parte — che è la definizione di vicolo cieco del §10, ripetuta su tutte e
   quattro le rotte pubbliche. Costruire le pagine sarebbe scope nuovo (§2.6),
   quindi si toglie l'affordance e il testo resta come **elenco di sezioni
-  previste**. Privacy policy, termini di servizio e cookie policy veri sono
-  lavoro di M5, insieme alle quattro pagine istituzionali.
+  previste**. ~~Privacy policy, termini di servizio e cookie policy veri sono
+  lavoro di M5, insieme alle quattro pagine istituzionali.~~ → **il 15.08.2026 i
+  founder hanno ritirato il blocco f) dallo scope della demo**, e con lui tutte e
+  sette le voci: **il lavoro è passato al perimetro dell'MVP** e ha la sua
+  sezione in fondo ai refinement. La decisione dell'08.08 sull'affordance resta
+  intatta ed è ancora ciò che si vede a schermo.
 
 - **07.08.2026 — Il sistema di toast si rimuove** (`CLAUDE.md` §3). `toast`,
   `toaster` e `use-toast` escono dal repository insieme al `<Toaster />` montato
@@ -3847,6 +3938,51 @@ chiedesse di dimostrarla domani, cosa gli mostreremmo?* — e per questo portano
 tutte il conto delle stringhe con il criterio accanto: **il giorno in cui si
 decide, quelle stringhe o si confermano o si cambiano**, e chi lo farà deve
 sapere quante sono senza rifare la ricerca.
+
+**La prima voce dell'elenco è di una classe diversa e peggiore**, ed è detto lì:
+non promette un meccanismo che manca, afferma un fatto che è **già falso oggi**.
+
+- **«Non vengono mai condivisi con terzi» è falso, e lo dice il portale del
+  dipendente** (15.08.2026). La pagina Profilo dichiara *"i tuoi dati sanitari
+  sono protetti e non vengono mai condivisi con terzi"*. Il modello la smentisce
+  in due punti, e uno dei due lo dichiara **la stessa applicazione**: lo psicologo
+  è un **collaboratore a mandato** — *"Collaborazione a mandato (Auftrag). Nessun
+  vincolo di assunzione"*, nel portale professionista — quindi un professionista
+  indipendente, non un dipendente di Kora; e le **strutture convenzionate** del
+  check-up sono soggetti distinti che producono il referto, cioè quello che il
+  `CONTRATTO-DATI.md` §3 chiama **l'unico dato sanitario individuale del
+  dominio**. Sono terzi per qualunque definizione giuridica.
+
+  **Quante stringhe, con il criterio**: **1**, `employee.profile.dataNote`, più
+  le sue tre traduzioni — e cercando *"con terzi"*, *"a terzi"* e *"terze parti"*
+  sulle 728 chiavi stringa di `src/lib/i18n/it.ts` **è l'unica occorrenza del
+  prodotto**. Nessun'altra schermata nomina i terzi, né per promettere né per
+  dichiarare.
+
+  **Perché è peggiore delle tre qui sotto.** Crittografia, consenso e residenza
+  promettono cose che **non esistono ancora**: sono debiti, e si pagano
+  costruendo o riscrivendo. Questa afferma un fatto **già falso mentre lo si
+  legge**, ed è un errore. E lo afferma nel **portale del dipendente**, cioè alla
+  persona che ha più diritto di leggerlo esatto e meno modo di verificarlo: chi
+  legge quella riga sta per raccontare a uno psicologo cose che non racconta al
+  proprio datore di lavoro.
+
+  **È anche l'unica delle quattro che non aspetta una decisione, ma una
+  passata.** Il rimedio è noto e costa quattro stringhe: la riformulazione giusta
+  **è già l'argomento più forte del prodotto**. *"Non con la tua azienda"* è
+  vero, lo sostiene la forma del dominio (`CONTRATTO-DATI.md` §3) ed è ciò che
+  altre **21 stringhe** dicono in coro. Vale la pena valutare se **nominare anche
+  il destinatario** — il professionista che il dipendente sceglie — perché una
+  promessa che dice *con chi* il dato è condiviso è più forte di una che dice
+  solo chi resta fuori, e qui il destinatario è una persona che l'utente ha
+  scelto lui. La stringa non si scrive qui: è `src/`.
+
+  **Proprietario: i founder**, e la formulazione va portata alla stessa revisione
+  legale della privacy policy — è la frase che quella policy dovrà sostenere.
+  **Il trigger è la prima passata che tocca `i18n`**, non una decisione da
+  attendere: a differenza delle altre tre non c'è niente da decidere prima, e
+  ogni giorno in cui resta è un giorno in cui la schermata dice una cosa non
+  vera. Al più tardi **prima del primo dipendente vero**.
 
 - **La crittografia end-to-end è promessa a schermo e non è verificabile**
   (15.08.2026). La pagina privacy dell'HR dichiara *"i dati sanitari sono
@@ -4046,6 +4182,174 @@ reale.
 
   Da rifare quando esistono disponibilità reali: allora il grigio dirà una cosa
   vera, e la promessa la sosterranno i dati invece di una schermata costruita.
+
+## Il perimetro delle pagine del footer — lavoro dell'MVP
+
+Il blocco f) di M5 è stato **ritirato dallo scope della demo** il 15.08.2026, e
+**il lavoro è arrivato qui**: non è cancellato, ha cambiato milestone
+(`CLAUDE.md` §4, blocco f). Questa sezione è ciò che serve a chi lo costruirà, e
+sta in questo file e non nel contratto dati per una ragione sola: **f) non ha
+nessuna superficie di backend** — nessuna entità, nessun metodo, nessun
+invariante — e sarebbe l'unico gruppo del §8 del contratto senza niente da
+costruire per chi legge quel documento.
+
+### Come il footer si legge oggi — misurato, non corretto
+
+Il punto di partenza di chi costruirà, e la misura serve perché la decisione su
+**quali delle sette voci esistono** si prende guardando come si leggono adesso.
+Rilevato sulla **build demo** a 1280px, con `innerWidth` verificato prima di
+fidarsi di qualunque numero (`CLAUDE.md` §11).
+
+**L'affordance sull'elemento non c'è, ed è giusto così.** Tutte e sette sono `<p>`
+senza `href` e senza `role`, con `cursor: auto` e `text-decoration: none` — la
+decisione dell'08.08.2026 ha fatto il suo lavoro e non ha lasciato residui.
+**Nessun bersaglio muto**: gli unici elementi focalizzabili del footer sono le
+**cinque ancore vere**, e le sette voci stanno fuori dall'ordine di tabulazione.
+La famiglia del pulsante check-up senza nome, chiusa il 15.08, qui non si
+presenta.
+
+**Il difetto è un altro, ed è di simmetria di colonna.** Le quattro voci
+istituzionali stanno accanto ai cinque link veri e sono rese in modo
+**indistinguibile**:
+
+| | colonna "Piattaforma" | colonna "Azienda" |
+|---|---|---|
+| elemento | `<a href>` × 5 | `<p>` × 4 |
+| stile calcolato | 14px, peso 400, opacità 0.8, `rgb(250,250,250)`, Inter | **identico** |
+| prima riga | x 346, y 411, 274×20 | x 660, **y 411**, **274×20** |
+
+Stesso asse verticale, stessa larghezza, stessa altezza, 314px di distanza. A
+distinguerle resta il solo puntatore, cioè un'informazione che arriva **dopo** il
+gesto e solo a chi passa sopra: l'affordance è stata tolta dall'elemento e
+**lasciata nel layout**.
+
+**Le tre voci legali invece si leggono come testo**, e questo chiude la lettura:
+stanno a 12px e opacità 0.5, cioè **identiche alla riga di copyright accanto a
+loro**. Ne discende la cosa che serve a chi deciderà — **nello stesso footer
+esiste già il trattamento che dice "questo è testo", e ce l'hanno tre voci su
+sette.**
+
+**Non è stato toccato niente**: è scope (§2.6), e la scelta fra togliere le voci
+dal footer e lasciarle è la stessa che questa passata rimanda. **La lettura visiva
+resta da confermare su un browser vero**: il pannello riporta `visibilityState:
+hidden` anche a scheda in primo piano e gli screenshot escono bianchi, quindi le
+misure geometriche sono valide e il raster no — è la stessa limitazione già a
+verbale nelle due passate precedenti.
+
+### Cosa dipende da fuori, e cosa è lavoro di codice
+
+**Fuori dal codice — è qui che sta il costo**, e nessuna delle tre si compra con
+una passata diligente:
+
+- **i testi legali**, che li scrive un avvocato e non chi lavora qui;
+- **la decisione sulla residenza dei dati**, fra le decisioni in sospeso: una
+  privacy policy deve dire dove stanno i dati, e finché non è ratificata il
+  documento non è scrivibile senza affermare il falso;
+- **la scelta di scope su quali delle sette voci esistono davvero**, che oggi non
+  è presa e non va presa in anticipo.
+
+**Lavoro di codice — è un ordine di grandezza meno**, e va detto perché non
+sembri il contrario: se le pagine sono **testo statico**, ognuna è una rotta in
+`App.tsx`, una voce di dizionario e una riga nel footer che diventa un link.
+Nessun provider, nessuna query, nessun tipo. Il costo del blocco **non è la sua
+implementazione**.
+
+**Una conseguenza che il testo statico si porta dietro, e non è ovvia**: un testo
+legale dentro `i18n` significa **quattro versioni giuridicamente vincolanti** da
+tenere allineate — che non è tradurre un'etichetta. Va deciso **quale lingua fa
+fede** e cosa succede quando una sola cambia. È una decisione da prendere prima
+di scrivere la prima riga, non dopo.
+
+### L'inventario delle promesse che la policy dovrà sostenere
+
+**È la ragione per cui questa passata si fa adesso invece che il giorno in cui si
+costruisce.** La privacy policy futura dovrà sostenere o smentire ciò che le
+schermate promettono **già oggi**, e quell'inventario serve prima: è il tavolo su
+cui si decide la residenza dei dati, che il §2.1 dei *Dubbi* colloca **prima del
+primo pilot**, cioè prima dei contratti.
+
+**Il criterio**, perché il conto sia rifacibile: si contano le stringhe di
+`src/lib/i18n/it.ts` — **728 chiavi stringa** — che **affermano qualcosa che una
+privacy policy dovrà sostenere o smentire**. Restano fuori le etichette, i titoli
+di colonna, gli stati vuoti e le stringhe che contengono una parola chiave senza
+fare un'affermazione: "Lugano, Svizzera" è un indirizzo, "scenario conservativo"
+è il modello ROI. Ogni promessa ha le sue tre traduzioni; **il conto è su `it.ts`
+perché sono i punti a schermo**.
+
+| famiglia | stringhe | classe | esito |
+|---|---|---|---|
+| dove stanno i dati | **5** (+6 di sola conformità) | meccanismo | ha già la sua voce |
+| crittografia | **3** | meccanismo | ha già la sua voce |
+| consenso | **2** | meccanismo | ha già la sua voce |
+| **cosa l'azienda non vede** | **21** | **fatto, e vero** | il lato in positivo |
+| **terzi** | **1** | **fatto, e falso** | ha la sua voce, la quarta |
+| conservazione, cancellazione, diritti | **0** | — | terreno libero |
+
+Le prime tre e la quinta hanno una voce fra le decisioni in sospeso e **qui si
+citano senza duplicarle**: l'inventario serve a trovare le altre.
+
+**Le 21 sono il lato in positivo, e valgono quanto la promessa falsa.** Sono ciò
+che la policy potrà affermare **senza rischi**, perché non sono promesse di
+intenzione: le sostiene la forma del dominio, e il `CONTRATTO-DATI.md` §3 le
+garantisce una per una — l'elenco dipendenti non ha nessun campo su cui un nome
+possa arrivare, la soppressione sotto soglia avviene nel provider e il record
+soppresso non porta il punteggio, la nota di sessione non è restituita da nessun
+metodo dell'area HR o admin. Dove stanno: **3** nel portale dipendente, **16**
+nell'area HR — di cui le sei di `hr.privacy.neverSeen.*`, che sono l'elenco più
+esplicito che il prodotto abbia: *dati sanitari individuali, chi ha usato lo
+psicologo, note cliniche o referti, diagnosi o trattamenti, prenotazioni
+individuali* — **1** sulla landing e **1** nel back-office.
+
+**Lo zero della sesta famiglia è un risultato, non un vuoto.** Cercando
+conservazione, cancellazione, export e diritti dell'interessato, **nessuna
+schermata promette niente**: né per quanto tempo i dati restano, né che si possano
+scaricare o cancellare. Su quel terreno **la policy è libera di dire ciò che sarà
+vero**, senza dover rincorrere una frase già pubblicata — ed è l'unica delle sei
+famiglie di cui si possa dire. L'unico quasi-caso è `common.state.boot.body`,
+*"quello che hai fatto finora non viene conservato"*, che parla dello stato della
+demo in memoria e non di dati personali.
+
+### L'effetto sul conteggio delle rotte — verificato, il criterio regge
+
+Il `CLAUDE.md` §10 ha ora un criterio scritto che distingue **26 rotte dello
+scope** da **27 schermate**, e dichiara che il numero si muoverà con le pagine del
+footer. **Regge senza riscritture**: il criterio definisce una rotta dello scope
+come *una voce del §10*, quindi aggiungerne `n` porta le rotte a `26 + n` e le
+schermate a `27 + n` **per applicazione della definizione**, senza toccarla. A
+muoversi sono i due valori, che è esattamente ciò per cui il criterio è stato
+scritto al posto di un numero.
+
+L'unica correzione che è servita è stata **l'attribuzione**, fatta in questa
+passata: quella riga diceva che il conto si sarebbe mosso «con le pagine del
+footer di M5.f», e da oggi sono lavoro dell'MVP.
+
+**Ma `n` non è sette**, e chi costruisce non deve darlo per scontato: le sette
+voci sono *sezioni*, non necessariamente sette rotte. "Contatti" può essere una
+sezione della landing o un `mailto:`, "Blog" può stare fuori dall'applicazione, e
+tre delle sette sono documenti legali che potrebbero condividere una rotta sola.
+**`n` lo decide la scelta di scope**, che è la terza dipendenza qui sopra.
+
+### Cosa non è di questo blocco
+
+Nominare i confini è metà del lavoro, e questi quattro tornano a proporsi da soli:
+
+- **il DPA e il contratto B2B** sono documenti commerciali, non schermate: si
+  firmano, non si navigano, e non entrano nello scope del §10;
+- **la QR-fattura** e il resto della fatturazione stanno già nel
+  `CONTRATTO-DATI.md` §8, gruppo «Ciclo di vita dell'azienda e del dipendente»;
+- **la raccolta del consenso, l'export e la cancellazione dei dati** sono
+  **meccanismi**, e stanno nel `CONTRATTO-DATI.md` §8.2. La privacy policy li
+  *dichiara*; non li implementa. Costruire la pagina senza costruire loro
+  significa pubblicare la descrizione di funzioni che non ci sono — che è il
+  difetto già registrato fra le decisioni in sospeso, non uno nuovo;
+- **il cookie banner**, e qui c'è un fatto misurato che vale la pena sapere
+  prima: **oggi l'applicazione non scrive niente**. `document.cookie`,
+  `localStorage` e `sessionStorage` sono **vuoti a runtime** sulla build demo, e
+  l'unica occorrenza di `document.cookie` in `src/` sta in un componente shadcn
+  che non importa nessuno. Con zero richieste esterne a runtime (§3) **non c'è
+  nessun cookie da dichiarare**: il contenuto di una cookie policy dipenderà da
+  ciò che l'MVP aggiunge — un cookie di sessione per l'autenticazione, e
+  qualunque analytics — non da ciò che esiste.
 
 ## Note per chi riprende
 

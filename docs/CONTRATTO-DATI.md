@@ -847,6 +847,14 @@ La garanzia del §3 — la nota che non esce mai verso l'azienda, e a impedirlo 
 forma del dominio — non è una risposta a questa domanda: dice dove il dato **non**
 va, non chi ne risponde.
 
+**I documenti che dichiareranno tutto questo non sono in questo contratto.**
+Privacy policy, termini e cookie policy sono pagine di testo senza superficie di
+backend, e il loro perimetro sta in `docs/PROGRESS.md` insieme all'inventario
+delle promesse che le schermate fanno già oggi. La distinzione serve a chi
+implementa: **questa sezione è il meccanismo, quelle pagine lo dichiarano** — e
+pubblicare la dichiarazione senza il meccanismo è ciò che il prodotto sta già
+facendo in tre punti, registrati fra le decisioni in sospeso di quel file.
+
 ### 8.3 Ciclo di vita dell'azienda e del dipendente
 
 Il dataset demo nasce già popolato, quindi nessuno di questi passaggi esiste:
