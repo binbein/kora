@@ -3860,6 +3860,51 @@ tutte il conto delle stringhe con il criterio accanto: **il giorno in cui si
 decide, quelle stringhe o si confermano o si cambiano**, e chi lo farà deve
 sapere quante sono senza rifare la ricerca.
 
+**La prima voce dell'elenco è di una classe diversa e peggiore**, ed è detto lì:
+non promette un meccanismo che manca, afferma un fatto che è **già falso oggi**.
+
+- **«Non vengono mai condivisi con terzi» è falso, e lo dice il portale del
+  dipendente** (15.08.2026). La pagina Profilo dichiara *"i tuoi dati sanitari
+  sono protetti e non vengono mai condivisi con terzi"*. Il modello la smentisce
+  in due punti, e uno dei due lo dichiara **la stessa applicazione**: lo psicologo
+  è un **collaboratore a mandato** — *"Collaborazione a mandato (Auftrag). Nessun
+  vincolo di assunzione"*, nel portale professionista — quindi un professionista
+  indipendente, non un dipendente di Kora; e le **strutture convenzionate** del
+  check-up sono soggetti distinti che producono il referto, cioè quello che il
+  `CONTRATTO-DATI.md` §3 chiama **l'unico dato sanitario individuale del
+  dominio**. Sono terzi per qualunque definizione giuridica.
+
+  **Quante stringhe, con il criterio**: **1**, `employee.profile.dataNote`, più
+  le sue tre traduzioni — e cercando *"con terzi"*, *"a terzi"* e *"terze parti"*
+  sulle 728 chiavi stringa di `src/lib/i18n/it.ts` **è l'unica occorrenza del
+  prodotto**. Nessun'altra schermata nomina i terzi, né per promettere né per
+  dichiarare.
+
+  **Perché è peggiore delle tre qui sotto.** Crittografia, consenso e residenza
+  promettono cose che **non esistono ancora**: sono debiti, e si pagano
+  costruendo o riscrivendo. Questa afferma un fatto **già falso mentre lo si
+  legge**, ed è un errore. E lo afferma nel **portale del dipendente**, cioè alla
+  persona che ha più diritto di leggerlo esatto e meno modo di verificarlo: chi
+  legge quella riga sta per raccontare a uno psicologo cose che non racconta al
+  proprio datore di lavoro.
+
+  **È anche l'unica delle quattro che non aspetta una decisione, ma una
+  passata.** Il rimedio è noto e costa quattro stringhe: la riformulazione giusta
+  **è già l'argomento più forte del prodotto**. *"Non con la tua azienda"* è
+  vero, lo sostiene la forma del dominio (`CONTRATTO-DATI.md` §3) ed è ciò che
+  altre **21 stringhe** dicono in coro. Vale la pena valutare se **nominare anche
+  il destinatario** — il professionista che il dipendente sceglie — perché una
+  promessa che dice *con chi* il dato è condiviso è più forte di una che dice
+  solo chi resta fuori, e qui il destinatario è una persona che l'utente ha
+  scelto lui. La stringa non si scrive qui: è `src/`.
+
+  **Proprietario: i founder**, e la formulazione va portata alla stessa revisione
+  legale della privacy policy — è la frase che quella policy dovrà sostenere.
+  **Il trigger è la prima passata che tocca `i18n`**, non una decisione da
+  attendere: a differenza delle altre tre non c'è niente da decidere prima, e
+  ogni giorno in cui resta è un giorno in cui la schermata dice una cosa non
+  vera. Al più tardi **prima del primo dipendente vero**.
+
 - **La crittografia end-to-end è promessa a schermo e non è verificabile**
   (15.08.2026). La pagina privacy dell'HR dichiara *"i dati sanitari sono
   crittografati in transito e a riposo con standard AES-256"*, e la landing porta
