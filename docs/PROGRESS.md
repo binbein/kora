@@ -2018,7 +2018,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Ventidue passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Ventitré passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2026,8 +2026,8 @@ quella francese di M5.e, le quattro della **revisione del 15.08.2026** — #43 e
 #44 sulla coerenza del dominio e sugli stati limite, #45 sul perimetro del
 contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
 `README.md`, il residuo della nota di sessione, gli slot sovrapposti e i periodi
-non dichiarati, i fatti corretti nei documenti, e **questa passata**, il
-perimetro e le promesse in sospeso. Non
+non dichiarati, i fatti corretti nei documenti, il perimetro e le promesse in
+sospeso, e **questa passata**, il footer fuori dalla demo. Non
 aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
 seam e del dizionario. **Quelle che hanno una sottosezione loro sono le
@@ -3424,6 +3424,85 @@ chiusura è **l'unico che non si può misurare mentre lo si scrive**: si scrive
 **sei** con cinque commit sul branch, era esatta al merge previsto, ed è
 invecchiata appena la passata ne ha guadagnato un settimo. La clausola che chiude
 il buco è ora nel criterio, e questo commit è il primo ad applicarla.
+
+#### Il footer fuori dalla demo, e l'inventario delle promesse (15.08.2026)
+
+**Otto commit: otto di documenti e zero di codice** — totale e ripartizione dalla
+stessa misura, `git log --format='%s' master..HEAD`. Nessun file sotto `src/`,
+nessun tipo cambiato, `lint` e `typecheck` a zero. Registra una decisione dei
+founder e ne ricava il perimetro; non costruisce niente.
+
+**Conta fra i refinement anche se chiude una milestone**, e il criterio regge
+senza deroghe: esclude **il lavoro della milestone**, e questa passata non è un
+blocco di M5 — è la decisione che ne ritira uno.
+
+##### La decisione, e la forma che le è stata data
+
+**Nessuna delle sette voci del footer si costruisce nella demo.** Il blocco f)
+esce dallo scope e **il lavoro passa al perimetro dell'MVP**, che ha ora la sua
+sezione in fondo a questo file. La ragione è scritta nel `CLAUDE.md` §4 perché
+impedisca a una passata futura di portarsi avanti: **una privacy policy che non
+sa dire dove stanno i dati non è una bozza da rifinire, è un documento che afferma
+il falso su una schermata che un cliente firmerà.**
+
+**M5 è chiusa con il sesto blocco ritirato, non con cinque blocchi.** Fra le tre
+forme possibili è stata scelta quella che **non rende retroattivamente falso
+nessun verbale**: "si articola in sei blocchi" resta vero in tre punti che quel
+numero l'hanno misurato davvero — il `CLAUDE.md` §4 e le due righe del contratto
+sulla paginazione — e rinumerare a cinque li avrebbe smentiti. Costava sette
+punti in tre file contro i dieci della rinumerazione, e **non rompe nessun
+rimando**: l'unico a «M5.f», nel §10, è stato riformulato sull'attribuzione nuova.
+
+**«Ritirato» non viaggia mai da solo** (founder, 15.08.2026): ogni punto in cui
+compare dice **dove è andato il lavoro**, perché letto fra sei mesi si leggerebbe
+come "cancellato", e il lavoro non è cancellato — ha cambiato milestone.
+
+##### La scoperta: una promessa che il modello smentisce
+
+**«I tuoi dati sanitari non vengono mai condivisi con terzi»**, nel portale del
+dipendente. È falsa: lo psicologo è un collaboratore **a mandato**, e lo dichiara
+la stessa applicazione due schermate più in là; le strutture del check-up sono
+soggetti distinti che producono il referto. Ha la sua voce fra le decisioni in
+sospeso, ed è **di una classe peggiore delle altre tre**: quelle promettono cose
+che non esistono ancora e sono debiti, questa afferma un fatto **già falso mentre
+lo si legge**, ed è un errore.
+
+**Il lato in positivo vale quanto quello**: **21 stringhe** promettono cosa
+l'azienda non vede, e sono **promesse di fatto, vere**, sostenute dalla forma del
+dominio. Sono ciò che la policy futura potrà affermare senza rischi — e sono anche
+la riformulazione già pronta per la stringa falsa, perché *"non con la tua
+azienda"* è ciò che dicono in coro.
+
+**E lo zero della sesta famiglia è un risultato**: nessuna schermata promette
+niente su conservazione, cancellazione o diritti dell'interessato, quindi su quel
+terreno la policy è libera di dire ciò che sarà vero invece di rincorrere una
+frase già pubblicata.
+
+##### Il footer, e il criterio delle rotte
+
+**Il footer è stato guardato, non corretto.** L'affordance sull'elemento non c'è e
+non ha lasciato residui, e nessuna delle sette voci è un bersaglio muto da
+tastiera. Il difetto è **di simmetria di colonna** — quattro `<p>` resi in modo
+identico ai cinque link veri, stesso asse, stessa larghezza, 314px a fianco — e la
+misura sta nella sezione del perimetro con la nota che **il trattamento giusto
+esiste già nello stesso footer**, e ce l'hanno tre voci su sette.
+
+**Il criterio delle rotte del §10 regge senza riscritture** quando f) aggiungerà
+pagine: aggiungere `n` voci porta le rotte a `26 + n` e le schermate a `27 + n`
+per applicazione della definizione. Verificato, ed è il primo criterio di questo
+repository a essere messo alla prova contro l'evento per cui era stato scritto.
+
+##### Il criterio di conteggio alla sua terza passata
+
+**La metà che discrimina non è ancora provata**, ed è la seconda volta che va
+detto: la passata precedente aveva segnalato che la distinzione fra codice e
+documenti non era stata esercitata, e qui succede di nuovo — **otto commit su
+otto sono `docs:`**. Tre usi, zero prove sulla parte che aveva prodotto il
+difetto originale. Chi farà la prossima passata mista sa che tocca a lui.
+
+**La clausola aggiunta ieri ha funzionato al primo giro**: il numero di questa
+sottosezione è stato scritto `n + 1` sapendo di predirlo, e sarebbe stato da
+aggiornare se la passata avesse guadagnato un nono commit.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
