@@ -151,6 +151,23 @@ export function useSessionNote(
     ),
     queryFn: () => dataProvider.getSessionNote(sessionId ?? ""),
     enabled: professionalId !== undefined && sessionId !== undefined,
+    /*
+     * QUESTA CHIAVE NON È SCALDABILE, e lo dice qui invece di farlo scoprire al
+     * guardrail della cache fredda (`prefetch.ts`).
+     *
+     * Dipende dalla seduta aperta: c'è una chiave per ognuna delle 63 erogate,
+     * e quale serva lo decide un clic. `prefetchDemo` non può conoscerla prima,
+     * e scaldarle tutte vorrebbe dire tirare **la nota clinica di ogni seduta
+     * di ogni paziente** nella cache del client prima che qualcuno apra un
+     * dialogo — il contrario di ciò che il §10.D promette di quel testo, e la
+     * decisione peggiore da lasciare in eredità a `prefetchDemo` il giorno in
+     * cui dietro c'è una `fetch`.
+     *
+     * Non è la stessa cosa del referto del check-up, che si scalda: quello è il
+     * documento di chi sta guardando la propria pagina, questa è la nota che
+     * una professionista ha scritto su un paziente.
+     */
+    meta: { coldOnPurpose: true },
   });
 }
 
