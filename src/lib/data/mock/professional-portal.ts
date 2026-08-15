@@ -5,6 +5,7 @@ import type {
   ProfessionalEarnings,
   ProfessionalSession,
   SessionEntitlement,
+  SessionNote,
   SessionType,
 } from "../types";
 import { COMPANY } from "./company";
@@ -145,8 +146,24 @@ function occurrence(slot: PatientSlot, weekOffset: number): Date {
   );
 }
 
-function buildSessions(): ProfessionalSession[] {
-  const sessions: ProfessionalSession[] = [];
+/**
+ * Una seduta **in archivio**, cioè senza `hasNote`.
+ *
+ * Il valore memorizzato non è la verità: `hasNote` nasce in proiezione, dalle
+ * note che esistono davvero (`provider.ts`, `sessionsOf`). Togliendolo dal tipo
+ * dell'archivio non c'è più nessun `hasNote` da leggere qui — e `PORTAL_SESSIONS`
+ * lo leggono anche `service-usage.ts` ed `employee-portal.ts`, che la proiezione
+ * la scavalcano: con un campo memorizzato, chi lo leggesse domani troverebbe
+ * `false` su ogni record e ne ricaverebbe una curva sbagliata senza rompere
+ * niente.
+ *
+ * Sta qui e non in `types.ts`, che è il contratto con l'API futura: il backend
+ * non avrà nessun archivio senza `hasNote`.
+ */
+export type StoredSession = Omit<ProfessionalSession, "hasNote">;
+
+function buildSessions(): StoredSession[] {
+  const sessions: StoredSession[] = [];
 
   for (const slot of PATIENTS) {
     const lastWeek = slot.untilWeeksAgo === undefined ? null : -slot.untilWeeksAgo;
@@ -177,7 +194,6 @@ function buildSessions(): ProfessionalSession[] {
             : "scheduled",
         // il tipo si deriva sotto, quando la lista è completa e ordinata
         type: "session",
-        hasNote: false,
         ...(cancelled ? { cancellationReasonKey: "by_patient" as const } : {}),
       });
     }
@@ -213,28 +229,116 @@ function buildSessions(): ProfessionalSession[] {
             : "session";
       session.type = type;
     }
-
-    /*
-     * La nota si scrive dopo la seduta, quindi l'ultima erogata di ogni paziente
-     * non ce l'ha ancora: è quella su cui il professionista sta per scrivere, ed
-     * è anche l'unico modo perché il pulsante "aggiungi nota" esista davvero
-     * invece di essere sempre "nota".
-     */
-    if (session.status === "completed") {
-      session.hasNote = sorted.some(
-        (other) =>
-          other.patientId === session.patientId &&
-          other.status === "completed" &&
-          other.start > session.start,
-      );
-    }
   }
 
   return sorted;
 }
 
 /** Tutte le sedute della Dr.ssa Meier, dalla più vecchia alla più recente. */
-export const PORTAL_SESSIONS: ProfessionalSession[] = buildSessions();
+export const PORTAL_SESSIONS: StoredSession[] = buildSessions();
+
+/*
+ * LE NOTE CHE ESISTONO DAVVERO.
+ *
+ * `hasNote` dice "la nota esiste" (`docs/CONTRATTO-DATI.md` §3), quindi dietro
+ * ogni `true` ci deve essere una nota da leggere: prima di questi semi il campo
+ * si derivava da un'euristica su *quando una nota si scriverebbe*, e 55 sedute
+ * su 63 lo dichiaravano vero mentre `getSessionNote` rispondeva `null` per
+ * tutte.
+ *
+ * STANNO SULLA PRIMA VISITA, ed è il criterio da non cambiare senza sapere cosa
+ * si rompe: è la seduta di presa in carico, l'unica che si verbalizza sempre.
+ * Le altre restano da scrivere, ed è ciò che tiene vivo "aggiungi nota" — senza
+ * almeno una seduta erogata senza nota quel pulsante non esiste più a schermo,
+ * e con lui il caso che il dialogo serve a mostrare.
+ *
+ * IL TESTO È DI PROCESSO E NON CLINICO — cosa si è fatto, cosa si è concordato,
+ * quando ci si rivede — e non lo è per pudore: sono persone inventate, e una
+ * nota clinica verosimile su una persona inventata è contenuto che nessuno ha
+ * approvato (§2.4). Le otto note si somigliano, ed è la scelta meno peggiore:
+ * variare la sostanza vorrebbe dire inventare un sintomo o un obiettivo
+ * terapeutico a testa. La ripetizione è un difetto estetico, l'altro no.
+ */
+const FIRST_VISIT_NOTES: Record<
+  string,
+  Omit<SessionNote, "sessionId" | "updatedAt">
+> = {
+  df: {
+    notes: "Primo incontro. Raccolta l'anamnesi e definito il perimetro del percorso.",
+    nextGoal: "Concordare la frequenza degli incontri.",
+    suggestedFollowUp: "Seduta settimanale.",
+  },
+  pm: {
+    notes: "Presa in carico. Ricostruito il quadro iniziale insieme alla persona.",
+    nextGoal: "Mettere a fuoco l'obiettivo del percorso.",
+    suggestedFollowUp: "Si prosegue con cadenza settimanale.",
+  },
+  rt: {
+    notes: "Colloquio iniziale. Chiarite le aspettative sul percorso.",
+    nextGoal: "Definire i primi passi da verificare insieme.",
+    suggestedFollowUp: "Prossimo incontro fra una settimana.",
+  },
+  sc: {
+    notes: "Prima seduta. Raccolta la storia e concordato il metodo di lavoro.",
+    nextGoal: "Verificare la tenuta della cadenza concordata.",
+    suggestedFollowUp: "Cadenza settimanale, da rivedere fra un mese.",
+  },
+  gr: {
+    notes: "Apertura del percorso. Ricostruita la situazione di partenza.",
+    nextGoal: "Individuare le priorità su cui lavorare.",
+    suggestedFollowUp: "Incontri settimanali.",
+  },
+  mb: {
+    notes: "Primo colloquio. Definiti insieme i termini del lavoro.",
+    nextGoal: "Riprendere il punto concordato al prossimo incontro.",
+    suggestedFollowUp: "Settimanale, stesso orario.",
+  },
+  at: {
+    notes: "Presa in carico. Raccolte le informazioni iniziali.",
+    nextGoal: "Fissare l'obiettivo del primo ciclo di sedute.",
+    suggestedFollowUp: "Si rivede la persona la settimana prossima.",
+  },
+  [PORTAL_PATIENT_EMPLOYEE_ID]: {
+    notes: "Prima visita. Ricostruito il quadro e condiviso il piano di lavoro.",
+    nextGoal: "Verificare i primi riscontri al prossimo incontro.",
+    suggestedFollowUp: "Cadenza settimanale.",
+  },
+};
+
+/*
+ * Si costruiscono dall'array **finito**, non dentro il ciclo che deriva i tipi:
+ * là `session.type` è ancora da scrivere per metà lista, e il criterio
+ * pescherebbe meno note senza che niente si lamenti.
+ *
+ * `updatedAt` è la fine della seduta, non `DEMO_TODAY`: una nota su una seduta
+ * di marzo datata al giorno della demo direbbe che è stata scritta sette mesi
+ * dopo. Deriva dal record — nessuna costante nuova — ed è il primo istante in
+ * cui la nota può esistere onestamente. Il ritardo vero con cui un
+ * professionista verbalizza sarebbe una cifra che nessuno ha approvato, per un
+ * campo che nessuna schermata rende.
+ */
+export const SESSION_NOTES: SessionNote[] = PORTAL_SESSIONS.filter(
+  (session) => session.status === "completed" && session.type === "first_visit",
+).map((session) => {
+  const text = FIRST_VISIT_NOTES[session.patientId];
+  /*
+   * Il record è indicizzato per stringa, quindi un paziente aggiunto senza il
+   * suo testo produrrebbe una nota con tre campi `undefined` — e `hasNote`
+   * direbbe di sì su una nota che non si può leggere. Il controllo fallisce
+   * davvero: è il nono paziente che qualcuno aggiungerà a `PATIENTS`.
+   */
+  assertInDev(
+    text !== undefined,
+    `La prima visita di ${session.patientInitials} non ha un testo in FIRST_VISIT_NOTES.`,
+  );
+  return {
+    sessionId: session.id,
+    ...text,
+    updatedAt: new Date(
+      session.start.getTime() + session.durationMinutes * 60_000,
+    ),
+  };
+});
 
 /*
  * PAZIENTE ATTIVO: ha una seduta in programma, oppure ne ha avuta una nelle
@@ -251,7 +355,7 @@ export const PORTAL_SESSIONS: ProfessionalSession[] = buildSessions();
  */
 export const ACTIVE_PATIENT_WEEKS = 6;
 
-export function isActivePatient(sessions: ProfessionalSession[]): boolean {
+export function isActivePatient(sessions: StoredSession[]): boolean {
   const since = addDays(startOfWeek(DEMO_TODAY), -ACTIVE_PATIENT_WEEKS * 7);
   return sessions.some(
     (session) =>
@@ -278,7 +382,7 @@ export function isActivePatient(sessions: ProfessionalSession[]): boolean {
  * contano le erogate (§10.B).
  */
 export function entitlementFor(
-  patientSessions: ProfessionalSession[],
+  patientSessions: StoredSession[],
 ): SessionEntitlement {
   return {
     used: patientSessions.filter((session) => session.status === "completed")
@@ -291,8 +395,8 @@ export function entitlementFor(
 /** Le sedute di un paziente dentro una lista. */
 export function sessionsOfPatient(
   patientId: string,
-  sessions: ProfessionalSession[],
-): ProfessionalSession[] {
+  sessions: StoredSession[],
+): StoredSession[] {
   return sessions.filter((session) => session.patientId === patientId);
 }
 
@@ -301,9 +405,9 @@ function sameMonth(a: Date, b: Date): boolean {
 }
 
 function deliveredIn(
-  sessions: ProfessionalSession[],
+  sessions: StoredSession[],
   month: Date,
-): ProfessionalSession[] {
+): StoredSession[] {
   return sessions.filter(
     (session) => session.status === "completed" && sameMonth(session.start, month),
   );
@@ -322,7 +426,7 @@ function deliveredIn(
  * costante di modulo calcolata su `PORTAL_SESSIONS`, quindi il regime della
  * Dr.ssa Meier veniva dichiarato di chiunque.
  */
-function sessionsPerWeek(sessions: ProfessionalSession[]): number {
+function sessionsPerWeek(sessions: StoredSession[]): number {
   return Math.round(
     sessions.filter(
       (session) =>
@@ -356,7 +460,7 @@ function sessionsPerWeek(sessions: ProfessionalSession[]): number {
  */
 export function monthlyEarnings(
   professionalId: string,
-  sessions: ProfessionalSession[],
+  sessions: StoredSession[],
   feePerSession: number,
   month: Date,
 ): ProfessionalEarnings {
@@ -393,7 +497,7 @@ export function monthlyEarnings(
  * nasce ordinata e `sessionsOf` riordina dopo aver aggiunto le prenotazioni.
  */
 export function payoutHistory(
-  sessions: ProfessionalSession[],
+  sessions: StoredSession[],
   feePerSession: number,
 ): Payout[] {
   const payouts: Payout[] = [];

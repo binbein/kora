@@ -1,7 +1,6 @@
 import { assertInDev } from "../guardrails";
 import type {
   CappedServiceKind,
-  ProfessionalSession,
   SessionEntitlement,
   VirtualDoctorConsult,
 } from "../types";
@@ -13,6 +12,7 @@ import {
   PORTAL_PATIENT_EMPLOYEE_ID,
   PORTAL_SESSIONS,
   sessionsOfPatient,
+  type StoredSession,
 } from "./professional-portal";
 import { SERVICE_USAGE } from "./service-usage";
 
@@ -62,7 +62,7 @@ function coachEntitlement(): SessionEntitlement {
  */
 export function employeeEntitlement(
   kind: CappedServiceKind,
-  psychologistSessions: ProfessionalSession[],
+  psychologistSessions: StoredSession[],
 ): SessionEntitlement {
   if (kind === "coach") return coachEntitlement();
   return entitlementFor(psychologistSessions);

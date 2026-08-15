@@ -1957,14 +1957,14 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Diciotto passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Diciannove passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
 quella francese di M5.e, le quattro della **revisione del 15.08.2026** — #43 e
 #44 sulla coerenza del dominio e sugli stati limite, #45 sul perimetro del
-contratto, #46 la coda documentale che l'ha chiusa — e **questa passata**,
-l'allineamento del `README.md`. Non
+contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
+`README.md` e **questa passata**, il residuo della nota di sessione. Non
 aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
 seam e del dizionario, più le sette che hanno una sottosezione loro qui sotto:
@@ -2689,21 +2689,10 @@ una nota esistente è `Nota`, non "Modifica nota": cercando la seconda si
 concludeva che il salvataggio non fosse avvenuto. Due misure che rispondevano a
 una domanda diversa da quella posta (§11).
 
-**Aperto e dichiarato:**
-
-- **La query della nota si monta a cache fredda**, e il guardrail del §5.6 lo
-  dice: `useSessionNote` è la prima lettura che nasce da un gesto e non dal
-  primo paint, e `prefetchDemo` non può scaldarla — le chiavi sono una per
-  seduta. Il controllo esenta le query `enabled: false`, che è il caso del
-  dialogo chiuso, ma non quello del dialogo appena aperto. **Va deciso**: o si
-  scaldano le note al boot, o il controllo impara a distinguere un montaggio
-  successivo al primo paint.
-- **`hasNote` è derivato e non ha una nota dietro.** 56 sedute su 63 lo
-  dichiarano vero — il paziente ha una seduta più recente — ma `getSessionNote`
-  per loro risponde `null`, quindi "Nota" apre comunque un foglio bianco. Il
-  precaricamento morde sulle note scritte davvero, e sul resto il dato dice una
-  cosa che dietro non c'è: è la famiglia "due sorgenti per lo stesso fatto", ed
-  è materia di dataset.
+**Aperto e dichiarato:** questa passata lasciò due voci, il controllo sulla
+cache fredda contro `useSessionNote` e `hasNote` derivato da un surrogato.
+**Le ha chiuse entrambe la passata sul residuo della nota**, qui sotto, che le
+ha prese insieme perché erano due facce della stessa cosa.
 
 #### Il perimetro del contratto (15.08.2026)
 
@@ -2753,11 +2742,9 @@ paginare un estratto di otto righe curate non aggiunge niente alla demo. È lavo
 dell'MVP, sta nel §8.7, e da qui smette di essere orfana fra un documento e
 l'altro.
 
-**Resta a una passata di codice**, e non è di questo blocco: la correzione di
-`hasNote` nel dataset, che oggi lo deriva da *"il paziente ha una seduta più
-recente"* — 56 sedute su 63 lo dichiarano vero e `getSessionNote` per tutte
-risponde `null` — e la decisione sul controllo della cache fredda contro
-`useSessionNote`, aperta dalla passata del 15.08.2026.
+**Restava a una passata di codice**, e non era di questo blocco: la correzione di
+`hasNote` nel dataset e la decisione sul controllo della cache fredda contro
+`useSessionNote`. **Quella passata c'è stata**, ed è l'ultima di questa sezione.
 
 #### La coda dell'analisi, e la chiusura della revisione (15.08.2026)
 
@@ -2777,15 +2764,199 @@ dominio (#43), gli stati limite delle schermate (#44), il perimetro del contratt
 (#45) e questa. Le prime quattro hanno la loro sezione o, per la #42, le due voci
 fra le decisioni chiuse.
 
-**Cosa resta aperto, e a chi appartiene.** Al codice, in una passata sua: la
-correzione di `hasNote` nel dataset, che oggi lo deriva da un surrogato, e la
-decisione sul controllo della cache fredda contro `useSessionNote`. Ai founder,
+**Cosa resta aperto, e a chi appartiene.** Al codice non resta niente: le due
+voci che stavano qui — `hasNote` derivato da un surrogato e il controllo sulla
+cache fredda contro `useSessionNote` — le ha chiuse la passata sul residuo della
+nota, l'ultima di questa sezione. Ai founder,
 nelle decisioni in sospeso qui sopra: la **residenza dei dati**, il **protocollo
 clinico**, la **revisione madrelingua**, e fuori dal repository il **cap table**
 con il CTO co-founder (§4.2 dei *Dubbi*, sesta domanda prioritaria). Senza
 risposta pronta resta il **margine lordo**, che `docs/PITCH.md` vieta di
 improvvisare: la sua è la quinta domanda prioritaria, validare la curva di
 utilizzo reale come metrica n. 1 dei pilot.
+
+#### Il residuo della nota di sessione (15.08.2026)
+
+Cinque commit di codice e uno di documenti. Chiude le due voci che la passata
+sugli stati limite aveva lasciato aperte e che questo file assegnava
+esplicitamente a «una passata di codice». **Sono state prese insieme perché sono
+due facce della stessa cosa**: la nota di sessione, che nessuno leggeva finché
+`useSessionNote` non è nato, e che appena letta ha mostrato tutti e due i
+difetti nello stesso gesto.
+
+**Nessun numero del §8 e del §9 si muove**, e non c'è stato niente da cercare:
+`hasNote` non alimenta nessuna KPI, nessun totale, nessuna serie. È letto in un
+punto solo fuori dal layer dati, `ProSessioni.tsx:67`. A cambiare è un rapporto
+fra **etichette**.
+
+##### Il guardrail smetteva di essere utile proprio dove serviva
+
+`useSessionNote` è la prima lettura dell'applicazione che nasce da un gesto e
+non dal primo paint: c'è una chiave per ognuna delle 63 sedute erogate, e quale
+serva lo decide un clic. `prefetchDemo` non può metterla in elenco, quindi il
+controllo sulla cache fredda parlava **a ogni apertura del dialogo** — un
+guardrail che accusa il codice giusto di un difetto che non ha è un guardrail
+che si impara a ignorare.
+
+Le due strade erano scaldare le note al boot o insegnare al controllo a
+distinguere un montaggio successivo al primo paint. **Nessuna delle due**, e le
+ragioni valgono oltre il caso:
+
+- **scaldarle avrebbe messo in `prefetchDemo` la decisione peggiore da lasciare
+  in eredità**: tirare la nota clinica di ogni seduta di ogni paziente nella
+  cache del client prima che qualcuno apra un dialogo. Il §10.D promette di quel
+  testo il contrario, e il commento di quella funzione dice già che il giorno di
+  `http/` è lì che si decide cosa vale la pena precaricare. Non vale il
+  precedente di `checkup.report`, che si scalda perché è **il documento di chi
+  sta guardando la propria pagina**;
+- **«dopo il primo paint» avrebbe spento il guardrail su ogni navigazione.**
+  `/hr/fatturazione` raggiunta con un clic monta i suoi osservatori esattamente
+  come il dialogo, e quello è il caso in cui il controllo guadagna il suo posto.
+  Sarebbe stato comprare il silenzio su una query pagandolo con la copertura di
+  venticinque rotte.
+
+**La query dichiara di non essere scaldabile** — `meta: { coldOnPurpose: true }`
+— e il controllo rispetta la dichiarazione. È la terza esenzione della stessa
+famiglia delle due che c'erano già, si legge in fila dallo stesso oggetto
+(`event.observer.options`, come `enabled`), e la ragione sta sulla query perché
+è il chiamante a saperla: chi ne scriverà una seconda non deve tornare a toccare
+`prefetch.ts`, e chi vuole l'inventario delle esenzioni cerca `coldOnPurpose`.
+
+##### `hasNote` era 55 su 63, ed era un surrogato
+
+Il campo si derivava da *"il paziente ha una seduta più recente"*, cioè da
+un'euristica su **quando una nota si scriverebbe**, non dall'esistenza della
+nota. **La misura, rifatta eseguendo `buildSessions()`: 55 sedute erogate su 63
+dichiaravano `hasNote: true`, e per tutte `getSessionNote` rispondeva `null`.**
+
+I documenti dicevano 56 in due punti, e **non era invecchiato: non è mai stato
+vero.** L'euristica toglie la nota all'ultima erogata di ogni paziente, e i
+pazienti con almeno una erogata sono otto — 63 − 8 = 55. L'aritmetica lo forza,
+e nessuno l'aveva rifatta. Le voci che portavano il 56 sono uscite da questo file
+e dal `CONTRATTO-DATI.md`, quindi **nessuna occorrenza lo dichiara più come
+misura**: resta nominato solo qui, per dire che era sbagliato. È la stessa
+convenzione con cui questo file tiene il 114 dei guardrail.
+
+**Le note esistono, e sono otto: una per prima visita erogata.** È il criterio,
+e la ragione per cui è quella seduta va tenuta in chiaro — è la presa in carico,
+l'unica che si verbalizza sempre. Le altre restano da scrivere, ed è ciò che
+tiene vivo "aggiungi nota": senza almeno una erogata senza nota quel pulsante
+sparirebbe dallo schermo, e con lui il caso che il dialogo serve a mostrare.
+
+**Il testo è di processo e mai clinico** — cosa si è fatto, cosa si è
+concordato, quando ci si rivede. Non per pudore: sono persone inventate, e una
+nota clinica verosimile su una persona inventata è contenuto che nessuno ha
+approvato (§2.4). Le otto si somigliano, **ed è la scelta meno peggiore**:
+variare la sostanza avrebbe voluto dire inventare un sintomo o un obiettivo
+terapeutico a testa. La ripetizione è un difetto estetico, l'altro no.
+
+**`updatedAt` è la fine della seduta**, `start + durationMinutes`, non
+`DEMO_TODAY`: una nota di marzo datata al giorno della demo direbbe di essere
+stata scritta sette mesi dopo. Deriva dal record, quindi si muove con
+`DEMO_TODAY` e non introduce costanti — e qualunque ritardo più verosimile
+sarebbe una cifra che nessuno ha approvato, per un campo che **nessuna schermata
+rende**.
+
+**Il rapporto si ribalta: 55/8 diventa 8/55.** È accettato, e la ragione per cui
+costa poco è che **prime visite e ultime-erogate sono insiemi disgiunti** su
+tutti e otto i pazienti: le 8 righe che dicevano "aggiungi nota" continuano a
+dirlo — M.B. 21.09, il bersaglio della prova del pitch, compresa — e a
+ribaltarsi sono le 47 in mezzo.
+
+##### L'archivio non può più portare quel campo
+
+`hasNote` nasce ora in **proiezione**, dentro `sessionsOf`, che è l'unico punto
+che produce un `ProfessionalSession`: non è un allineamento fra due valori, è lo
+stesso valore letto in due modi (§5.5). L'archivio è tipizzato
+`StoredSession = Omit<ProfessionalSession, "hasNote">`, e i due archivi sono
+diventati due — anche `bookedByProfessional`, o il varco si sarebbe richiuso a
+metà.
+
+**Non è stile.** `PORTAL_SESSIONS` lo leggono anche `service-usage.ts` ed
+`employee-portal.ts`, che **scavalcano la proiezione**: con un campo memorizzato
+sempre `false`, chi lo leggesse domani ne ricaverebbe una curva sbagliata senza
+rompere niente — la famiglia di difetto che questo file teme più di tutte. Costa
+nove firme allargate e un alias esportato da `professional-portal.ts`, non da
+`types.ts`: il backend non avrà nessun archivio senza `hasNote`.
+
+##### Il guardrail nuovo, che non era previsto: 99 → 100
+
+La proposta approvata prevedeva che il conteggio restasse a 99. **È salito a
+100**, e la ragione non si ricostruisce da sola leggendo il diff:
+`noUncheckedIndexedAccess` è **spento** in `tsconfig.json`, quindi indicizzare
+per stringa il record dei testi restituisce il tipo pieno invece di
+`T | undefined`. Un nono paziente aggiunto a `PATIENTS` senza il suo testo
+produrrebbe una nota con tre campi `undefined` — e `hasNote` direbbe di sì su
+una nota che non si può leggere — **senza che il typecheck se ne accorga**. Il
+controllo fallisce davvero, ed è il solo di questa passata.
+
+**Due guardrail sono stati invece rifiutati**, e vale quanto quello aggiunto:
+
+- **sull'invariante `hasNote` ⇔ la nota esiste**: verificherebbe
+  `notes.has(id) === notes.has(id)`. È il guardrail della prenotazione che si
+  appoggiava alla funzione che doveva sorvegliare, ripetuto;
+- **sulla data della nota**: sui semi confronterebbe l'espressione con sé stessa
+  una riga sotto dove è scritta, e su `saveSessionNote` non è raggiungibile
+  perché il pulsante nota esiste solo su `completed`, cioè su un passato.
+  L'invariante è vero e **violabile in produzione**, quindi è andato in
+  `CONTRATTO-DATI.md` §3 — con scritto anche **perché non è sorvegliato**, che
+  è la domanda che si fa chi legge un invariante dichiarato e non controllato.
+
+##### La verifica, e la prova che è andata storta per prima
+
+**A schermo, build demo, viewport 1280×900 e scheda in primo piano** (§11):
+
+- **8 "Nota" e 55 "Aggiungi nota"** fra le 63 erogate, che è la misura del layer
+  dati vista dall'altro lato;
+- dialogo su **M.B. 21.09**, che una nota non ce l'ha: **console muta** — è il
+  criterio di chiusura del blocco — e tre campi vuoti;
+- dialogo sulla **prima visita di G.R. del 13.07**, che ce l'ha: **console
+  muta**, tre campi pieni col testo seminato;
+- **salvataggio**: la riga passa da "Aggiungi nota" a "Nota" senza ricaricare, e
+  le erogate senza nota scendono da 55 a 54;
+- **riapertura**: i tre campi tornano pieni;
+- **prova al contrario**: tolto il `meta`, il guardrail torna a parlare con la
+  chiave esatta della seduta aperta. È insieme la prova che il difetto era reale
+  e che a chiuderlo è l'esenzione e non altro;
+- numeri del pitch fermi: 3 su 10 · 3 in programma, 1 su 4, 63 erogate, 14
+  sedute, CHF 1'120, CHF 14'200, 16 giorni, 68%, 82 su 120, 142 di 1'200, 62%,
+  soglia 12, −2 punti;
+- `lint`, `typecheck`, `build` e `build:demo` a posto.
+
+**Lo sfarfallio: guardato, non si vede, non è stato fatto niente.** Il dialogo di
+una seduta con nota rende necessariamente un primo fotogramma coi campi vuoti —
+la query parte all'apertura — e la domanda era se quel fotogramma arrivi allo
+schermo. Non arriva. Il rimedio abbozzato era sospendere il corpo del dialogo su
+`loadState`, e aveva un tranello: avrebbe toccato anche le 55 sedute *senza*
+nota, dove il form vuoto è già la resa giusta, scambiando un lampo di campi
+vuoti con un lampo di niente. **Una segnalazione chiusa con "guardato, niente"
+vale quanto una correzione, e vale più di una correzione inventata per non
+lasciarla senza esito** (founder, 15.08.2026).
+
+**Che l'`Omit` non cambi il runtime è stato provato transpilando** il file prima
+e dopo e confrontando l'output, perché i tipi si cancellano. Le differenze sono
+**quattro delta di codice** — i due letterali `hasNote: false`, il blocco di
+derivazione, e il `session.hasNote ||` che cade — più il commento nuovo su
+`sessionsOf`, che esbuild conserva. Nessuna in più, e **l'`Omit` non compare in
+nessuna**: i letterali perdono il campo perché il tipo li costringe, non perché
+l'annotazione emetta qualcosa.
+
+**Il primo giro di quella prova ha confrontato due file da zero byte**, e ha
+risposto *"nessuna differenza"*. L'invocazione passava a esbuild un `--loader`
+che con un file su disco non si applica, e `stderr` era silenziato: l'errore non
+si vedeva e i due output erano vuoti. **È la terza volta che questo file registra
+la stessa famiglia** — la scheda nascosta del 14.08, il censimento da grep di
+M5.a — e la terza vale la formulazione generale: **uno strumento che risponde
+esattamente quello che speravi va rifatto, non creduto.** Qui la risposta
+sbagliata era anche la più desiderabile, che è ciò che la rende pericolosa.
+
+**Il pannello del browser ha dato e tolto**, ed è annotato perché costa tempo a
+chi lo riprende: riporta `visibilityState: hidden` anche a scheda in primo piano,
+quindi la pagina non ridipinge, gli screenshot escono bianchi e i timer sono
+throttled a **~388 ms reali** — un campionatore scritto a 1 ms non risolve
+niente. Gli input arrivano su alcune schede e non su altre, e la scheda iniziale
+del pannello non li consegnava affatto. I due punti del salvataggio sono stati
+eseguiti **su un browser vero dai founder**, non qui.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

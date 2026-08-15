@@ -301,8 +301,26 @@ export function assertQueriesArePrewarmed(queryClient: QueryClient): void {
      * la prima `enabled` che qualcuno scriverà a incontrare questo controllo,
      * e la troverebbe che accusa lei invece del prefetch.
      */
-    const { enabled } = event.observer.options;
+    const { enabled, meta } = event.observer.options;
     if (enabled === false) return;
+
+    /*
+     * Una query può dichiarare che **non è scaldabile**, e allora il controllo
+     * non ha niente da chiedere: la sua chiave non si conosce prima del gesto
+     * che la produce, quindi `prefetchDemo` non avrebbe potuto metterla in
+     * elenco nemmeno volendo. È il caso della nota di sessione, che ha una
+     * chiave per seduta e la sceglie un clic.
+     *
+     * La dichiarazione sta sulla query e non qui, per la stessa ragione per cui
+     * `enabled` sta lì: la sa il chiamante, non il guardrail. Chi ne scriverà
+     * una seconda non deve tornare a toccare questo file, e chi vuole
+     * l'inventario delle esenzioni cerca `coldOnPurpose`.
+     *
+     * Si legge da `event.observer.options` come `enabled`, non da
+     * `event.query.meta`: le esenzioni devono leggersi in fila dallo stesso
+     * oggetto, o la prossima somiglia a un caso speciale.
+     */
+    if (meta?.coldOnPurpose === true) return;
 
     const key = JSON.stringify(event.query.queryKey);
 

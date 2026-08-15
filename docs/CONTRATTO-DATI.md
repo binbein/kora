@@ -245,22 +245,21 @@ restituisce**. Le altre proiezioni sanno al massimo che una nota esiste
 (`ProfessionalSession.hasNote`), mai cosa dice. La nota non esce mai verso
 l'azienda del paziente, e a impedirlo è la forma del dominio.
 
-**`hasNote` deve derivare dalle note, e oggi deriva da un surrogato.** Nel
-dataset demo è calcolato da *"il paziente ha una seduta più recente"*, cioè da
-un'euristica su **quando una nota si scriverebbe**, non dall'esistenza della
-nota. I due valori possono quindi contraddirsi, ed è il difetto che il §5.5 di
-`CLAUDE.md` vieta ai numeri applicato a un booleano.
+**`hasNote` è `la nota esiste`**, non una stima di quando dovrebbe esistere.
+Sono lo stesso valore letto in due modi, come `Appointment` e
+`ProfessionalSession` sono la stessa seduta: il backend lo deriva dalle note che
+ha, e non lo memorizza accanto a loro dove potrebbe smettere di tornare.
 
-La misura: **56 sedute su 63 dichiarano `hasNote: true` e per tutte
-`getSessionNote` risponde `null`**. A schermo il pulsante dice "Nota" invece di
-"Aggiungi nota" e il dialogo si apre bianco. Non si vedeva finché nessuno leggeva
-le note: è emerso il 15.08.2026, con il primo lettore di `getSessionNote`.
+**Una nota non precede la sua seduta.** È l'invariante sulla data, e vale in
+produzione dove i timestamp sono veri: si scrive dopo, quindi `updatedAt` non
+può cadere prima della fine della seduta a cui appartiene.
 
-Per il backend la regola è una sola: **`hasNote` è `la nota esiste`**, non una
-stima di quando dovrebbe esistere. Sono lo stesso valore letto in due modi, come
-`Appointment` e `ProfessionalSession` sono la stessa seduta. La correzione del
-dataset demo resta da fare e non è di questo documento: sta fra le voci aperte di
-`docs/PROGRESS.md`.
+Nel frontend **non è sorvegliato da nessun guardrail**, e la ragione va detta
+qui perché è il posto in cui ci si chiede come mai: nella demo non è violabile.
+Le note seminate derivano `updatedAt` dalla fine della propria seduta, quindi un
+controllo verificherebbe l'espressione contro sé stessa; e quelle scritte durante
+la demo nascono col giorno corrente su sedute già erogate, cioè su un passato.
+In produzione nessuna delle due cose è garantita, ed è lì che l'invariante serve.
 
 ### Percorso dipendente
 
