@@ -150,8 +150,8 @@ trasformare un argomento forte in una correzione ricevuta in sala.
 
 **Detto a voce, è un argomento competitivo.** Quattro lingue nazionali sono la
 condizione per vendere a un'azienda svizzera con sedi in più cantoni, e la
-piattaforma le ha **oggi**, non "le avrà": tutte e ventisette le rotte sono state
-percorse in ognuna delle quattro. È questo il modo di dirlo, non un cambio di
+piattaforma le ha **oggi**, non "le avrà": tutte e ventisette le schermate sono
+state percorse in ognuna delle quattro. È questo il modo di dirlo, non un cambio di
 lingua a schermo.
 
 **Se è l'investitore a cliccare una sigla**, la schermata regge e non c'è niente

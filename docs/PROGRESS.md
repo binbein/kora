@@ -916,7 +916,10 @@ Sei blocchi, in `CLAUDE.md` §4, ognuno con la sua demo funzionante.
 #### a) Accessibilità completa — chiuso
 
 Dodici commit. **Il censimento a schermo passa da 79 punti sotto soglia a
-zero**, su 27 rotte: le 26 più la 404.
+zero**, su **27 schermate** — il criterio che distingue rotte e schermate sta nel
+`CLAUDE.md` §10, che è l'unico punto che le conta. *(Questa riga portava il
+criterio — "27 rotte: le 26 più la 404" — e stava nel file che non decide: dal
+15.08.2026 lo dichiara la costituzione e qui si rimanda.)*
 
 **Il censimento vecchio era da grep e sbagliava in difetto.** Diceva 27 testi e
 40 icone; a schermo, con il viewport reale, i punti distinti erano **79** — 60

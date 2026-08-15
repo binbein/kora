@@ -1635,6 +1635,31 @@ base44; la ventiseiesima è `/roi`, approvata dai founder il 07.08.2026. **Nessu
 schermata nuova senza
 approvazione** (§2.6); nessuna schermata esistente si elimina senza dirlo.
 
+**Rotte e schermate non sono la stessa cosa, e questo è l'unico punto che le
+conta.** Il criterio, perché non serva rifarlo quando il numero si muove — e si
+muoverà con le pagine del footer di M5.f:
+
+- una **rotta dello scope** è una voce di questo §10, cioè una schermata che
+  qualcuno ha approvato e che si raggiunge da un indirizzo dichiarato. Sono le
+  **26** qui sopra;
+- una **schermata** è tutto ciò che l'applicazione può disegnare al posto di una
+  pagina. Sono **27**: le 26 più la **404**, che in `App.tsx` è il catch-all `*`
+  — non ha un indirizzo suo, non entra nello scope, e nondimeno va percorsa,
+  tradotta e verificata come le altre.
+
+Ne discende la regola d'uso: **si conta in rotte quando si parla di scope e in
+schermate quando si parla di copertura** — quante ne sono state percorse,
+tradotte, censite per il contrasto. `docs/PROGRESS.md` e `docs/PITCH.md` citano e
+rimandano qui invece di tenere un secondo conto, che è la stessa disciplina del
+§5.6 per i guardrail e del §3 per i `.jsx`.
+
+**I verbali di `docs/PROGRESS.md` scrivono "27 rotte", e restano com'erano**:
+sono resoconti datati di passate concluse — le 27 percorse da M5.a, da M5.b, dai
+blocchi c) e d) — e intendevano la copertura, cioè ciò che questo criterio chiama
+schermate. Riscriverli sarebbe correggere il verbale di una misura fatta davvero;
+questa riga esiste perché chi cerca `27 rotte` trovi la lettura qui invece di
+riaprire una decisione già presa (founder, 15.08.2026).
+
 ### A. Pubblica — `/`, `/roi`, `/pricing`, `/demo`
 1. **Landing**: hero, problema, tre livelli di valore, anteprima piani, privacy, CTA.
 2. **Calcolatore ROI** — *da costruire, non esiste*. Perdite oggi vs risparmio con
