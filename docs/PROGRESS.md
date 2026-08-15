@@ -4114,6 +4114,49 @@ nessuna superficie di backend** — nessuna entità, nessun metodo, nessun
 invariante — e sarebbe l'unico gruppo del §8 del contratto senza niente da
 costruire per chi legge quel documento.
 
+### Come il footer si legge oggi — misurato, non corretto
+
+Il punto di partenza di chi costruirà, e la misura serve perché la decisione su
+**quali delle sette voci esistono** si prende guardando come si leggono adesso.
+Rilevato sulla **build demo** a 1280px, con `innerWidth` verificato prima di
+fidarsi di qualunque numero (`CLAUDE.md` §11).
+
+**L'affordance sull'elemento non c'è, ed è giusto così.** Tutte e sette sono `<p>`
+senza `href` e senza `role`, con `cursor: auto` e `text-decoration: none` — la
+decisione dell'08.08.2026 ha fatto il suo lavoro e non ha lasciato residui.
+**Nessun bersaglio muto**: gli unici elementi focalizzabili del footer sono le
+**cinque ancore vere**, e le sette voci stanno fuori dall'ordine di tabulazione.
+La famiglia del pulsante check-up senza nome, chiusa il 15.08, qui non si
+presenta.
+
+**Il difetto è un altro, ed è di simmetria di colonna.** Le quattro voci
+istituzionali stanno accanto ai cinque link veri e sono rese in modo
+**indistinguibile**:
+
+| | colonna "Piattaforma" | colonna "Azienda" |
+|---|---|---|
+| elemento | `<a href>` × 5 | `<p>` × 4 |
+| stile calcolato | 14px, peso 400, opacità 0.8, `rgb(250,250,250)`, Inter | **identico** |
+| prima riga | x 346, y 411, 274×20 | x 660, **y 411**, **274×20** |
+
+Stesso asse verticale, stessa larghezza, stessa altezza, 314px di distanza. A
+distinguerle resta il solo puntatore, cioè un'informazione che arriva **dopo** il
+gesto e solo a chi passa sopra: l'affordance è stata tolta dall'elemento e
+**lasciata nel layout**.
+
+**Le tre voci legali invece si leggono come testo**, e questo chiude la lettura:
+stanno a 12px e opacità 0.5, cioè **identiche alla riga di copyright accanto a
+loro**. Ne discende la cosa che serve a chi deciderà — **nello stesso footer
+esiste già il trattamento che dice "questo è testo", e ce l'hanno tre voci su
+sette.**
+
+**Non è stato toccato niente**: è scope (§2.6), e la scelta fra togliere le voci
+dal footer e lasciarle è la stessa che questa passata rimanda. **La lettura visiva
+resta da confermare su un browser vero**: il pannello riporta `visibilityState:
+hidden` anche a scheda in primo piano e gli screenshot escono bianchi, quindi le
+misure geometriche sono valide e il raster no — è la stessa limitazione già a
+verbale nelle due passate precedenti.
+
 ### Cosa dipende da fuori, e cosa è lavoro di codice
 
 **Fuori dal codice — è qui che sta il costo**, e nessuna delle tre si compra con
