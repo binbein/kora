@@ -71,10 +71,23 @@ diversi a seconda di come parte l'applicazione**:
 una manopola girata male non si vedrebbe più da nessuna parte — ed è di
 produzione anche il build che si porta al pitch.
 
+**Le tre build si vedono identiche**, e non è una svista: nessun badge, nessuna
+scritta, niente che dica quale si sta guardando. È voluto — la build che si porta
+al pitch deve essere **quella provata**, non una versione con dei segni addosso.
+A cambiare è solo cosa succede **quando qualcosa è sbagliato**: in sviluppo il
+guardrail lancia e la pagina resta bianca, in `build:demo` logga in console e la
+schermata si disegna comunque. Più le manopole qui sotto, che vivono solo in
+sviluppo.
+
 **Un log della build demo non autorizza a proseguire**: dopo il log
 l'inizializzazione continua, quindi le schermate si disegnano con i numeri che il
-guardrail ha appena dichiarato sbagliati. Le ragioni della scelta, il criterio con
-cui i call site si contano e la regola operativa stanno nel `CLAUDE.md` §5.6.
+guardrail ha appena dichiarato sbagliati.
+
+È la stessa cosa vista dall'altro lato: **la build demo sembra a posto anche
+quando i numeri sono sbagliati**, quindi guardarla non basta e la console non è un
+accessorio. Per questo la prova generale si fa lì e con la console aperta — la
+procedura sta in [`docs/PITCH.md`](docs/PITCH.md), le ragioni della scelta e il
+criterio con cui i call site si contano nel `CLAUDE.md` §5.6.
 
 ## Le manopole di sviluppo
 
