@@ -966,6 +966,13 @@ zero**, su **27 schermate** — il criterio che distingue rotte e schermate sta 
 criterio — "27 rotte: le 26 più la 404" — e stava nel file che non decide: dal
 15.08.2026 lo dichiara la costituzione e qui si rimanda.)*
 
+> **Quello zero era falso di quattro nodi, dall'11.08.2026 al 15.08.2026.** I tre
+> link legali e il copyright del footer stavano a `opacity-50` su `bg-primary`:
+> **4.08:1** contro 4.5, e 12px è testo normale. Il verbale resta com'è perché è
+> il resoconto di ciò che quel censimento misurò; a essere sbagliata non era la
+> conta, era **ciò che lo strumento poteva vedere**. La spiegazione, la misura e
+> la correzione stanno nella passata del 15.08.2026, in fondo ai refinement.
+
 **Il censimento vecchio era da grep e sbagliava in difetto.** Diceva 27 testi e
 40 icone; a schermo, con il viewport reale, i punti distinti erano **79** — 60
 icone e 19 testi — per 259 occorrenze. Il confine testo/icone che `PROGRESS`
