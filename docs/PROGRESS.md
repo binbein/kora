@@ -1575,15 +1575,28 @@ Indietro" nel posto sbagliato — la coreografia si prova su **scheda nuova**, c
 
 **Aperto e dichiarato:**
 
-- **I tre portali non hanno nessuna uscita verso la landing.** Censito in questa
-  passata: `/employee`, `/hr` e `/professional` non hanno **nessuna ancora** che
-  esca dal portale; solo `/admin` ce l'ha, dalla passata dell'11.08.2026. Il
-  giro del pitch funziona lo stesso, con Indietro fra un portale e l'altro — è
-  come è stato verificato — ma è lo stesso difetto che per `/admin` fu
-  riconosciuto come vicolo cieco (§10), e la sua correzione fu otto righe e
-  passò dai founder. **Non è stato toccato**: è scope (§2.6) e non è ciò che
-  questo blocco doveva fare. `docs/PITCH.md` oggi non dice che fra un portale e
-  l'altro si torna con Indietro.
+- ~~**I tre portali non hanno nessuna uscita verso la landing.** Censito in
+  questa passata: `/employee`, `/hr` e `/professional` non hanno **nessuna
+  ancora** che esca dal portale; solo `/admin` ce l'ha, dalla passata
+  dell'11.08.2026. Il giro del pitch funziona lo stesso, con Indietro fra un
+  portale e l'altro — è come è stato verificato — ma è lo stesso difetto che per
+  `/admin` fu riconosciuto come vicolo cieco (§10), e la sua correzione fu otto
+  righe e passò dai founder. **Non è stato toccato**: è scope (§2.6) e non è ciò
+  che questo blocco doveva fare. `docs/PITCH.md` oggi non dice che fra un
+  portale e l'altro si torna con Indietro.~~ → **chiuso da #34** il 13.08.2026,
+  che ha aperto le tre uscite e riscritto `docs/PITCH.md` — che oggi dice il
+  contrario, *"sei clic, e non serve il tasto Indietro"*. La passata ha la sua
+  sottosezione fra i refinement.
+
+  **Non è un difetto chiuso qui: è una voce rimasta aperta in un posto e chiusa
+  in un altro**, per due giorni. Costava più delle altre della stessa famiglia
+  perché sta sotto un titolo che si chiama «Aperto e dichiarato» e riguarda il
+  giro del pitch: chi la leggesse preparando una prova generale crederebbe di
+  dover premere Indietro fra un portale e l'altro, e cercherebbe a schermo una
+  cosa che non serve più. *(Barrata il 15.08.2026. È l'unica correzione di
+  quella passata che non riguarda un numero — il mandato erano le affermazioni
+  vere quando sono state scritte e non più vere adesso, e questa lo è per
+  intero.)*
 - **La guardia non nega mai in demo**, per costruzione. È l'esito voluto e non
   un residuo, ma va riletto il giorno in cui `/admin` avesse una vera ragione di
   essere protetto davanti a qualcuno.
