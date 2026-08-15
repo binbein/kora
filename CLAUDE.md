@@ -533,6 +533,12 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
   chiude con una demo funzionante** (§2.3) — non sono fasi di un unico cantiere
   aperto. L'ordine non è vincolante tranne dove una dipendenza lo impone (f).
 
+  **Cinque sono stati eseguiti; il sesto è stato ritirato dallo scope della demo**
+  il 15.08.2026, e **il suo lavoro è passato al perimetro dell'MVP**
+  (`docs/PROGRESS.md`). I blocchi restano sei — è così che la milestone è stata
+  approvata, e le passate che si contano su quel numero l'hanno misurato davvero —
+  ma **a schermo M5 non ha più niente di aperto**.
+
   - **a) Accessibilità completa.** Il punto di partenza è il censimento del
     debito AA in `docs/PROGRESS.md`, più ciò che non copriva: focus visibili su
     ogni elemento interattivo, `aria` e alt dove mancano, e il percorso del
@@ -1653,7 +1659,8 @@ approvazione** (§2.6); nessuna schermata esistente si elimina senza dirlo.
 
 **Rotte e schermate non sono la stessa cosa, e questo è l'unico punto che le
 conta.** Il criterio, perché non serva rifarlo quando il numero si muove — e si
-muoverà con le pagine del footer di M5.f:
+muoverà con le pagine del footer, che dal 15.08.2026 sono **lavoro dell'MVP** e
+non più della demo (§4, blocco f):
 
 - una **rotta dello scope** è una voce di questo §10, cioè una schermata che
   qualcuno ha approvato e che si raggiunge da un indirizzo dichiarato. Sono le

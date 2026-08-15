@@ -53,22 +53,28 @@ data, come è stato fatto per quello del residuo della nota di sessione.
 
 ## Stato
 
-**M0, M1, M2, M3 e M4 chiuse. M5 è aperta.** La demo è condivisibile e **tutte e
+**M0, M1, M2, M3, M4 e M5 sono chiuse: il piano non ha più milestone aperte.** La
+demo è condivisibile e **tutte e
 cinque le aree leggono dal provider**: nessuna schermata dichiara più le proprie
 costanti, le stringhe stanno in `i18n`, ogni importo passa da `format.ts` e ogni
 data da `DEMO_TODAY`. Le rotte sono 26, il repository è nostro — niente base44,
 zero richieste esterne a runtime — e `reference/` è stato cancellato, che era la
 prova che M3 fosse davvero finita.
 
-**Cinque blocchi di M5 su sei sono chiusi** — accessibilità, stati di errore e
-vuoto, validazione dei form, guardie di rotta e **le altre tre lingue**: la
-demo parla italiano, tedesco, francese e inglese, e il selettore le mostra
-tutte e quattro. **Resta il solo blocco f)**, le pagine del footer, che dipende
-dai testi legali dei founder e dalla decisione sulla residenza dei dati.
+**Cinque blocchi di M5 su sei sono stati eseguiti** — accessibilità, stati di
+errore e vuoto, validazione dei form, guardie di rotta e **le altre tre lingue**:
+la demo parla italiano, tedesco, francese e inglese, e il selettore le mostra
+tutte e quattro. **Il sesto, le pagine del footer, è stato ritirato dallo scope
+della demo** il 15.08.2026, **e il suo lavoro è passato al perimetro dell'MVP**,
+che ha la sua sezione in fondo ai refinement: non è cancellato, ha cambiato
+milestone. Da lì **M5 è chiusa e non ha più niente di aperto a schermo**.
 
 **M5 è l'ultima milestone del piano, e si articola in sei blocchi** approvati
 dai founder l'11.08.2026 — accessibilità, stati di errore e vuoto, validazione
-dei form, guardie di rotta, le altre tre lingue, pagine del footer. Stanno in
+dei form, guardie di rotta, le altre tre lingue, pagine del footer. **I blocchi
+restano sei**: è così che la milestone è stata approvata, ed è il numero su cui
+altre righe di questo file e del contratto dati hanno misurato davvero. A
+cambiare non è il conto, è che uno dei sei **non si costruisce qui**. Stanno in
 `CLAUDE.md` §4 con le dipendenze e le decisioni che ognuno porta con sé;
 **ognuno chiude con una demo funzionante** (§2.3), quindi non è un cantiere
 unico che resta aperto fino alla fine.
@@ -719,9 +725,11 @@ Fachpersonen, più Anmelden e Demo vereinbaren — la barra sta su una riga a
 - **Le voci morte del footer** erano `<p>` con `cursor-pointer` e hover su tutte
   e quattro le rotte pubbliche: si comportavano da link e non portavano da
   nessuna parte. Tolta l'affordance, il testo resta come elenco di sezioni —
-  decisione dei founder dell'08.08.2026. **Privacy policy, termini e cookie
+  decisione dei founder dell'08.08.2026. ~~**Privacy policy, termini e cookie
   policy veri sono lavoro di M5**, insieme a "Chi siamo", "Contatti", "Carriere"
-  e "Blog".
+  e "Blog".~~ → **non più di M5** dal 15.08.2026: il blocco f) è stato ritirato
+  dallo scope della demo e **il lavoro è passato al perimetro dell'MVP**, che ha
+  la sua sezione in fondo ai refinement. L'elenco di sezioni resta com'era.
 
 **Aperto e dichiarato:**
 
@@ -3463,7 +3471,7 @@ Il piano completo è in `CLAUDE.md` §4. In breve:
 | M2 | Il contratto dati | **fatta** |
 | M3 | Migrazione area per area + calcolatore ROI | **fatta** |
 | M4 | Report scaricabile | **fatta** |
-| M5 | Verso la produzione (differibile) | **in corso** — a–e chiusi; f in attesa di input dei founder sulla residenza dei dati |
+| M5 | Verso la produzione (differibile) | **fatta** — a–e eseguiti; f ritirato dallo scope della demo il 15.08.2026, e il suo lavoro è nel perimetro dell'MVP |
 
 ## Decisioni chiuse
 
@@ -3659,8 +3667,12 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   parte — che è la definizione di vicolo cieco del §10, ripetuta su tutte e
   quattro le rotte pubbliche. Costruire le pagine sarebbe scope nuovo (§2.6),
   quindi si toglie l'affordance e il testo resta come **elenco di sezioni
-  previste**. Privacy policy, termini di servizio e cookie policy veri sono
-  lavoro di M5, insieme alle quattro pagine istituzionali.
+  previste**. ~~Privacy policy, termini di servizio e cookie policy veri sono
+  lavoro di M5, insieme alle quattro pagine istituzionali.~~ → **il 15.08.2026 i
+  founder hanno ritirato il blocco f) dallo scope della demo**, e con lui tutte e
+  sette le voci: **il lavoro è passato al perimetro dell'MVP** e ha la sua
+  sezione in fondo ai refinement. La decisione dell'08.08 sull'affordance resta
+  intatta ed è ancora ciò che si vede a schermo.
 
 - **07.08.2026 — Il sistema di toast si rimuove** (`CLAUDE.md` §3). `toast`,
   `toaster` e `use-toast` escono dal repository insieme al `<Toaster />` montato
