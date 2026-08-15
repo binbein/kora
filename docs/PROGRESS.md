@@ -2797,7 +2797,13 @@ utilizzo reale come metrica n. 1 dei pilot.
 
 #### Il residuo della nota di sessione (15.08.2026)
 
-Cinque commit di codice e uno di documenti. Chiude le due voci che la passata
+Sei commit: **tre di codice** — due `fix:` e un `refactor:` — **e tre di
+documenti**. *(Diceva "cinque di codice e uno di documenti": il totale era
+giusto e la ripartizione no, cioè due numeri presi in due momenti invece che
+dalla stessa misura. Corretto il 15.08.2026, ed è l'esemplare che ha fatto
+scrivere il criterio in testa a questo file — il difetto si è riprodotto qui, in
+una passata attenta, mentre le correzioni della stessa famiglia erano già
+pianificate.)* Chiude le due voci che la passata
 sugli stati limite aveva lasciato aperte e che questo file assegnava
 esplicitamente a «una passata di codice». **Sono state prese insieme perché sono
 due facce della stessa cosa**: la nota di sessione, che nessuno leggeva finché
