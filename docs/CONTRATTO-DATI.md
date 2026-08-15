@@ -1051,7 +1051,40 @@ Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
   prezzo è per dipendente al mese, e su un organico che cambia a metà mese la
   fattura di oggi non saprebbe cosa dire.
 
-### 8.9 Paginazione
+### 8.9 L'avanzamento del piano di prevenzione non ha una sorgente
+
+**`AiPlanArea.progressPercent` è l'unico numero del dominio che non misura
+niente.** Le cinque aree del piano lo portano come valore dichiarato del dataset
+(`mock/ai-plan.ts`), e l'unico guardrail che lo riguarda ne verifica il **range
+0–100** — cioè che sia una percentuale, non che sia *quella* percentuale. È il
+solo controllo scrivibile: non esiste una seconda sorgente contro cui
+confrontarlo, e un guardrail che non può che verificare la forma è il segno che
+dietro non c'è un fatto.
+
+**Nessuna entità registra il comportamento che quella barra misurerebbe.** Il
+check rapido è un umore auto-riportato senza cadenza (§3), il check-up è annuale
+e restituisce misure cliniche, e **non esiste nessun tracciamento di abitudini** —
+sonno, attività, alimentazione — né come entità né come scrittura. Le cinque aree
+del profilo salute nascono dall'assessment iniziale, che è una fotografia e non
+una serie.
+
+**In produzione le strade sono due, e la scelta è di prodotto.** O la barra
+sparisce e la card resta quello che il resto già è — un obiettivo e tre
+suggerimenti per area, che non hanno bisogno di una percentuale per essere utili
+— **oppure va costruito ciò che la alimenta**, e allora nasce un pezzo di dominio
+nuovo: un tracciamento periodico per area, con la sua cadenza, il suo storico e
+la sua definizione di "avanzamento rispetto a cosa". La seconda strada è
+sostanziale, e tocca la promessa più delicata del prodotto: un dato di abitudine
+raccolto in continuo è più invasivo di tutto ciò che la piattaforma raccoglie
+oggi, quindi ricade sul consenso del §8.2 prima ancora che sull'interfaccia.
+
+**Non si sceglie per omissione.** Lasciare la barra e riempirla con un valore
+dichiarato è ciò che il dataset demo fa, dichiarandolo; farlo in produzione
+significherebbe mostrare a una persona una misura del proprio comportamento che
+nessuno ha misurato — che è la stessa famiglia del §8 di `CLAUDE.md`, dove nessuna
+metrica di stress si deduce da un surrogato.
+
+### 8.10 Paginazione
 
 **`getEmployeeDirectory` restituisce otto righe su 120**, e la schermata lo
 dichiara (§7). Un elenco vero si pagina e si cerca, e vale per ogni lista che in
