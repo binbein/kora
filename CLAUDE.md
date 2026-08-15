@@ -1444,6 +1444,40 @@ deriva "prenotabile" (§8). Il portale professionista la mostra accanto al
 regime tenuto. Trascritta il 10.08.2026 su decisione dei founder ai sensi del
 §2.4: la cifra era già nel dataset e non nell'elenco delle cifre ammesse.
 
+**Margini lordi per piano: 79% Essenziale, 73% Plus, 68% Executive** (BP p.9–10;
+la banda **68–79%** ricompare a **p.4**, nella sintesi, e a **p.16**, sullo
+stream 1 "Abbonamenti B2B"). Trascritti il 15.08.2026 su decisione dei founder ai
+sensi del §2.4.
+
+**L'avvertenza sta sulla stessa riga, perché due dei tre non si derivano dai
+costi che il BP mostra.** Ricalcolando ogni esempio con le sole voci esposte:
+
+| piano | ricavo | costi esposti nel BP | margine implicito | dichiarato |
+|---|---|---|---|---|
+| Essenziale, 50 dip | CHF 22'800 | 2'100 + 2'800 | 78.5% | **79%** |
+| Plus, 150 dip | CHF 99'000 | 10'500 + 6'750 | 82.6% | **73%** |
+| Executive, 400 dip | CHF 393'600 | 71'120 | 81.9% | **68%** |
+
+Solo l'Essenziale torna. Su Plus ed Executive restano rispettivamente **CHF
+~9'480 e ~54'832** di costi che il documento non espone, quindi le due cifre
+dichiarate sono più prudenti di ciò che i loro esempi sostengono — il che è la
+direzione giusta in cui sbagliare, ma non le rende derivabili.
+
+**Ne discende una regola d'uso, e non è un divieto di citarle.** Averle qui dà
+loro una casa e chiude una lacuna del §2.4; **non le promuove a risposta di
+pitch**. `docs/PITCH.md` continua a dire di non improvvisare il margine lordo, e
+la ragione non è mai stata che la cifra mancasse: è che citarla invita la domanda
+*"da cosa esce"*, a cui gli esempi del Business Plan rispondono per un piano su
+tre.
+
+**Il co-payment non è uno stream di margine, e a dirlo è il Business Plan**: la
+tabella dei flussi di ricavo (p.16) gli assegna margine **"—"** e funzione
+*"Fidelizzazione — incentiva l'uso consapevole del cap"*, mentre il 68–79% sta
+sullo stream 1, gli abbonamenti. È la conferma documentale della correzione del
+14.08.2026 a `docs/PITCH.md`, che ha spostato la risposta sul margine dal
+co-payment al **divario fra sessioni incluse ed erogate** — e la conferma vale
+più del ragionamento che l'aveva prodotta, perché viene dalla fonte.
+
 ### Formule del calcolatore ROI (§10.A.2), per N dipendenti
 
 - Assenteismo: `N × 6.5 giorni × CHF 900`
