@@ -91,7 +91,7 @@ nella testata di quel file.
 `src/pages/` per area (`public`, `employee`, `hr`, `professional`, `admin`),
 `src/components/ui/` per shadcn (non si tocca), `src/components/kora/` per i
 componenti di dominio, `src/lib/` per il layer dati e le funzioni pure, `docs/`
-per i tre documenti qui sopra.
+per gli altri tre documenti (`CLAUDE.md` sta alla radice).
 
 La mappa a grana fine — file per file, con la ragione di ognuno — sta nel
 `CLAUDE.md` §3.
@@ -112,8 +112,9 @@ la build in cui i guardrail parlano.
 
 Fork della demo generata su base44. Il Builder non è più la fonte di verità:
 **git lo è**, e il plugin e l'SDK di base44 sono usciti dal repository in M1
-(`CLAUDE.md` §3) — insieme a `reference/`, il sorgente della precedente demo
-Next.js, cancellato alla chiusura di M3 quando non c'era più niente da prenderne.
+(`CLAUDE.md` §3). `reference/`, il sorgente della precedente demo Next.js, è
+rimasto più a lungo come magazzino di sola lettura ed è stato cancellato alla
+chiusura di M3, quando non c'era più niente da prenderne.
 
 L'alias `@/` lo iniettava il plugin; da allora è definito in `vite.config.js`
 sotto `resolve.alias`, e **non si toglie**: Vite non legge i `paths` di
