@@ -146,8 +146,24 @@ function occurrence(slot: PatientSlot, weekOffset: number): Date {
   );
 }
 
-function buildSessions(): ProfessionalSession[] {
-  const sessions: ProfessionalSession[] = [];
+/**
+ * Una seduta **in archivio**, cioè senza `hasNote`.
+ *
+ * Il valore memorizzato non è la verità: `hasNote` nasce in proiezione, dalle
+ * note che esistono davvero (`provider.ts`, `sessionsOf`). Togliendolo dal tipo
+ * dell'archivio non c'è più nessun `hasNote` da leggere qui — e `PORTAL_SESSIONS`
+ * lo leggono anche `service-usage.ts` ed `employee-portal.ts`, che la proiezione
+ * la scavalcano: con un campo memorizzato, chi lo leggesse domani troverebbe
+ * `false` su ogni record e ne ricaverebbe una curva sbagliata senza rompere
+ * niente.
+ *
+ * Sta qui e non in `types.ts`, che è il contratto con l'API futura: il backend
+ * non avrà nessun archivio senza `hasNote`.
+ */
+export type StoredSession = Omit<ProfessionalSession, "hasNote">;
+
+function buildSessions(): StoredSession[] {
+  const sessions: StoredSession[] = [];
 
   for (const slot of PATIENTS) {
     const lastWeek = slot.untilWeeksAgo === undefined ? null : -slot.untilWeeksAgo;
@@ -178,7 +194,6 @@ function buildSessions(): ProfessionalSession[] {
             : "scheduled",
         // il tipo si deriva sotto, quando la lista è completa e ordinata
         type: "session",
-        hasNote: false,
         ...(cancelled ? { cancellationReasonKey: "by_patient" as const } : {}),
       });
     }
@@ -214,28 +229,13 @@ function buildSessions(): ProfessionalSession[] {
             : "session";
       session.type = type;
     }
-
-    /*
-     * La nota si scrive dopo la seduta, quindi l'ultima erogata di ogni paziente
-     * non ce l'ha ancora: è quella su cui il professionista sta per scrivere, ed
-     * è anche l'unico modo perché il pulsante "aggiungi nota" esista davvero
-     * invece di essere sempre "nota".
-     */
-    if (session.status === "completed") {
-      session.hasNote = sorted.some(
-        (other) =>
-          other.patientId === session.patientId &&
-          other.status === "completed" &&
-          other.start > session.start,
-      );
-    }
   }
 
   return sorted;
 }
 
 /** Tutte le sedute della Dr.ssa Meier, dalla più vecchia alla più recente. */
-export const PORTAL_SESSIONS: ProfessionalSession[] = buildSessions();
+export const PORTAL_SESSIONS: StoredSession[] = buildSessions();
 
 /*
  * LE NOTE CHE ESISTONO DAVVERO.
@@ -355,7 +355,7 @@ export const SESSION_NOTES: SessionNote[] = PORTAL_SESSIONS.filter(
  */
 export const ACTIVE_PATIENT_WEEKS = 6;
 
-export function isActivePatient(sessions: ProfessionalSession[]): boolean {
+export function isActivePatient(sessions: StoredSession[]): boolean {
   const since = addDays(startOfWeek(DEMO_TODAY), -ACTIVE_PATIENT_WEEKS * 7);
   return sessions.some(
     (session) =>
@@ -382,7 +382,7 @@ export function isActivePatient(sessions: ProfessionalSession[]): boolean {
  * contano le erogate (§10.B).
  */
 export function entitlementFor(
-  patientSessions: ProfessionalSession[],
+  patientSessions: StoredSession[],
 ): SessionEntitlement {
   return {
     used: patientSessions.filter((session) => session.status === "completed")
@@ -395,8 +395,8 @@ export function entitlementFor(
 /** Le sedute di un paziente dentro una lista. */
 export function sessionsOfPatient(
   patientId: string,
-  sessions: ProfessionalSession[],
-): ProfessionalSession[] {
+  sessions: StoredSession[],
+): StoredSession[] {
   return sessions.filter((session) => session.patientId === patientId);
 }
 
@@ -405,9 +405,9 @@ function sameMonth(a: Date, b: Date): boolean {
 }
 
 function deliveredIn(
-  sessions: ProfessionalSession[],
+  sessions: StoredSession[],
   month: Date,
-): ProfessionalSession[] {
+): StoredSession[] {
   return sessions.filter(
     (session) => session.status === "completed" && sameMonth(session.start, month),
   );
@@ -426,7 +426,7 @@ function deliveredIn(
  * costante di modulo calcolata su `PORTAL_SESSIONS`, quindi il regime della
  * Dr.ssa Meier veniva dichiarato di chiunque.
  */
-function sessionsPerWeek(sessions: ProfessionalSession[]): number {
+function sessionsPerWeek(sessions: StoredSession[]): number {
   return Math.round(
     sessions.filter(
       (session) =>
@@ -460,7 +460,7 @@ function sessionsPerWeek(sessions: ProfessionalSession[]): number {
  */
 export function monthlyEarnings(
   professionalId: string,
-  sessions: ProfessionalSession[],
+  sessions: StoredSession[],
   feePerSession: number,
   month: Date,
 ): ProfessionalEarnings {
@@ -497,7 +497,7 @@ export function monthlyEarnings(
  * nasce ordinata e `sessionsOf` riordina dopo aver aggiunto le prenotazioni.
  */
 export function payoutHistory(
-  sessions: ProfessionalSession[],
+  sessions: StoredSession[],
   feePerSession: number,
 ): Payout[] {
   const payouts: Payout[] = [];

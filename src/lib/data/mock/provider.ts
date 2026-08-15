@@ -70,6 +70,7 @@ import {
   PORTAL_PROFESSIONAL_ID,
   PORTAL_SESSIONS,
   SESSION_NOTES,
+  type StoredSession,
 } from "./professional-portal";
 import { CURRENT_QUARTER, QUARTERS, ROI_SNAPSHOTS } from "./roi";
 import { INITIAL_SLOTS } from "./scheduling";
@@ -115,7 +116,7 @@ export class MockDataProvider implements DataProvider {
    * per il professionista e da `getAppointments` per il dipendente, che è
    * l'unico modo perché le due schermate non possano divergere (§10.D).
    */
-  private readonly bookedByProfessional = new Map<string, ProfessionalSession[]>();
+  private readonly bookedByProfessional = new Map<string, StoredSession[]>();
 
   /*
    * L'ultima risposta al check rapido. Non entra nelle serie del §8, ed è una
@@ -154,6 +155,11 @@ export class MockDataProvider implements DataProvider {
   /**
    * Tutte le sedute di un professionista, curate e prenotate, in ordine di
    * orario e con lo stato delle note applicato.
+   *
+   * **È l'unico punto che produce `ProfessionalSession`**, e quindi l'unico che
+   * decide `hasNote`: l'archivio non porta quel campo (`StoredSession`), e qui
+   * si legge dalle note che esistono. Non è un allineamento fra due valori — è
+   * lo stesso valore letto in due modi (§5.5).
    */
   private sessionsOf(professionalId: string): ProfessionalSession[] {
     const curated =
@@ -165,7 +171,7 @@ export class MockDataProvider implements DataProvider {
     all.sort((a, b) => a.start.getTime() - b.start.getTime());
     return all.map((session) => ({
       ...session,
-      hasNote: session.hasNote || this.notes.has(session.id),
+      hasNote: this.notes.has(session.id),
     }));
   }
 
@@ -546,7 +552,7 @@ export class MockDataProvider implements DataProvider {
 
     const mine = sessionsOfPatient(PORTAL_PATIENT_EMPLOYEE_ID, agenda);
 
-    const session: ProfessionalSession = {
+    const session: StoredSession = {
       // deterministico: lo stesso slot non può produrre due id diversi
       id: `booked-${slot.professionalId}-${slot.start.getTime()}`,
       patientId: PORTAL_PATIENT_EMPLOYEE_ID,
@@ -559,7 +565,6 @@ export class MockDataProvider implements DataProvider {
       // primo colloquio se è la prima volta con questo professionista: è la
       // stessa distinzione che il suo calendario mostra
       type: mine.length === 0 ? "first_visit" : "session",
-      hasNote: false,
     };
 
     this.bookedByProfessional.set(slot.professionalId, [
