@@ -4138,6 +4138,55 @@ tenere allineate — che non è tradurre un'etichetta. Va deciso **quale lingua 
 fede** e cosa succede quando una sola cambia. È una decisione da prendere prima
 di scrivere la prima riga, non dopo.
 
+### L'inventario delle promesse che la policy dovrà sostenere
+
+**È la ragione per cui questa passata si fa adesso invece che il giorno in cui si
+costruisce.** La privacy policy futura dovrà sostenere o smentire ciò che le
+schermate promettono **già oggi**, e quell'inventario serve prima: è il tavolo su
+cui si decide la residenza dei dati, che il §2.1 dei *Dubbi* colloca **prima del
+primo pilot**, cioè prima dei contratti.
+
+**Il criterio**, perché il conto sia rifacibile: si contano le stringhe di
+`src/lib/i18n/it.ts` — **728 chiavi stringa** — che **affermano qualcosa che una
+privacy policy dovrà sostenere o smentire**. Restano fuori le etichette, i titoli
+di colonna, gli stati vuoti e le stringhe che contengono una parola chiave senza
+fare un'affermazione: "Lugano, Svizzera" è un indirizzo, "scenario conservativo"
+è il modello ROI. Ogni promessa ha le sue tre traduzioni; **il conto è su `it.ts`
+perché sono i punti a schermo**.
+
+| famiglia | stringhe | classe | esito |
+|---|---|---|---|
+| dove stanno i dati | **5** (+6 di sola conformità) | meccanismo | ha già la sua voce |
+| crittografia | **3** | meccanismo | ha già la sua voce |
+| consenso | **2** | meccanismo | ha già la sua voce |
+| **cosa l'azienda non vede** | **21** | **fatto, e vero** | il lato in positivo |
+| **terzi** | **1** | **fatto, e falso** | ha la sua voce, la quarta |
+| conservazione, cancellazione, diritti | **0** | — | terreno libero |
+
+Le prime tre e la quinta hanno una voce fra le decisioni in sospeso e **qui si
+citano senza duplicarle**: l'inventario serve a trovare le altre.
+
+**Le 21 sono il lato in positivo, e valgono quanto la promessa falsa.** Sono ciò
+che la policy potrà affermare **senza rischi**, perché non sono promesse di
+intenzione: le sostiene la forma del dominio, e il `CONTRATTO-DATI.md` §3 le
+garantisce una per una — l'elenco dipendenti non ha nessun campo su cui un nome
+possa arrivare, la soppressione sotto soglia avviene nel provider e il record
+soppresso non porta il punteggio, la nota di sessione non è restituita da nessun
+metodo dell'area HR o admin. Dove stanno: **3** nel portale dipendente, **16**
+nell'area HR — di cui le sei di `hr.privacy.neverSeen.*`, che sono l'elenco più
+esplicito che il prodotto abbia: *dati sanitari individuali, chi ha usato lo
+psicologo, note cliniche o referti, diagnosi o trattamenti, prenotazioni
+individuali* — **1** sulla landing e **1** nel back-office.
+
+**Lo zero della sesta famiglia è un risultato, non un vuoto.** Cercando
+conservazione, cancellazione, export e diritti dell'interessato, **nessuna
+schermata promette niente**: né per quanto tempo i dati restano, né che si possano
+scaricare o cancellare. Su quel terreno **la policy è libera di dire ciò che sarà
+vero**, senza dover rincorrere una frase già pubblicata — ed è l'unica delle sei
+famiglie di cui si possa dire. L'unico quasi-caso è `common.state.boot.body`,
+*"quello che hai fatto finora non viene conservato"*, che parla dello stato della
+demo in memoria e non di dati personali.
+
 ### L'effetto sul conteggio delle rotte — verificato, il criterio regge
 
 Il `CLAUDE.md` §10 ha ora un criterio scritto che distingue **26 rotte dello
