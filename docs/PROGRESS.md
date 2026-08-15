@@ -2961,9 +2961,9 @@ eseguiti **su un browser vero dai founder**, non qui.
 
 #### Slot sovrapposti e periodi non dichiarati (15.08.2026)
 
-Sette commit. Cinque difetti verificati, nessuno dei quali rompeva la demo — ma
-**il primo era a un clic dal giro che apre il pitch**. Nessun numero del §8 e del
-§9 si muove.
+Sei commit di codice e tre di documenti. Cinque difetti verificati, nessuno dei
+quali rompeva la demo — ma **il primo era a un clic dal giro che apre il pitch**.
+Nessun numero del §8 e del §9 si muove.
 
 ##### Due slot prenotabili si sovrapponevano, e uno era quello del pitch
 
