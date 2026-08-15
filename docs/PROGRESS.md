@@ -20,6 +20,29 @@ lì.
 - Se una milestone chiude con difetti noti e accettati, si scrivono qui: è il posto
   in cui chi riprende scopre cosa non deve rifare da capo.
 
+### Come una passata conta i propri commit
+
+Quasi ogni voce di questo file si apre dichiarando quanti commit ha, e finora
+quel conteggio non aveva un criterio scritto — a differenza dei call site
+(`CLAUDE.md` §5.6) e dei `.jsx` (`CLAUDE.md` §3), che ce l'hanno e per questo
+hanno smesso di divergere. Il criterio, deciso dai founder il 15.08.2026:
+
+- **codice** è `feat:`, `fix:` e `refactor:`; **documenti** è `docs:`. Non ci
+  sono altre categorie, e un commit sta in una sola;
+- **si conta sul branch, a chiusura avvenuta**, non a memoria e non durante:
+  `git log --format='%s' <merge>^..<merge>^2` elenca esattamente i commit della
+  passata, e `| sed 's/:.*//' | sort | uniq -c` ne dà la ripartizione;
+- **se si scrive la ripartizione si scrive anche il totale, dalla stessa
+  misura.** È la parte che vale più delle altre due: il difetto che ha fatto
+  scrivere questa regola aveva il **totale giusto e la ripartizione sbagliata**
+  — «cinque commit di codice e uno di documenti» su un branch di tre e tre — ed
+  è la firma di due numeri presi in due momenti. Un solo comando, due numeri che
+  non possono divergere.
+
+Vale da questa passata in avanti. Le voci più vecchie non si riscrivono: sono
+verbali, e un conteggio sbagliato che qualcuno trova si corregge lì con la sua
+data, come è stato fatto per quello del residuo della nota di sessione.
+
 ## Stato
 
 **M0, M1, M2, M3 e M4 chiuse. M5 è aperta.** La demo è condivisibile e **tutte e
@@ -46,10 +69,16 @@ unico che resta aperto fino alla fine.
 refinement.** Vale il criterio già scritto in quella sezione, che esclude la
 milestone: M4 è #19 e ha la sua sezione, e i blocchi di M5 hanno la loro qui
 sotto. **Il conto vive in un posto solo**, la sezione «Refinement fra le
-milestone», e oggi dice **diciassette**: questa riga ne dichiarava undici mentre
-quella ne diceva tredici, ed erano due misure dello stesso insieme prese in due
-momenti — il difetto che questo file racconta di aver già avuto con le CTA e con
-i guardrail. Qui non si ripete il numero: si rimanda.
+milestone», ed è lì che si legge: questa riga non lo ripete.
+
+**Ha già sbagliato due volte a ripeterlo**, ed è la ragione per cui ora non lo
+fa. Dichiarava **undici** mentre la sezione diceva tredici; corretta a
+**diciassette**, è tornata a divergere in tre giorni, perché la sezione è salita
+a venti e nessuno è risalito fin qui. Erano ogni volta due misure dello stesso
+insieme prese in due momenti — il difetto che questo file racconta di aver già
+avuto con le CTA e con i guardrail — e la seconda correzione lo ha ripetuto
+mentre scriveva, nella stessa frase, che il numero non si ripete. **Il rimedio
+non era allinearlo meglio: era toglierlo** (founder, 15.08.2026).
 
 Il primo commit è l'export **intatto**, così ogni modifica successiva si legge come
 diff contro quello che base44 ha prodotto. Il magazzino della precedente demo
@@ -916,7 +945,10 @@ Sei blocchi, in `CLAUDE.md` §4, ognuno con la sua demo funzionante.
 #### a) Accessibilità completa — chiuso
 
 Dodici commit. **Il censimento a schermo passa da 79 punti sotto soglia a
-zero**, su 27 rotte: le 26 più la 404.
+zero**, su **27 schermate** — il criterio che distingue rotte e schermate sta nel
+`CLAUDE.md` §10, che è l'unico punto che le conta. *(Questa riga portava il
+criterio — "27 rotte: le 26 più la 404" — e stava nel file che non decide: dal
+15.08.2026 lo dichiara la costituzione e qui si rimanda.)*
 
 **Il censimento vecchio era da grep e sbagliava in difetto.** Diceva 27 testi e
 40 icone; a schermo, con il viewport reale, i punti distinti erano **79** — 60
@@ -1543,15 +1575,28 @@ Indietro" nel posto sbagliato — la coreografia si prova su **scheda nuova**, c
 
 **Aperto e dichiarato:**
 
-- **I tre portali non hanno nessuna uscita verso la landing.** Censito in questa
-  passata: `/employee`, `/hr` e `/professional` non hanno **nessuna ancora** che
-  esca dal portale; solo `/admin` ce l'ha, dalla passata dell'11.08.2026. Il
-  giro del pitch funziona lo stesso, con Indietro fra un portale e l'altro — è
-  come è stato verificato — ma è lo stesso difetto che per `/admin` fu
-  riconosciuto come vicolo cieco (§10), e la sua correzione fu otto righe e
-  passò dai founder. **Non è stato toccato**: è scope (§2.6) e non è ciò che
-  questo blocco doveva fare. `docs/PITCH.md` oggi non dice che fra un portale e
-  l'altro si torna con Indietro.
+- ~~**I tre portali non hanno nessuna uscita verso la landing.** Censito in
+  questa passata: `/employee`, `/hr` e `/professional` non hanno **nessuna
+  ancora** che esca dal portale; solo `/admin` ce l'ha, dalla passata
+  dell'11.08.2026. Il giro del pitch funziona lo stesso, con Indietro fra un
+  portale e l'altro — è come è stato verificato — ma è lo stesso difetto che per
+  `/admin` fu riconosciuto come vicolo cieco (§10), e la sua correzione fu otto
+  righe e passò dai founder. **Non è stato toccato**: è scope (§2.6) e non è ciò
+  che questo blocco doveva fare. `docs/PITCH.md` oggi non dice che fra un
+  portale e l'altro si torna con Indietro.~~ → **chiuso da #34** il 13.08.2026,
+  che ha aperto le tre uscite e riscritto `docs/PITCH.md` — che oggi dice il
+  contrario, *"sei clic, e non serve il tasto Indietro"*. La passata ha la sua
+  sottosezione fra i refinement.
+
+  **Non è un difetto chiuso qui: è una voce rimasta aperta in un posto e chiusa
+  in un altro**, per due giorni. Costava più delle altre della stessa famiglia
+  perché sta sotto un titolo che si chiama «Aperto e dichiarato» e riguarda il
+  giro del pitch: chi la leggesse preparando una prova generale crederebbe di
+  dover premere Indietro fra un portale e l'altro, e cercherebbe a schermo una
+  cosa che non serve più. *(Barrata il 15.08.2026. È l'unica correzione di
+  quella passata che non riguarda un numero — il mandato erano le affermazioni
+  vere quando sono state scritte e non più vere adesso, e questa lo è per
+  intero.)*
 - **La guardia non nega mai in demo**, per costruzione. È l'esito voluto e non
   un residuo, ma va riletto il giorno in cui `/admin` avesse una vera ragione di
   essere protetto davanti a qualcuno.
@@ -1957,23 +2002,28 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Venti passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Ventun passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
 quella francese di M5.e, le quattro della **revisione del 15.08.2026** — #43 e
 #44 sulla coerenza del dominio e sugli stati limite, #45 sul perimetro del
 contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
-`README.md`, il residuo della nota di sessione e **questa passata**, gli slot
-sovrapposti e i periodi non dichiarati. Non
+`README.md`, il residuo della nota di sessione, gli slot sovrapposti e i periodi
+non dichiarati, e **questa passata**, i fatti corretti nei documenti. Non
 aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
-seam e del dizionario, più le sette che hanno una sottosezione loro qui sotto:
-le due che **eseguono** una decisione della riunione del 10.08.2026,
-l'allineamento documentale pre-M5, i due fix pre-M5, l'uscita da `/admin`, le
-uscite dai portali e l'overflow della landing. La sintesi sta qui perché **il
-dettaglio è in git e il quadro no**: chi riprende deve sapere che queste cose
-esistono prima di riscoprirle.
+seam e del dizionario. **Quelle che hanno una sottosezione loro sono le
+sottosezioni qui sotto**, e si contano leggendole invece di fidarsi di una cifra
+in prosa: la riga diceva **sette** quando erano già tredici, ed è lo stesso
+difetto della testa di questo file due schermate più su — un numero scritto
+accanto alla lista che lo smentisce. *(Corretta il 15.08.2026 togliendo il
+conteggio, non allineandolo. A trovarla non è stata la spazzata degli avverbi,
+che cerca «oggi» e «ora» accanto a un numero: qui l'avverbio non c'era, e a
+denunciarla è stata la lista. Chi rifà quella spazzata deve saperlo prima — il
+criterio «numero + avverbio» non copre tutta la famiglia.)* La sintesi sta qui
+perché **il dettaglio è in git e il quadro no**: chi riprende deve sapere che
+queste cose esistono prima di riscoprirle.
 
 **La PR docs-only del 14.08.2026 sulla costituzione non è la quattordicesima**:
 allinea `CLAUDE.md` a ciò che la tranche 1b ha cambiato — conteggio dei
@@ -2122,7 +2172,12 @@ diff di questa (`CLAUDE.md` §5.6).
 > perché `prefetch.ts` non entra nei 96. ~~Un 97 futuro è un errore di criterio,
 > non una correzione.~~ → **ribaltato dal `CLAUDE.md` §5.6 il 14.08.2026**: le
 > regole si scrivono sui criteri, non sui valori che i criteri producono. Il 97
-> è arrivato il giorno dopo con la tranche tedesca, e oggi il conto è **99**.*
+> è arrivato il giorno dopo con la tranche tedesca, e **al 14.08.2026 il conto
+> era 99** — poi è salito ancora due volte. **Il valore corrente sta nel
+> `CLAUDE.md` §5.6, che è l'unico punto che lo dichiara**: qui la cifra è datata
+> perché serve a mostrare che il conto si muove per ragioni ordinarie, non a
+> dire quanto vale adesso. Fino al 15.08.2026 questa riga diceva "oggi il conto
+> è 99", e quell'avverbio la faceva invecchiare a ogni guardrail nuovo.*
 
 **`--mode demo` non ha bisogno di nessun file `.env.demo`**, ed è l'unica strada
 percorribile: `.gitignore` esclude `.env*` (§2.5), quindi una build che ne
@@ -2778,7 +2833,13 @@ utilizzo reale come metrica n. 1 dei pilot.
 
 #### Il residuo della nota di sessione (15.08.2026)
 
-Cinque commit di codice e uno di documenti. Chiude le due voci che la passata
+Sei commit: **tre di codice** — due `fix:` e un `refactor:` — **e tre di
+documenti**. *(Diceva "cinque di codice e uno di documenti": il totale era
+giusto e la ripartizione no, cioè due numeri presi in due momenti invece che
+dalla stessa misura. Corretto il 15.08.2026, ed è l'esemplare che ha fatto
+scrivere il criterio in testa a questo file — il difetto si è riprodotto qui, in
+una passata attenta, mentre le correzioni della stessa famiglia erano già
+pianificate.)* Chiude le due voci che la passata
 sugli stati limite aveva lasciato aperte e che questo file assegnava
 esplicitamente a «una passata di codice». **Sono state prese insieme perché sono
 due facce della stessa cosa**: la nota di sessione, che nessuno leggeva finché
@@ -3127,6 +3188,99 @@ quello che speravi va rifatto, uno che crolla si è già denunciato.** Il perico
   periodo diverso da quello scelto, ed entrambi lo dicono nel titolo. Il giorno
   in cui il contratto avrà alert storici — `getEarlyAlert(period)` — la scelta si
   rifà, e allora nascondere smetterebbe di essere una finzione.
+
+#### I fatti corretti nei documenti (15.08.2026)
+
+**Diciassette commit, tutti `docs:`, zero di codice** — contati sul branch con il
+criterio scritto in testa a questo file, che questa passata inaugura e che è nata
+da uno dei difetti che chiudeva. `git diff --stat` non tocca **nessun file sotto
+`src/`**, `lint` e `typecheck` restano a zero, e nessun numero del §8 o del §9 si
+muove.
+
+**Nove correzioni, e sei sono lo stesso difetto in sei punti**: un numero o un
+elenco scritto in prosa accanto a ciò che lo smentisce. È la famiglia che questo
+file racconta di aver già avuto tre volte — 19/11 contro 13/9 delle CTA, 114
+contro 96 dei guardrail, undici contro tredici delle passate — e la scoperta di
+questa passata è che **non è storica: si riproduce**. Uno degli esemplari è stato
+scritto **il giorno prima**, da una passata attenta, mentre le correzioni erano
+già pianificate.
+
+Da lì il criterio di ogni rimedio: **stabilire una regola, non allineare un
+valore**. Dove il numero serviva al racconto è stato **datato**; dove ripeteva
+una lista che gli stava accanto è stato **tolto**; dove mancava un criterio, il
+criterio è stato scritto — ed è ciò che il §5.6 aveva già fatto per i guardrail e
+il §3 per i `.jsx`, cioè i due conteggi che hanno smesso di divergere.
+
+##### Cosa è stato corretto
+
+| | dove | rimedio |
+|---|---|---|
+| tre `97` dei call site | `CLAUDE.md` §5.6 | allineati a **102**, con la regola che la riga datata e la prosa si muovono insieme |
+| «oggi il conto è 99» | questo file, blocco del 114 | **datato** al 14.08.2026 e rimandato al §5.6 |
+| «la chat non espone numeri d'emergenza» | `CONTRATTO-DATI.md` §8.1, `PITCH.md`, questo file | **è falso**: il 144 c'è, nel disclaimer della chat, in quattro lingue. Il buco vero è che **non è nel check rapido** |
+| «tariffa del mercato privato» sui CHF 70–80 | `PITCH.md` | il mercato privato è **CHF 120–150** (BP p.9), trascritto in §9; la risposta ora regge sul 4–5× |
+| margine lordo | `CLAUDE.md` §9 | **79 / 73 / 68%** trascritti con l'avvertenza: solo l'Essenziale si deriva dai costi esposti |
+| 15–25% contro il 12% | `PITCH.md` | **risposta pronta nuova**, con le due letture del BP trascritte in §9 |
+| `README.md` assente dal §3 | `CLAUDE.md` §3 | riga nell'albero: **è la porta, non un quarto mestiere** |
+| due file su otto in `lib/data/` | `CLAUDE.md` §3 | **nominati tutti e otto**, con il criterio dell'albero |
+| 26 contro 27 rotte | `CLAUDE.md` §10 | **26 rotte dello scope, 27 schermate**, e il §10 è l'unico punto che le conta |
+| «diciassette» e «sette» | questo file | **tolti**: rimandano alla lista invece di contarla |
+| «cinque commit di codice e uno» | questo file | erano **tre e tre**, e da qui il criterio di conteggio |
+| le uscite dai portali | questo file, M5.d | **barrata**: chiusa da #34 due giorni prima, aperta qui e chiusa altrove |
+
+##### La spazzata, con i suoi numeri
+
+Fatta su `CLAUDE.md` e su questo file, cercando ogni punto in cui un numero è
+accompagnato da un avverbio che lo dichiara corrente — «oggi», «ora», «adesso»,
+«attualmente». **Diciassette punti esaminati, cinque invecchiati**: i tre `97`, il
+«diciassette» e il «99». Gli altri dodici sono stati verificati contro il codice e
+**tengono** — i tre `.jsx` convertibili, «nessuna variante `data-*` rotta», i due
+chiamanti di `raiseOutsideCurrentStack`, i 45 componenti shadcn, i tre
+appuntamenti in home, «nessun professionista con i documenti non verificati». Le
+cifre già barrate sono state escluse: sono correzioni in luogo, non dichiarazioni.
+
+**Due difetti della stessa famiglia stanno fuori da quel criterio**, ed è
+l'informazione che serve a chi rifarà la spazzata:
+
+- **«le sette che hanno una sottosezione»** non aveva nessun avverbio. A trovarlo
+  è stata la lista che smentiva, non la ricerca;
+- **«`docs/PITCH.md` oggi non dice…»** aveva l'avverbio ma **non un numero**, ed
+  è la sola correzione di questa passata che non riguarda una cifra. Era anche la
+  più cara: sta sotto un titolo «Aperto e dichiarato» e riguarda il giro del
+  pitch.
+
+Il criterio «numero + avverbio» è quindi un buon punto di partenza e non un
+perimetro. Quello vero è più largo: **un'affermazione che era vera quando è stata
+scritta e non lo è più**, che sia una cifra o una frase.
+
+##### Due correzioni sono nate da errori del prompt che le chiedeva
+
+Va a verbale perché è la prova migliore che il criterio di conteggio non è
+burocrazia — **la famiglia si riproduce dentro il lavoro che la sta chiudendo**:
+
+- la risposta pronta sul 15–25% ancorava il confronto all'esempio **Essenziale**
+  del BP e ne derivava le persone con le **cinque sedute a testa del Plus**: due
+  righe diverse usate come una. Con le tre dell'Essenziale sarebbe uscito il
+  **39%** invece del **23%**, cioè una risposta sbagliata proprio davanti a chi ha
+  il documento in mano. L'àncora è l'esempio del **Plus**, che è il piano di Demo
+  SA, e da lì persone e sedute vengono dalla stessa riga;
+- la banda **68–79%** era data a p.2 e p.16: **p.2 è l'indice**. La banda sta a
+  **p.4** e a **p.16**, e la fonte scritta in §9 le nomina entrambe — citarne una
+  quando ce ne sono due è lo stesso difetto in scala ridotta.
+
+Entrambe sono state trovate riaprendo il Business Plan invece di fidarsi della
+lista, che era la prima istruzione della passata.
+
+##### Fuori da git
+
+`reference/` è stata cancellata dal filesystem: conteneva solo un `.DS_Store`,
+git non la tracciava dalla chiusura di M3, e `README.md` e il `CLAUDE.md` §1 la
+davano già per cancellata.
+
+**`_to_delete/` resta dov'è e `.gitignore` non è stato toccato.** La proposta di
+aggiungercela partiva da una premessa falsa — è già esclusa, in
+`.git/info/exclude`, quindi nessun `git add -A` la raccoglie. Metterla in un file
+tracciato imporrebbe a tutti la convenzione di una macchina sola.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
@@ -3562,9 +3716,13 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 
   **Cosa manca nel prodotto**: nessun percorso di presa in carico urgente, il
   check rapido accetta il valore peggiore senza che succeda niente, la chat del
-  medico non rileva il rischio e non espone numeri d'emergenza. Il perimetro sta
-  in `CONTRATTO-DATI.md` §8.1, che lo mette **primo** perché non è una funzione
-  ma una condizione per operare.
+  medico non rileva il rischio. **Il numero d'emergenza c'è**, ma in un punto
+  solo — il disclaimer della chat del medico, *"in caso di emergenza chiama il
+  144"*, in tutte e quattro le lingue — e **non è nel check rapido**, che è dove
+  il valore peggiore si dichiara senza parlare con nessuno. Il perimetro sta in
+  `CONTRATTO-DATI.md` §8.1, che lo mette **primo** perché non è una funzione ma
+  una condizione per operare. *(Fino al 15.08.2026 questa riga diceva che la
+  chat non espone numeri d'emergenza, ed era falsa.)*
 
   **Il trigger è prima del primo utente attivo**, non prima del primo contratto,
   ed è la formula del documento stesso: il rischio nasce con la prima persona

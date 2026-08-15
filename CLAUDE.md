@@ -341,6 +341,8 @@ riceve di autenticarsi, quindi non vanno mai mandati a un investitore.
 ```
 kora/
   CLAUDE.md              ← questo file: le regole, l'unica fonte
+  README.md              ← la porta: come si avvia, i tre modi di build, le
+                           manopole di sviluppo, e dove stanno le regole
   docs/PROGRESS.md       ← cosa esiste e perché, milestone per milestone
   docs/PITCH.md          ← lo script operativo della presentazione dal vivo
   docs/CONTRATTO-DATI.md ← output di M2: la specifica per il backend futuro
@@ -358,8 +360,19 @@ kora/
       kora/              ← componenti di dominio nuovi: RapidCheckCard (M3),
                            StateNotice (M5.b), RequireRole (M5.d)
     lib/
-      data/              ← il contratto dati e l'implementazione mock (§5),
-                           più i guardrail e il prefetch della cache
+      data/
+        provider.ts      ← l'interfaccia: il contratto che il backend erediterà
+        types.ts         ← le entità del dominio (§5.3)
+        index.ts         ← la riga che sceglie l'implementazione (§5.7)
+        queries.ts       ← le query react-query e `loadState`, che distingue
+                           attesa, vuoto ed errore (M5.b)
+        query-keys.ts    ← le chiavi gerarchiche, cioè la superficie di
+                           invalidazione (`docs/CONTRATTO-DATI.md` §4)
+        guardrails.ts    ← le tre primitive, e l'unico punto che legge il modo (§5.6)
+        prefetch.ts      ← la cache scaldata prima del primo paint
+        fault-injection.ts ← le manopole `?fail` e `?empty`, solo in sviluppo (M5.b)
+        mock/            ← l'implementazione finta: il dataset di §8 e §9, che si
+                           cancella il giorno di `http/` (§5.7)
       i18n/              ← i quattro dizionari (it, de, fr, en), il registro
                            delle lingue e la guardia dei segnaposto
       locale.ts          ← il tipo `Locale` e il default: modulo foglia, perché
@@ -380,6 +393,20 @@ kora/
 `earnings.ts` e `schedule.ts` sono presentazione, non dominio: raggruppare per
 settimana è una decisione della schermata e per questo non sta nel provider
 (`docs/CONTRATTO-DATI.md` §2).
+
+**Il criterio dell'albero, perché la prossima aggiunta non riapra la domanda:
+l'albero nomina *ogni* file di `lib/` e di `lib/data/`, e ogni omissione si
+motiva** — l'unica che c'è, `utils.ts`, ha la sua riga qui sotto. Le cartelle restano
+cartelle quando il loro contenuto non è codice da orientarsi ma materiale:
+`mock/` è il dataset, `i18n/` sono i dizionari, `base44/entities/` sono schemi.
+Chi aggiunge un file a `lib/data/` aggiunge una riga qui, e chi ne trova uno che
+non c'è ha trovato un difetto, non una scelta.
+
+Fino al 15.08.2026 la glossa di `data/` ne nominava **due su otto** — i guardrail
+e il prefetch — e le altre sei si leggevano come assenze: è lo stesso meccanismo
+che le due righe qui sotto esistono per disinnescare, applicato per distrazione
+proprio dove la regola era già scritta. I tre non nominati erano
+`fault-injection.ts`, `queries.ts` e `query-keys.ts`, arrivati con M5.b.
 
 **`src/lib/utils.ts` manca da questa lista di proposito**, ed è l'unico file di
 `lib/` che non compare: contiene il solo `cn()` — `clsx` più `twMerge` — e
@@ -418,6 +445,17 @@ starebbe bene in due dei tre, è scritta male in almeno uno.
 `docs/CONTRATTO-DATI.md` non è un quarto mestiere: è **l'output di M2** e la
 specifica con cui nasce il repository del backend (§5.7), quindi non parla a chi
 lavora qui ma a chi lavorerà là.
+
+**`README.md` non è un mestiere in più: è la porta.** Dice come si avvia il
+progetto, cosa fanno i tre modi di build, quali sono le manopole di sviluppo e
+**dove stanno le regole** — e non ne decide nessuna. Per questo il conto resta
+tre: i mestieri sono decidere, raccontare e presentare, e il README non fa
+nessuna delle tre. Vale intera anche per lui la regola qui sopra: **non duplica**,
+rimanda — se una riga starebbe bene sia lì sia qui, è scritta male in almeno uno
+dei due, e quella che si toglie è la sua. **Viene dall'export base44** ed è stato
+riscritto dalla passata di allineamento del 15.08.2026; fino a questa riga la
+costituzione non sapeva che esistesse — `grep README CLAUDE.md` dava **zero**,
+sul file che chi clona il repository apre per primo.
 
 **Il Business Plan sta in `docs/`, e resta una fonte da consultare, non da citare.**
 Decisione dei founder del 07.08.2026: durante la costruzione della demo più
@@ -669,8 +707,8 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 97 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 97 posti.
+call site sono 102 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 102 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
 **Il criterio con cui i call site si contano**, perché una rilevazione futura non
@@ -716,6 +754,15 @@ numero**: se il criterio è stato applicato per intero, a essere invecchiata è 
 riga, e si aggiorna con la data. Un guardrail nuovo è un call site nuovo, ed è
 esattamente ciò che è successo passando da 96 a 97 con la tranche tedesca.
 
+**Il numero compare in questa sezione più di una volta, e una sola porta la
+data.** È quella del criterio, qui sopra; le altre tre — le due che aprono la
+sezione e quella sui nomi — sono prosa. Sono invecchiate **due volte in due
+giorni**, mentre la riga datata veniva aggiornata da entrambe le passate che
+muovevano il conto: non è distrazione, è che una cifra senza il criterio accanto
+non chiede di essere riletta. Ne discendono due obblighi opposti e ugualmente
+brevi: chi muove il numero **le muove tutte**, e chi ne trova una che non torna
+guarda **prima** la riga datata (founder, 15.08.2026).
+
 **Perché questa forma e non quella di prima.** Fino al 14.08.2026 la riga diceva
 *"un 97 futuro va riconosciuto come errore di criterio, non come correzione"*:
 blindava **un valore**, il 97 è arrivato in un giorno per la ragione più
@@ -731,7 +778,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 97 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 102 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 
@@ -1407,6 +1454,21 @@ motivo, e con una valutazione a `null` non c'è niente da cui farla scendere o
 salire. Le cinque tariffe restano dichiarate nel dataset, e un guardrail
 verifica che nessuna esca dalla banda.
 
+**La stessa seduta sul mercato privato costa CHF 120–150** (BP p.9, riga
+"Sessioni extra (oltre 6)" dell'Essenziale: *"Co-payment CHF 35/sess · vs CHF
+120–150 mercato privato"*). Trascritta il 15.08.2026 su decisione dei founder ai
+sensi del §2.4.
+
+**È una cifra diversa dai CHF 70–80, e confonderle capovolge un argomento.** I
+70–80 sono ciò che **KORA paga** al professionista per una seduta erogata; i
+120–150 sono ciò che **il dipendente pagherebbe fuori** per la stessa seduta. Il
+co-payment sta sotto entrambe — CHF 35, 28 e 22 secondo il piano — ed è quel
+confronto a renderlo un **deterrente** e non una barriera economica: chi supera
+il cap paga comunque una frazione del prezzo di mercato. Fino al 15.08.2026
+`docs/PITCH.md` chiamava "tariffa del mercato privato" i CHF 70–80, cioè metteva
+il costo di KORA al posto del prezzo di fuori, e la cifra vera non era in questo
+elenco — quindi la risposta non avrebbe potuto citarla nemmeno volendo.
+
 **A pieno regime, 20 sessioni a settimana valgono CHF 5'600–6'400 al mese.** Serve
 al portale professionista: **il regime va sempre detto accanto al totale**,
 altrimenti chi ha letto il BP legge uno scarto di un ordine di grandezza come un
@@ -1419,6 +1481,70 @@ all'albo e firma del contratto di mandato — cioè i due controlli da cui si
 deriva "prenotabile" (§8). Il portale professionista la mostra accanto al
 regime tenuto. Trascritta il 10.08.2026 su decisione dei founder ai sensi del
 §2.4: la cifra era già nel dataset e non nell'elenco delle cifre ammesse.
+
+**Margini lordi per piano: 79% Essenziale, 73% Plus, 68% Executive** (BP p.9–10;
+la banda **68–79%** ricompare a **p.4**, nella sintesi, e a **p.16**, sullo
+stream 1 "Abbonamenti B2B"). Trascritti il 15.08.2026 su decisione dei founder ai
+sensi del §2.4.
+
+**L'avvertenza sta sulla stessa riga, perché due dei tre non si derivano dai
+costi che il BP mostra.** Ricalcolando ogni esempio con le sole voci esposte:
+
+| piano | ricavo | costi esposti nel BP | margine implicito | dichiarato |
+|---|---|---|---|---|
+| Essenziale, 50 dip | CHF 22'800 | 2'100 + 2'800 | 78.5% | **79%** |
+| Plus, 150 dip | CHF 99'000 | 10'500 + 6'750 | 82.6% | **73%** |
+| Executive, 400 dip | CHF 393'600 | 71'120 | 81.9% | **68%** |
+
+Solo l'Essenziale torna. Su Plus ed Executive restano rispettivamente **CHF
+~9'480 e ~54'832** di costi che il documento non espone, quindi le due cifre
+dichiarate sono più prudenti di ciò che i loro esempi sostengono — il che è la
+direzione giusta in cui sbagliare, ma non le rende derivabili.
+
+**Ne discende una regola d'uso, e non è un divieto di citarle.** Averle qui dà
+loro una casa e chiude una lacuna del §2.4; **non le promuove a risposta di
+pitch**. `docs/PITCH.md` continua a dire di non improvvisare il margine lordo, e
+la ragione non è mai stata che la cifra mancasse: è che citarla invita la domanda
+*"da cosa esce"*, a cui gli esempi del Business Plan rispondono per un piano su
+tre.
+
+**Il co-payment non è uno stream di margine, e a dirlo è il Business Plan**: la
+tabella dei flussi di ricavo (p.16) gli assegna margine **"—"** e funzione
+*"Fidelizzazione — incentiva l'uso consapevole del cap"*, mentre il 68–79% sta
+sullo stream 1, gli abbonamenti. È la conferma documentale della correzione del
+14.08.2026 a `docs/PITCH.md`, che ha spostato la risposta sul margine dal
+co-payment al **divario fra sessioni incluse ed erogate** — e la conferma vale
+più del ragionamento che l'aveva prodotta, perché viene dalla fonte.
+
+**Utilizzo del servizio psicologico: il Business Plan ne dà due letture, e non
+sono compatibili.** Trascritte entrambe il 15.08.2026 su decisione dei founder ai
+sensi del §2.4, perché la risposta pronta del pitch ha bisogno di tutte e due —
+una per rispondere, l'altra perché è da lì che arriva la domanda.
+
+1. **La banda mensile: 15–25%** dei dipendenti usa attivamente il servizio
+   psicologico *"in un mese dato"* (BP p.9, riquadro "Principio fondamentale"),
+   con l'esempio *"con 50 dipendenti: 10–12 attivi = 25–30 sessioni/mese
+   totali"*.
+2. **Gli esempi di margine, che sono annuali.** Plus: *"150 dip: Ricavo CHF
+   99'000/anno. 30 dip × 5 sess = 150 sess"* — cioè **30 persone su 150, il 20%,
+   cinque sedute a testa sull'anno**. Essenziale: *"50 dip … Utilizzo 20% = 30
+   sessioni"* — 10 persone su 50, ancora il **20%**, tre sedute a testa.
+
+**Si contraddicono di circa un fattore dieci, e la contraddizione è interna al
+BP**: sullo stesso Essenziale, 25–30 sessioni al mese fanno 300–360 all'anno su
+un monte annuo di 300 (50 × 6), mentre l'esempio di margine — nello stesso
+riquadro, due righe sotto — calcola il 79% su **30 sessioni all'anno**.
+
+**Dove il BP diverge da sé stesso vince l'esempio di margine**, ed è la lettura
+che il dataset del §8 segue: è l'unica delle due che regga il proprio conto. La
+banda mensile resta trascritta perché **è la riga che un investitore ha letto**,
+non perché sia utilizzabile in un confronto.
+
+**Per Demo SA l'esempio è quello del Plus**, che è il suo piano: le persone e le
+sedute a testa vengono dalla **stessa riga**, e prenderle da due esempi diversi —
+le persone dal Plus e le sedute dall'Essenziale, o viceversa — produce due
+risultati lontani fra loro. È l'errore che questa trascrizione esiste per
+impedire, ed è già stato commesso una volta preparando la risposta pronta.
 
 ### Formule del calcolatore ROI (§10.A.2), per N dipendenti
 
@@ -1508,6 +1634,31 @@ corrente è anche il totale dell'anno. Il consumo del singolo trimestre — 22 /
 base44; la ventiseiesima è `/roi`, approvata dai founder il 07.08.2026. **Nessuna
 schermata nuova senza
 approvazione** (§2.6); nessuna schermata esistente si elimina senza dirlo.
+
+**Rotte e schermate non sono la stessa cosa, e questo è l'unico punto che le
+conta.** Il criterio, perché non serva rifarlo quando il numero si muove — e si
+muoverà con le pagine del footer di M5.f:
+
+- una **rotta dello scope** è una voce di questo §10, cioè una schermata che
+  qualcuno ha approvato e che si raggiunge da un indirizzo dichiarato. Sono le
+  **26** qui sopra;
+- una **schermata** è tutto ciò che l'applicazione può disegnare al posto di una
+  pagina. Sono **27**: le 26 più la **404**, che in `App.tsx` è il catch-all `*`
+  — non ha un indirizzo suo, non entra nello scope, e nondimeno va percorsa,
+  tradotta e verificata come le altre.
+
+Ne discende la regola d'uso: **si conta in rotte quando si parla di scope e in
+schermate quando si parla di copertura** — quante ne sono state percorse,
+tradotte, censite per il contrasto. `docs/PROGRESS.md` e `docs/PITCH.md` citano e
+rimandano qui invece di tenere un secondo conto, che è la stessa disciplina del
+§5.6 per i guardrail e del §3 per i `.jsx`.
+
+**I verbali di `docs/PROGRESS.md` scrivono "27 rotte", e restano com'erano**:
+sono resoconti datati di passate concluse — le 27 percorse da M5.a, da M5.b, dai
+blocchi c) e d) — e intendevano la copertura, cioè ciò che questo criterio chiama
+schermate. Riscriverli sarebbe correggere il verbale di una misura fatta davvero;
+questa riga esiste perché chi cerca `27 rotte` trovi la lettura qui invece di
+riaprire una decisione già presa (founder, 15.08.2026).
 
 ### A. Pubblica — `/`, `/roi`, `/pricing`, `/demo`
 1. **Landing**: hero, problema, tre livelli di valore, anteprima piani, privacy, CTA.

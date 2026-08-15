@@ -150,8 +150,8 @@ trasformare un argomento forte in una correzione ricevuta in sala.
 
 **Detto a voce, è un argomento competitivo.** Quattro lingue nazionali sono la
 condizione per vendere a un'azienda svizzera con sedi in più cantoni, e la
-piattaforma le ha **oggi**, non "le avrà": tutte e ventisette le rotte sono state
-percorse in ognuna delle quattro. È questo il modo di dirlo, non un cambio di
+piattaforma le ha **oggi**, non "le avrà": tutte e ventisette le schermate sono
+state percorse in ognuna delle quattro. È questo il modo di dirlo, non un cambio di
 lingua a schermo.
 
 **Se è l'investitore a cliccare una sigla**, la schermata regge e non c'è niente
@@ -326,18 +326,75 @@ CHF 35 · Plus 10, extra CHF 28 · Executive 16, extra CHF 22** (`CLAUDE.md` §9
 > ciò che la frase voleva dire. Il divario fra incluse ed erogate regge da sé, e
 > il suo numero è l'unico dei tre che l'investitore ha già davanti agli occhi.
 
+### "Il documento dice 15–25% di utilizzo, la demo mostra il 12%"
+
+Arriva da chi ha letto il Business Plan, e arriva subito dopo la risposta sul
+margine, perché è lì che il 12% viene detto. Chi la fa sta concludendo che la
+demo è sotto-utilizzata rispetto alle nostre stesse assunzioni. **Non lo è, e i
+due numeri non si possono sottrarre: hanno denominatori diversi.**
+
+**Primo, e prima di ogni altra cosa: il 12% non è una quota di persone.** È la
+quota del **monte annuo di sedute** che è stata consumata — 142 su 1'200
+(`CLAUDE.md` §8) — mentre il 15–25% del documento è una quota di **dipendenti**.
+È questa sovrapposizione a generare la domanda, quindi si scioglie per prima e
+con una frase sola.
+
+**Secondo: la quota di persone del dataset è circa il 23%.** Le 142 sedute
+dell'anno, a cinque sedute a testa, fanno **~28 persone su 120**. Le cinque
+sedute a testa non sono una nostra stima: sono la riga del Business Plan per il
+piano Plus, che è il piano di Demo SA — *"150 dip: 30 dip × 5 sess = 150 sess"*
+(`CLAUDE.md` §9).
+
+**Terzo, ed è il confronto giusto: quel 23% sta accanto al 20% del Business
+Plan.** Gli esempi di margine del documento sono **annuali** e danno tutti e due
+il **20% dei dipendenti** — 30 su 150 sul Plus, 10 su 50 sull'Essenziale. Demo SA
+è appena sopra quella soglia, sullo stesso piano e sulla stessa base. Detto così
+il dataset non è sotto le assunzioni: **le rispetta**.
+
+**Non confrontare il 23% con la banda "in un mese dato"**: sarebbe rifare la
+stessa confusione al contrario, un dato annuale contro uno mensile.
+
+**Se la domanda insiste, la contraddizione è del documento e si dice così.** Nel
+riquadro "principio fondamentale" le due letture non stanno insieme: 25–30
+sessioni al mese su 50 dipendenti Essenziale fanno 300–360 all'anno su un monte
+annuo di 300, mentre l'esempio di margine due righe sotto calcola il 79% su **30
+sessioni all'anno**. È un fattore dieci dentro lo stesso riquadro. **Dove il
+Business Plan diverge da sé stesso, la lettura difendibile è l'esempio di
+margine**, ed è quella che il dataset segue — non l'abbiamo scelta per comodità,
+è l'unica delle due il cui conto torna.
+
+Da non fare: non usare questa risposta per anticipare la curva di utilizzo reale.
+Quella non la sappiamo, ed è la domanda qui sotto.
+
 ### "Quindi sulle sedute extra ci rimettete?"
 
-È il seguito immediato della risposta sul margine: dire che il co-payment è un
-deterrente e non un ricavo invita la domanda, dove la formulazione vecchia non la
-invitava. È il prezzo della correzione, e si paga rispondendo — non schivando.
+È l'altro seguito della risposta sul margine, e nasce dalla parte sul co-payment:
+dire che è un deterrente e non un ricavo invita la domanda, dove la formulazione
+vecchia non la invitava. È il prezzo della correzione, e si paga rispondendo —
+non schivando.
 
 **Sì, per unità, ed è voluto.** Il co-payment è tarato per **scoraggiare l'uso
-oltre il tetto**, non per coprirne il costo. Un prezzo a copertura vorrebbe dire
-chiedere al dipendente la tariffa del mercato privato — i **CHF 70–80** che
-prende il professionista (`CLAUDE.md` §9) — e a quel punto il tetto non sarebbe
-più un tetto: la seduta oltre il cap smetterebbe di essere una scelta consapevole
-per diventare una barriera economica.
+oltre il tetto**, non per coprirne il costo: a KORA una seduta erogata costa
+**CHF 70–80** e oltre il cap ne incassa **28**, quindi sull'unità la sottrazione
+la fa chiunque e il segno è quello.
+
+**Il confronto che spiega il numero è un altro, ed è quello da fare per primo:
+fuori la stessa seduta costa CHF 120–150** (`CLAUDE.md` §9). Il dipendente che
+supera il cap paga **28 invece di 120–150**, cioè **un quarto o un quinto** del
+prezzo di mercato. È lì che si vede a cosa serve quella cifra: non a coprire un
+costo, ma a restare abbastanza bassa da non trasformare la seduta oltre il tetto
+in una barriera economica, e abbastanza visibile da restare una scelta
+consapevole. Un prezzo a copertura vorrebbe dire chiedere al dipendente i
+120–150 del mercato privato, e a quel punto il tetto non sarebbe più un tetto:
+sarebbe la fine dell'accesso.
+
+**I tre numeri vanno tenuti distinti, perché due si somigliano**: 70–80 è quanto
+KORA **paga**, 120–150 quanto costa **fuori**, 28 quanto paga **il dipendente**
+oltre il cap sul Plus. Fino al 14.08.2026 questa risposta chiamava "tariffa del
+mercato privato" i 70–80 — cioè il costo di KORA al posto del prezzo di fuori — e
+con quella sostituzione l'argomento si capovolgeva: il confronto diventava
+"28 contro 70–80", che dice solo che ci rimettiamo, e spariva il 4–5× che è la
+ragione per cui il co-payment funziona.
 
 **Il volume è marginale, e si vede a schermo.** Nell'elenco pazienti del portale
 professionista **due dei sei pazienti** sono sopra il cap. È la stessa prova
@@ -401,7 +458,16 @@ superato i controlli.*
 **Il percorso di escalation non c'è, e la demo non lo simula.** È la risposta da
 dare per intero e senza attenuarla: il check rapido accetta anche la risposta
 peggiore e non succede niente, e la chat del medico virtuale non rileva il
-rischio e non espone numeri d'emergenza.
+rischio.
+
+**Il 144 è a schermo, ma in un punto solo e non in quello che conta.** Sta nel
+disclaimer della chat del medico virtuale — *"in caso di emergenza chiama il
+144"* — e **non c'è nel check rapido**, che è invece il punto in cui il valore
+peggiore si dichiara senza parlare con nessuno. Detto così non attenua la
+risposta, la precisa: quello che manca non è un numero da aggiungere, è un
+percorso dove il segnale arriva. Se qualcuno lo ha visto nella chat mentre
+mostravi il medico virtuale, questa è la frase che tiene insieme le due cose
+invece di sembrare una contraddizione.
 
 **Il referente clinico e il protocollo si definiscono prima del primo utente
 attivo.** È il momento in cui la domanda smette di essere teorica, ed è lì che va
