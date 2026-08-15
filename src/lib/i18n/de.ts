@@ -349,6 +349,7 @@ export const de: Dictionary = {
       distance: "{km} km",
       providerAddress: "{address}, {city}",
       bookFrom: "Ab {date}",
+      notInPlan: "Nicht im Plan enthalten",
 
       report: {
         title: "Befund vom {date}",

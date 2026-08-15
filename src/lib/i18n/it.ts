@@ -400,6 +400,10 @@ export const it = {
       providerAddress: "{address}, {city}",
       /** Sul pulsante, quando il prossimo check-up non è ancora aperto */
       bookFrom: "Dal {date}",
+      /* `availableFrom` è `null` quando il piano non comprende il check-up
+         (`docs/CONTRATTO-DATI.md` §3): il pulsante resta disabilitato e deve
+         comunque avere un nome, o è un bersaglio muto. */
+      notInPlan: "Non incluso nel piano",
 
       report: {
         /** "Referto del 15.03.2026" */
