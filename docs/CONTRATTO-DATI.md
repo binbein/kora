@@ -868,7 +868,91 @@ Il dataset demo nasce già popolato, quindi nessuno di questi passaggi esiste:
   documento, i dati fiscali, lo stato di pagamento e la QR-fattura, che in
   Svizzera è il modo in cui una fattura si paga.
 
-### 8.4 Ciclo dell'appuntamento
+### 8.4 Il co-payment non ha dove essere registrato, e non è deciso chi lo paga
+
+**È l'unico ricavo variabile del modello, e non ha nessuna rappresentazione
+contabile.** Il prezzo esiste come dato — `Plan.extraSessionPrice`, riportato su
+`SessionEntitlement` — e si **annuncia** in due schermate: la prenotazione lo
+dichiara prima di confermare, l'elenco pazienti del professionista lo mostra sui
+due pazienti sopra il cap. Ma superato il tetto la conferma **prenota e basta**:
+nessun addebito, nessuna riga, nessun documento. `Invoice` porta organico,
+prezzo unitario e stato, e non ha altre voci.
+
+Il gruppo qui sopra dichiara mancante la **forma** della fattura. Questo è un
+buco diverso e più a monte: **manca l'oggetto da fatturare**, non il documento
+che lo conterrebbe. Nessuna entità registra che una seduta è stata erogata oltre
+il cap, a che prezzo, e a chi è stata addebitata.
+
+**La decisione a monte non è stata presa da nessuna parte: chi paga.** Le due
+strade non sono varianti di implementazione e producono contratti diversi:
+
+- **addebito al dipendente** — serve un mezzo di pagamento sulla persona, quindi
+  un rapporto commerciale diretto fra la piattaforma e chi non è il cliente
+  pagante, con tutto ciò che ne segue (incasso, rimborso, insoluto, e un
+  dipendente che può rifiutarsi di pagare una seduta già erogata);
+- **riaddebito all'azienda** — la seduta extra diventa una riga della fattura
+  mensile, e allora l'azienda **sa che quella persona ha superato il cap**. È il
+  punto in cui una scelta contabile tocca la garanzia di privacy del §3: una
+  riga aggregata "sedute oltre cap: 4 × CHF 28" non nomina nessuno, una riga per
+  seduta sì, e il confine fra le due è una decisione, non un dettaglio di
+  rendering.
+
+**Non è teoria: `docs/PITCH.md` ci costruisce sopra due risposte intere** — il
+co-payment come deterrente che tiene il consumo dentro il cap, e il confronto con
+i CHF 120–150 del mercato privato (`CLAUDE.md` §9). Sono argomenti che reggono, e
+descrivono un meccanismo che **il prodotto oggi non ha**: chi supera il cap
+prenota e non paga niente.
+
+Ne discende anche un vincolo sul metodo di scrittura del §4: `bookAppointment`
+oggi restituisce un `Appointment` e nient'altro. Se l'addebito nasce alla
+prenotazione, quella firma deve poter dire **che cosa è stato addebitato**; se
+nasce alla dichiarazione di erogazione (§8.5 qui sotto), l'oggetto contabile
+nasce lì, e le due scelte non sono intercambiabili — la prima addebita una seduta
+che potrebbe non avvenire.
+
+### 8.5 Ciclo dell'appuntamento
+
+**Prima degli stati manca l'attore: nessuno dichiara che una seduta è
+avvenuta.** Le scritture del dominio sono tutte inserimenti — `bookAppointment`,
+`submitRapidCheck`, `submitDemoRequest`, più `saveSessionNote`, che è l'unico
+upsert — e **nessun metodo porta una seduta da `scheduled` a `completed`**. Nel
+mock a farlo è l'orologio: lo stato si deriva da `start < DEMO_TODAY`, in un punto
+solo (`mock/professional-portal.ts`).
+
+In produzione quella condizione diventa un **evento dichiarativo**, e quell'atto
+decide insieme tre grandezze che oggi non possono divergere:
+
+| | dove si legge | cosa decide |
+|---|---|---|
+| **il compenso maturato** del professionista | `ProfessionalEarnings`, `ProfessionalPayout` | quanto la piattaforma deve pagare |
+| **il consumo del cap** del dipendente | `SessionEntitlement.used` | quando scatta il co-payment |
+| **l'utilizzo che l'HR vede** | `ServiceUsageMonth`, e la KPI "142 su 1'200" | il numeratore su cui poggia il ROI |
+
+**Sono rigorosamente coerenti per una ragione fragile: derivano tutte e tre dalla
+stessa condizione sull'orologio.** Tre filtri distinti su
+`status === "completed"`, e una sola sorgente dietro. Il giorno in cui la
+condizione diventa un evento — qualcuno preme un pulsante, o non lo preme —
+**possono divergere per la prima volta**, ed è esattamente il tipo di divergenza
+che il §5.5 di `CLAUDE.md` esiste per prevenire: due numeri che descrivono lo
+stesso fatto e smettono di essere lo stesso numero.
+
+Le domande da chiudere, tutte e tre di prodotto prima che di implementazione:
+
+- **chi dichiara.** Il professionista, il dipendente, entrambi, o un default
+  temporale che qualcuno può contestare. Se dichiara solo chi viene pagato,
+  l'atto ha un conflitto d'interesse incorporato; se servono entrambi, una seduta
+  resta sospesa quando uno dei due non risponde;
+- **entro quale finestra.** Un compenso che matura senza scadenza non si chiude
+  mai, e il riepilogo mensile del portale professionista — che si consolida al
+  quinto del mese dopo (§3, compensi) — ha bisogno di sapere quando il mese è
+  definitivo;
+- **cosa succede se i due lati non concordano.** È il caso che genera la mancata
+  presentazione qui sotto, e non è lo stesso problema: lì manca uno **stato**, qui
+  manca **chi lo scrive**.
+
+Finché l'atto non esiste, la mancata presentazione non è rappresentabile nemmeno
+aggiungendo il valore all'enumerazione: uno stato che nessuno può dichiarare non
+è uno stato.
 
 `ProfessionalSession.status` ha tre valori — in programma, erogata, annullata — e
 il ciclo vero ne ha di più:
@@ -885,7 +969,53 @@ il ciclo vero ne ha di più:
 - **La pubblicazione della disponibilità**: gli slot sono un dato del dataset, e
   nessun metodo permette a una professionista di dichiarare quando lavora.
 
-### 8.5 Autorizzazione e multi-tenant
+### 8.6 La prenotazione del check-up non esiste
+
+**Il gruppo qui sopra descrive il ciclo delle sedute, e niente di quello vale
+qui.** Una seduta si prenota su un'agenda che la piattaforma governa; un check-up
+si prenota presso una **struttura convenzionata**, cioè un terzo soggetto
+contrattuale con il proprio calendario, i propri orari e i propri referti. Sono
+due flussi diversi, e il secondo non esiste affatto.
+
+**Cosa manca, alla lettera**: non c'è nessun `bookCheckup` nell'interfaccia; il
+pulsante di ogni struttura è **disabilitato in ogni caso**, e dice perché
+(`pages/employee/Checkup.tsx`); e `CheckupBooking` è **un tipo che nessun metodo
+crea** — vive solo come valore di `CheckupEligibility.lastCompleted`, cioè
+descrive un check-up già fatto e mai uno che qualcuno stia prenotando.
+
+**Non è un dettaglio dell'offerta: è una delle cinque voci del piano Plus**
+(`CLAUDE.md` §9), e a schermo si presenta come un elenco di cliniche con un
+pulsante spento. Il perimetro da costruire è quello di un'integrazione, non di
+una schermata: disponibilità di terzi, conferma che può arrivare in differita,
+disdetta governata da chi non siamo noi, e il referto che torna dentro
+`CheckupReport` — che il §3 dichiara **l'unico dato sanitario individuale del
+dominio**, quindi il canale su cui arriva è una scelta di trattamento prima che
+di trasporto.
+
+**Due conseguenze sono già visibili nei tipi**, e vanno lette prima di
+implementare:
+
+- **`CheckupEligibility.lastCompleted` promette più di quanto dichiari.** Il
+  nome e la glossa dicono *l'ultimo check-up eseguito*, ma il campo è un
+  `CheckupBooking` e `CheckupBooking.status` è un `AppointmentStatus` intero —
+  quindi il tipo ammette anche `scheduled` e `cancelled`. Oggi il dataset
+  contiene un solo valore, `completed`, e la contraddizione non si vede; **i
+  consumatori si comportano già in due modi diversi**, il che è il sintomo che la
+  promessa vive nel nome e non nel tipo. In produzione o il campo si restringe —
+  un `CompletedCheckup` che non può essere altro — oppure cambia nome e
+  dichiara di essere *l'ultima prenotazione*, e allora chi legge deve filtrare.
+  Le due strade non si equivalgono: la prima rende impossibile lo sbaglio, la
+  seconda lo lascia a ogni chiamante.
+- **`EmployeeDirectoryEntry.checkupStatus` ha un valore che l'altro lato non sa
+  produrre.** L'elenco dell'HR ammette `"booked"`, ma **nel percorso del
+  dipendente non c'è nessun modo di arrivarci**, perché la prenotazione non
+  esiste: il valore è raggiungibile solo come seme del dataset. È il segno che
+  l'HR era stata progettata su un flusso che il portale non ha, e il giorno in
+  cui `bookCheckup` esiste i due lati vanno riletti insieme — la stessa
+  disciplina con cui il §3 tiene `Appointment` e `ProfessionalSession` come due
+  proiezioni di un record solo.
+
+### 8.7 Autorizzazione e multi-tenant
 
 **`UserRole` è un'enumerazione piatta**: dice *hr*, non *HR di quale azienda*.
 Nessun metodo prende un identificatore di azienda — `getCompany()` non ne prende
@@ -901,7 +1031,7 @@ cosa si può leggere, e chiunque può chiamare l'API senza passare da lei.
 La forma che il contratto ha già preso per accogliere tutto questo — `Session`,
 `getSession`, `enterAs` — sta nel §6, con la ragione per cui ci sta.
 
-### 8.6 Realtà del personale
+### 8.8 Realtà del personale
 
 Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
 
@@ -921,7 +1051,40 @@ Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
   prezzo è per dipendente al mese, e su un organico che cambia a metà mese la
   fattura di oggi non saprebbe cosa dire.
 
-### 8.7 Paginazione
+### 8.9 L'avanzamento del piano di prevenzione non ha una sorgente
+
+**`AiPlanArea.progressPercent` è l'unico numero del dominio che non misura
+niente.** Le cinque aree del piano lo portano come valore dichiarato del dataset
+(`mock/ai-plan.ts`), e l'unico guardrail che lo riguarda ne verifica il **range
+0–100** — cioè che sia una percentuale, non che sia *quella* percentuale. È il
+solo controllo scrivibile: non esiste una seconda sorgente contro cui
+confrontarlo, e un guardrail che non può che verificare la forma è il segno che
+dietro non c'è un fatto.
+
+**Nessuna entità registra il comportamento che quella barra misurerebbe.** Il
+check rapido è un umore auto-riportato senza cadenza (§3), il check-up è annuale
+e restituisce misure cliniche, e **non esiste nessun tracciamento di abitudini** —
+sonno, attività, alimentazione — né come entità né come scrittura. Le cinque aree
+del profilo salute nascono dall'assessment iniziale, che è una fotografia e non
+una serie.
+
+**In produzione le strade sono due, e la scelta è di prodotto.** O la barra
+sparisce e la card resta quello che il resto già è — un obiettivo e tre
+suggerimenti per area, che non hanno bisogno di una percentuale per essere utili
+— **oppure va costruito ciò che la alimenta**, e allora nasce un pezzo di dominio
+nuovo: un tracciamento periodico per area, con la sua cadenza, il suo storico e
+la sua definizione di "avanzamento rispetto a cosa". La seconda strada è
+sostanziale, e tocca la promessa più delicata del prodotto: un dato di abitudine
+raccolto in continuo è più invasivo di tutto ciò che la piattaforma raccoglie
+oggi, quindi ricade sul consenso del §8.2 prima ancora che sull'interfaccia.
+
+**Non si sceglie per omissione.** Lasciare la barra e riempirla con un valore
+dichiarato è ciò che il dataset demo fa, dichiarandolo; farlo in produzione
+significherebbe mostrare a una persona una misura del proprio comportamento che
+nessuno ha misurato — che è la stessa famiglia del §8 di `CLAUDE.md`, dove nessuna
+metrica di stress si deduce da un surrogato.
+
+### 8.10 Paginazione
 
 **`getEmployeeDirectory` restituisce otto righe su 120**, e la schermata lo
 dichiara (§7). Un elenco vero si pagina e si cerca, e vale per ogni lista che in

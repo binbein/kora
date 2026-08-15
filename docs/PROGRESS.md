@@ -37,7 +37,15 @@ hanno smesso di divergere. Il criterio, deciso dai founder il 15.08.2026:
   scrivere questa regola aveva il **totale giusto e la ripartizione sbagliata**
   — «cinque commit di codice e uno di documenti» su un branch di tre e tre — ed
   è la firma di due numeri presi in due momenti. Un solo comando, due numeri che
-  non possono divergere.
+  non possono divergere;
+- **il commit di chiusura conta sé stesso**, quindi il numero della sua
+  sottosezione è l'unico che non si può misurare mentre lo si scrive: si scrive
+  `n + 1`, cioè si predice. Ne discende l'obbligo che chiude il buco — **chi
+  aggiunge un commit dopo la chiusura aggiorna quel numero nello stesso
+  commit**, perché da lì in poi la predizione è falsa. *(Clausola aggiunta il
+  15.08.2026 dalla seconda passata che ha usato il criterio, ed è il buco che ha
+  trovato usandolo: la sua sottosezione dichiarò sei con cinque commit sul
+  branch, ed è invecchiata appena la passata ne ha guadagnato un settimo.)*
 
 Vale da questa passata in avanti. Le voci più vecchie non si riscrivono: sono
 verbali, e un conteggio sbagliato che qualcuno trova si corregge lì con la sua
@@ -510,7 +518,7 @@ Operations; le date di fatturazione ferme ad aprile su una demo di settembre.
 - **L'elenco dipendenti è un estratto di otto righe su 120**, dichiarato a
   schermo e in `CONTRATTO-DATI.md` §7. ~~La paginazione è M5.~~ → **non era di
   M5**, e nessuno dei sei blocchi la contiene: è lavoro dell'MVP, dichiarato in
-  `CONTRATTO-DATI.md` §8.7 dalla passata del 15.08.2026.
+  `CONTRATTO-DATI.md` §8, gruppo «Paginazione», dalla passata del 15.08.2026.
 
 #### L'area dipendente (§10.B)
 
@@ -2002,7 +2010,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Ventun passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Ventidue passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2010,7 +2018,8 @@ quella francese di M5.e, le quattro della **revisione del 15.08.2026** — #43 e
 #44 sulla coerenza del dominio e sugli stati limite, #45 sul perimetro del
 contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
 `README.md`, il residuo della nota di sessione, gli slot sovrapposti e i periodi
-non dichiarati, e **questa passata**, i fatti corretti nei documenti. Non
+non dichiarati, i fatti corretti nei documenti, e **questa passata**, il
+perimetro e le promesse in sospeso. Non
 aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
 seam e del dizionario. **Quelle che hanno una sottosezione loro sono le
@@ -2795,8 +2804,8 @@ spezzarla in due la renderebbe illeggibile.
 **La paginazione ha trovato la sua collocazione.** Il §7 del contratto la mandava
 a M5; **nessuno dei sei blocchi di M5 la contiene**, e non è una dimenticanza —
 paginare un estratto di otto righe curate non aggiunge niente alla demo. È lavoro
-dell'MVP, sta nel §8.7, e da qui smette di essere orfana fra un documento e
-l'altro.
+dell'MVP, sta nel §8 sotto «Paginazione», e da qui smette di essere orfana fra un
+documento e l'altro.
 
 **Restava a una passata di codice**, e non era di questo blocco: la correzione di
 `hasNote` nel dataset e la decisione sul controllo della cache fredda contro
@@ -3282,6 +3291,132 @@ aggiungercela partiva da una premessa falsa — è già esclusa, in
 `.git/info/exclude`, quindi nessun `git add -A` la raccoglie. Metterla in un file
 tracciato imporrebbe a tutti la convenzione di una macchina sola.
 
+#### Il perimetro e le promesse in sospeso (15.08.2026)
+
+**Sette commit: sette di documenti e zero di codice** — totale e ripartizione
+dalla stessa misura, `git log --format='%s' master..HEAD`, come vuole il criterio
+in testa a questo file. Due soli file toccati, `CONTRATTO-DATI.md` e questo:
+**nessun file sotto `src/`, e nessun tipo è cambiato**; `lint` e `typecheck`
+restano a zero. Non ci sono verifiche a schermo perché non c'è niente di nuovo a
+schermo, ed è la stessa forma della passata sul perimetro del contratto, che è il
+suo modello.
+
+Quattro vuoti in più nel §8 del contratto e tre promesse in più fra le decisioni
+in sospeso. **Il perimetro dell'MVP passa da sette gruppi a dieci** — chi cerca
+"sette gruppi" lo trova nel verbale della passata che li scrisse, ed era giusto
+quel giorno.
+
+##### I quattro vuoti, e il filo che ne tiene insieme tre
+
+| | il vuoto | dove |
+|---|---|---|
+| **l'atto dichiarativo** | nessuno porta una seduta da `scheduled` a `completed`: nel mock lo fa l'orologio | §8.5, in testa al ciclo dell'appuntamento |
+| **il co-payment** | l'unico ricavo variabile del modello non ha dove essere registrato, e chi lo paga non è deciso | §8.4, gruppo nuovo |
+| **la prenotazione del check-up** | non esiste: nessun `bookCheckup`, pulsante disabilitato, e `CheckupBooking` è un tipo che nessun metodo crea | §8.6, gruppo nuovo |
+| **`progressPercent`** | l'unico numero del dominio che non misura niente, e nessuna entità registra ciò che misurerebbe | §8.9, gruppo nuovo |
+
+**Tre dei quattro non sono stati mancanti ma attori o oggetti mancanti**, ed è la
+lettura che li tiene insieme: il gruppo sul ciclo dell'appuntamento elencava gli
+*stati* che mancano — la mancata presentazione, la policy di preavviso — e non si
+era accorto che **manca chi li scriverebbe**. Lo stesso vale per il
+co-payment, dove non manca la forma della fattura ma **l'oggetto da fatturare**, e
+per il check-up, dove non manca una schermata ma **il flusso verso un terzo
+soggetto contrattuale**. Uno stato che nessuno può dichiarare non è uno stato: è
+la frase che le tre voci condividono.
+
+**Il quarto è di un'altra specie e sta bene dove sta**: `progressPercent` non
+manca di un attore, manca di un fatto. Il suo unico guardrail ne verifica il range
+0–100 — cioè che sia una percentuale, non che sia quella — e un controllo che può
+solo verificare la forma è il segno che dietro non c'è una seconda sorgente contro
+cui confrontarsi.
+
+##### L'atto dichiarativo è il più caro dei quattro, e si vede solo contando
+
+Le tre grandezze che dipendono da «la seduta è avvenuta» — compenso maturato,
+consumo del cap, utilizzo che l'HR vede — sono **tre filtri distinti su
+`status === "completed"`**, in tre file diversi, con **una sola condizione
+sull'orologio** dietro. Oggi non possono divergere per costruzione; il giorno in
+cui la condizione diventa un evento, possono divergere per la prima volta. È il
+§5.5 di `CLAUDE.md` visto in anticipo: due numeri che descrivono lo stesso fatto e
+smettono di essere lo stesso numero.
+
+##### Le tre promesse, contate come la residenza dei dati
+
+Stessa classe di rischio e stesso trattamento: il conto delle stringhe con il
+criterio accanto, perché il giorno in cui si decide quelle stringhe o si
+confermano o si cambiano.
+
+| promessa | stringhe in `it.ts` | dove |
+|---|---|---|
+| crittografia end-to-end, AES-256 | **3** | titolo e corpo del principio nella privacy HR, **più il chip della landing** |
+| consenso raccolto e revocabile | **2** | titolo e corpo, nella sola privacy HR |
+| «ti richiediamo fra qualche giorno» | **1** | il `doneHint` del check rapido |
+
+**La più grave è il consenso, e non per il numero**: le altre due promettono un
+meccanismo che manca, questa afferma un **fatto giuridico compiuto** — che il
+consenso è stato dato — su una schermata rivolta a chi su quella base tratterà i
+dati dei propri dipendenti, e promette una revoca che non ha nessun percorso.
+Il `CONTRATTO-DATI.md` §8.2 dice l'opposto alla lettera.
+
+**La terza è minore e ha una forma che le altre non hanno**: una stringa a
+schermo sta **decidendo ciò che il contratto lascia indeciso**. "Fra qualche
+giorno" non è vago per prudenza — esclude già la cadenza settimanale e quella
+mensile, cioè restringe una scelta di prodotto che nessuno ha fatto.
+
+##### Due cose che il conteggio ha trovato e la lista non prevedeva
+
+Sono la ragione per cui il §5 della richiesta chiedeva di **contare con un
+criterio invece di stimare**, ed è servito:
+
+- **la crittografia sta in tre punti, non in uno.** Il terzo è il **chip della
+  landing**, `public.landing.privacyChip.encryption`, che non era nell'elenco —
+  ed è il più esposto dei tre: la privacy HR la vede un cliente che valuta, il
+  chip lo vede chiunque apra la demo, investitori compresi, ed è nel percorso del
+  pitch;
+- **i consumatori di `lastCompleted` sono tre, non due.** Oltre a `EmployeeHome`,
+  che controlla lo status, e a `Checkup`, che non lo controlla, c'è **`Profilo`**,
+  che pure non lo controlla. Il rapporto è due su tre, e rafforza il punto invece
+  di cambiarlo: la promessa vive nel nome del campo e non nel tipo, quindi ogni
+  chiamante decide per conto suo.
+
+##### Una scelta di forma, perché la prossima inserzione non la ripaghi
+
+Inserire tre gruppi in mezzo al §8 ha rinumerato quelli dopo, e i due rimandi di
+questo file alla paginazione sarebbero invecchiati **a ogni inserzione futura**.
+Ora nominano il gruppo invece del numero — «§8, gruppo Paginazione» — che è la
+stessa disciplina delle passate precedenti applicata a un rimando anziché a un
+conteggio: **si cita ciò che non si muove.** I rimandi a §8.1 restano numerici:
+l'escalation clinica è prima per una ragione dichiarata, e non si sposta.
+
+**Il §8.1 non è stato toccato**, ed è una scelta e non un caso: la passata
+documentale ci aveva appena riscritto l'affermazione sul numero d'emergenza. Le
+quattro voci nuove si aggiungono **accanto**, mai dentro — verificato confrontando
+il gruppo con quello di `master`, identico riga per riga.
+
+##### Il criterio di conteggio alla sua seconda passata
+
+È la prima volta che il criterio scritto in testa a questo file viene usato da chi
+non l'ha appena scritto, quindi vale dire cosa ha retto e cosa no.
+
+**Ha retto la metà che serviva**: *totale e ripartizione dalla stessa misura*. È
+la regola che ha fatto correggere il numero di questa stessa sottosezione quando
+la passata ha guadagnato un commit, invece di lasciarlo invecchiare come è
+successo alle CTA, ai guardrail e al conto delle passate.
+
+**Non ha esercitato la metà che discrimina.** Qui i commit sono tutti `docs:`,
+quindi la distinzione fra codice e documenti — la parte su cui la passata
+precedente aveva sbagliato — **non è stata messa alla prova**. Due usi non fanno
+un criterio validato: la prossima passata mista è quella che lo dirà.
+
+**E ha mostrato un buco, che è l'esito più utile.** «Si conta sul branch, a
+chiusura avvenuta» non dice **se il commit di chiusura conta sé stesso**. Deve —
+è un commit della passata — e da qui discende che il numero della sottosezione di
+chiusura è **l'unico che non si può misurare mentre lo si scrive**: si scrive
+`n + 1`, cioè si predice. Qui è successo alla lettera — la sottosezione dichiarò
+**sei** con cinque commit sul branch, era esatta al merge previsto, ed è
+invecchiata appena la passata ne ha guadagnato un settimo. La clausola che chiude
+il buco è ora nel criterio, e questo commit è il primo ad applicarla.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -3703,6 +3838,96 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
   92%. Le tre ragioni per esteso stanno in §5.4.
 
 ## Decisioni in sospeso
+
+**Tre delle voci qui sotto sono la stessa classe di rischio, ed è quella che la
+residenza dei dati ha inaugurato**: una **promessa di meccanismo** scritta in una
+schermata che un cliente firmerà, mentre il meccanismo non esiste e nessuno ha
+ratificato la frase. Si riconoscono da una prova sola — *se un cliente ci
+chiedesse di dimostrarla domani, cosa gli mostreremmo?* — e per questo portano
+tutte il conto delle stringhe con il criterio accanto: **il giorno in cui si
+decide, quelle stringhe o si confermano o si cambiano**, e chi lo farà deve
+sapere quante sono senza rifare la ricerca.
+
+- **La crittografia end-to-end è promessa a schermo e non è verificabile**
+  (15.08.2026). La pagina privacy dell'HR dichiara *"i dati sanitari sono
+  crittografati in transito e a riposo con standard AES-256"*, e la landing porta
+  lo stesso claim come chip accanto a "Hosting in Svizzera".
+
+  **Quante stringhe la promettono, con il criterio**: in `src/lib/i18n/it.ts`
+  sono **3** — cercando le stringhe che nominano la cifratura — cioè il **titolo
+  e il corpo** del principio nel riquadro privacy HR
+  (`hr.privacy.principle.encryption`) e il **chip della landing**
+  (`public.landing.privacyChip.encryption`). Ognuna ha le sue tre traduzioni,
+  quindi a cambiare sarebbero dodici stringhe su quattro file, ma **il conto che
+  conta è tre**: sono tre punti a schermo, ed è quello il numero da rileggere.
+
+  **Il chip della landing è il punto più esposto e non è quello che si
+  guarderebbe per primo**: la pagina privacy HR la vede un cliente che sta
+  valutando, il chip lo vede **chiunque apra la demo**, investitori compresi, ed
+  è nel percorso del pitch.
+
+  **Perché è una decisione e non un compito.** "End-to-end" ha un significato
+  tecnico preciso — solo gli estremi possono leggere — e con un backend che
+  calcola aggregati per reparto, deriva il diritto alle sedute e conserva le note
+  di sessione, *quel* significato non è compatibile con l'architettura descritta
+  in questo documento. Cifratura in transito e a riposo lo è, ma è un'altra
+  affermazione. Quindi o la frase si riscrive su ciò che si farà davvero, o
+  l'architettura deve cambiare — e la seconda è una decisione che cambia il §8.2
+  del contratto, non una riga di `i18n`.
+
+  **Proprietario: i founder**, insieme a chi scriverà il backend — è una scelta
+  di architettura prima che di copy. **Il trigger è il primo dato sanitario
+  vero**, cioè lo stesso del protocollo clinico: il giorno in cui esiste un
+  referto di una persona reale, la frase o è vera o è una dichiarazione falsa a
+  un cliente.
+
+- **Il consenso è promesso come già raccolto, e non esiste** (15.08.2026). La
+  stessa pagina dichiara *"ogni dipendente conferma il consenso durante
+  l'attivazione e può revocarlo in ogni momento"*. Il `CONTRATTO-DATI.md` §8.2
+  dice l'opposto alla lettera: **nessun consenso viene raccolto in nessun punto**
+  del percorso, e non esistono né l'export dei propri dati né la loro
+  cancellazione.
+
+  **Quante stringhe, con il criterio**: in `src/lib/i18n/it.ts` sono **2** —
+  cercando le stringhe che nominano il consenso o la revoca — il **titolo e il
+  corpo** di `hr.privacy.principle.consent`. Vivono in un punto solo, la pagina
+  privacy HR, e non hanno un equivalente sulla landing.
+
+  **È la più grave delle tre, e non per il numero.** Le altre due promettono un
+  meccanismo che manca; questa afferma un **fatto giuridico compiuto** — che il
+  consenso è stato dato — su una schermata rivolta al titolare del trattamento,
+  cioè a chi su quella base tratterà i dati dei propri dipendenti. E promette una
+  **revoca** che non ha nessun percorso: né un metodo del provider né una
+  schermata.
+
+  **Proprietario: i founder con il legale**, ed è la stessa decisione del §8.2 —
+  chi è titolare e chi responsabile del trattamento — vista dal lato della frase
+  che la anticipa. **Il trigger è prima del primo utente attivo**, come il
+  protocollo clinico: il consenso o si raccoglie prima del primo dato, o non lo
+  si raccoglie mai per quel dato.
+
+- **Il `doneHint` del check rapido promette una cadenza che il contratto non ha**
+  (15.08.2026). Dopo aver risposto, la card dice *"ti richiediamo come stai fra
+  qualche giorno"*. Il `CONTRATTO-DATI.md` §3 dichiara esplicitamente che **la
+  cadenza non esiste**: il contratto non dice ogni quanto si chiede, quindi non
+  può dire quando la risposta è dovuta, e non esistono né l'invito né il ritardo.
+
+  **Quante stringhe**: **1**, `employee.rapidCheck.doneHint`, più le sue tre
+  traduzioni. È l'unica del prodotto che affermi una ricorrenza.
+
+  **È la minore delle tre e va nominata comunque**, perché il difetto ha una
+  forma che le altre due non hanno: **una stringa a schermo sta decidendo ciò che
+  il contratto lascia indeciso.** "Fra qualche giorno" non è vago per prudenza —
+  esclude già la cadenza mensile e quella settimanale, cioè restringe una scelta
+  di prodotto che nessuno ha fatto, e la restringe nel punto in cui il §2.7 vuole
+  frasi intere e non decisioni nascoste nel copy.
+
+  **Proprietario: i founder**, ed è una decisione di prodotto piccola con una
+  conseguenza di dominio grande — la cadenza è ciò da cui dipendono i misurati
+  del periodo, quindi la soglia di anonimato (`CLAUDE.md` §8). **Il trigger è il
+  primo pilot**, che è anche il momento in cui il check rapido smette di essere
+  un tocco in una demo e diventa la sorgente dei dati di stress veri. Fino ad
+  allora la frase non fa danno, e non va confermata per inerzia.
 
 - **Il protocollo clinico e il referente non esistono, e il prodotto ne ha
   bisogno prima degli utenti** (15.08.2026). Il §2.6 di *"Dubbi Business per
