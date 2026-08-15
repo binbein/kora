@@ -661,7 +661,7 @@ export const fr: Dictionary = {
     kpiCheckup: "Check-up réalisés",
     kpiCheckupHint: "{done} sur {enrolled} inscrits",
 
-    alertTitle: "Alerte précoce — département {department}",
+    alertTitle: "Alerte précoce — département {department} · dernier relevé",
     alertDescription:
       "Le stress du département est en zone haute depuis {months} mois consécutifs, depuis {since}.",
 

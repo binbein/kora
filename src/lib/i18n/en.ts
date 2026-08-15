@@ -649,7 +649,7 @@ export const en: Dictionary = {
     kpiCheckup: "Check-ups completed",
     kpiCheckupHint: "{done} of {enrolled} enrolled",
 
-    alertTitle: "Early alert — {department} department",
+    alertTitle: "Early alert — {department} department · latest reading",
     alertDescription:
       "The stress of the department has been in the high band for {months} consecutive months, since {since}.",
 

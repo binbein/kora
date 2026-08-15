@@ -601,7 +601,7 @@ export const de: Dictionary = {
     kpiCheckup: "Abgeschlossene Check-ups",
     kpiCheckupHint: "{done} von {enrolled} angemeldet",
 
-    alertTitle: "Frühwarnung — Abteilung {department}",
+    alertTitle: "Frühwarnung — Abteilung {department} · letzte Erhebung",
     alertDescription:
       "Der Stress der Abteilung liegt seit {months} aufeinanderfolgenden Monaten im hohen Bereich, seit {since}.",
 

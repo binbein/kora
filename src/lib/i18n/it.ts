@@ -754,7 +754,12 @@ export const it = {
     /** "51 su 82 iscritti" */
     kpiCheckupHint: "{done} su {enrolled} iscritti",
 
-    alertTitle: "Alert precoce — reparto {department}",
+    /* Il qualificatore sta nel titolo come per la tabella e i due grafici: il
+       banner non segue il selettore del trimestre — `getEarlyAlert` non prende
+       un periodo — e senza dirlo, chi apre il Q4 2025 legge in cima un alert
+       datato luglio 2026. Dice "ultimo rilevamento" e non "in corso", che su
+       questa schermata vuol già dire un'altra cosa: il trimestre parziale. */
+    alertTitle: "Alert precoce — reparto {department} · ultimo rilevamento",
     alertDescription:
       "Lo stress del reparto è in fascia alta da {months} mesi consecutivi, da {since}.",
 
