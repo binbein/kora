@@ -333,11 +333,27 @@ deterrente e non un ricavo invita la domanda, dove la formulazione vecchia non l
 invitava. È il prezzo della correzione, e si paga rispondendo — non schivando.
 
 **Sì, per unità, ed è voluto.** Il co-payment è tarato per **scoraggiare l'uso
-oltre il tetto**, non per coprirne il costo. Un prezzo a copertura vorrebbe dire
-chiedere al dipendente la tariffa del mercato privato — i **CHF 70–80** che
-prende il professionista (`CLAUDE.md` §9) — e a quel punto il tetto non sarebbe
-più un tetto: la seduta oltre il cap smetterebbe di essere una scelta consapevole
-per diventare una barriera economica.
+oltre il tetto**, non per coprirne il costo: a KORA una seduta erogata costa
+**CHF 70–80** e oltre il cap ne incassa **28**, quindi sull'unità la sottrazione
+la fa chiunque e il segno è quello.
+
+**Il confronto che spiega il numero è un altro, ed è quello da fare per primo:
+fuori la stessa seduta costa CHF 120–150** (`CLAUDE.md` §9). Il dipendente che
+supera il cap paga **28 invece di 120–150**, cioè **un quarto o un quinto** del
+prezzo di mercato. È lì che si vede a cosa serve quella cifra: non a coprire un
+costo, ma a restare abbastanza bassa da non trasformare la seduta oltre il tetto
+in una barriera economica, e abbastanza visibile da restare una scelta
+consapevole. Un prezzo a copertura vorrebbe dire chiedere al dipendente i
+120–150 del mercato privato, e a quel punto il tetto non sarebbe più un tetto:
+sarebbe la fine dell'accesso.
+
+**I tre numeri vanno tenuti distinti, perché due si somigliano**: 70–80 è quanto
+KORA **paga**, 120–150 quanto costa **fuori**, 28 quanto paga **il dipendente**
+oltre il cap sul Plus. Fino al 14.08.2026 questa risposta chiamava "tariffa del
+mercato privato" i 70–80 — cioè il costo di KORA al posto del prezzo di fuori — e
+con quella sostituzione l'argomento si capovolgeva: il confronto diventava
+"28 contro 70–80", che dice solo che ci rimettiamo, e spariva il 4–5× che è la
+ragione per cui il co-payment funziona.
 
 **Il volume è marginale, e si vede a schermo.** Nell'elenco pazienti del portale
 professionista **due dei sei pazienti** sono sopra il cap. È la stessa prova
