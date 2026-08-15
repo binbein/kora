@@ -1416,6 +1416,21 @@ motivo, e con una valutazione a `null` non c'è niente da cui farla scendere o
 salire. Le cinque tariffe restano dichiarate nel dataset, e un guardrail
 verifica che nessuna esca dalla banda.
 
+**La stessa seduta sul mercato privato costa CHF 120–150** (BP p.9, riga
+"Sessioni extra (oltre 6)" dell'Essenziale: *"Co-payment CHF 35/sess · vs CHF
+120–150 mercato privato"*). Trascritta il 15.08.2026 su decisione dei founder ai
+sensi del §2.4.
+
+**È una cifra diversa dai CHF 70–80, e confonderle capovolge un argomento.** I
+70–80 sono ciò che **KORA paga** al professionista per una seduta erogata; i
+120–150 sono ciò che **il dipendente pagherebbe fuori** per la stessa seduta. Il
+co-payment sta sotto entrambe — CHF 35, 28 e 22 secondo il piano — ed è quel
+confronto a renderlo un **deterrente** e non una barriera economica: chi supera
+il cap paga comunque una frazione del prezzo di mercato. Fino al 15.08.2026
+`docs/PITCH.md` chiamava "tariffa del mercato privato" i CHF 70–80, cioè metteva
+il costo di KORA al posto del prezzo di fuori, e la cifra vera non era in questo
+elenco — quindi la risposta non avrebbe potuto citarla nemmeno volendo.
+
 **A pieno regime, 20 sessioni a settimana valgono CHF 5'600–6'400 al mese.** Serve
 al portale professionista: **il regime va sempre detto accanto al totale**,
 altrimenti chi ha letto il BP legge uno scarto di un ordine di grandezza come un
