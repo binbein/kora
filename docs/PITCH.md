@@ -326,11 +326,52 @@ CHF 35 · Plus 10, extra CHF 28 · Executive 16, extra CHF 22** (`CLAUDE.md` §9
 > ciò che la frase voleva dire. Il divario fra incluse ed erogate regge da sé, e
 > il suo numero è l'unico dei tre che l'investitore ha già davanti agli occhi.
 
+### "Il documento dice 15–25% di utilizzo, la demo mostra il 12%"
+
+Arriva da chi ha letto il Business Plan, e arriva subito dopo la risposta sul
+margine, perché è lì che il 12% viene detto. Chi la fa sta concludendo che la
+demo è sotto-utilizzata rispetto alle nostre stesse assunzioni. **Non lo è, e i
+due numeri non si possono sottrarre: hanno denominatori diversi.**
+
+**Primo, e prima di ogni altra cosa: il 12% non è una quota di persone.** È la
+quota del **monte annuo di sedute** che è stata consumata — 142 su 1'200
+(`CLAUDE.md` §8) — mentre il 15–25% del documento è una quota di **dipendenti**.
+È questa sovrapposizione a generare la domanda, quindi si scioglie per prima e
+con una frase sola.
+
+**Secondo: la quota di persone del dataset è circa il 23%.** Le 142 sedute
+dell'anno, a cinque sedute a testa, fanno **~28 persone su 120**. Le cinque
+sedute a testa non sono una nostra stima: sono la riga del Business Plan per il
+piano Plus, che è il piano di Demo SA — *"150 dip: 30 dip × 5 sess = 150 sess"*
+(`CLAUDE.md` §9).
+
+**Terzo, ed è il confronto giusto: quel 23% sta accanto al 20% del Business
+Plan.** Gli esempi di margine del documento sono **annuali** e danno tutti e due
+il **20% dei dipendenti** — 30 su 150 sul Plus, 10 su 50 sull'Essenziale. Demo SA
+è appena sopra quella soglia, sullo stesso piano e sulla stessa base. Detto così
+il dataset non è sotto le assunzioni: **le rispetta**.
+
+**Non confrontare il 23% con la banda "in un mese dato"**: sarebbe rifare la
+stessa confusione al contrario, un dato annuale contro uno mensile.
+
+**Se la domanda insiste, la contraddizione è del documento e si dice così.** Nel
+riquadro "principio fondamentale" le due letture non stanno insieme: 25–30
+sessioni al mese su 50 dipendenti Essenziale fanno 300–360 all'anno su un monte
+annuo di 300, mentre l'esempio di margine due righe sotto calcola il 79% su **30
+sessioni all'anno**. È un fattore dieci dentro lo stesso riquadro. **Dove il
+Business Plan diverge da sé stesso, la lettura difendibile è l'esempio di
+margine**, ed è quella che il dataset segue — non l'abbiamo scelta per comodità,
+è l'unica delle due il cui conto torna.
+
+Da non fare: non usare questa risposta per anticipare la curva di utilizzo reale.
+Quella non la sappiamo, ed è la domanda qui sotto.
+
 ### "Quindi sulle sedute extra ci rimettete?"
 
-È il seguito immediato della risposta sul margine: dire che il co-payment è un
-deterrente e non un ricavo invita la domanda, dove la formulazione vecchia non la
-invitava. È il prezzo della correzione, e si paga rispondendo — non schivando.
+È l'altro seguito della risposta sul margine, e nasce dalla parte sul co-payment:
+dire che è un deterrente e non un ricavo invita la domanda, dove la formulazione
+vecchia non la invitava. È il prezzo della correzione, e si paga rispondendo —
+non schivando.
 
 **Sì, per unità, ed è voluto.** Il co-payment è tarato per **scoraggiare l'uso
 oltre il tetto**, non per coprirne il costo: a KORA una seduta erogata costa
