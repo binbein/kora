@@ -969,7 +969,53 @@ il ciclo vero ne ha di più:
 - **La pubblicazione della disponibilità**: gli slot sono un dato del dataset, e
   nessun metodo permette a una professionista di dichiarare quando lavora.
 
-### 8.6 Autorizzazione e multi-tenant
+### 8.6 La prenotazione del check-up non esiste
+
+**Il gruppo qui sopra descrive il ciclo delle sedute, e niente di quello vale
+qui.** Una seduta si prenota su un'agenda che la piattaforma governa; un check-up
+si prenota presso una **struttura convenzionata**, cioè un terzo soggetto
+contrattuale con il proprio calendario, i propri orari e i propri referti. Sono
+due flussi diversi, e il secondo non esiste affatto.
+
+**Cosa manca, alla lettera**: non c'è nessun `bookCheckup` nell'interfaccia; il
+pulsante di ogni struttura è **disabilitato in ogni caso**, e dice perché
+(`pages/employee/Checkup.tsx`); e `CheckupBooking` è **un tipo che nessun metodo
+crea** — vive solo come valore di `CheckupEligibility.lastCompleted`, cioè
+descrive un check-up già fatto e mai uno che qualcuno stia prenotando.
+
+**Non è un dettaglio dell'offerta: è una delle cinque voci del piano Plus**
+(`CLAUDE.md` §9), e a schermo si presenta come un elenco di cliniche con un
+pulsante spento. Il perimetro da costruire è quello di un'integrazione, non di
+una schermata: disponibilità di terzi, conferma che può arrivare in differita,
+disdetta governata da chi non siamo noi, e il referto che torna dentro
+`CheckupReport` — che il §3 dichiara **l'unico dato sanitario individuale del
+dominio**, quindi il canale su cui arriva è una scelta di trattamento prima che
+di trasporto.
+
+**Due conseguenze sono già visibili nei tipi**, e vanno lette prima di
+implementare:
+
+- **`CheckupEligibility.lastCompleted` promette più di quanto dichiari.** Il
+  nome e la glossa dicono *l'ultimo check-up eseguito*, ma il campo è un
+  `CheckupBooking` e `CheckupBooking.status` è un `AppointmentStatus` intero —
+  quindi il tipo ammette anche `scheduled` e `cancelled`. Oggi il dataset
+  contiene un solo valore, `completed`, e la contraddizione non si vede; **i
+  consumatori si comportano già in due modi diversi**, il che è il sintomo che la
+  promessa vive nel nome e non nel tipo. In produzione o il campo si restringe —
+  un `CompletedCheckup` che non può essere altro — oppure cambia nome e
+  dichiara di essere *l'ultima prenotazione*, e allora chi legge deve filtrare.
+  Le due strade non si equivalgono: la prima rende impossibile lo sbaglio, la
+  seconda lo lascia a ogni chiamante.
+- **`EmployeeDirectoryEntry.checkupStatus` ha un valore che l'altro lato non sa
+  produrre.** L'elenco dell'HR ammette `"booked"`, ma **nel percorso del
+  dipendente non c'è nessun modo di arrivarci**, perché la prenotazione non
+  esiste: il valore è raggiungibile solo come seme del dataset. È il segno che
+  l'HR era stata progettata su un flusso che il portale non ha, e il giorno in
+  cui `bookCheckup` esiste i due lati vanno riletti insieme — la stessa
+  disciplina con cui il §3 tiene `Appointment` e `ProfessionalSession` come due
+  proiezioni di un record solo.
+
+### 8.7 Autorizzazione e multi-tenant
 
 **`UserRole` è un'enumerazione piatta**: dice *hr*, non *HR di quale azienda*.
 Nessun metodo prende un identificatore di azienda — `getCompany()` non ne prende
@@ -985,7 +1031,7 @@ cosa si può leggere, e chiunque può chiamare l'API senza passare da lei.
 La forma che il contratto ha già preso per accogliere tutto questo — `Session`,
 `getSession`, `enterAs` — sta nel §6, con la ragione per cui ci sta.
 
-### 8.7 Realtà del personale
+### 8.8 Realtà del personale
 
 Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
 
@@ -1005,7 +1051,7 @@ Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
   prezzo è per dipendente al mese, e su un organico che cambia a metà mese la
   fattura di oggi non saprebbe cosa dire.
 
-### 8.8 Paginazione
+### 8.9 Paginazione
 
 **`getEmployeeDirectory` restituisce otto righe su 120**, e la schermata lo
 dichiara (§7). Un elenco vero si pagina e si cerca, e vale per ogni lista che in
