@@ -2002,7 +2002,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Ventun passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Ventidue passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2010,7 +2010,8 @@ quella francese di M5.e, le quattro della **revisione del 15.08.2026** — #43 e
 #44 sulla coerenza del dominio e sugli stati limite, #45 sul perimetro del
 contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
 `README.md`, il residuo della nota di sessione, gli slot sovrapposti e i periodi
-non dichiarati, e **questa passata**, i fatti corretti nei documenti. Non
+non dichiarati, i fatti corretti nei documenti, e **questa passata**, il
+perimetro e le promesse in sospeso. Non
 aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
 seam e del dizionario. **Quelle che hanno una sottosezione loro sono le
@@ -3281,6 +3282,102 @@ davano già per cancellata.
 aggiungercela partiva da una premessa falsa — è già esclusa, in
 `.git/info/exclude`, quindi nessun `git add -A` la raccoglie. Metterla in un file
 tracciato imporrebbe a tutti la convenzione di una macchina sola.
+
+#### Il perimetro e le promesse in sospeso (15.08.2026)
+
+**Sei commit, tutti `docs:`, zero di codice** — contati sul branch con il
+criterio in testa a questo file. Due soli file toccati, `CONTRATTO-DATI.md` e
+questo: **nessun file sotto `src/`, e nessun tipo è cambiato**; `lint` e
+`typecheck` restano a zero. Non ci sono verifiche a schermo perché non c'è niente
+di nuovo a schermo, ed è la stessa forma della passata sul perimetro del
+contratto, che è il suo modello.
+
+Quattro vuoti in più nel §8 del contratto e tre promesse in più fra le decisioni
+in sospeso. **Il perimetro dell'MVP passa da sette gruppi a dieci** — chi cerca
+"sette gruppi" lo trova nel verbale della passata che li scrisse, ed era giusto
+quel giorno.
+
+##### I quattro vuoti, e il filo che ne tiene insieme tre
+
+| | il vuoto | dove |
+|---|---|---|
+| **l'atto dichiarativo** | nessuno porta una seduta da `scheduled` a `completed`: nel mock lo fa l'orologio | §8.5, in testa al ciclo dell'appuntamento |
+| **il co-payment** | l'unico ricavo variabile del modello non ha dove essere registrato, e chi lo paga non è deciso | §8.4, gruppo nuovo |
+| **la prenotazione del check-up** | non esiste: nessun `bookCheckup`, pulsante disabilitato, e `CheckupBooking` è un tipo che nessun metodo crea | §8.6, gruppo nuovo |
+| **`progressPercent`** | l'unico numero del dominio che non misura niente, e nessuna entità registra ciò che misurerebbe | §8.9, gruppo nuovo |
+
+**Tre dei quattro non sono stati mancanti ma attori o oggetti mancanti**, ed è la
+lettura che li tiene insieme: il gruppo sul ciclo dell'appuntamento elencava gli
+*stati* che mancano — la mancata presentazione, la policy di preavviso — e non si
+era accorto che **manca chi li scriverebbe**. Lo stesso vale per il
+co-payment, dove non manca la forma della fattura ma **l'oggetto da fatturare**, e
+per il check-up, dove non manca una schermata ma **il flusso verso un terzo
+soggetto contrattuale**. Uno stato che nessuno può dichiarare non è uno stato: è
+la frase che le tre voci condividono.
+
+**Il quarto è di un'altra specie e sta bene dove sta**: `progressPercent` non
+manca di un attore, manca di un fatto. Il suo unico guardrail ne verifica il range
+0–100 — cioè che sia una percentuale, non che sia quella — e un controllo che può
+solo verificare la forma è il segno che dietro non c'è una seconda sorgente contro
+cui confrontarsi.
+
+##### L'atto dichiarativo è il più caro dei quattro, e si vede solo contando
+
+Le tre grandezze che dipendono da «la seduta è avvenuta» — compenso maturato,
+consumo del cap, utilizzo che l'HR vede — sono **tre filtri distinti su
+`status === "completed"`**, in tre file diversi, con **una sola condizione
+sull'orologio** dietro. Oggi non possono divergere per costruzione; il giorno in
+cui la condizione diventa un evento, possono divergere per la prima volta. È il
+§5.5 di `CLAUDE.md` visto in anticipo: due numeri che descrivono lo stesso fatto e
+smettono di essere lo stesso numero.
+
+##### Le tre promesse, contate come la residenza dei dati
+
+Stessa classe di rischio e stesso trattamento: il conto delle stringhe con il
+criterio accanto, perché il giorno in cui si decide quelle stringhe o si
+confermano o si cambiano.
+
+| promessa | stringhe in `it.ts` | dove |
+|---|---|---|
+| crittografia end-to-end, AES-256 | **3** | titolo e corpo del principio nella privacy HR, **più il chip della landing** |
+| consenso raccolto e revocabile | **2** | titolo e corpo, nella sola privacy HR |
+| «ti richiediamo fra qualche giorno» | **1** | il `doneHint` del check rapido |
+
+**La più grave è il consenso, e non per il numero**: le altre due promettono un
+meccanismo che manca, questa afferma un **fatto giuridico compiuto** — che il
+consenso è stato dato — su una schermata rivolta a chi su quella base tratterà i
+dati dei propri dipendenti, e promette una revoca che non ha nessun percorso.
+Il `CONTRATTO-DATI.md` §8.2 dice l'opposto alla lettera.
+
+**La terza è minore e ha una forma che le altre non hanno**: una stringa a
+schermo sta **decidendo ciò che il contratto lascia indeciso**. "Fra qualche
+giorno" non è vago per prudenza — esclude già la cadenza settimanale e quella
+mensile, cioè restringe una scelta di prodotto che nessuno ha fatto.
+
+##### Due cose che il conteggio ha trovato e la lista non prevedeva
+
+Sono la ragione per cui il §5 della richiesta chiedeva di **contare con un
+criterio invece di stimare**, ed è servito:
+
+- **la crittografia sta in tre punti, non in uno.** Il terzo è il **chip della
+  landing**, `public.landing.privacyChip.encryption`, che non era nell'elenco —
+  ed è il più esposto dei tre: la privacy HR la vede un cliente che valuta, il
+  chip lo vede chiunque apra la demo, investitori compresi, ed è nel percorso del
+  pitch;
+- **i consumatori di `lastCompleted` sono tre, non due.** Oltre a `EmployeeHome`,
+  che controlla lo status, e a `Checkup`, che non lo controlla, c'è **`Profilo`**,
+  che pure non lo controlla. Il rapporto è due su tre, e rafforza il punto invece
+  di cambiarlo: la promessa vive nel nome del campo e non nel tipo, quindi ogni
+  chiamante decide per conto suo.
+
+##### Una scelta di forma, perché la prossima inserzione non la ripaghi
+
+Inserire tre gruppi in mezzo al §8 ha rinumerato quelli dopo, e i due rimandi di
+questo file alla paginazione sarebbero invecchiati **a ogni inserzione futura**.
+Ora nominano il gruppo invece del numero — «§8, gruppo Paginazione» — che è la
+stessa disciplina delle passate precedenti applicata a un rimando anziché a un
+conteggio: **si cita ciò che non si muove.** I rimandi a §8.1 restano numerici:
+l'escalation clinica è prima per una ragione dichiarata, e non si sposta.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
