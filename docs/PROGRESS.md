@@ -4104,6 +4104,82 @@ reale.
   Da rifare quando esistono disponibilità reali: allora il grigio dirà una cosa
   vera, e la promessa la sosterranno i dati invece di una schermata costruita.
 
+## Il perimetro delle pagine del footer — lavoro dell'MVP
+
+Il blocco f) di M5 è stato **ritirato dallo scope della demo** il 15.08.2026, e
+**il lavoro è arrivato qui**: non è cancellato, ha cambiato milestone
+(`CLAUDE.md` §4, blocco f). Questa sezione è ciò che serve a chi lo costruirà, e
+sta in questo file e non nel contratto dati per una ragione sola: **f) non ha
+nessuna superficie di backend** — nessuna entità, nessun metodo, nessun
+invariante — e sarebbe l'unico gruppo del §8 del contratto senza niente da
+costruire per chi legge quel documento.
+
+### Cosa dipende da fuori, e cosa è lavoro di codice
+
+**Fuori dal codice — è qui che sta il costo**, e nessuna delle tre si compra con
+una passata diligente:
+
+- **i testi legali**, che li scrive un avvocato e non chi lavora qui;
+- **la decisione sulla residenza dei dati**, fra le decisioni in sospeso: una
+  privacy policy deve dire dove stanno i dati, e finché non è ratificata il
+  documento non è scrivibile senza affermare il falso;
+- **la scelta di scope su quali delle sette voci esistono davvero**, che oggi non
+  è presa e non va presa in anticipo.
+
+**Lavoro di codice — è un ordine di grandezza meno**, e va detto perché non
+sembri il contrario: se le pagine sono **testo statico**, ognuna è una rotta in
+`App.tsx`, una voce di dizionario e una riga nel footer che diventa un link.
+Nessun provider, nessuna query, nessun tipo. Il costo del blocco **non è la sua
+implementazione**.
+
+**Una conseguenza che il testo statico si porta dietro, e non è ovvia**: un testo
+legale dentro `i18n` significa **quattro versioni giuridicamente vincolanti** da
+tenere allineate — che non è tradurre un'etichetta. Va deciso **quale lingua fa
+fede** e cosa succede quando una sola cambia. È una decisione da prendere prima
+di scrivere la prima riga, non dopo.
+
+### L'effetto sul conteggio delle rotte — verificato, il criterio regge
+
+Il `CLAUDE.md` §10 ha ora un criterio scritto che distingue **26 rotte dello
+scope** da **27 schermate**, e dichiara che il numero si muoverà con le pagine del
+footer. **Regge senza riscritture**: il criterio definisce una rotta dello scope
+come *una voce del §10*, quindi aggiungerne `n` porta le rotte a `26 + n` e le
+schermate a `27 + n` **per applicazione della definizione**, senza toccarla. A
+muoversi sono i due valori, che è esattamente ciò per cui il criterio è stato
+scritto al posto di un numero.
+
+L'unica correzione che è servita è stata **l'attribuzione**, fatta in questa
+passata: quella riga diceva che il conto si sarebbe mosso «con le pagine del
+footer di M5.f», e da oggi sono lavoro dell'MVP.
+
+**Ma `n` non è sette**, e chi costruisce non deve darlo per scontato: le sette
+voci sono *sezioni*, non necessariamente sette rotte. "Contatti" può essere una
+sezione della landing o un `mailto:`, "Blog" può stare fuori dall'applicazione, e
+tre delle sette sono documenti legali che potrebbero condividere una rotta sola.
+**`n` lo decide la scelta di scope**, che è la terza dipendenza qui sopra.
+
+### Cosa non è di questo blocco
+
+Nominare i confini è metà del lavoro, e questi quattro tornano a proporsi da soli:
+
+- **il DPA e il contratto B2B** sono documenti commerciali, non schermate: si
+  firmano, non si navigano, e non entrano nello scope del §10;
+- **la QR-fattura** e il resto della fatturazione stanno già nel
+  `CONTRATTO-DATI.md` §8, gruppo «Ciclo di vita dell'azienda e del dipendente»;
+- **la raccolta del consenso, l'export e la cancellazione dei dati** sono
+  **meccanismi**, e stanno nel `CONTRATTO-DATI.md` §8.2. La privacy policy li
+  *dichiara*; non li implementa. Costruire la pagina senza costruire loro
+  significa pubblicare la descrizione di funzioni che non ci sono — che è il
+  difetto già registrato fra le decisioni in sospeso, non uno nuovo;
+- **il cookie banner**, e qui c'è un fatto misurato che vale la pena sapere
+  prima: **oggi l'applicazione non scrive niente**. `document.cookie`,
+  `localStorage` e `sessionStorage` sono **vuoti a runtime** sulla build demo, e
+  l'unica occorrenza di `document.cookie` in `src/` sta in un componente shadcn
+  che non importa nessuno. Con zero richieste esterne a runtime (§3) **non c'è
+  nessun cookie da dichiarare**: il contenuto di una cookie policy dipenderà da
+  ciò che l'MVP aggiunge — un cookie di sessione per l'autenticazione, e
+  qualunque analytics — non da ciò che esiste.
+
 ## Note per chi riprende
 
 - **`reference/` non c'è più**, cancellato alla chiusura di M3: era il magazzino
