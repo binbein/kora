@@ -1977,12 +1977,17 @@ contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
 sovrapposti e i periodi non dichiarati. Non
 aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
-seam e del dizionario, più le sette che hanno una sottosezione loro qui sotto:
-le due che **eseguono** una decisione della riunione del 10.08.2026,
-l'allineamento documentale pre-M5, i due fix pre-M5, l'uscita da `/admin`, le
-uscite dai portali e l'overflow della landing. La sintesi sta qui perché **il
-dettaglio è in git e il quadro no**: chi riprende deve sapere che queste cose
-esistono prima di riscoprirle.
+seam e del dizionario. **Quelle che hanno una sottosezione loro sono le
+sottosezioni qui sotto**, e si contano leggendole invece di fidarsi di una cifra
+in prosa: la riga diceva **sette** quando erano già tredici, ed è lo stesso
+difetto della testa di questo file due schermate più su — un numero scritto
+accanto alla lista che lo smentisce. *(Corretta il 15.08.2026 togliendo il
+conteggio, non allineandolo. A trovarla non è stata la spazzata degli avverbi,
+che cerca «oggi» e «ora» accanto a un numero: qui l'avverbio non c'era, e a
+denunciarla è stata la lista. Chi rifà quella spazzata deve saperlo prima — il
+criterio «numero + avverbio» non copre tutta la famiglia.)* La sintesi sta qui
+perché **il dettaglio è in git e il quadro no**: chi riprende deve sapere che
+queste cose esistono prima di riscoprirle.
 
 **La PR docs-only del 14.08.2026 sulla costituzione non è la quattordicesima**:
 allinea `CLAUDE.md` a ciò che la tranche 1b ha cambiato — conteggio dei
