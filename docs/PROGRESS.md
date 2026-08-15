@@ -2961,9 +2961,9 @@ eseguiti **su un browser vero dai founder**, non qui.
 
 #### Slot sovrapposti e periodi non dichiarati (15.08.2026)
 
-Sei commit di codice e tre di documenti. Cinque difetti verificati, nessuno dei
-quali rompeva la demo — ma **il primo era a un clic dal giro che apre il pitch**.
-Nessun numero del §8 e del §9 si muove.
+Sei commit di codice e quattro di documenti. Cinque difetti verificati, nessuno
+dei quali rompeva la demo — ma **il primo era a un clic dal giro che apre il
+pitch**. Nessun numero del §8 e del §9 si muove.
 
 ##### Due slot prenotabili si sovrapponevano, e uno era quello del pitch
 
@@ -3086,17 +3086,27 @@ durata qui sopra dice esattamente dove il primo non arriva.
   "Verificati" e "Firmato";
 - `lint`, `typecheck` e `build:demo` a posto.
 
+**Due asserzioni le ha eseguite un umano**, perché il pannello del browser non
+poteva — la ragione è qui sotto, e non è una scusa: sono le due che chiudono i
+punti 1 e 2, quindi il modo in cui sono state prese va scritto accanto all'esito.
+
+- **le due prenotazioni del venerdì nella stessa sessione** — Rossi 09:00 e Meier
+  10:00 — compaiono **entrambe** nella home, console muta. È il caso che prima si
+  accavallava, visto dal lato del dipendente;
+- **la vista Q4 2025 col banner etichettato**: il qualificatore "· ultimo
+  rilevamento" fa il suo lavoro, e la data di luglio 2026 non salta all'occhio.
+
 ##### Due cose sullo strumento, e insieme dicono una regola
 
 **Il pannello del browser non apre due dialoghi nella stessa scheda.** Il secondo
 resta un guscio vuoto con il solo pulsante di chiusura: la scheda riporta
 `visibilityState: hidden`, non ridipinge, e l'animazione di uscita di Radix non
-completa. Ne discende che **prenotare entrambi gli slot del venerdì nella stessa
-sessione del browser non è stato fatto a schermo** — è provato headless
-attraverso il provider vero, che è lo stesso codice, e a schermo i due slot sono
-provati uno per scheda. Per la stessa ragione non è stato possibile aprire il
-selettore del trimestre: il popover di Radix non si apre, quindi **la vista Q4
-2025 col banner etichettato non è stata guardata**.
+completa. Per la stessa ragione non si apre il popover del selettore del
+trimestre. **Sono le due asserzioni passate a un umano** qui sopra: il pannello
+non poteva prenderle, e ciò che poteva dare — le due prenotazioni una per scheda,
+e il testo del banner in italiano e in tedesco — non era la stessa cosa. Il
+provider era comunque provato headless, che è lo stesso codice; a mancare era
+**la schermata**, ed è esattamente ciò che un umano ha guardato.
 
 **Il primo script che misurava le sovrapposizioni è crollato**, perché passava lo
 *slot* dove la funzione voleva la *data*. Ed è la **coppia esatta** dell'errore
