@@ -870,6 +870,48 @@ Il dataset demo nasce già popolato, quindi nessuno di questi passaggi esiste:
 
 ### 8.4 Ciclo dell'appuntamento
 
+**Prima degli stati manca l'attore: nessuno dichiara che una seduta è
+avvenuta.** Le scritture del dominio sono tutte inserimenti — `bookAppointment`,
+`submitRapidCheck`, `submitDemoRequest`, più `saveSessionNote`, che è l'unico
+upsert — e **nessun metodo porta una seduta da `scheduled` a `completed`**. Nel
+mock a farlo è l'orologio: lo stato si deriva da `start < DEMO_TODAY`, in un punto
+solo (`mock/professional-portal.ts`).
+
+In produzione quella condizione diventa un **evento dichiarativo**, e quell'atto
+decide insieme tre grandezze che oggi non possono divergere:
+
+| | dove si legge | cosa decide |
+|---|---|---|
+| **il compenso maturato** del professionista | `ProfessionalEarnings`, `ProfessionalPayout` | quanto la piattaforma deve pagare |
+| **il consumo del cap** del dipendente | `SessionEntitlement.used` | quando scatta il co-payment |
+| **l'utilizzo che l'HR vede** | `ServiceUsageMonth`, e la KPI "142 su 1'200" | il numeratore su cui poggia il ROI |
+
+**Sono rigorosamente coerenti per una ragione fragile: derivano tutte e tre dalla
+stessa condizione sull'orologio.** Tre filtri distinti su
+`status === "completed"`, e una sola sorgente dietro. Il giorno in cui la
+condizione diventa un evento — qualcuno preme un pulsante, o non lo preme —
+**possono divergere per la prima volta**, ed è esattamente il tipo di divergenza
+che il §5.5 di `CLAUDE.md` esiste per prevenire: due numeri che descrivono lo
+stesso fatto e smettono di essere lo stesso numero.
+
+Le domande da chiudere, tutte e tre di prodotto prima che di implementazione:
+
+- **chi dichiara.** Il professionista, il dipendente, entrambi, o un default
+  temporale che qualcuno può contestare. Se dichiara solo chi viene pagato,
+  l'atto ha un conflitto d'interesse incorporato; se servono entrambi, una seduta
+  resta sospesa quando uno dei due non risponde;
+- **entro quale finestra.** Un compenso che matura senza scadenza non si chiude
+  mai, e il riepilogo mensile del portale professionista — che si consolida al
+  quinto del mese dopo (§3, compensi) — ha bisogno di sapere quando il mese è
+  definitivo;
+- **cosa succede se i due lati non concordano.** È il caso che genera la mancata
+  presentazione qui sotto, e non è lo stesso problema: lì manca uno **stato**, qui
+  manca **chi lo scrive**.
+
+Finché l'atto non esiste, la mancata presentazione non è rappresentabile nemmeno
+aggiungendo il valore all'enumerazione: uno stato che nessuno può dichiarare non
+è uno stato.
+
 `ProfessionalSession.status` ha tre valori — in programma, erogata, annullata — e
 il ciclo vero ne ha di più:
 
