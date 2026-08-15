@@ -341,6 +341,8 @@ riceve di autenticarsi, quindi non vanno mai mandati a un investitore.
 ```
 kora/
   CLAUDE.md              ← questo file: le regole, l'unica fonte
+  README.md              ← la porta: come si avvia, i tre modi di build, le
+                           manopole di sviluppo, e dove stanno le regole
   docs/PROGRESS.md       ← cosa esiste e perché, milestone per milestone
   docs/PITCH.md          ← lo script operativo della presentazione dal vivo
   docs/CONTRATTO-DATI.md ← output di M2: la specifica per il backend futuro
@@ -418,6 +420,17 @@ starebbe bene in due dei tre, è scritta male in almeno uno.
 `docs/CONTRATTO-DATI.md` non è un quarto mestiere: è **l'output di M2** e la
 specifica con cui nasce il repository del backend (§5.7), quindi non parla a chi
 lavora qui ma a chi lavorerà là.
+
+**`README.md` non è un mestiere in più: è la porta.** Dice come si avvia il
+progetto, cosa fanno i tre modi di build, quali sono le manopole di sviluppo e
+**dove stanno le regole** — e non ne decide nessuna. Per questo il conto resta
+tre: i mestieri sono decidere, raccontare e presentare, e il README non fa
+nessuna delle tre. Vale intera anche per lui la regola qui sopra: **non duplica**,
+rimanda — se una riga starebbe bene sia lì sia qui, è scritta male in almeno uno
+dei due, e quella che si toglie è la sua. **Viene dall'export base44** ed è stato
+riscritto dalla passata di allineamento del 15.08.2026; fino a questa riga la
+costituzione non sapeva che esistesse — `grep README CLAUDE.md` dava **zero**,
+sul file che chi clona il repository apre per primo.
 
 **Il Business Plan sta in `docs/`, e resta una fonte da consultare, non da citare.**
 Decisione dei founder del 07.08.2026: durante la costruzione della demo più
