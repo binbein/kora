@@ -868,7 +868,49 @@ Il dataset demo nasce già popolato, quindi nessuno di questi passaggi esiste:
   documento, i dati fiscali, lo stato di pagamento e la QR-fattura, che in
   Svizzera è il modo in cui una fattura si paga.
 
-### 8.4 Ciclo dell'appuntamento
+### 8.4 Il co-payment non ha dove essere registrato, e non è deciso chi lo paga
+
+**È l'unico ricavo variabile del modello, e non ha nessuna rappresentazione
+contabile.** Il prezzo esiste come dato — `Plan.extraSessionPrice`, riportato su
+`SessionEntitlement` — e si **annuncia** in due schermate: la prenotazione lo
+dichiara prima di confermare, l'elenco pazienti del professionista lo mostra sui
+due pazienti sopra il cap. Ma superato il tetto la conferma **prenota e basta**:
+nessun addebito, nessuna riga, nessun documento. `Invoice` porta organico,
+prezzo unitario e stato, e non ha altre voci.
+
+Il gruppo qui sopra dichiara mancante la **forma** della fattura. Questo è un
+buco diverso e più a monte: **manca l'oggetto da fatturare**, non il documento
+che lo conterrebbe. Nessuna entità registra che una seduta è stata erogata oltre
+il cap, a che prezzo, e a chi è stata addebitata.
+
+**La decisione a monte non è stata presa da nessuna parte: chi paga.** Le due
+strade non sono varianti di implementazione e producono contratti diversi:
+
+- **addebito al dipendente** — serve un mezzo di pagamento sulla persona, quindi
+  un rapporto commerciale diretto fra la piattaforma e chi non è il cliente
+  pagante, con tutto ciò che ne segue (incasso, rimborso, insoluto, e un
+  dipendente che può rifiutarsi di pagare una seduta già erogata);
+- **riaddebito all'azienda** — la seduta extra diventa una riga della fattura
+  mensile, e allora l'azienda **sa che quella persona ha superato il cap**. È il
+  punto in cui una scelta contabile tocca la garanzia di privacy del §3: una
+  riga aggregata "sedute oltre cap: 4 × CHF 28" non nomina nessuno, una riga per
+  seduta sì, e il confine fra le due è una decisione, non un dettaglio di
+  rendering.
+
+**Non è teoria: `docs/PITCH.md` ci costruisce sopra due risposte intere** — il
+co-payment come deterrente che tiene il consumo dentro il cap, e il confronto con
+i CHF 120–150 del mercato privato (`CLAUDE.md` §9). Sono argomenti che reggono, e
+descrivono un meccanismo che **il prodotto oggi non ha**: chi supera il cap
+prenota e non paga niente.
+
+Ne discende anche un vincolo sul metodo di scrittura del §4: `bookAppointment`
+oggi restituisce un `Appointment` e nient'altro. Se l'addebito nasce alla
+prenotazione, quella firma deve poter dire **che cosa è stato addebitato**; se
+nasce alla dichiarazione di erogazione (§8.5 qui sotto), l'oggetto contabile
+nasce lì, e le due scelte non sono intercambiabili — la prima addebita una seduta
+che potrebbe non avvenire.
+
+### 8.5 Ciclo dell'appuntamento
 
 **Prima degli stati manca l'attore: nessuno dichiara che una seduta è
 avvenuta.** Le scritture del dominio sono tutte inserimenti — `bookAppointment`,
@@ -927,7 +969,7 @@ il ciclo vero ne ha di più:
 - **La pubblicazione della disponibilità**: gli slot sono un dato del dataset, e
   nessun metodo permette a una professionista di dichiarare quando lavora.
 
-### 8.5 Autorizzazione e multi-tenant
+### 8.6 Autorizzazione e multi-tenant
 
 **`UserRole` è un'enumerazione piatta**: dice *hr*, non *HR di quale azienda*.
 Nessun metodo prende un identificatore di azienda — `getCompany()` non ne prende
@@ -943,7 +985,7 @@ cosa si può leggere, e chiunque può chiamare l'API senza passare da lei.
 La forma che il contratto ha già preso per accogliere tutto questo — `Session`,
 `getSession`, `enterAs` — sta nel §6, con la ragione per cui ci sta.
 
-### 8.6 Realtà del personale
+### 8.7 Realtà del personale
 
 Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
 
@@ -963,7 +1005,7 @@ Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
   prezzo è per dipendente al mese, e su un organico che cambia a metà mese la
   fattura di oggi non saprebbe cosa dire.
 
-### 8.7 Paginazione
+### 8.8 Paginazione
 
 **`getEmployeeDirectory` restituisce otto righe su 120**, e la schermata lo
 dichiara (§7). Un elenco vero si pagina e si cerca, e vale per ogni lista che in

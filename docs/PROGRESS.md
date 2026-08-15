@@ -510,7 +510,7 @@ Operations; le date di fatturazione ferme ad aprile su una demo di settembre.
 - **L'elenco dipendenti è un estratto di otto righe su 120**, dichiarato a
   schermo e in `CONTRATTO-DATI.md` §7. ~~La paginazione è M5.~~ → **non era di
   M5**, e nessuno dei sei blocchi la contiene: è lavoro dell'MVP, dichiarato in
-  `CONTRATTO-DATI.md` §8.7 dalla passata del 15.08.2026.
+  `CONTRATTO-DATI.md` §8, gruppo «Paginazione», dalla passata del 15.08.2026.
 
 #### L'area dipendente (§10.B)
 
@@ -2795,8 +2795,8 @@ spezzarla in due la renderebbe illeggibile.
 **La paginazione ha trovato la sua collocazione.** Il §7 del contratto la mandava
 a M5; **nessuno dei sei blocchi di M5 la contiene**, e non è una dimenticanza —
 paginare un estratto di otto righe curate non aggiunge niente alla demo. È lavoro
-dell'MVP, sta nel §8.7, e da qui smette di essere orfana fra un documento e
-l'altro.
+dell'MVP, sta nel §8 sotto «Paginazione», e da qui smette di essere orfana fra un
+documento e l'altro.
 
 **Restava a una passata di codice**, e non era di questo blocco: la correzione di
 `hasNote` nel dataset e la decisione sul controllo della cache fredda contro
