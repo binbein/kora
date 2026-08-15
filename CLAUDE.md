@@ -1478,6 +1478,36 @@ sullo stream 1, gli abbonamenti. È la conferma documentale della correzione del
 co-payment al **divario fra sessioni incluse ed erogate** — e la conferma vale
 più del ragionamento che l'aveva prodotta, perché viene dalla fonte.
 
+**Utilizzo del servizio psicologico: il Business Plan ne dà due letture, e non
+sono compatibili.** Trascritte entrambe il 15.08.2026 su decisione dei founder ai
+sensi del §2.4, perché la risposta pronta del pitch ha bisogno di tutte e due —
+una per rispondere, l'altra perché è da lì che arriva la domanda.
+
+1. **La banda mensile: 15–25%** dei dipendenti usa attivamente il servizio
+   psicologico *"in un mese dato"* (BP p.9, riquadro "Principio fondamentale"),
+   con l'esempio *"con 50 dipendenti: 10–12 attivi = 25–30 sessioni/mese
+   totali"*.
+2. **Gli esempi di margine, che sono annuali.** Plus: *"150 dip: Ricavo CHF
+   99'000/anno. 30 dip × 5 sess = 150 sess"* — cioè **30 persone su 150, il 20%,
+   cinque sedute a testa sull'anno**. Essenziale: *"50 dip … Utilizzo 20% = 30
+   sessioni"* — 10 persone su 50, ancora il **20%**, tre sedute a testa.
+
+**Si contraddicono di circa un fattore dieci, e la contraddizione è interna al
+BP**: sullo stesso Essenziale, 25–30 sessioni al mese fanno 300–360 all'anno su
+un monte annuo di 300 (50 × 6), mentre l'esempio di margine — nello stesso
+riquadro, due righe sotto — calcola il 79% su **30 sessioni all'anno**.
+
+**Dove il BP diverge da sé stesso vince l'esempio di margine**, ed è la lettura
+che il dataset del §8 segue: è l'unica delle due che regga il proprio conto. La
+banda mensile resta trascritta perché **è la riga che un investitore ha letto**,
+non perché sia utilizzabile in un confronto.
+
+**Per Demo SA l'esempio è quello del Plus**, che è il suo piano: le persone e le
+sedute a testa vengono dalla **stessa riga**, e prenderle da due esempi diversi —
+le persone dal Plus e le sedute dall'Essenziale, o viceversa — produce due
+risultati lontani fra loro. È l'errore che questa trascrizione esiste per
+impedire, ed è già stato commesso una volta preparando la risposta pronta.
+
 ### Formule del calcolatore ROI (§10.A.2), per N dipendenti
 
 - Assenteismo: `N × 6.5 giorni × CHF 900`
