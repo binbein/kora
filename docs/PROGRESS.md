@@ -37,7 +37,15 @@ hanno smesso di divergere. Il criterio, deciso dai founder il 15.08.2026:
   scrivere questa regola aveva il **totale giusto e la ripartizione sbagliata**
   — «cinque commit di codice e uno di documenti» su un branch di tre e tre — ed
   è la firma di due numeri presi in due momenti. Un solo comando, due numeri che
-  non possono divergere.
+  non possono divergere;
+- **il commit di chiusura conta sé stesso**, quindi il numero della sua
+  sottosezione è l'unico che non si può misurare mentre lo si scrive: si scrive
+  `n + 1`, cioè si predice. Ne discende l'obbligo che chiude il buco — **chi
+  aggiunge un commit dopo la chiusura aggiorna quel numero nello stesso
+  commit**, perché da lì in poi la predizione è falsa. *(Clausola aggiunta il
+  15.08.2026 dalla seconda passata che ha usato il criterio, ed è il buco che ha
+  trovato usandolo: la sua sottosezione dichiarò sei con cinque commit sul
+  branch, ed è invecchiata appena la passata ne ha guadagnato un settimo.)*
 
 Vale da questa passata in avanti. Le voci più vecchie non si riscrivono: sono
 verbali, e un conteggio sbagliato che qualcuno trova si corregge lì con la sua
@@ -3285,12 +3293,13 @@ tracciato imporrebbe a tutti la convenzione di una macchina sola.
 
 #### Il perimetro e le promesse in sospeso (15.08.2026)
 
-**Sei commit, tutti `docs:`, zero di codice** — contati sul branch con il
-criterio in testa a questo file. Due soli file toccati, `CONTRATTO-DATI.md` e
-questo: **nessun file sotto `src/`, e nessun tipo è cambiato**; `lint` e
-`typecheck` restano a zero. Non ci sono verifiche a schermo perché non c'è niente
-di nuovo a schermo, ed è la stessa forma della passata sul perimetro del
-contratto, che è il suo modello.
+**Sette commit: sette di documenti e zero di codice** — totale e ripartizione
+dalla stessa misura, `git log --format='%s' master..HEAD`, come vuole il criterio
+in testa a questo file. Due soli file toccati, `CONTRATTO-DATI.md` e questo:
+**nessun file sotto `src/`, e nessun tipo è cambiato**; `lint` e `typecheck`
+restano a zero. Non ci sono verifiche a schermo perché non c'è niente di nuovo a
+schermo, ed è la stessa forma della passata sul perimetro del contratto, che è il
+suo modello.
 
 Quattro vuoti in più nel §8 del contratto e tre promesse in più fra le decisioni
 in sospeso. **Il perimetro dell'MVP passa da sette gruppi a dieci** — chi cerca
@@ -3378,6 +3387,35 @@ Ora nominano il gruppo invece del numero — «§8, gruppo Paginazione» — che
 stessa disciplina delle passate precedenti applicata a un rimando anziché a un
 conteggio: **si cita ciò che non si muove.** I rimandi a §8.1 restano numerici:
 l'escalation clinica è prima per una ragione dichiarata, e non si sposta.
+
+**Il §8.1 non è stato toccato**, ed è una scelta e non un caso: la passata
+documentale ci aveva appena riscritto l'affermazione sul numero d'emergenza. Le
+quattro voci nuove si aggiungono **accanto**, mai dentro — verificato confrontando
+il gruppo con quello di `master`, identico riga per riga.
+
+##### Il criterio di conteggio alla sua seconda passata
+
+È la prima volta che il criterio scritto in testa a questo file viene usato da chi
+non l'ha appena scritto, quindi vale dire cosa ha retto e cosa no.
+
+**Ha retto la metà che serviva**: *totale e ripartizione dalla stessa misura*. È
+la regola che ha fatto correggere il numero di questa stessa sottosezione quando
+la passata ha guadagnato un commit, invece di lasciarlo invecchiare come è
+successo alle CTA, ai guardrail e al conto delle passate.
+
+**Non ha esercitato la metà che discrimina.** Qui i commit sono tutti `docs:`,
+quindi la distinzione fra codice e documenti — la parte su cui la passata
+precedente aveva sbagliato — **non è stata messa alla prova**. Due usi non fanno
+un criterio validato: la prossima passata mista è quella che lo dirà.
+
+**E ha mostrato un buco, che è l'esito più utile.** «Si conta sul branch, a
+chiusura avvenuta» non dice **se il commit di chiusura conta sé stesso**. Deve —
+è un commit della passata — e da qui discende che il numero della sottosezione di
+chiusura è **l'unico che non si può misurare mentre lo si scrive**: si scrive
+`n + 1`, cioè si predice. Qui è successo alla lettera — la sottosezione dichiarò
+**sei** con cinque commit sul branch, era esatta al merge previsto, ed è
+invecchiata appena la passata ne ha guadagnato un settimo. La clausola che chiude
+il buco è ora nel criterio, e questo commit è il primo ad applicarla.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
