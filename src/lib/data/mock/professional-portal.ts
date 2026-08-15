@@ -5,6 +5,7 @@ import type {
   ProfessionalEarnings,
   ProfessionalSession,
   SessionEntitlement,
+  SessionNote,
   SessionType,
 } from "../types";
 import { COMPANY } from "./company";
@@ -235,6 +236,109 @@ function buildSessions(): ProfessionalSession[] {
 
 /** Tutte le sedute della Dr.ssa Meier, dalla più vecchia alla più recente. */
 export const PORTAL_SESSIONS: ProfessionalSession[] = buildSessions();
+
+/*
+ * LE NOTE CHE ESISTONO DAVVERO.
+ *
+ * `hasNote` dice "la nota esiste" (`docs/CONTRATTO-DATI.md` §3), quindi dietro
+ * ogni `true` ci deve essere una nota da leggere: prima di questi semi il campo
+ * si derivava da un'euristica su *quando una nota si scriverebbe*, e 55 sedute
+ * su 63 lo dichiaravano vero mentre `getSessionNote` rispondeva `null` per
+ * tutte.
+ *
+ * STANNO SULLA PRIMA VISITA, ed è il criterio da non cambiare senza sapere cosa
+ * si rompe: è la seduta di presa in carico, l'unica che si verbalizza sempre.
+ * Le altre restano da scrivere, ed è ciò che tiene vivo "aggiungi nota" — senza
+ * almeno una seduta erogata senza nota quel pulsante non esiste più a schermo,
+ * e con lui il caso che il dialogo serve a mostrare.
+ *
+ * IL TESTO È DI PROCESSO E NON CLINICO — cosa si è fatto, cosa si è concordato,
+ * quando ci si rivede — e non lo è per pudore: sono persone inventate, e una
+ * nota clinica verosimile su una persona inventata è contenuto che nessuno ha
+ * approvato (§2.4). Le otto note si somigliano, ed è la scelta meno peggiore:
+ * variare la sostanza vorrebbe dire inventare un sintomo o un obiettivo
+ * terapeutico a testa. La ripetizione è un difetto estetico, l'altro no.
+ */
+const FIRST_VISIT_NOTES: Record<
+  string,
+  Omit<SessionNote, "sessionId" | "updatedAt">
+> = {
+  df: {
+    notes: "Primo incontro. Raccolta l'anamnesi e definito il perimetro del percorso.",
+    nextGoal: "Concordare la frequenza degli incontri.",
+    suggestedFollowUp: "Seduta settimanale.",
+  },
+  pm: {
+    notes: "Presa in carico. Ricostruito il quadro iniziale insieme alla persona.",
+    nextGoal: "Mettere a fuoco l'obiettivo del percorso.",
+    suggestedFollowUp: "Si prosegue con cadenza settimanale.",
+  },
+  rt: {
+    notes: "Colloquio iniziale. Chiarite le aspettative sul percorso.",
+    nextGoal: "Definire i primi passi da verificare insieme.",
+    suggestedFollowUp: "Prossimo incontro fra una settimana.",
+  },
+  sc: {
+    notes: "Prima seduta. Raccolta la storia e concordato il metodo di lavoro.",
+    nextGoal: "Verificare la tenuta della cadenza concordata.",
+    suggestedFollowUp: "Cadenza settimanale, da rivedere fra un mese.",
+  },
+  gr: {
+    notes: "Apertura del percorso. Ricostruita la situazione di partenza.",
+    nextGoal: "Individuare le priorità su cui lavorare.",
+    suggestedFollowUp: "Incontri settimanali.",
+  },
+  mb: {
+    notes: "Primo colloquio. Definiti insieme i termini del lavoro.",
+    nextGoal: "Riprendere il punto concordato al prossimo incontro.",
+    suggestedFollowUp: "Settimanale, stesso orario.",
+  },
+  at: {
+    notes: "Presa in carico. Raccolte le informazioni iniziali.",
+    nextGoal: "Fissare l'obiettivo del primo ciclo di sedute.",
+    suggestedFollowUp: "Si rivede la persona la settimana prossima.",
+  },
+  [PORTAL_PATIENT_EMPLOYEE_ID]: {
+    notes: "Prima visita. Ricostruito il quadro e condiviso il piano di lavoro.",
+    nextGoal: "Verificare i primi riscontri al prossimo incontro.",
+    suggestedFollowUp: "Cadenza settimanale.",
+  },
+};
+
+/*
+ * Si costruiscono dall'array **finito**, non dentro il ciclo che deriva i tipi:
+ * là `session.type` è ancora da scrivere per metà lista, e il criterio
+ * pescherebbe meno note senza che niente si lamenti.
+ *
+ * `updatedAt` è la fine della seduta, non `DEMO_TODAY`: una nota su una seduta
+ * di marzo datata al giorno della demo direbbe che è stata scritta sette mesi
+ * dopo. Deriva dal record — nessuna costante nuova — ed è il primo istante in
+ * cui la nota può esistere onestamente. Il ritardo vero con cui un
+ * professionista verbalizza sarebbe una cifra che nessuno ha approvato, per un
+ * campo che nessuna schermata rende.
+ */
+export const SESSION_NOTES: SessionNote[] = PORTAL_SESSIONS.filter(
+  (session) => session.status === "completed" && session.type === "first_visit",
+).map((session) => {
+  const text = FIRST_VISIT_NOTES[session.patientId];
+  /*
+   * Il record è indicizzato per stringa, quindi un paziente aggiunto senza il
+   * suo testo produrrebbe una nota con tre campi `undefined` — e `hasNote`
+   * direbbe di sì su una nota che non si può leggere. Il controllo fallisce
+   * davvero: è il nono paziente che qualcuno aggiungerà a `PATIENTS`.
+   */
+  assertInDev(
+    text !== undefined,
+    `La prima visita di ${session.patientInitials} non ha un testo in FIRST_VISIT_NOTES.`,
+  );
+  return {
+    sessionId: session.id,
+    ...text,
+    updatedAt: new Date(
+      session.start.getTime() + session.durationMinutes * 60_000,
+    ),
+  };
+});
 
 /*
  * PAZIENTE ATTIVO: ha una seduta in programma, oppure ne ha avuta una nelle

@@ -69,6 +69,7 @@ import {
   PORTAL_PATIENT_EMPLOYEE_ID,
   PORTAL_PROFESSIONAL_ID,
   PORTAL_SESSIONS,
+  SESSION_NOTES,
 } from "./professional-portal";
 import { CURRENT_QUARTER, QUARTERS, ROI_SNAPSHOTS } from "./roi";
 import { INITIAL_SLOTS } from "./scheduling";
@@ -95,7 +96,15 @@ import {
  * `lib/data/http/` con la stessa interfaccia. Le schermate non le tocca nessuno.
  */
 export class MockDataProvider implements DataProvider {
-  private readonly notes = new Map<string, SessionNote>();
+  /*
+   * Le note, e sono **l'unica sorgente di `hasNote`**: nasce con i semi del
+   * dataset e la demo ci aggiunge quelle che il professionista scrive. Le due
+   * strade portano allo stesso posto, quindi una nota seminata e una scritta in
+   * sala si comportano identiche (§5.5).
+   */
+  private readonly notes = new Map<string, SessionNote>(
+    SESSION_NOTES.map((note) => [note.sessionId, note]),
+  );
 
   /*
    * Le sedute prenotate durante la demo, per professionista.
