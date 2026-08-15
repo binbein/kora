@@ -2122,7 +2122,12 @@ diff di questa (`CLAUDE.md` §5.6).
 > perché `prefetch.ts` non entra nei 96. ~~Un 97 futuro è un errore di criterio,
 > non una correzione.~~ → **ribaltato dal `CLAUDE.md` §5.6 il 14.08.2026**: le
 > regole si scrivono sui criteri, non sui valori che i criteri producono. Il 97
-> è arrivato il giorno dopo con la tranche tedesca, e oggi il conto è **99**.*
+> è arrivato il giorno dopo con la tranche tedesca, e **al 14.08.2026 il conto
+> era 99** — poi è salito ancora due volte. **Il valore corrente sta nel
+> `CLAUDE.md` §5.6, che è l'unico punto che lo dichiara**: qui la cifra è datata
+> perché serve a mostrare che il conto si muove per ragioni ordinarie, non a
+> dire quanto vale adesso. Fino al 15.08.2026 questa riga diceva "oggi il conto
+> è 99", e quell'avverbio la faceva invecchiare a ogni guardrail nuovo.*
 
 **`--mode demo` non ha bisogno di nessun file `.env.demo`**, ed è l'unica strada
 percorribile: `.gitignore` esclude `.env*` (§2.5), quindi una build che ne
