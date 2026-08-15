@@ -3939,50 +3939,35 @@ tutte il conto delle stringhe con il criterio accanto: **il giorno in cui si
 decide, quelle stringhe o si confermano o si cambiano**, e chi lo farà deve
 sapere quante sono senza rifare la ricerca.
 
-**La prima voce dell'elenco è di una classe diversa e peggiore**, ed è detto lì:
-non promette un meccanismo che manca, afferma un fatto che è **già falso oggi**.
+~~**La prima voce dell'elenco era di una classe diversa e peggiore**: non
+prometteva un meccanismo che manca, affermava un fatto già falso.~~ →
+**chiusa il 15.08.2026**, ed è l'unica delle quattro che si sia chiusa
+scrivendo codice invece che prendendo una decisione, come la voce stessa
+prevedeva.
 
-- **«Non vengono mai condivisi con terzi» è falso, e lo dice il portale del
-  dipendente** (15.08.2026). La pagina Profilo dichiara *"i tuoi dati sanitari
-  sono protetti e non vengono mai condivisi con terzi"*. Il modello la smentisce
-  in due punti, e uno dei due lo dichiara **la stessa applicazione**: lo psicologo
-  è un **collaboratore a mandato** — *"Collaborazione a mandato (Auftrag). Nessun
-  vincolo di assunzione"*, nel portale professionista — quindi un professionista
-  indipendente, non un dipendente di Kora; e le **strutture convenzionate** del
-  check-up sono soggetti distinti che producono il referto, cioè quello che il
-  `CONTRATTO-DATI.md` §3 chiama **l'unico dato sanitario individuale del
-  dominio**. Sono terzi per qualunque definizione giuridica.
-
-  **Quante stringhe, con il criterio**: **1**, `employee.profile.dataNote`, più
-  le sue tre traduzioni — e cercando *"con terzi"*, *"a terzi"* e *"terze parti"*
-  sulle 728 chiavi stringa di `src/lib/i18n/it.ts` **è l'unica occorrenza del
-  prodotto**. Nessun'altra schermata nomina i terzi, né per promettere né per
-  dichiarare.
-
-  **Perché è peggiore delle tre qui sotto.** Crittografia, consenso e residenza
-  promettono cose che **non esistono ancora**: sono debiti, e si pagano
-  costruendo o riscrivendo. Questa afferma un fatto **già falso mentre lo si
-  legge**, ed è un errore. E lo afferma nel **portale del dipendente**, cioè alla
-  persona che ha più diritto di leggerlo esatto e meno modo di verificarlo: chi
-  legge quella riga sta per raccontare a uno psicologo cose che non racconta al
-  proprio datore di lavoro.
-
-  **È anche l'unica delle quattro che non aspetta una decisione, ma una
-  passata.** Il rimedio è noto e costa quattro stringhe: la riformulazione giusta
-  **è già l'argomento più forte del prodotto**. *"Non con la tua azienda"* è
-  vero, lo sostiene la forma del dominio (`CONTRATTO-DATI.md` §3) ed è ciò che
-  altre **21 stringhe** dicono in coro. Vale la pena valutare se **nominare anche
-  il destinatario** — il professionista che il dipendente sceglie — perché una
-  promessa che dice *con chi* il dato è condiviso è più forte di una che dice
-  solo chi resta fuori, e qui il destinatario è una persona che l'utente ha
-  scelto lui. La stringa non si scrive qui: è `src/`.
-
-  **Proprietario: i founder**, e la formulazione va portata alla stessa revisione
-  legale della privacy policy — è la frase che quella policy dovrà sostenere.
-  **Il trigger è la prima passata che tocca `i18n`**, non una decisione da
-  attendere: a differenza delle altre tre non c'è niente da decidere prima, e
-  ogni giorno in cui resta è un giorno in cui la schermata dice una cosa non
-  vera. Al più tardi **prima del primo dipendente vero**.
+> ~~**«Non vengono mai condivisi con terzi» è falso, e lo dice il portale del
+> dipendente** (15.08.2026). La pagina Profilo dichiarava *"i tuoi dati sanitari
+> sono protetti e non vengono mai condivisi con terzi"*, mentre lo psicologo è un
+> collaboratore a mandato e le strutture del check-up sono soggetti distinti che
+> producono il referto: terzi per qualunque definizione giuridica. Una stringa,
+> `employee.profile.dataNote`, e cercando *"con terzi"*, *"a terzi"* e *"terze
+> parti"* sulle 728 chiavi di `it.ts` era l'unica occorrenza del prodotto.~~
+>
+> → **Riscritta in tutte e quattro le lingue** (founder, 15.08.2026): *"i tuoi
+> dati sanitari li vedono i professionisti che scegli tu."* **Nomina il
+> destinatario invece di ripetere chi è escluso**, ed è la forma che le fa
+> guadagnare il posto: il `PrivacyBanner` cento pixel più su dice già che nessun
+> dato individuale arriva all'azienda, quindi una riscrittura su quella
+> affermazione l'avrebbe duplicata nella stessa schermata — e il §11 direbbe di
+> togliere la riga, non di riscriverla.
+>
+> **Senza esclusività, e per la stessa ragione per cui la voce esisteva.**
+> *"Solo"* sarebbe vero sul prodotto — nessun metodo HR o admin restituisce
+> `SessionNote` o `CheckupReport` (`CONTRATTO-DATI.md` §3) — e **lasco sul piano
+> giuridico**, perché Kora quei dati li conserva ed è la parte che la privacy
+> policy dovrà nominare come titolare. Sostituire una promessa falsa in diritto
+> con una lasca nello stesso diritto sarebbe stato lo stesso errore una tacca più
+> piccolo, dentro la passata che esiste per chiuderlo.
 
 - **La crittografia end-to-end è promessa a schermo e non è verificabile**
   (15.08.2026). La pagina privacy dell'HR dichiara *"i dati sanitari sono
@@ -4282,13 +4267,16 @@ perché sono i punti a schermo**.
 | crittografia | **3** | meccanismo | ha già la sua voce |
 | consenso | **2** | meccanismo | ha già la sua voce |
 | **cosa l'azienda non vede** | **21** | **fatto, e vero** | il lato in positivo |
-| **terzi** | **1** | **fatto, e falso** | ha la sua voce, la quarta |
+| **terzi** | **1** | **fatto** | era falsa, **riscritta il 15.08.2026**: nomina il destinatario |
 | conservazione, cancellazione, diritti | **0** | — | terreno libero |
 
-Le prime tre e la quinta hanno una voce fra le decisioni in sospeso e **qui si
-citano senza duplicarle**: l'inventario serve a trovare le altre.
+**Le prime tre hanno una voce fra le decisioni in sospeso** e qui si citano senza
+duplicarle; **la quinta ce l'aveva e si è chiusa il 15.08.2026**, riscrivendo la
+stringa. L'inventario serve a trovare le altre.
 
-**Le 21 sono il lato in positivo, e valgono quanto la promessa falsa.** Sono ciò
+**Le 21 sono il lato in positivo, e valgono quanto valeva la promessa falsa** —
+tanto che sono state **la riformulazione già pronta** per la stringa che l'ha
+sostituita. Sono ciò
 che la policy potrà affermare **senza rischi**, perché non sono promesse di
 intenzione: le sostiene la forma del dominio, e il `CONTRATTO-DATI.md` §3 le
 garantisce una per una — l'elenco dipendenti non ha nessun campo su cui un nome
