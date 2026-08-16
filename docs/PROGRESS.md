@@ -835,6 +835,20 @@ consumatore e `submitDemoRequest` ora invalida: la riga "nessuna, oggi" del
 - **Il pulsante "Approva" del dialogo professionisti è stato rimosso**, con la
   decisione dei founder qui sotto. La scrittura vera dell'admin arriva con le
   guardie di ruolo di M5.
+- **Anche i due pulsanti "Aggiungi" sono spariti con questa passata**, e la
+  ragione è la stessa dell'"Approva": `AdminAziende` ne aveva uno e
+  `AdminProvider` uno — *"Aggiungi"* e *"Aggiungi provider"* — e nessuno dei due
+  faceva niente. Creare un cliente o convenzionare una struttura sono scritture
+  vere, e stanno nel `CONTRATTO-DATI.md` §8.3 e §8.6, cioè fra il lavoro
+  dell'MVP.
+
+  *(Riga scritta il 17.08.2026. Il gemello "Approva" ha la sua decisione
+  dell'08.08 e la sua riga qui; questi due sono usciti nello stesso commit —
+  `bf116ae`, insieme ai due `.jsx` che li contenevano — **senza che niente li
+  nominasse**, quindi a saperlo era solo git. È lo stesso difetto delle
+  affermazioni invecchiate che questa serie di passate insegue, in negativo: lì
+  una riga sopravvive al codice, qui il codice se n'è andato senza lasciarne
+  una.)*
 - **I grafici recharts misurano zero a scheda nascosta.** Il difetto segnalato
   in apertura di M3 è stato capito: non è il `ResponsiveContainer`, è che a
   scheda nascosta `innerWidth` vale **0** e l'intera pagina misura zero. Con una
@@ -4860,6 +4874,34 @@ reale.
 
   Da rifare quando esistono disponibilità reali: allora il grigio dirà una cosa
   vera, e la promessa la sosterranno i dati invece di una schermata costruita.
+
+- **Le animazioni d'ingresso dei grafici** (founder, 17.08.2026). La regola del
+  `CLAUDE.md` §6.2 — **nessuna animazione d'ingresso su nessun grafico** —
+  **resta intera e non si tocca**: vale per la demo, e questa voce non la
+  scalfisce.
+
+  Quello che si registra è **da dove è nata**. Il 07.08.2026 la ciambella della
+  dashboard HR mostrò i settori vuoti — i gruppi `recharts-pie-sector` c'erano e
+  non contenevano nessun `path` — perché l'animazione non completava, e la
+  regola fu la risposta giusta a un rischio inaccettabile: la schermata su cui
+  si regge il pitch poteva mostrare un buco. Ma **il difetto è stato misurato su
+  una macchina sola**, e da un caso su un dispositivo non si può sapere se il
+  problema sia di recharts, del browser o di quella macchina.
+
+  Le due ragioni scritte nel §6.2 non pesano uguale fuori dalla demo. La seconda
+  — *un'animazione d'ingresso è tempo morto da spiegare* — è una ragione **di
+  presentazione dal vivo**, e in un prodotto che una persona usa da sola non
+  vale: lì un ingresso morbido è il pattern normale, non un ritardo da giustificare.
+  La prima — *il rendering deterministico rende affidabili le verifiche a
+  schermo* — resta vera sempre, ma in produzione si compra con un interruttore
+  in fase di test invece che con un divieto.
+
+  **Il trigger è un parco dispositivi vero.** Va rivalutata quando esiste
+  qualcosa su cui provarla davvero — browser e macchine diverse — e non prima:
+  rimetterle oggi significherebbe riaprire su una misura sola il rischio che una
+  misura sola aveva chiuso. E vale la pena ricordare che `prefers-reduced-motion`
+  è la terza cosa da decidere quel giorno, perché un'animazione che si
+  reintroduce senza di lui è un'animazione che qualcuno non può spegnere.
 
 ## Il perimetro delle pagine del footer — lavoro dell'MVP
 
