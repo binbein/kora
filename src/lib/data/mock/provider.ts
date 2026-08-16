@@ -31,7 +31,6 @@ import {
   type PlanId,
   type Professional,
   type ProfessionalEarnings,
-  type ProfessionalFilter,
   type ProfessionalSession,
   type Quarter,
   type RapidCheckAnswer,
@@ -266,17 +265,8 @@ export class MockDataProvider implements DataProvider {
     return Promise.resolve(INVOICES);
   }
 
-  getProfessionals(filter?: ProfessionalFilter): Promise<Professional[]> {
-    const matches = PROFESSIONALS.filter((professional) => {
-      if (filter?.specialty && professional.specialty !== filter.specialty) {
-        return false;
-      }
-      if (filter?.language && !professional.languages.includes(filter.language)) {
-        return false;
-      }
-      return true;
-    });
-    return Promise.resolve(matches);
+  getProfessionals(): Promise<Professional[]> {
+    return Promise.resolve(PROFESSIONALS);
   }
 
   getProfessional(id: string): Promise<Professional | null> {

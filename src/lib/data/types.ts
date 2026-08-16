@@ -507,11 +507,6 @@ export function serviceOf(professional: Professional): CappedServiceKind {
   return professional.specialty === "coaching" ? "coach" : "psychologist";
 }
 
-export type ProfessionalFilter = {
-  specialty?: ProfessionalSpecialty;
-  language?: ProfessionalLanguage;
-};
-
 // ---------------------------------------------------------------------------
 // Appuntamenti — due proiezioni della stessa entità
 // ---------------------------------------------------------------------------

@@ -24,7 +24,6 @@ import type {
   PlanId,
   Professional,
   ProfessionalEarnings,
-  ProfessionalFilter,
   ProfessionalSession,
   Quarter,
   RapidCheckAnswer,
@@ -147,7 +146,26 @@ export interface DataProvider {
 
   // --- Professionisti -------------------------------------------------------
 
-  getProfessionals(filter?: ProfessionalFilter): Promise<Professional[]>;
+  /**
+   * Il corpo professionale, **intero e senza filtro** (16.08.2026).
+   *
+   * Prendeva un `ProfessionalFilter` opzionale su specialità e lingua che **non
+   * chiamava nessuno** dei quattro consumatori. Non era un'opzione in attesa di
+   * un uso: era un'opzione che la chiave di cache non codificava — la lettura
+   * sta su `queryKeys.professional.all()`, che è costante — quindi il primo
+   * chiamante che avesse passato un filtro avrebbe letto la risposta di un'altra
+   * domanda.
+   *
+   * Delle due strade — la chiave codifica il filtro, oppure il parametro esce —
+   * è uscito il parametro, per tre ragioni: il §11 non vuole opzioni che nessuno
+   * passa; **il filtro che serve non è questo** — chi prenota filtra per
+   * prenotabilità e tipo di servizio, non per specialità e lingua; e il vuoto
+   * vero, che il `docs/CONTRATTO-DATI.md` §8 nomina, è che **il dipendente non
+   * ha una lingua**, quindi nessun filtro per lingua è costruibile da questo
+   * lato. Il giorno in cui ce l'ha, il parametro torna **insieme alla sua
+   * chiave**.
+   */
+  getProfessionals(): Promise<Professional[]>;
   getProfessional(id: string): Promise<Professional | null>;
 
   // --- Portale professionista (§10.D) --------------------------------------

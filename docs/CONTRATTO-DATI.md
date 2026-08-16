@@ -1098,8 +1098,14 @@ Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
 - **Una sola sede per azienda, e nessuna sede sul reparto.** Un'azienda svizzera
   con sedi in più cantoni è il caso che rende utili le quattro lingue.
 - **Nessuna lingua sul profilo del dipendente**, mentre il professionista ha le
-  sue e `getProfessionals` espone già un filtro che nessuno chiama. Chi prenota
-  non può quindi cercare chi parla la sua lingua, che è il primo filtro vero.
+  sue. Chi prenota non può quindi cercare chi parla la sua lingua, che è il primo
+  filtro vero. *(Fino al 16.08.2026 questa riga aggiungeva che «`getProfessionals`
+  espone già un filtro che nessuno chiama»: quel parametro **è stato tolto**, e la
+  ragione è la stessa che rende vero il resto della frase — un filtro per lingua
+  non è costruibile da un lato che la lingua non ce l'ha. La chiave di cache di
+  quella lettura è costante, quindi il primo chiamante che avesse passato un
+  filtro avrebbe letto la risposta di un'altra domanda: il giorno in cui il filtro
+  serve, torna **insieme alla sua chiave**.)*
 - **Email obbligatoria**, quindi nessun canale per chi non ha una casella
   aziendale — in un'azienda di produzione è una parte grossa dell'organico, ed è
   la stessa popolazione che il link anonimo del check rapido dovrebbe raggiungere.
