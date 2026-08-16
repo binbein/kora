@@ -1362,8 +1362,10 @@ sta sul dato, non nella schermata — "attivo" si **deriva** da
 
 **Sedute erogate in carriera, ratificate dai founder il 10.08.2026**: Colombo
 **340**, Rossi **285**, Meier **312**, Fontana **210**, Keller **0**. La somma è
-**1'147**, ed è la KPI "sedute erogate" del back-office (§10.E): il totale non si
-scrive accanto ai cinque, si somma da loro.
+**1'147**, ed è la KPI **"Sessioni di carriera"** del back-office (§10.E): il
+totale non si scrive accanto ai cinque, si somma da loro. *(La riga citava
+"sedute erogate", che non era l'etichetta di quella KPI in nessun momento:
+allineata al testo vero il 17.08.2026, insieme alla parola.)*
 
 Sono **valori dichiarati, non derivati**, e la differenza va tenuta in chiaro: un
 guardrail vincola la sola **Meier** — il suo totale non può essere minore delle

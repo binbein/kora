@@ -57,6 +57,11 @@ che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
 
 - **Si parte dalla landing** e si usano **solo i link interni**. Mai la barra
   degli indirizzi.
+- **Si dice "sessioni", mai "sedute".** È la parola del Business Plan ed è
+  quella che le schermate mostrano da tutte e cinque le aree (`CLAUDE.md` §7).
+  Dirne una mentre se ne indica un'altra invita la domanda su quale sia la
+  differenza fra le due, e la differenza non c'è. Le risposte pronte qui sotto
+  sono già scritte così.
 - **Fra un portale e l'altro si passa dal logo.** In alto a sinistra di ogni
   portale il logo Kora riporta alla landing, e da lì la barra pubblica entra nel
   successivo: dipendente → logo → HR → logo → professionista. **Sei clic, e non
@@ -78,13 +83,13 @@ che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
   gesto, quindi l'uso normale non lo incontra — ma non lanciarne due da console.
 - **Il giro che mostra il marketplace intero**: prenota uno slot della Dr.ssa
   Meier dal portale dipendente, poi passa al portale professionista e mostra la
-  stessa seduta nel calendario. È un record solo visto da due lati, e si vede che
+  stessa sessione nel calendario. È un record solo visto da due lati, e si vede che
   lo slot è sparito dai liberi.
 
   **Prenota dentro la settimana visibile** — **venerdì 25.09 alle 10:00** è lo
   slot provato in M3 e funziona. Il calendario del professionista mostra **solo
   la settimana corrente** (lun 21 – dom 27.09) e non ha navigazione fra
-  settimane: uno slot preso oltre il 27 compare fra le sedute in programma ma
+  settimane: uno slot preso oltre il 27 compare fra le sessioni in programma ma
   **non nella griglia**, e a metà pitch si legge come un difetto invece che come
   il limite dichiarato che è (`docs/PROGRESS.md`, area dipendente).
 
@@ -292,22 +297,22 @@ Stress Index). E il rapporto **non cambia con N** — ogni voce è lineare, quin
 da 20 a 1000 dipendenti gli importi crescono e il 2.35:1 resta: se te lo chiedono,
 mostralo muovendo il campo.
 
-### "Come fate margine se le sedute costano?"
+### "Come fate margine se le sessioni costano?"
 
 **Dal divario fra sessioni incluse ed erogate**, e il numero che lo sostiene è
-già a schermo: il monte annuo di Demo SA è di **1'200 sedute** — 120 dipendenti
+già a schermo: il monte annuo di Demo SA è di **1'200 sessioni** — 120 dipendenti
 per le 10 del piano Plus — e ne sono state usate **142**, cioè il **12%**
 (`CLAUDE.md` §8). È la KPI "142 di 1'200" della dashboard HR, quindi è una cifra
 che si indica mentre la si dice, non un conto fatto a voce.
 
-**Il costo da leggere accanto è quello di una seduta erogata: CHF 70–80** al
+**Il costo da leggere accanto è quello di una sessione erogata: CHF 70–80** al
 professionista (`CLAUDE.md` §9). Senza un costo unitario il 12% è un dato e non
 un argomento; con il costo accanto al monte e al consumo, **la moltiplicazione la
 fa chi ascolta**. Va lasciata fare: la tariffa è una banda e non un punto, quindi
 un totale detto a voce diventa un numero da difendere che nessuno ha chiesto.
 
 **Il cap annuale è il freno, e il co-payment è il deterrente che lo tiene** — non
-un ricavo. Oltre le sedute incluse il dipendente paga di tasca sua, e questo
+un ricavo. Oltre le sessioni incluse il dipendente paga di tasca sua, e questo
 tiene il consumo dentro il monte **senza che la piattaforma debba dire di no a
 nessuno**: è la differenza fra un tetto che si spiega e una lista d'attesa che si
 subisce.
@@ -316,12 +321,12 @@ Non è teoria messa in una slide: nell'elenco pazienti del portale professionist
 **due pazienti sono sopra il cap**, e a schermo si vede che il tetto è reale e
 gestito.
 
-I tetti scalano col piano, e il co-payment con loro: **Essenziale 6 sedute, extra
+I tetti scalano col piano, e il co-payment con loro: **Essenziale 6 sessioni, extra
 CHF 35 · Plus 10, extra CHF 28 · Executive 16, extra CHF 22** (`CLAUDE.md` §9).
 
 > **Risposta riscritta su decisione dei founder del 14.08.2026.** Diceva che il
 > margine viene dal co-payment, e metteva nella stessa frase i CHF 28 incassati e
-> i CHF 70–80 pagati: chi ascolta fa la sottrazione e sente dire che ogni seduta
+> i CHF 70–80 pagati: chi ascolta fa la sottrazione e sente dire che ogni sessione
 > oltre il cap costa alla piattaforma più di quanto le renda, cioè l'opposto di
 > ciò che la frase voleva dire. Il divario fra incluse ed erogate regge da sé, e
 > il suo numero è l'unico dei tre che l'investitore ha già davanti agli occhi.
@@ -334,14 +339,14 @@ demo è sotto-utilizzata rispetto alle nostre stesse assunzioni. **Non lo è, e 
 due numeri non si possono sottrarre: hanno denominatori diversi.**
 
 **Primo, e prima di ogni altra cosa: il 12% non è una quota di persone.** È la
-quota del **monte annuo di sedute** che è stata consumata — 142 su 1'200
+quota del **monte annuo di sessioni** che è stata consumata — 142 su 1'200
 (`CLAUDE.md` §8) — mentre il 15–25% del documento è una quota di **dipendenti**.
 È questa sovrapposizione a generare la domanda, quindi si scioglie per prima e
 con una frase sola.
 
-**Secondo: la quota di persone del dataset è circa il 23%.** Le 142 sedute
-dell'anno, a cinque sedute a testa, fanno **~28 persone su 120**. Le cinque
-sedute a testa non sono una nostra stima: sono la riga del Business Plan per il
+**Secondo: la quota di persone del dataset è circa il 23%.** Le 142 sessioni
+dell'anno, a cinque sessioni a testa, fanno **~28 persone su 120**. Le cinque
+sessioni a testa non sono una nostra stima: sono la riga del Business Plan per il
 piano Plus, che è il piano di Demo SA — *"150 dip: 30 dip × 5 sess = 150 sess"*
 (`CLAUDE.md` §9).
 
@@ -366,7 +371,7 @@ margine**, ed è quella che il dataset segue — non l'abbiamo scelta per comodi
 Da non fare: non usare questa risposta per anticipare la curva di utilizzo reale.
 Quella non la sappiamo, ed è la domanda qui sotto.
 
-### "Quindi sulle sedute extra ci rimettete?"
+### "Quindi sulle sessioni extra ci rimettete?"
 
 È l'altro seguito della risposta sul margine, e nasce dalla parte sul co-payment:
 dire che è un deterrente e non un ricavo invita la domanda, dove la formulazione
@@ -374,15 +379,15 @@ vecchia non la invitava. È il prezzo della correzione, e si paga rispondendo �
 non schivando.
 
 **Sì, per unità, ed è voluto.** Il co-payment è tarato per **scoraggiare l'uso
-oltre il tetto**, non per coprirne il costo: a KORA una seduta erogata costa
+oltre il tetto**, non per coprirne il costo: a KORA una sessione erogata costa
 **CHF 70–80** e oltre il cap ne incassa **28**, quindi sull'unità la sottrazione
 la fa chiunque e il segno è quello.
 
 **Il confronto che spiega il numero è un altro, ed è quello da fare per primo:
-fuori la stessa seduta costa CHF 120–150** (`CLAUDE.md` §9). Il dipendente che
+fuori la stessa sessione costa CHF 120–150** (`CLAUDE.md` §9). Il dipendente che
 supera il cap paga **28 invece di 120–150**, cioè **un quarto o un quinto** del
 prezzo di mercato. È lì che si vede a cosa serve quella cifra: non a coprire un
-costo, ma a restare abbastanza bassa da non trasformare la seduta oltre il tetto
+costo, ma a restare abbastanza bassa da non trasformare la sessione oltre il tetto
 in una barriera economica, e abbastanza visibile da restare una scelta
 consapevole. Un prezzo a copertura vorrebbe dire chiedere al dipendente i
 120–150 del mercato privato, e a quel punto il tetto non sarebbe più un tetto:
@@ -408,14 +413,14 @@ piattaforma debba dire di no a nessuno. Se il co-payment sparisse, a cambiare no
 sarebbe il margine ma **la frizione** — ed è esattamente per questo che il numero
 della risposta sul margine è il 12%, e non i CHF 28.
 
-**Il tetto scala col piano al contrario del co-payment**: Essenziale 6 sedute con
+**Il tetto scala col piano al contrario del co-payment**: Essenziale 6 sessioni con
 extra a CHF 35, Executive 16 con extra a CHF 22 (`CLAUDE.md` §9). Chi ha più
-sedute incluse paga **meno** l'extra, perché al tetto ci arriva avendone già
+sessioni incluse paga **meno** l'extra, perché al tetto ci arriva avendone già
 usate di più. Detto così è coerenza del modello, non una stranezza da
 giustificare.
 
 **Se la domanda arriva a *"e se uno ne facesse trenta?"***: oggi non c'è nessun
-tetto al numero di sedute oltre cap prenotabili, il caso non si è mai presentato,
+tetto al numero di sessioni oltre cap prenotabili, il caso non si è mai presentato,
 e il monitoraggio del consumo è parte di ciò che i pilot devono produrre — la
 stessa linea della risposta qui sotto. **Non descrivere una difesa che il
 prodotto non ha.**
@@ -442,7 +447,7 @@ cifra che nessun documento sostiene.
 Il vetting è **a schermo**, non a parole, e in due punti:
 
 - **La Dr.ssa Keller** compare nel back-office fra i professionisti con documenti
-  verificati e **mandato non ancora firmato**: zero sedute erogate, nessuna
+  verificati e **mandato non ancora firmato**: zero sessioni erogate, nessuna
   valutazione. **Non è prenotabile**, e infatti nella prenotazione del dipendente
   non compare. "Prenotabile" si **deriva** da documenti *e* mandato in ordine, non
   è uno stato che qualcuno può scrivere accanto e contraddire.
