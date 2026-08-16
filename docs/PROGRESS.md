@@ -1178,7 +1178,7 @@ la review lo campioni invece di fidarsi.
 | `/demo` | strumento | — | — | `ErrorNotice` `public.demoRequest.error` sotto il pulsante |
 | `/employee` home | consumer | `null` | frase esistente sugli appuntamenti | `ErrorNotice` di pagina |
 | `/employee` contatori | consumer | `null` | — | `ErrorNotice` nella sola card |
-| `/employee` check rapido | consumer | `null` | — | `ErrorNotice` `employee.rapidCheck.error` |
+| `/employee` check rapido | consumer | `null` | — | `ErrorNotice` `employee.state.error` sulla lettura, `…rapidCheck.error` sulla scrittura |
 | `/employee/psicologi` | consumer | `null` | frase esistente sull'elenco | `ErrorNotice` di pagina |
 | `/employee/psicologi` dialogo | consumer | `null` | frase esistente sugli slot | `ErrorNotice`, e `…dialog.error` sulla prenotazione |
 | `/employee/medico` | consumer | `null` | — | `ErrorNotice` di pagina |
@@ -1204,6 +1204,15 @@ la review lo campioni invece di fidarsi.
 | `/admin/analytics` | strumento | `null` | `EmptyNotice` `admin.analytics.empty` | `ErrorNotice` di pagina |
 | 404 | strumento | — | — | — (non legge dal provider) |
 | bootstrap | strumento | — | — | `ErrorNotice` `common.state.boot`, senza layout |
+
+> **Quella riga confondeva lettura e scrittura, e la card non era coperta.**
+> `employee.rapidCheck.error` è il fallimento del **tocco**; la **lettura** non
+> aveva nessun ramo — `isError` era scartato e `undefined` faceva `return null`,
+> quindi con `?fail=getRapidCheckAnswer` la card spariva dalla home in silenzio.
+> Il verbale resta il resoconto di ciò che quel blocco costruì; la casella è
+> stata riempita davvero il **16.08.2026**, e la riga sopra porta ora tutte e
+> due le metà. *(È la stessa forma della correzione dei quattro nodi del footer:
+> non la conta era sbagliata, era la cosa contata.)*
 
 **Verificato a schermo, viewport 1280×900 e scheda in primo piano** (§11):
 
