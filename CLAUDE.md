@@ -1124,6 +1124,32 @@ la regola riguarda ogni serie che si aggiunge.
 - **Un professionista parla come parlerebbe lui**, non come parla il prodotto: il
   medico virtuale dà del lei ed è coerente dall'inizio alla fine della
   conversazione. Il codice ereditato oscilla fra "lei" e "tu" nella stessa chat.
+- **Una cosa, una parola — e la parola è quella del Business Plan** (founder,
+  17.08.2026). Due sinonimi per la stessa cosa non sono una sfumatura di tono:
+  chi legge cerca la differenza che il prodotto sta segnalando, non la trova, e
+  intanto il listino e il portale sembrano parlare di due prodotti. Quando due
+  parole si contendono un posto, **vince quella che il Business Plan usa**: è
+  già la parola che l'investitore ha letto, e sceglierla non chiede a nessuno di
+  arbitrare fra due gusti.
+
+  **Il caso che ha fatto scrivere la regola è "sessioni"**, che il prodotto
+  diceva anche "sedute" — nel portale professionista e nel back-office — mentre
+  i piani, il portale dipendente e le KPI dell'HR dicevano "sessioni". Non era
+  una distinzione decisa: era nata per abitudine, e questo elenco non la
+  nominava. Il Business Plan scrive "sessioni" ovunque — *"Sessioni psicologo
+  online"*, *"Sessioni extra (oltre 6)"*, *"sessioni/anno"* — e **un coach non
+  tiene una seduta**. Allineato il 17.08.2026: 38 stringhe, tutte italiane.
+
+  **La regola vale sul testo a schermo**, cioè sui dizionari di `i18n`: è lì che
+  la doppia parola si vede. I commenti del sorgente e la prosa di questo file
+  descrivono il dominio e non sono interfaccia — si allineano quando si tocca il
+  punto in cui stanno, come i `.jsx` del §3, non con una passata a tappeto.
+
+  **La doppia parola può esistere in una lingua sola, e va cercata lingua per
+  lingua**: al momento dell'allineamento tedesco, francese e inglese usavano già
+  un termine solo — `Sitzung`, `séance`, `session` — per entrambe le italiane.
+  Chi traduce **non** eredita il difetto, quindi non è dal conteggio delle
+  quattro lingue che lo si scopre.
 - La privacy è un argomento di vendita: la nota *"Dati aggregati e anonimi · soglia
   minima {n} dipendenti misurati per reparto"* con icona lucchetto è sempre visibile
   in dashboard. Dice **"misurati"**, non "dipendenti" né "iscritti": la soglia conta
@@ -1336,8 +1362,10 @@ sta sul dato, non nella schermata — "attivo" si **deriva** da
 
 **Sedute erogate in carriera, ratificate dai founder il 10.08.2026**: Colombo
 **340**, Rossi **285**, Meier **312**, Fontana **210**, Keller **0**. La somma è
-**1'147**, ed è la KPI "sedute erogate" del back-office (§10.E): il totale non si
-scrive accanto ai cinque, si somma da loro.
+**1'147**, ed è la KPI **"Sessioni di carriera"** del back-office (§10.E): il
+totale non si scrive accanto ai cinque, si somma da loro. *(La riga citava
+"sedute erogate", che non era l'etichetta di quella KPI in nessun momento:
+allineata al testo vero il 17.08.2026, insieme alla parola.)*
 
 Sono **valori dichiarati, non derivati**, e la differenza va tenuta in chiaro: un
 guardrail vincola la sola **Meier** — il suo totale non può essere minore delle

@@ -52,7 +52,7 @@ import type { Dictionary } from "./index";
  * revisione nativa è l'unico posto in cui la domanda ha una risposta vera
  * (founder, 14.08.2026).
  *
- *   1. `admin.professionals.kpiSessions` — "sedute di carriera" è reso
+ *   1. `admin.professionals.kpiSessions` — "sessioni di carriera" è reso
  *      `Sitzungen gesamt`. L'italiano ha coniato un'espressione per separare
  *      questo totale da altri due conteggi su schermate vicine; il tedesco non
  *      ha un composto corto che non suoni come storia d'impiego, quindi la
@@ -1059,7 +1059,7 @@ export const de: Dictionary = {
 
       successTitle: "Anfrage erhalten",
       successBody:
-        "Die Anfrage für {company} ist erfasst. Das Team antwortet innerhalb eines Arbeitstages.",
+        "Vielen Dank für Ihr Interesse. Unser Team meldet sich innerhalb eines Arbeitstages bei Ihnen.",
       successHome: "Zur Startseite",
       successRoi: "Berechnen Sie inzwischen die Rendite",
     },
@@ -1120,7 +1120,7 @@ export const de: Dictionary = {
       kpiTotal: "Angemeldete Benutzer",
       kpiTotalHint: "Über alle Kunden im Portfolio",
       kpiActive: "Aktiv",
-      kpiWithAssessment: "Mit Assessment",
+      kpiWithAssessment: "Erstassessment abgeschlossen",
       kpiAverageScore: "Durchschnittliches Gesundheitsprofil",
       kpiOnExtract: "Auf den {shown} gezeigten Zeilen",
 
@@ -1145,8 +1145,8 @@ export const de: Dictionary = {
 
     professionals: {
       title: "Fachpersonen",
-      empty: "Keine Fachperson im Roster.",
-      kpiTotal: "Im Roster",
+      empty: "Keine Fachperson im Netzwerk.",
+      kpiTotal: "Fachpersonen",
       kpiBookable: "Buchbar",
       kpiVetting: "In Prüfung",
       kpiSessions: "Sitzungen gesamt",

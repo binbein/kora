@@ -15,7 +15,7 @@ import Footer from "@/components/public/Footer";
 import { dataProvider } from "@/lib/data";
 import { queryKeys } from "@/lib/data/query-keys";
 import type { DemoRequest as DemoRequestRecord } from "@/lib/data/types";
-import { interpolate, t } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
 import { ErrorNotice } from "@/components/kora/StateNotice";
 
 /*
@@ -165,11 +165,23 @@ export default function DemoRequest() {
   });
 
   /*
-   * Lo stato di successo è **il record restituito**, non un booleano: la
-   * conferma nomina l'azienda che ha scritto, quindi non può comparire se la
-   * scrittura non è avvenuta. Un `submitted = true` si accenderebbe lo stesso
-   * il giorno in cui la mutation fallisse, ed è il difetto della schermata
-   * ereditata, dove `handleSubmit` non chiamava niente.
+   * Lo stato di successo è **il record restituito**, non un booleano: a
+   * riempirlo è `onSuccess` con ciò che il provider ha risposto, quindi la
+   * conferma non può comparire se la scrittura non è avvenuta. Un
+   * `submitted = true` si accenderebbe lo stesso il giorno in cui la mutation
+   * fallisse, ed è il difetto della schermata ereditata, dove `handleSubmit`
+   * non chiamava niente.
+   *
+   * Fino al 17.08.2026 la conferma **nominava l'azienda**, letta da questo
+   * record: quel nome era la prova **a schermo** che la scrittura era tornata
+   * dal provider, perché nessuno poteva scriverlo al posto suo. Il testo ora è
+   * generico (founder, 17.08.2026) — è ciò che un prodotto vero risponde — e
+   * il record resta lo stato perché la garanzia sta lì, non nella frase.
+   *
+   * **La prova si è spostata, non è sparita**: la richiesta compare in
+   * `/admin` con azienda, referente e telefono, ed è il passo 4 della
+   * coreografia di `docs/PITCH.md`, cioè il punto in cui la demo la mostra
+   * già.
    */
   const [confirmed, setConfirmed] = useState<DemoRequestRecord | null>(null);
 
@@ -210,9 +222,7 @@ export default function DemoRequest() {
             {t.public.demoRequest.successTitle}
           </h1>
           <p className="text-muted-foreground">
-            {interpolate(t.public.demoRequest.successBody, {
-              company: confirmed.companyName,
-            })}
+            {t.public.demoRequest.successBody}
           </p>
           {/* Nessun vicolo cieco (§10): da qui si torna indietro o si va al
               calcolatore, che è la cosa utile da fare mentre si aspetta. */}

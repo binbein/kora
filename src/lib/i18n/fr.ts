@@ -101,7 +101,7 @@ import type { Dictionary } from "./index";
  *      selettore mostra anche il primo trimestre (vedi il commento su `hr`). La
  *      revisione può preferire `T3 2026`; quello che non si può fare è
  *      l'ordinale con un suffisso solo.
- *   4. `admin.professionals.kpiSessions` — "sedute di carriera" è reso `Total
+ *   4. `admin.professionals.kpiSessions` — "sessioni di carriera" è reso `Total
  *      des séances`, e la distinzione dagli altri due conteggi si sposta nel
  *      sottotitolo. È lo stesso punto che il tedesco ha portato alla sua
  *      revisione con `Sitzungen gesamt`.
@@ -1154,7 +1154,7 @@ export const fr: Dictionary = {
 
       successTitle: "Demande reçue",
       successBody:
-        "La demande pour {company} est enregistrée. L'équipe répond dans un jour ouvrable.",
+        "Merci de votre intérêt. Notre équipe vous contactera dans un jour ouvrable.",
       successHome: "Retour à l'accueil",
       successRoi: "En attendant, calculez le retour",
     },
@@ -1218,7 +1218,7 @@ export const fr: Dictionary = {
       kpiTotal: "Utilisateurs inscrits",
       kpiTotalHint: "Sur tous les clients en portefeuille",
       kpiActive: "Actifs",
-      kpiWithAssessment: "Avec assessment",
+      kpiWithAssessment: "Assessment initial terminé",
       kpiAverageScore: "Profil santé moyen",
       kpiOnExtract: "Sur les {shown} lignes affichées",
 
@@ -1244,7 +1244,7 @@ export const fr: Dictionary = {
     professionals: {
       title: "Professionnels",
       empty: "Aucun professionnel dans le réseau.",
-      kpiTotal: "Dans le réseau",
+      kpiTotal: "Professionnels",
       kpiBookable: "Réservables",
       kpiVetting: "En vérification",
       /* "Sedute di carriera" non ha un composto corto in francese che non

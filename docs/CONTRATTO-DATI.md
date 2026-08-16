@@ -927,6 +927,26 @@ Il dataset demo nasce già popolato, quindi nessuno di questi passaggi esiste:
 - **La fatturazione oltre la lettura**: `Invoice` si legge e basta. Mancano il
   documento, i dati fiscali, lo stato di pagamento e la QR-fattura, che in
   Svizzera è il modo in cui una fattura si paga.
+- **Cosa il dipendente può modificare del proprio profilo.** Oggi **nessuna
+  scrittura** tocca `EmployeeProfile`: la pagina lo mostra e basta. Non è una
+  svista da colmare con un pulsante "modifica", perché la domanda vera sta a
+  monte — **chi crea l'account e chi lo attiva** decide quali campi arrivano
+  dall'azienda e quali dalla persona, e i due insiemi hanno regole opposte: il
+  reparto governa un aggregato che l'HR legge (§3), quindi non può essere un
+  campo che l'interessato cambia da sé; l'email è la chiave dell'invito. Restano
+  fuori anche i due casi che si presentano per primi in un'azienda vera: **chi
+  cambia reparto** — e allora la sua storia di misurazioni resta dov'era o lo
+  segue — e **chi lascia l'azienda**, che è l'offboarding due righe più su.
+- **"Pianifica review".** Era un pulsante della pagina report che non faceva
+  niente, tolto il 07.08.2026 come vicolo cieco (`docs/PROGRESS.md`). Farlo
+  davvero **non è una schermata**: una review è un incontro con il cliente, e
+  fissarlo è un'integrazione con un calendario di terzi — disponibilità di chi
+  la tiene, invito che esce dalla piattaforma, disdetta governata da fuori. È la
+  stessa forma del §8.6, e la stessa ragione per cui quel gruppo esiste. Il
+  contratto commerciale la prevede già in due punti — il report trimestrale del
+  Plus e la call mensile col team clinico dell'Executive (`CLAUDE.md` §9) —
+  quindi la cadenza dipende dal piano, e non è un campo che si aggiunge a
+  `Company`.
 
 ### 8.4 Il co-payment non ha dove essere registrato, e non è deciso chi lo paga
 
@@ -1106,6 +1126,27 @@ implementare:
   disciplina con cui il §3 tiene `Appointment` e `ProfessionalSession` come due
   proiezioni di un record solo.
 
+**Della struttura non si sa né cosa offre né quanto lavora**, e le due cose
+arrivano dalla stessa integrazione. Il back-office aveva due colonne — i
+pacchetti di una clinica e le sue prenotazioni — **tolte il 09.08.2026** perché
+nessuna delle due esiste nei dati approvati: `CLAUDE.md` §8 dà alla rete cinque
+nomi, cinque indirizzi e uno stato di convenzionamento, e **non un listino per
+struttura né una ripartizione delle prenotazioni fra le cliniche**. Erano numeri
+che si potevano solo inventare, quindi sono uscite.
+
+In produzione esistono entrambe, e non sono un dato che scriviamo noi:
+
+- **cosa offre una struttura** è il suo catalogo, e decide una cosa che oggi il
+  prodotto dà per scontata — che il check-up del Plus e quello **executive**
+  (`CLAUDE.md` §9) siano erogabili ovunque. Non lo sono: un'eco addome e un ECG
+  non li fa ogni poliambulatorio, quindi il catalogo è ciò che rende
+  **prenotabile** una coppia struttura-piano, non un'etichetta descrittiva;
+- **quante prenotazioni ha** è un conteggio, e in produzione si **deriva** dalle
+  prenotazioni vere (§5.5 di `CLAUDE.md`) invece di essere una colonna. Oggi la
+  KPI di piattaforma esiste e dichiara il proprio perimetro — *"di piattaforma,
+  sui dodici mesi"* — mentre la ripartizione per struttura no: è quella che
+  manca, ed è il dato con cui si capisce se una convenzione serve a qualcuno.
+
 ### 8.7 Autorizzazione e multi-tenant
 
 **`UserRole` è un'enumerazione piatta**: dice *hr*, non *HR di quale azienda*.
@@ -1147,6 +1188,21 @@ Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
 - **L'organico è un intero.** Niente FTE, part-time, stagionali né pro-rata: il
   prezzo è per dipendente al mese, e su un organico che cambia a metà mese la
   fattura di oggi non saprebbe cosa dire.
+- **Due persone possono chiamarsi allo stesso modo, e l'interfaccia deve saperle
+  distinguere.** Il §7 dichiara già la metà che riguarda i dati: in produzione le
+  liste si uniscono per **id vero** e non per iniziali, quindi il vincolo del
+  dataset demo — nessuna coppia di iniziali ripetuta, sorvegliato da un guardrail
+  — cade insieme al guardrail. **Manca la seconda metà, ed è quella che si
+  vede.** Le schermate che mostrano una persona senza mostrarne il nome ne
+  mostrano **le iniziali**: l'elenco dipendenti dell'HR, i pazienti e le sessioni
+  del professionista, le sessioni del back-office. Con due `M.B.` nella stessa
+  azienda quelle righe diventano ambigue a chi guarda, e l'ambiguità **non è
+  risolvibile aggiungendo un identificatore**: un id accanto alle iniziali è un
+  pseudonimo stabile, cioè esattamente ciò che l'anonimato di quelle schermate
+  esiste per non dare. La scelta è di prodotto — un discriminante che non
+  identifica, l'ordinamento come unica chiave di riga, o l'ammissione che due
+  righe possano leggersi uguali — e va presa prima che il primo cliente vero
+  abbia due omonimi, il che su 420 dipendenti è il primo giorno.
 
 ### 8.9 L'avanzamento del piano di prevenzione non ha una sorgente
 
@@ -1181,7 +1237,88 @@ significherebbe mostrare a una persona una misura del proprio comportamento che
 nessuno ha misurato — che è la stessa famiglia del §8 di `CLAUDE.md`, dove nessuna
 metrica di stress si deduce da un surrogato.
 
-### 8.10 Paginazione
+### 8.10 Le tre voci del profilo non hanno una sorgente
+
+**Sta accanto al §8.9 perché è lo stesso problema**, e la somiglianza è il modo
+più rapido di capirlo: lì una barra misura un avanzamento che nessuno registra,
+qui tre voci descrivono uno stato che nessuno rileva più di una volta.
+
+La demo ereditata mostrava nel profilo del dipendente **stress, sonno ed
+energia** come tre righe scritte in pagina. Non erano tre dati: erano tre
+etichette. Nel dominio di oggi esiste `HealthProfile`, e porta **tre cose
+diverse** — un punteggio `0–100`, una sintesi fra tre valori e **l'area più
+debole fra le cinque** di `HealthArea` (§3). Fra le cinque non c'è l'energia.
+
+**Il lavoro dell'MVP non è rimettere tre etichette.** Rimetterle costa un'ora, e
+sarebbe la scelta per omissione che il §8.9 vieta: tre voci accanto a un nome
+che un cliente legge come una misura del proprio stato. Il lavoro è decidere **da
+dove escono quei numeri**, e sono tre decisioni distinte:
+
+- **la cadenza**: `HealthProfile` nasce dall'assessment iniziale, che è una
+  fotografia scattata una volta all'attivazione. Tre voci che non si aggiornano
+  mai invecchiano addosso alla persona, e a un anno di distanza dicono di
+  qualcun altro;
+- **lo storico**: senza una serie non esiste "sta migliorando", che è l'unica
+  cosa utile che tre voci possono dire a chi le legge di sé. Il check rapido è
+  la sola sorgente ricorrente che il prodotto ha, e misura **una** delle tre;
+- **rispetto a cosa**: un valore di sonno non vuol dire niente da solo. O si
+  confronta con la baseline della persona — e allora serve la serie — o con una
+  norma di popolazione, che è un dato clinico che la piattaforma non ha e non
+  può inventare (`CLAUDE.md` §2.4).
+
+**La terza decisione è quella che tocca il §8.2**, come per il §8.9: rilevare
+sonno ed energia in continuo è più invasivo di tutto ciò che il prodotto
+raccoglie oggi, e ricade sul consenso prima che sull'interfaccia. Ed è il punto
+in cui il vincolo del `CLAUDE.md` §8 va riletto al contrario: lì dice che lo
+stress non si deduce mai dal comportamento, e un tracciamento di abitudini è
+esattamente il surrogato che quella riga rifiuta per l'aggregato aziendale.
+Averlo sul profilo individuale non è la stessa cosa — è il diretto interessato
+che guarda i propri dati — ma la differenza va **decisa**, non lasciata cadere
+dalla parte comoda.
+
+### 8.11 Le recensioni dei professionisti
+
+Il roster porta una **valutazione numerica** — `4.9`, `4.8` — e **nessun testo**:
+non esiste un'entità recensione, non c'è un metodo che la scriva né uno che la
+legga, e la valutazione del dataset è un valore dichiarato senza nulla dietro
+(`CLAUDE.md` §8). Chi prenota vede un numero e non sa da quante persone viene.
+
+**Il vincolo che decide il gruppo non è la scrittura: è che anonimo non basta.**
+Una recensione firmata "anonimo" ma datata, e con un dettaglio dentro — *"dopo il
+mio percorso di sei mesi"* — dice comunque chi è, su una rete in cui un
+professionista ha sei pazienti attivi. È la stessa aritmetica della soglia di
+anonimato del §3, spostata dall'aggregato al testo libero: lì il rimedio è un
+numero minimo di misurati, qui non esiste un rimedio automatico, perché a
+identificare è **il contenuto** e non la firma.
+
+E il danno non è simmetrico rispetto agli altri dati del prodotto: la promessa
+principale è che nessuno sappia chi va dallo psicologo (`docs/PITCH.md`), quindi
+una recensione che si lascia ricondurre a una persona non è un difetto di
+funzione — **smentisce l'argomento di vendita**, e lo smentisce su una schermata
+pubblica.
+
+**Ne discende il perimetro, che è più largo di "aggiungere un campo testo":**
+
+- **la moderazione**, cioè chi legge prima della pubblicazione e con quale
+  regola. Non è un filtro automatico: a essere identificante è un dettaglio
+  plausibile, non una parola in una lista;
+- **la forma del testo**: se sia libero, o una scelta fra frasi, o solo delle
+  dimensioni con un punteggio ciascuna — che è l'unica forma che non può
+  contenere un dettaglio;
+- **se pubblicare il solo aggregato**, cioè tenere la media e il numero di
+  valutazioni e non mostrare mai un testo. È la strada che costa meno ed è
+  compatibile con quello che c'è: la valutazione è già un aggregato, le manca
+  solo il denominatore;
+- **il diritto di replica del professionista**, e cosa succede a una recensione
+  quando lascia la rete — che è la stessa domanda del §8.2 sulla nota di
+  sessione, su un dato che però è pubblico.
+
+**Non è la stessa cosa della nota di sessione**, ed è utile dirlo perché i due si
+somigliano: la nota è privata per forma del dominio e nessun tipo la fa uscire
+(§3); una recensione **nasce per essere pubblicata**, quindi la protezione non
+può stare nella forma del tipo e deve stare nel processo.
+
+### 8.12 Paginazione
 
 **`getEmployeeDirectory` restituisce otto righe su 120**, e la schermata lo
 dichiara (§7). Un elenco vero si pagina e si cerca, e vale per ogni lista che in
