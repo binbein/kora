@@ -30,6 +30,7 @@ import type { Quarter } from "./data/types";
 
 /** A4 in punti tipografici, come li conta jsPDF. */
 const A4_WIDTH_PT = 595.28;
+const A4_HEIGHT_PT = 841.89;
 const MARGIN_PT = 28;
 
 /**
@@ -65,14 +66,25 @@ export function printPeriodMark(period: Quarter): string {
 /**
  * Cattura il nodo e fa scaricare il PDF.
  *
- * Restituisce il numero di pagine prodotte, che è ciò che il chiamante
- * controlla: il §10.C.3 vuole **una pagina sola**.
+ * **Non restituisce niente, e prima restituiva `doc.getNumberOfPages()`**
+ * (16.08.2026). Quel numero era tautologico: dopo un `addImage` solo vale
+ * sempre `1`, qualunque cosa sia stata disegnata — quindi la promessa del
+ * §10.C.3, *una pagina sola*, non era verificata da niente e il chiamante lo
+ * ignorava a ragione. **A non essere controllato era il caso vero**: un
+ * contenuto più alto del foglio veniva disegnato oltre il bordo e **ritagliato
+ * in silenzio**, cioè il documento usciva di una pagina perché il resto era
+ * sparito.
+ *
+ * Ora l'altezza si misura contro quella utile e chi non ci sta **non viene
+ * salvato**: la funzione lancia, e il chiamante ha già lo stato d'errore che
+ * M5.b gli ha dato. È la scelta giusta per un allegato che va in consiglio —
+ * un fallimento visibile costa meno di un documento tagliato che nessuno nota.
  */
 export async function downloadReportPdf(
   node: HTMLElement,
   fileName: string,
   period: Quarter,
-): Promise<number> {
+): Promise<void> {
   /*
    * IL GUARDRAIL CHE IL §5.6 NOMINA PER NOME: «il trimestre del PDF diverso da
    * quello mostrato».
@@ -108,7 +120,33 @@ export async function downloadReportPdf(
 
   const doc = new jsPDF({ unit: "pt", format: "a4", compress: true });
   const usableWidth = A4_WIDTH_PT - MARGIN_PT * 2;
+  const usableHeight = A4_HEIGHT_PT - MARGIN_PT * 2;
   const drawnHeight = (canvas.height / canvas.width) * usableWidth;
+
+  /*
+   * IL SECONDO GUARDRAIL DI QUESTA FUNZIONE, e sorveglia l'altra promessa del
+   * §10.C.3: una pagina sola.
+   *
+   * Fallisce quando la vista di stampa è cresciuta oltre il foglio — una
+   * sezione in più, o una traduzione molto più lunga dell'italiano. È un
+   * difetto del codice e non una condizione del dato: il contenuto è fisso,
+   * quindi in sviluppo si vuole il lancio che dice **di quanto** si sfora.
+   */
+  assertInDevOutsidePromise(
+    drawnHeight <= usableHeight,
+    `Il report disegna ${drawnHeight.toFixed(1)} pt su ${usableHeight.toFixed(1)} disponibili: uscirebbe di ${(drawnHeight - usableHeight).toFixed(1)} pt oltre il bordo, ritagliati senza che si veda.`,
+  );
+
+  /*
+   * In produzione i guardrail tacciono, quindi il rifiuto sta anche qui: senza,
+   * la build silenziosa salverebbe il documento tagliato — il caso peggiore,
+   * perché il file arriva e sembra a posto.
+   */
+  if (drawnHeight > usableHeight) {
+    throw new Error(
+      `Il report non sta in una pagina: ${drawnHeight.toFixed(1)} pt su ${usableHeight.toFixed(1)}.`,
+    );
+  }
 
   doc.addImage(
     canvas.toDataURL("image/jpeg", 0.92),
@@ -120,5 +158,4 @@ export async function downloadReportPdf(
   );
 
   doc.save(fileName);
-  return doc.getNumberOfPages();
 }
