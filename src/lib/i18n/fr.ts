@@ -378,6 +378,7 @@ export const fr: Dictionary = {
 
       report: {
         title: "Rapport du {date}",
+        empty: "Aucun rapport à afficher pour ce bilan de santé.",
         measurement: {
           blood_pressure: "Tension",
           cholesterol: "Cholestérol",

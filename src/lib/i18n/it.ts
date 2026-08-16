@@ -408,6 +408,9 @@ export const it = {
       report: {
         /** "Referto del 15.03.2026" */
         title: "Referto del {date}",
+        /* Il referto non c'è: `getCheckupReport` è nullable per contratto, e
+           il vuoto è un caso previsto — non un dialogo senza contenuto. */
+        empty: "Per questo check-up non c'è un referto da mostrare.",
         measurement: {
           blood_pressure: "Pressione",
           cholesterol: "Colesterolo",

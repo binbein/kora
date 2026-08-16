@@ -353,6 +353,7 @@ export const de: Dictionary = {
 
       report: {
         title: "Befund vom {date}",
+        empty: "Für diese Vorsorgeuntersuchung gibt es keinen Befund zum Anzeigen.",
         measurement: {
           blood_pressure: "Blutdruck",
           cholesterol: "Cholesterin",
