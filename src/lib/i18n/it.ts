@@ -377,6 +377,10 @@ export const it = {
       title: "Check-up annuale",
       subtitle: "Il check-up fisico incluso nel tuo piano.",
 
+      /* Nome accessibile del pulsante che apre il referto: il pulsante
+         avvolge una card, e un nome calcolato dal contenuto sarebbe fragile.
+         Non contraddice il testo visibile. */
+      openReport: "Apri il tuo ultimo referto",
       lastTitle: "Il tuo ultimo referto",
       /** "Fatto il 15.03.2026 · Centro Medico Ardesia" */
       lastDone: "Fatto il {date} · {provider}",

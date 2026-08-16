@@ -361,6 +361,7 @@ export const fr: Dictionary = {
       title: "Check-up annuel",
       subtitle: "Le check-up physique compris dans ton plan.",
 
+      openReport: "Ouvrir ton dernier rapport",
       lastTitle: "Ton dernier rapport",
       lastDone: "Fait le {date} · {provider}",
       lastOpen: "Appuie pour le voir",
