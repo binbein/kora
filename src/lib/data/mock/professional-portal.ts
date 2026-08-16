@@ -85,7 +85,8 @@ const PATIENTS: PatientSlot[] = [
   { patientId: "gr", initials: "G.R.", weekday: 1, hour: 10, minute: 0, fromWeeksAgo: 10 },
   { patientId: "mb", initials: "M.B.", weekday: 1, hour: 14, minute: 0, fromWeeksAgo: 8 },
   { patientId: "ek", initials: "E.K.", weekday: 2, hour: 11, minute: 0, fromWeeksAgo: -1 },
-  { patientId: "sc", initials: "S.C.", weekday: 3, hour: 16, minute: 0, fromWeeksAgo: 12 },
+  // era "S.C.", cioè le iniziali della referente HR di Demo SA: vedi `hr.ts`
+  { patientId: "ig", initials: "I.G.", weekday: 3, hour: 16, minute: 0, fromWeeksAgo: 12 },
   {
     patientId: PORTAL_PATIENT_EMPLOYEE_ID,
     initials: "L.B.",
@@ -278,7 +279,7 @@ const FIRST_VISIT_NOTES: Record<
     nextGoal: "Definire i primi passi da verificare insieme.",
     suggestedFollowUp: "Prossimo incontro fra una settimana.",
   },
-  sc: {
+  ig: {
     notes: "Prima seduta. Raccolta la storia e concordato il metodo di lavoro.",
     nextGoal: "Verificare la tenuta della cadenza concordata.",
     suggestedFollowUp: "Cadenza settimanale, da rivedere fra un mese.",

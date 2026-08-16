@@ -408,6 +408,9 @@ export const it = {
       report: {
         /** "Referto del 15.03.2026" */
         title: "Referto del {date}",
+        /* Il referto non c'è: `getCheckupReport` è nullable per contratto, e
+           il vuoto è un caso previsto — non un dialogo senza contenuto. */
+        empty: "Per questo check-up non c'è un referto da mostrare.",
         measurement: {
           blood_pressure: "Pressione",
           cholesterol: "Colesterolo",
@@ -564,7 +567,9 @@ export const it = {
          professionista, e il numero e' il suo. */
       completed: "Erogate ({n})",
       cancelled: "Annullate ({n})",
-      start: "Avvia",
+      /* La videochiamata è uno dei servizi che la demo non simula (§1.1), e
+         il pulsante lo dice invece di restare premibile senza esito. */
+      startUnavailable: "Videochiamata non attiva nella demo",
       addNote: "Aggiungi nota",
       editNote: "Nota",
       emptyUpcoming: "Nessuna seduta in programma.",
@@ -586,6 +591,13 @@ export const it = {
         error: {
           title: "Nota non salvata",
           body: "Il testo è ancora qui: riprova.",
+        },
+        /* La nota salvata non è stata letta. Il salvataggio resta spento
+           finché non arriva: senza sapere cosa c'è, scriverci sopra è una
+           cancellazione (16.08.2026). */
+        loadError: {
+          title: "Nota non disponibile",
+          body: "La nota di questa seduta non è stata letta. Salvare adesso la sovrascriverebbe.",
         },
         saved: "Nota salvata",
         privacy:
@@ -1493,7 +1505,6 @@ export const it = {
       colEmail: "Email",
       colCompany: "Azienda",
       colRole: "Ruolo",
-      colScore: "Profilo salute",
       colStatus: "Stato",
       colJoined: "Iscritto",
 

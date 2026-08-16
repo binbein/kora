@@ -77,18 +77,20 @@ export default function AdminUtenti() {
         );
 
   /*
-   * Il punteggio medio conta i soli utenti che hanno fatto l'assessment: chi
-   * non l'ha fatto non ha un punteggio, e metterlo a zero abbasserebbe la media
-   * con un dato che non esiste (§11).
+   * IL PUNTEGGIO MEDIO ARRIVA GIÀ AGGREGATO, e non è una riduzione su queste
+   * righe (founder, 16.08.2026).
+   *
+   * Prima `PlatformUser` portava il punteggio della singola persona e questa
+   * schermata lo mediava: un dato sanitario individuale accanto a nome, cognome
+   * ed email, cioè l'unico punto in cui il dominio smentiva la garanzia del
+   * `docs/CONTRATTO-DATI.md` §3. Ora la media è del mese, non dell'estratto, e
+   * il sottotitolo lo dice.
+   *
+   * L'estratto conserva **quanti** hanno fatto l'assessment: è un fatto sul
+   * percorso, non un esito, come lo stato del check-up nell'elenco dell'HR.
    */
-  const scored = users.filter((user) => user.healthScore !== null);
-  const averageScore =
-    scored.length === 0
-      ? null
-      : Math.round(
-          scored.reduce((sum, user) => sum + (user.healthScore ?? 0), 0) /
-            scored.length,
-        );
+  const assessed = users.filter((user) => user.assessmentCompleted);
+  const averageScore = currentMonth?.averageHealthScore ?? null;
 
   /*
    * Il denominatore dell'estratto è il numero che l'analytics chiama "utenti
@@ -113,11 +115,11 @@ export default function AdminUtenti() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/*
-          * La prima KPI conta tutta la piattaforma, le altre tre l'estratto, e
-          * ognuna lo dichiara. Quattro numeri affiancati senza dirlo
-          * sembrerebbero parlare della stessa popolazione: è la forma in cui il
-          * back-office ereditato metteva "618 utenti attivi" accanto a un tasso
-          * di attivazione che ne implicava 767.
+          * La prima e la quarta KPI contano tutta la piattaforma, le due in
+          * mezzo l'estratto, e ognuna lo dichiara. Quattro numeri affiancati
+          * senza dirlo sembrerebbero parlare della stessa popolazione: è la
+          * forma in cui il back-office ereditato metteva "618 utenti attivi"
+          * accanto a un tasso di attivazione che ne implicava 767.
           */}
         <KPICard
           title={t.admin.users.kpiTotal}
@@ -134,14 +136,14 @@ export default function AdminUtenti() {
         />
         <KPICard
           title={t.admin.users.kpiWithAssessment}
-          value={formatNumber(scored.length)}
+          value={formatNumber(assessed.length)}
           subtitle={onExtract}
           icon={Activity}
         />
         <KPICard
           title={t.admin.users.kpiAverageScore}
           value={averageScore === null ? t.common.none : formatNumber(averageScore)}
-          subtitle={onExtract}
+          subtitle={t.admin.users.kpiTotalHint}
           icon={Activity}
         />
       </div>
@@ -166,7 +168,11 @@ export default function AdminUtenti() {
                 <TableHead>{t.admin.users.colEmail}</TableHead>
                 <TableHead>{t.admin.users.colCompany}</TableHead>
                 <TableHead>{t.admin.users.colRole}</TableHead>
-                <TableHead>{t.admin.users.colScore}</TableHead>
+                {/* Nessuna colonna con il punteggio: la riga porta nome,
+                    cognome ed email, e un dato sanitario individuale accanto
+                    a un'identità in chiaro è ciò che la decisione del
+                    16.08.2026 ha tolto dal contratto. La media sta fra le KPI,
+                    aggregata. */}
                 <TableHead>{t.admin.users.colStatus}</TableHead>
                 <TableHead>{t.admin.users.colJoined}</TableHead>
               </TableRow>
@@ -185,15 +191,6 @@ export default function AdminUtenti() {
                   </TableCell>
                   <TableCell>
                     <Badge variant="outline">{t.admin.role[user.role]}</Badge>
-                  </TableCell>
-                  <TableCell className="tabular-nums">
-                    {user.healthScore === null ? (
-                      <span className="text-muted-foreground">
-                        {t.common.none}
-                      </span>
-                    ) : (
-                      formatNumber(user.healthScore)
-                    )}
                   </TableCell>
                   <TableCell>
                     <Badge

@@ -353,6 +353,7 @@ export const de: Dictionary = {
 
       report: {
         title: "Befund vom {date}",
+        empty: "Für diese Vorsorgeuntersuchung gibt es keinen Befund zum Anzeigen.",
         measurement: {
           blood_pressure: "Blutdruck",
           cholesterol: "Cholesterin",
@@ -478,7 +479,7 @@ export const de: Dictionary = {
       upcoming: "Geplant ({n})",
       completed: "Durchgeführt ({n})",
       cancelled: "Abgesagt ({n})",
-      start: "Starten",
+      startUnavailable: "Videoanruf in dieser Demo nicht aktiv",
       addNote: "Notiz hinzufügen",
       editNote: "Notiz",
       emptyUpcoming: "Keine geplante Sitzung.",
@@ -497,6 +498,10 @@ export const de: Dictionary = {
         error: {
           title: "Notiz nicht gespeichert",
           body: "Der Text ist noch hier: versuchen Sie es erneut.",
+        },
+                loadError: {
+          title: "Notiz nicht verfügbar",
+          body: "Die Notiz dieser Sitzung wurde nicht geladen. Ein Speichern würde sie jetzt überschreiben.",
         },
         saved: "Notiz gespeichert",
         privacy:
@@ -1122,7 +1127,6 @@ export const de: Dictionary = {
       colEmail: "E-Mail",
       colCompany: "Unternehmen",
       colRole: "Rolle",
-      colScore: "Gesundheitsprofil",
       colStatus: "Status",
       colJoined: "Angemeldet",
 

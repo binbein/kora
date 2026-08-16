@@ -1178,7 +1178,7 @@ la review lo campioni invece di fidarsi.
 | `/demo` | strumento | — | — | `ErrorNotice` `public.demoRequest.error` sotto il pulsante |
 | `/employee` home | consumer | `null` | frase esistente sugli appuntamenti | `ErrorNotice` di pagina |
 | `/employee` contatori | consumer | `null` | — | `ErrorNotice` nella sola card |
-| `/employee` check rapido | consumer | `null` | — | `ErrorNotice` `employee.rapidCheck.error` |
+| `/employee` check rapido | consumer | `null` | — | `ErrorNotice` `employee.state.error` sulla lettura, `…rapidCheck.error` sulla scrittura |
 | `/employee/psicologi` | consumer | `null` | frase esistente sull'elenco | `ErrorNotice` di pagina |
 | `/employee/psicologi` dialogo | consumer | `null` | frase esistente sugli slot | `ErrorNotice`, e `…dialog.error` sulla prenotazione |
 | `/employee/medico` | consumer | `null` | — | `ErrorNotice` di pagina |
@@ -1204,6 +1204,15 @@ la review lo campioni invece di fidarsi.
 | `/admin/analytics` | strumento | `null` | `EmptyNotice` `admin.analytics.empty` | `ErrorNotice` di pagina |
 | 404 | strumento | — | — | — (non legge dal provider) |
 | bootstrap | strumento | — | — | `ErrorNotice` `common.state.boot`, senza layout |
+
+> **Quella riga confondeva lettura e scrittura, e la card non era coperta.**
+> `employee.rapidCheck.error` è il fallimento del **tocco**; la **lettura** non
+> aveva nessun ramo — `isError` era scartato e `undefined` faceva `return null`,
+> quindi con `?fail=getRapidCheckAnswer` la card spariva dalla home in silenzio.
+> Il verbale resta il resoconto di ciò che quel blocco costruì; la casella è
+> stata riempita davvero il **16.08.2026**, e la riga sopra porta ora tutte e
+> due le metà. *(È la stessa forma della correzione dei quattro nodi del footer:
+> non la conta era sbagliata, era la cosa contata.)*
 
 **Verificato a schermo, viewport 1280×900 e scheda in primo piano** (§11):
 
@@ -2025,7 +2034,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Ventiquattro passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Venticinque passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2034,8 +2043,8 @@ quella francese di M5.e, le quattro della **revisione del 15.08.2026** — #43 e
 contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
 `README.md`, il residuo della nota di sessione, gli slot sovrapposti e i periodi
 non dichiarati, i fatti corretti nei documenti, il perimetro e le promesse in
-sospeso, il footer fuori dalla demo, e **questa passata**, i terzi e la
-simmetria del footer. Non
+sospeso, il footer fuori dalla demo, i terzi e la simmetria del footer, e
+**questa passata**, l'identità collisa e gli stati limite. Non
 aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
 seam e del dizionario. **Quelle che hanno una sottosezione loro sono le
@@ -3630,6 +3639,211 @@ Ed è lì che è rimasto il giudizio: la riscrittura di `dataNote` tocca solo te
 un'affermazione falsa del prodotto**, non un documento — e il prodotto è ciò che
 quella stringa rende a schermo. **Il criterio decide la colonna; a scegliere il
 prefisso resta chi scrive**, ed è utile saperlo prima della prossima passata mista.
+
+#### Identità collisa e stati limite, seconda tornata (16.08.2026)
+
+**Undici commit: sette di codice — `fix:` ×7 — e quattro di documenti.** Totale e
+ripartizione dalla stessa misura, `git log --format='%s' master..HEAD`, come vuole
+il criterio in testa a questo file; il numero è scritto `n + 1` perché il commit di
+chiusura conta sé stesso. **È la seconda passata mista**, dopo quella sui terzi e
+la simmetria del footer, e la prima in cui il codice è la parte grossa.
+
+Sei difetti verificati, nessuno dei quali rompeva la demo. **Nessun numero del §8
+e del §9 si muove** — verificati a schermo alla cifra, elenco più sotto — e il
+filo che tiene insieme i primi due è lo stesso: **un dato che identifica una
+persona è finito dove non doveva**, una volta per collisione e una per campo.
+
+##### Una persona sola descritta come due, e il contrario
+
+`S.C.` erano insieme **Sara Conti**, referente HR di Demo SA nel back-office, e la
+dipendente delle Vendite che è **la paziente più lunga della Dr.ssa Meier** — dodici
+sedute su un cap di dieci, cioè una delle due righe sopra cap che `docs/PITCH.md`
+indica a schermo come prova che il tetto è reale. Per il §8 — *stesse iniziali,
+stessa persona* — le tre schermate parlavano di lei: la referente HR risultava in
+Vendite e con il percorso terapeutico più lungo della demo, accanto al proprio nome,
+cognome ed email.
+
+**A cambiare sono le iniziali, non il nome** (`sc` → `ig`, `S.C.` → `I.G.`): un nome
+nuovo passa dalla verifica del §8 e da una decisione dei founder, una coppia di
+iniziali libera no. Le occupate erano undici e la scelta è caduta fuori da tutte,
+comprese le sette che si ricavano dai nomi del back-office — che nessun elenco
+teneva.
+
+##### Il guardrail che c'era guardava una lista sola, e non poteva vederla
+
+L'invariante del §8 viveva dentro `EMPLOYEE_DIRECTORY`, mentre le persone di questa
+demo stanno in **tre** elenchi: l'estratto dell'HR, l'agenda della professionista e
+gli utenti del back-office. Ora li attraversa tutti e tre, in `platform.ts` — l'unico
+dei tre file che può importare gli altri due senza chiudere un ciclo, e anche
+l'elenco arrivato per ultimo, cioè quello che ha introdotto la collisione. Il
+controllo vecchio **è stato spostato, non duplicato**: due guardie sulla stessa
+condizione sono due posti in cui sbagliarla (§5.6).
+
+**Quattro confronti, e il quarto è quello che serviva.** Azienda, reparto e id di
+dominio non avrebbero trovato niente — il back-office non dichiara né reparto né id,
+quindi per quei tre `S.C.` era coerente. A distinguere `M.B.` da `S.C.` è il
+**ruolo**: chi compare nell'estratto o fra i pazienti è un dipendente in un percorso
+di cura, e un ruolo diverso da `employee` sulle stesse iniziali vuol dire o due
+persone o il percorso di cura di chi dipendente non è.
+
+**È una scelta di questa passata e va portata ai founder**, perché il perimetro
+chiesto erano azienda e reparto: senza il quarto confronto il guardrail sarebbe
+passato su entrambi i casi, cioè non avrebbe distinto quello che gli era stato
+chiesto di distinguere. Il quinto controllo — **stessa persona, stesse iniziali** —
+è la direzione opposta, e non è ornamento: rinominare una lista e non l'altra è
+esattamente ciò che questa passata ha fatto a mano.
+
+**Provato nei due versi**, che è il criterio del §5.6:
+
+| dataset | esito |
+|---|---|
+| `sc` / `S.C.` rimesso nel solo estratto HR | pagina bianca in sviluppo, e il messaggio esatto: *"S.C. è un dipendente secondo l'elenco dipendenti dell'HR e ha ruolo "hr" secondo gli utenti del back-office"* |
+| `ig` / `I.G.` | nessun guardrail parla, le 27 rotte si disegnano |
+
+##### Il punteggio salute individuale esce dal contratto (founder, 16.08.2026)
+
+`PlatformUser` portava `firstName`, `lastName`, `email` **e** `healthScore`, e
+`/admin/utenti` li rendeva tutti e quattro. Era l'unica eccezione a ciò che il
+`CONTRATTO-DATI.md` §3 dichiara per l'intero contratto — *`CheckupReport` è l'unico
+dato sanitario individuale del dominio, e nessun metodo di HR o admin lo
+restituisce* — e **nessuna riga la nominava**: chi leggeva quel paragrafo non aveva
+modo di scoprirla.
+
+Il campo è uscito, la colonna con lui. Al suo posto due cose che non sono la stessa:
+
+- **`PlatformUser.assessmentCompleted`** dice **che** l'assessment è stato fatto e
+  mai cosa ha detto. È la distinzione con cui `EmployeeDirectoryEntry` porta già lo
+  stato del check-up senza portarne l'esito, e senza di essa la KPI "con
+  assessment" sarebbe morta con il campo che la alimentava;
+- **`PlatformMonth.averageHealthScore`** è il punteggio **aggregato**, cioè la forma
+  in cui può stare in un'area che vede i nomi: una media non si attribuisce a
+  nessuno. Sta su quella serie perché è già *la serie sola per tutti i grafici del
+  back-office* (§2 del contratto), e una seconda entità con la stessa cadenza è una
+  seconda cosa che può divergere.
+
+**Sette cifre non ratificate diventano una.** I punteggi individuali non stavano nel
+§8 più di quanto ci stia la media: la differenza è che ora è **un valore dichiarato
+e dichiarato tale**, come le sedute di carriera. Vale **73**, che è ciò che la media
+dei sette dava — la schermata non si muove — ed è **la cifra da portare ai founder**
+perché entri nel §8 o venga cambiata. La sua costanza sulla finestra è una
+semplificazione della demo ed è registrata nel §7 del contratto.
+
+**Nessun guardrail nuovo, e la ragione vale quanto uno aggiunto.** L'invariante
+disponibile sarebbe *`averageHealthScore` è `null` se e solo se non c'è nessun
+iscritto*, cioè il confronto dell'espressione con sé stessa una riga sotto dove è
+scritta: è il guardrail che la passata sulla nota di sessione ha già rifiutato, e
+rifiutarlo di nuovo è coerenza, non pigrizia.
+
+##### La nota di sessione tornava sovrascrivibile, sul ramo d'errore
+
+`loadState` non comprendeva `noteQuery` e il suo `isError` non era reso da nessuna
+parte. Su lettura fallita `stored` restava `undefined`, la bozza cadeva su
+`EMPTY_DRAFT`, e il dialogo si apriva **in bianco su una seduta che la nota ce
+l'ha** — l'etichetta diceva "Nota" — con "Salva nota" premibile. **Un guasto di
+rete diventava una cancellazione**, sull'unica scrittura del dominio che M2 esisteva
+per dimostrare, e sul difetto che il commento sopra quella query dichiara chiuso.
+
+Ora il dialogo rende l'errore **al posto del modulo**, e non è severità: tre campi
+vuoti accanto a "non è stato possibile leggere la nota" si leggono comunque come una
+nota vuota, che è precisamente l'equivoco da cui nasce la sovrascrittura. Il
+salvataggio ha una terza condizione, `note.state !== "ready"`, che sorveglia
+l'**attesa**.
+
+**Il corpo non si sospende, ed è una decisione già presa**: sospenderlo toccherebbe
+anche le 55 sedute senza nota, dove il modulo vuoto è la resa giusta — è il tranello
+che la passata del 15.08.2026 aveva già visto e scartato. A non essere disponibile
+è il salvataggio, non la schermata.
+
+##### Tre stati limite, e uno era un pulsante che non faceva niente
+
+- **Il pulsante "Avvia"** delle sedute in programma non aveva `onClick`: l'unico
+  controllo attivo dell'applicazione che non faceva nulla, su 18 righe, nella prima
+  scheda che si apre entrando nel portale. Passa al registro del pulsante del
+  check-up — **disabilitato, con il motivo nell'etichetta** — perché toglierlo
+  avrebbe lasciato la seduta in programma senza esito visibile. La chiave `start`
+  esce dai quattro dizionari con lui: una stringa che nessuno legge è codice che il
+  §11 non vuole.
+- **Il check rapido spariva in silenzio.** `isError` era scartato e `undefined`
+  faceva `return null`, quindi una lettura fallita **toglieva la card dalla home**
+  senza che niente lo dicesse — ed è la card su cui poggia la risposta a *"da dove
+  vengono i numeri di stress?"*. L'errore resta **dentro la card** e non al posto
+  della pagina: appuntamenti e contatori sono arrivati benissimo.
+- **Il referto del check-up non si apriva da tastiera.** Era un `div` con `onClick`,
+  senza `role`, `tabIndex` né gestione dei tasti, ed era **l'unico modo** di aprire
+  quel dialogo, mentre M5.a dichiara il percorso del pitch percorribile da sola
+  tastiera. Ora è un `<button>` vero, che porta fuoco, `Enter` e `Spazio` senza che
+  nessuno li riscriva. Nello stesso dialogo il corpo usciva solo su `report &&`:
+  con `?empty=getCheckupReport` si apriva **un riquadro con il solo titolo**, e il
+  vuoto ora ha il suo ramo.
+
+##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato prima di ogni misura
+
+- **27 schermate percorse**, zero vuote, **zero stati d'errore raggiungibili**,
+  nessun overflow orizzontale, console senza errori;
+- **`?fail=getSessionNote` sulla prima visita di L.B., che la nota ce l'ha**: il
+  dialogo dice *"Nota non disponibile — La nota di questa seduta non è stata letta.
+  Salvare adesso la sovrascriverebbe."*, **zero textarea e nessun pulsante di
+  salvataggio**. Senza manopola gli stessi tre campi tornano pieni e "Salva nota" è
+  premibile; con `:1` il "Riprova" **riesce davvero** e i tre campi si riempiono;
+- **8 "Nota" e 55 "Aggiungi nota"** fra le 63 erogate, cioè il rapporto del
+  15.08.2026 invariato;
+- **`?fail=getRapidCheckAnswer`**: la card mostra l'errore al posto dei cinque
+  volti, e il resto della home resta intero — 78/100, i tre appuntamenti, `3 su 10
+  sessioni usate · 3 in programma`. Con `:2` il "Riprova" riporta i cinque volti;
+- **`?empty=getCheckupReport`**: il dialogo dice *"Per questo check-up non c'è un
+  referto da mostrare."* invece del solo titolo;
+- **la card del referto è un `<button type="button">`**, `tabIndex` 0, nome
+  accessibile dal testo che contiene, `:focus-visible` che aggancia e anello a
+  `rgb(17,57,90)` — `primary`, **11.95:1** sulla banda — con raggio `12px`, cioè
+  quello della `Card` che avvolge;
+- **`/admin/utenti`**: sei intestazioni e **nessuna colonna del punteggio**;
+  `profilo salute medio 73` con sottotitolo *"su tutti i clienti in portafoglio"*,
+  `con assessment 6` sulle sette righe, `utenti iscritti 415` fermo;
+- **i 18 pulsanti video sono `disabled`**, fuori dall'ordine di tabulazione, 265px
+  di etichetta in una riga da 945 e nessun overflow;
+- **la prova sopra cap regge sul nome nuovo**: `I.G. · 12 sedute erogate · 10
+  incluse + 2 a CHF 28`, e l'estratto HR la dà in Vendite;
+- **i numeri del pitch fermi**: CHF 14'200, 16 giorni, 68%, 82 iscritti su 120, 41
+  attivi, 142 di 1'200, 62%, soglia 12, −2 punti, 2.35:1, 78/100, 3 su 10 · 3 in
+  programma, 1 su 4, 6 pazienti attivi, 63 erogate su 82, 14 sedute, CHF 80, CHF
+  1'120, CHF 5'040, CHF 652'968, 415 e 798;
+- `lint`, `typecheck`, `build` e `build:demo` a posto; guardrail **106 = 99 + 7**.
+
+##### Due cose sullo strumento, e la seconda è nuova
+
+**Radix non risponde a `element.click()` in questo pannello.** Le schede di
+`ProSessioni` non cambiavano né col clic sintetico né con il clic reale sul
+riferimento, e il tasto freccia non muoveva il fuoco. Rispondono a una **sequenza di
+eventi puntatore completa** — `pointerdown`, `mousedown`, `pointerup`, `mouseup`,
+`click` — perché è il `pointerdown` che ascoltano, non il `click`. È la strada con
+cui sono state prese tutte le asserzioni sui dialoghi di questa passata, e vale la
+pena saperlo prima della prossima: senza, l'unica lettura possibile è *"la scheda
+non cambia"*, che si legge come un difetto della pagina.
+
+**Una scheda è diventata cieca a metà sessione**, `innerWidth` a **0** e
+`read_page` che riportava *"viewport 0x0"*: la trappola del §11 esatta, e le misure
+prese lì sarebbero state di un'altra pagina. Le verifiche sono state rifatte su una
+scheda nuova. È la seconda volta che questo file la registra in due giorni, dopo la
+passata sul footer — **non è un caso raro, è il modo normale in cui questo pannello
+invecchia**, e il controllo di `innerWidth` prima di ogni misura è la sola difesa.
+
+##### Aperto e dichiarato
+
+- **Il quarto confronto del guardrail — il ruolo — è una scelta di questa passata**,
+  non del perimetro chiesto, e va ratificata o tolta. Se i founder decidessero che
+  la referente HR può comparire nell'estratto dei dipendenti della propria azienda —
+  cosa vera nella realtà, e che qui produrrebbe un percorso di cura accanto a un
+  nome in chiaro — quel confronto va sostituito con un reparto sul back-office, che
+  oggi non c'è.
+- **Il 73 non è nel §8.** È dichiarato in `platform.ts` con il suo commento, e
+  finché non entra nella costituzione è una cifra del dataset che il §2.4 non
+  copre: era vero anche dei sette punteggi che sostituisce, ed è il momento giusto
+  per chiuderlo perché adesso è **una** riga.
+- **L'attivazione da tastiera del pulsante referto resta sulla parola dello
+  standard.** `Enter` sintetico non riproduce l'azione di default — è la stessa cosa
+  annotata da M5.c per l'invio del form — quindi ciò che è misurato è che
+  l'elemento è un `<button>` focalizzabile con l'anello visibile, non il tasto che
+  apre il dialogo.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

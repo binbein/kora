@@ -378,6 +378,7 @@ export const fr: Dictionary = {
 
       report: {
         title: "Rapport du {date}",
+        empty: "Aucun rapport à afficher pour ce bilan de santé.",
         measurement: {
           blood_pressure: "Tension",
           cholesterol: "Cholestérol",
@@ -512,7 +513,7 @@ export const fr: Dictionary = {
       upcoming: "Prévues ({n})",
       completed: "Effectuées ({n})",
       cancelled: "Annulées ({n})",
-      start: "Démarrer",
+      startUnavailable: "Visioconférence inactive dans cette démo",
       addNote: "Ajouter une note",
       editNote: "Note",
       emptyUpcoming: "Aucune séance prévue.",
@@ -531,6 +532,10 @@ export const fr: Dictionary = {
         error: {
           title: "Note non enregistrée",
           body: "Le texte est encore là : réessayez.",
+        },
+                loadError: {
+          title: "Note indisponible",
+          body: "La note de cette séance n'a pas pu être chargée. L'enregistrer maintenant l'écraserait.",
         },
         saved: "Note enregistrée",
         privacy:
@@ -1188,7 +1193,6 @@ export const fr: Dictionary = {
       colEmail: "E-mail",
       colCompany: "Entreprise",
       colRole: "Rôle",
-      colScore: "Profil santé",
       colStatus: "Statut",
       colJoined: "Inscrit",
 

@@ -150,11 +150,26 @@ export default function Checkup() {
         </p>
       </div>
 
+      {/*
+        * È UN `<button>` E NON UNA CARD CON `onClick` (16.08.2026).
+        *
+        * Era un `div` con un gestore del clic, senza `role`, senza `tabIndex` e
+        * senza tastiera: l'unico modo di aprire il referto era il puntatore, e
+        * il §11 vuole il percorso del pitch percorribile da sola tastiera.
+        * L'elemento vero porta con sé fuoco, `Enter` e `Spazio` senza che
+        * nessuno li riscriva, e il nome accessibile è il testo che contiene.
+        *
+        * Il raggio del fuoco è quello della `Card` che avvolge — `rounded-xl` —
+        * perché un anello squadrato attorno a una scheda arrotondata si vede
+        * come un difetto.
+        */}
       {lastCompleted && (
-        <Card
-          className="p-5 bg-accent/40 border-secondary/20 cursor-pointer hover:shadow-md transition-shadow"
+        <button
+          type="button"
           onClick={() => setReportOpen(true)}
+          className="block w-full text-left rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
+        <Card className="p-5 bg-accent/40 border-secondary/20 cursor-pointer hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-secondary/10 rounded-xl">
               <ClipboardCheck className="w-5 h-5 text-secondary" aria-hidden="true" />
@@ -175,6 +190,7 @@ export default function Checkup() {
             </div>
           </div>
         </Card>
+        </button>
       )}
 
       {eligibility.availableFrom && (
@@ -228,6 +244,18 @@ export default function Checkup() {
               copy={t.employee.state.error}
               onRetry={() => reportQuery.refetch()}
             />
+          )}
+          {/*
+            * IL REFERTO ASSENTE È UN CASO, NON UN DIALOGO VUOTO (16.08.2026).
+            *
+            * `getCheckupReport` è nullable per contratto — un check-up fatto
+            * può non avere ancora il suo referto — e finora il `null` non aveva
+            * un ramo: il dialogo si apriva con il solo titolo, cioè con un
+            * riquadro senza niente dentro. `undefined` resta senza resa, che è
+            * l'attesa e dura un fotogramma.
+            */}
+          {!reportQuery.isError && report === null && (
+            <EmptyNotice text={t.employee.checkup.report.empty} />
           )}
           {report && (
             <div className="space-y-3">

@@ -373,6 +373,7 @@ export const en: Dictionary = {
 
       report: {
         title: "Report of {date}",
+        empty: "There is no report to show for this check-up.",
         measurement: {
           blood_pressure: "Blood pressure",
           cholesterol: "Cholesterol",
@@ -505,7 +506,7 @@ export const en: Dictionary = {
       upcoming: "Scheduled ({n})",
       completed: "Delivered ({n})",
       cancelled: "Cancelled ({n})",
-      start: "Start",
+      startUnavailable: "Video call not active in this demo",
       addNote: "Add note",
       editNote: "Note",
       emptyUpcoming: "No session scheduled.",
@@ -524,6 +525,10 @@ export const en: Dictionary = {
         error: {
           title: "Note not saved",
           body: "The text is still here: try again.",
+        },
+                loadError: {
+          title: "Note unavailable",
+          body: "The note for this session did not load. Saving now would overwrite it.",
         },
         saved: "Note saved",
         privacy:
@@ -1174,7 +1179,6 @@ export const en: Dictionary = {
       colEmail: "Email",
       colCompany: "Company",
       colRole: "Role",
-      colScore: "Health profile",
       colStatus: "Status",
       colJoined: "Joined",
 
