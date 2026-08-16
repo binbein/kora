@@ -67,6 +67,21 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      nei componenti). Aggiungere una lingua domani = aggiungere un file con le
      stesse chiavi. **Retrofittare l'i18n su ventisei schermate dopo costa dieci volte
      tanto: si fa mentre si tocca ogni schermata, non alla fine.**
+
+     **Quante sono, e con quale criterio** — perché è il quarto conteggio di
+     questo repository e nasce già con la regola accanto, come i call site del
+     §5.6, i `.jsx` del §3 e le rotte del §10. Si contano le **chiavi foglia di
+     tipo stringa** di un dizionario, **tolti prima i commenti**: la prosa che
+     nomina una chiave non è una chiave, ed è la trappola che fa uscire un
+     numero diverso a ogni rilettura. Oggi sono **731**, uguali in tutti e
+     quattro i file (16.08.2026) — e che siano uguali non è una misura ma una
+     garanzia del tipo `Translated<Dictionary>`, che non compila se una manca.
+
+     **Il 663 dei verbali di M5.e non era invecchiato: era sbagliato quando è
+     stato scritto.** Misurato su `de.ts` al merge della sua tranche, le chiavi
+     erano già ~721. I verbali non si riscrivono — sono resoconti datati — e a
+     chiudere la famiglia «due conteggi dello stesso oggetto senza criterio» è
+     questa riga, che è l'unico punto che le conta.
    - **Mai concatenare stringhe per comporre frasi** (l'ordine delle parole cambia
      tra lingue). Sempre frasi complete con segnaposto:
      `"Hai usato {n} delle tue {max} sessioni"`, mai `"Hai usato " + n + ...`.
