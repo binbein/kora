@@ -162,10 +162,21 @@ export default function Checkup() {
         * Il raggio del fuoco è quello della `Card` che avvolge — `rounded-xl` —
         * perché un anello squadrato attorno a una scheda arrotondata si vede
         * come un difetto.
+        *
+        * L'`aria-label` È ESPLICITO, ed è l'eccezione alla regola che
+        * `RapidCheckCard` enuncia — lì il testo dentro il pulsante è il suo nome
+        * e sovrascriverlo sarebbe un difetto. Qui il pulsante avvolge una
+        * `Card`, cioè *flow content*, che il modello di contenuto di `button`
+        * non ammette: funziona in ogni browser di oggi, e nondimeno è
+        * esattamente ciò che rende fragile un nome calcolato dal contenuto. Il
+        * testo dell'etichetta **non contraddice quello visibile** — la card
+        * dice già "tocca per vederlo" — quindi non apre lo scarto fra chi legge
+        * e chi ascolta che quella regola esiste per impedire.
         */}
       {lastCompleted && (
         <button
           type="button"
+          aria-label={t.employee.checkup.openReport}
           onClick={() => setReportOpen(true)}
           className="block w-full text-left rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >

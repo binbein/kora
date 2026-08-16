@@ -485,11 +485,19 @@ si legge come un punteggio pessimo. Sta su questa serie e non su una entità sua
 per la regola di questo paragrafo: una seconda entità con la stessa cadenza è
 una seconda cosa che può divergere.
 
-**Tutti i campi di `PlatformMonth` contano lo stesso insieme: i clienti
-presenti in quel mese _e_ avviati.** Ricavo, dipendenti coperti, iscritti e
-sedute rispondono allo stesso predicato, e un contratto firmato e non partito
-non entra in nessuno dei quattro — è `ClientCompany.active` applicato una volta
-sola.
+**Tutti i campi *sommatori* di `PlatformMonth` contano lo stesso insieme: i
+clienti presenti in quel mese _e_ avviati.** Ricavo, dipendenti coperti,
+iscritti e sedute rispondono allo stesso predicato, e un contratto firmato e non
+partito non entra in nessuno dei quattro — è `ClientCompany.active` applicato una
+volta sola.
+
+**`averageHealthScore` non è uno di quei quattro, e la qualifica serve** (data:
+16.08.2026, insieme al campo). È una **media**, non una somma: dal predicato
+dipende la sua **presenza** — `null` quando l'insieme è vuoto, perché senza
+iscritti non c'è nessun assessment — mentre il **valore** non è additivo e non si
+ricava sommando i clienti del mese. Sommarlo come gli altri quattro darebbe un
+numero senza significato, ed è la ragione per cui questa riga dice ora "campi
+sommatori" invece di "tutti i campi".
 
 Non è pignoleria: iscritti e coperti sono il numeratore e il denominatore
 dell'attivazione, quindi **contare due insiemi diversi ammette un'attivazione
@@ -741,6 +749,15 @@ invece di restare assunzioni implicite:
   schermata lo dichiara invece di far credere che l'azienda abbia otto persone, e
   l'intestazione conta l'azienda e non la tabella: in produzione
   `getEmployeeDirectory` prenderà una pagina e un filtro.
+- **Le tre liste di persone si uniscono per iniziali, e nessuna persona compare
+  con due ruoli.** L'estratto dell'HR, l'agenda della professionista e gli utenti
+  del back-office non condividono un id: le iniziali sono l'unica chiave, quindi
+  il dataset è costruito perché chi ha un ruolo diverso da `employee` non compaia
+  negli altri due elenchi, e un guardrail lo verifica. **Non è una regola del
+  dominio**: una referente HR è una dipendente, può stare nell'elenco della
+  propria azienda e può essere in cura. In produzione le liste si uniscono per id
+  vero, le iniziali tornano a essere una resa e il vincolo sparisce insieme al
+  guardrail che lo sorveglia.
 - **Il punteggio medio del profilo salute è costante sulla finestra.**
   `PlatformMonth.averageHealthScore` sta su una serie mensile perché in
   produzione il backend lo calcolerà mese per mese dalle risposte vere, mentre
@@ -1081,8 +1098,14 @@ Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
 - **Una sola sede per azienda, e nessuna sede sul reparto.** Un'azienda svizzera
   con sedi in più cantoni è il caso che rende utili le quattro lingue.
 - **Nessuna lingua sul profilo del dipendente**, mentre il professionista ha le
-  sue e `getProfessionals` espone già un filtro che nessuno chiama. Chi prenota
-  non può quindi cercare chi parla la sua lingua, che è il primo filtro vero.
+  sue. Chi prenota non può quindi cercare chi parla la sua lingua, che è il primo
+  filtro vero. *(Fino al 16.08.2026 questa riga aggiungeva che «`getProfessionals`
+  espone già un filtro che nessuno chiama»: quel parametro **è stato tolto**, e la
+  ragione è la stessa che rende vero il resto della frase — un filtro per lingua
+  non è costruibile da un lato che la lingua non ce l'ha. La chiave di cache di
+  quella lettura è costante, quindi il primo chiamante che avesse passato un
+  filtro avrebbe letto la risposta di un'altra domanda: il giorno in cui il filtro
+  serve, torna **insieme alla sua chiave**.)*
 - **Email obbligatoria**, quindi nessun canale per chi non ha una casella
   aziendale — in un'azienda di produzione è una parte grossa dell'organico, ed è
   la stessa popolazione che il link anonimo del check rapido dovrebbe raggiungere.

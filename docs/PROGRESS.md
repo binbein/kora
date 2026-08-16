@@ -102,7 +102,8 @@ stanno in `docs/` dal 07.08.2026 (decisione qui sotto), ma restano una fonte da
 consultare: le cifre ammesse sono solo quelle trascritte in `CLAUDE.md` §8 e §9.
 
 **M4 è chiusa**: da `/hr/report` si scarica un PDF di una pagina per il
-trimestre scelto. Da lì il lavoro è **refinement fra le milestone** — passate
+trimestre scelto — e da **16.08.2026 quella pagina è verificata**, non promessa:
+prima il controllo restituiva un numero che valeva sempre uno. Da lì il lavoro è **refinement fra le milestone** — passate
 che non aggiungono schermate e mettono in ordine layer dati, seam e dizionario;
 la sintesi sta nella sezione dedicata, sotto M4. **La prossima milestone è M5.**
 
@@ -2034,7 +2035,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Venticinque passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Ventisei passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2043,8 +2044,9 @@ quella francese di M5.e, le quattro della **revisione del 15.08.2026** — #43 e
 contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
 `README.md`, il residuo della nota di sessione, gli slot sovrapposti e i periodi
 non dichiarati, i fatti corretti nei documenti, il perimetro e le promesse in
-sospeso, il footer fuori dalla demo, i terzi e la simmetria del footer, e
-**questa passata**, l'identità collisa e gli stati limite. Non
+sospeso, il footer fuori dalla demo, i terzi e la simmetria del footer,
+l'identità collisa e gli stati limite, e **questa passata**, le simmetrie e le
+verifiche vere — che è **l'ultima**: da qui la demo è congelata. Non
 aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
 seam e del dizionario. **Quelle che hanno una sottosezione loro sono le
@@ -3150,6 +3152,16 @@ gemello statico sugli slot proponibili e il controllo sull'agenda del paziente i
 succede mentre qualcuno prenota, e nessuno dei due copre l'altro — la nota sulla
 durata qui sopra dice esattamente dove il primo non arriva.
 
+> **La ripartizione si muove qui, ed è la riga che mancava** (aggiunta il
+> 16.08.2026). Dei due, quello in `bookAppointment` è **una chiamata lunga** —
+> `assertInDevOutsidePromise`, perché sta dentro un metodo `async` e il lancio
+> deve uscire dallo stack corrente — quindi il conto passa da `93 + 6` a
+> **`95 + 7`**: è la prima volta che il secondo addendo si muove da quando
+> esiste. Questo file si fermava al `93 + 6` della passata precedente e la
+> ripartizione corrente viveva solo nel `CLAUDE.md` §5.6, che è dove il criterio
+> sta di casa — e resta lì. Questa riga non apre un secondo elenco: dice **dove**
+> il settimo è nato, che è l'unica cosa che il §5.6 non può dire.
+
 ##### Verificato
 
 **Il punto 1 provato nei due versi, sullo stesso codice:**
@@ -3844,6 +3856,218 @@ invecchia**, e il controllo di `innerWidth` prima di ogni misura è la sola dife
   annotata da M5.c per l'invio del form — quindi ciò che è misurato è che
   l'elemento è un `<button>` focalizzabile con l'anello visibile, non il tasto che
   apre il dialogo.
+
+#### Simmetrie e verifiche vere — l'ultima passata sulla demo (16.08.2026)
+
+**Quattordici commit: otto di codice — `fix:` ×8 — e sei di documenti.** Totale e
+ripartizione dalla stessa misura, `git log --format='%s' master..HEAD`; il numero
+è `n + 1` perché il commit di chiusura conta sé stesso. **Nessun numero del §8 e
+del §9 si muove.**
+
+**Con questa passata la demo è congelata**: il lavoro successivo è il perimetro
+dell'MVP (`docs/CONTRATTO-DATI.md` §8, dieci gruppi) e le decisioni in sospeso di
+questo file, che hanno una definizione di finito. Non ci sono altre passate di
+refinement.
+
+Comprende la **chiusura della passata precedente** — quattro punti che la review
+di quella PR aveva sollevato — e sette difetti nuovi. Il filo che tiene insieme
+la parte grossa: **un controllo che dichiara più di quanto verifica**, in cinque
+forme diverse.
+
+##### La chiusura della passata precedente
+
+**Il guardrail sulle identità diceva una cosa falsa del dominio.** Il confronto
+sul ruolo affermava che il back-office stava esponendo il percorso di cura di chi
+dipendente non è: **una referente HR è una dipendente**, può stare nell'estratto
+della propria azienda e può essere in cura — il prodotto ha bisogno che sia
+possibile. Il controllo non è cambiato di una riga; è cambiato ciò che dichiara.
+Quello che è vero e verificabile è più modesto: **in questo dataset chi ha un
+ruolo non-`employee` non compare negli altri due elenchi**, perché le iniziali
+sono l'unica chiave che li unisce. È una regola del dataset demo, ed è entrata
+fra le semplificazioni del §7 del contratto: in produzione le liste si uniscono
+per id vero e il vincolo sparisce insieme al guardrail.
+
+**Il pulsante del referto ha un `aria-label` esplicito.** Avvolge una `Card`,
+cioè *flow content*, che il modello di contenuto di `button` non ammette:
+funziona in ogni browser di oggi ed è esattamente ciò che rende fragile un nome
+calcolato dal contenuto. È l'eccezione dichiarata alla regola di
+`RapidCheckCard`, e il testo **non contraddice quello visibile** — la card dice
+già "tocca per vederlo" — quindi non apre lo scarto fra chi legge e chi ascolta
+che quella regola esiste per impedire.
+
+**«Tutti i campi di `PlatformMonth` contano lo stesso insieme» è diventato
+«tutti i campi sommatori».** Con `averageHealthScore` dal predicato dipende la
+**presenza** — `null` se non c'è nessun iscritto — e non il **valore**: è una
+media, e sommarla sui clienti del mese darebbe un numero che non vuol dire
+niente. Stessa forma della correzione tre paragrafi sopra, e stessa data.
+
+**`fr.ts` dichiarava una regola tipografica che non ha mai seguito.** La testata
+prometteva lo spazio unificatore U+00A0 davanti a `:` e `?`; nel file gli U+00A0
+erano **zero**, **compresi i due esempi che la testata portava a modello**.
+**Il conto, con il criterio**: si contano le occorrenze dentro i letterali di
+stringa, cioè ciò che va a schermo, non la prosa dei commenti che li nomina —
+**35**, 25 e 10. Un conteggio sul file intero si sposta ogni volta che qualcuno
+tocca un commento, ed è il numero senza criterio che il §5.6 esiste per non
+produrre.
+
+**Delle due strade è stata tolta la dichiarazione, non applicata la regola**, e
+le ragioni sono scritte nella testata perché la prossima passata non le rifaccia:
+**quale** carattere è precisamente ciò che decide un revisore madrelingua — la
+forma stretta vuole U+202F davanti a `; : ! ?`, quella corrente ammette U+00A0
+davanti ai due punti; sarebbe **il quinto carattere invisibile** di questo
+codice, che è ciò che il `CLAUDE.md` §2.7 ha rifiutato per il separatore delle
+migliaia; e **il momento in cui la spazzata pagherebbe non arriva prima della
+revisione**, il cui innesco è una presentazione non in italiano che
+`docs/PITCH.md` dichiara di non fare. Chi arriva prima non è un lettore
+francese: è chi apre il file e legge una promessa che il file non mantiene.
+
+##### Gli slot: tre confronti su cinque guardavano l'istante
+
+`getAvailableSlots`, il primo controllo di `bookAppointment` e il guardrail
+statico sull'agenda del portale confrontavano **il solo istante di inizio**,
+mentre il gemello di `scheduling.ts` e il terzo controllo della prenotazione
+confrontavano intervalli — la correzione del 15.08.2026 fatta su un lato e
+lasciata asimmetrica sull'altro. Uno slot che invade a metà una seduta già presa
+veniva **offerto** e poi **accettato**.
+
+**Una primitiva sola, cinque chiamanti**, e sta in `lib/dates.ts` e non in
+`mock/`: la regola non è del dataset finto, è del dominio, e sopravvive alla
+cancellazione di `mock/` (§5.7). Estremi esclusi — una che finisce alle 17:30 e
+una che comincia alle 17:30 si toccano, non si sovrappongono.
+
+**La trappola a verbale è chiusa, ed è un controllo nuovo.** Il gemello statico
+confronta gli slot **fra loro** e non può vedere uno slot che cade su una seduta
+già in agenda del paziente: il caso più stretto è Fontana del giovedì contro la
+seduta di Laura delle 17:30. Ora un secondo guardrail confronta **ogni slot
+proponibile con le sedute che il dipendente ha già**, con qualunque
+professionista, e gira all'inizializzazione — cioè il giorno in cui qualcuno
+tocca `SESSION_DURATION_MINUTES` e non prenota niente.
+
+**Provato in isolamento**, che è il modo di distinguere i due controlli: portando
+la durata a 61 parla per primo il gemello di `scheduling.ts`, quindi il caso
+nuovo non si vedrebbe. Spostando invece lo slot Fontana alle 17:00 — una fascia
+che non collide con nessun altro slot ma invade la seduta di Laura — parla **solo
+il controllo nuovo**, con la data e il professionista giusti. È la prova che i
+due non si coprono a vicenda.
+
+##### "Una pagina sola" non era verificata da niente
+
+`downloadReportPdf` restituiva `doc.getNumberOfPages()` dopo un `addImage` solo:
+vale **sempre 1**, qualunque cosa sia stata disegnata. Il §10.C.3 chiedeva una
+pagina e nessuno lo verificava; il chiamante ignorava quel numero, **a ragione**.
+E il caso vero non era controllato: un contenuto più alto del foglio veniva
+disegnato oltre il bordo e **ritagliato in silenzio**.
+
+Ora l'altezza disegnata si confronta con quella utile — 785.89 pt — e chi non ci
+sta **non viene salvato**: il guardrail dice di quanto si sfora, e il lancio
+copre anche la build silenziosa, dove un file che arriva sembra un successo. Il
+ritorno tautologico è sparito: **lo "qualcosa" del chiamante è uno stato**, non
+un numero su cui nessuno ramificava.
+
+**Misurato in tutte e quattro le lingue**: 546.8 pt in italiano, francese e
+inglese, **560.3 in tedesco** — che è la più alta — su 785.89 disponibili. Il
+margine più stretto è di 225.6 pt.
+
+##### Tre scritture dello stesso fatto, e un metodo che rispondeva a un'altra domanda
+
+**`SAVINGS_PER_ACTIVE` era `14200 / 41`**, e quel 41 stava nel primo seme tre
+righe sopra mentre i CHF 14'200 stavano anche in `toSnapshot`. Cambiando gli
+attivi del trimestre corrente, i tre precedenti sarebbero stati scalati con un
+tasso vecchio, e **nessun guardrail se ne sarebbe accorto**: gli importi che ne
+escono sono plausibili e crescono come devono. Era l'unico punto del dataset in
+cui il §5.5 era violato su un numero d'ancoraggio. Il divisore viene dal seme,
+l'ancoraggio resta scritto una volta, e i quattro importi non si muovono —
+14'200 / 11'800 / 9'400 / 6'200, 16 / 13 / 10 / 7 giorni.
+
+**`monthlyEarnings` accetta un mese e calcolava il regime da `DEMO_TODAY`**:
+chiedendo i compensi di un mese passato si otteneva il regime di oggi.
+Invisibile, perché `ProPagamenti` chiede solo il mese corrente — e nondimeno un
+metodo del contratto che risponde male a una domanda che accetta. La finestra è
+ora ancorata al mese chiesto, e sul mese corrente la risposta non cambia: `Tieni
+5 sedute a settimana`.
+
+##### La chiave non codificava la domanda, e il parametro è uscito
+
+`getProfessionals` prendeva un `ProfessionalFilter` su specialità e lingua che
+**nessuno dei quattro consumatori passava**, mentre la lettura sta su
+`queryKeys.professional.all()`, che è costante: il primo chiamante con un filtro
+avrebbe letto la risposta di un'altra domanda.
+
+**Fra codificare il filtro nella chiave e togliere il parametro è uscito il
+parametro**, per tre ragioni: il §11 non vuole opzioni che nessuno passa; **il
+filtro che serve non è quello** — chi prenota filtra per prenotabilità e tipo di
+servizio; e il vuoto vero, che il §8 del contratto già nomina, è che **il
+dipendente non ha una lingua**, quindi nessun filtro per lingua è costruibile da
+questo lato. Il giorno in cui ce l'ha, il parametro torna **insieme alla sua
+chiave**. Il §8.8 è stato aggiornato: citava quel filtro come già esposto.
+
+##### Due numeri che non dicevano di cosa parlavano
+
+**L'asse dei ricavi era in migliaia senza unità**: leggeva `0 15 30 45 60` sotto
+un titolo che dice "ricavo ricorrente mensile", accanto a una KPI che dice CHF
+54'414 — due numeri sullo stesso fatto a due ordini di grandezza di distanza. In
+più `formatNumber` non ha decimali, quindi un tick a 6'600 usciva **"7"**.
+Rendere l'importo intero non chiede una stringa nuova e fa combaciare l'asse con
+la KPI e con il tooltip: ora legge `0 15'000 30'000 45'000 60'000`.
+
+**"Check-up prenotati · sui dodici mesi" sommava tutta la piattaforma** (212)
+mentre la dashboard HR ne mostra 51 per la sola Demo SA, e l'etichetta non lo
+diceva. Ora dice "di piattaforma", che è la disciplina già adottata per le tre
+accezioni di "sedute".
+
+##### I fatti corretti nei documenti, con una regola diversa per ognuno
+
+| | dove | rimedio |
+|---|---|---|
+| `react-router-dom 6` | `CLAUDE.md` §3 | **7**, con la data: invecchiata dal 12.08.2026, nella sezione che ogni sessione legge per prima |
+| `663 chiavi` | `placeholders.ts` | **731**, che è sorgente e si corregge al valore misurato |
+| `663 chiavi` | verbali M5.e | **non riscritti**: sono resoconti datati. Il 663 **non era invecchiato, era sbagliato quando è stato scritto** — al merge della tranche tedesca le chiavi erano già ~721 |
+| il criterio delle chiavi | `CLAUDE.md` §2.7 | **scritto**: chiavi foglia di tipo stringa, **tolti prima i commenti**, ed è l'unico punto che le conta |
+| il settimo `assertInDevOutsidePromise` | questo file, PR #49 | **la sua riga**, dove è nato: il controllo sull'agenda del paziente, lungo perché sta in un metodo `async` |
+
+**Il criterio delle chiavi è il quarto conteggio di questo repository a nascere
+con la regola accanto**, dopo i call site del §5.6, i `.jsx` del §3 e le rotte
+del §10 — ed è quello che chiude la famiglia «due conteggi dello stesso oggetto
+senza criterio». La trappola qui è che **la prosa che nomina una chiave non è una
+chiave**: contando senza togliere i commenti `it.ts` dà 732 e gli altri tre 731,
+cioè una differenza che non esiste.
+
+##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato
+
+- **27 schermate percorse**, zero vuote, zero stati d'errore raggiungibili,
+  **zero overflow orizzontale**, console senza errori;
+- **il giro del marketplace regge la riscrittura dei confronti**: prenotata la
+  Dr.ssa Meier venerdì 25.09 alle 10:00, la conferma lo dice, la home passa da 3
+  a **4 in programma** con `used` fermo a 3, e la seduta compare nel calendario
+  della professionista;
+- **il dialogo di prenotazione offre gli slot giusti**: Meier il venerdì propone
+  **solo le 10:00**, cioè la fascia del pitch;
+- **i due controlli sugli slot provati in isolamento** (tabella sopra);
+- **il PDF sta in una pagina in tutte e quattro le lingue**: 546.8 / 560.3 /
+  546.8 / 546.8 pt su 785.89, e con il foglio ridotto ad arte il pulsante mostra
+  *"Il PDF non è stato creato"* invece di scaricare un documento tagliato;
+- **l'asse dei ricavi**: `0 15'000 30'000 45'000 60'000`, nessun overflow;
+- **la KPI dei check-up dice il suo perimetro in tutte e quattro le lingue**,
+  ognuna su una riga e senza overflow;
+- **il pulsante della videochiamata nelle quattro lingue**: 265 / 269 / 294 / 243
+  px in una riga da 945, il francese è il più largo;
+- **l'`aria-label` del referto** è `Apri il tuo ultimo referto`;
+- **i numeri del pitch fermi**: CHF 14'200, 16 giorni, 68%, 82 su 120, 41 attivi,
+  142 di 1'200, 62%, soglia 12, −2 punti, 2.35:1, 78/100, 3 su 10 · 3 in
+  programma, 1 su 4, 6 pazienti attivi, `I.G. · 12 sedute · 10 incluse + 2 a CHF
+  28`, 63 erogate su 82, CHF 1'120, CHF 5'040, CHF 652'968, 415 su 798;
+- `lint`, `typecheck`, `build` e `build:demo` a posto; guardrail **108 = 100 + 8**,
+  con tutte e quattro le occorrenze del §5.6 mosse insieme.
+
+##### Una cosa sullo strumento, e vale per chi verificherà l'MVP
+
+**Radix non risponde a `element.click()` in questo pannello**, e nemmeno al clic
+reale sul riferimento: schede, dialoghi e popover restano fermi, e la lettura
+naturale è *"la schermata non funziona"*. Rispondono a una **sequenza di eventi
+puntatore completa** — `pointerdown`, `mousedown`, `pointerup`, `mouseup`,
+`click` — perché ascoltano il `pointerdown`. È la strada con cui sono state prese
+tutte le asserzioni sui dialoghi di questa passata e della precedente, ed è la
+prima volta che questo file la scrive per esteso.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

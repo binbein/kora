@@ -1,3 +1,4 @@
+import { overlaps } from "../../dates";
 import { assertInDev } from "../guardrails";
 import type { AppointmentSlot } from "../types";
 import { DEMO_TODAY } from "./demo-date";
@@ -103,11 +104,14 @@ for (const slot of INITIAL_SLOTS) {
  * ricalcolare a mente le sedici fasce.
  */
 for (const [index, slot] of INITIAL_SLOTS.entries()) {
-  const endsAt = slot.start.getTime() + slot.durationMinutes * 60_000;
   for (const other of INITIAL_SLOTS.slice(index + 1)) {
-    const otherEndsAt = other.start.getTime() + other.durationMinutes * 60_000;
     assertInDev(
-      slot.start.getTime() >= otherEndsAt || other.start.getTime() >= endsAt,
+      !overlaps(
+        slot.start,
+        slot.durationMinutes,
+        other.start,
+        other.durationMinutes,
+      ),
       `Gli slot di ${slot.professionalId} e ${other.professionalId} si sovrappongono: chi prenota è la stessa persona e non può fare entrambe le sedute.`,
     );
   }

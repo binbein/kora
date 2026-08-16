@@ -183,9 +183,26 @@ export default function AdminAnalytics() {
                   stroke="hsl(var(--border))"
                 />
                 <XAxis dataKey="label" tick={{ fontSize: 12 }} />
+                {/*
+                  * L'ASSE PORTA L'IMPORTO INTERO, E PRIMA ERA IN MIGLIAIA SENZA
+                  * DIRLO (16.08.2026).
+                  *
+                  * Leggeva `0 15 30 45 60` sotto un titolo che dice "ricavo
+                  * ricorrente mensile", accanto a una KPI che dice CHF 54'414:
+                  * l'unità non stava da nessuna parte, e chi guardava aveva due
+                  * numeri sullo stesso fatto a due ordini di grandezza di
+                  * distanza. In più `formatNumber` non ha decimali, quindi un
+                  * tick a 6'600 usciva come "7", cioè arrotondato del 6%.
+                  *
+                  * Delle due strade — dichiarare l'unità nel titolo o rendere
+                  * l'importo intero — la seconda non chiede una stringa nuova e
+                  * fa combaciare l'asse con la KPI e con il tooltip, che sono i
+                  * due posti dove lo stesso numero compare già per esteso.
+                  */}
                 <YAxis
                   tick={{ fontSize: 12 }}
-                  tickFormatter={(value: number) => formatNumber(value / 1000)}
+                  width={64}
+                  tickFormatter={(value: number) => formatNumber(value)}
                 />
                 <Tooltip formatter={(value) => formatCHF(Number(value))} />
                 <Bar

@@ -356,6 +356,7 @@ export const en: Dictionary = {
       title: "Annual check-up",
       subtitle: "The physical check-up included in your plan.",
 
+      openReport: "Open your latest report",
       lastTitle: "Your latest report",
       lastDone: "Done on {date} · {provider}",
       lastOpen: "Tap to view it",
@@ -1251,7 +1252,7 @@ export const en: Dictionary = {
       kpiActive: "Active centres",
       kpiCities: "Cities covered",
       kpiBookings: "Check-ups booked",
-      kpiBookingsHint: "Over the twelve months",
+      kpiBookingsHint: "Platform-wide, over the twelve months",
       kpiPending: "Under agreement",
 
       colName: "Centre",

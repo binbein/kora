@@ -22,7 +22,12 @@ import { it } from "./it";
  * GIRA SOLO DOVE I GUARDRAIL PARLANO. La scansione intera è dentro il
  * confronto su `GUARDRAIL_MODE`, quindi in produzione il modo è un letterale
  * falso, il ramo è morto e il minificatore porta via funzione e messaggi: non
- * resta né il controllo né il costo di percorrere 663 chiavi.
+ * resta né il controllo né il costo di percorrere **731** chiavi.
+ *
+ * *(Diceva 663, e non era un numero invecchiato: era sbagliato quando è stato
+ * scritto — al merge della tranche tedesca le chiavi erano già ~721. Il criterio
+ * con cui si contano sta nel `CLAUDE.md` §2.7, che è l'unico punto che le conta:
+ * qui si cita, per non tenerne un secondo elenco che possa divergere.)*
  */
 
 const PLACEHOLDER = /\{(\w+)\}/g;

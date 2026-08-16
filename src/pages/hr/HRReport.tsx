@@ -239,6 +239,14 @@ export default function HRReport() {
                  * o una cattura che fallisce producevano una promise rifiutata
                  * e nessun messaggio, con il pulsante che tornava attivo come
                  * se il file fosse partito.
+                 *
+                 * DA QUI PASSA ANCHE IL REPORT CHE NON STA IN UNA PAGINA
+                 * (16.08.2026). È questo lo "stato" con cui il chiamante
+                 * risponde al controllo: prima `downloadReportPdf` restituiva
+                 * un numero di pagine sempre uguale a uno e questa schermata lo
+                 * ignorava — a ragione, perché non diceva niente. Ora il caso
+                 * che il §10.C.3 vieta arriva come rifiuto, e chi guarda vede
+                 * che il file non è stato creato invece di aprirne uno tagliato.
                  */
                 setFailed(true);
               } finally {

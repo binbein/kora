@@ -67,6 +67,21 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      nei componenti). Aggiungere una lingua domani = aggiungere un file con le
      stesse chiavi. **Retrofittare l'i18n su ventisei schermate dopo costa dieci volte
      tanto: si fa mentre si tocca ogni schermata, non alla fine.**
+
+     **Quante sono, e con quale criterio** — perché è il quarto conteggio di
+     questo repository e nasce già con la regola accanto, come i call site del
+     §5.6, i `.jsx` del §3 e le rotte del §10. Si contano le **chiavi foglia di
+     tipo stringa** di un dizionario, **tolti prima i commenti**: la prosa che
+     nomina una chiave non è una chiave, ed è la trappola che fa uscire un
+     numero diverso a ogni rilettura. Oggi sono **731**, uguali in tutti e
+     quattro i file (16.08.2026) — e che siano uguali non è una misura ma una
+     garanzia del tipo `Translated<Dictionary>`, che non compila se una manca.
+
+     **Il 663 dei verbali di M5.e non era invecchiato: era sbagliato quando è
+     stato scritto.** Misurato su `de.ts` al merge della sua tranche, le chiavi
+     erano già ~721. I verbali non si riscrivono — sono resoconti datati — e a
+     chiudere la famiglia «due conteggi dello stesso oggetto senza criterio» è
+     questa riga, che è l'unico punto che le conta.
    - **Mai concatenare stringhe per comporre frasi** (l'ordine delle parole cambia
      tra lingue). Sempre frasi complete con segnaposto:
      `"Hai usato {n} delle tue {max} sessioni"`, mai `"Hai usato " + n + ...`.
@@ -126,8 +141,15 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
 Ereditato da base44, **e non è lo stack della demo precedente**: chi arriva dal
 repository Next non dia niente per scontato.
 
-- **Vite 6 + React 18 + react-router-dom 6.** Nessun server, nessun SSR: è una SPA
+- **Vite 6 + React 18 + react-router-dom 7.** Nessun server, nessun SSR: è una SPA
   che si serve come file statici.
+
+  **Diceva 6, ed era invecchiata dal 12.08.2026**: il blocco d) di M5 ha portato
+  il router alla 7 — il major è entrato per primo e da solo, e le cinque API che
+  questo progetto usa sono immutate — mentre questa riga è rimasta a dichiarare
+  la versione precedente per quattro giorni. Corretta il 16.08.2026. È la
+  sezione che ogni sessione legge per prima, ed è il posto in cui una versione
+  sbagliata costa di più: chi la crede si prepara a un'API che non c'è.
 - **TypeScript.** Vite compila `.ts`/`.tsx` nativamente e la convivenza con il
   `.jsx` esistente è indolore. **Tutto il codice nuovo si scrive in TypeScript**;
   le pagine ereditate si convertono quando le si tocca (§10), non tutte insieme.
@@ -729,8 +751,8 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 106 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 106 posti.
+call site sono 108 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 108 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
 **Il criterio con cui i call site si contano**, perché una rilevazione futura non
@@ -738,7 +760,7 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **99 + 7 = 106** (16.08.2026). Restano fuori, e sono le tre trappole del
+Oggi **100 + 8 = 108** (16.08.2026). Restano fuori, e sono le tre trappole del
 conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
 nome lungo che **contiene** quello corto.
 
@@ -800,7 +822,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 106 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 108 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 

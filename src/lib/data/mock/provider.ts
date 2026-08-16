@@ -1,3 +1,4 @@
+import { overlaps } from "../../dates";
 import { assertInDevOutsidePromise } from "../guardrails";
 import type { DataProvider } from "../provider";
 import {
@@ -30,7 +31,6 @@ import {
   type PlanId,
   type Professional,
   type ProfessionalEarnings,
-  type ProfessionalFilter,
   type ProfessionalSession,
   type Quarter,
   type RapidCheckAnswer,
@@ -265,17 +265,8 @@ export class MockDataProvider implements DataProvider {
     return Promise.resolve(INVOICES);
   }
 
-  getProfessionals(filter?: ProfessionalFilter): Promise<Professional[]> {
-    const matches = PROFESSIONALS.filter((professional) => {
-      if (filter?.specialty && professional.specialty !== filter.specialty) {
-        return false;
-      }
-      if (filter?.language && !professional.languages.includes(filter.language)) {
-        return false;
-      }
-      return true;
-    });
-    return Promise.resolve(matches);
+  getProfessionals(): Promise<Professional[]> {
+    return Promise.resolve(PROFESSIONALS);
   }
 
   getProfessional(id: string): Promise<Professional | null> {
@@ -490,16 +481,31 @@ export class MockDataProvider implements DataProvider {
      * il difetto è nel contratto, non nella schermata, e in produzione un
      * annullamento riguarda quasi sempre una seduta futura.
      */
-    const taken = new Set(
-      this.sessionsOf(professionalId)
-        .filter((session) => session.status !== "cancelled")
-        .map((session) => session.start.getTime()),
+    /*
+     * OCCUPATO VUOL DIRE SOVRAPPOSTO, NON "COMINCIA ALLO STESSO ISTANTE"
+     * (16.08.2026).
+     *
+     * Era un insieme di istanti d'inizio, quindi uno slot che invade a metà una
+     * seduta già in agenda veniva **offerto** — e poi prenotato, perché il
+     * controllo della prenotazione guardava lo stesso istante. Il dataset di
+     * oggi non lo produce, ma è il difetto corretto sugli slot fra loro il
+     * 15.08.2026 e lasciato asimmetrico da questo lato.
+     */
+    const busy = this.sessionsOf(professionalId).filter(
+      (session) => session.status !== "cancelled",
     );
     return Promise.resolve(
       INITIAL_SLOTS.filter(
         (slot) =>
           slot.professionalId === professionalId &&
-          !taken.has(slot.start.getTime()),
+          !busy.some((session) =>
+            overlaps(
+              slot.start,
+              slot.durationMinutes,
+              session.start,
+              session.durationMinutes,
+            ),
+          ),
       ),
     );
   }
@@ -535,14 +541,23 @@ export class MockDataProvider implements DataProvider {
      * quando quella fascia torna prenotabile, un guardrail che la contasse
      * ancora come occupata accuserebbe la schermata di proporre uno slot che
      * invece è libero per davvero.
+     *
+     * **Intervalli e non istanti** (16.08.2026), come il filtro che decide cosa
+     * è libero: guardando il solo inizio, una fascia che ne invade un'altra
+     * passava di qui in silenzio.
      */
     assertInDevOutsidePromise(
       !agenda.some(
         (session) =>
           session.status !== "cancelled" &&
-          session.start.getTime() === slot.start.getTime(),
+          overlaps(
+            slot.start,
+            slot.durationMinutes,
+            session.start,
+            session.durationMinutes,
+          ),
       ),
-      "Prenotato un orario su cui c'è già una seduta: la schermata sta proponendo uno slot occupato.",
+      "Prenotata una fascia che si sovrappone a una seduta già in agenda: la schermata sta proponendo uno slot occupato.",
     );
 
     assertInDevOutsidePromise(
@@ -567,7 +582,6 @@ export class MockDataProvider implements DataProvider {
      * minuti. Vale la stessa esenzione delle annullate: quella fascia è tornata
      * libera davvero.
      */
-    const endsAt = slot.start.getTime() + slot.durationMinutes * 60_000;
     const patientAgenda = PROFESSIONALS.flatMap((professional) =>
       sessionsOfPatient(
         PORTAL_PATIENT_EMPLOYEE_ID,
@@ -575,12 +589,16 @@ export class MockDataProvider implements DataProvider {
       ),
     );
     assertInDevOutsidePromise(
-      !patientAgenda.some((session) => {
-        if (session.status === "cancelled") return false;
-        const sessionEndsAt =
-          session.start.getTime() + session.durationMinutes * 60_000;
-        return slot.start.getTime() < sessionEndsAt && session.start.getTime() < endsAt;
-      }),
+      !patientAgenda.some(
+        (session) =>
+          session.status !== "cancelled" &&
+          overlaps(
+            slot.start,
+            slot.durationMinutes,
+            session.start,
+            session.durationMinutes,
+          ),
+      ),
       "Prenotata una seduta che si sovrappone a un'altra dello stesso dipendente: la schermata sta proponendo una fascia già occupata.",
     );
 

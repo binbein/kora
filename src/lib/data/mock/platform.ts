@@ -681,11 +681,21 @@ for (const [initials, group] of groupBy((claim) => claim.initials)) {
    * lasciavano passare la collisione: azienda, reparto e id tornavano tutti,
    * perché il back-office non dichiara né reparto né id di dominio.
    *
-   * Chi compare nell'estratto dei dipendenti o fra i pazienti è un dipendente in
-   * un percorso di cura. Se il back-office attribuisce a quelle iniziali un
-   * ruolo diverso da `employee`, o sono due persone, o la piattaforma sta
-   * mostrando il percorso di cura di chi dipendente non è — che è il caso
-   * peggiore, perché quella lista porta nome, cognome ed email.
+   * QUESTA È UNA REGOLA DEL DATASET DEMO, NON DEL DOMINIO, e la distinzione è
+   * la correzione del 16.08.2026 a come questa riga era stata scritta. Una
+   * referente HR **è** una dipendente: può stare nell'estratto della propria
+   * azienda e può essere in cura, e il prodotto ha bisogno che sia possibile —
+   * dire il contrario sarebbe una regola falsa messa in un guardrail.
+   *
+   * Ciò che è vero e verificabile è più modesto: **in questo dataset le persone
+   * con un ruolo non-`employee` non compaiono negli altri due elenchi.** Le
+   * iniziali sono l'unica chiave che unisce le tre liste — il back-office non
+   * porta né reparto né id di dominio — quindi finché quel vincolo tiene,
+   * iniziali condivise con un ruolo diverso vogliono dire **due persone che il
+   * dataset non sa distinguere**, non una persona con due mestieri.
+   *
+   * In produzione le liste si uniranno per id vero e questo confronto sparisce
+   * (`docs/CONTRATTO-DATI.md` §7).
    */
   const employeeClaim = group.find((claim) => claim.isEmployee);
   for (const claim of group) {
@@ -693,7 +703,7 @@ for (const [initials, group] of groupBy((claim) => claim.initials)) {
       employeeClaim === undefined ||
         claim.role === null ||
         claim.role === "employee",
-      `${initials} è un dipendente secondo ${employeeClaim?.source} e ha ruolo "${claim.role}" secondo ${claim.source}: o sono due persone, o il back-office espone il percorso di cura di chi non è un dipendente (§8).`,
+      `${initials} compare in ${employeeClaim?.source} e ha ruolo "${claim.role}" in ${claim.source}: in questo dataset chi non è "employee" non sta negli altri due elenchi, quindi sono due persone che le sole iniziali non distinguono (§8).`,
     );
   }
 }
