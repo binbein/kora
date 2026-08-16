@@ -1154,7 +1154,7 @@ export const fr: Dictionary = {
 
       successTitle: "Demande reçue",
       successBody:
-        "La demande pour {company} est enregistrée. L'équipe répond dans un jour ouvrable.",
+        "Merci de votre intérêt. Notre équipe vous contactera dans un jour ouvrable.",
       successHome: "Retour à l'accueil",
       successRoi: "En attendant, calculez le retour",
     },

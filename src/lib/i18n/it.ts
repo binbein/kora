@@ -1408,11 +1408,13 @@ export const it = {
       },
 
       successTitle: "Richiesta ricevuta",
-      /* La conferma nomina l'azienda che ha scritto, e la legge dal record
-         restituito dalla mutation: è la prova che la scrittura è avvenuta,
-         non un cartello che compare comunque. */
+      /* Generica, e senza il nome dell'azienda (founder, 17.08.2026): è ciò
+         che un prodotto vero risponde a chi ha appena compilato un form.
+         Quel nome era la prova a schermo che la scrittura era tornata dal
+         provider; la prova non è sparita, si è spostata in `/admin`, dove la
+         richiesta compare in tabella (`DemoRequest.tsx`). */
       successBody:
-        "La richiesta per {company} è registrata. Il team risponde entro un giorno lavorativo.",
+        "Grazie per l'interesse. Il nostro team ti contatterà entro un giorno lavorativo.",
       successHome: "Torna alla home",
       successRoi: "Intanto, calcola il ritorno",
     },

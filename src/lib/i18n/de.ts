@@ -1059,7 +1059,7 @@ export const de: Dictionary = {
 
       successTitle: "Anfrage erhalten",
       successBody:
-        "Die Anfrage für {company} ist erfasst. Das Team antwortet innerhalb eines Arbeitstages.",
+        "Vielen Dank für Ihr Interesse. Unser Team meldet sich innerhalb eines Arbeitstages bei Ihnen.",
       successHome: "Zur Startseite",
       successRoi: "Berechnen Sie inzwischen die Rendite",
     },

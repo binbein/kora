@@ -1105,7 +1105,7 @@ export const en: Dictionary = {
 
       successTitle: "Request received",
       successBody:
-        "The request for {company} is registered. The team replies within one working day.",
+        "Thank you for your interest. Our team will contact you within one working day.",
       successHome: "Back to home",
       successRoi: "In the meantime, calculate the return",
     },
