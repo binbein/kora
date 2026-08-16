@@ -387,7 +387,27 @@ stessa cosa di una data lontana.
 lì, come `SessionNote`: nessun metodo dell'area HR o admin lo restituisce.
 `EmployeeDirectoryEntry` porta lo stato del check-up, mai il suo esito. Sta su un
 metodo suo e non dentro l'eligibility perché si chiede quando lo si apre, che è
-anche il modo in cui in produzione lo si permessiona e lo si traccia. I valori
+anche il modo in cui in produzione lo si permessiona e lo si traccia.
+
+> **Questa frase è stata falsa fino al 16.08.2026, e adesso è vera.**
+> `PlatformUser` portava `healthScore` — il punteggio del profilo salute della
+> singola persona — accanto a nome, cognome ed email, e `/admin/utenti` lo
+> rendeva in una colonna. Era **l'unica eccezione** a ciò che questo paragrafo
+> dichiara per l'intero contratto, e nessun'altra riga la nominava: chi leggeva
+> qui non aveva modo di scoprirla.
+>
+> **Il campo è stato tolto** su decisione dei founder, ed è la forma del
+> dominio a garantirlo, non la schermata (`CLAUDE.md` §5.5). Al suo posto:
+> `PlatformUser.assessmentCompleted`, che dice **che** l'assessment è stato
+> fatto e mai cosa ha detto — la stessa distinzione con cui
+> `EmployeeDirectoryEntry` porta lo stato del check-up senza portarne l'esito —
+> e `PlatformMonth.averageHealthScore`, il punteggio **aggregato**, che è la
+> forma in cui può stare in un'area che vede i nomi: una media non si
+> attribuisce a nessuno.
+>
+> **Per chi scriverà il backend**: `assessmentCompleted` non è il punteggio
+> reso booleano, ed esporlo derivandolo da *"esiste un punteggio"* è ciò che
+> rimetterebbe il dato individuale sulla stessa riga per un'altra strada. I valori
 delle misure sono **stringhe** — "120/80 mmHg", "Ritmo sinusale" — perché sono
 letture con la loro unità, non grandezze che il client debba riformattare.
 
@@ -456,6 +476,14 @@ entità separate potrebbero divergere. Ogni suo campo è derivato dal portafogli
 clienti; nel dataset demo le sessioni di un cliente sono la curva di Demo SA
 scalata sul rapporto fra gli iscritti, **e questa è una semplificazione che
 salta in produzione** (§7).
+
+`PlatformMonth.averageHealthScore` è arrivato qui il 16.08.2026, ed è la ragione
+per cui il punteggio individuale ha potuto lasciare `PlatformUser`: **è
+l'aggregato che dice la stessa cosa senza attribuirla a nessuno**. È `null`
+quando nessuno ha ancora fatto l'assessment — il vuoto del §2, non uno zero che
+si legge come un punteggio pessimo. Sta su questa serie e non su una entità sua
+per la regola di questo paragrafo: una seconda entità con la stessa cadenza è
+una seconda cosa che può divergere.
 
 **Tutti i campi di `PlatformMonth` contano lo stesso insieme: i clienti
 presenti in quel mese _e_ avviati.** Ricavo, dipendenti coperti, iscritti e
@@ -713,6 +741,13 @@ invece di restare assunzioni implicite:
   schermata lo dichiara invece di far credere che l'azienda abbia otto persone, e
   l'intestazione conta l'azienda e non la tabella: in produzione
   `getEmployeeDirectory` prenderà una pagina e un filtro.
+- **Il punteggio medio del profilo salute è costante sulla finestra.**
+  `PlatformMonth.averageHealthScore` sta su una serie mensile perché in
+  produzione il backend lo calcolerà mese per mese dalle risposte vere, mentre
+  nel dataset demo è **un valore dichiarato** — come le sedute di carriera del
+  `CLAUDE.md` §8, e per la stessa ragione: dietro non c'è una seconda sorgente
+  da cui derivarlo. Il giorno in cui c'è, questa riga sparisce e il campo non si
+  tocca.
 - **Un solo cliente, una sola azienda.** `getCompany()` non prende un
   identificatore: la demo ha Demo SA e basta. In produzione l'azienda viene dalla
   sessione, non da un parametro — ed è una modifica al provider, non alle
