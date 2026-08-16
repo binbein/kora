@@ -416,24 +416,30 @@ function deliveredIn(
 
 /*
  * Il regime tenuto: media delle sedute erogate nelle quattro settimane piene
- * precedenti quella corrente.
+ * precedenti quella in cui cade `reference`.
  *
  * Si deriva e non si conta sugli slot, perché i percorsi si avvicendano: un
- * numero fisso resterebbe fermo mentre l'agenda cambia. La settimana corrente
- * resta fuori perché non è finita, e includerla farebbe sempre sembrare il
- * regime più basso di quello che è.
+ * numero fisso resterebbe fermo mentre l'agenda cambia. La settimana di
+ * `reference` resta fuori perché non è finita, e includerla farebbe sempre
+ * sembrare il regime più basso di quello che è.
  *
  * Riceve le sedute per la stessa ragione delle due funzioni qui sotto: era una
  * costante di modulo calcolata su `PORTAL_SESSIONS`, quindi il regime della
  * Dr.ssa Meier veniva dichiarato di chiunque.
+ *
+ * RICEVE ANCHE L'ISTANTE DA CUI GUARDARE INDIETRO (16.08.2026), e prima lo
+ * prendeva da `DEMO_TODAY`: `monthlyEarnings` accetta un mese e rispondeva con
+ * il regime **di oggi** a chi ne chiedeva uno passato. Invisibile a schermo —
+ * `ProPagamenti` chiede solo il mese corrente — e nondimeno il metodo del
+ * contratto rispondeva male a una domanda che accetta.
  */
-function sessionsPerWeek(sessions: StoredSession[]): number {
+function sessionsPerWeek(sessions: StoredSession[], reference: Date): number {
   return Math.round(
     sessions.filter(
       (session) =>
         session.status === "completed" &&
-        session.start >= addDays(startOfWeek(DEMO_TODAY), -28) &&
-        session.start < startOfWeek(DEMO_TODAY),
+        session.start >= addDays(startOfWeek(reference), -28) &&
+        session.start < startOfWeek(reference),
     ).length / 4,
   );
 }
@@ -466,6 +472,18 @@ export function monthlyEarnings(
   month: Date,
 ): ProfessionalEarnings {
   const delivered = deliveredIn(sessions, month);
+
+  /*
+   * DA DOVE SI GUARDA INDIETRO PER IL REGIME: dal giorno della demo se il mese
+   * chiesto è quello in corso, dall'ultimo giorno del mese altrimenti.
+   *
+   * Sul mese corrente la risposta non cambia di un'unità — è la finestra di
+   * sempre — e su un mese passato smette di essere il regime di oggi.
+   */
+  const reference = sameMonth(DEMO_TODAY, month)
+    ? DEMO_TODAY
+    : new Date(month.getFullYear(), month.getMonth() + 1, 0);
+
   return {
     professionalId,
     month,
@@ -475,7 +493,7 @@ export function monthlyEarnings(
       (total, session) => total + session.durationMinutes,
       0,
     ),
-    sessionsPerWeek: sessionsPerWeek(sessions),
+    sessionsPerWeek: sessionsPerWeek(sessions, reference),
     feePerSession,
     grossChf: delivered.length * feePerSession,
     fullCapacity: FULL_CAPACITY,
