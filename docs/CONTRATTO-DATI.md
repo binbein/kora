@@ -1194,8 +1194,8 @@ Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
   dataset demo — nessuna coppia di iniziali ripetuta, sorvegliato da un guardrail
   — cade insieme al guardrail. **Manca la seconda metà, ed è quella che si
   vede.** Le schermate che mostrano una persona senza mostrarne il nome ne
-  mostrano **le iniziali**: l'elenco dipendenti dell'HR, i pazienti e le sedute
-  del professionista, le sedute del back-office. Con due `M.B.` nella stessa
+  mostrano **le iniziali**: l'elenco dipendenti dell'HR, i pazienti e le sessioni
+  del professionista, le sessioni del back-office. Con due `M.B.` nella stessa
   azienda quelle righe diventano ambigue a chi guarda, e l'ambiguità **non è
   risolvibile aggiungendo un identificatore**: un id accanto alle iniziali è un
   pseudonimo stabile, cioè esattamente ciò che l'anonimato di quelle schermate

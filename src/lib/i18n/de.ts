@@ -52,7 +52,7 @@ import type { Dictionary } from "./index";
  * revisione nativa è l'unico posto in cui la domanda ha una risposta vera
  * (founder, 14.08.2026).
  *
- *   1. `admin.professionals.kpiSessions` — "sedute di carriera" è reso
+ *   1. `admin.professionals.kpiSessions` — "sessioni di carriera" è reso
  *      `Sitzungen gesamt`. L'italiano ha coniato un'espressione per separare
  *      questo totale da altri due conteggi su schermate vicine; il tedesco non
  *      ha un composto corto che non suoni come storia d'impiego, quindi la

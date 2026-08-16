@@ -101,7 +101,7 @@ import type { Dictionary } from "./index";
  *      selettore mostra anche il primo trimestre (vedi il commento su `hr`). La
  *      revisione può preferire `T3 2026`; quello che non si può fare è
  *      l'ordinale con un suffisso solo.
- *   4. `admin.professionals.kpiSessions` — "sedute di carriera" è reso `Total
+ *   4. `admin.professionals.kpiSessions` — "sessioni di carriera" è reso `Total
  *      des séances`, e la distinzione dagli altri due conteggi si sposta nel
  *      sottotitolo. È lo stesso punto che il tedesco ha portato alla sua
  *      revisione con `Sitzungen gesamt`.

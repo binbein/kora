@@ -4223,9 +4223,13 @@ nessuno lo faccia in buona fede.**
 
 #### Le parole e il perimetro (17.08.2026)
 
-**Nove commit: tre di codice — `refactor:` ×2, `fix:` ×1 — e sei di documenti.**
-Totale e ripartizione dalla stessa misura, `git log --format='%s' master..HEAD`;
-il numero è `n + 1` perché il commit di chiusura conta sé stesso. **Nessuna
+**Dieci commit: quattro di codice — `refactor:` ×2, `fix:` ×2 — e sei di
+documenti.** Totale e ripartizione dalla stessa misura,
+`git log --format='%s' master..HEAD`. *(La sottosezione ne dichiarava nove: il
+commit di chiusura conta sé stesso, quindi il numero si scrive `n + 1`, cioè si
+predice — e la passata ne ha guadagnato uno dopo. Aggiornato nello stesso commit
+che l'ha aggiunto, che è l'obbligo scritto in testa a questo file dalla prima
+passata a cui è successo.)* **Nessuna
 logica cambia**: solo stringhe e documenti, e **nessun numero del §8 e del §9 si
 muove** — l'elenco verificato è più sotto.
 
@@ -4253,6 +4257,13 @@ alla regola.
 carriera, singola agenda, piattaforma — sono stati riscritti e non tolti: a
 cambiare è il sostantivo, non la disciplina chiusa il 10.08.2026. Per la stessa
 ragione `kpiSessions` non è diventato "Totali".
+
+**Tre citazioni dell'etichetta italiana sono invecchiate insieme alla parola**, e
+stanno in posti che una ricerca sulle stringhe non guarda: il `CLAUDE.md` §8
+citava la KPI del back-office come *"sedute erogate"* — che non è mai stato il
+suo testo — e le testate di `de.ts` e `fr.ts` citano *"sedute di carriera"*
+nell'elenco delle domande per la revisione madrelingua. Allineate: una citazione
+di un'etichetta è **l'etichetta**, e vale la regola anche dentro un commento.
 
 **`docs/PITCH.md` è stato allineato per intero**, venti occorrenze, e non solo
 dove cita un'etichetta: è il testo che una persona **pronuncia stando davanti
