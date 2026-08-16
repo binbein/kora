@@ -241,11 +241,19 @@ for (const entry of EMPLOYEE_DIRECTORY) {
   );
 }
 
-assertInDev(
-  new Set(EMPLOYEE_DIRECTORY.map((entry) => entry.initials)).size ===
-    EMPLOYEE_DIRECTORY.length,
-  "Due dipendenti condividono le iniziali: stesse iniziali deve voler dire stessa persona (§8).",
-);
+/*
+ * L'UNICITÀ DELLE INIZIALI SI CONTROLLA IN `platform.ts` (16.08.2026).
+ *
+ * Stava qui e guardava questa lista sola, mentre le persone della demo vivono
+ * in tre elenchi: l'estratto, l'agenda della Dr.ssa Meier e gli utenti del
+ * back-office. Guardandone uno non poteva vedere la collisione fra la referente
+ * HR e la paziente con il percorso più lungo, che è il difetto per cui il §8
+ * dice "stesse iniziali, stessa persona".
+ *
+ * È andato dove i tre elenchi si possono importare senza chiudere un ciclo, non
+ * duplicato: due controlli sulla stessa condizione sono due posti in cui
+ * sbagliarla (§5.6).
+ */
 
 /*
  * L'estratto non può essere più lungo dell'azienda, né dichiarare più iscritti

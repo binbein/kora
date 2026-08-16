@@ -8,11 +8,14 @@ import type {
   ClientCompany,
   PlatformMonth,
   PlatformUser,
+  UserRole,
 } from "../types";
 import { sameQuarter } from "../types";
 import { COMPANY, PLANS, PLAN_LIST } from "./company";
 import { DEMO_TODAY } from "./demo-date";
+import { EMPLOYEE_DIRECTORY } from "./hr";
 import { HISTORY_MONTHS } from "./measurement";
+import { PORTAL_SESSIONS } from "./professional-portal";
 import { CURRENT_QUARTER, ROI_SNAPSHOTS } from "./roi";
 import { SERVICE_USAGE } from "./service-usage";
 
@@ -509,5 +512,173 @@ for (const user of PLATFORM_USERS) {
   assertInDev(
     user.email.endsWith(".example"),
     `L'utente ${user.email} non è su un dominio .example: una persona inventata non deve comparire su un dominio di terzi (§8).`,
+  );
+}
+
+/*
+ * STESSE INIZIALI DEVE VOLER DIRE STESSA PERSONA, E A DIRLO SONO TRE LISTE.
+ *
+ * L'invariante del §8 esisteva già, ma sorvegliava una lista sola — le iniziali
+ * distinte dentro `EMPLOYEE_DIRECTORY` — mentre le persone di questa demo vivono
+ * in tre elenchi che non si parlavano: l'estratto dell'HR, l'agenda della Dr.ssa
+ * Meier e gli utenti del back-office. È così che S.C. ha potuto essere insieme
+ * la referente HR di Demo SA e la paziente con il percorso più lungo, senza che
+ * si rompesse niente (corretto il 16.08.2026).
+ *
+ * Sta qui e non in `hr.ts` perché questo è l'unico dei tre file che può
+ * importare gli altri due senza chiudere un ciclo — ed è anche l'elenco
+ * arrivato per ultimo, cioè quello che ha introdotto la collisione.
+ *
+ * IL CASO CHE DEVE PASSARE È M.B.: Marco Bianchi sta in tutti e tre gli
+ * elenchi ed è la stessa persona, coerente. A distinguerlo da S.C. non è il
+ * numero di liste in cui compare, sono i quattro confronti qui sotto.
+ */
+type IdentityClaim = {
+  initials: string;
+  companyId: string;
+  /** Il reparto, dove la lista lo dichiara: ce l'ha solo l'estratto dell'HR. */
+  departmentId: string | null;
+  /** Il ruolo, dove la lista lo dichiara: ce l'ha solo il back-office. */
+  role: UserRole | null;
+  /**
+   * L'id con cui le due liste di dipendenti si uniscono. Il back-office ha un
+   * id suo (`user-mb`) che non è quello del dominio, quindi lì è `null`:
+   * ricavarlo togliendo il prefisso sarebbe un aggancio su una convenzione di
+   * scrittura, cioè la cosa che questo guardrail esiste per non fare.
+   */
+  personId: string | null;
+  /**
+   * Se la lista contiene, per costruzione, dipendenti dell'azienda: l'estratto
+   * e i pazienti sì, gli utenti del back-office no — lì ci sono anche HR e
+   * amministratori.
+   */
+  isEmployee: boolean;
+  /** Chi lo afferma, perché il messaggio dica dove guardare. */
+  source: string;
+};
+
+const identityClaims: IdentityClaim[] = [
+  ...EMPLOYEE_DIRECTORY.map((entry) => ({
+    initials: entry.initials,
+    companyId: COMPANY.id,
+    departmentId: entry.departmentId,
+    role: null,
+    personId: entry.employeeId,
+    isEmployee: true,
+    source: "l'elenco dipendenti dell'HR",
+  })),
+  /*
+   * I pazienti del portale sono dipendenti di Demo SA: è la stessa azienda vista
+   * dai due lati del marketplace (§10.D). Il reparto non lo dichiarano, quindi
+   * non partecipano al confronto sul reparto.
+   */
+  ...PORTAL_SESSIONS.map((session) => ({
+    initials: session.patientInitials,
+    companyId: COMPANY.id,
+    departmentId: null,
+    role: null,
+    personId: session.patientId,
+    isEmployee: true,
+    source: "l'agenda del portale professionista",
+  })),
+  ...PLATFORM_USERS.map((user) => ({
+    initials: `${user.firstName.charAt(0)}.${user.lastName.charAt(0)}.`,
+    companyId: user.companyId,
+    departmentId: null,
+    role: user.role,
+    personId: null,
+    isEmployee: false,
+    source: "gli utenti del back-office",
+  })),
+];
+
+/** Le rivendicazioni raggruppate per `key`, saltando quelle che non ne hanno. */
+function groupBy(
+  key: (claim: IdentityClaim) => string | null,
+): Map<string, IdentityClaim[]> {
+  const groups = new Map<string, IdentityClaim[]>();
+  for (const claim of identityClaims) {
+    const value = key(claim);
+    if (value === null) continue;
+    const group = groups.get(value);
+    if (group === undefined) groups.set(value, [claim]);
+    else group.push(claim);
+  }
+  return groups;
+}
+
+/** I valori distinti e dichiarati di un gruppo, per i messaggi e per i conti. */
+function declared(
+  group: IdentityClaim[],
+  field: (claim: IdentityClaim) => string | null,
+): string[] {
+  return [
+    ...new Set(group.map(field).filter((value): value is string => value !== null)),
+  ];
+}
+
+for (const [initials, group] of groupBy((claim) => claim.initials)) {
+  const companies = declared(group, (claim) => claim.companyId);
+  assertInDev(
+    companies.length === 1,
+    `${initials} compare in più aziende — ${companies.join(", ")} — quindi stesse iniziali non vogliono dire stessa persona (§8).`,
+  );
+
+  /*
+   * Il reparto si confronta solo fra chi lo dichiara, e oggi è una lista sola:
+   * questo è l'invariante di unicità che viveva in `hr.ts`, in forma generale
+   * perché il giorno in cui una seconda lista porterà un reparto il confronto
+   * ci sia già.
+   */
+  const departments = declared(group, (claim) => claim.departmentId);
+  assertInDev(
+    departments.length <= 1,
+    `${initials} compare in più reparti — ${departments.join(", ")} — quindi due persone diverse condividono le iniziali (§8).`,
+  );
+
+  /*
+   * Due dipendenti diversi non possono avere le stesse iniziali. È l'altra metà
+   * del controllo che stava in `hr.ts`, e qui vale anche fra le due liste:
+   * l'estratto e l'agenda si uniscono su questo id.
+   */
+  const people = declared(group, (claim) => claim.personId);
+  assertInDev(
+    people.length <= 1,
+    `${initials} appartiene a più persone — ${people.join(", ")} — su elenchi che si uniscono per id (§8).`,
+  );
+
+  /*
+   * IL CONFRONTO CHE DISTINGUE M.B. DA S.C., e senza il quale i primi tre
+   * lasciavano passare la collisione: azienda, reparto e id tornavano tutti,
+   * perché il back-office non dichiara né reparto né id di dominio.
+   *
+   * Chi compare nell'estratto dei dipendenti o fra i pazienti è un dipendente in
+   * un percorso di cura. Se il back-office attribuisce a quelle iniziali un
+   * ruolo diverso da `employee`, o sono due persone, o la piattaforma sta
+   * mostrando il percorso di cura di chi dipendente non è — che è il caso
+   * peggiore, perché quella lista porta nome, cognome ed email.
+   */
+  const employeeClaim = group.find((claim) => claim.isEmployee);
+  for (const claim of group) {
+    assertInDev(
+      employeeClaim === undefined ||
+        claim.role === null ||
+        claim.role === "employee",
+      `${initials} è un dipendente secondo ${employeeClaim?.source} e ha ruolo "${claim.role}" secondo ${claim.source}: o sono due persone, o il back-office espone il percorso di cura di chi non è un dipendente (§8).`,
+    );
+  }
+}
+
+/*
+ * E la stessa persona non può avere due iniziali. È la direzione opposta della
+ * precedente, e serve perché le due liste si rinominano una alla volta: cambiare
+ * le iniziali nell'estratto e lasciarle nell'agenda produce due persone dove ce
+ * n'è una, senza che nessuno degli altri controlli se ne accorga.
+ */
+for (const [personId, group] of groupBy((claim) => claim.personId)) {
+  const spellings = declared(group, (claim) => claim.initials);
+  assertInDev(
+    spellings.length === 1,
+    `La persona "${personId}" compare con più iniziali — ${spellings.join(", ")} — su elenchi che si uniscono per id (§8).`,
   );
 }
