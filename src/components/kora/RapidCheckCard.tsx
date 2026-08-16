@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Angry, CheckCircle2, Frown, Laugh, Meh, Smile } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { dataProvider } from "@/lib/data";
-import { useRapidCheckAnswer } from "@/lib/data/queries";
+import { loadState, useRapidCheckAnswer } from "@/lib/data/queries";
 import { queryKeys } from "@/lib/data/query-keys";
 import type { RapidCheckAnswer } from "@/lib/data/types";
 import { t } from "@/lib/i18n";
@@ -72,7 +72,19 @@ const FACE_MUTED = "border-transparent bg-transparent text-muted-foreground/40";
 
 export default function RapidCheckCard() {
   const queryClient = useQueryClient();
-  const { data: answer } = useRapidCheckAnswer();
+  const answerQuery = useRapidCheckAnswer();
+  const answer = answerQuery.data;
+
+  /*
+   * LA LETTURA HA IL SUO STATO, E FINO AL 16.08.2026 NON CE L'AVEVA.
+   *
+   * `isError` veniva scartato e `undefined` faceva `return null`, quindi una
+   * lettura fallita **faceva sparire la card dalla home** senza che niente lo
+   * dicesse — e questa è la card su cui poggia la risposta a "da dove vengono i
+   * numeri di stress?" (`docs/PITCH.md`). L'`ErrorNotice` più in basso copre
+   * un'altra cosa: il tocco che non si salva.
+   */
+  const read = loadState([answerQuery]);
 
   const submit = useMutation({
     mutationFn: (value: RapidCheckAnswer["value"]) =>
@@ -86,6 +98,19 @@ export default function RapidCheckCard() {
       queryClient.invalidateQueries({ queryKey: queryKeys.employee.rapidCheck() }),
   });
 
+  /*
+   * L'errore resta **dentro la card**, e non al posto della home: il check
+   * rapido è un blocco della schermata, e sostituire l'area intera per una
+   * lettura che riguarda cinque volti toglierebbe di mezzo gli appuntamenti e i
+   * contatori, che sono arrivati benissimo (M5.b).
+   */
+  if (read.state === "error") {
+    return (
+      <Card className="p-5">
+        <ErrorNotice copy={t.employee.state.error} onRetry={read.retry} />
+      </Card>
+    );
+  }
   if (answer === undefined) return null;
 
   const answered = answer !== null;
