@@ -118,7 +118,7 @@ export const it = {
 
   sessionType: {
     first_visit: "Prima visita",
-    session: "Seduta",
+    session: "Sessione",
     follow_up: "Follow-up",
   },
 
@@ -200,7 +200,7 @@ export const it = {
       /** "3 su 10 sessioni usate" */
       sessions: "{used} su {total} sessioni usate",
       /*
-       * Una prenotazione non fa salire le usate — quelle sono le sedute già
+       * Una prenotazione non fa salire le usate — quelle sono le sessioni già
        * fatte (§10.B) — quindi la parte in programma è una frase a sé, e la
        * riga la usa solo quando c'è qualcosa in programma.
        */
@@ -263,8 +263,8 @@ export const it = {
         coach: "Coach",
       },
       empty: "Nessun professionista disponibile per questo servizio.",
-      /** "312 sedute erogate" */
-      totalSessions: "{n} sedute erogate",
+      /** "312 sessioni erogate" */
+      totalSessions: "{n} sessioni erogate",
       book: "Prenota",
 
       dialog: {
@@ -524,7 +524,7 @@ export const it = {
         nutrition_recheck:
           "Ripeti il controllo del colesterolo al prossimo check-up",
         mental_continue: "Prosegui il percorso con la psicologa",
-        mental_techniques: "Usa fuori dalla seduta le tecniche che impari",
+        mental_techniques: "Usa fuori dalla sessione le tecniche che impari",
         mental_journal: "Annota come ti senti nei giorni difficili",
       },
     },
@@ -535,21 +535,21 @@ export const it = {
 
     nav: {
       calendar: "Calendario",
-      sessions: "Sedute",
+      sessions: "Sessioni",
       patients: "Pazienti",
       payments: "Pagamenti",
       profile: "Profilo",
     },
 
-    /** "CHF 80 a seduta" — l'importo arriva già formattato da format.ts */
-    feePerSession: "{fee} a seduta",
+    /** "CHF 80 a sessione" — l'importo arriva già formattato da format.ts */
+    feePerSession: "{fee} a sessione",
 
     calendar: {
       title: "Calendario",
       /** "Settimana dal 21.09.2026 al 27.09.2026" */
       week: "Settimana dal {from} al {to}",
-      sessionsThisWeek: "Sedute questa settimana",
-      nextSession: "Prossima seduta",
+      sessionsThisWeek: "Sessioni questa settimana",
+      nextSession: "Prossima sessione",
       /* "in agenda" e non "del mese": i Pagamenti contano le erogate, e due
          etichette uguali su due numeri diversi sono il difetto del §5.5 */
       sessionsThisMonth: "In agenda questo mese",
@@ -561,11 +561,11 @@ export const it = {
       legendFree: "Libera",
       legendPast: "Passata",
       today: "oggi",
-      empty: "Nessuna seduta in questa settimana.",
+      empty: "Nessuna sessione in questa settimana.",
     },
 
     sessions: {
-      title: "Sedute",
+      title: "Sessioni",
       upcoming: "In programma ({n})",
       /* Nella sua agenda: la scheda vive dentro il portale di una sola
          professionista, e il numero e' il suo. */
@@ -576,18 +576,18 @@ export const it = {
       startUnavailable: "Videochiamata non attiva nella demo",
       addNote: "Aggiungi nota",
       editNote: "Nota",
-      emptyUpcoming: "Nessuna seduta in programma.",
-      emptyCompleted: "Nessuna seduta erogata.",
-      emptyCancelled: "Nessuna seduta annullata.",
+      emptyUpcoming: "Nessuna sessione in programma.",
+      emptyCompleted: "Nessuna sessione erogata.",
+      emptyCancelled: "Nessuna sessione annullata.",
       note: {
         /** "Nota privata — L.B." */
         title: "Nota privata — {patient}",
-        notes: "Note della seduta",
+        notes: "Note della sessione",
         notesPlaceholder: "Appunti clinici privati",
         nextGoal: "Prossimo obiettivo",
-        nextGoalPlaceholder: "Obiettivo per la seduta successiva",
+        nextGoalPlaceholder: "Obiettivo per la sessione successiva",
         followUp: "Follow-up suggerito",
-        followUpPlaceholder: "Seduta successiva consigliata fra",
+        followUpPlaceholder: "Sessione successiva consigliata fra",
         save: "Salva nota",
         saving: "Salvataggio",
         /* La nota non è stata salvata. Registro strumento, e si dice che il
@@ -601,7 +601,7 @@ export const it = {
            cancellazione (16.08.2026). */
         loadError: {
           title: "Nota non disponibile",
-          body: "La nota di questa seduta non è stata letta. Salvare adesso la sovrascriverebbe.",
+          body: "La nota di questa sessione non è stata letta. Salvare adesso la sovrascriverebbe.",
         },
         saved: "Nota salvata",
         privacy:
@@ -617,23 +617,23 @@ export const it = {
         "I nomi sono abbreviati per privacy. Le note cliniche sono visibili solo a te.",
       /** "Paziente L.B." */
       name: "Paziente {initials}",
-      /** "9 sedute erogate" */
-      delivered: "{n} sedute erogate",
+      /** "9 sessioni erogate" */
+      delivered: "{n} sessioni erogate",
       /** "Prossima: 24.09.2026" */
       next: "Prossima: {date}",
-      noNext: "Nessuna seduta in programma",
+      noNext: "Nessuna sessione in programma",
       new: "Nuovo",
       /** "10 su 10 incluse" */
       withinCap: "{used} su {total} incluse",
       /** "10 incluse + 2 a CHF 28" */
       overCap: "{total} incluse + {extra} a {price}",
-      capReached: "Sedute incluse esaurite",
+      capReached: "Sessioni incluse esaurite",
     },
 
     payments: {
       title: "Pagamenti",
-      sessionsThisMonth: "Sedute erogate",
-      feePerSession: "Tariffa a seduta",
+      sessionsThisMonth: "Sessioni erogate",
+      feePerSession: "Tariffa a sessione",
       monthTotal: "Totale del mese",
       yearTotal: "Totale dell'anno",
       /* La frase intera, non " · in corso" attaccato al mese: il pezzo mobile
@@ -643,7 +643,7 @@ export const it = {
       /** "settembre 2026 · in corso" */
       monthInProgress: "{month} · in corso",
       model:
-        "Pagamento per seduta erogata. Kora emette la fattura e paga entro il 5 del mese successivo.",
+        "Pagamento per sessione erogata. Kora emette la fattura e paga entro il 5 del mese successivo.",
       /*
        * Il regime va detto accanto al totale (§9), altrimenti CHF 1'120 contro i
        * CHF 5'600–6'400 del Business Plan si legge come "Kora paga poco" invece
@@ -651,23 +651,23 @@ export const it = {
        */
       capacityTitle: "Il tuo regime",
       capacity:
-        "Tieni {sessions} sedute a settimana. A pieno regime sono {full} a settimana, che valgono {min}–{max} al mese: la collaborazione parte da una disponibilità minima di {minHours} ore a settimana e cresce con l'agenda.",
+        "Tieni {sessions} sessioni a settimana. A pieno regime sono {full} a settimana, che valgono {min}–{max} al mese: la collaborazione parte da una disponibilità minima di {minHours} ore a settimana e cresce con l'agenda.",
       weeks: "Settimane del mese",
-      /* Un mese senza sedute erogate non è un errore: è un mese in cui non si è
+      /* Un mese senza sessioni erogate non è un errore: è un mese in cui non si è
          lavorato, e la frase lo dice invece di lasciare un totale a zero da
          interpretare. */
-      weeksEmpty: "Nessuna seduta erogata questo mese.",
+      weeksEmpty: "Nessuna sessione erogata questo mese.",
       payoutsEmpty: "Nessun pagamento ancora.",
       /** "dal 21.09.2026 al 27.09.2026" */
       weekRange: "dal {from} al {to}",
-      /** "5 sedute · 250 min" */
-      weekDetail: "{sessions} sedute · {minutes} min",
+      /** "5 sessioni · 250 min" */
+      weekDetail: "{sessions} sessioni · {minutes} min",
       paid: "Pagato",
       pending: "In attesa",
       /** "il 05.10.2026" */
       paidOn: "il {date}",
-      /** "14 sedute × CHF 80" */
-      sessionsTimesFee: "{sessions} sedute × {fee}",
+      /** "14 sessioni × CHF 80" */
+      sessionsTimesFee: "{sessions} sessioni × {fee}",
       empty: "Nessun compenso ancora maturato.",
     },
 
@@ -679,15 +679,15 @@ export const it = {
       languages: "Lingue",
       specialty: "Specializzazione",
       collaboration: "Collaborazione",
-      fee: "Tariffa a seduta",
+      fee: "Tariffa a sessione",
       documents: "Documenti",
       verified: "Verificati",
       documentsPending: "In verifica",
       mandate: "Contratto a mandato",
       signed: "Firmato",
       mandatePending: "Da firmare",
-      /** "312 sedute erogate" */
-      totalSessions: "{n} sedute erogate",
+      /** "312 sessioni erogate" */
+      totalSessions: "{n} sessioni erogate",
       mandateNote:
         "Collaborazione a mandato (Auftrag). Nessun vincolo di assunzione: Kora porta i pazienti e gestisce prenotazioni, video e pagamenti.",
     },
@@ -960,7 +960,7 @@ export const it = {
        */
       measurementTitle: "Da dove vengono i dati di stress",
       measurementBody:
-        "Il dato di stress arriva dal check rapido: una domanda, un tocco, auto-riportata dal dipendente. Non si deduce mai dal comportamento — né dalle sedute prenotate, né dalle aperture dell'app.",
+        "Il dato di stress arriva dal check rapido: una domanda, un tocco, auto-riportata dal dipendente. Non si deduce mai dal comportamento — né dalle sessioni prenotate, né dalle aperture dell'app.",
       anonymousLinkTitle: "Anche senza account",
       anonymousLinkBody:
         "Il check rapido si risponde nell'app oppure da un link anonimo, che non richiede di aver attivato l'account. Misurare solo chi si è iscritto vorrebbe dire misurare solo chi è già ingaggiato, e il dato serve soprattutto dove l'adozione non è ancora arrivata.",
@@ -1352,7 +1352,7 @@ export const it = {
       privacyTitleLead: "La privacy non è un dettaglio.",
       privacyTitleAccent: "È il cuore del prodotto.",
       privacyBody:
-        "L'azienda non vede mai dati individuali, sedute, referti o diagnosi. Solo insight aggregati e anonimi. I dati sanitari restano di chi li produce.",
+        "L'azienda non vede mai dati individuali, sessioni, referti o diagnosi. Solo insight aggregati e anonimi. I dati sanitari restano di chi li produce.",
       privacyChip: {
         hosting: "Hosting in Svizzera",
         gdpr: "Conforme GDPR",
@@ -1532,11 +1532,10 @@ export const it = {
       kpiBookable: "Prenotabili",
       kpiVetting: "In verifica",
       /* "di carriera": e' la somma dei totali di sempre dei cinque
-         professionisti, non le sedute di un mese ne' quelle di un'agenda. Tre
-         schermate del back-office dicevano "sedute erogate" contando tre cose
-         diverse, e affiancate si leggevano come lo stesso numero sbagliato
-         (§5.5). */
-      kpiSessions: "Sedute di carriera",
+         professionisti, non le sessioni di un mese ne' quelle di un'agenda. Tre
+         schermate del back-office dicevano "erogate" contando tre cose diverse,
+         e affiancate si leggevano come lo stesso numero sbagliato (§5.5). */
+      kpiSessions: "Sessioni di carriera",
       kpiSessionsHint: "Somma di tutti i professionisti della rete",
 
       colName: "Nome",
@@ -1544,7 +1543,7 @@ export const it = {
       colSpecialty: "Specialità",
       colLanguages: "Lingue",
       colFee: "Compenso",
-      colSessions: "Sedute",
+      colSessions: "Sessioni",
       colDocuments: "Documenti",
       colMandate: "Mandato",
       colStatus: "Stato",
@@ -1558,15 +1557,15 @@ export const it = {
     },
 
     sessions: {
-      title: "Sedute",
+      title: "Sessioni",
       /* La sola agenda della Dr.ssa Meier: il dataset demo ha un portale
          professionista solo (`docs/CONTRATTO-DATI.md` §7). */
       subtitle: "Agenda di {professional}",
-      kpiTotal: "Sedute",
+      kpiTotal: "Sessioni",
       kpiDelivered: "Erogate",
       kpiScheduled: "In programma",
       kpiVolume: "Compensi maturati",
-      kpiVolumeHint: "Solo sedute erogate",
+      kpiVolumeHint: "Solo sessioni erogate",
 
       colPatient: "Paziente",
       colProfessional: "Professionista",
@@ -1594,7 +1593,7 @@ export const it = {
       /* "di piattaforma": è la somma su tutti i clienti, non su Demo SA —
          la dashboard HR ne mostra 51 per la sola Demo SA, e due numeri sulla
          stessa cosa devono dire di cosa parlano. È la disciplina già adottata
-         per le tre accezioni di "sedute" (16.08.2026). */
+         per le tre accezioni di "sessioni" (16.08.2026). */
       kpiBookingsHint: "Di piattaforma, sui dodici mesi",
       kpiPending: "In convenzionamento",
 
@@ -1620,7 +1619,7 @@ export const it = {
       kpiRevenue: "Ricavo del mese",
       /** "CHF 652'968 annualizzati" */
       kpiRevenueHint: "{amount} annualizzati",
-      kpiSessions: "Sedute del mese",
+      kpiSessions: "Sessioni del mese",
       kpiEnrolled: "Utenti iscritti",
       kpiActivation: "Attivazione",
       /** "415 su 798 dipendenti coperti" */
@@ -1628,12 +1627,12 @@ export const it = {
 
       revenueChart: "Ricavo ricorrente mensile",
       /* "di piattaforma": e' la somma su tutti i clienti, mese per mese —
-         un'altra grandezza ancora rispetto alle sedute di carriera dei
+         un'altra grandezza ancora rispetto alle sessioni di carriera dei
          professionisti e a quelle di una singola agenda. */
-      sessionsChart: "Sedute di piattaforma per mese",
+      sessionsChart: "Sessioni di piattaforma per mese",
       planMixChart: "Mix piani",
       activationChart: "Attivazione",
-      serviceMixChart: "Sedute per servizio, dodici mesi",
+      serviceMixChart: "Sessioni per servizio, dodici mesi",
 
       /** "1 azienda" / "2 aziende" — il singolare cambia la parola intera. */
       planMixOne: "1 azienda",
