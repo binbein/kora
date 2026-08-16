@@ -741,6 +741,15 @@ invece di restare assunzioni implicite:
   schermata lo dichiara invece di far credere che l'azienda abbia otto persone, e
   l'intestazione conta l'azienda e non la tabella: in produzione
   `getEmployeeDirectory` prenderà una pagina e un filtro.
+- **Le tre liste di persone si uniscono per iniziali, e nessuna persona compare
+  con due ruoli.** L'estratto dell'HR, l'agenda della professionista e gli utenti
+  del back-office non condividono un id: le iniziali sono l'unica chiave, quindi
+  il dataset è costruito perché chi ha un ruolo diverso da `employee` non compaia
+  negli altri due elenchi, e un guardrail lo verifica. **Non è una regola del
+  dominio**: una referente HR è una dipendente, può stare nell'elenco della
+  propria azienda e può essere in cura. In produzione le liste si uniscono per id
+  vero, le iniziali tornano a essere una resa e il vincolo sparisce insieme al
+  guardrail che lo sorveglia.
 - **Il punteggio medio del profilo salute è costante sulla finestra.**
   `PlatformMonth.averageHealthScore` sta su una serie mensile perché in
   produzione il backend lo calcolerà mese per mese dalle risposte vere, mentre
