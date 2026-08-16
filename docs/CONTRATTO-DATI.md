@@ -1029,6 +1029,37 @@ il ciclo vero ne ha di più:
 - **La pubblicazione della disponibilità**: gli slot sono un dato del dataset, e
   nessun metodo permette a una professionista di dichiarare quando lavora.
 
+#### Cosa vuol dire "occupato", per chi scriverà il backend
+
+Il §4 dice già che `bookAppointment` **deve poter rifiutare** uno slot occupato.
+Non diceva cosa sia occupato, e la definizione va scritta qui perché è l'unico
+punto in cui questo documento parla al backend: nel frontend la regola vive in un
+posto solo — `lib/dates.ts`, che **sopravvive alla cancellazione di `mock/`** — ma
+il backend non eredita quel file.
+
+**Due sedute non si sovrappongono se condividono uno dei due lati:**
+
+- **lo stesso professionista**, che non può tenerne due insieme;
+- **lo stesso paziente**, che non può farne due insieme **nemmeno con
+  professionisti diversi** — ed è la metà che si dimentica, perché ogni agenda
+  guardata da sola è coerente.
+
+**Si confrontano intervalli, non istanti d'inizio**, e **gli estremi sono
+esclusi**: una seduta che finisce alle 17:30 e una che comincia alle 17:30 si
+**toccano**, non si sovrappongono, e devono restare entrambe prenotabili. Con
+`[inizio, fine)` la condizione è
+`a.inizio < b.fine && b.inizio < a.fine`.
+
+**Le annullate non occupano la loro fascia**: da quando una seduta è annullata,
+quell'ora torna prenotabile da chiunque — altrimenti l'annullamento non
+libererebbe niente, che è il solo motivo per cui esiste.
+
+**Vale in tre punti e non in uno**, e in produzione sono tre superfici diverse:
+ciò che l'elenco degli slot liberi non propone, ciò che la prenotazione rifiuta,
+e ciò che i dati non possono contenere. Nel frontend il terzo è un guardrail di
+sviluppo; nel backend è un vincolo di integrità, ed è il solo dei tre che regga
+due prenotazioni simultanee.
+
 ### 8.6 La prenotazione del check-up non esiste
 
 **Il gruppo qui sopra descrive il ciclo delle sedute, e niente di quello vale
