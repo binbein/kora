@@ -485,11 +485,19 @@ si legge come un punteggio pessimo. Sta su questa serie e non su una entità sua
 per la regola di questo paragrafo: una seconda entità con la stessa cadenza è
 una seconda cosa che può divergere.
 
-**Tutti i campi di `PlatformMonth` contano lo stesso insieme: i clienti
-presenti in quel mese _e_ avviati.** Ricavo, dipendenti coperti, iscritti e
-sedute rispondono allo stesso predicato, e un contratto firmato e non partito
-non entra in nessuno dei quattro — è `ClientCompany.active` applicato una volta
-sola.
+**Tutti i campi *sommatori* di `PlatformMonth` contano lo stesso insieme: i
+clienti presenti in quel mese _e_ avviati.** Ricavo, dipendenti coperti,
+iscritti e sedute rispondono allo stesso predicato, e un contratto firmato e non
+partito non entra in nessuno dei quattro — è `ClientCompany.active` applicato una
+volta sola.
+
+**`averageHealthScore` non è uno di quei quattro, e la qualifica serve** (data:
+16.08.2026, insieme al campo). È una **media**, non una somma: dal predicato
+dipende la sua **presenza** — `null` quando l'insieme è vuoto, perché senza
+iscritti non c'è nessun assessment — mentre il **valore** non è additivo e non si
+ricava sommando i clienti del mese. Sommarlo come gli altri quattro darebbe un
+numero senza significato, ed è la ragione per cui questa riga dice ora "campi
+sommatori" invece di "tutti i campi".
 
 Non è pignoleria: iscritti e coperti sono il numeratore e il denominatore
 dell'attivazione, quindi **contare due insiemi diversi ammette un'attivazione
