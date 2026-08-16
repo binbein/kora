@@ -1493,7 +1493,6 @@ export const it = {
       colEmail: "Email",
       colCompany: "Azienda",
       colRole: "Ruolo",
-      colScore: "Profilo salute",
       colStatus: "Stato",
       colJoined: "Iscritto",
 

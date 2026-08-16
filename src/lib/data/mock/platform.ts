@@ -175,6 +175,22 @@ if (reference === undefined) {
 
 const REFERENCE = reference;
 
+/*
+ * IL PUNTEGGIO MEDIO DEL PROFILO SALUTE, ED È UN VALORE DICHIARATO.
+ *
+ * Come le sedute di carriera del §8, e per la stessa ragione: dietro non c'è
+ * una seconda sorgente da cui derivarlo. Fino al 16.08.2026 il numero a schermo
+ * era la media di sette punteggi individuali scritti su `PLATFORM_USERS`, cioè
+ * sette cifre non ratificate al posto di una — e soprattutto sette dati
+ * sanitari attaccati a nome, cognome ed email. Il 73 è il valore che quella
+ * media dava, tenuto perché la schermata non si muove.
+ *
+ * SEMPLIFICAZIONE DELLA DEMO, non del contratto: è costante sulla finestra,
+ * mentre il campo sta su una serie mensile perché in produzione il backend lo
+ * calcolerà mese per mese dalle risposte vere (`docs/CONTRATTO-DATI.md` §7).
+ */
+const AVERAGE_HEALTH_SCORE = 73;
+
 const SERVICE_KINDS: AppointmentKind[] = [
   "psychologist",
   "virtual_doctor",
@@ -231,6 +247,11 @@ export const PLATFORM_MONTHS: PlatformMonth[] = HISTORY_MONTHS.map(
       }
     }
 
+    const enrolled = clients.reduce(
+      (sum, company) => sum + company.enrolledEmployees,
+      0,
+    );
+
     return {
       month,
       recurringRevenueChf: clients.reduce(
@@ -241,11 +262,18 @@ export const PLATFORM_MONTHS: PlatformMonth[] = HISTORY_MONTHS.map(
         (sum, company) => sum + company.employeeCount,
         0,
       ),
-      enrolledEmployees: clients.reduce(
-        (sum, company) => sum + company.enrolledEmployees,
-        0,
-      ),
+      enrolledEmployees: enrolled,
       sessions,
+      /*
+       * Nessun iscritto vuol dire nessun assessment, quindi nessuna media: è il
+       * `null` del §11 — il valore assente, non uno zero che si legge come un
+       * punteggio pessimo. Il ramo non si raggiunge con questa finestra, che si
+       * apre sul mese d'ingresso di Demo SA, e sta qui per la stessa ragione per
+       * cui `adoptionPercent` guarda il proprio denominatore: in produzione il
+       * primo mese di un cliente nuovo è il caso ordinario.
+       */
+      averageHealthScore:
+        enrolled === 0 ? null : AVERAGE_HEALTH_SCORE,
     };
   },
 );
@@ -290,7 +318,7 @@ export const PLATFORM_USERS: PlatformUser[] = [
     companyId: "demo-sa",
     role: "employee",
     active: true,
-    healthScore: 74,
+    assessmentCompleted: true,
     joinedAt: monthStart(DEMO_TODAY.getFullYear(), 1),
   },
   {
@@ -301,7 +329,7 @@ export const PLATFORM_USERS: PlatformUser[] = [
     companyId: "demo-sa",
     role: "hr",
     active: true,
-    healthScore: 82,
+    assessmentCompleted: true,
     joinedAt: monthStart(DEMO_TODAY.getFullYear(), 1),
   },
   {
@@ -312,7 +340,7 @@ export const PLATFORM_USERS: PlatformUser[] = [
     companyId: "larice-pharma",
     role: "employee",
     active: true,
-    healthScore: 61,
+    assessmentCompleted: true,
     joinedAt: monthStart(DEMO_TODAY.getFullYear(), 2),
   },
   {
@@ -323,7 +351,7 @@ export const PLATFORM_USERS: PlatformUser[] = [
     companyId: "larice-pharma",
     role: "hr",
     active: true,
-    healthScore: 88,
+    assessmentCompleted: true,
     joinedAt: monthStart(DEMO_TODAY.getFullYear(), 2),
   },
   {
@@ -334,7 +362,7 @@ export const PLATFORM_USERS: PlatformUser[] = [
     companyId: "genziana-tech",
     role: "employee",
     active: true,
-    healthScore: 79,
+    assessmentCompleted: true,
     joinedAt: monthStart(DEMO_TODAY.getFullYear(), 3),
   },
   {
@@ -345,13 +373,14 @@ export const PLATFORM_USERS: PlatformUser[] = [
     companyId: "genziana-tech",
     role: "employee",
     active: false,
-    healthScore: 55,
+    assessmentCompleted: true,
     joinedAt: monthStart(DEMO_TODAY.getFullYear(), 3),
   },
   {
     /*
-     * Iscritto senza assessment: `healthScore` è `null`, che è il caso di §11
-     * — il valore assente, non uno zero che si legge come un punteggio pessimo.
+     * L'unico iscritto che l'assessment non l'ha fatto: è il caso che tiene
+     * onesta la KPI "con assessment", che senza di lui conterebbe tutte le
+     * righe e non avrebbe niente da dire.
      */
     id: "user-gm",
     firstName: "Giorgio",
@@ -360,7 +389,7 @@ export const PLATFORM_USERS: PlatformUser[] = [
     companyId: "studio-legale-rovere",
     role: "employee",
     active: false,
-    healthScore: null,
+    assessmentCompleted: false,
     joinedAt: monthStart(DEMO_TODAY.getFullYear(), 5),
   },
 ];

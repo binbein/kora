@@ -1018,6 +1018,22 @@ export type Session = {
   role: UserRole | null;
 };
 
+/**
+ * Una persona vista dal back-office: **nome, cognome ed email**, cioè
+ * un'identità in chiaro.
+ *
+ * PER QUESTO NON PORTA NESSUN DATO SANITARIO (founder, 16.08.2026). Fino a
+ * questa data c'era `healthScore`, il punteggio del profilo salute della
+ * persona, e la tabella lo rendeva in una colonna accanto al nome: era l'unico
+ * punto del dominio in cui un dato sanitario individuale usciva verso l'area
+ * admin, e smentiva la garanzia che il `docs/CONTRATTO-DATI.md` §3 dà per
+ * l'intero contratto.
+ *
+ * `assessmentCompleted` dice **che** l'assessment è stato fatto, mai cosa ha
+ * detto: è la stessa distinzione con cui `EmployeeDirectoryEntry` porta lo
+ * stato del check-up senza portarne l'esito. Il punteggio resta, ma **come
+ * aggregato**, su `PlatformMonth`.
+ */
 export type PlatformUser = {
   id: string;
   firstName: string;
@@ -1026,8 +1042,8 @@ export type PlatformUser = {
   companyId: string;
   role: UserRole;
   active: boolean;
-  /** Punteggio del profilo salute, se ha completato l'assessment */
-  healthScore: number | null;
+  /** Se ha completato l'assessment iniziale (§8). Non dice con che esito. */
+  assessmentCompleted: boolean;
   joinedAt: Date;
 };
 
@@ -1086,4 +1102,15 @@ export type PlatformMonth = {
   enrolledEmployees: number;
   /** Sessioni erogate nel mese, per servizio */
   sessions: Record<AppointmentKind, number>;
+  /**
+   * Punteggio medio del profilo salute nel mese, `null` se nessuno l'ha ancora
+   * fatto.
+   *
+   * È **la forma in cui il punteggio individuale può stare in un'area che vede
+   * i nomi**: un aggregato non si attribuisce a nessuno. Sta qui e non sulla
+   * persona per la decisione del 16.08.2026, ed è su questa serie perché è già
+   * quella sola da cui il back-office prende tutti i suoi grafici (§2 del
+   * contratto dati).
+   */
+  averageHealthScore: number | null;
 };

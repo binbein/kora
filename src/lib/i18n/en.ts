@@ -1174,7 +1174,6 @@ export const en: Dictionary = {
       colEmail: "Email",
       colCompany: "Company",
       colRole: "Role",
-      colScore: "Health profile",
       colStatus: "Status",
       colJoined: "Joined",
 
