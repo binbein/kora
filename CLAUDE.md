@@ -77,6 +77,29 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      quattro i file (16.08.2026) — e che siano uguali non è una misura ma una
      garanzia del tipo `Translated<Dictionary>`, che non compila se una manca.
 
+     **IL CONTO SI FA SULL'ALBERO SINTATTICO, NON CON UN GREP**, ed è la
+     clausola senza la quale il criterio autorizzava proprio i numeri sbagliati
+     che esiste per non far nascere (16.08.2026). La ragione è una proprietà del
+     file, non della fretta di chi conta: **62 delle 731 chiavi hanno il valore
+     sulla riga successiva**, perché la stringa non ci stava. Un motivo di
+     ricerca per riga le prende o le perde a seconda che il suo `\s*` attraversi
+     l'a capo — due implementazioni entrambe fedeli alla frase qui sopra e
+     lontane 62. Il comando che lo esegue davvero:
+
+     ```
+     node -e 'const ts=require("typescript"),fs=require("fs");
+     const p="src/lib/i18n/it.ts";
+     const sf=ts.createSourceFile(p,fs.readFileSync(p,"utf8"),ts.ScriptTarget.Latest,true);
+     let n=0;(function w(x){if(ts.isPropertyAssignment(x)&&
+     (ts.isStringLiteral(x.initializer)||ts.isNoSubstitutionTemplateLiteral(x.initializer)))n++;
+     ts.forEachChild(x,w)})(sf);console.log(n)'
+     ```
+
+     Sull'albero non c'è niente da togliere: i commenti non sono nodi, e una
+     proprietà o ha un letterale stringa per valore o non è una chiave foglia.
+     Verificato: **731 proprietà con inizializzatore letterale stringa, 109
+     oggetti, zero proprietà di altro tipo**, identici sui quattro dizionari.
+
      **Il 663 dei verbali di M5.e non era invecchiato: era sbagliato quando è
      stato scritto.** Misurato su `de.ts` al merge della sua tranche, le chiavi
      erano già ~721. I verbali non si riscrivono — sono resoconti datati — e a
@@ -400,7 +423,7 @@ kora/
       locale.ts          ← il tipo `Locale` e il default: modulo foglia, perché
                            lo leggono sia `format.ts` sia `i18n`
       format.ts          ← formatCHF, formatDate, formatPercent — unico punto
-      dates.ts           ← aritmetica sui giorni: calcola, non formatta
+      dates.ts           ← aritmetica su giorni e fasce: calcola, non formatta
       roi-model.ts       ← formule del calcolatore ROI (§9)
       earnings.ts        ← righe settimanali e totali dei compensi (§10.D)
       schedule.ts        ← la griglia del calendario, costruita dalle sedute

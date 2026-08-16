@@ -37,16 +37,43 @@ function SessionRow({
     cancelled: 'bg-destructive/10 text-destructive',
   }[session.status];
 
+  /*
+   * LA RIGA CEDE IN DUE MODI, E PRIMA NON NE AVEVA NESSUNO (16.08.2026).
+   *
+   * Il difetto: il blocco di destra è `flex-shrink-0` e il pulsante eredita
+   * `whitespace-nowrap` da shadcn, quindi non cede mai; quello di sinistra
+   * aveva `min-w-0` e **nessun troncamento**, quindi si stringeva fino a niente
+   * e il testo continuava a **dipingere fuori dalla propria scatola**, sopra il
+   * pulsante. Misurato a 420px: la data chiedeva 72px in una scatola da 17.
+   *
+   * Non è un difetto di mobile — la soglia dichiarata resta 1280px (§10.C) — è
+   * il §2.7: niente larghezze fisse su etichette e pulsanti, e un layout che
+   * regge parole più lunghe. Le etichette di questa riga cambiano con la lingua
+   * e con lo stato della seduta, quindi la larghezza del pulsante non è nota a
+   * chi scrive la riga.
+   *
+   * I due modi:
+   *   - `truncate` sulle due righe di testo: dentro la propria scatola il testo
+   *     si accorcia con i puntini invece di uscirne;
+   *   - `flex-wrap` più una base sul blocco di sinistra: sotto quella larghezza
+   *     il pulsante **scende sotto** invece di schiacciare il testo. La base non
+   *     è una larghezza fissa su un'etichetta — è la soglia sotto la quale la
+   *     riga smette di leggersi come "iniziali + data", cioè il punto in cui è
+   *     giusto che a spostarsi sia il pulsante.
+   *
+   * A 1280 non cambia niente, in nessuna delle quattro lingue: i due blocchi
+   * stanno sulla stessa riga con ~370px di margine.
+   */
   return (
     <Card className="p-4">
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3 min-w-0">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3 min-w-0 flex-1 basis-64">
           <div className={`w-10 h-10 rounded-xl ${tone} flex items-center justify-center text-sm font-bold flex-shrink-0`}>
             {session.patientInitials}
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-semibold">{session.patientInitials}</p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-sm font-semibold truncate">{session.patientInitials}</p>
+            <p className="text-xs text-muted-foreground truncate">
               <span className="capitalize">{formatWeekday(session.start)}</span>{' '}
               <span className="tabular-nums">
                 {formatDate(session.start)}, {formatTime(session.start)}

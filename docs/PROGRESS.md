@@ -2035,7 +2035,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Ventisei passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Ventisette passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2045,8 +2045,9 @@ contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
 `README.md`, il residuo della nota di sessione, gli slot sovrapposti e i periodi
 non dichiarati, i fatti corretti nei documenti, il perimetro e le promesse in
 sospeso, il footer fuori dalla demo, i terzi e la simmetria del footer,
-l'identità collisa e gli stati limite, e **questa passata**, le simmetrie e le
-verifiche vere — che è **l'ultima**: da qui la demo è congelata. Non
+l'identità collisa e gli stati limite, le simmetrie e le verifiche vere, e
+**questa passata**, la riga della seduta e i criteri che si contraddicevano —
+che è **l'ultima**: da qui la demo è congelata. Non
 aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
 seam e del dizionario. **Quelle che hanno una sottosezione loro sono le
@@ -4068,6 +4069,125 @@ puntatore completa** — `pointerdown`, `mousedown`, `pointerup`, `mouseup`,
 `click` — perché ascoltano il `pointerdown`. È la strada con cui sono state prese
 tutte le asserzioni sui dialoghi di questa passata e della precedente, ed è la
 prima volta che questo file la scrive per esteso.
+
+#### La riga della seduta e i criteri che si contraddicevano (16.08.2026)
+
+**Quattro commit: uno di codice e tre di documenti** — totale e ripartizione dalla
+stessa misura, `git log --format='%s' master..HEAD`, con il numero scritto `n + 1`
+perché il commit di chiusura conta sé stesso. **Nessun numero del §8 e del §9 si
+muove.**
+
+È la passata che chiude la demo: quella precedente si era dichiarata l'ultima, e
+questa raccoglie ciò che la sua review ha trovato. **Da qui il lavoro è il
+perimetro dell'MVP** (`docs/CONTRATTO-DATI.md` §8) e le decisioni in sospeso.
+
+##### La riga della seduta non sapeva cedere
+
+Il blocco di destra è `flex-shrink-0` e il pulsante eredita `whitespace-nowrap`
+da shadcn, quindi non cede mai; quello di sinistra aveva `min-w-0` e **nessun
+troncamento**, quindi si stringeva fino a niente e il testo **continuava a
+dipingere fuori dalla propria scatola**, sopra il pulsante. Misurato a 420px: la
+data chiedeva **72px in una scatola da 17**.
+
+**Le due scatole non si sovrapponevano mai**, ed è la ragione per cui il difetto
+è sopravvissuto a tre passate di verifica: un controllo che confronta i
+rettangoli dei due blocchi trova sempre il `gap-4` fra loro e risponde "nessuna
+sovrapposizione". A sovrapporsi erano **i glifi**, che escono da un elemento con
+`overflow: visible` senza spostarne il bordo. Il controllo giusto è
+`scrollWidth > clientWidth` **insieme a** `overflow === "visible"`, ed è la
+settima trappola di misura che questo file registra.
+
+**Non è un difetto di mobile**: la soglia dichiarata resta 1280px (§10.C) e non
+si sposta. È il §2.7 — niente larghezze fisse su etichette e pulsanti, layout che
+regge parole più lunghe — e le etichette di quella riga cambiano con la lingua e
+con lo stato della seduta, quindi **chi scrive la riga non conosce la larghezza
+del pulsante**.
+
+**Due modi di cedere, ed è la riga a cederli, non la stringa**: `truncate` tiene
+il testo dentro la sua scatola, e `flex-wrap` più una base sul blocco di sinistra
+manda il pulsante **sotto** quando la riga smette di leggersi come "iniziali +
+data". La base non è una larghezza fissa su un'etichetta: è la soglia sotto la
+quale è giusto che a spostarsi sia il pulsante.
+
+**Un componente copre entrambe le schede.** Le sedute in programma e quelle
+erogate sono lo stesso `SessionRow`, quindi l'etichetta corta riceve lo stesso
+trattamento per costruzione — non c'era una seconda riga da correggere.
+
+##### Verificato a schermo, `innerWidth` controllato prima di ogni misura
+
+Tre larghezze, e in ognuna il conto è sulle righe rese, non su una:
+
+| | righe | sovrapposizioni | testo che dipinge fuori | pulsante sotto |
+|---|---|---|---|---|
+| 1280 · it | 18 + 63 | 0 | 0 | 0 |
+| 1280 · de | 18 + 63 | 0 | 0 | 0 |
+| 380 · it | 18 + 63 | 0 | 0 | **tutte** |
+| 380 · de, fr | 18 | 0 | 0 | tutte |
+
+A 1280 non cambia niente in nessuna lingua: i due blocchi restano sulla stessa
+riga con circa 370px di margine, e il pulsante resta a filo del bordo destro
+della card.
+
+##### Il criterio delle chiavi autorizzava i numeri che esisteva per impedire
+
+Il §2.7 diceva *"chiavi foglia di tipo stringa, tolti prima i commenti"*, e **due
+motivi di ricerca entrambi fedeli a quella frase danno numeri diversi**: 669 e
+731. La ragione è una proprietà del file e non della fretta di chi conta —
+**62 delle 731 chiavi hanno il valore sulla riga successiva**, perché la stringa
+non ci stava — quindi un motivo per riga le prende o le perde a seconda che il
+suo `\s*` attraversi l'a capo.
+
+**Il conto si fa sull'albero sintattico**, e il comando sta nel §2.7. Sull'albero
+non c'è niente da togliere: i commenti non sono nodi, e una proprietà o ha un
+letterale stringa per valore o non è una chiave foglia. Verificato: **731
+proprietà con inizializzatore letterale stringa, 109 oggetti, zero proprietà di
+altro tipo**, identici sui quattro dizionari.
+
+È la stessa forma delle correzioni al conteggio dei call site e dei `.jsx` — con
+la differenza che qui a essere invecchiato non era il numero, era **il criterio**,
+scritto due giorni fa da questa stessa serie di passate.
+
+##### Cosa vuol dire "occupato", scritto per il backend
+
+Il §4 del contratto diceva già che `bookAppointment` deve poter rifiutare uno
+slot occupato, e non diceva cosa sia occupato. Ora che la regola vive in un punto
+solo e **sopravvive alla cancellazione di `mock/`**, la definizione sta nel §8.5:
+stesso professionista **o stesso paziente**, intervalli e non istanti, estremi
+esclusi, e le annullate liberano la fascia.
+
+La metà che si dimentica è il **paziente**, perché ogni agenda guardata da sola è
+coerente — ed è esattamente il difetto trovato il 15.08.2026 e chiuso il giorno
+dopo.
+
+##### Due cose trovate e **non** difetti, registrate perché nessuno le corregga
+
+Sono l'esito più utile della review della passata precedente, e stanno qui per la
+ragione opposta a quella solita: **non perché qualcuno le sistemi, ma perché
+nessuno lo faccia in buona fede.**
+
+- **L'asse dell'attivazione di `AdminAnalytics` va da 0 a 100%, ed è giusto
+  così.** La serie scende da **~68% a ~52%** sui dodici mesi — misurata sul
+  grafico, 16 punti di dislivello — perché ogni cliente nuovo entra con
+  un'adozione più bassa e diluisce il totale: è la curva dell'onboarding che il
+  §8 racconta. Troncare l'asse sul range dei dati trasformerebbe quella
+  diluizione in una **caduta** che i dati non sostengono. Si legge poco
+  pronunciata perché 16 punti su 100 sono poco pronunciati; se un giorno
+  l'onboarding deve vedersi, **si annota, non si riscala**.
+
+  *(Due cifre sbagliate hanno accompagnato questa voce prima che qualcuno la
+  misurasse: «fra il 44% e il 52%», nella segnalazione che l'ha aperta, e «otto
+  punti percentuali», nella richiesta che l'ha chiusa. Sono 16, e nessuna delle
+  due cambia la conclusione — ma è la famiglia che questo file insegue da tre
+  passate, riprodotta su una riga che nessuno considerava un conteggio.)*
+
+- **`getStressHistory(departmentId?)` non è il caso del filtro tolto da
+  `getProfessionals`.** Si somigliano — un parametro opzionale su una lettura —
+  e le due proprietà che contano sono opposte: **la chiave lo codifica**,
+  `["company", "stress", departmentId ?? "all"]`, e **ha due chiamanti veri**,
+  `HRDashboard.tsx:164` per la serie aziendale e `:176` per quella del reparto in
+  alert. Il filtro dei professionisti non aveva né l'una né l'altra cosa. È la
+  distinzione da tenere a mente: a rendere tossico un parametro opzionale non è
+  l'opzionalità, è **una chiave che non distingue le due domande**.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
