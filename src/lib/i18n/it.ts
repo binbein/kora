@@ -1387,7 +1387,7 @@ export const it = {
          restano nel form, e dirlo evita che si ricominci da capo. */
       error: {
         title: "Invio non riuscito",
-        body: "I dati che hai scritto sono ancora qui: riprova.",
+        body: "I dati inseriti sono ancora qui: riprova.",
       },
 
       /* La validazione (M5.c). Registro strumento come il resto dell'area
@@ -1414,7 +1414,7 @@ export const it = {
          provider; la prova non è sparita, si è spostata in `/admin`, dove la
          richiesta compare in tabella (`DemoRequest.tsx`). */
       successBody:
-        "Grazie per l'interesse. Il nostro team ti contatterà entro un giorno lavorativo.",
+        "Grazie per l'interesse. Il nostro team risponderà entro un giorno lavorativo.",
       successHome: "Torna alla home",
       successRoi: "Intanto, calcola il ritorno",
     },
