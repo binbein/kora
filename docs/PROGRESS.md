@@ -3150,6 +3150,16 @@ gemello statico sugli slot proponibili e il controllo sull'agenda del paziente i
 succede mentre qualcuno prenota, e nessuno dei due copre l'altro — la nota sulla
 durata qui sopra dice esattamente dove il primo non arriva.
 
+> **La ripartizione si muove qui, ed è la riga che mancava** (aggiunta il
+> 16.08.2026). Dei due, quello in `bookAppointment` è **una chiamata lunga** —
+> `assertInDevOutsidePromise`, perché sta dentro un metodo `async` e il lancio
+> deve uscire dallo stack corrente — quindi il conto passa da `93 + 6` a
+> **`95 + 7`**: è la prima volta che il secondo addendo si muove da quando
+> esiste. Questo file si fermava al `93 + 6` della passata precedente e la
+> ripartizione corrente viveva solo nel `CLAUDE.md` §5.6, che è dove il criterio
+> sta di casa — e resta lì. Questa riga non apre un secondo elenco: dice **dove**
+> il settimo è nato, che è l'unica cosa che il §5.6 non può dire.
+
 ##### Verificato
 
 **Il punto 1 provato nei due versi, sullo stesso codice:**
