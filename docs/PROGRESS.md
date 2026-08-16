@@ -2057,7 +2057,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Ventisette passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Ventotto passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2067,12 +2067,22 @@ contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
 `README.md`, il residuo della nota di sessione, gli slot sovrapposti e i periodi
 non dichiarati, i fatti corretti nei documenti, il perimetro e le promesse in
 sospeso, il footer fuori dalla demo, i terzi e la simmetria del footer,
-l'identità collisa e gli stati limite, le simmetrie e le verifiche vere, e
-**questa passata**, la riga della seduta e i criteri che si contraddicevano —
-che è **l'ultima**: da qui la demo è congelata. Non
-aggiungono
+l'identità collisa e gli stati limite, le simmetrie e le verifiche vere, la riga
+della sessione e i criteri che si contraddicevano, e **questa passata**, le
+parole e il perimetro. Non aggiungono
 schermate e non spostano un numero a schermo — sono igiene del layer dati, del
-seam e del dizionario. **Quelle che hanno una sottosezione loro sono le
+seam e del dizionario.
+
+~~Le due passate del 16.08.2026 si sono dichiarate **l'ultima**, «da qui la demo
+è congelata».~~ → **Non lo erano**, e non per un imprevisto: la prima è stata
+smentita dalla review della propria PR, la seconda da una decisione dei founder
+arrivata dopo. **Da qui non si predice più quale sia l'ultima** (17.08.2026): una
+passata sa cosa ha fatto, non cosa verrà chiesto domani, ed è la stessa
+distinzione fra misurare e prevedere che il criterio di conteggio in testa a
+questo file tiene su un numero. Quello che resta vero, e che era il contenuto
+utile di quella frase, è **dove va il lavoro quando non c'è una richiesta
+aperta**: il perimetro dell'MVP (`docs/CONTRATTO-DATI.md` §8) e le decisioni in
+sospeso. **Quelle che hanno una sottosezione loro sono le
 sottosezioni qui sotto**, e si contano leggendole invece di fidarsi di una cifra
 in prosa: la riga diceva **sette** quando erano già tredici, ed è lo stesso
 difetto della testa di questo file due schermate più su — un numero scritto
@@ -4210,6 +4220,171 @@ nessuno lo faccia in buona fede.**
   alert. Il filtro dei professionisti non aveva né l'una né l'altra cosa. È la
   distinzione da tenere a mente: a rendere tossico un parametro opzionale non è
   l'opzionalità, è **una chiave che non distingue le due domande**.
+
+#### Le parole e il perimetro (17.08.2026)
+
+**Nove commit: tre di codice — `refactor:` ×2, `fix:` ×1 — e sei di documenti.**
+Totale e ripartizione dalla stessa misura, `git log --format='%s' master..HEAD`;
+il numero è `n + 1` perché il commit di chiusura conta sé stesso. **Nessuna
+logica cambia**: solo stringhe e documenti, e **nessun numero del §8 e del §9 si
+muove** — l'elenco verificato è più sotto.
+
+##### Una parola sola per la stessa cosa
+
+Il prodotto diceva **"sedute"** nel portale professionista e nel back-office e
+**"sessioni"** nei piani, nel portale dipendente e nelle KPI dell'HR. Non era una
+distinzione: era abitudine, e il §7 non la nominava. I founder hanno deciso
+**"sessioni"** (17.08.2026), e la ragione chiude la questione senza arbitrare fra
+due gusti — **è la parola del Business Plan**, quindi il listino e il portale
+dicono la stessa cosa, e un coach non tiene una seduta. La regola generale è ora
+nel `CLAUDE.md` §7.
+
+**Il difetto era in una lingua sola, ed è l'esito che vale oltre il caso.** Le
+38 stringhe da cambiare sono **tutte italiane**: tedesco, francese e inglese
+usavano già un termine solo — `Sitzung`, `séance`, `session` — per entrambe le
+parole italiane. **Chi traduce non eredita il difetto**, perché traduce il
+significato e non la parola, quindi da un confronto fra i quattro dizionari la
+doppia parola **non emerge**: i quattro file avevano già lo stesso numero di
+chiavi e nessuna incoerenza fra loro. Si trova solo contando le parole **dentro
+i valori di stringa di una lingua alla volta**, ed è il criterio scritto accanto
+alla regola.
+
+**Le tre accezioni restano tre.** I commenti che dichiarano cosa conta ognuna —
+carriera, singola agenda, piattaforma — sono stati riscritti e non tolti: a
+cambiare è il sostantivo, non la disciplina chiusa il 10.08.2026. Per la stessa
+ragione `kpiSessions` non è diventato "Totali".
+
+**`docs/PITCH.md` è stato allineato per intero**, venti occorrenze, e non solo
+dove cita un'etichetta: è il testo che una persona **pronuncia stando davanti
+allo schermo**, quindi è l'unico documento in cui le due parole finiscono
+affiancate davvero. Le citazioni testuali del Business Plan restano com'erano.
+La prosa di dominio del `CLAUDE.md` §8 e §9 e quella del contratto dati **non**
+sono state riscritte a tappeto: non sono interfaccia, e la regola lo dichiara.
+
+##### Tre etichette che non dicevano quello che contavano
+
+| prima | dopo | perché |
+|---|---|---|
+| "Con assessment" | **"Assessment iniziale completato"** | gergo interno: non diceva **quale** assessment né che si conta la sola esecuzione. È quello del §8 — dieci domande all'attivazione — e la KPI non dice mai l'esito, come `assessmentCompleted` |
+| "Nel roster" | **"Professionisti"** | titolava un conteggio di professionisti. Non "Totali", che riaprirebbe l'ambiguità fra le tre accezioni accanto a `kpiSessions` |
+| "Nessun professionista nel roster." | **"…nella rete."** | "rete" è la parola che il prodotto già usa: le strutture del check-up dicono "nella rete" da sempre |
+
+`roster` era on-screen in **due** lingue su quattro — italiano e tedesco — mentre
+francese e inglese dicevano già `réseau` e `network`: la stessa forma del caso
+qui sopra, un difetto che il confronto fra dizionari non mostra.
+
+##### La conferma della richiesta demo non nomina più l'azienda
+
+Il testo è generico (founder, 17.08.2026): *"Grazie per l'interesse. Il nostro
+team ti contatterà entro un giorno lavorativo."* **Lo stato resta il record e non
+un booleano**, perché la garanzia che la conferma non possa comparire senza una
+scrittura sta lì e non nella frase — a riempirlo è `onSuccess` con ciò che il
+provider ha risposto.
+
+**Quello che si perde è dichiarato nel sorgente, insieme a dove si ritrova**: il
+nome era la prova **a schermo** che il record era tornato dal provider, e quella
+prova ora vive in `/admin`, cioè nel passo 4 della coreografia di
+`docs/PITCH.md`. Non è una prova più debole: è la stessa, spostata nel punto in
+cui la demo la mostra già.
+
+##### Sette voci nuove per il perimetro dell'MVP
+
+Sei nel `CONTRATTO-DATI.md` §8, una qui. Nessuna è lavoro di codice oggi, e
+ognuna dice **perché** oggi non c'è.
+
+| voce | dove | il vincolo che la decide |
+|---|---|---|
+| le tre voci del profilo — stress, sonno, energia | §8.10, **gruppo nuovo** | non è rimettere tre etichette: è decidere cadenza, storico e "rispetto a cosa". Sta accanto al §8.9 perché è lo stesso problema |
+| le recensioni dei professionisti | §8.11, **gruppo nuovo** | **anonimo non basta**: una data e un dettaglio identificano su una rete da sei pazienti attivi, e la protezione non può stare nella forma del tipo perché una recensione nasce pubblica |
+| cosa può modificare il dipendente | dentro §8.3 | la domanda vera è a monte: chi crea l'account decide quali campi vengono dall'azienda |
+| "Pianifica review" | dentro §8.3 | non è una schermata: è un'integrazione con un calendario di terzi, e la cadenza dipende dal piano |
+| servizi e prenotazioni per struttura | dentro §8.6 | il catalogo decide se il check-up **executive** è erogabile lì, e le prenotazioni si derivano invece di essere una colonna |
+| l'omonimia | dentro §8.8 | il contratto aveva la metà sui dati — id veri — e non quella visibile: due `M.B.` rendono ambigue le righe anonime, e un id accanto alle iniziali è lo pseudonimo che quelle schermate esistono per non dare |
+| le animazioni d'ingresso dei grafici | «Migliorie rimandate al refinement» | il §6.2 **resta intero**: si registra che nacque da un difetto misurato su **una macchina sola**, e che una delle sue due ragioni vale solo in presentazione dal vivo |
+
+**I gruppi del §8 passano da dieci a dodici**, e Paginazione da §8.10 a §8.12.
+Nessun rimando si è rotto: i rimandi a quel gruppo lo **nominano** invece di
+numerarlo, che è la disciplina lasciata dall'inserzione precedente — «si cita ciò
+che non si muove». Chi cerca "dieci gruppi" lo trova nei due verbali che lo
+scrissero, dove era giusto.
+
+##### Il verbale che mancava, e le due righe invecchiate
+
+**I due pulsanti "Aggiungi"** — `AdminAziende` e `AdminProvider` — sono usciti
+con la migrazione del back-office del 09.08.2026 senza che niente li nominasse,
+a differenza del gemello "Approva". La riga ora c'è, accanto alla sua. **È il
+difetto delle affermazioni invecchiate visto in negativo**: lì una riga
+sopravvive al codice che descriveva, qui il codice se n'è andato senza lasciarne
+una — e la seconda forma è più difficile da trovare, perché non c'è niente da
+rileggere che sia falso.
+
+Le due righe corrette in questo file: **«La prossima milestone è M5»** nella
+sezione *Stato*, vera il giorno in cui fu scritta e sopravvissuta alla chiusura
+nel punto che chi riprende legge per primo; e le **«728 chiavi stringa»**
+dell'inventario delle promesse, che non è un verbale ma **un criterio vivo**,
+scritto per essere rieseguito da chi costruirà l'MVP — 731, con il rimando al
+`CLAUDE.md` §2.7 invece della ripetizione del criterio. La riga 4647 **non è
+stata toccata**: è dentro un blocco barrato del 15.08, cioè un resoconto datato.
+
+##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato prima di ogni misura
+
+- **zero occorrenze di "sedut*"** in tutte le schermate percorse, e nessuna
+  parola nuova al suo posto oltre a "sessioni";
+- **i numeri del pitch fermi**: CHF 14'200, 16 giorni, 68%, 82 su 120, 41 attivi,
+  142 di 1'200, 62%, soglia 12, −2 punti; i cinque di ancoraggio a N=100 —
+  1'289'500 / 221'150 / 66'000 / 155'150 / 2.35:1; 78/100, `3 su 10 sessioni
+  usate · 3 in programma`, 1 su 4; 6 pazienti attivi con **due sopra il cap**
+  — `I.G. 12 · 10 incluse + 2 a CHF 28` e `G.R. 11 · 10 incluse + 1` —, 18 in
+  programma e 63 erogate; CHF 80, CHF 1'120, CHF 5'040 e le righe settimanali
+  3+4+5+2 che sommano a 14; CHF 54'414, CHF 652'968, 415 su 798, 1'147, 195;
+  CHF 38 / 55 / 82 a listino;
+- **le quattro KPI di `/admin/utenti` restano alte uguali** — 170px, stessa `y`
+  — con il titolo nuovo su tre righe e **zero overflow**; misurato anche nelle
+  altre tre lingue con il font e la larghezza veri: due righe in tedesco e
+  francese, tre in inglese, nessuna che sfori;
+- **la conferma demo nelle quattro lingue**: nessuna nomina l'azienda, nessuna
+  sfora, e le due uscite restano — provata cambiando lingua **a conferma già a
+  schermo**, che non la rimonta;
+- **la coreografia di `/admin` regge**: tabella vuota a freddo, uscita col logo,
+  richiesta inviata da `/demo`, due Indietro, e in tabella `Ontano Logistica SA`
+  con `+41 91 000 00 00` e 23.09.2026. **Una sola navigazione** per tutto il giro;
+- **nessun overflow orizzontale** su nessuna delle schermate percorse, console
+  senza errori;
+- `lint`, `typecheck`, `build` e `build:demo` a posto; guardrail **108 = 100 + 8**,
+  invariati; **731 chiavi** in tutti e quattro i dizionari, invariate.
+
+##### Una cosa sullo strumento, ed è la stessa di due giorni fa
+
+**La prima scheda era cieca dal primo comando**: `innerWidth` a 0 con
+`visibilityState: hidden`, e il primo censimento è stato preso lì. I valori di
+testo erano giusti — `innerText` non dipende dal layout — ma per la regola del
+§11 una misura presa a larghezza zero non si usa, e tutto è stato rifatto su
+scheda nuova. È la terza volta in tre giorni: **non è un caso raro**, è il modo
+normale in cui questo pannello invecchia, e il controllo di `innerWidth` prima di
+ogni misura è la sola difesa.
+
+**La trappola dello spazio unificatore è tornata**, ed è la stessa di M1: cercare
+`"CHF 80"` con lo spazio da tastiera dà **falso** su una pagina che lo mostra,
+perché fra `CHF` e la cifra c'è U+00A0. Verificato leggendo i codepoint invece
+di fidarsi del primo `includes`.
+
+##### Aperto e dichiarato
+
+- **"Sedute" resta nei commenti del sorgente fuori da `i18n` e nella prosa dei
+  documenti di dominio**, ed è la scelta della regola, non un residuo: sono 69
+  occorrenze nel `CONTRATTO-DATI.md`, più i commenti di `lib/` e di `mock/`. Si
+  allineano quando qualcuno tocca il punto in cui stanno, come i `.jsx` del §3.
+- **Il "ti" della conferma demo è una scelta di registro da rileggere.** Il §7
+  vuole l'area pubblica in terza persona, e la frase dei founder dà del tu; nella
+  stessa schermata `error.body` lo faceva già — *"I dati che hai scritto…"* —
+  quindi non introduce un caso nuovo, ma **è il secondo**. In tedesco e francese
+  la stessa frase esce con `Sie` e `vous`, perché lì il registro dell'area è
+  quello: la divergenza è voluta e sta nella convenzione delle lingue, non in una
+  svista.
+- **`Assessment initial terminé` tiene il prestito che `fr.ts` aveva già.** Non è
+  una scelta lessicale nuova — la stessa chiave diceva "Avec assessment" — quindi
+  non è stata aggiunta alle cinque domande in testa a quel file. Se la revisione
+  madrelingua preferisse *évaluation initiale*, cambia una stringa sola.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
