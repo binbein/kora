@@ -105,7 +105,15 @@ consultare: le cifre ammesse sono solo quelle trascritte in `CLAUDE.md` §8 e §
 trimestre scelto — e da **16.08.2026 quella pagina è verificata**, non promessa:
 prima il controllo restituiva un numero che valeva sempre uno. Da lì il lavoro è **refinement fra le milestone** — passate
 che non aggiungono schermate e mettono in ordine layer dati, seam e dizionario;
-la sintesi sta nella sezione dedicata, sotto M4. **La prossima milestone è M5.**
+la sintesi sta nella sezione dedicata, sotto M4.
+
+~~**La prossima milestone è M5.**~~ → **M5 è chiusa**, e con lei il piano: la
+riga lo dice cinquanta righe più su. *(Barrata il 17.08.2026. Era vera il
+giorno in cui è stata scritta ed è sopravvissuta alla chiusura, nel punto che
+chi riprende legge per primo — la stessa forma della versione del router nel
+`CLAUDE.md` §3, e lo stesso posto: la sezione che orienta prima di tutte le
+altre. A trovarla non è stato un conteggio, perché qui non c'era un numero;
+l'ha trovata la riga che la smentisce, come per le passate di refinement.)*
 
 **La palette è decisa ed eseguita** (riunione del 10.08.2026): le CTA piene sono
 passate su `primary`, 13 punti su 9 file, e nessun call site usa più
@@ -4939,8 +4947,15 @@ cui si decide la residenza dei dati, che il §2.1 dei *Dubbi* colloca **prima de
 primo pilot**, cioè prima dei contratti.
 
 **Il criterio**, perché il conto sia rifacibile: si contano le stringhe di
-`src/lib/i18n/it.ts` — **728 chiavi stringa** — che **affermano qualcosa che una
-privacy policy dovrà sostenere o smentire**. Restano fuori le etichette, i titoli
+`src/lib/i18n/it.ts` — **731 chiavi**, con il criterio e il comando che le
+contano nel `CLAUDE.md` §2.7, che è l'unico punto che le conta — che
+**affermano qualcosa che una privacy policy dovrà sostenere o smentire**.
+*(Diceva **728**, che non è nessuna delle misure note di quel file: era una
+cifra senza criterio, ed è il difetto che il §2.7 esiste per non produrre.
+Corretta il 17.08.2026. Non è un verbale che si lascia com'è: è un criterio
+**vivo**, scritto per essere rieseguito da chi costruirà l'MVP, e chi lo
+rieseguisse partendo da 728 non ritroverebbe il proprio punto di partenza.)*
+Restano fuori le etichette, i titoli
 di colonna, gli stati vuoti e le stringhe che contengono una parola chiave senza
 fare un'affermazione: "Lugano, Svizzera" è un indirizzo, "scenario conservativo"
 è il modello ROI. Ogni promessa ha le sue tre traduzioni; **il conto è su `it.ts`
