@@ -1,4 +1,4 @@
-import { addDays, startOfWeek } from "../../dates";
+import { addDays, overlaps, startOfWeek } from "../../dates";
 import { assertInDev } from "../guardrails";
 import type {
   Payout,
@@ -625,6 +625,9 @@ assertInDev(
  * Un'ora non può essere insieme occupata e prenotabile: le due liste finiscono
  * nella stessa griglia, e il conflitto si vede solo a schermo e solo se qualcuno
  * guarda proprio quel giorno.
+ *
+ * **Intervalli e non istanti** (16.08.2026): confrontava il solo inizio, quindi
+ * vedeva uno slot che comincia sulla seduta e non uno che la invade a metà.
  */
 for (const slot of INITIAL_SLOTS.filter(
   (entry) => entry.professionalId === PORTAL_PROFESSIONAL_ID,
@@ -633,8 +636,50 @@ for (const slot of INITIAL_SLOTS.filter(
     !PORTAL_SESSIONS.some(
       (session) =>
         session.status !== "cancelled" &&
-        session.start.getTime() === slot.start.getTime(),
+        overlaps(
+          slot.start,
+          slot.durationMinutes,
+          session.start,
+          session.durationMinutes,
+        ),
     ),
-    `Uno slot prenotabile della Dr.ssa Meier cade su una seduta già in agenda.`,
+    `Uno slot prenotabile della Dr.ssa Meier si sovrappone a una seduta già in agenda.`,
+  );
+}
+
+/*
+ * NESSUNO SLOT PROPONIBILE CADE SU UNA SEDUTA CHE IL PAZIENTE HA GIÀ, con
+ * qualunque professionista. È il controllo che chiude la trappola lasciata a
+ * verbale il 15.08.2026, e va letto insieme al gemello di `scheduling.ts`.
+ *
+ * Quello confronta **gli slot fra loro** e non arriva qui: il caso più stretto è
+ * lo slot Fontana del giovedì, 16:30, contro la seduta di Laura delle 17:30 —
+ * dieci minuti di margine con una durata di 50, zero a 60, sovrapposizione da
+ * 61. Il controllo a runtime della prenotazione lo prende, ma **solo se qualcuno
+ * prenota davvero** quello slot; questo lo prende all'inizializzazione, cioè il
+ * giorno in cui qualcuno tocca `SESSION_DURATION_MINUTES` e non riprenota
+ * niente.
+ *
+ * Sta qui e non in `scheduling.ts` perché lì le sedute non ci sono: quel file
+ * definisce `SESSION_DURATION_MINUTES` e importarle chiuderebbe un ciclo. È lo
+ * stesso motivo per cui il controllo qui sopra vive in questo file.
+ *
+ * Guarda **le sole sedute del paziente del portale**: le altre sono di persone
+ * diverse, che possono benissimo avere quell'ora occupata.
+ */
+for (const slot of INITIAL_SLOTS) {
+  assertInDev(
+    !PORTAL_SESSIONS.some(
+      (session) =>
+        session.patientId === PORTAL_PATIENT_EMPLOYEE_ID &&
+        session.status !== "cancelled" &&
+        overlaps(
+          slot.start,
+          slot.durationMinutes,
+          session.start,
+          session.durationMinutes,
+        ),
+    ),
+    `Lo slot di ${slot.professionalId} del ${slot.start.toISOString()} si sovrappone a una seduta che il dipendente ha già: chi prenota è una persona sola.`,
   );
 }

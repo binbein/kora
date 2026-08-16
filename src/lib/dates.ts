@@ -25,6 +25,31 @@ export function addDays(date: Date, days: number): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
 }
 
+/**
+ * Se due fasce si sovrappongono. **Estremi esclusi**: una che finisce alle 17:30
+ * e una che comincia alle 17:30 non si sovrappongono, si toccano.
+ *
+ * STA QUI, IN UN POSTO SOLO, PERCHÉ LO CHIEDONO IN CINQUE (16.08.2026). Due
+ * guardrail statici, il filtro degli slot liberi e due controlli della
+ * prenotazione facevano la stessa aritmetica, e **tre di loro la facevano
+ * diversa**: confrontavano il solo istante d'inizio, quindi vedevano due sedute
+ * che cominciano insieme e non una che ne invade un'altra di venti minuti. È il
+ * difetto corretto su un lato il 15.08.2026 e lasciato asimmetrico sull'altro.
+ *
+ * Sopravvive alla cancellazione di `mock/` (§5.7), ed è voluto: la regola non è
+ * del dataset finto, è del dominio, e il backend dovrà applicarla.
+ */
+export function overlaps(
+  aStart: Date,
+  aMinutes: number,
+  bStart: Date,
+  bMinutes: number,
+): boolean {
+  const aEnd = aStart.getTime() + aMinutes * 60_000;
+  const bEnd = bStart.getTime() + bMinutes * 60_000;
+  return aStart.getTime() < bEnd && bStart.getTime() < aEnd;
+}
+
 /** Due istanti che cadono nello stesso giorno di calendario. */
 export function isSameDay(a: Date, b: Date): boolean {
   return (
