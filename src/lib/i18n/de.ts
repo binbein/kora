@@ -1197,7 +1197,7 @@ export const de: Dictionary = {
       kpiActive: "Aktive Einrichtungen",
       kpiCities: "Abgedeckte Städte",
       kpiBookings: "Gebuchte Check-ups",
-      kpiBookingsHint: "Über zwölf Monate",
+      kpiBookingsHint: "Plattformweit, über zwölf Monate",
       kpiPending: "In Vertragsprüfung",
 
       colName: "Einrichtung",

@@ -1591,7 +1591,11 @@ export const it = {
       kpiActive: "Strutture attive",
       kpiCities: "Città coperte",
       kpiBookings: "Check-up prenotati",
-      kpiBookingsHint: "Sui dodici mesi",
+      /* "di piattaforma": è la somma su tutti i clienti, non su Demo SA —
+         la dashboard HR ne mostra 51 per la sola Demo SA, e due numeri sulla
+         stessa cosa devono dire di cosa parlano. È la disciplina già adottata
+         per le tre accezioni di "sedute" (16.08.2026). */
+      kpiBookingsHint: "Di piattaforma, sui dodici mesi",
       kpiPending: "In convenzionamento",
 
       colName: "Struttura",

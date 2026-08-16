@@ -1252,7 +1252,7 @@ export const en: Dictionary = {
       kpiActive: "Active centres",
       kpiCities: "Cities covered",
       kpiBookings: "Check-ups booked",
-      kpiBookingsHint: "Over the twelve months",
+      kpiBookingsHint: "Platform-wide, over the twelve months",
       kpiPending: "Under agreement",
 
       colName: "Centre",
