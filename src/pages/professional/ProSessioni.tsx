@@ -137,6 +137,22 @@ export default function ProSessioni() {
   /* Il primo lettore di `getSessionNote`: "Modifica nota" apriva un foglio
      bianco e salvando sovrascriveva quella che c'era. */
   const noteQuery = useSessionNote(professionalId, openSession?.id);
+
+  /*
+   * I TRE CASI VALGONO ANCHE QUI, E IL RAMO D'ERRORE RIAPRIVA IL DIFETTO CHE
+   * QUESTA QUERY ESISTE PER CHIUDERE (16.08.2026).
+   *
+   * `stored` resta `undefined` sia mentre la nota arriva sia quando non
+   * arriverà mai: senza distinguerli, una lettura fallita su una seduta che una
+   * nota **ce l'ha** apriva tre campi bianchi sotto l'etichetta "Modifica
+   * nota", e "Salva" ci scriveva sopra il vuoto. Il guasto di rete diventava
+   * una cancellazione.
+   *
+   * La query non entra nel gruppo della pagina: è disabilitata finché non c'è
+   * un dialogo aperto, e lì dentro direbbe "in attesa" a una schermata che non
+   * aspetta niente. Ha il suo stato, dentro il dialogo che la usa.
+   */
+  const note = loadState([noteQuery]);
   const stored = noteQuery.data;
   const current: NoteDraft =
     draft ??
@@ -220,6 +236,19 @@ export default function ProSessioni() {
               })}
             </DialogTitle>
           </DialogHeader>
+          {/*
+            * Sull'errore il modulo non si disegna affatto, e non è severità: tre
+            * campi vuoti accanto a "non è stato possibile leggere la nota" si
+            * leggono comunque come una nota vuota, che è precisamente
+            * l'equivoco da cui nasce la sovrascrittura. Il gesto utile è
+            * rileggere, e ce l'ha il "Riprova".
+            */}
+          {note.state === "error" ? (
+            <ErrorNotice
+              copy={t.professional.sessions.note.loadError}
+              onRetry={note.retry}
+            />
+          ) : (
           <div className="space-y-4">
             <div>
               <Label>{t.professional.sessions.note.notes}</Label>
@@ -264,9 +293,22 @@ export default function ProSessioni() {
               * booleano. Il pulsante spento è il modo più quieto di dirlo: non
               * c'è niente da segnalare finché non si è scritto niente.
               */}
+            {/*
+              * `note.state !== "ready"` è la terza condizione, e sorveglia
+              * l'attesa: finché la nota salvata non è arrivata non si sa cosa
+              * si sovrascriverebbe. Il corpo del dialogo **non** si sospende —
+              * lo si è deciso il 15.08.2026, perché sospenderlo toccherebbe
+              * anche le 55 sedute senza nota, dove il modulo vuoto è già la
+              * resa giusta: a non essere disponibile è il salvataggio, non la
+              * schermata.
+              */}
             <Button
               className="w-full bg-executive hover:bg-executive/90"
-              disabled={saveNote.isPending || isNoteEmpty(current)}
+              disabled={
+                saveNote.isPending ||
+                isNoteEmpty(current) ||
+                note.state !== "ready"
+              }
               onClick={() =>
                 openSession && saveNote.mutate({ sessionId: openSession.id, ...current })
               }
@@ -286,6 +328,7 @@ export default function ProSessioni() {
               {t.professional.sessions.note.privacy}
             </p>
           </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>

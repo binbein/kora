@@ -498,6 +498,10 @@ export const de: Dictionary = {
           title: "Notiz nicht gespeichert",
           body: "Der Text ist noch hier: versuchen Sie es erneut.",
         },
+                loadError: {
+          title: "Notiz nicht verfügbar",
+          body: "Die Notiz dieser Sitzung wurde nicht geladen. Ein Speichern würde sie jetzt überschreiben.",
+        },
         saved: "Notiz gespeichert",
         privacy:
           "Die Notizen sind privat und werden nicht mit dem Unternehmen der Patientin geteilt.",

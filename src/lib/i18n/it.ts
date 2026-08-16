@@ -587,6 +587,13 @@ export const it = {
           title: "Nota non salvata",
           body: "Il testo è ancora qui: riprova.",
         },
+        /* La nota salvata non è stata letta. Il salvataggio resta spento
+           finché non arriva: senza sapere cosa c'è, scriverci sopra è una
+           cancellazione (16.08.2026). */
+        loadError: {
+          title: "Nota non disponibile",
+          body: "La nota di questa seduta non è stata letta. Salvare adesso la sovrascriverebbe.",
+        },
         saved: "Nota salvata",
         privacy:
           "Le note sono private e non vengono condivise con l'azienda del paziente.",

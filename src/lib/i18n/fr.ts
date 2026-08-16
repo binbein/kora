@@ -532,6 +532,10 @@ export const fr: Dictionary = {
           title: "Note non enregistrée",
           body: "Le texte est encore là : réessayez.",
         },
+                loadError: {
+          title: "Note indisponible",
+          body: "La note de cette séance n'a pas pu être chargée. L'enregistrer maintenant l'écraserait.",
+        },
         saved: "Note enregistrée",
         privacy:
           "Les notes sont privées et ne sont pas partagées avec l'entreprise du patient.",

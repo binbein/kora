@@ -525,6 +525,10 @@ export const en: Dictionary = {
           title: "Note not saved",
           body: "The text is still here: try again.",
         },
+                loadError: {
+          title: "Note unavailable",
+          body: "The note for this session did not load. Saving now would overwrite it.",
+        },
         saved: "Note saved",
         privacy:
           "Notes are private and are not shared with the patient's organisation.",
