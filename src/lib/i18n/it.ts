@@ -564,7 +564,9 @@ export const it = {
          professionista, e il numero e' il suo. */
       completed: "Erogate ({n})",
       cancelled: "Annullate ({n})",
-      start: "Avvia",
+      /* La videochiamata è uno dei servizi che la demo non simula (§1.1), e
+         il pulsante lo dice invece di restare premibile senza esito. */
+      startUnavailable: "Videochiamata non attiva nella demo",
       addNote: "Aggiungi nota",
       editNote: "Nota",
       emptyUpcoming: "Nessuna seduta in programma.",

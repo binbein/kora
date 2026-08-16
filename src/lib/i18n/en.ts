@@ -505,7 +505,7 @@ export const en: Dictionary = {
       upcoming: "Scheduled ({n})",
       completed: "Delivered ({n})",
       cancelled: "Cancelled ({n})",
-      start: "Start",
+      startUnavailable: "Video call not active in this demo",
       addNote: "Add note",
       editNote: "Note",
       emptyUpcoming: "No session scheduled.",

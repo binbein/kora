@@ -56,9 +56,22 @@ function SessionRow({
           </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
+          {/*
+            * IL PULSANTE RESTA E DICE PERCHÉ NON SI PREME, come quello del
+            * check-up (`Checkup.tsx`): è lo stesso caso, un'azione che il
+            * prodotto avrà e la demo non simula (§1.1).
+            *
+            * Fino al 16.08.2026 era abilitato e senza `onClick`: l'unico
+            * controllo attivo dell'applicazione che non faceva niente, sulla
+            * prima scheda che si apre entrando nel portale. Toglierlo avrebbe
+            * lasciato la seduta in programma senza esito visibile; il motivo
+            * sta nell'etichetta, perché è lì che lo cerca chi ha appena
+            * provato a premere.
+            */}
           {session.status === 'scheduled' && (
-            <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-              <Video className="w-3.5 h-3.5 mr-1" aria-hidden="true" /> {t.professional.sessions.start}
+            <Button size="sm" variant="outline" disabled>
+              <Video className="w-3.5 h-3.5 mr-1" aria-hidden="true" />
+              {t.professional.sessions.startUnavailable}
             </Button>
           )}
           {session.status === 'completed' && (

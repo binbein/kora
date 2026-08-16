@@ -512,7 +512,7 @@ export const fr: Dictionary = {
       upcoming: "Prévues ({n})",
       completed: "Effectuées ({n})",
       cancelled: "Annulées ({n})",
-      start: "Démarrer",
+      startUnavailable: "Visioconférence inactive dans cette démo",
       addNote: "Ajouter une note",
       editNote: "Note",
       emptyUpcoming: "Aucune séance prévue.",

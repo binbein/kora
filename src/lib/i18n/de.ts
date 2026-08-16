@@ -478,7 +478,7 @@ export const de: Dictionary = {
       upcoming: "Geplant ({n})",
       completed: "Durchgeführt ({n})",
       cancelled: "Abgesagt ({n})",
-      start: "Starten",
+      startUnavailable: "Videoanruf in dieser Demo nicht aktiv",
       addNote: "Notiz hinzufügen",
       editNote: "Notiz",
       emptyUpcoming: "Keine geplante Sitzung.",
