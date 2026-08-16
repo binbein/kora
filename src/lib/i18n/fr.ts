@@ -33,13 +33,42 @@ import type { Dictionary } from "./index";
  * ci era arrivato con il nominale puro; l'italiano tiene l'imperativo, che è
  * neutro per prassi.
  *
- * TIPOGRAFIA: SPAZIO UNIFICATORE PRIMA DI `:` E DI `?`. È il carattere U+00A0,
- * non lo spazio della tastiera, ed è la convenzione francese — `Focus : {area}`,
- * `Comment te sens-tu aujourd'hui ?`. Sta dichiarato qui perché è **invisibile**:
- * un `grep` scritto con lo spazio normale non trova la stringa, che è la stessa
- * trappola dello spazio di `formatCHF` (M1). La forma più stretta della regola
- * vuole l'espace fine (U+202F) davanti a `?`: è una scelta di finezza
- * tipografica e sta fra i punti da portare alla revisione madrelingua.
+ * TIPOGRAFIA: LO SPAZIO PRIMA DI `:` E DI `?` È QUELLO DELLA TASTIERA, ED È UN
+ * PUNTO APERTO PER LA REVISIONE MADRELINGUA.
+ *
+ * Fino al 16.08.2026 questa testata dichiarava lo spazio unificatore U+00A0 —
+ * `Focus : {area}`, `Comment te sens-tu aujourd'hui ?` — e **il file non lo
+ * rispettava in nessun punto**, **compresi i due esempi che la testata portava
+ * a modello**. Misurato, non dedotto: in tutto `fr.ts` gli U+00A0 erano **zero**.
+ *
+ * **Il conto, con il suo criterio** — si contano le occorrenze dentro i
+ * *letterali di stringa* del dizionario, cioè ciò che va a schermo, non la prosa
+ * dei commenti che li nomina: **35**, cioè 25 davanti ai due punti e 10 davanti
+ * al punto interrogativo (16.08.2026). Il criterio è quello del `CLAUDE.md`
+ * §5.6 applicato qui: un conteggio sul file intero si muove ogni volta che
+ * qualcuno tocca un commento, e sarebbe il numero senza criterio che quella
+ * sezione esiste per non produrre.
+ *
+ * **La regola non è stata applicata, la dichiarazione è stata tolta**, e la
+ * scelta ha tre ragioni:
+ *
+ *   1. **quale carattere** non è deciso, ed è esattamente ciò che un revisore
+ *      madrelingua decide: la forma stretta vuole l'espace fine U+202F davanti
+ *      a `; : ! ?`, quella corrente ammette U+00A0 davanti ai due punti. Questa
+ *      testata mandava già la seconda metà della domanda alla revisione;
+ *   2. **sarebbe il quinto carattere invisibile di questo codice**, ed è la
+ *      ragione per cui il `CLAUDE.md` §2.7 ha rifiutato U+202F nei numeri —
+ *      lì per una resa che si vede, qui per una che non si vede;
+ *   3. **il momento in cui servirebbe non arriva prima della revisione.** Il
+ *      suo innesco è *"prima di qualunque presentazione non in italiano"*, e
+ *      `docs/PITCH.md` dichiara che la lingua non si cambia in sala. Chi arriva
+ *      prima non è un lettore francese: è chi apre questo file e legge una
+ *      promessa che il file non mantiene.
+ *
+ * Resta vera la ragione per cui la voce esisteva: **se un giorno lo spazio
+ * unificatore entra, va dichiarato qui**, perché è invisibile e un `grep`
+ * scritto con lo spazio normale non trova la stringa — la stessa trappola dello
+ * spazio di `formatCHF` (M1).
  *
  * I SEGNAPOSTO SONO QUELLI DELL'ITALIANO, alla lettera: `{n}`, `{max}`,
  * `{company}`. Rinominarne uno compila e rende `{nombre}` a schermo, quindi a
@@ -76,9 +105,12 @@ import type { Dictionary } from "./index";
  *      des séances`, e la distinzione dagli altri due conteggi si sposta nel
  *      sottotitolo. È lo stesso punto che il tedesco ha portato alla sua
  *      revisione con `Sitzungen gesamt`.
- *   5. Lo **spazio prima di `?`** è l'unificatore U+00A0; la regola stretta
- *      vuole l'espace fine U+202F. Davanti ai due punti U+00A0 è corretto in
- *      entrambe le scuole.
+ *   5. Lo **spazio prima di `:` e di `?`** è quello della tastiera, in tutte e
+ *      35 le occorrenze a schermo. La regola francese ne vuole uno unificatore, e
+ *      **quale** è la domanda: la forma stretta dà l'espace fine U+202F davanti
+ *      a `; : ! ?`, quella corrente ammette U+00A0 davanti ai due punti. Va
+ *      deciso qui e applicato in un colpo solo, mai una stringa alla volta —
+ *      la ragione per esteso è in testa a questo file.
  */
 export const fr: Dictionary = {
   common: {
