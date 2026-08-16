@@ -126,8 +126,15 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
 Ereditato da base44, **e non è lo stack della demo precedente**: chi arriva dal
 repository Next non dia niente per scontato.
 
-- **Vite 6 + React 18 + react-router-dom 6.** Nessun server, nessun SSR: è una SPA
+- **Vite 6 + React 18 + react-router-dom 7.** Nessun server, nessun SSR: è una SPA
   che si serve come file statici.
+
+  **Diceva 6, ed era invecchiata dal 12.08.2026**: il blocco d) di M5 ha portato
+  il router alla 7 — il major è entrato per primo e da solo, e le cinque API che
+  questo progetto usa sono immutate — mentre questa riga è rimasta a dichiarare
+  la versione precedente per quattro giorni. Corretta il 16.08.2026. È la
+  sezione che ogni sessione legge per prima, ed è il posto in cui una versione
+  sbagliata costa di più: chi la crede si prepara a un'API che non c'è.
 - **TypeScript.** Vite compila `.ts`/`.tsx` nativamente e la convivenza con il
   `.jsx` esistente è indolore. **Tutto il codice nuovo si scrive in TypeScript**;
   le pagine ereditate si convertono quando le si tocca (§10), non tutte insieme.
