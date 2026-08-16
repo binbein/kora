@@ -27,7 +27,10 @@ import { it } from "./it";
  * *(Diceva 663, e non era un numero invecchiato: era sbagliato quando è stato
  * scritto — al merge della tranche tedesca le chiavi erano già ~721. Il criterio
  * con cui si contano sta nel `CLAUDE.md` §2.7, che è l'unico punto che le conta:
- * qui si cita, per non tenerne un secondo elenco che possa divergere.)*
+ * qui si cita, per non tenerne un secondo elenco che possa divergere. **E si fa
+ * sull'albero sintattico, non con un grep**: 62 delle 731 hanno il valore sulla
+ * riga successiva, quindi un motivo di ricerca per riga le prende o le perde a
+ * seconda di come tratta l'a capo. Il comando sta nel §2.7.)*
  */
 
 const PLACEHOLDER = /\{(\w+)\}/g;
