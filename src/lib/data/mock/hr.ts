@@ -71,8 +71,21 @@ export const EMPLOYEE_DIRECTORY: EmployeeDirectoryEntry[] = [
     checkupStatus: "available",
   },
   {
-    employeeId: "sc",
-    initials: "S.C.",
+    /*
+     * ERA `sc` / "S.C.", ED ERA UNA COLLISIONE DI IDENTITÀ (16.08.2026).
+     *
+     * S.C. sono anche le iniziali di Sara Conti, la referente HR di Demo SA in
+     * `platform.ts`: per il §8 — stesse iniziali, stessa persona — questa riga,
+     * il suo percorso dalla Dr.ssa Meier e l'utente del back-office parlavano
+     * della stessa persona, e la facevano risultare in Vendite e con il
+     * percorso terapeutico più lungo della demo.
+     *
+     * A cambiare sono le **iniziali**, non il nome: un nome nuovo passa dalla
+     * verifica del §8 e da una decisione dei founder, una coppia di iniziali
+     * libera no.
+     */
+    employeeId: "ig",
+    initials: "I.G.",
     departmentId: "sales",
     enrolled: true,
     checkupStatus: "completed",
