@@ -59,8 +59,28 @@ const SEEDS: QuarterSeed[] = [
   { enrolledEmployees: 39, activeEmployees: 18 },
 ];
 
-/** CHF risparmiati per dipendente attivo, ancorati al trimestre corrente (§9). */
-const SAVINGS_PER_ACTIVE = 14200 / 41;
+/**
+ * I CHF 14'200 del §8: il risparmio del trimestre corrente, e l'ancoraggio da
+ * cui scendono gli altri tre. È l'unica cifra scritta di questo blocco, e
+ * scritta **una volta**.
+ */
+const CURRENT_QUARTER_SAVINGS_CHF = 14200;
+
+/**
+ * CHF risparmiati per dipendente attivo, ancorati al trimestre corrente (§9).
+ *
+ * IL DIVISORE VIENE DAL SEME, NON RISCRITTO (16.08.2026). Era `14200 / 41`, e
+ * quel 41 era la terza scrittura dello stesso fatto — sta nel primo seme tre
+ * righe sopra, e i CHF 14'200 stavano anche in `toSnapshot`. Cambiando gli
+ * attivi del trimestre corrente, i tre trimestri precedenti sarebbero stati
+ * scalati con un tasso vecchio: nessun guardrail se ne sarebbe accorto, perché
+ * gli importi che ne escono sono plausibili e crescenti come devono essere.
+ *
+ * Era l'unico punto del dataset in cui il §5.5 era violato su un numero
+ * d'ancoraggio.
+ */
+const SAVINGS_PER_ACTIVE =
+  CURRENT_QUARTER_SAVINGS_CHF / SEEDS[0].activeEmployees;
 
 /**
  * Monte sessioni annuo dell'azienda: organico per sessioni incluse dal piano.
@@ -95,7 +115,7 @@ function toSnapshot(seed: QuarterSeed, index: number): RoiSnapshot {
   // CHF 14'200 esatti del §8, che sono l'ancoraggio di tutti gli altri
   const savedChf =
     index === 0
-      ? 14200
+      ? CURRENT_QUARTER_SAVINGS_CHF
       : roundToHundreds(seed.activeEmployees * SAVINGS_PER_ACTIVE);
 
   return {
