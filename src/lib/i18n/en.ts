@@ -1172,7 +1172,7 @@ export const en: Dictionary = {
       kpiTotal: "Enrolled users",
       kpiTotalHint: "Across all clients in the portfolio",
       kpiActive: "Active",
-      kpiWithAssessment: "With assessment",
+      kpiWithAssessment: "Initial assessment completed",
       kpiAverageScore: "Average health profile",
       kpiOnExtract: "On the {shown} rows shown",
 
@@ -1198,7 +1198,7 @@ export const en: Dictionary = {
     professionals: {
       title: "Professionals",
       empty: "No professional in the network.",
-      kpiTotal: "In the network",
+      kpiTotal: "Professionals",
       kpiBookable: "Bookable",
       kpiVetting: "In vetting",
       /* "Sedute di carriera" ha in inglese un aggettivo che le altre due lingue

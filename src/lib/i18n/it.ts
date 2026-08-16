@@ -1496,7 +1496,12 @@ export const it = {
          iscritti. */
       kpiTotalHint: "Su tutti i clienti in portafoglio",
       kpiActive: "Attivi",
-      kpiWithAssessment: "Con assessment",
+      /* Quale assessment, e che cosa se ne conta: "con assessment" era gergo
+         interno che non diceva né l'uno né l'altro. È l'assessment iniziale
+         del §8 — dieci domande all'attivazione dell'account — e la KPI conta
+         **che** sia stato fatto, mai con che esito, come `assessmentCompleted`
+         (`docs/CONTRATTO-DATI.md` §3). */
+      kpiWithAssessment: "Assessment iniziale completato",
       kpiAverageScore: "Profilo salute medio",
       /* Le tre KPI qui sopra si contano sull'estratto, la prima su tutta la
          piattaforma: senza dirlo, quattro numeri affiancati sembrerebbero
@@ -1526,9 +1531,14 @@ export const it = {
 
     professionals: {
       title: "Professionisti",
-      /* Roster vuoto: nessuno è ancora entrato nella rete. */
-      empty: "Nessun professionista nel roster.",
-      kpiTotal: "Nel roster",
+      /* Rete vuota: nessuno è ancora entrato. "Roster" era gergo interno, e
+         la rete è già la parola con cui il prodotto nomina l'insieme — le
+         strutture del check-up dicono "nella rete" da sempre. */
+      empty: "Nessun professionista nella rete.",
+      /* Titola il conteggio dei professionisti, non quello delle sessioni:
+         "Professionisti" e non "Totali", che riaprirebbe l'ambiguità fra le
+         tre accezioni chiusa il 10.08.2026. */
+      kpiTotal: "Professionisti",
       kpiBookable: "Prenotabili",
       kpiVetting: "In verifica",
       /* "di carriera": e' la somma dei totali di sempre dei cinque

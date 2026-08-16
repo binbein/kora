@@ -1120,7 +1120,7 @@ export const de: Dictionary = {
       kpiTotal: "Angemeldete Benutzer",
       kpiTotalHint: "Über alle Kunden im Portfolio",
       kpiActive: "Aktiv",
-      kpiWithAssessment: "Mit Assessment",
+      kpiWithAssessment: "Erstassessment abgeschlossen",
       kpiAverageScore: "Durchschnittliches Gesundheitsprofil",
       kpiOnExtract: "Auf den {shown} gezeigten Zeilen",
 
@@ -1145,8 +1145,8 @@ export const de: Dictionary = {
 
     professionals: {
       title: "Fachpersonen",
-      empty: "Keine Fachperson im Roster.",
-      kpiTotal: "Im Roster",
+      empty: "Keine Fachperson im Netzwerk.",
+      kpiTotal: "Fachpersonen",
       kpiBookable: "Buchbar",
       kpiVetting: "In Prüfung",
       kpiSessions: "Sitzungen gesamt",

@@ -1218,7 +1218,7 @@ export const fr: Dictionary = {
       kpiTotal: "Utilisateurs inscrits",
       kpiTotalHint: "Sur tous les clients en portefeuille",
       kpiActive: "Actifs",
-      kpiWithAssessment: "Avec assessment",
+      kpiWithAssessment: "Assessment initial terminé",
       kpiAverageScore: "Profil santé moyen",
       kpiOnExtract: "Sur les {shown} lignes affichées",
 
@@ -1244,7 +1244,7 @@ export const fr: Dictionary = {
     professionals: {
       title: "Professionnels",
       empty: "Aucun professionnel dans le réseau.",
-      kpiTotal: "Dans le réseau",
+      kpiTotal: "Professionnels",
       kpiBookable: "Réservables",
       kpiVetting: "En vérification",
       /* "Sedute di carriera" non ha un composto corto in francese che non
