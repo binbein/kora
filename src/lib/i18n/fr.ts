@@ -679,6 +679,8 @@ export const fr: Dictionary = {
     companySubtitle: "{name} · {count} collaborateurs · Plan {plan}",
 
     quarterSelectorLabel: "Trimestre",
+    quarterFrameTitle: "Le trimestre sélectionné",
+    quarterFrameHint: "Tout ce qui se trouve ici change avec le trimestre.",
     quarterLabel: "Trimestre {quarter} {year}",
     quarterLabelInProgress: "Trimestre {quarter} {year} · en cours",
     quarterShort: "T{quarter}",
@@ -728,6 +730,7 @@ export const fr: Dictionary = {
     trendDepartmentLegend: "de {from} à {to} · en zone haute depuis le mois {month}",
 
     roiTitle: "Économies par trimestre",
+    roiSubtitle: "Les quatre trimestres, celui qui est sélectionné en évidence.",
 
     stressLevel: {
       low: "Bas",

@@ -746,6 +746,10 @@ export const it = {
     companySubtitle: "{name} · {count} dipendenti · Piano {plan}",
 
     quarterSelectorLabel: "Trimestre",
+    /* La cornice del trimestre (17.08.2026): il selettore comanda questo blocco
+       e non la pagina, e la cornice lo dice senza una frase che lo spieghi. */
+    quarterFrameTitle: "Il trimestre selezionato",
+    quarterFrameHint: "Tutto quello che sta qui dentro cambia con il trimestre.",
     /** "3° trimestre 2026" */
     quarterLabel: "{quarter}° trimestre {year}",
     /* Il trimestre in corso è parziale: senza dirlo, chi confronta le sessioni
@@ -842,6 +846,7 @@ export const it = {
     trendDepartmentLegend: "da {from} a {to} · in fascia alta dal mese {month}",
 
     roiTitle: "Risparmio per trimestre",
+    roiSubtitle: "Tutti e quattro i trimestri, con il selezionato in evidenza.",
 
     stressLevel: {
       low: "Basso",

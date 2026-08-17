@@ -105,53 +105,86 @@ function extremesOf(
   return { from: published[0], to: published[published.length - 1] };
 }
 
-/**
- * L'intestazione con il selettore del trimestre.
- *
- * Sta fuori dal corpo perché la mostra anche il ramo del trimestre senza dati:
- * senza di lei quel ramo sarebbe un vicolo cieco, e chi ci finisce non avrebbe
- * il comando con cui uscirne (§10).
- */
+/** Il titolo della pagina e l'azienda a cui si riferisce. */
 function DashboardHeader({
   company,
+}: {
+  company: Company;
+}) {
+  return (
+    <div>
+      <h1 className="text-2xl font-bold font-display">{t.hr.dashboardTitle}</h1>
+      <p className="text-sm text-muted-foreground mt-1">
+        {interpolate(t.hr.companySubtitle, {
+          name: company.name,
+          count: formatNumber(company.employeeCount),
+          plan: t.plan[company.plan.id],
+        })}
+      </p>
+    </div>
+  );
+}
+
+/*
+ * LA CORNICE DEL TRIMESTRE (founder, 17.08.2026).
+ *
+ * Il selettore stava nell'intestazione della pagina e sembrava comandarla
+ * tutta. Non è così, ed è misurato: **lo seguono otto elementi** — le sei KPI,
+ * la ciambella della distribuzione (cumulata fino al trimestre scelto) e
+ * l'evidenziazione nel grafico del risparmio. Non lo seguono il banner
+ * dell'alert, lo stress per reparto (che mostra l'ultimo mese), il trend a
+ * dodici mesi e l'utilizzo dei servizi.
+ *
+ * La cornice è la risposta: **quello che segue il trimestre sta dentro, con il
+ * selettore in cima**, e tutto il resto sta fuori e sotto. Il selettore non è
+ * più un comando della pagina, è il comando di questo blocco — e la posizione
+ * lo dice senza una frase che lo spieghi.
+ *
+ * **I due banner restano sopra la cornice**, e non ci entrano: sono avvisi, e
+ * la loro posizione è parte dell'informazione.
+ */
+function QuarterFrame({
   quarters,
   currentQuarter,
   selected,
   onSelect,
+  children,
 }: {
-  company: Company;
   quarters: Quarter[];
   currentQuarter: Quarter;
   selected: Quarter;
   onSelect: (key: string) => void;
+  children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-      <div>
-        <h1 className="text-2xl font-bold font-display">{t.hr.dashboardTitle}</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          {interpolate(t.hr.companySubtitle, {
-            name: company.name,
-            count: formatNumber(company.employeeCount),
-            plan: t.plan[company.plan.id],
-          })}
-        </p>
+    <Card className="p-5 space-y-6 border-2 bg-muted/40">
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+        <div>
+          <h2 className="font-semibold">{t.hr.quarterFrameTitle}</h2>
+          <p className="text-xs text-muted-foreground mt-1">
+            {t.hr.quarterFrameHint}
+          </p>
+        </div>
+        <div className="w-full sm:w-auto">
+          <Select value={quarterKey(selected)} onValueChange={onSelect}>
+            <SelectTrigger
+              className="w-full sm:w-64 bg-card"
+              aria-label={t.hr.quarterSelectorLabel}
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {quarters.map((period) => (
+                <SelectItem key={quarterKey(period)} value={quarterKey(period)}>
+                  {quarterLabel(period, currentQuarter)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
-      <div className="w-full sm:w-auto">
-        <Select value={quarterKey(selected)} onValueChange={onSelect}>
-          <SelectTrigger className="w-full sm:w-64" aria-label={t.hr.quarterSelectorLabel}>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {quarters.map((period) => (
-              <SelectItem key={quarterKey(period)} value={quarterKey(period)}>
-                {quarterLabel(period, currentQuarter)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-    </div>
+      {children}
+    </Card>
   );
 }
 
@@ -243,16 +276,20 @@ export default function HRDashboard() {
   if (snapshot === null || report === null) {
     return (
       <div className="space-y-6">
-        <DashboardHeader
-          company={company}
+        <DashboardHeader company={company} />
+        {/*
+          * La cornice resta anche qui, e non è simmetria: **il selettore è il
+          * modo di uscire da un trimestre senza dati**, e ora vive lì dentro.
+          * Senza, questo ramo sarebbe il vicolo cieco che il §10 vieta.
+          */}
+        <QuarterFrame
           quarters={quarters}
           currentQuarter={currentQuarter}
           selected={selected}
           onSelect={setSelectedKey}
-        />
-        <Card>
+        >
           <EmptyNotice text={t.hr.quarterEmpty} />
-        </Card>
+        </QuarterFrame>
       </div>
     );
   }
@@ -376,13 +413,7 @@ export default function HRDashboard() {
 
   return (
     <div className="space-y-6">
-      <DashboardHeader
-        company={company}
-        quarters={quarters}
-        currentQuarter={currentQuarter}
-        selected={selected}
-        onSelect={setSelectedKey}
-      />
+      <DashboardHeader company={company} />
 
       {alert && (
         <Card className="p-5 bg-warning/15 border-warning">
@@ -412,86 +443,163 @@ export default function HRDashboard() {
         })}
       />
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-        <KPICard
-          title={t.hr.kpiSavings}
-          value={formatCHF(snapshot.savedChf)}
-          subtitle={interpolate(t.hr.kpiSavingsHint, {
-            days: formatNumber(snapshot.avoidedAbsenceDays),
-          })}
-          icon={Calculator}
-          variant="accent"
-        />
-        <KPICard
-          title={t.hr.kpiAdoption}
-          value={formatPercent(report.adoptionPercent)}
-          subtitle={interpolate(t.hr.kpiAdoptionHint, {
-            enrolled: formatNumber(snapshot.enrolledEmployees),
-            total: formatNumber(company.employeeCount),
-          })}
-          icon={Users}
-        />
-        <KPICard
-          title={t.hr.kpiActive}
-          value={formatNumber(snapshot.activeEmployees)}
-          subtitle={t.hr.kpiActiveHint}
-          icon={Brain}
-        />
-        <KPICard
-          title={t.hr.kpiStress}
-          value={
-            report.stressTrendPoints === null
-              ? t.common.none
-              : interpolate(t.hr.kpiStressValue, {
-                  points: formatSigned(report.stressTrendPoints),
-                })
-          }
-          subtitle={
-            report.stressTrendPoints === null
-              ? t.hr.kpiStressEmpty
-              : t.hr.kpiStressHint
-          }
-          icon={Stethoscope}
-          polarity={
-            report.stressTrendPoints === null
-              ? undefined
-              : { sign: report.stressTrendPoints, goodWhen: 'down' }
-          }
-        />
-        <KPICard
-          title={t.hr.kpiSessions}
-          value={formatNumber(snapshot.sessionsUsed)}
-          subtitle={
-            <>
-              {interpolate(t.hr.kpiSessionsHint, {
-                used: formatNumber(snapshot.sessionsUsed),
-                total: formatNumber(snapshot.sessionsTotal),
-              })}
-              {/* barra sottile: una traccia spessa e quasi vuota si legge come
-                  un errore di rendering, e la quota è il 12% (§8) */}
-              <span className="mt-2 block h-1 w-full rounded-full bg-muted">
-                <span
-                  className="block h-1 rounded-full bg-secondary"
-                  style={{
-                    width: `${(snapshot.sessionsUsed / snapshot.sessionsTotal) * 100}%`,
-                  }}
-                />
-              </span>
-            </>
-          }
-          icon={Brain}
-        />
-        <KPICard
-          title={t.hr.kpiCheckup}
-          value={formatPercent(report.checkupCompletionPercent)}
-          subtitle={interpolate(t.hr.kpiCheckupHint, {
-            done: formatNumber(cumulative.checkup),
-            enrolled: formatNumber(snapshot.enrolledEmployees),
-          })}
-          icon={CalendarCheck}
-        />
-      </div>
+      {/*
+        * Dentro la cornice: le sei KPI, la ciambella e il grafico del
+        * risparmio. Sono gli otto elementi che seguono il selettore, e sono
+        * tutti e soli quelli.
+        */}
+      <QuarterFrame
+        quarters={quarters}
+        currentQuarter={currentQuarter}
+        selected={selected}
+        onSelect={setSelectedKey}
+      >
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+          <KPICard
+            title={t.hr.kpiSavings}
+            value={formatCHF(snapshot.savedChf)}
+            subtitle={interpolate(t.hr.kpiSavingsHint, {
+              days: formatNumber(snapshot.avoidedAbsenceDays),
+            })}
+            icon={Calculator}
+            variant="accent"
+          />
+          <KPICard
+            title={t.hr.kpiAdoption}
+            value={formatPercent(report.adoptionPercent)}
+            subtitle={interpolate(t.hr.kpiAdoptionHint, {
+              enrolled: formatNumber(snapshot.enrolledEmployees),
+              total: formatNumber(company.employeeCount),
+            })}
+            icon={Users}
+          />
+          <KPICard
+            title={t.hr.kpiActive}
+            value={formatNumber(snapshot.activeEmployees)}
+            subtitle={t.hr.kpiActiveHint}
+            icon={Brain}
+          />
+          <KPICard
+            title={t.hr.kpiStress}
+            value={
+              report.stressTrendPoints === null
+                ? t.common.none
+                : interpolate(t.hr.kpiStressValue, {
+                    points: formatSigned(report.stressTrendPoints),
+                  })
+            }
+            subtitle={
+              report.stressTrendPoints === null
+                ? t.hr.kpiStressEmpty
+                : t.hr.kpiStressHint
+            }
+            icon={Stethoscope}
+            polarity={
+              report.stressTrendPoints === null
+                ? undefined
+                : { sign: report.stressTrendPoints, goodWhen: 'down' }
+            }
+          />
+          <KPICard
+            title={t.hr.kpiSessions}
+            value={formatNumber(snapshot.sessionsUsed)}
+            subtitle={
+              <>
+                {interpolate(t.hr.kpiSessionsHint, {
+                  used: formatNumber(snapshot.sessionsUsed),
+                  total: formatNumber(snapshot.sessionsTotal),
+                })}
+                {/* barra sottile: una traccia spessa e quasi vuota si legge come
+                    un errore di rendering, e la quota è il 12% (§8) */}
+                <span className="mt-2 block h-1 w-full rounded-full bg-muted">
+                  <span
+                    className="block h-1 rounded-full bg-secondary"
+                    style={{
+                      width: `${(snapshot.sessionsUsed / snapshot.sessionsTotal) * 100}%`,
+                    }}
+                  />
+                </span>
+              </>
+            }
+            icon={Brain}
+          />
+          <KPICard
+            title={t.hr.kpiCheckup}
+            value={formatPercent(report.checkupCompletionPercent)}
+            subtitle={interpolate(t.hr.kpiCheckupHint, {
+              done: formatNumber(cumulative.checkup),
+              enrolled: formatNumber(snapshot.enrolledEmployees),
+            })}
+            icon={CalendarCheck}
+          />
+        </div>
 
+        <div className="grid lg:grid-cols-2 gap-6">
+        <Card className="p-5">
+          <h3 className="font-semibold">{t.hr.distributionTitle}</h3>
+          <p className="text-xs text-muted-foreground mb-4">
+            {interpolate(t.hr.distributionSubtitle, {
+              quarter: quarterLabel(selected, currentQuarter),
+            })}
+          </p>
+          <ResponsiveContainer width="100%" height={230}>
+            <PieChart>
+              <Pie data={distribution} innerRadius={60} outerRadius={90} dataKey="value" nameKey="name" paddingAngle={4} isAnimationActive={false}>
+                {distribution.map((entry) => (
+                  <Cell key={entry.kind} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+          <div className="flex flex-wrap gap-3 justify-center mt-2">
+            {distribution.map((entry) => (
+              <div key={entry.kind} className="flex items-center gap-1.5 text-xs tabular-nums">
+                <div className="w-2.5 h-2.5 rounded-full" style={{ background: entry.color }} />
+                {interpolate(t.hr.distributionEntry, {
+                  service: entry.name,
+                  count: formatNumber(entry.value),
+                })}
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        <Card className="p-5">
+          <h3 className="font-semibold">{t.hr.roiTitle}</h3>
+          {/* Dentro una cornice che dice "trimestre selezionato" un grafico a
+              quattro barre va spiegato: senza, sembra che dovrebbe mostrarne
+              una sola. */}
+          <p className="text-xs text-muted-foreground mb-4">{t.hr.roiSubtitle}</p>
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={roiChart}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="short" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip formatter={(value: number) => formatCHF(value)} />
+              {/* il trimestre scelto è pieno, gli altri smorzati: il grafico
+                  dice dove si è, senza una legenda che lo spieghi */}
+              <Bar dataKey="saved" radius={[4, 4, 0, 0]} isAnimationActive={false} name={t.hr.roiTitle}>
+                {roiChart.map((entry) => (
+                  <Cell
+                    key={entry.short}
+                    fill="hsl(var(--secondary))"
+                    fillOpacity={entry.selected ? 1 : 0.35}
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </Card>
+        </div>
+      </QuarterFrame>
+
+      {/*
+        * Fuori dalla cornice: quello che parla dell'ultimo mese o dei dodici,
+        * e che il selettore non tocca. **Ognuno dichiara il proprio periodo nel
+        * titolo** — "ultimo mese", "ultimi {months} mesi" — perché spostare i
+        * blocchi senza dirlo sposterebbe la confusione invece di toglierla.
+        */}
       <Card className="p-5">
         <h3 className="font-semibold mb-4">{t.hr.stressByDepartment}</h3>
         <div className="space-y-3">
@@ -636,59 +744,6 @@ export default function HRDashboard() {
                   name={t.hr.service[kind]}
                 />
               ))}
-            </BarChart>
-          </ResponsiveContainer>
-        </Card>
-
-        <Card className="p-5">
-          <h3 className="font-semibold">{t.hr.distributionTitle}</h3>
-          <p className="text-xs text-muted-foreground mb-4">
-            {interpolate(t.hr.distributionSubtitle, {
-              quarter: quarterLabel(selected, currentQuarter),
-            })}
-          </p>
-          <ResponsiveContainer width="100%" height={230}>
-            <PieChart>
-              <Pie data={distribution} innerRadius={60} outerRadius={90} dataKey="value" nameKey="name" paddingAngle={4} isAnimationActive={false}>
-                {distribution.map((entry) => (
-                  <Cell key={entry.kind} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-          <div className="flex flex-wrap gap-3 justify-center mt-2">
-            {distribution.map((entry) => (
-              <div key={entry.kind} className="flex items-center gap-1.5 text-xs tabular-nums">
-                <div className="w-2.5 h-2.5 rounded-full" style={{ background: entry.color }} />
-                {interpolate(t.hr.distributionEntry, {
-                  service: entry.name,
-                  count: formatNumber(entry.value),
-                })}
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        <Card className="p-5">
-          <h3 className="font-semibold mb-4">{t.hr.roiTitle}</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={roiChart}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-              <XAxis dataKey="short" tick={{ fontSize: 12 }} />
-              <YAxis tick={{ fontSize: 12 }} />
-              <Tooltip formatter={(value: number) => formatCHF(value)} />
-              {/* il trimestre scelto è pieno, gli altri smorzati: il grafico
-                  dice dove si è, senza una legenda che lo spieghi */}
-              <Bar dataKey="saved" radius={[4, 4, 0, 0]} isAnimationActive={false} name={t.hr.roiTitle}>
-                {roiChart.map((entry) => (
-                  <Cell
-                    key={entry.short}
-                    fill="hsl(var(--secondary))"
-                    fillOpacity={entry.selected ? 1 : 0.35}
-                  />
-                ))}
-              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </Card>

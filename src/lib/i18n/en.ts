@@ -635,6 +635,8 @@ export const en: Dictionary = {
     companySubtitle: "{name} · {count} employees · {plan} plan",
 
     quarterSelectorLabel: "Quarter",
+    quarterFrameTitle: "The selected quarter",
+    quarterFrameHint: "Everything inside this box changes with the quarter.",
     quarterLabel: "Quarter {quarter} {year}",
     quarterLabelInProgress: "Quarter {quarter} {year} · in progress",
     quarterShort: "Q{quarter}",
@@ -685,6 +687,7 @@ export const en: Dictionary = {
       "from {from} to {to} · in the high band from month {month}",
 
     roiTitle: "Savings per quarter",
+    roiSubtitle: "All four quarters, with the selected one highlighted.",
 
     stressLevel: {
       low: "Low",

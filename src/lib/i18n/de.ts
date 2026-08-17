@@ -587,6 +587,8 @@ export const de: Dictionary = {
     companySubtitle: "{name} · {count} Mitarbeitende · Plan {plan}",
 
     quarterSelectorLabel: "Quartal",
+    quarterFrameTitle: "Das ausgewählte Quartal",
+    quarterFrameHint: "Alles in diesem Bereich ändert sich mit dem Quartal.",
     quarterLabel: "{quarter}. Quartal {year}",
     quarterLabelInProgress: "{quarter}. Quartal {year} · laufend",
     quarterShort: "Q{quarter}",
@@ -635,6 +637,7 @@ export const de: Dictionary = {
     trendDepartmentLegend: "von {from} bis {to} · im hohen Bereich ab Monat {month}",
 
     roiTitle: "Einsparung pro Quartal",
+    roiSubtitle: "Alle vier Quartale, das ausgewählte hervorgehoben.",
 
     stressLevel: {
       low: "Niedrig",
