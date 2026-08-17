@@ -381,7 +381,7 @@ export const fr: Dictionary = {
       },
       arc: {
         impact: "Merci. Dans quelle mesure cela pèse-t-il sur vos journées : arrivez-vous à travailler et à faire vos activités comme d'habitude, ou avez-vous dû renoncer à quelque chose ?",
-        symptoms: "Très bien. Remarquez-vous autre chose en même temps — fièvre, fatigue, changements du sommeil ou de l'appétit ?",
+        symptoms: "Très bien. Remarquez-vous autre chose en même temps — fièvre, fatigue ou changements de l'appétit ?",
         guidance: "Merci, cela me suffit pour vous orienter. Je ne peux pas poser de diagnostic d'ici : si le trouble est lié au stress ou à l'humeur, réservez une séance avec un psychologue depuis la section dédiée ; sinon, adressez-vous à votre médecin traitant, qui peut vous examiner. Si les symptômes s'aggravent brusquement, appelez le 144.",
       },
       closed: "La conversation de démonstration s'arrête ici.",
@@ -1269,7 +1269,7 @@ export const fr: Dictionary = {
       kpiTotal: "Professionnels",
       kpiBookable: "Réservables",
       kpiVetting: "En vérification",
-      /* "Sedute di carriera" non ha un composto corto in francese che non
+      /* "Sessioni di carriera" non ha un composto corto in francese che non
          suoni come storia d'impiego: la distinzione dagli altri due conteggi
          si sposta tutta nel sottotitolo, come in tedesco. */
       kpiSessions: "Total des séances",

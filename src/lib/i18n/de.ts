@@ -323,7 +323,7 @@ export const de: Dictionary = {
       },
       arc: {
         impact: "Danke. Wie sehr belastet es Sie im Alltag: schaffen Sie Arbeit und Ihre üblichen Dinge wie immer, oder mussten Sie auf etwas verzichten?",
-        symptoms: "Verstanden. Bemerken Sie noch etwas dabei — Fieber, Müdigkeit, Veränderungen bei Schlaf oder Appetit?",
+        symptoms: "Verstanden. Bemerken Sie noch etwas dabei — Fieber, Müdigkeit oder Veränderungen beim Appetit?",
         guidance: "Danke, das genügt mir zur Orientierung. Eine Diagnose kann ich von hier aus nicht stellen: hängt die Beschwerde mit Stress oder Stimmung zusammen, buchen Sie im entsprechenden Bereich eine Sitzung bei einer Psychologin; andernfalls wenden Sie sich an Ihre Hausärztin oder Ihren Hausarzt, die Sie untersuchen können. Verschlimmern sich die Beschwerden plötzlich, rufen Sie die 144.",
       },
       closed: "Das Demo-Gespräch endet hier.",

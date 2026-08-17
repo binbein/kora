@@ -2,7 +2,7 @@ import { DEFAULT_LOCALE, type Locale } from "@/lib/locale";
 import { de } from "./de";
 import { en } from "./en";
 import { fr } from "./fr";
-import { assertPlaceholdersMatch } from "./placeholders";
+import { assertKeyCountMatches, assertPlaceholdersMatch } from "./placeholders";
 import { it } from "./it";
 
 /*
@@ -55,6 +55,14 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
   "fr-CH": fr,
   "en-CH": en,
 };
+
+/*
+ * Quante chiavi ha l'italiano si verifica all'avvio, e non si dichiara più a
+ * mano da nessuna parte: il numero atteso sta accanto al controllo, in
+ * `placeholders.ts`. Le altre tre lingue non si contano — che abbiano le stesse
+ * chiavi lo garantisce `Dictionary`, e il tipo non si verifica a runtime.
+ */
+assertKeyCountMatches();
 
 /*
  * I segnaposto di ogni traduzione si confrontano con l'italiano all'avvio
