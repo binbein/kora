@@ -1872,6 +1872,38 @@ Home, Psicologi, Medico virtuale, Check-up, Piano AI, Profilo.
    È una card nella home, **non una rotta nuova**: non entra nel conto delle 26.
    Approvato dai founder il **06.08.2026** ai sensi del §2.6.
 
+2. **La home mostra due fatti, non quattro scorciatoie** (founder, 17.08.2026).
+   Le quattro tessere verso medico virtuale, check-up, piano e profilo erano
+   **quattro delle sei voci del menu**, cioè la stessa strada disegnata due
+   volte. Al loro posto **la data del prossimo check-up** e **i consulti di
+   medico virtuale dell'anno di piano**: due cose che si vedevano solo dentro
+   `/employee/profilo`, e nessun dato nuovo (§2.4). **Non sono link**, o
+   tornerebbe la duplicazione. Il badge "Fatto" resta: il §8 vuole che il
+   check-up completato di Laura si legga uguale in home, nel profilo e
+   nell'elenco dell'HR.
+
+3. **Il profilo si raggiunge dal riquadro dell'identità**, non dal menu
+   (founder, 17.08.2026) — con un'icona, che è dove chi usa un'app cerca le
+   proprie cose. **La rotta resta**: cambia come ci si arriva, quindi non è
+   scope. **L'effetto voluto sta su mobile**: la barra in basso mostrava le
+   prime cinque di sei voci, quindi Profilo lì non c'era affatto; con cinque
+   voci la barra è completa e la troncatura silenziosa sparisce.
+
+4. **Il medico virtuale arriva a una conclusione** (founder, 17.08.2026): un
+   arco di **quattro scambi** — la risposta a parola chiave, poi quanto dura,
+   quali altri sintomi, e l'orientamento — dopo il quale la casella **si spegne
+   e dice perché**, nel registro del pulsante del check-up. Prima ripeteva la
+   stessa frase all'infinito, che è la prima cosa che si vede provandolo due
+   volte.
+
+   **Il limite è normativo prima che editoriale**: il medico **consiglia e
+   orienta, non diagnostica e non prescrive**. Un software che diagnostica o fa
+   triage può ricadere nella normativa sui dispositivi medici in Svizzera e in
+   UE (*"Dubbi Business per CEO"* §2.2), con certificazioni lunghe e care.
+   **Nessuna frase dell'arco nomina un farmaco o afferma una causa**, e
+   l'ultima lo dichiara prima di indirizzare. È un vincolo su ogni frase che si
+   aggiungerà a quella chat, non una proprietà delle quattro di oggi.
+
 **Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — la parte in
 programma del contatore sale, l'appuntamento compare in home, lo slot sparisce dalla
 disponibilità e compare nel calendario del professionista. Nessun vicolo cieco: ogni

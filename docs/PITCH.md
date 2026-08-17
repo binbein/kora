@@ -471,14 +471,18 @@ dare per intero e senza attenuarla: il check rapido accetta anche la risposta
 peggiore e non succede niente, e la chat del medico virtuale non rileva il
 rischio.
 
-**Il 144 è a schermo, ma in un punto solo e non in quello che conta.** Sta nel
-disclaimer della chat del medico virtuale — *"in caso di emergenza chiama il
-144"* — e **non c'è nel check rapido**, che è invece il punto in cui il valore
-peggiore si dichiara senza parlare con nessuno. Detto così non attenua la
-risposta, la precisa: quello che manca non è un numero da aggiungere, è un
-percorso dove il segnale arriva. Se qualcuno lo ha visto nella chat mentre
-mostravi il medico virtuale, questa è la frase che tiene insieme le due cose
-invece di sembrare una contraddizione.
+**Il 144 è a schermo in due punti, ed entrambi sono nella chat del medico.** Il
+disclaimer sotto la conversazione — *"in caso di emergenza chiama il 144"* — e
+la risposta con cui la chat si chiude, che orienta e aggiunge *"se i sintomi
+peggiorano all'improvviso, chiami il 144"*. **Non c'è nel check rapido**, che è
+invece il punto in cui il valore peggiore si dichiara senza parlare con nessuno.
+
+Detto così non attenua la risposta, la precisa: **quello che manca non è un
+numero da aggiungere, è un percorso dove il segnale arriva.** Se qualcuno lo ha
+visto nella chat mentre mostravi il medico virtuale, questa è la frase che tiene
+insieme le due cose invece di sembrare una contraddizione. *(Fino al 17.08.2026
+il numero era in un punto solo; il secondo è arrivato con l'arco della chat, e
+non sposta la lacuna di un centimetro.)*
 
 **Il referente clinico e il protocollo si definiscono prima del primo utente
 attivo.** È il momento in cui la domanda smette di essere teorica, ed è lì che va

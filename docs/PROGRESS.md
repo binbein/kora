@@ -5096,13 +5096,16 @@ prevedeva.
 
   **Cosa manca nel prodotto**: nessun percorso di presa in carico urgente, il
   check rapido accetta il valore peggiore senza che succeda niente, la chat del
-  medico non rileva il rischio. **Il numero d'emergenza c'è**, ma in un punto
-  solo — il disclaimer della chat del medico, *"in caso di emergenza chiama il
-  144"*, in tutte e quattro le lingue — e **non è nel check rapido**, che è dove
-  il valore peggiore si dichiara senza parlare con nessuno. Il perimetro sta in
+  medico non rileva il rischio. **Il numero d'emergenza c'è**, in due punti —
+  il disclaimer della chat del medico e l'ultima risposta del suo arco, in tutte
+  e quattro le lingue — e **non è nel check rapido**, che è dove il valore
+  peggiore si dichiara senza parlare con nessuno. Il perimetro sta in
   `CONTRATTO-DATI.md` §8.1, che lo mette **primo** perché non è una funzione ma
   una condizione per operare. *(Fino al 15.08.2026 questa riga diceva che la
-  chat non espone numeri d'emergenza, ed era falsa.)*
+  chat non espone numeri d'emergenza, ed era falsa; fino al 17.08.2026 diceva
+  "un punto solo", ed è invecchiata con l'arco. **Il vuoto non si è mosso**: due
+  numeri nella stessa schermata restano zero percorsi dove il segnale arriva, e
+  chi legge questa voce non deve leggere il secondo come un passo avanti.)*
 
   **Il trigger è prima del primo utente attivo**, non prima del primo contratto,
   ed è la formula del documento stesso: il rischio nasce con la prima persona
