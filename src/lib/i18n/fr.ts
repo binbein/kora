@@ -380,7 +380,7 @@ export const fr: Dictionary = {
         },
       },
       arc: {
-        duration: "Merci. Aidez-moi à situer les choses : cela dure depuis des jours, des semaines ou plus longtemps ? Et tous les jours ou par épisodes ?",
+        impact: "Merci. Dans quelle mesure cela pèse-t-il sur vos journées : arrivez-vous à travailler et à faire vos activités comme d'habitude, ou avez-vous dû renoncer à quelque chose ?",
         symptoms: "Très bien. Remarquez-vous autre chose en même temps — fièvre, fatigue, changements du sommeil ou de l'appétit ?",
         guidance: "Merci, cela me suffit pour vous orienter. Je ne peux pas poser de diagnostic d'ici : si le trouble est lié au stress ou à l'humeur, réservez une séance avec un psychologue depuis la section dédiée ; sinon, adressez-vous à votre médecin traitant, qui peut vous examiner. Si les symptômes s'aggravent brusquement, appelez le 144.",
       },
@@ -679,6 +679,8 @@ export const fr: Dictionary = {
     companySubtitle: "{name} · {count} collaborateurs · Plan {plan}",
 
     quarterSelectorLabel: "Trimestre",
+    quarterFrameTitle: "Le trimestre sélectionné",
+    quarterFrameHint: "Tout ce qui se trouve ici change avec le trimestre.",
     quarterLabel: "Trimestre {quarter} {year}",
     quarterLabelInProgress: "Trimestre {quarter} {year} · en cours",
     quarterShort: "T{quarter}",
@@ -728,6 +730,7 @@ export const fr: Dictionary = {
     trendDepartmentLegend: "de {from} à {to} · en zone haute depuis le mois {month}",
 
     roiTitle: "Économies par trimestre",
+    roiSubtitle: "Les quatre trimestres, celui qui est sélectionné en évidence.",
 
     stressLevel: {
       low: "Bas",
@@ -797,6 +800,7 @@ export const fr: Dictionary = {
       adoption: "Taux d'activation",
       usage: "Séances sur le volume annuel",
       checkup: "Check-up réalisés",
+      virtualDoctor: "Consultations médecin virtuel · sur le trimestre",
       stress: "Stress moyen",
       stressValue: "{points} points",
       savings: "Économies estimées",

@@ -322,7 +322,7 @@ export const de: Dictionary = {
         },
       },
       arc: {
-        duration: "Danke. Helfen Sie mir, das einzuordnen: geht das seit Tagen, seit Wochen oder länger? Und täglich oder in Schüben?",
+        impact: "Danke. Wie sehr belastet es Sie im Alltag: schaffen Sie Arbeit und Ihre üblichen Dinge wie immer, oder mussten Sie auf etwas verzichten?",
         symptoms: "Verstanden. Bemerken Sie noch etwas dabei — Fieber, Müdigkeit, Veränderungen bei Schlaf oder Appetit?",
         guidance: "Danke, das genügt mir zur Orientierung. Eine Diagnose kann ich von hier aus nicht stellen: hängt die Beschwerde mit Stress oder Stimmung zusammen, buchen Sie im entsprechenden Bereich eine Sitzung bei einer Psychologin; andernfalls wenden Sie sich an Ihre Hausärztin oder Ihren Hausarzt, die Sie untersuchen können. Verschlimmern sich die Beschwerden plötzlich, rufen Sie die 144.",
       },
@@ -587,6 +587,8 @@ export const de: Dictionary = {
     companySubtitle: "{name} · {count} Mitarbeitende · Plan {plan}",
 
     quarterSelectorLabel: "Quartal",
+    quarterFrameTitle: "Das ausgewählte Quartal",
+    quarterFrameHint: "Alles in diesem Bereich ändert sich mit dem Quartal.",
     quarterLabel: "{quarter}. Quartal {year}",
     quarterLabelInProgress: "{quarter}. Quartal {year} · laufend",
     quarterShort: "Q{quarter}",
@@ -635,6 +637,7 @@ export const de: Dictionary = {
     trendDepartmentLegend: "von {from} bis {to} · im hohen Bereich ab Monat {month}",
 
     roiTitle: "Einsparung pro Quartal",
+    roiSubtitle: "Alle vier Quartale, das ausgewählte hervorgehoben.",
 
     stressLevel: {
       low: "Niedrig",
@@ -704,6 +707,7 @@ export const de: Dictionary = {
       adoption: "Aktivierungsrate",
       usage: "Sitzungen am Jahreskontingent",
       checkup: "Abgeschlossene Check-ups",
+      virtualDoctor: "Beratungen virtueller Arzt · im Quartal",
       stress: "Durchschnittlicher Stress",
       stressValue: "{points} Punkte",
       savings: "Geschätzte Einsparung",

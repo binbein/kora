@@ -144,6 +144,18 @@ export default function PrintableReport({
           value={formatPercent(report.checkupCompletionPercent)}
         />
         {/*
+          La riga entra anche qui, ed è una decisione: il PDF è lo stesso report
+          visto come allegato, e una metrica che c'è a schermo e non
+          nell'allegato è la coppia di viste che divergono. Il §10.C.3 vuole
+          **una pagina sola** e il controllo del 16.08.2026 lancia davvero: il
+          margine più stretto era di 225.6 pt in tedesco, quindi un rigo ci sta
+          — verificato, non dedotto.
+        */}
+        <Metric
+          label={t.hr.report.virtualDoctor}
+          value={formatNumber(report.virtualDoctorConsults)}
+        />
+        {/*
           Il "—" del trimestre più vecchio è `common.none`, come a schermo: un
           trimestre senza precedente non ha un trend, e uno zero direbbe
           "invariato" dove il dato non esiste.

@@ -373,7 +373,15 @@ export const it = {
        * `docs/CONTRATTO-DATI.md` §8.1 dichiara.
        */
       arc: {
-        duration: "Grazie. Mi aiuti a inquadrarlo: va avanti da giorni, da settimane o da più tempo? E capita tutti i giorni o a episodi?",
+        /*
+         * La prima domanda dell'arco riguarda **l'impatto sulla giornata**, e
+         * non la durata: `sleep` e `fallback` chiedono già "da quanto tempo",
+         * quindi la stessa domanda arrivava due volte di fila — e proprio sulla
+         * strada che il pitch percorre per prima, visto che l'area debole di
+         * Laura è il sonno. Nessuna delle cinque aperture chiede l'impatto, e
+         * per questo basta **una** frase invece di una variante per caso.
+         */
+        impact: "Grazie. Quanto le pesa nella giornata: riesce a lavorare e a fare le sue cose come sempre, o ha dovuto rinunciare a qualcosa?",
         symptoms: "Chiaro. Nota altro insieme a questo — febbre, stanchezza, cambiamenti nel sonno o nell'appetito?",
         guidance: "La ringrazio, mi basta per orientarla. Una diagnosi da qui non posso farla: se il disturbo è legato a stress o umore, prenoti una sessione con uno psicologo dalla sezione dedicata; altrimenti si rivolga al suo medico curante, che può visitarla. Se i sintomi peggiorano all'improvviso, chiami il 144.",
       },
@@ -738,6 +746,10 @@ export const it = {
     companySubtitle: "{name} · {count} dipendenti · Piano {plan}",
 
     quarterSelectorLabel: "Trimestre",
+    /* La cornice del trimestre (17.08.2026): il selettore comanda questo blocco
+       e non la pagina, e la cornice lo dice senza una frase che lo spieghi. */
+    quarterFrameTitle: "Il trimestre selezionato",
+    quarterFrameHint: "Tutto quello che sta qui dentro cambia con il trimestre.",
     /** "3° trimestre 2026" */
     quarterLabel: "{quarter}° trimestre {year}",
     /* Il trimestre in corso è parziale: senza dirlo, chi confronta le sessioni
@@ -834,6 +846,7 @@ export const it = {
     trendDepartmentLegend: "da {from} a {to} · in fascia alta dal mese {month}",
 
     roiTitle: "Risparmio per trimestre",
+    roiSubtitle: "Tutti e quattro i trimestri, con il selezionato in evidenza.",
 
     stressLevel: {
       low: "Basso",
@@ -916,6 +929,7 @@ export const it = {
       adoption: "Tasso di attivazione",
       usage: "Sessioni sul monte annuo",
       checkup: "Check-up completati",
+      virtualDoctor: "Consulti medico virtuale · nel trimestre",
       stress: "Stress medio",
       /** "−2 punti" */
       stressValue: "{points} punti",

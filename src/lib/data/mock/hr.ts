@@ -15,7 +15,7 @@ import { DEMO_TODAY } from "./demo-date";
 import { COMPANY_MONTHS, HISTORY_MONTHS } from "./measurement";
 import { LAURA } from "./people";
 import { ANNUAL_SESSION_ALLOWANCE, ROI_SNAPSHOTS } from "./roi";
-import { usageThrough } from "./service-usage";
+import { usageThrough, usageWithin } from "./service-usage";
 
 /*
  * I dati che vivono solo nell'area HR (CLAUDE.md §10.C).
@@ -212,6 +212,7 @@ function toReport(snapshot: RoiSnapshot): HrReport {
         ? 0
         : Math.round((usage.checkup / snapshot.enrolledEmployees) * 100),
     stressTrendPoints: stressTrendFor(snapshot.period),
+    virtualDoctorConsults: usageWithin(snapshot.period).virtual_doctor,
     savedChf: snapshot.savedChf,
     avoidedAbsenceDays: snapshot.avoidedAbsenceDays,
     recommendationKeys: RECOMMENDATION_KEYS,

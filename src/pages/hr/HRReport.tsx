@@ -276,6 +276,18 @@ export default function HRReport() {
           label={t.hr.report.checkup}
           value={formatPercent(report.checkupCompletionPercent)}
         />
+        {/*
+          * L'etichetta dichiara il periodo — "nel trimestre" — perché è
+          * l'unica riga di questo elenco che non si cumula, e accanto a
+          * `usage`, che invece si cumula sul monte annuo, senza dirlo sarebbero
+          * due numeri che sembrano parlare della stessa finestra. È la stessa
+          * disciplina delle tre accezioni di "sessioni" e dei check-up di
+          * piattaforma.
+          */}
+        <StatRow
+          label={t.hr.report.virtualDoctor}
+          value={formatNumber(report.virtualDoctorConsults)}
+        />
         <StatRow
           label={t.hr.report.stress}
           value={

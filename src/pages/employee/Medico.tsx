@@ -59,7 +59,7 @@ function replyTo(question: string, turn: number): string {
    */
   if (turn > 0) {
     const arc = [
-      t.employee.doctor.arc.duration,
+      t.employee.doctor.arc.impact,
       t.employee.doctor.arc.symptoms,
       t.employee.doctor.arc.guidance,
     ];

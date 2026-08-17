@@ -530,6 +530,12 @@ Operations; le date di fatturazione ferme ad aprile su una demo di settembre.
   perché lo stress è una serie mensile (§5.3) mentre il selettore governa gli
   aggregati trimestrali. Il titolo lo dice. Se un giorno dovrà seguirlo, serve un
   metodo nuovo sul provider.
+
+  **Resta aperto, e dal 17.08.2026 smette di *sembrare* un errore**: la
+  riorganizzazione della dashboard ha messo il selettore dentro una cornice
+  insieme ai soli otto elementi che lo seguono, e questa tabella è finita fuori,
+  dove il suo titolo — "ultimo mese" — è la cosa che ci si aspetta di leggere. La
+  posizione ha tolto la contraddizione apparente; **il difetto è dov'era**.
 - **L'elenco dipendenti è un estratto di otto righe su 120**, dichiarato a
   schermo e in `CONTRATTO-DATI.md` §7. ~~La paginazione è M5.~~ → **non era di
   M5**, e nessuno dei sei blocchi la contiene: è lavoro dell'MVP, dichiarato in
@@ -2057,7 +2063,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Trenta passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Trentuno passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2069,8 +2075,9 @@ non dichiarati, i fatti corretti nei documenti, il perimetro e le promesse in
 sospeso, il footer fuori dalla demo, i terzi e la simmetria del footer,
 l'identità collisa e gli stati limite, le simmetrie e le verifiche vere, la riga
 della sessione e i criteri che si contraddicevano, le parole e il perimetro,
-l'anteprima a tre pannelli e la voce Admin, e **questa passata**, la home e il
-medico. Non aggiungono schermate e non spostano un numero a schermo.
+l'anteprima a tre pannelli e la voce Admin, la home e il medico, e **questa
+passata**, la cornice del trimestre. Non aggiungono schermate e non spostano un
+numero a schermo.
 
 **Fino al 17.08.2026 la riga finiva con "sono igiene del layer dati, del seam e
 del dizionario", e da questa passata non è più vero di tutte.** Le due metà si
@@ -4679,6 +4686,138 @@ distinguerle vorrebbe dire capire la frase.
   0: è successo **quattro volte in questa passata**, e ogni misura geometrica è
   stata rifatta su una scheda nuova. Non è più una trappola da annotare, è la
   condizione normale in cui questo strumento lavora.
+
+#### La cornice del trimestre (17.08.2026)
+
+**Sette commit: quattro di codice — `feat:` ×2, `fix:` ×2 — e tre di
+documenti.** Totale e ripartizione dalla stessa misura,
+`git log --format='%s' master..HEAD`; il numero è `n + 1` perché il commit di
+chiusura conta sé stesso. **Nessun numero del §8 e del §9 cambia valore**, e la
+riorganizzazione non ne muove nessuno: le sei KPI dicono oggi quello che
+dicevano ieri.
+
+Si apre con la **chiusura della passata precedente** — quattro punti della sua
+review — e prosegue con due decisioni dei founder sull'area HR.
+
+##### La chiusura: una domanda ripetuta e due riquadri d'identità
+
+**La prima frase dell'arco chiedeva la durata, e due delle cinque aperture la
+chiedono già.** Non era teorico: l'area debole di Laura è il sonno, quindi è la
+strada che il pitch percorre per prima. **Il rimedio è la domanda, non una
+variante**: l'arco ora chiede **l'impatto sulla giornata**, che nessuna delle
+cinque aperture chiede, quindi la sovrapposizione sparisce anche sul fallback e
+resta una stringa per lingua.
+
+**I due riquadri d'identità hanno l'icona a sinistra, e trattamenti diversi.**
+Quello del dipendente è un link e porta l'icona di una persona; **quello
+dell'HR non è un link** — `/hr/profilo` non esiste per decisione — e porta
+l'icona di un'azienda, perché è un'azienda quello che mostra. Un'icona da
+profilo su un riquadro che non porta da nessuna parte è **l'affordance che
+mente**, lo stesso difetto delle voci del footer dell'08.08.2026 visto dal lato
+opposto: lì era rimasta nel layout dopo essere uscita dall'elemento, qui la si
+sarebbe messa in un elemento che non la merita.
+
+**La disposizione è ora una regola**, nel `CLAUDE.md` §6.5: icona a sinistra in
+tutti e tre i portali, link solo dove esiste una schermata di profilo — oggi il
+dipendente, domani il professionista, mai l'HR — e **l'icona dice cosa c'è
+dentro il riquadro, non dove porta**. È stata decisa due volte in due passate, e
+una terza ne avrebbe prodotto una terza forma.
+
+##### La cornice: il selettore comanda un blocco, non la pagina
+
+Il selettore stava in alto a destra dell'intestazione e sembrava comandare tutto.
+**Lo seguono otto elementi** — le sei KPI, la ciambella (cumulata fino al
+trimestre scelto) e l'evidenziazione nel grafico del risparmio — e **non lo
+seguono** il banner dell'alert, lo stress per reparto, il trend a dodici mesi e
+l'utilizzo servizi.
+
+La cornice mette insieme gli otto **con il selettore in cima**, e lascia gli
+altri fuori e sotto. **I due banner restano sopra**: sono avvisi, e la loro
+posizione è informazione.
+
+**La cornice avvolge anche il ramo del trimestre senza dati**, e non è
+simmetria: quel ramo teneva l'intestazione perché **il selettore è il modo di
+uscirne**, e il selettore ora vive lì dentro. Senza, sarebbe tornato il vicolo
+cieco del §10.
+
+**Le tre righe fuori dichiaravano già il proprio periodo** — "ultimo mese",
+"ultimi 12 mesi" — quindi non è stato aggiunto niente. **Il grafico del
+risparmio invece sì**: dentro una cornice intitolata al trimestre selezionato,
+quattro barre vanno spiegate, e il sottotitolo dice che è un confronto.
+
+**Il difetto noto della tabella stress non si chiude qui**, ed è annotato dove
+vive (voce di M3): la posizione ha tolto la contraddizione apparente, il difetto
+è dov'era.
+
+##### Il medico virtuale nel report
+
+Il campo torna su `HrReport` e si **deriva** dalla serie mensile di utilizzo,
+sommando i **soli mesi del trimestre**. È la scelta dei founder fra le due, e il
+motivo si vede subito: il cumulato darebbe **118** su tutti e quattro i
+trimestri, cioè un numero che non si muove accanto a un selettore che si muove.
+
+**I quattro trimestri danno 19 + 29 + 35 + 35 = 118**, che è il totale dei dodici
+mesi del §8. Nessuna cifra nuova entra nel dataset: la somma delle parti è il
+tutto che era già dichiarato.
+
+**L'etichetta dichiara il periodo** — "nel trimestre" — perché la riga sta
+accanto a `usagePercent`, che invece **si cumula** sul monte annuo. Le due
+definizioni stanno ora affiancate nella tabella delle KPI del contratto, con la
+ragione della differenza: **il medico virtuale non ha un monte da consumare**,
+sul Plus è illimitato.
+
+**La riga entra anche nella vista di stampa, ed è una decisione dichiarata**: il
+PDF è lo stesso report visto come allegato, e una metrica a schermo assente
+dall'allegato è la coppia di viste che divergono.
+
+##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato prima di ogni misura
+
+- **la prova che conta, fatta cambiando trimestre**: con il passaggio da 3° a 1°
+  trimestre 2026 il testo della cornice **cambia** e il testo dei blocchi fuori è
+  **identico carattere per carattere**, confrontato per intero e non a campione;
+- **i numeri della cornice sul trimestre corrente non si sono mossi**: CHF
+  14'200, 16 giorni, 68%, 82 su 120, 41 attivi, 142 di 1'200, 62%, −2 punti; e
+  sul 1° trimestre 2026 escono i valori derivati del §9 — CHF 9'400, 10 giorni,
+  48%, 58 iscritti, 27 attivi, 50 sessioni;
+- **l'ordine dei blocchi**: titolo, alert, banner privacy, cornice, stress per
+  reparto, trend + utilizzo. Sei blocchi, quello che deve stare sopra sta sopra;
+- **il contrasto sul fondo nuovo della cornice** (rgb 245,249,247): titolo
+  **14.26:1**, sottotitolo **4.79:1** a 12px e peso normale, sopra la soglia AA.
+  Va misurato perché il §6.1 censiva su `--background`, e questo è un fondo che
+  prima non c'era;
+- **i consulti cambiano con il trimestre**: 19 / 29 / 35 / 35, che sommano a 118;
+- **il PDF regge**: la riga nuova costa **23.7 pt** su 785.89 utili, contro un
+  margine più stretto già misurato di 225.6 pt in tedesco. Lo scarico
+  end-to-end non fa parlare il guardrail — che **in sviluppo lancia** — e sulla
+  build demo la console resta muta;
+- **una sola navigazione** per il giro, console senza un messaggio, nessun
+  overflow orizzontale;
+- `lint`, `typecheck`, `build` e `build:demo` a posto; guardrail **108 = 100 +
+  8** invariati; **750 chiavi** ×4.
+
+##### Una cosa sullo strumento, e completa quella di due passate fa
+
+**Le opzioni di un `Select` Radix vogliono anche il `pointermove`.** La sequenza
+registrata il 16.08 — `pointerdown`, `mousedown`, `pointerup`, `mouseup`,
+`click` — apre il menu ma **non seleziona**: l'opzione resta lì e il valore non
+cambia, che si legge come "il selettore non funziona". Con `pointermove` in
+testa la selezione avviene. È la stessa famiglia già a verbale, con un evento in
+più, e vale la pena saperlo prima della prossima verifica su un selettore.
+
+##### Aperto e dichiarato
+
+- **La tabella stress per reparto non segue il selettore**, e non è stato
+  chiuso qui: la cornice lo rende leggibile, non lo risolve. Servirebbe un
+  metodo nuovo sul provider, ed è annotato nella voce di M3.
+- **La seconda frase dell'arco cita ancora "cambiamenti nel sonno"** fra i
+  sintomi associati, quindi su un'apertura che parla di sonno c'è una
+  sovrapposizione residua — più piccola di quella chiusa oggi, e sulla stessa
+  strada del pitch. È una parola, non una frase: si toglie il giorno in cui
+  qualcuno decide che vale la pena.
+- **Il PDF è stato verificato in italiano end-to-end**, non nelle altre tre
+  lingue: il costo della riga è di 23.7 pt e il margine più stretto già misurato
+  era di 225.6, quindi la conclusione regge per differenza — ma è una deduzione,
+  non una misura, e va detto quale delle due è.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

@@ -451,6 +451,15 @@ nascono due e le schermate divergono:
 | **Utilizzo** (`usagePercent`) | sessioni di psicologo consumate ÷ **monte annuo**, non ÷ trimestre: è la stessa grandezza della KPI "142 su 1'200" |
 | **Check-up completati** | check-up eseguiti ÷ **iscritti**, non ÷ organico: chi non ha attivato l'account non può prenotarlo, e metterlo al denominatore misurerebbe l'adozione una seconda volta |
 | **Trend dello stress** | ultimo mese del trimestre **meno** l'ultimo del precedente, in punti. `null` sul trimestre più vecchio della finestra, che un precedente non ce l'ha: uno zero direbbe "invariato" dove il dato non esiste |
+| **Consulti di medico virtuale** (`virtualDoctorConsults`) | somma della serie di utilizzo sui **soli mesi del trimestre**, non cumulata. È l'unica riga del report che non si cumula, e la ragione è che quel servizio **non ha un monte annuo**: sul Plus è illimitato (`CLAUDE.md` §9), quindi non c'è niente da consumare e "quanti finora" non è una domanda. Cumulandola darebbe il totale dei dodici mesi su tutti e quattro i trimestri, cioè un numero che non si muove accanto a un selettore che si muove |
+
+**Le due righe qui sopra vanno lette insieme**, perché stanno sulla stessa
+schermata e si contraddirebbero senza saperlo: `usagePercent` **si cumula**
+perché misura un monte annuo, `virtualDoctorConsults` **no** perché un monte non
+ce l'ha. Da qui l'obbligo che il §7 di `CLAUDE.md` impone alle tre accezioni di
+"sessioni" e ai check-up di piattaforma: **l'etichetta a schermo dichiara il
+periodo** — "nel trimestre" — o due numeri affiancati sembrano coprire la stessa
+finestra.
 
 L'arrotondamento al centinaio fa parte della regola, non della formattazione:
 senza, gli importi non sono riproducibili, e una cifra al franco su un risparmio

@@ -51,6 +51,10 @@ function Identity({ onNavigate }: { onNavigate?: () => void }) {
       aria-label={t.employee.identityAction}
       className="flex items-center gap-3 bg-accent rounded-lg p-3 hover:bg-accent/70 transition-colors"
     >
+      <User
+        className="w-4 h-4 text-accent-foreground flex-shrink-0"
+        aria-hidden="true"
+      />
       <div className="min-w-0 flex-1">
         <p className="text-xs font-medium text-foreground truncate">
           {employeeDisplayName(profile)}
@@ -62,10 +66,6 @@ function Identity({ onNavigate }: { onNavigate?: () => void }) {
           })}
         </p>
       </div>
-      <User
-        className="w-4 h-4 text-accent-foreground flex-shrink-0"
-        aria-hidden="true"
-      />
     </Link>
   );
 }

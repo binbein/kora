@@ -926,6 +926,18 @@ export type HrReport = {
    * uscirebbe neutra invece che vuota (§11: il primo periodo del dataset).
    */
   stressTrendPoints: number | null;
+  /**
+   * I consulti di medico virtuale **dei soli mesi del trimestre**, e non
+   * cumulati come le sedute di psicologo.
+   *
+   * La differenza è una scelta e va detta, perché le due grandezze vivono
+   * sulla stessa schermata: `usagePercent` misura il consumo di un **monte
+   * annuo**, quindi si cumula; il medico virtuale sul piano Plus è illimitato
+   * (`CLAUDE.md` §9) e non ha nessun monte da consumare, quindi cumularlo
+   * darebbe i 118 dei dodici mesi in tutti e quattro i trimestri — un numero
+   * che non si muove mai accanto a un selettore che si muove.
+   */
+  virtualDoctorConsults: number;
   savedChf: number;
   avoidedAbsenceDays: number;
   /** Chiavi delle raccomandazioni in `i18n`, unione per la ragione detta su
