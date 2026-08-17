@@ -245,19 +245,37 @@ risponde meglio. Tre fatti, tutti verificabili:
    non ha nemmeno il campo del punteggio. A uscire su entrambi i rami è il
    conteggio dei misurati, perché la riga deve poter dire quante persone hanno
    risposto (`docs/CONTRATTO-DATI.md` §3).
-2. **La nota privata di sessione non esce mai verso l'azienda.** Il testo vive
-   solo sulle proiezioni che il professionista riceve, e **nessun tipo che l'area
-   HR o l'admin possano leggere ha un campo su cui possa arrivare**: a impedirlo
-   è la forma del dominio, non la JSX. Le altre proiezioni sanno al massimo che
-   una nota esiste, mai cosa dice (`CLAUDE.md` §10.D).
+2. **Il nome del paziente arriva a chi cura e a nessun altro.** Nel portale
+   della Dr.ssa Meier i pazienti hanno un nome — lei quel nome lo conosce già,
+   glielo dice la persona che ha davanti — e **la stessa seduta vista dal
+   back-office porta le sole iniziali**, perché è una proiezione diversa che il
+   campo non ce l'ha. La nota clinica funziona allo stesso modo e da più tempo:
+   il testo vive solo su ciò che il professionista riceve, e le altre proiezioni
+   sanno al massimo che una nota esiste, mai cosa dice (`CLAUDE.md` §10.D).
+
+   **È il fatto più facile da mostrare, e va mostrato invece che detto**:
+   `/professional/pazienti` fa "Marco Bianchi", `/admin/sessioni` fa "M.B.", ed
+   è la stessa seduta. Chi guarda vede la garanzia funzionare, non la sente
+   promettere.
+
+   **Se chiedono perché la psicologa il nome ce l'ha**, la risposta è che
+   nasconderglielo non protegge nessuno: la privacy che il prodotto promette non
+   è verso chi eroga la cura, è **verso l'azienda e verso di noi**. Un prodotto
+   che mostrasse "L.B." a chi ha quella persona in seduta starebbe recitando la
+   privacy invece di averla.
+
 3. **La soglia conta i dipendenti misurati nel periodo, non gli iscritti.** È la
    stessa cifra della risposta precedente e qui dice un'altra cosa: sotto soglia
    non c'è da nessuna parte un dato più fine da andare a prendere, c'è il
    trattino con il lucchetto che si vede sulla Direzione.
 
-La stessa garanzia vale dal lato dell'azienda: l'elenco dipendenti porta iniziali
-e reparto e **non ha nessun campo su cui un nome possa arrivare**, e lo stato del
-check-up dice se è stato fatto, mai cosa ha detto (`docs/CONTRATTO-DATI.md` §3).
+**E dal lato dell'azienda è il fatto che conta più di tutti, ora che il nome
+esiste da qualche parte**: l'elenco dipendenti porta iniziali e reparto e **non
+ha nessun campo su cui un nome possa arrivare**, e lo stato del check-up dice se
+è stato fatto, mai cosa ha detto (`docs/CONTRATTO-DATI.md` §3). Finché nessuna
+schermata mostrava un nome la frase era vera e poco interessante; adesso dice
+esattamente dove passa il confine, e si mostra aprendo `/hr/dipendenti` dopo il
+portale della Dr.ssa Meier.
 
 **Va detto come il punto più forte del prodotto, non come una rassicurazione**:
 qui la privacy non è una promessa scritta nell'informativa, è una proprietà della
