@@ -340,6 +340,12 @@ function ProfessionalCard({
               {t.specialty[professional.specialty]}
             </Badge>
           </div>
+          {/* La bio sta qui perché è qui che si sceglie: la specialità dice di
+              cosa si occupa, la bio come lavora — ed è la differenza fra due
+              card che si somigliano. */}
+          <p className="text-sm text-muted-foreground mt-2">
+            {t.professionalBio[professional.bioKey]}
+          </p>
           <div className="flex flex-wrap items-center gap-4 mt-3 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <Globe className="w-3 h-3" aria-hidden="true" />

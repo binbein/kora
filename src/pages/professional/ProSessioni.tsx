@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { FileText, Save, Video } from 'lucide-react';
+import { CalendarX, FileText, Save, Video } from 'lucide-react';
 import { formatDate, formatNumber, formatTime, formatWeekday } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import { dataProvider } from '@/lib/data';
@@ -19,17 +19,28 @@ import {
   useSessionNote,
 } from '@/lib/data/queries';
 import { ErrorNotice } from '@/components/kora/StateNotice';
-import type { ProfessionalSession, SessionNote } from '@/lib/data/types';
+import CancelSessionDialog from '@/components/professional/CancelSessionDialog';
+import {
+  patientDisplayName,
+  patientInitials,
+  type ProfessionalSession,
+  type SessionNote,
+} from '@/lib/data/types';
 
 /** Il callback esiste solo dove le sedute possono avere una nota: le erogate. */
 type NoteHandler = (session: ProfessionalSession) => void;
 
+/** E questo solo dove si può annullare: le sessioni in programma. */
+type CancelHandler = (session: ProfessionalSession) => void;
+
 function SessionRow({
   session,
   onNote,
+  onCancel,
 }: {
   session: ProfessionalSession;
   onNote?: NoteHandler;
+  onCancel?: CancelHandler;
 }) {
   const tone = {
     scheduled: 'bg-secondary/10 text-secondary-strong',
@@ -69,10 +80,10 @@ function SessionRow({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0 flex-1 basis-64">
           <div className={`w-10 h-10 rounded-xl ${tone} flex items-center justify-center text-sm font-bold flex-shrink-0`}>
-            {session.patientInitials}
+            {patientInitials(session)}
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-semibold truncate">{session.patientInitials}</p>
+            <p className="text-sm font-semibold truncate">{patientDisplayName(session)}</p>
             <p className="text-xs text-muted-foreground truncate">
               <span className="capitalize">{formatWeekday(session.start)}</span>{' '}
               <span className="tabular-nums">
@@ -96,10 +107,26 @@ function SessionRow({
             * provato a premere.
             */}
           {session.status === 'scheduled' && (
-            <Button size="sm" variant="outline" disabled>
-              <Video className="w-3.5 h-3.5 mr-1" aria-hidden="true" />
-              {t.professional.sessions.startUnavailable}
-            </Button>
+            <>
+              <Button size="sm" variant="outline" disabled>
+                <Video className="w-3.5 h-3.5 mr-1" aria-hidden="true" />
+                {t.professional.sessions.startUnavailable}
+              </Button>
+              {/*
+                * Il gesto esiste **solo dove il metodo lo accetta**: una
+                * sessione erogata o annullata non si annulla, e il provider la
+                * rifiuta — ma un pulsante che compare e viene respinto è un
+                * invito a sbagliare, non una difesa (§11).
+                */}
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => onCancel?.(session)}
+              >
+                <CalendarX className="w-3.5 h-3.5 mr-1" aria-hidden="true" />
+                {t.professional.sessions.cancel.action}
+              </Button>
+            </>
           )}
           {session.status === 'completed' && (
             <Button size="sm" variant="outline" onClick={() => onNote?.(session)}>
@@ -117,6 +144,17 @@ function SessionRow({
           )}
         </div>
       </div>
+      {/* La nota di annullamento sta su una riga sua e non nel blocco di
+          destra: è testo libero, e schiacciato accanto al badge tornerebbe a
+          dipingere fuori dalla propria scatola come faceva la data. Vive solo
+          su questa proiezione — il back-office non ha il campo. */}
+      {session.cancellationNote && (
+        <p className="text-xs text-muted-foreground mt-3">
+          {interpolate(t.professional.sessions.cancel.noteShown, {
+            note: session.cancellationNote,
+          })}
+        </p>
+      )}
     </Card>
   );
 }
@@ -125,10 +163,12 @@ function SessionList({
   sessions,
   emptyLabel,
   onNote,
+  onCancel,
 }: {
   sessions: ProfessionalSession[];
   emptyLabel: string;
   onNote?: NoteHandler;
+  onCancel?: CancelHandler;
 }) {
   if (sessions.length === 0) {
     return (
@@ -136,7 +176,12 @@ function SessionList({
     );
   }
   return sessions.map((session) => (
-    <SessionRow key={session.id} session={session} onNote={onNote} />
+    <SessionRow
+      key={session.id}
+      session={session}
+      onNote={onNote}
+      onCancel={onCancel}
+    />
   ));
 }
 
@@ -161,6 +206,9 @@ export default function ProSessioni() {
    * scrive la mutation e lo rilegge la query.
    */
   const [openSession, setOpenSession] = useState<ProfessionalSession | null>(null);
+
+  /* La sessione che si sta annullando: stesso stato di dialogo, altro dialogo. */
+  const [cancelling, setCancelling] = useState<ProfessionalSession | null>(null);
 
   /*
    * `null` vuol dire "non ha ancora scritto niente", e non è la stessa cosa di
@@ -253,7 +301,11 @@ export default function ProSessioni() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="upcoming" className="space-y-3 mt-4">
-          <SessionList sessions={upcoming} emptyLabel={t.professional.sessions.emptyUpcoming} />
+          <SessionList
+            sessions={upcoming}
+            emptyLabel={t.professional.sessions.emptyUpcoming}
+            onCancel={setCancelling}
+          />
         </TabsContent>
         <TabsContent value="completed" className="space-y-3 mt-4">
           <SessionList
@@ -267,12 +319,18 @@ export default function ProSessioni() {
         </TabsContent>
       </Tabs>
 
+      <CancelSessionDialog
+        session={cancelling}
+        professionalId={professionalId}
+        onClose={() => setCancelling(null)}
+      />
+
       <Dialog open={!!openSession} onOpenChange={() => setOpenSession(null)}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>
               {interpolate(t.professional.sessions.note.title, {
-                patient: openSession ? openSession.patientInitials : '',
+                patient: openSession ? patientDisplayName(openSession) : '',
               })}
             </DialogTitle>
           </DialogHeader>

@@ -15,28 +15,56 @@ import { interpolate, t } from "@/lib/i18n";
 import { professionalDisplayName } from "@/lib/data/types";
 import { usePortalProfessional } from "@/lib/data/queries";
 
-function ProfessionalBadge() {
+function ProfessionalBadge({ onNavigate }: { onNavigate?: () => void }) {
   const { data: professional } = usePortalProfessional();
   /*
-   * Qui i tre casi collassano di proposito (M5.b): il riquadro è decorativo, e
-   * in tutti e tre — in attesa, profilo assente, lettura fallita — la cosa
-   * giusta è non disegnarlo. La nav deve restare coi suoi link, che sono la via
-   * d'uscita: un errore al suo posto toglierebbe la navigazione all'area (§10).
+   * Qui i tre casi collassano di proposito (M5.b): in attesa, profilo assente,
+   * lettura fallita — la cosa giusta è non disegnarlo. La nav deve restare coi
+   * suoi link, che sono la via d'uscita: un errore al suo posto toglierebbe la
+   * navigazione all'area (§10).
+   *
+   * **Da quando il riquadro è un link questo ramo toglie anche una porta**, e
+   * resta com'è: la voce del menu non c'è più, quindi con il profilo illeggibile
+   * `/professional/profilo` è irraggiungibile dalla barra. È il caso in cui la
+   * destinazione è **proprio ciò che non si è potuto leggere** — un link verso
+   * la schermata di un profilo che non arriva porterebbe a una pagina vuota.
    */
   if (!professional) return null;
 
+  /*
+   * IL RIQUADRO È LA PORTA DEL PROFILO (17.08.2026), come nel portale
+   * dipendente e per la stessa ragione: "Profilo" è uscito dalle voci del menu
+   * ed è entrato qui. La rotta non cambia, cambia come ci si arriva.
+   *
+   * La disposizione è quella del §6.5 — **icona a sinistra**, nome, dettaglio
+   * sotto — e l'icona è una persona perché è una persona quello che il riquadro
+   * mostra: dice cosa c'è dentro, non dove porta. Il nome accessibile dice
+   * invece la destinazione, che è l'unica cosa che serve a chi ci arriva
+   * tabulando.
+   */
   return (
-    <div className="bg-accent rounded-lg p-3">
-      <p className="text-xs font-medium text-foreground">
-        {professionalDisplayName(professional)}
-      </p>
-      <p className="text-[10px] text-muted-foreground">
-        {t.qualification[professional.qualificationKey]} ·{" "}
-        {interpolate(t.professional.feePerSession, {
-          fee: formatCHF(professional.sessionFee),
-        })}
-      </p>
-    </div>
+    <Link
+      to="/professional/profilo"
+      onClick={onNavigate}
+      aria-label={t.professional.identityAction}
+      className="flex items-center gap-3 bg-accent rounded-lg p-3 hover:bg-accent/70 transition-colors"
+    >
+      <User
+        className="w-4 h-4 text-accent-foreground flex-shrink-0"
+        aria-hidden="true"
+      />
+      <div className="min-w-0 flex-1">
+        <p className="text-xs font-medium text-foreground truncate">
+          {professionalDisplayName(professional)}
+        </p>
+        <p className="text-[10px] text-muted-foreground truncate">
+          {t.qualification[professional.qualificationKey]} ·{" "}
+          {interpolate(t.professional.feePerSession, {
+            fee: formatCHF(professional.sessionFee),
+          })}
+        </p>
+      </div>
+    </Link>
   );
 }
 
@@ -61,11 +89,6 @@ export default function ProNav() {
       path: "/professional/pagamenti",
       icon: CreditCard,
       label: t.professional.nav.payments,
-    },
-    {
-      path: "/professional/profilo",
-      icon: User,
-      label: t.professional.nav.profile,
     },
   ];
 
@@ -138,6 +161,16 @@ export default function ProNav() {
                 {label}
               </Link>
             ))}
+            {/*
+              * Anche qui, come in `EmployeeNav` e per la stessa ragione: il
+              * riquadro vive nella barra laterale, che sotto `lg` non esiste.
+              * Senza questa riga `/professional/profilo` non sarebbe
+              * raggiungibile da nessuna parte su schermo stretto — una rotta
+              * senza porta, cioè il vicolo cieco del §10.
+              */}
+            <div className="pt-2">
+              <ProfessionalBadge onNavigate={() => setOpen(false)} />
+            </div>
           </nav>
         )}
       </header>

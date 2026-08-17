@@ -6,7 +6,11 @@ import { formatCHF, formatDate, formatNumber } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import { loadState, usePortalProfessionalId, useProfessionalPatients } from '@/lib/data/queries';
 import { ErrorNotice } from '@/components/kora/StateNotice';
-import type { SessionEntitlement } from '@/lib/data/types';
+import {
+  patientDisplayName,
+  patientInitials,
+  type SessionEntitlement,
+} from '@/lib/data/types';
 
 /*
  * Il diritto alle sedute, detto come lo legge il professionista.
@@ -86,13 +90,15 @@ export default function ProPazienti() {
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="w-10 h-10 rounded-xl bg-executive/10 flex items-center justify-center text-sm font-bold text-executive flex-shrink-0">
-                  {patient.patientInitials}
+                  {patientInitials(patient)}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold">
-                    {interpolate(t.professional.patients.name, {
-                      initials: patient.patientInitials,
-                    })}
+                  {/* Il nome, e non "Paziente L.B.": chi cura il nome lo
+                      conosce, e l'abbreviazione qui non protegge nessuno
+                      (17.08.2026). L'avatar tiene le iniziali perché è un
+                      avatar. */}
+                  <p className="text-sm font-semibold truncate">
+                    {patientDisplayName(patient)}
                   </p>
                   <p className="text-xs text-muted-foreground tabular-nums">
                     {interpolate(t.professional.patients.delivered, {

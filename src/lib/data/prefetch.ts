@@ -89,6 +89,15 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
       queryKey: queryKeys.professional.patients(professionalId),
       queryFn: () => dataProvider.getProfessionalPatients(professionalId),
     }),
+    /*
+     * La proiezione del back-office è una chiave sua, quindi va scaldata sua:
+     * legge le stesse sedute della riga qui sopra, ma per il guardrail della
+     * cache fredda sono due letture distinte, come lo sono per il tipo.
+     */
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.professional.platformSessions(professionalId),
+      queryFn: () => dataProvider.getPlatformSessions(professionalId),
+    }),
     queryClient.prefetchQuery({
       queryKey: queryKeys.professional.earnings(professionalId, monthKey(month)),
       queryFn: () => dataProvider.getProfessionalEarnings(professionalId, month),

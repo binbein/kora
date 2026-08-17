@@ -1,12 +1,13 @@
 import { addDays, overlaps, startOfWeek } from "../../dates";
 import { assertInDev } from "../guardrails";
-import type {
-  Payout,
-  ProfessionalEarnings,
-  ProfessionalSession,
-  SessionEntitlement,
-  SessionNote,
-  SessionType,
+import {
+  patientDisplayName,
+  type Payout,
+  type ProfessionalEarnings,
+  type ProfessionalSession,
+  type SessionEntitlement,
+  type SessionNote,
+  type SessionType,
 } from "../types";
 import { COMPANY } from "./company";
 import { DEMO_TODAY } from "./demo-date";
@@ -44,8 +45,20 @@ export const PORTAL_PATIENT_EMPLOYEE_ID = LAURA.id;
 
 type PatientSlot = {
   patientId: string;
-  /** È tutto ciò che il professionista riceve del nome (§10.D) */
-  initials: string;
+  /*
+   * IL NOME, E NON LE INIZIALI (17.08.2026). Le iniziali si derivano da qui con
+   * `patientInitials`: scritte accanto sarebbero un secondo valore per lo stesso
+   * fatto, e la stessa persona potrebbe comparire con due grafie a seconda di
+   * quale delle due schermate la mostra (§5.5).
+   *
+   * I nomi sono nel `CLAUDE.md` §8 come tutte le persone della demo, e valgono
+   * le due regole di quel paragrafo lette al contrario di come valgono per il
+   * roster: **cognomi comuni**, perché un paziente non è pubblico né cercabile e
+   * l'azienda è inventata, quindi non c'è niente con cui una coincidenza possa
+   * collidere.
+   */
+  firstName: string;
+  lastName: string;
   /** 1 = lunedì … 5 = venerdì. Sabato e domenica non lavora. */
   weekday: number;
   hour: number;
@@ -82,14 +95,24 @@ type PatientSlot = {
  * Mostrarlo a schermo vale più della riga che costa.
  */
 const PATIENTS: PatientSlot[] = [
-  { patientId: "gr", initials: "G.R.", weekday: 1, hour: 10, minute: 0, fromWeeksAgo: 10 },
-  { patientId: "mb", initials: "M.B.", weekday: 1, hour: 14, minute: 0, fromWeeksAgo: 8 },
-  { patientId: "ek", initials: "E.K.", weekday: 2, hour: 11, minute: 0, fromWeeksAgo: -1 },
+  { patientId: "gr", firstName: "Giulia", lastName: "Ricci", weekday: 1, hour: 10, minute: 0, fromWeeksAgo: 10 },
+  /*
+   * Marco Bianchi non è un nome nuovo: è **l'utente `user-mb` del back-office**,
+   * la stessa persona vista dall'elenco della piattaforma. Il §8 dice che stesse
+   * iniziali vogliono dire stessa persona, quindi con il nome a schermo dire
+   * "Marco Bianchi" di qua e un nome diverso di là sarebbe la collisione di
+   * identità del 16.08.2026 al contrario. Un guardrail lo verifica.
+   */
+  { patientId: "mb", firstName: "Marco", lastName: "Bianchi", weekday: 1, hour: 14, minute: 0, fromWeeksAgo: 8 },
+  { patientId: "ek", firstName: "Eva", lastName: "Kunz", weekday: 2, hour: 11, minute: 0, fromWeeksAgo: -1 },
   // era "S.C.", cioè le iniziali della referente HR di Demo SA: vedi `hr.ts`
-  { patientId: "ig", initials: "I.G.", weekday: 3, hour: 16, minute: 0, fromWeeksAgo: 12 },
+  { patientId: "ig", firstName: "Ilaria", lastName: "Gatti", weekday: 3, hour: 16, minute: 0, fromWeeksAgo: 12 },
   {
     patientId: PORTAL_PATIENT_EMPLOYEE_ID,
-    initials: "L.B.",
+    // dal profilo, non riscritto: è la stessa persona del portale dipendente, e
+    // due stringhe uguali in due file sono due stringhe che possono divergere
+    firstName: LAURA.firstName,
+    lastName: LAURA.lastName,
     weekday: 4,
     hour: 17,
     minute: 30,
@@ -97,12 +120,12 @@ const PATIENTS: PatientSlot[] = [
     // del dipendente non è un numero a parte ma il conto di queste
     fromWeeksAgo: 3,
   },
-  { patientId: "at", initials: "A.T.", weekday: 5, hour: 9, minute: 0, fromWeeksAgo: 6 },
+  { patientId: "at", firstName: "Andrea", lastName: "Tosi", weekday: 5, hour: 9, minute: 0, fromWeeksAgo: 6 },
 
   // percorsi conclusi: fuori dall'elenco pazienti, dentro lo storico compensi
-  { patientId: "df", initials: "D.F.", weekday: 2, hour: 15, minute: 0, fromWeeksAgo: 29, untilWeeksAgo: 22 },
-  { patientId: "pm", initials: "P.M.", weekday: 3, hour: 9, minute: 30, fromWeeksAgo: 24, untilWeeksAgo: 16 },
-  { patientId: "rt", initials: "R.T.", weekday: 5, hour: 14, minute: 0, fromWeeksAgo: 17, untilWeeksAgo: 12 },
+  { patientId: "df", firstName: "Davide", lastName: "Fumagalli", weekday: 2, hour: 15, minute: 0, fromWeeksAgo: 29, untilWeeksAgo: 22 },
+  { patientId: "pm", firstName: "Paolo", lastName: "Moretti", weekday: 3, hour: 9, minute: 30, fromWeeksAgo: 24, untilWeeksAgo: 16 },
+  { patientId: "rt", firstName: "Rita", lastName: "Trevisan", weekday: 5, hour: 14, minute: 0, fromWeeksAgo: 17, untilWeeksAgo: 12 },
 ];
 
 /**
@@ -185,7 +208,8 @@ function buildSessions(): StoredSession[] {
       sessions.push({
         id: `session-${slot.patientId}-${start.getTime()}`,
         patientId: slot.patientId,
-        patientInitials: slot.initials,
+        patientFirstName: slot.firstName,
+        patientLastName: slot.lastName,
         start,
         durationMinutes: SESSION_DURATION_MINUTES,
         status: cancelled
@@ -330,7 +354,7 @@ export const SESSION_NOTES: SessionNote[] = PORTAL_SESSIONS.filter(
    */
   assertInDev(
     text !== undefined,
-    `La prima visita di ${session.patientInitials} non ha un testo in FIRST_VISIT_NOTES.`,
+    `La prima visita di ${patientDisplayName(session)} non ha un testo in FIRST_VISIT_NOTES.`,
   );
   return {
     sessionId: session.id,
@@ -615,7 +639,7 @@ for (const slot of PATIENTS) {
   if (entitlement.used <= entitlement.total) continue;
   assertInDev(
     isActivePatient(mine),
-    `${slot.initials} ha ${entitlement.used} sedute sul cap di ${entitlement.total} ma non è un paziente attivo: il co-payment non comparirebbe da nessuna parte.`,
+    `${slot.firstName} ${slot.lastName} ha ${entitlement.used} sedute sul cap di ${entitlement.total} ma non è un paziente attivo: il co-payment non comparirebbe da nessuna parte.`,
   );
 }
 

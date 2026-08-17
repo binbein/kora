@@ -88,10 +88,14 @@ import type { Dictionary } from "./index";
  *
  *   1. `cancellationReason.*`, `professional.patients.*` — le forme sono al
  *      **maschile generico**, come in italiano e **al contrario del tedesco**,
- *      che qui ha scelto il femminile. Dei pazienti si conoscono le sole
- *      iniziali e il genere non sta nel dominio: una forma marcata direbbe a
- *      schermo qualcosa che il dataset non dice. Se la revisione preferisse
- *      l'epicena, in francese costa una riformulazione per ogni riga.
+ *      che qui ha scelto il femminile. Se la revisione preferisse l'epicena, in
+ *      francese costa una riformulazione per ogni riga.
+ *
+ *      *(La ragione scritta qui fino al 17.08.2026 — "dei pazienti si conoscono
+ *      le sole iniziali e il genere non sta nel dominio" — non vale più: le
+ *      schermate di chi cura mostrano il **nome**, e sei pazienti con un nome
+ *      hanno un genere che si legge. La scelta resta la stessa e l'argomento
+ *      cambia: è il maschile generico del francese, non un'assenza di dato.)*
  *   2. "dipendenti" è reso **collaborateurs** ovunque, che è il termine delle
  *      risorse umane in Svizzera romanda; `employés` è più letterale e meno
  *      idiomatico. È la parola più ripetuta del file, quindi cambiarla dopo
@@ -159,6 +163,21 @@ export const fr: Dictionary = {
     psychologist_f: "Psychologue FSP",
     psychologist_m: "Psychologue FSP",
     coach_m: "Coach",
+  },
+
+  /* Aucun nom d'université, de clinique ou d'association, et aucune année
+     d'expérience : la règle est dans `it.ts` et vaut pour les quatre langues. */
+  professionalBio: {
+    colombo:
+      "Travaille sur le stress lié au travail : des charges qui ne tiennent plus dans la journée, des limites qui s'effacent, des décisions qui pèsent. Le premier entretien sert à cerner ce qu'il faut vraiment.",
+    rossi:
+      "Accompagne des parcours sur le burnout et l'anxiété avec une méthode concrète : peu d'objectifs à la fois, vérifiés ensemble à chaque séance.",
+    meier:
+      "S'occupe du sommeil et de ce qui l'empêche — rythmes irréguliers, pensées qui reviennent le soir, repos qui ne repose pas. Avance par étapes, en partant des habitudes.",
+    fontana:
+      "Coaching sur les objectifs professionnels, les changements de rôle et les décisions à prendre. Ce n'est pas un parcours clinique et cela ne le remplace pas.",
+    keller:
+      "S'occupe du stress professionnel avec une attention à la prévention : reconnaître les signaux avant qu'ils ne deviennent un problème.",
   },
 
   specialty: {
@@ -519,13 +538,13 @@ export const fr: Dictionary = {
    */
   professional: {
     portalName: "Portail professionnels",
+    identityAction: "Ouvrir mon profil professionnel",
 
     nav: {
       calendar: "Calendrier",
       sessions: "Séances",
       patients: "Patients",
       payments: "Paiements",
-      profile: "Profil",
     },
 
     feePerSession: "{fee} par séance",
@@ -554,6 +573,27 @@ export const fr: Dictionary = {
       startUnavailable: "Visioconférence inactive dans cette démo",
       addNote: "Ajouter une note",
       editNote: "Note",
+      cancel: {
+        action: "Annuler",
+        actionLabel:
+          "Annuler la séance de {patient} du {weekday} {date} à {time}",
+        title: "Annuler la séance ?",
+        summary: "{patient} · {weekday} {date}, {time}",
+        noteLabel: "Note (facultative)",
+        notePlaceholder: "Pourquoi la séance a été annulée",
+        notePrivacy:
+          "La note reste dans votre agenda : l'entreprise du patient ne la voit pas.",
+        effect:
+          "L'horaire redevient réservable et la séance ne compte pas dans la rémunération.",
+        keep: "Retour",
+        confirm: "Annuler la séance",
+        confirming: "Annulation",
+        error: {
+          title: "Séance non annulée",
+          body: "La séance est toujours prévue : réessayer.",
+        },
+        noteShown: "Note : {note}",
+      },
       emptyUpcoming: "Aucune séance prévue.",
       emptyCompleted: "Aucune séance effectuée.",
       emptyCancelled: "Aucune séance annulée.",
@@ -585,8 +625,7 @@ export const fr: Dictionary = {
       title: "Patients",
       count: "{n} patients actifs",
       privacy:
-        "Les noms sont abrégés pour des raisons de confidentialité. Les notes cliniques ne sont visibles que par vous.",
-      name: "Patient {initials}",
+        "Vous voyez les noms parce que c'est vous qui suivez ces personnes. L'entreprise ne reçoit ni les noms ni les notes : sa liste ne porte que les initiales.",
       delivered: "{n} séances effectuées",
       next: "Prochaine : {date}",
       noNext: "Aucune séance prévue",

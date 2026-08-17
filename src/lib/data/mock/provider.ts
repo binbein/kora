@@ -17,6 +17,7 @@ import {
   type Invoice,
   type ServiceUsageMonth,
   type VirtualDoctorConsult,
+  patientInitials,
   sameQuarter,
   serviceOf,
   type Appointment,
@@ -29,6 +30,7 @@ import {
   type Payout,
   type Plan,
   type PlanId,
+  type PlatformSession,
   type Professional,
   type ProfessionalEarnings,
   type ProfessionalSession,
@@ -119,6 +121,26 @@ export class MockDataProvider implements DataProvider {
   private readonly bookedByProfessional = new Map<string, StoredSession[]>();
 
   /*
+   * Le sedute annullate durante la demo, per id.
+   *
+   * È una **sovrapposizione** e non una modifica: `PORTAL_SESSIONS` è il
+   * dataset curato del §8 e non si tocca, quindi l'annullamento vive qui e
+   * `sessionsOf` lo applica in proiezione — come `hasNote`, che nasce dalle note
+   * e non dal record memorizzato. Ne discende che un ricaricamento riporta la
+   * seduta al suo posto, che è ciò che il §10 dice di tutto lo stato del
+   * provider.
+   *
+   * Porta anche il motivo, benché oggi possa valere una cosa sola: il giorno in
+   * cui la disdetta arriva anche dal lato del dipendente
+   * (`docs/CONTRATTO-DATI.md` §8.5) a cambiare è chi scrive qui dentro, non la
+   * forma.
+   */
+  private readonly cancellations = new Map<
+    string,
+    { reasonKey: "by_patient" | "by_professional"; note: string | null }
+  >();
+
+  /*
    * L'ultima risposta al check rapido. Non entra nelle serie del §8, ed è una
    * scelta: quelle dodici curve raccontano la storia che il pitch spiega, e un
    * tocco fatto davanti a un investitore non deve poterla muovere. Serve a
@@ -169,10 +191,36 @@ export class MockDataProvider implements DataProvider {
       ...(this.bookedByProfessional.get(professionalId) ?? []),
     ];
     all.sort((a, b) => a.start.getTime() - b.start.getTime());
-    return all.map((session) => ({
+    return all.map((session) =>
+      this.applyCancellation({
+        ...session,
+        hasNote: this.notes.has(session.id),
+      }),
+    );
+  }
+
+  /**
+   * L'annullamento avvenuto durante la demo, applicato in proiezione.
+   *
+   * Sta in una funzione perché la usano in due — la lettura e la scrittura, che
+   * deve restituire la seduta com'è appena diventata — e due punti che
+   * costruiscono la stessa forma sono due punti che possono divergere (§5.5).
+   *
+   * **È l'ultima parola sullo stato**: una seduta annullata non è più "in
+   * programma" per nessun lettore — il calendario, gli appuntamenti del
+   * dipendente e lo slot che torna libero leggono tutti `status`, ed è la
+   * ragione per cui non serve toccarne nessuno.
+   */
+  private applyCancellation(session: ProfessionalSession): ProfessionalSession {
+    const cancelled = this.cancellations.get(session.id);
+    if (cancelled === undefined) return session;
+
+    return {
       ...session,
-      hasNote: this.notes.has(session.id),
-    }));
+      status: "cancelled",
+      cancellationReasonKey: cancelled.reasonKey,
+      ...(cancelled.note === null ? {} : { cancellationNote: cancelled.note }),
+    };
   }
 
   getReferenceDate(): Promise<Date> {
@@ -311,6 +359,30 @@ export class MockDataProvider implements DataProvider {
     return Promise.resolve(this.sessionsOf(professionalId));
   }
 
+  /**
+   * La proiezione del back-office: le stesse sedute senza il nome.
+   *
+   * Si costruisce **dalla stessa lista** che riceve il professionista, campo per
+   * campo e non con uno spread: uno spread porterebbe qui ogni campo che
+   * `ProfessionalSession` guadagnerà domani — il nome del paziente, la nota di
+   * annullamento — e la garanzia del tipo verrebbe aggirata dall'implementazione
+   * che dovrebbe rispettarla.
+   */
+  async getPlatformSessions(
+    professionalId: string,
+  ): Promise<PlatformSession[]> {
+    const sessions = await this.getProfessionalSessions(professionalId);
+    return sessions.map((session) => ({
+      id: session.id,
+      professionalId,
+      // il nome non attraversa questo confine, le iniziali sì: si derivano qui
+      patientInitials: patientInitials(session),
+      start: session.start,
+      status: session.status,
+      type: session.type,
+    }));
+  }
+
   async getProfessionalPatients(
     professionalId: string,
   ): Promise<PatientSummary[]> {
@@ -339,7 +411,8 @@ export class MockDataProvider implements DataProvider {
       const completed = mine.filter((session) => session.status === "completed");
       summaries.push({
         patientId,
-        patientInitials: mine[0].patientInitials,
+        patientFirstName: mine[0].patientFirstName,
+        patientLastName: mine[0].patientLastName,
         lastSessionAt: completed[completed.length - 1]?.start ?? null,
         nextSessionAt:
           mine.find((session) => session.status === "scheduled")?.start ?? null,
@@ -374,6 +447,62 @@ export class MockDataProvider implements DataProvider {
   async getProfessionalPayouts(professionalId: string): Promise<Payout[]> {
     const professional = await this.requireProfessional(professionalId);
     return payoutHistory(this.sessionsOf(professionalId), professional.sessionFee);
+  }
+
+  /**
+   * Annulla una sessione in programma.
+   *
+   * **Cerca l'id in tutte le agende**, e non in quella del portale: un id di
+   * seduta è unico nel dominio, e in produzione a trovarlo è il server. Passare
+   * anche il professionista sarebbe un secondo dato che il primo già implica —
+   * e che il chiamante potrebbe sbagliare.
+   *
+   * Lancia anche in produzione, come `requireProfessional` e per la stessa
+   * ragione: sono invarianti dell'API, non del dataset. Un backend vero
+   * risponderebbe 404 sulla seduta che non c'è e 409 su quella che non si può
+   * più annullare.
+   */
+  async cancelSession(
+    sessionId: string,
+    note?: string,
+  ): Promise<ProfessionalSession> {
+    const session = PROFESSIONALS.flatMap((professional) =>
+      this.sessionsOf(professional.id),
+    ).find((entry) => entry.id === sessionId);
+
+    assertInDevOutsidePromise(
+      session !== undefined,
+      `"${sessionId}" non è una seduta di nessuna agenda.`,
+    );
+    if (session === undefined) {
+      throw new Error(`Nessuna seduta con id "${sessionId}".`);
+    }
+
+    /*
+     * LE DUE METÀ DELLA CONDIZIONE, che oggi coincidono e domani no.
+     *
+     * Qui lo stato si deriva dall'orologio, quindi `scheduled` implica già
+     * futura; in produzione lo stato è un evento che qualcuno dichiara
+     * (`docs/CONTRATTO-DATI.md` §8.5) e le due si separano — una seduta di ieri
+     * che nessuno ha chiuso è ancora `scheduled`, e annullarla toglierebbe un
+     * compenso già maturato. Sono una precondizione sola, non due rami: il
+     * secondo non è codice irraggiungibile, è la metà che tiene il metodo
+     * onesto il giorno del passaggio.
+     */
+    if (session.status !== "scheduled" || session.start <= DEMO_TODAY) {
+      throw new Error(
+        `La seduta "${sessionId}" non è annullabile: è ${session.status} e comincia il ${session.start.toISOString()}.`,
+      );
+    }
+
+    // il confine normalizza, come per la richiesta demo: assente, vuota e soli
+    // spazi sono la stessa cosa per chi legge, e diventano `null` una volta sola
+    this.cancellations.set(sessionId, {
+      reasonKey: "by_professional",
+      note: note?.trim() || null,
+    });
+
+    return this.applyCancellation(session);
   }
 
   getSessionNote(sessionId: string): Promise<SessionNote | null> {
@@ -608,9 +737,10 @@ export class MockDataProvider implements DataProvider {
       // deterministico: lo stesso slot non può produrre due id diversi
       id: `booked-${slot.professionalId}-${slot.start.getTime()}`,
       patientId: PORTAL_PATIENT_EMPLOYEE_ID,
-      // le iniziali si derivano dal profilo: è tutto ciò che il professionista
-      // riceve del nome, e scriverle a mano vorrebbe dire poterle sbagliare
-      patientInitials: `${LAURA.firstName[0]}.${LAURA.lastName[0]}.`,
+      // il nome viene dal profilo, non riscritto qui: è la stessa persona che il
+      // portale dipendente mostra, e due stringhe uguali possono divergere
+      patientFirstName: LAURA.firstName,
+      patientLastName: LAURA.lastName,
       start: slot.start,
       durationMinutes: slot.durationMinutes,
       status: "scheduled",

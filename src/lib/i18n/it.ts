@@ -87,6 +87,33 @@ export const it = {
     coach_m: "Coach",
   },
 
+  /*
+   * Le biografie del roster (founder, 17.08.2026).
+   *
+   * IL VINCOLO, E VALE PER OGNI FRASE CHE SI AGGIUNGERÀ QUI: **nessun nome di
+   * università, ospedale, clinica o associazione**, e nessun anno di
+   * esperienza. Il primo perché un cognome più un ateneo preciso punta a una
+   * persona vera — è la prova di sicurezza con cui il §8 ha scelto questi
+   * cognomi; il secondo perché il dataset dice già quante sedute ognuno ha
+   * erogato, e "quindici anni di pratica" accanto a zero sedute è una
+   * contraddizione che si legge nella stessa schermata.
+   *
+   * Parlano quindi **del lavoro e non del curriculum**: cosa segue quella
+   * persona, e come.
+   */
+  professionalBio: {
+    colombo:
+      "Lavora sullo stress legato al lavoro: carichi che non rientrano, confini che saltano, decisioni che pesano. Il primo incontro serve a capire cosa serve davvero.",
+    rossi:
+      "Segue percorsi su burnout e ansia con un metodo pratico: pochi obiettivi per volta, verificati insieme a ogni incontro.",
+    meier:
+      "Si occupa di sonno e di ciò che lo tiene sveglio — ritmi irregolari, pensieri che tornano la sera, riposo che non ristora. Lavora per gradi, partendo dalle abitudini.",
+    fontana:
+      "Coaching su obiettivi professionali, passaggi di ruolo e decisioni da prendere. Non è un percorso clinico e non lo sostituisce.",
+    keller:
+      "Si occupa di stress lavorativo con attenzione alla prevenzione: riconoscere i segnali prima che diventino un problema.",
+  },
+
   specialty: {
     work_stress: "Stress lavorativo",
     burnout_anxiety: "Burnout e ansia",
@@ -568,13 +595,16 @@ export const it = {
 
   professional: {
     portalName: "Portale professionisti",
+    /* Il nome accessibile del riquadro d'identità dice **la destinazione**, non
+       il contenuto: chi lo incontra tabulando ha bisogno di sapere dove porta,
+       e il nome della professionista lo legge già a schermo (§6.5). */
+    identityAction: "Apri il tuo profilo professionale",
 
     nav: {
       calendar: "Calendario",
       sessions: "Sessioni",
       patients: "Pazienti",
       payments: "Pagamenti",
-      profile: "Profilo",
     },
 
     /** "CHF 80 a sessione" — l'importo arriva già formattato da format.ts */
@@ -612,6 +642,40 @@ export const it = {
       startUnavailable: "Videochiamata non attiva nella demo",
       addNote: "Aggiungi nota",
       editNote: "Nota",
+      /*
+       * L'annullamento (17.08.2026).
+       *
+       * "Annulla la sessione" e non "Annulla" sul pulsante che conferma: in
+       * italiano "Annulla" è anche il modo standard di chiudere un dialogo
+       * senza fare niente, e nello stesso riquadro le due parole si
+       * contendevano il significato opposto. Chi torna indietro legge "Torna
+       * indietro".
+       */
+      cancel: {
+        action: "Annulla",
+        /** "Annulla la sessione di Marco Bianchi di lunedì 28.09.2026 alle 14:00" */
+        actionLabel:
+          "Annulla la sessione di {patient} di {weekday} {date} alle {time}",
+        title: "Annullare la sessione?",
+        /** "Marco Bianchi · lunedì 28.09.2026, 14:00" */
+        summary: "{patient} · {weekday} {date}, {time}",
+        noteLabel: "Nota (facoltativa)",
+        notePlaceholder: "Perché la sessione è stata annullata",
+        notePrivacy:
+          "La nota resta nella tua agenda: l'azienda del paziente non la vede.",
+        effect: "L'ora torna prenotabile e la sessione non entra nei compensi.",
+        keep: "Torna indietro",
+        confirm: "Annulla la sessione",
+        confirming: "Annullamento",
+        /* Dice cosa non è successo, come le altre mutation: la sessione è
+           ancora dov'era, e ritentare è lo stesso pulsante. */
+        error: {
+          title: "Sessione non annullata",
+          body: "La sessione è ancora in programma: riprova.",
+        },
+        /** "Nota: il paziente ha chiesto di spostare" */
+        noteShown: "Nota: {note}",
+      },
       emptyUpcoming: "Nessuna sessione in programma.",
       emptyCompleted: "Nessuna sessione erogata.",
       emptyCancelled: "Nessuna sessione annullata.",
@@ -649,10 +713,14 @@ export const it = {
       title: "Pazienti",
       /** "6 pazienti attivi" */
       count: "{n} pazienti attivi",
+      /*
+       * DICEVA "I nomi sono abbreviati per privacy" ED È DIVENTATA FALSA IL
+       * 17.08.2026, quando la professionista ha cominciato a ricevere il nome
+       * dei propri pazienti. La frase nuova dice la stessa garanzia dal verso
+       * giusto: non che il nome non esista, ma **verso chi non esce**.
+       */
       privacy:
-        "I nomi sono abbreviati per privacy. Le note cliniche sono visibili solo a te.",
-      /** "Paziente L.B." */
-      name: "Paziente {initials}",
+        "Vedi il nome perché sei tu a seguire queste persone. L'azienda non riceve né i nomi né le note: il suo elenco porta le sole iniziali.",
       /** "9 sessioni erogate" */
       delivered: "{n} sessioni erogate",
       /** "Prossima: 24.09.2026" */

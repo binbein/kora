@@ -224,14 +224,40 @@ forma leggendo questo paragrafo, non tre sezioni più in là.
 
 ### Appuntamenti — due proiezioni, una entità
 
-`Appointment` (lato dipendente) e `ProfessionalSession` (lato professionista) sono
-**due viste dello stesso record memorizzato**, non due entità. Una prenotazione
-fatta dal dipendente compare nel calendario del professionista perché è la stessa
-riga.
+`Appointment` (lato dipendente), `ProfessionalSession` (lato professionista) e
+`PlatformSession` (lato back-office) sono **tre viste dello stesso record
+memorizzato**, non tre entità. Una prenotazione fatta dal dipendente compare nel
+calendario del professionista perché è la stessa riga.
 
-La proiezione del professionista porta `patientId` e `patientInitials`, e **non ha
-nessun campo su cui un nome possa arrivare**. Non è una scelta di rendering: è una
-garanzia del contratto.
+**La proiezione di chi cura porta il nome del paziente; quella del back-office
+no** (17.08.2026, decisione dei founder). `ProfessionalSession` e
+`PatientSummary` hanno `patientFirstName` e `patientLastName`;
+`PlatformSession` porta le sole iniziali e **non ha nessun campo su cui un nome
+possa arrivare**. Non è una scelta di rendering: è una garanzia del contratto, e
+sta nella forma perché una scelta di rendering qualcuno può disfarla.
+
+**La garanzia non è cambiata, è cambiato verso chi vale.** Una psicologa il nome
+della propria paziente lo conosce già, e mostrarle delle iniziali non protegge
+nessuno; ciò che il contratto impedisce è che quel nome raggiunga **l'azienda**
+(`EmployeeDirectoryEntry`) e **l'amministratore di piattaforma**
+(`PlatformSession`). Le due letture si sono separate esattamente quel giorno:
+finché entrambe portavano le sole iniziali erano la stessa, e la seconda vista
+serviva solo a chi la leggeva.
+
+**Le iniziali si derivano dal nome** (`patientInitials`) e non sono un campo
+accanto: due valori per lo stesso fatto sono due valori che possono divergere
+(`CLAUDE.md` §5.5), e qui divergerebbero **fra due schermate che mostrano l'una
+o l'altra** a seconda di chi guarda. Per il backend la conseguenza è che a
+derivarle è chi costruisce la proiezione, non chi la consuma.
+
+**La nota di annullamento vive solo sulla proiezione di chi cura.**
+`ProfessionalSession.cancellationNote` è testo libero che il professionista può
+lasciare annullando, ed è la stessa garanzia di `SessionNote`: `PlatformSession`
+non ha il campo. **Assente vuol dire che una nota non c'è**, e copre due casi
+che nessuna schermata distingue — la seduta non è annullata, oppure è stata
+annullata senza scrivere niente. È il prezzo di tenere il motivo e la nota come
+due campi piatti: in produzione, se la distinzione servisse, diventano un
+oggetto solo la cui assenza dice "non annullata".
 
 `EmployeeDirectoryEntry` è l'altra metà della stessa garanzia, dal lato
 dell'azienda: porta iniziali e reparto e **non ha nessun campo su cui un nome
@@ -546,6 +572,7 @@ compensi e pagamenti.
 |---|---|
 | `saveSessionNote` | `["professional", professionalId]` |
 | `bookAppointment` | `["professional", professionalId]` **e** `["employee"]` |
+| `cancelSession` | `["professional", professionalId]` **e** `["employee"]` |
 | `submitRapidCheck` | `["employee", "rapid-check"]` |
 | `submitDemoRequest` | `["platform", "demo-requests"]` |
 | `enterAs` | `["session"]` |
@@ -558,6 +585,11 @@ rileggere altro sarebbe rileggere mezza applicazione per un cambio di porta.
 
 **È anche la sola che in produzione può sparire**: il ruolo lo concederà
 l'autenticazione (§6). Le altre quattro restano.
+
+**Sei dal 17.08.2026**, con `cancelSession`. **È la prima scrittura che non
+inserisce**: `saveSessionNote` è un upsert e le altre quattro sono
+inserimenti, mentre questa **cambia lo stato di un record che esiste** — ed è
+il primo passo dentro il ciclo dell'appuntamento che il §8.5 descrive.
 
 **`bookAppointment` invalida due radici perché scrive un record solo.**
 `Appointment` e `ProfessionalSession` sono due proiezioni della stessa seduta
@@ -590,6 +622,22 @@ un motivo distinto da quello dello slot occupato — oppure alla conferma della
 seduta, e allora il dipendente va avvertito prima. Il contratto non lo dice
 perché la demo non lo esercita, ma è una scelta di prodotto e non un dettaglio:
 cambia cosa vede chi prenota l'undicesima seduta.
+
+**`cancelSession` invalida le stesse due radici, e per la stessa ragione**: la
+seduta è un record solo. Dal lato del professionista tornano indietro agenda,
+pazienti e disponibilità — l'ora annullata torna prenotabile, ed è il caso che
+dà un senso all'annullamento; dal lato del dipendente l'appuntamento sparisce
+dalla home. **Compenso e contatore non si muovono**, e non è una svista da
+correggere invalidando meno: contano le **erogate**, quindi una seduta in
+programma che sparisce non tocca né l'uno né l'altro. Rileggerli costa una riga
+e decidere qui cosa non è cambiato costerebbe di più.
+
+**Rifiuta una seduta che non sia in programma e futura, e le due metà non sono
+la stessa cosa.** Oggi coincidono, perché nel dataset demo lo stato si deriva
+dall'orologio; in produzione lo stato è un **evento dichiarativo** (§8.5) e una
+seduta di ieri che nessuno ha chiuso resta `scheduled` — annullarla toglierebbe
+un compenso già maturato. Il backend deve controllarle entrambe: un `409` sul
+confine HTTP, come per lo slot occupato.
 
 **`submitRapidCheck` invalida solo la risposta**, non la radice: il check rapido
 non muove contatori né appuntamenti, e invalidare più del necessario farebbe
@@ -668,6 +716,30 @@ di un professionista vero, e a differenza di un nome nessuno se ne accorge
 leggendo (`CLAUDE.md` §8). **In produzione quel numero esiste e va aggiunto qui**:
 la qualifica e lo stato dei documenti sono ciò che la piattaforma mostra, il
 numero è ciò che verifica.
+
+**La biografia c'è, e porta un vincolo che vale anche in produzione.**
+`Professional.bioKey` è arrivato il 17.08.2026 su decisione dei founder, e sta
+in questa sezione benché sia una presenza e non un'assenza: il campo era nella
+demo ereditata come stringa scritta in pagina, è sparito il 07.08.2026 **senza
+che nessuna riga lo nominasse**, e questa è la lacuna documentale che si chiude
+— nel verso opposto a quella del numero d'albo, che invece è un'esclusione
+decisa.
+
+**Il tipo porta la chiave, non il testo**, come `qualificationKey`: la bio è una
+frase da mostrare e vive nei dizionari, quindi cambia con la lingua. In
+produzione il testo lo scriverà il professionista e diventerà un campo di dati,
+e allora la chiave lascerà il posto a una stringa per lingua — è la stessa
+trasformazione che aspetta ogni testo redazionale del dominio.
+
+**Il vincolo è sul contenuto e non si eredita da solo: nessun nome di
+università, ospedale, clinica o associazione.** Un cognome poco frequente più un
+ateneo preciso punta a una persona vera, ed è la prova di sicurezza con cui il
+`CLAUDE.md` §8 ha scelto i cognomi del roster. In produzione i professionisti
+sono persone vere e il vincolo cambia natura — diventa una scelta loro, non
+nostra — ma **finché il roster è inventato la bio non può nominare istituzioni
+che esistono**. Vale anche il divieto di anni di esperienza: il dataset dice
+quante sedute ognuno ha erogato, e una cifra in prosa accanto a uno zero è una
+contraddizione nella stessa schermata.
 
 **Le forme dei campi degli schemi base44.** I dodici `base44/entities/*.jsonc` del
 progetto originale sono stati usati come lista di controllo della copertura del
@@ -767,6 +839,13 @@ invece di restare assunzioni implicite:
   propria azienda e può essere in cura. In produzione le liste si uniscono per id
   vero, le iniziali tornano a essere una resa e il vincolo sparisce insieme al
   guardrail che lo sorveglia.
+
+  **Dal 17.08.2026 due delle tre liste dichiarano anche un nome** — l'agenda e
+  il back-office — e il guardrail ha guadagnato l'invariante che ne discende:
+  stesse iniziali non possono portare due nomi diversi. Non cambia la
+  semplificazione, la rende **verificabile in un punto in più**: prima due
+  persone diverse con le stesse iniziali si distinguevano solo per reparto o
+  per id, che il back-office non dichiara — ed è il buco da cui passò S.C.
 - **Il punteggio medio del profilo salute è costante sulla finestra.**
   `PlatformMonth.averageHealthScore` sta su una serie mensile perché in
   produzione il backend lo calcolerà mese per mese dalle risposte vere, mentre
@@ -1009,11 +1088,17 @@ che potrebbe non avvenire.
 ### 8.5 Ciclo dell'appuntamento
 
 **Prima degli stati manca l'attore: nessuno dichiara che una seduta è
-avvenuta.** Le scritture del dominio sono tutte inserimenti — `bookAppointment`,
+avvenuta.** Le scritture del dominio erano tutte inserimenti — `bookAppointment`,
 `submitRapidCheck`, `submitDemoRequest`, più `saveSessionNote`, che è l'unico
-upsert — e **nessun metodo porta una seduta da `scheduled` a `completed`**. Nel
-mock a farlo è l'orologio: lo stato si deriva da `start < DEMO_TODAY`, in un punto
-solo (`mock/professional-portal.ts`).
+upsert — e dal 17.08.2026 `cancelSession` è la prima che **cambia lo stato di un
+record esistente**. Porta una seduta da `scheduled` a `cancelled`, e resta vero
+che **nessun metodo la porta a `completed`**: nel mock a farlo è l'orologio, in
+un punto solo (`mock/professional-portal.ts`).
+
+La differenza fra i due passaggi è quella che questa sezione descrive:
+l'annullamento **ha un attore** — è il professionista, e preme un pulsante —
+mentre l'erogazione no, ed è il motivo per cui una si è potuta costruire e
+l'altra è ancora una domanda di prodotto.
 
 In produzione quella condizione diventa un **evento dichiarativo**, e quell'atto
 decide insieme tre grandezze che oggi non possono divergere:
@@ -1057,9 +1142,33 @@ il ciclo vero ne ha di più:
   una seduta che il paziente non onora è un compenso maturato per il
   professionista e non è una seduta erogata per il cap. Senza quello stato, i due
   numeri che il §3 tiene separati tornano a coincidere.
-- **Disdetta e riprogrammazione da entrambi i lati**, con la **policy di
+- ~~**Disdetta e riprogrammazione da entrambi i lati**, con la **policy di
   preavviso** che decide se la disdetta è gratuita. Oggi `cancellationReasonKey`
-  dice chi ha annullato e nient'altro.
+  dice chi ha annullato e nient'altro.~~ → **metà chiusa il 17.08.2026**, e vale
+  la pena dire quale.
+
+  **C'è**: `cancelSession`, dal lato del professionista. Rifiuta ciò che non è
+  in programma e futuro, valorizza `cancellationReasonKey` a `by_professional`,
+  accetta una nota libera che resta sulla proiezione di chi cura, e libera la
+  fascia — una seduta annullata non occupa più la sua ora (§4).
+
+  **Manca ancora, e sono quattro cose distinte:**
+
+  - **la disdetta dal lato del dipendente**, che è l'altra metà del verso:
+    `by_patient` esiste nell'enumerazione ed è oggi un valore che **solo il
+    dataset può scrivere**. Il metodo per il paziente non c'è, e con lui non
+    c'è la domanda su cosa possa disdire e fino a quando;
+  - **la policy di preavviso**, che decide se una disdetta è gratuita. È la
+    regola che dà un senso all'ora in cui si annulla, e oggi il metodo non
+    guarda quanto manca alla seduta: guarda solo che sia futura;
+  - **chi paga una disdetta tardiva.** È la stessa domanda della mancata
+    presentazione qui sopra, spostata di un'ora: se la piattaforma riconosce il
+    compenso, la seduta annullata smette di essere neutra sui conti — e oggi lo
+    è, perché il compenso conta le erogate;
+  - **la riprogrammazione**, che non è un annullamento seguito da una
+    prenotazione: le due sedute sono la stessa, e trattarle come due record
+    perde il filo del percorso — che è precisamente ciò da cui `SessionType`
+    deriva "follow-up".
 - **La lista d'attesa**, che è la risposta alla promessa del Business Plan sul
   primo appuntamento entro 24 ore quando gli slot finiscono.
 - **La pubblicazione della disponibilità**: gli slot sono un dato del dataset, e
@@ -1210,8 +1319,12 @@ Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
   dataset demo — nessuna coppia di iniziali ripetuta, sorvegliato da un guardrail
   — cade insieme al guardrail. **Manca la seconda metà, ed è quella che si
   vede.** Le schermate che mostrano una persona senza mostrarne il nome ne
-  mostrano **le iniziali**: l'elenco dipendenti dell'HR, i pazienti e le sessioni
-  del professionista, le sessioni del back-office. Con due `M.B.` nella stessa
+  mostrano **le iniziali**: l'elenco dipendenti dell'HR e le sessioni del
+  back-office. *(Erano quattro fino al 17.08.2026: i pazienti e le sessioni del
+  professionista ora mostrano il nome, quindi il problema lì non si pone — e
+  **restringere l'elenco è tutto il guadagno**, perché due dei quattro posti in
+  cui l'omonimia sarebbe ambigua erano proprio quelli di chi la persona la
+  conosce.)* Con due `M.B.` nella stessa
   azienda quelle righe diventano ambigue a chi guarda, e l'ambiguità **non è
   risolvibile aggiungendo un identificatore**: un id accanto alle iniziali è un
   pseudonimo stabile, cioè esattamente ciò che l'anonimato di quelle schermate

@@ -22,6 +22,7 @@ import type {
   Payout,
   Plan,
   PlanId,
+  PlatformSession,
   Professional,
   ProfessionalEarnings,
   ProfessionalSession,
@@ -189,6 +190,23 @@ export interface DataProvider {
   ): Promise<ProfessionalSession[]>;
 
   /**
+   * Le stesse sedute come le vede **il back-office**: la terza proiezione.
+   *
+   * Non è `getProfessionalSessions` con un altro nome: quella serve **chi
+   * cura** e porta il nome del paziente, questa serve chi amministra la
+   * piattaforma e porta le iniziali, su un tipo che il nome non ha
+   * (`PlatformSession`). Le due letture si sono separate il giorno in cui la
+   * prima ha guadagnato il nome — prima erano la stessa perché dicevano la
+   * stessa cosa.
+   *
+   * Prende l'id perché nel dataset demo il back-office elenca l'agenda di una
+   * professionista sola, e la schermata lo dichiara: in produzione ne aggrega
+   * molte e prenderà un intervallo e una pagina
+   * (`docs/CONTRATTO-DATI.md` §6, §7).
+   */
+  getPlatformSessions(professionalId: string): Promise<PlatformSession[]>;
+
+  /**
    * I pazienti di un professionista, ognuno con il suo conto di sessioni.
    * È derivato dalle sessioni: l'elenco e la KPI che lo conta non possono
    * divergere perché sono la stessa lista (§10.D).
@@ -203,6 +221,28 @@ export interface DataProvider {
 
   /** Storico pagamenti, dal mese in corso all'indietro. */
   getProfessionalPayouts(professionalId: string): Promise<Payout[]>;
+
+  /**
+   * Annulla una sessione in programma, dal lato del professionista.
+   *
+   * **RIFIUTA SE LA SESSIONE NON È ANNULLABILE**, e la condizione ha due metà
+   * che oggi coincidono e domani no: dev'essere `scheduled` e dev'essere
+   * ancora futura. Nel dataset demo la prima implica la seconda, perché lo
+   * stato si deriva dall'orologio; in produzione lo stato è un **evento** che
+   * qualcuno dichiara (`docs/CONTRATTO-DATI.md` §8.5), quindi una seduta di
+   * ieri che nessuno ha chiuso resta `scheduled` — e annullarla a posteriori
+   * cambierebbe un compenso già maturato.
+   *
+   * **La nota è facoltativa e non esce mai verso l'azienda**: arriva su
+   * `ProfessionalSession.cancellationNote`, che è una proiezione di chi cura.
+   * Il `?` è la convenzione degli input di scrittura (§2 del contratto), e a
+   * normalizzare è il confine.
+   *
+   * Chi annulla è il professionista, quindi il motivo non è un parametro: la
+   * disdetta dal lato del dipendente non esiste ancora, ed è dichiarata fra i
+   * vuoti dell'MVP insieme alla policy di preavviso.
+   */
+  cancelSession(sessionId: string, note?: string): Promise<ProfessionalSession>;
 
   getSessionNote(sessionId: string): Promise<SessionNote | null>;
 

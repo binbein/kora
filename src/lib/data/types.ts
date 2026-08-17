@@ -370,6 +370,39 @@ export function employeeDisplayName(profile: EmployeeProfile): string {
   return `${profile.firstName} ${profile.lastName}`;
 }
 
+/**
+ * Le due metà del nome di un paziente, come le portano le proiezioni di **chi
+ * cura** — `ProfessionalSession` e `PatientSummary`, e nessun'altra.
+ *
+ * Sta qui come tipo e non come coppia di campi ripetuta due volte perché le due
+ * funzioni sotto devono poterlo ricevere da entrambe: sono la stessa persona
+ * vista da due elenchi della stessa professionista.
+ */
+export type PatientNamed = {
+  patientFirstName: string;
+  patientLastName: string;
+};
+
+/** Nome da mostrare a chi cura. Stessa ragione degli altri due qui sopra. */
+export function patientDisplayName(patient: PatientNamed): string {
+  return `${patient.patientFirstName} ${patient.patientLastName}`;
+}
+
+/**
+ * "L.B." — le iniziali **si derivano dal nome, non si scrivono accanto**.
+ *
+ * È il §5.5 applicato a una stringa: con un campo `patientInitials` accanto al
+ * nome ci sarebbero due valori per lo stesso fatto, e il giorno in cui uno dei
+ * due cambia la stessa persona comparirebbe con due grafie — su schermate che
+ * mostrano l'una o l'altra a seconda di chi guarda.
+ *
+ * È anche l'unico punto in cui la proiezione del back-office prende le sue: il
+ * nome non attraversa quel confine, le iniziali sì.
+ */
+export function patientInitials(patient: PatientNamed): string {
+  return `${patient.patientFirstName[0]}.${patient.patientLastName[0]}.`;
+}
+
 /** Quante sessioni sono state usate sul cap del piano, e quanto costa la successiva. */
 export type SessionEntitlement = {
   used: number;
@@ -442,6 +475,23 @@ export type Professional = {
    * tipo e non si inventa.
    */
   qualificationKey: "psychologist_f" | "psychologist_m" | "coach_m";
+  /**
+   * Chiave della biografia in `it.ts` (founder, 17.08.2026).
+   *
+   * **È una chiave e non un testo**, come la qualifica: la bio è una frase da
+   * mostrare, quindi vive nei dizionari e cambia con la lingua (§2.7). A
+   * differenza della qualifica la chiave **è la persona**, perché la bio è sua
+   * e non una categoria che si condivide — e per questo l'unione ha esattamente
+   * i cinque id del roster: aggiungere un professionista senza scrivergli la bio
+   * non compila.
+   *
+   * IL VINCOLO SUL TESTO STA NEL `docs/CONTRATTO-DATI.md` §6 e vale in tutte e
+   * quattro le lingue: **nessun nome di università, ospedale, clinica o
+   * associazione**. Un cognome poco frequente più un ateneo preciso punta a una
+   * persona vera, ed è la stessa prova di sicurezza con cui il §8 ha scelto i
+   * cognomi del roster.
+   */
+  bioKey: "colombo" | "rossi" | "meier" | "fontana" | "keller";
   /**
    * 0–5, un decimale. **`null` per chi non ha ancora erogato sedute**: un
    * professionista in verifica non ha una valutazione, e uno zero si
@@ -533,19 +583,29 @@ export type Appointment = {
 };
 
 /**
- * Lo stesso appuntamento come lo vede **il professionista**: il paziente è
- * identificato da un id opaco e dalle iniziali, mai dal nome.
+ * Lo stesso appuntamento come lo vede **il professionista**, e il paziente ci
+ * arriva **con il suo nome** (founder, 17.08.2026).
  *
  * Sono due proiezioni di una sola entità memorizzata, non due entità: una
  * prenotazione fatta dal dipendente compare qui perché è lo stesso record
- * (§10.D). Che il nome non ci sia è una garanzia del contratto, non una scelta
- * di rendering: non esiste campo su cui possa arrivare.
+ * (§10.D).
+ *
+ * PERCHÉ IL NOME C'È, E PERCHÉ LA GARANZIA DEL §3 NON CADE. Una psicologa il
+ * nome della propria paziente lo conosce — glielo dice la persona che ha in
+ * cura — e mostrarle delle iniziali non protegge nessuno: confonde e basta. Ciò
+ * che il contratto garantisce non è che il nome non esista, è **verso chi non
+ * esce**: l'azienda e l'amministratore di piattaforma. Le loro proiezioni —
+ * `EmployeeDirectoryEntry` e `PlatformSession` — non hanno nessun campo su cui
+ * possa arrivare, e quella è la garanzia, non una scelta di rendering.
+ *
+ * Le **iniziali non sono un campo**: si derivano con `patientInitials`, perché
+ * due valori per lo stesso fatto sono due valori che possono divergere (§5.5).
  */
 export type ProfessionalSession = {
   id: string;
   patientId: string;
-  /** "L.B." — è tutto ciò che il professionista riceve del nome */
-  patientInitials: string;
+  patientFirstName: string;
+  patientLastName: string;
   start: Date;
   durationMinutes: number;
   status: AppointmentStatus;
@@ -554,6 +614,52 @@ export type ProfessionalSession = {
   hasNote: boolean;
   /** Chiave del motivo in `it.ts`, presente solo sulle sessioni annullate */
   cancellationReasonKey?: "by_patient" | "by_professional";
+  /**
+   * La nota libera che il professionista può lasciare annullando (17.08.2026).
+   *
+   * **Vive solo qui**, come `SessionNote`: nessun tipo che l'area HR o l'admin
+   * possano leggere ha un campo su cui possa arrivare, e `PlatformSession` è
+   * quello che lo dimostra — la stessa seduta, senza questo campo.
+   *
+   * Assente vuol dire **che una nota non c'è**, e copre due casi che le
+   * schermate non distinguono: la seduta non è annullata, oppure è stata
+   * annullata senza scrivere niente. È il prezzo di tenere il motivo e la nota
+   * come due campi piatti invece che come un oggetto solo — il motivo esisteva
+   * prima, e le schermate leggono la coppia (`docs/CONTRATTO-DATI.md` §3).
+   */
+  cancellationNote?: string;
+};
+
+/**
+ * La stessa seduta come la vede **il back-office**: la terza proiezione, dopo
+ * quella del dipendente e quella del professionista.
+ *
+ * ESISTE PERCHÉ LE DUE VISTE HANNO DIRITTI DIVERSI, e prima ne condividevano
+ * una: `/admin/sessioni` leggeva `getProfessionalSessions`, cioè la proiezione
+ * di chi cura. Finché lì c'erano le sole iniziali la coincidenza non costava
+ * niente; dal momento in cui la professionista riceve il nome del paziente, la
+ * stessa lettura lo consegnerebbe **anche all'amministratore di piattaforma**,
+ * accanto alla data di una seduta di psicologia — che è esattamente ciò che è
+ * stato tolto il 16.08.2026 portando via `healthScore` da `PlatformUser`.
+ *
+ * **Non lo si risolve facendo scegliere alla schermata cosa rendere**: quella è
+ * una scelta che qualcuno può disfare. Qui non c'è **nessun campo su cui un
+ * nome possa arrivare**, ed è la stessa garanzia di forma che
+ * `EmployeeDirectoryEntry` dà dal lato dell'azienda.
+ *
+ * Porta il minimo che la schermata mostra: chi, quando, che tipo, com'è andata.
+ * Il compenso non è un campo — è la tariffa del professionista moltiplicata per
+ * le erogate, e un importo memorizzato accanto potrebbe smettere di tornare con
+ * lei (§5.5).
+ */
+export type PlatformSession = {
+  id: string;
+  professionalId: string;
+  /** "L.B." — e non esiste il campo che porterebbe il nome */
+  patientInitials: string;
+  start: Date;
+  status: AppointmentStatus;
+  type: SessionType;
 };
 
 /** Slot proponibile in prenotazione; diventa un `Appointment` se confermato. */
@@ -590,7 +696,9 @@ export type SessionNote = {
  */
 export type PatientSummary = {
   patientId: string;
-  patientInitials: string;
+  /** Chi cura riceve il nome, come su `ProfessionalSession` e per la stessa ragione */
+  patientFirstName: string;
+  patientLastName: string;
   /** `null` quando è un paziente nuovo che non ha ancora fatto sedute */
   lastSessionAt: Date | null;
   nextSessionAt: Date | null;

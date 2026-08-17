@@ -65,10 +65,14 @@ import type { Dictionary } from "./index";
  *      "Buongiorno", che copre tutta la giornata mentre `Guten Morgen` no. In
  *      un registro caldo un madrelingua potrebbe preferire `Hallo`: è una
  *      scelta di tono, non di significato.
- *   4. Le forme femminili di `professional.*` — `Patientinnen`,
- *      `Patientin {initials}`. L'italiano le usa perché il portale è quello
- *      della Dr.ssa Meier; il tedesco costringe a scegliere, e il maschile
- *      generico avrebbe cambiato in silenzio di chi parla la demo.
+ *   4. Le forme femminili di `professional.*` — `Patientinnen`, e la stessa
+ *      scelta in `cancellationReason.by_patient`. L'italiano le usa perché il
+ *      portale è quello della Dr.ssa Meier; il tedesco costringe a scegliere, e
+ *      il maschile generico avrebbe cambiato in silenzio di chi parla la demo.
+ *      *(La riga citava anche `Patientin {initials}`, che dal 17.08.2026 non
+ *      esiste più: le schermate mostrano il nome del paziente, non le sue
+ *      iniziali, e i sei pazienti attivi non sono tutti donne — il che è
+ *      esattamente la domanda da portare alla revisione.)*
  */
 export const de: Dictionary = {
   common: {
@@ -112,6 +116,21 @@ export const de: Dictionary = {
     psychologist_f: "Psychologin FSP",
     psychologist_m: "Psychologe FSP",
     coach_m: "Coach",
+  },
+
+  /* Kein Name einer Universität, einer Klinik oder eines Verbands, und keine
+     Berufsjahre: die Regel steht in `it.ts` und gilt für alle vier Sprachen. */
+  professionalBio: {
+    colombo:
+      "Arbeitet mit arbeitsbedingtem Stress: Aufgaben, die nicht mehr in den Tag passen, Grenzen, die verschwimmen, Entscheidungen, die schwer wiegen. Das erste Gespräch klärt, was wirklich gebraucht wird.",
+    rossi:
+      "Begleitet Wege aus Burnout und Angst, praktisch angelegt: wenige Ziele auf einmal, bei jedem Termin gemeinsam überprüft.",
+    meier:
+      "Beschäftigt sich mit Schlaf und mit dem, was ihn stört — unregelmässige Rhythmen, Gedanken, die abends wiederkommen, Ruhe, die nicht erholt. Arbeitet schrittweise, ausgehend von den Gewohnheiten.",
+    fontana:
+      "Coaching zu beruflichen Zielen, Rollenwechseln und anstehenden Entscheidungen. Kein klinischer Weg und kein Ersatz dafür.",
+    keller:
+      "Beschäftigt sich mit arbeitsbedingtem Stress, mit Blick auf Prävention: die Signale erkennen, bevor daraus ein Problem wird.",
   },
 
   specialty: {
@@ -453,13 +472,13 @@ export const de: Dictionary = {
   /* Portale professionista: registro strumento, **Sie**. */
   professional: {
     portalName: "Portal für Fachpersonen",
+    identityAction: "Ihr Fachprofil öffnen",
 
     nav: {
       calendar: "Kalender",
       sessions: "Sitzungen",
       patients: "Patientinnen",
       payments: "Zahlungen",
-      profile: "Profil",
     },
 
     feePerSession: "{fee} pro Sitzung",
@@ -488,6 +507,27 @@ export const de: Dictionary = {
       startUnavailable: "Videoanruf in dieser Demo nicht aktiv",
       addNote: "Notiz hinzufügen",
       editNote: "Notiz",
+      cancel: {
+        action: "Absagen",
+        actionLabel:
+          "Sitzung von {patient} am {weekday}, {date} um {time} absagen",
+        title: "Sitzung absagen?",
+        summary: "{patient} · {weekday}, {date}, {time}",
+        noteLabel: "Notiz (optional)",
+        notePlaceholder: "Warum die Sitzung abgesagt wurde",
+        notePrivacy:
+          "Die Notiz bleibt in Ihrem Kalender: das Unternehmen der Patientin sieht sie nicht.",
+        effect:
+          "Die Zeit wird wieder buchbar und die Sitzung zählt nicht zum Honorar.",
+        keep: "Zurück",
+        confirm: "Sitzung absagen",
+        confirming: "Wird abgesagt",
+        error: {
+          title: "Sitzung nicht abgesagt",
+          body: "Die Sitzung ist weiterhin geplant: bitte erneut versuchen.",
+        },
+        noteShown: "Notiz: {note}",
+      },
       emptyUpcoming: "Keine geplante Sitzung.",
       emptyCompleted: "Keine durchgeführte Sitzung.",
       emptyCancelled: "Keine abgesagte Sitzung.",
@@ -519,8 +559,7 @@ export const de: Dictionary = {
       title: "Patientinnen",
       count: "{n} aktive Patientinnen",
       privacy:
-        "Die Namen sind aus Datenschutzgründen abgekürzt. Die klinischen Notizen sehen nur Sie.",
-      name: "Patientin {initials}",
+        "Sie sehen die Namen, weil Sie diese Menschen begleiten. Das Unternehmen erhält weder Namen noch Notizen: seine Liste führt nur die Initialen.",
       delivered: "{n} durchgeführte Sitzungen",
       next: "Nächste: {date}",
       noNext: "Keine geplante Sitzung",

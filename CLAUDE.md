@@ -813,8 +813,8 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 109 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 109 posti.
+call site sono 111 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 111 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
 **Il criterio con cui i call site si contano**, perché una rilevazione futura non
@@ -822,7 +822,7 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **101 + 8 = 109** (17.08.2026). Restano fuori, e sono le tre trappole del
+Oggi **102 + 9 = 111** (17.08.2026). Restano fuori, e sono le tre trappole del
 conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
 nome lungo che **contiene** quello corto.
 
@@ -858,8 +858,9 @@ dice **perché** quel file è diverso e non solo che non si conta.
 diversa da quella scritta qui va confrontata **prima col criterio e poi col
 numero**: se il criterio è stato applicato per intero, a essere invecchiata è la
 riga, e si aggiorna con la data. Un guardrail nuovo è un call site nuovo, ed è
-esattamente ciò che è successo passando da 96 a 97 con la tranche tedesca e da
-108 a 109 con il conteggio delle chiavi del §2.7 (17.08.2026).
+esattamente ciò che è successo passando da 96 a 97 con la tranche tedesca, da
+108 a 109 con il conteggio delle chiavi del §2.7 e da 109 a 111 con
+l'annullamento e il nome dei pazienti (17.08.2026).
 
 **Il numero compare in questa sezione più di una volta, e una sola porta la
 data.** È quella del criterio, qui sopra; le altre tre — le due che aprono la
@@ -885,7 +886,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 109 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 111 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 
@@ -1535,6 +1536,23 @@ Tre vincoli che vengono dalla verifica, non dal gusto:
   ragione per cui Colombo, Rossi, Meier e Fontana reggono. **La prova è
   cercare cognome + professione + cantone**, non il solo cognome.
 
+**I pazienti della Dr.ssa Meier hanno un nome** (founder, 17.08.2026): Giulia
+Ricci, **Marco Bianchi**, Eva Kunz, Ilaria Gatti, Laura Bernasconi, Andrea Tosi,
+e i tre percorsi conclusi Davide Fumagalli, Paolo Moretti, Rita Trevisan. Il
+nome lo vede **chi cura**, mai l'azienda né il back-office, e a garantirlo è la
+forma del dato (§10.D).
+
+**Marco Bianchi non è un nome nuovo**: è l'utente `user-mb` del back-office, e
+comparire con due nomi sulle stesse iniziali sarebbe la collisione di identità
+del 16.08.2026 vista dal lato che il nome apre. Un guardrail lo verifica.
+
+**La prova di sicurezza qui è più leggera che per il roster, e la ragione è la
+riga qui sopra letta al contrario**: un paziente non è pubblico, non è
+cercabile, non ha una professione né un cantone accanto, e l'azienda è
+inventata — quindi non esiste la terna che identifica una persona vera. Resta la
+metà che vale sempre: **cognomi comuni**, che è il motivo per cui non c'è
+nessuno *Steiner* in questo elenco.
+
 Domini email: TLD riservato **`.example`** (RFC 2606), che nessuno può registrare —
 `m.bianchi@demo-sa.example`. Si vedono solo nel back-office, che dichiara di essere
 dimostrativo. Le persone inventate non devono comparire su domini di terzi.
@@ -2006,6 +2024,50 @@ demo scollegate.
    la JSX: il testo vive solo sulle proiezioni che il professionista riceve e non
    compare su nessun tipo che l'area HR o l'admin possano leggere. Approvato dai
    founder il **06.08.2026**; non è una schermata nuova, quindi il §2.6 è soddisfatto.
+
+2. **Il professionista vede il nome dei suoi pazienti. L'amministratore no**
+   (founder, 17.08.2026). Una psicologa il nome della propria paziente lo
+   conosce — glielo dice la persona che ha davanti — e mostrarle delle iniziali
+   non protegge nessuno: confonde e basta.
+
+   **La garanzia del contratto non cade, cambia verso.** Non è "il nome non
+   esiste", è **verso chi non esce**: l'azienda e l'amministratore di
+   piattaforma. Le loro proiezioni — `EmployeeDirectoryEntry` e
+   `PlatformSession` — non hanno nessun campo su cui possa arrivare.
+
+   **`/admin/sessioni` riceve una proiezione sua**, ed è la parte da non
+   scorciare: quella schermata leggeva la stessa lettura del portale, e con il
+   nome sul tipo lo avrebbe consegnato al back-office accanto alla data di una
+   seduta di psicologia — cioè il dato individuale che il 16.08.2026 è uscito da
+   `PlatformUser`. **Non si risolve facendo scegliere alla schermata cosa
+   rendere**, perché è una scelta che qualcuno può disfare: si risolve nella
+   forma del dato, con una terza vista dello stesso record.
+
+   **Le iniziali si derivano dal nome e non sono un campo** (§5.5), e da qui
+   discende l'invariante nuovo del guardrail delle identità: stesse iniziali non
+   possono portare due nomi diversi.
+
+3. **Una sessione in programma si può annullare** (founder, 17.08.2026), dal
+   calendario e dalla lista sessioni. **Solo `scheduled` e solo nel futuro**: il
+   metodo rifiuta il resto e la schermata non offre il gesto dove sarebbe
+   rifiutato.
+
+   Il motivo resta l'enumerazione di due valori che c'era già — chi ha annullato
+   — e vale `by_professional`. In più il dialogo accetta **una nota libera
+   facoltativa**, che vive **solo sulla proiezione di chi cura**, come
+   `SessionNote`: `PlatformSession` è la prova che non può arrivare altrove.
+
+   **Quello che ne discende era già scritto per le annullate**, e va verificato
+   invece che dato per fatto: lo slot torna prenotabile, il compenso non matura,
+   il contatore delle sessioni usate non si muove — conta le erogate — e la
+   cella del calendario si svuota. Metà del vuoto del
+   `docs/CONTRATTO-DATI.md` §8.5 si chiude qui; l'altra metà — preavviso, chi
+   paga una disdetta tardiva, riprogrammazione, disdetta dal lato del dipendente
+   — resta dichiarata lì.
+
+4. **Il profilo si raggiunge dal riquadro dell'identità**, non dal menu
+   (founder, 17.08.2026), come nel portale dipendente e con la disposizione del
+   §6.5. **La rotta resta**: cambia come ci si arriva, quindi non è scope.
 
 **Finita quando:** le righe settimanali sommano al totale del mese; i pazienti
 elencati sono lo stesso numero che dichiara la KPI; le date e i giorni della
