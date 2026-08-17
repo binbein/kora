@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, CreditCard, FileText, Shield, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Users, CreditCard, FileText, Shield, Building2, Menu, X } from 'lucide-react';
 import KoraLogo from '@/components/shared/KoraLogo';
 import { formatNumber } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
@@ -55,14 +55,37 @@ export default function HRNav() {
         </nav>
         {company && (
           <div className="p-4 border-t border-border">
-            <div className="bg-accent rounded-lg p-3">
-              <p className="text-xs font-medium text-foreground">{company.name}</p>
-              <p className="text-[10px] text-muted-foreground tabular-nums">
-                {interpolate(t.hr.navCompanyMeta, {
-                  count: formatNumber(company.employeeCount),
-                  plan: t.plan[company.plan.id],
-                })}
-              </p>
+            {/*
+              * LA STESSA DISPOSIZIONE DEL RIQUADRO DIPENDENTE, NON LO STESSO
+              * RIQUADRO (§6.4).
+              *
+              * Icona a sinistra come là, ma **l'icona di un'azienda**: qui non
+              * c'è una persona, ci sono un cliente, il suo organico e il suo
+              * piano. E **non è un link**, perché `/hr/profilo` non esiste ed è
+              * una decisione (§2.6), non una dimenticanza.
+              *
+              * Da qui la scelta dell'icona: un'icona da profilo su un riquadro
+              * che non porta da nessuna parte è l'affordance che mente — lo
+              * stesso difetto che le voci del footer hanno costretto a
+              * correggere l'08.08.2026, dove l'affordance era nel layout invece
+              * che nell'elemento.
+              */}
+            <div className="flex items-center gap-3 bg-accent rounded-lg p-3">
+              <Building2
+                className="w-4 h-4 text-accent-foreground flex-shrink-0"
+                aria-hidden="true"
+              />
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-medium text-foreground truncate">
+                  {company.name}
+                </p>
+                <p className="text-[10px] text-muted-foreground tabular-nums truncate">
+                  {interpolate(t.hr.navCompanyMeta, {
+                    count: formatNumber(company.employeeCount),
+                    plan: t.plan[company.plan.id],
+                  })}
+                </p>
+              </div>
             </div>
           </div>
         )}
