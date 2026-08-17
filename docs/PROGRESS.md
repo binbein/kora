@@ -2063,7 +2063,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Trentuno passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Trentadue passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2075,9 +2075,9 @@ non dichiarati, i fatti corretti nei documenti, il perimetro e le promesse in
 sospeso, il footer fuori dalla demo, i terzi e la simmetria del footer,
 l'identità collisa e gli stati limite, le simmetrie e le verifiche vere, la riga
 della sessione e i criteri che si contraddicevano, le parole e il perimetro,
-l'anteprima a tre pannelli e la voce Admin, la home e il medico, e **questa
-passata**, la cornice del trimestre. Non aggiungono schermate e non spostano un
-numero a schermo.
+l'anteprima a tre pannelli e la voce Admin, la home e il medico, la cornice del
+trimestre, e **questa passata**, il conteggio che diventa un guardrail. Non
+aggiungono schermate e non spostano un numero a schermo.
 
 **Fino al 17.08.2026 la riga finiva con "sono igiene del layer dati, del seam e
 del dizionario", e da questa passata non è più vero di tutte.** Le due metà si
@@ -2115,9 +2115,19 @@ allinea `CLAUDE.md` a ciò che la tranche 1b ha cambiato — conteggio dei
 guardrail, language switcher, default di `format.ts` — quindi è **contabilità di
 M5.e**, e la milestone questa sezione la esclude per criterio.
 
-**Non è un intervallo, e i buchi hanno un motivo**: #25 e #27 sono fuori per le
-due eccezioni qui sotto, e **#29–#33 sono M5**, cioè la milestone, che questa
-sezione esclude per criterio.
+**Non è un intervallo, e i buchi hanno un motivo — tutti, ed è la seconda
+stesura di questa riga.** Fuori per le due eccezioni qui sotto: **#25 e #35**,
+che sono sintesi retrospettive, e **#27 e #42**, che toccano solo
+`docs/PITCH.md`. Fuori come milestone: **#29–#33** e **#36–#38, #40 e #41**,
+cioè M5 con le quattro PR della tranche linguistica e la coda documentale della
+1b, che la riga qui sopra dichiara contabilità di M5.e.
+
+*(Fino al 17.08.2026 questa riga si fermava a «#25 e #27 … e #29–#33 sono M5»,
+cioè copriva metà dei buchi e si fermava dove la lista dei numeri diventava
+scomoda. Il costo non è teorico e si paga a valle: chi rifà il conto trova #35,
+non trova la ragione, e apre una segnalazione su un difetto che non c'è. È
+appena successo. Il totale — 31 — non si è mosso: a essere incompleto era
+l'elenco, non la misura.)*
 
 **#34 è la prova del criterio, non un'eccezione**: tocca `docs/PITCH.md`, ma
 **non solo lui** — cambia tre nav — quindi la seconda esclusione qui sotto non
@@ -2139,11 +2149,24 @@ non una passata. Senza questa riga il conto si insegue da solo: ogni sintesi
 scritta dopo il merge diventerebbe la passata successiva, che a sua volta
 chiederebbe la propria sintesi.
 
-**Il caso vero è #25**, che tocca solo questo file e scrive la sintesi di #24:
-è l'unica esclusa per questa regola, ed è la ragione per cui il conto salta da
-#24 a #26. Da lì la sintesi si scrive come **ultimo commit della passata
-stessa** — è quello che ha fatto #26 — così il conto d'apertura è già giusto
-al merge e non c'è una PR in più da contare.
+**I casi sono due, e il primo è #25**: tocca solo questo file e scrive la
+sintesi di #24, ed è la ragione per cui il conto salta da #24 a #26. Da lì la
+sintesi si scrive come **ultimo commit della passata stessa** — è quello che ha
+fatto #26 — così il conto d'apertura è già giusto al merge e non c'è una PR in
+più da contare.
+
+**Il secondo è #35**, la sintesi di #34, e non è un secondo caso della stessa
+scoperta: la disciplina della riga qui sopra c'era già — l'aveva inaugurata #26
+— e #34 non l'ha seguita, mergiata com'era in mezzo a M5, fra il blocco d) e la
+tranche linguistica. **L'eccezione ha retto lo stesso**, che è la ragione per
+cui vale la pena nominarla: #35 non si conta, il totale non si muove, e dopo di
+lei ogni passata ha chiuso con la propria sintesi dentro la propria PR.
+
+*(Questa riga arriva il 17.08.2026. Fino ad allora #35 non compariva in nessun
+punto di questo file, e la riga qui sopra la dichiarava inesistente dicendo che
+#25 era «l'unica»: è la forma difficile del difetto delle affermazioni
+invecchiate — non una frase falsa da rileggere, ma una cosa che non c'è e
+avrebbe dovuto esserci.)*
 
 **La seconda esclusione: le PR che toccano solo `docs/PITCH.md`.** Non sono
 passate di refinement, e non è una deroga a "le docs-only si contano": lo
@@ -5600,8 +5623,10 @@ cui si decide la residenza dei dati, che il §2.1 dei *Dubbi* colloca **prima de
 primo pilot**, cioè prima dei contratti.
 
 **Il criterio**, perché il conto sia rifacibile: si scorrono **le chiavi
-stringa di `src/lib/i18n/it.ts`** — quante sono, con quale criterio e con quale
-comando lo dice il `CLAUDE.md` §2.7, che è l'unico punto che le conta — e si
+stringa di `src/lib/i18n/it.ts`** — con quale criterio e con quale comando lo
+dice il `CLAUDE.md` §2.7, e **quante sono lo dice `EXPECTED_KEYS`** in
+`src/lib/i18n/placeholders.ts`, dove dal 17.08.2026 un guardrail lo verifica a
+ogni avvio — e si
 tengono quelle che **affermano qualcosa che una privacy policy dovrà sostenere o
 smentire**. Restano fuori le etichette, i titoli
 di colonna, gli stati vuoti e le stringhe che contengono una parola chiave senza
