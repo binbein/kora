@@ -382,7 +382,14 @@ export const it = {
          * per questo basta **una** frase invece di una variante per caso.
          */
         impact: "Grazie. Quanto le pesa nella giornata: riesce a lavorare e a fare le sue cose come sempre, o ha dovuto rinunciare a qualcosa?",
-        symptoms: "Chiaro. Nota altro insieme a questo — febbre, stanchezza, cambiamenti nel sonno o nell'appetito?",
+        /*
+         * I sintomi associati **non nominano il sonno**, per la stessa ragione
+         * della domanda qui sopra e sulla stessa strada: aprendo con "sonno" —
+         * l'area debole di Laura, quindi ciò che il pitch prova per primo — la
+         * frase chiedeva di una cosa che chi legge aveva appena detto. Fuori
+         * l'elenco resta di due voci e la congiunzione regge da sé.
+         */
+        symptoms: "Chiaro. Nota altro insieme a questo — febbre, stanchezza o cambiamenti nell'appetito?",
         guidance: "La ringrazio, mi basta per orientarla. Una diagnosi da qui non posso farla: se il disturbo è legato a stress o umore, prenoti una sessione con uno psicologo dalla sezione dedicata; altrimenti si rivolga al suo medico curante, che può visitarla. Se i sintomi peggiorano all'improvviso, chiami il 144.",
       },
       /* Spenta con il motivo nell'etichetta, come il pulsante del check-up. */
