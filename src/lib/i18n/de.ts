@@ -792,10 +792,10 @@ export const de: Dictionary = {
     nav: {
       pricing: "Pläne",
       roi: "ROI-Rechner",
-      demo: "Demo",
       employees: "Mitarbeitende",
       hr: "HR",
       professionals: "Fachpersonen",
+      admin: "Admin",
       login: "Anmelden",
       bookDemo: "Demo buchen",
       menu: "Menü öffnen",
@@ -970,6 +970,19 @@ export const de: Dictionary = {
         analyticsLabel: "HR-Dashboard (anonym)",
         analyticsValue: "Nutzung {adoption} · Stress {trend} Punkte",
         analyticsValueNoTrend: "Nutzung {adoption}",
+
+        panelEmployee: "Mitarbeitenden-Portal",
+        panelHr: "HR-Portal",
+        panelProfessional: "Fachpersonen-Portal",
+        panelShow: "{panel} anzeigen",
+
+        savingsLabel: "Einsparung im Quartal",
+        avoidedDaysLabel: "Vermiedene Fehltage",
+        avoidedDaysValue: "{days} Tage im Quartal",
+
+        earningsLabel: "Honorar des Monats",
+        sessionsValue: "{sessions} Sitzungen × {fee}",
+        patientsLabel: "Aktive Patientinnen",
       },
 
       problemTitle: "Die versteckten Kosten der Unternehmensgesundheit",

@@ -51,6 +51,14 @@ verticale.
 **Tieni la console su uno schermo di servizio**, non su quello proiettato: è lì
 che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
 
+**Clicca un pallino dell'anteprima appena apri la landing.** Il riquadro
+dell'hero ha tre pannelli — dipendente, HR, professionista — e finché nessuno lo
+tocca cambia da solo ogni cinque secondi. **Il primo clic lo ferma per sempre**
+(`CLAUDE.md` §10.A.1), quindi un clic all'apertura e da lì il riquadro mostra
+quello che dici tu invece di cambiare mentre parli. I tre pannelli sono il
+sommario del giro che stai per fare, quindi indicarli è già l'indice della
+presentazione.
+
 ---
 
 ## Durante
@@ -72,9 +80,10 @@ che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
   che questo file lo dicesse. Se ti ritrovi a premerlo qui, stai usando la
   versione vecchia.
 
-  **L'unico Indietro della presentazione resta quello della coreografia di
-  `/admin`**, qui sotto, ed è un'altra cosa: lì si torna a una schermata da cui
-  si è usciti, non si entra in una nuova.
+  ~~**L'unico Indietro della presentazione resta quello della coreografia di
+  `/admin`.**~~ → **Non ce n'è più nessuno** (17.08.2026): la barra ha la voce
+  "Admin", quindi anche l'ultimo giro che chiedeva il tasto Indietro si fa con
+  un clic. **La presentazione intera si percorre in avanti.**
 - **Mai ricaricare.** Il provider vive in memoria: un refresh azzera tutto quello
   che hai costruito durante la demo — le prenotazioni fatte, la richiesta demo
   compilata, il check rapido (`CLAUDE.md` §10).
@@ -98,40 +107,37 @@ che compaiono i log dei guardrail se qualcosa non torna a metà presentazione.
   che si è rotto in sala. Non cercare la navigazione a schermo — non c'è, e
   cercarla davanti a qualcuno costa più della frase.
 
-- **La richiesta demo che compare in `/admin` ha una coreografia sola**, e va
-  fatta in quest'ordine perché `/admin` non è linkata da nessuna schermata:
-  l'unico modo di entrarci è l'indirizzo digitato, che ricarica, che azzera il
-  provider. Quindi **è la prima cosa che si apre, non l'ultima.**
+- **La richiesta demo si mostra alla fine, e non ha più una coreografia.**
+  Compila il form da `/demo` durante il giro normale, e quando vuoi mostrarne
+  l'esito clicca **Admin** nella barra: la richiesta è in tabella, con azienda,
+  referente, telefono e data. Due momenti a distanza di minuti, entrambi dentro
+  la navigazione interna.
 
-  **Le uscite dai portali non cambiano niente qui**: il logo porta *fuori* da
-  un'area, e in `/admin` c'era già. A mancare è un link che porti *dentro*, e
-  non esiste da nessuna parte — è la ragione per cui questa coreografia
-  esiste.
+  **Non serve più aprire `/admin` per primo, e non si contano più gli
+  Indietro.** Fino al 17.08.2026 questa voce descriveva quattro passi in ordine
+  obbligato, perché `/admin` non era linkata da nessuna schermata e l'unico modo
+  di entrarci era digitare l'indirizzo — cioè ricaricare, cioè azzerare il
+  provider. **Adesso la barra pubblica ha la voce "Admin"** (`CLAUDE.md` §10.E),
+  quindi l'ingresso è un clic come gli altri e l'ordine lo scegli tu.
 
-  1. **Apri `/admin` per prima**, come schermata iniziale della sessione. La
-     tabella richieste è vuota, ed è giusto così: è il "prima".
-  2. **Esci col logo**, in alto a sinistra, che porta alla landing. Da qui in
-     poi **non si tocca più la barra degli indirizzi**.
-  3. **Fai il giro con i link interni**, e compila la richiesta demo da
-     `/demo`.
-  4. **Torna con Indietro**, e la richiesta è in tabella.
+  **Se vuoi anche il "prima"**, apri Admin una volta all'inizio del giro: la
+  tabella richieste è vuota, ed è giusto così. È diventato un passaggio
+  facoltativo che rafforza il racconto, non il vincolo su cui poggiava.
 
-  **Indietro va premuto una volta per ogni passo fatto**, non una sola: la
-  cronologia ha un'entrata per clic. Dal logo diretto a `/demo` sono **due
-  passi, quindi due Indietro** — ed è la ragione per tenere corto il tratto fra
-  il logo e il form. In alternativa si tiene premuto Indietro e si sceglie
-  `/admin` dall'elenco.
+  **Le due cose che restano vere, e sono le uniche**: non si ricarica **mai**, e
+  il provider vive in memoria — un refresh azzera la richiesta appena inviata
+  insieme a tutto il resto (`CLAUDE.md` §10).
 
-  **Non ricaricare in nessuno dei quattro passi.** Se digiti `/admin` alla fine
-  invece di tornarci con Indietro, il provider riparte e la tabella dice
-  "nessuna richiesta": è lo stesso stato del punto 1, e da fuori sembra che la
-  scrittura non abbia funzionato.
+- **Dopo l'invio, il form demo non si ripropone.** Resta la conferma, e tornarci
+  **non** la sostituisce con un form vuoto: la rotta è la stessa e il componente
+  non si rimonta. Per una seconda richiesta si passa da **"Torna alla home"** e
+  si rientra da lì — dal pulsante "Prenota una demo" della barra, che è anche il
+  modo in cui ci si arriva la prima volta, ora che la voce "Demo" non c'è più.
+  È voluto, ma scoprirlo davanti a qualcuno sembra una schermata bloccata.
 
-- **Dopo l'invio, il form demo non si ripropone.** Resta la conferma, e cliccare
-  "Demo" nella barra **non** la sostituisce con un form vuoto: la rotta è la
-  stessa e il componente non si rimonta. Per una seconda richiesta si passa da
-  **"Torna alla home"** e si rientra da lì. È voluto, ma scoprirlo davanti a
-  qualcuno sembra una schermata bloccata.
+- **La conferma non nomina l'azienda**, dal 17.08.2026: dice solo che la
+  richiesta è arrivata. La prova che la scrittura è avvenuta è la riga in
+  `/admin`, ed è la ragione per cui vale la pena mostrarla.
 
 ---
 

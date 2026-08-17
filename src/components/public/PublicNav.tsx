@@ -31,10 +31,27 @@ export default function PublicNav() {
   const navItems = [
     { path: "/pricing", label: t.public.nav.pricing },
     { path: "/roi", label: t.public.nav.roi },
-    { path: "/demo", label: t.public.nav.demo },
+    /*
+     * "Demo" è uscita, "Admin" è entrata (founder, 17.08.2026), e le due
+     * ragioni sono opposte.
+     *
+     * La voce "Demo" **ripeteva una strada invece di aggiungerne una**: a
+     * `/demo` si arriva da sette link, due dei quali in questa stessa barra —
+     * il pulsante "Prenota una demo", desktop e mobile.
+     *
+     * A `/admin` invece **non portava niente**, e costava: l'unico modo di
+     * entrarci era digitare l'indirizzo, digitare ricarica, e un ricaricamento
+     * azzera il provider, che vive in memoria (§10). È da lì che nasceva la
+     * coreografia in quattro passi di `docs/PITCH.md`, che con questa voce non
+     * serve più.
+     *
+     * Il banner "dati dimostrativi" di `/admin` resta, ed è ancora l'unica
+     * difesa a schermo (§10.E): la guardia di ruolo concede per costruzione.
+     */
     { path: "/employee", label: t.public.nav.employees },
     { path: "/hr", label: t.public.nav.hr },
     { path: "/professional", label: t.public.nav.professionals },
+    { path: "/admin", label: t.public.nav.admin },
   ];
 
   return (

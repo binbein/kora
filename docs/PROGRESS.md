@@ -2057,7 +2057,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Ventotto passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Ventinove passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2068,10 +2068,19 @@ contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
 non dichiarati, i fatti corretti nei documenti, il perimetro e le promesse in
 sospeso, il footer fuori dalla demo, i terzi e la simmetria del footer,
 l'identità collisa e gli stati limite, le simmetrie e le verifiche vere, la riga
-della sessione e i criteri che si contraddicevano, e **questa passata**, le
-parole e il perimetro. Non aggiungono
-schermate e non spostano un numero a schermo — sono igiene del layer dati, del
-seam e del dizionario.
+della sessione e i criteri che si contraddicevano, le parole e il perimetro, e
+**questa passata**, l'anteprima a tre pannelli e la voce Admin. Non aggiungono
+schermate e non spostano un numero a schermo.
+
+**Fino al 17.08.2026 la riga finiva con "sono igiene del layer dati, del seam e
+del dizionario", e da questa passata non è più vero di tutte.** Le due metà si
+sono separate: *nessuna schermata nuova e nessun numero mosso* resta vero
+dell'elenco intero — le rotte dello scope sono ancora **26**, `/admin` c'era già
+e a cambiare è il link che ci porta — mentre *igiene* descriveva le prime
+ventotto e non la ventinovesima, che **cambia come ci si comporta a schermo** su
+richiesta dei founder. La distinzione utile non è fra igiene e prodotto: è che
+una passata di refinement **non allarga lo scope del §10**, e questa non lo
+allarga.
 
 ~~Le due passate del 16.08.2026 si sono dichiarate **l'ultima**, «da qui la demo
 è congelata».~~ → **Non lo erano**, e non per un imprevisto: la prima è stata
@@ -4396,6 +4405,138 @@ di fidarsi del primo `includes`.
   una scelta lessicale nuova — la stessa chiave diceva "Avec assessment" — quindi
   non è stata aggiunta alle cinque domande in testa a quel file. Se la revisione
   madrelingua preferisse *évaluation initiale*, cambia una stringa sola.
+
+#### L'anteprima a tre pannelli e la voce Admin (17.08.2026)
+
+**Quattro commit: due di codice — `feat:` ×2 — e due di documenti.** Totale e
+ripartizione dalla stessa misura, `git log --format='%s' master..HEAD`; il numero
+è `n + 1` perché il commit di chiusura conta sé stesso. **Nessun numero del §8 e
+del §9 si muove**, e **le rotte dello scope restano 26**: `/admin` esisteva già,
+a nascere è il link che ci porta.
+
+È la prima passata di refinement che cambia **come ci si comporta a schermo**
+invece di mettere in ordine il layer dati, ed è la ragione per cui la riga in
+testa a questa sezione ha dovuto separare le sue due metà.
+
+##### L'anteprima dell'hero: tre pannelli, e li comanda chi guarda
+
+Un riquadro solo mescolava il punteggio di Laura, il suo prossimo appuntamento e
+una fetta di dashboard HR. Ora sono **tre pannelli, uno per lato del prodotto**,
+nell'ordine in cui il pitch li percorre — dipendente, HR, professionista — quindi
+il riquadro è **il sommario di quel giro** e l'ordine non è decorativo.
+
+**Nessuna cifra nuova** (§2.4), ed è il vincolo che ha deciso il contenuto: il
+risparmio e i giorni evitati sono `HrReport` del trimestre corrente, i compensi e
+i pazienti sono `getProfessionalEarnings` e `getProfessionalPatients` del portale
+della Dr.ssa Meier. Tutte e quattro **erano già scaldate da `prefetchDemo`**,
+quindi non è servito aggiungere una chiave e il guardrail della cache fredda non
+ha niente da dire — se non lo fossero state, la landing sarebbe partita con uno
+sfarfallio proprio sulla prima schermata.
+
+**Il primo clic ferma la rotazione per sempre** (founder), non finché non
+ricomincia: durante la presentazione si clicca una volta all'inizio e da lì
+comanda chi parla. Non esiste nessun gesto che la rimetta in moto, ed è voluto —
+l'unico momento in cui servirebbe è ricaricare, che durante la demo non si fa.
+
+**Due obblighi sul cambio automatico, e nessuno dei due è un dettaglio.** Non
+avanza a **scheda nascosta**, perché il browser sospende i timer e al ritorno il
+pannello risulterebbe saltato — è la quarta faccia dello stesso
+`visibilityState` che questo file registra da M3. E **non parte affatto** con
+`prefers-reduced-motion`, dove restano i soli pallini: a sparire è il movimento,
+non il comando. Il valore si legge una volta al montaggio, perché chi ha
+quell'impostazione ce l'ha prima di aprire la pagina.
+
+**L'altezza non si muove.** I tre pannelli stanno impilati nella **stessa cella di
+griglia**, quindi il riquadro è alto quanto il più alto dei tre e resta tale al
+cambio: un carosello che accorcia la pagina sposta tutto ciò che gli sta sotto
+mentre qualcuno legge. Misurato **259px in tutte e quattro le lingue e a tutte e
+due le larghezze provate**.
+
+**Il §6.2 non c'entra e non è stato toccato**: vieta le animazioni d'ingresso dei
+**grafici**, e qui non ci sono grafici. Il passaggio è una dissolvenza di opacità
+e non un movimento.
+
+##### La barra: via "Demo", dentro "Admin"
+
+**Le due ragioni sono opposte, e vale la pena tenerle distinte.** "Demo"
+**ripeteva una strada invece di aggiungerne una**: a `/demo` si arriva da sette
+link, due dei quali nella barra stessa — il pulsante "Prenota una demo", desktop
+e mobile. A `/admin` invece **non portava niente**, e quella scelta costava più
+di quanto proteggesse.
+
+**Non era una difesa.** Un indirizzo non linkato non protegge da chi ha il link,
+che è precisamente il caso che il §10.E descrive; e digitare un indirizzo
+**ricarica**, cioè azzera il provider, che vive in memoria. Il risultato era che
+la richiesta demo inviata durante il giro spariva **proprio mentre la si andava a
+mostrare** — ed è da lì che nasceva la coreografia in quattro passi di
+`docs/PITCH.md`, con l'obbligo di aprire `/admin` per primo e i due Indietro
+contati.
+
+**Da qui la presentazione si percorre tutta in avanti**: era l'ultimo punto che
+chiedeva il tasto Indietro, e il §10 aveva un solo posto in cui la regola «mai la
+barra degli indirizzi» si contraddiceva — questo. Il banner dei dati dimostrativi
+**resta**, ed è ora l'unica difesa a schermo, come il §10.E dichiara.
+
+##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato prima di ogni misura
+
+Il giro del pitch nuovo, **per intero e sulla build demo**, con la console
+aperta:
+
+- **una sola navigazione** per tutto il giro (`performance.getEntriesByType`),
+  console **senza un solo messaggio** — nessun log di guardrail;
+- clic su un pallino, portale dipendente, **prenotata la Dr.ssa Meier venerdì
+  25.09 alle 10:00**: `used` fermo a **3**, in programma da **3 a 4**;
+- logo → HR: CHF 14'200, 16, 68%, 82, 41, 142 di 1'200, 62%, soglia 12, −2;
+- logo → professionista: la settimana passa da **5 a 6 sessioni** e il mese da
+  **21 a 22**, cioè la stessa prenotazione vista dall'altro lato;
+- logo → "Prenota una demo" → richiesta inviata, la conferma **non nomina
+  l'azienda**, poi **Admin dalla barra**: `Ontano Logistica SA`, `+41 91 000 00
+  00`, 23.09.2026 in tabella, banner dei dati dimostrativi presente, CHF 652'968
+  / 415 / 798 fermi;
+- **i tre pannelli in tutte e quattro le lingue**, altezza **259px** ognuna,
+  zero testo che dipinge fuori dalla propria scatola, zero overflow di pagina;
+- **a scheda nascosta non avanza**: dopo 7s il pannello è ancora il primo. Con
+  `document.hidden` forzato a `false` avanza, e **dopo un clic non si muove più**
+  — provato per 10s, cioè due cicli;
+- **con `prefers-reduced-motion`** (rimontando la landing con `matchMedia`
+  sostituito): nessuna rotazione dopo 10s, e i pallini comandano ancora;
+- `lint`, `typecheck`, `build` e `build:demo` a posto; guardrail **108 = 100 +
+  8** invariati; **741 chiavi** in tutti e quattro i dizionari — 731 più le dieci
+  nuove dell'anteprima, con `nav.demo` che esce e `nav.admin` che entra.
+
+##### Una trappola nuova, ed è la quinta faccia della stessa
+
+**A scheda realmente nascosta le transizioni CSS non avanzano**, quindi
+l'opacità calcolata resta al valore di partenza mentre la classe è già quella
+giusta. Per un quarto d'ora la misura ha detto *"`aria-current` dice il pannello
+2 e l'opacità dice il pannello 1"*, che si legge come un difetto di stato. Non lo
+era: spegnendo la transizione con `style.transition = "none"`, classe, `aria` e
+opacità calcolata coincidono.
+
+Va accanto alle altre quattro — animazioni congelate, `innerWidth` a zero, il
+retryer in pausa, i timer sospesi — e la regola operativa è la stessa: **prima di
+concludere, verificare che lo strumento potesse vedere la cosa giusta.** Qui in
+più c'è che il difetto apparente era *interno alla cosa che si stava
+costruendo*, cioè il posto in cui è più facile crederci.
+
+##### Aperto e dichiarato
+
+- **A 768px la barra pubblica in tedesco sfora, e non è di questa passata.**
+  Misurato su `master` prima della modifica: l'ultimo blocco arriva a **952px** in
+  una riga che finisce a 744. Con "Admin" al posto di "Demo" arriva a **956**,
+  cioè **4px in più** — la differenza fra le due parole. La soglia dichiarata
+  resta 1280px (§10.C), dove la riga ha 257px di margine anche in tedesco.
+- **"Fokus: schlaf" è tedesco sbagliato**, e la riga è preesistente: la chiave
+  `focus` interpola l'area con `.toLowerCase()`, che in una lingua che scrive i
+  sostantivi con la maiuscola produce una minuscola dove non va. Si vede sul
+  primo pannello dell'hero, cioè sulla prima schermata, in una lingua che la demo
+  offre dal selettore. **Non toccata**: è fuori dal perimetro di questa passata,
+  ed è una riga sola.
+- **Il guardo dell'anteprima è uno solo per tutti e tre i pannelli**, quindi il
+  guasto di una qualunque delle dieci letture toglie il riquadro intero invece di
+  un pannello. È voluto: i pallini annunciano tre pannelli, e tre che diventano
+  due sono un comando che porta a una scatola vuota. `company` resta nell'elenco
+  pur non essendo reso da nessuno, ed è il comportamento che aveva già.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
