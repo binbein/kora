@@ -366,7 +366,7 @@ export default function EmployeeHome() {
                 <ClipboardCheck className="w-5 h-5 text-secondary" aria-hidden="true" />
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-semibold flex items-center gap-2 flex-wrap">
+                <div className="text-sm font-semibold flex items-center gap-2 flex-wrap">
                   {t.employee.home.checkupTitle}
                   {/*
                     * Il badge "Fatto" non è decorazione: il §8 vuole che il
@@ -380,7 +380,7 @@ export default function EmployeeHome() {
                       {t.employee.home.checkupDone}
                     </Badge>
                   )}
-                </p>
+                </div>
                 <p className="text-xs text-muted-foreground tabular-nums">
                   {checkup.availableFrom
                     ? interpolate(t.employee.home.checkupNext, {
