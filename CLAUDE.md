@@ -1949,7 +1949,33 @@ Dashboard, Dipendenti, Report, Fatturazione, Privacy.
    azienda vs Vendite con marker dell'alert**, **banner alert precoce** — i tre
    pezzi che base44 non aveva, costruiti in M3 — e selettore trimestre che cambia
    i dati.
-2. **Report**: le metriche del trimestre e le raccomandazioni.
+
+   **Quello che segue il trimestre sta dentro una cornice, con il selettore in
+   cima** (founder, 17.08.2026). Il selettore stava nell'intestazione e sembrava
+   comandare la pagina intera: non è così, e **lo seguono otto elementi** — le
+   sei KPI, la ciambella della distribuzione e l'evidenziazione nel grafico del
+   risparmio. Fuori e sotto sta quello che parla dell'ultimo mese o dei dodici:
+   stress per reparto, trend, utilizzo servizi.
+
+   **I due banner restano sopra la cornice** — alert precoce e soglia di
+   anonimato — e non ci entrano: sono avvisi, e la loro posizione è parte
+   dell'informazione.
+
+   **Ogni blocco fuori dalla cornice dichiara il proprio periodo nel titolo**, o
+   si sposta la confusione invece di toglierla. E il grafico del risparmio dice
+   che confronta **tutti e quattro** i trimestri: dentro una cornice intitolata
+   al trimestre selezionato, quattro barre vanno spiegate.
+
+   **La tabella dello stress per reparto non segue il selettore**, ed è un
+   difetto noto da M3 che **questa riorganizzazione non chiude**: finendo fuori
+   dalla cornice smette di *sembrare* un errore e diventa quello che è — un
+   blocco che parla dell'ultimo mese. Resta aperto, e sta in `docs/PROGRESS.md`.
+2. **Report**: le metriche del trimestre e le raccomandazioni, **compresi i
+   consulti di medico virtuale** (founder, 17.08.2026), che la migrazione di M3
+   aveva perso insieme al campo che li alimentava. Si sommano sui **soli mesi del
+   trimestre** e non si cumulano, perché quel servizio non ha un monte annuo da
+   consumare — la definizione sta in `docs/CONTRATTO-DATI.md` §3, e **l'etichetta
+   a schermo dichiara il periodo** come le tre accezioni di "sessioni".
 3. **Report scaricabile** — *il pulsante esiste e non fa niente*. Il PDF non si
    scrive a mano: si genera da una pagina che legge dal provider come tutte le
    altre. Deve restare **una pagina sola**: è un allegato per il consiglio, non un
