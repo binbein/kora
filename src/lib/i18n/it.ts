@@ -595,13 +595,16 @@ export const it = {
 
   professional: {
     portalName: "Portale professionisti",
+    /* Il nome accessibile del riquadro d'identità dice **la destinazione**, non
+       il contenuto: chi lo incontra tabulando ha bisogno di sapere dove porta,
+       e il nome della professionista lo legge già a schermo (§6.5). */
+    identityAction: "Apri il tuo profilo professionale",
 
     nav: {
       calendar: "Calendario",
       sessions: "Sessioni",
       patients: "Pazienti",
       payments: "Pagamenti",
-      profile: "Profilo",
     },
 
     /** "CHF 80 a sessione" — l'importo arriva già formattato da format.ts */

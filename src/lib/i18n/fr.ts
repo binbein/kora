@@ -88,10 +88,14 @@ import type { Dictionary } from "./index";
  *
  *   1. `cancellationReason.*`, `professional.patients.*` — le forme sono al
  *      **maschile generico**, come in italiano e **al contrario del tedesco**,
- *      che qui ha scelto il femminile. Dei pazienti si conoscono le sole
- *      iniziali e il genere non sta nel dominio: una forma marcata direbbe a
- *      schermo qualcosa che il dataset non dice. Se la revisione preferisse
- *      l'epicena, in francese costa una riformulazione per ogni riga.
+ *      che qui ha scelto il femminile. Se la revisione preferisse l'epicena, in
+ *      francese costa una riformulazione per ogni riga.
+ *
+ *      *(La ragione scritta qui fino al 17.08.2026 — "dei pazienti si conoscono
+ *      le sole iniziali e il genere non sta nel dominio" — non vale più: le
+ *      schermate di chi cura mostrano il **nome**, e sei pazienti con un nome
+ *      hanno un genere che si legge. La scelta resta la stessa e l'argomento
+ *      cambia: è il maschile generico del francese, non un'assenza di dato.)*
  *   2. "dipendenti" è reso **collaborateurs** ovunque, che è il termine delle
  *      risorse umane in Svizzera romanda; `employés` è più letterale e meno
  *      idiomatico. È la parola più ripetuta del file, quindi cambiarla dopo
@@ -534,13 +538,13 @@ export const fr: Dictionary = {
    */
   professional: {
     portalName: "Portail professionnels",
+    identityAction: "Ouvrir mon profil professionnel",
 
     nav: {
       calendar: "Calendrier",
       sessions: "Séances",
       patients: "Patients",
       payments: "Paiements",
-      profile: "Profil",
     },
 
     feePerSession: "{fee} par séance",

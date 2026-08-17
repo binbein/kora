@@ -495,13 +495,13 @@ export const en: Dictionary = {
    */
   professional: {
     portalName: "Professionals portal",
+    identityAction: "Open your professional profile",
 
     nav: {
       calendar: "Calendar",
       sessions: "Sessions",
       patients: "Patients",
       payments: "Payments",
-      profile: "Profile",
     },
 
     feePerSession: "{fee} per session",

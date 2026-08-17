@@ -65,10 +65,14 @@ import type { Dictionary } from "./index";
  *      "Buongiorno", che copre tutta la giornata mentre `Guten Morgen` no. In
  *      un registro caldo un madrelingua potrebbe preferire `Hallo`: è una
  *      scelta di tono, non di significato.
- *   4. Le forme femminili di `professional.*` — `Patientinnen`,
- *      `Patientin {initials}`. L'italiano le usa perché il portale è quello
- *      della Dr.ssa Meier; il tedesco costringe a scegliere, e il maschile
- *      generico avrebbe cambiato in silenzio di chi parla la demo.
+ *   4. Le forme femminili di `professional.*` — `Patientinnen`, e la stessa
+ *      scelta in `cancellationReason.by_patient`. L'italiano le usa perché il
+ *      portale è quello della Dr.ssa Meier; il tedesco costringe a scegliere, e
+ *      il maschile generico avrebbe cambiato in silenzio di chi parla la demo.
+ *      *(La riga citava anche `Patientin {initials}`, che dal 17.08.2026 non
+ *      esiste più: le schermate mostrano il nome del paziente, non le sue
+ *      iniziali, e i sei pazienti attivi non sono tutti donne — il che è
+ *      esattamente la domanda da portare alla revisione.)*
  */
 export const de: Dictionary = {
   common: {
@@ -468,13 +472,13 @@ export const de: Dictionary = {
   /* Portale professionista: registro strumento, **Sie**. */
   professional: {
     portalName: "Portal für Fachpersonen",
+    identityAction: "Ihr Fachprofil öffnen",
 
     nav: {
       calendar: "Kalender",
       sessions: "Sitzungen",
       patients: "Patientinnen",
       payments: "Zahlungen",
-      profile: "Profil",
     },
 
     feePerSession: "{fee} pro Sitzung",
