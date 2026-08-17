@@ -170,10 +170,10 @@ export const de: Dictionary = {
       doctor: "Arzt",
       checkup: "Check-up",
       aiPlan: "KI-Plan",
-      profile: "Profil",
     },
 
     identity: "{company} · {plan}",
+    identityAction: "Dein Profil öffnen",
 
     privacy:
       "Dein Unternehmen sieht nur aggregierte und anonyme Daten. Deine Gesundheit bleibt deine.",
@@ -216,12 +216,11 @@ export const de: Dictionary = {
         "{used} von {total} Sitzungen genutzt · {scheduled} geplant",
       book: "Sitzung buchen",
 
-      quickAction: {
-        doctor: "Virtueller Arzt",
-        checkup: "Jährlicher Check-up",
-        aiPlan: "Präventionsplan",
-        profile: "Gesundheitsprofil",
-      },
+      checkupTitle: "Jährlicher Check-up",
+      checkupNext: "Nächster ab {date}",
+      checkupToBook: "Noch zu buchen",
+      doctorTitle: "Virtueller Arzt",
+      doctorConsults: "{n} Beratungen in diesem Jahr",
       checkupDone: "Erledigt",
 
       planTitle: "Aus deinem Präventionsplan",
@@ -322,6 +321,12 @@ export const de: Dictionary = {
           text: "Schlafstörungen sind sehr verbreitet. Seit wann haben Sie Schwierigkeiten? Wachen Sie nachts auf oder fällt Ihnen das Einschlafen schwer?",
         },
       },
+      arc: {
+        duration: "Danke. Helfen Sie mir, das einzuordnen: geht das seit Tagen, seit Wochen oder länger? Und täglich oder in Schüben?",
+        symptoms: "Verstanden. Bemerken Sie noch etwas dabei — Fieber, Müdigkeit, Veränderungen bei Schlaf oder Appetit?",
+        guidance: "Danke, das genügt mir zur Orientierung. Eine Diagnose kann ich von hier aus nicht stellen: hängt die Beschwerde mit Stress oder Stimmung zusammen, buchen Sie im entsprechenden Bereich eine Sitzung bei einer Psychologin; andernfalls wenden Sie sich an Ihre Hausärztin oder Ihren Hausarzt, die Sie untersuchen können. Verschlimmern sich die Beschwerden plötzlich, rufen Sie die 144.",
+      },
+      closed: "Das Demo-Gespräch endet hier.",
       fallback:
         "Ich verstehe. Können Sie mir die Beschwerden genauer beschreiben? Seit wann spüren Sie sie?",
 

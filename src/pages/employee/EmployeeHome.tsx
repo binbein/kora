@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
-  Heart,
   Brain,
   Stethoscope,
   ClipboardCheck,
@@ -26,6 +25,7 @@ import {
   useEmployeeProfile,
   useEntitlement,
   useProfessionals,
+  useVirtualDoctorConsults,
 } from "@/lib/data/queries";
 import {
   professionalDisplayName,
@@ -187,6 +187,10 @@ export default function EmployeeHome() {
   const professionalsQuery = useProfessionals();
   const planQuery = useAiHealthPlan();
   const checkupQuery = useCheckupEligibility();
+  /* I consulti si contano dalla lista, non da uno scalare: due numeri che
+     descrivono la stessa cosa devono essere lo stesso numero (§5.5), ed è la
+     stessa lettura che il profilo mostra come conteggio. */
+  const consultsQuery = useVirtualDoctorConsults();
   /* L'azienda serve per il suo piano: quali servizi cappati esistono lo dice il
      contratto commerciale, non il contatore. Vedi i due `ServiceCounter`. */
   const companyQuery = useCompany();
@@ -199,6 +203,7 @@ export default function EmployeeHome() {
     professionalsQuery,
     planQuery,
     checkupQuery,
+    consultsQuery,
     companyQuery,
   ]);
   if (page.state === "error") {
@@ -210,6 +215,7 @@ export default function EmployeeHome() {
   const professionals = professionalsQuery.data;
   const plan = planQuery.data;
   const checkup = checkupQuery.data;
+  const consults = consultsQuery.data;
   const company = companyQuery.data;
   if (
     profile === undefined ||
@@ -217,6 +223,7 @@ export default function EmployeeHome() {
     professionals === undefined ||
     plan === undefined ||
     checkup === undefined ||
+    consults === undefined ||
     company === undefined
   ) {
     return null;
@@ -328,61 +335,81 @@ export default function EmployeeHome() {
         )}
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          {
-            icon: Stethoscope,
-            label: t.employee.home.quickAction.doctor,
-            path: "/employee/medico",
-            color: "bg-primary/10 text-primary",
-            badge: null,
-          },
-          {
-            icon: ClipboardCheck,
-            label: t.employee.home.quickAction.checkup,
-            path: "/employee/checkup",
-            color: "bg-secondary/10 text-secondary",
-            /*
-             * Il check-up è già stato fatto: il badge lo dice invece di
-             * proporlo come disponibile, che è ciò che l'elenco HR
-             * smentirebbe. Sta su menta chiara e non sul teal pieno del
-             * codice ereditato: a 10px il bianco su `secondary` è molto
-             * sotto l'AA (§6.1).
-             */
-            badge:
-              checkup.lastCompleted?.status === "completed"
-                ? t.employee.home.checkupDone
-                : null,
-          },
-          {
-            icon: Sparkles,
-            label: t.employee.home.quickAction.aiPlan,
-            path: "/employee/piano-ai",
-            color: "bg-executive/10 text-executive",
-            badge: null,
-          },
-          {
-            icon: Heart,
-            label: t.employee.home.quickAction.profile,
-            path: "/employee/profilo",
-            color: "bg-accent text-accent-foreground",
-            badge: null,
-          },
-        ].map(({ icon: Icon, label, path, color, badge }) => (
-          <Link key={path} to={path}>
-            <Card className="p-4 hover:shadow-md transition-shadow text-center relative h-full">
-              {badge && (
-                <Badge className="absolute -top-2 -right-2 bg-accent text-accent-foreground text-[10px] hover:bg-accent">
-                  {badge}
-                </Badge>
-              )}
-              <div className={`p-2.5 ${color} rounded-xl w-fit mx-auto mb-2`}>
-                <Icon className="w-5 h-5" aria-hidden="true" />
+      {/*
+        * DUE DATI AL POSTO DI QUATTRO SCORCIATOIE (17.08.2026).
+        *
+        * Qui c'erano quattro tessere verso medico virtuale, check-up, piano di
+        * prevenzione e profilo: **quattro delle sei voci del menu di sinistra**,
+        * cioè la stessa strada disegnata due volte. Al loro posto due cose che
+        * la home non diceva e che stavano solo dentro `/employee/profilo`.
+        *
+        * **Non sono link, ed è la ragione per cui esistono**: rifarli
+        * cliccabili rimetterebbe la duplicazione da cui si è partiti. Al medico
+        * virtuale e al check-up si va dal menu, che è dove si va per andare da
+        * qualche parte.
+        *
+        * Nessun dato nuovo: `getCheckupEligibility` e
+        * `getVirtualDoctorConsults` erano già letti da questa pagina e dal
+        * profilo.
+        */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/*
+          * Il check-up c'è solo se il piano lo prevede, con la stessa regola
+          * del contatore coach: a dirlo è il contratto commerciale (§9), non la
+          * card. Sull'Essenziale `availableFrom` è `null` per quel motivo, e
+          * "Da prenotare" direbbe che manca un gesto invece che un servizio.
+          */}
+        {company.plan.checkup && (
+          <Card className="p-5">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-secondary/10">
+                <ClipboardCheck className="w-5 h-5 text-secondary" aria-hidden="true" />
               </div>
-              <p className="text-xs font-medium">{label}</p>
-            </Card>
-          </Link>
-        ))}
+              <div className="min-w-0">
+                <p className="text-sm font-semibold flex items-center gap-2 flex-wrap">
+                  {t.employee.home.checkupTitle}
+                  {/*
+                    * Il badge "Fatto" non è decorazione: il §8 vuole che il
+                    * check-up completato di Laura si legga uguale in home, nel
+                    * profilo e nell'elenco dell'HR. Sta su menta chiara e non
+                    * sul teal pieno: a 10px il bianco su `secondary` è molto
+                    * sotto l'AA (§6.1).
+                    */}
+                  {checkup.lastCompleted?.status === "completed" && (
+                    <Badge className="bg-accent text-accent-foreground text-[10px] hover:bg-accent">
+                      {t.employee.home.checkupDone}
+                    </Badge>
+                  )}
+                </p>
+                <p className="text-xs text-muted-foreground tabular-nums">
+                  {checkup.availableFrom
+                    ? interpolate(t.employee.home.checkupNext, {
+                        date: formatDate(checkup.availableFrom),
+                      })
+                    : t.employee.home.checkupToBook}
+                </p>
+              </div>
+            </div>
+          </Card>
+        )}
+
+        <Card className="p-5">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-primary/10">
+              <Stethoscope className="w-5 h-5 text-primary" aria-hidden="true" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold">
+                {t.employee.home.doctorTitle}
+              </p>
+              <p className="text-xs text-muted-foreground tabular-nums">
+                {interpolate(t.employee.home.doctorConsults, {
+                  n: formatNumber(consults.length),
+                })}
+              </p>
+            </div>
+          </div>
+        </Card>
       </div>
 
       <Card className="p-5 bg-accent/40 border-secondary/20">

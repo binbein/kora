@@ -856,18 +856,25 @@ valore peggiore e non succede niente; la chat del medico virtuale non rileva il
 rischio; nessuna soglia, su nessun dato, produce una segnalazione a un essere
 umano.
 
-**Il numero d'emergenza è esposto in un punto solo**, e va detto con precisione
-perché è l'unico presidio che esiste: sta nel disclaimer della chat del medico
-virtuale — *"in caso di emergenza chiama il 144"* — in tutte e quattro le
-lingue, e **in nessun altro punto del prodotto**. In particolare non nel check
-rapido, che è invece **dove il valore peggiore si può dichiarare senza parlare
-con nessuno**: una risposta, un tocco, nessun interlocutore e nessun numero.
+**Il numero d'emergenza è esposto in due punti**, e vanno detti con precisione
+perché sono l'unico presidio che esiste: il **disclaimer** della chat del medico
+virtuale — *"in caso di emergenza chiama il 144"* — e, dal 17.08.2026,
+**l'ultima risposta dell'arco** della chat stessa, che dopo aver orientato
+aggiunge *"se i sintomi peggiorano all'improvviso, chiami il 144"*. Entrambi in
+tutte e quattro le lingue.
+
+**Sono due punti della stessa schermata, e questo è il fatto che conta.** In
+particolare il 144 **non è nel check rapido**, che è invece **dove il valore
+peggiore si può dichiarare senza parlare con nessuno**: una risposta, un tocco,
+nessun interlocutore e nessun numero.
 
 La distinzione decide dove il lavoro va fatto: non è un numero da aggiungere
-alla chat, che ce l'ha, è un percorso che manca al punto di ingresso che raccoglie
-il segnale peggiore. *(Fino al 15.08.2026 questa voce diceva che la chat "non
-espone nessun numero d'emergenza": era falsa, e faceva sembrare il vuoto più
-grande e più semplice di com'è.)*
+alla chat, che ora ne ha due, è un percorso che manca al punto di ingresso che
+raccoglie il segnale peggiore. *(Fino al 15.08.2026 questa voce diceva che la
+chat "non espone nessun numero d'emergenza": era falsa, e faceva sembrare il
+vuoto più grande e più semplice di com'è. Fino al 17.08.2026 diceva "un punto
+solo", ed è invecchiata con l'arco della chat — che ha aggiunto il secondo senza
+spostare il vuoto di un centimetro.)*
 
 Non c'è perché **manca la decisione a monte**: quale protocollo si applica e chi
 è il referente clinico che risponde. Sono scelte dei founder e non di chi scrive

@@ -73,14 +73,46 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      §5.6, i `.jsx` del §3 e le rotte del §10. Si contano le **chiavi foglia di
      tipo stringa** di un dizionario, **tolti prima i commenti**: la prosa che
      nomina una chiave non è una chiave, ed è la trappola che fa uscire un
-     numero diverso a ogni rilettura. Oggi sono **731**, uguali in tutti e
-     quattro i file (16.08.2026) — e che siano uguali non è una misura ma una
+     numero diverso a ogni rilettura. Oggi sono **746**, uguali in tutti e
+     quattro i file (17.08.2026) — e che siano uguali non è una misura ma una
      garanzia del tipo `Translated<Dictionary>`, che non compila se una manca.
+
+     **Questa è l'unica riga che porta il numero, e porta anche l'obbligo che
+     al §5.6 mancava qui**: **chi aggiunge o toglie una chiave muove questo
+     numero nella stessa passata**, e **chi ne trova uno che non torna rimisura
+     col comando qui sotto prima di segnalare** — se il criterio è stato
+     applicato per intero, a essere invecchiata è la riga, e si aggiorna con la
+     data. Il numero si muove, il criterio no.
+
+     **"Nella stessa passata" e non "nello stesso commit", ed è una
+     correzione** presa mezz'ora dopo aver scritto la seconda forma
+     (17.08.2026): il §2.8 vuole le decisioni di questo file in un commit
+     `docs:` **separato dal codice**, quindi un obbligo per commit chiedeva di
+     violare l'altra regola per rispettare questa. A proteggere è comunque il
+     merge — il numero deve essere giusto in ciò che arriva su `master`, non a
+     metà di un branch — e la passata è l'unità che il merge misura.
+
+     **La regola nasce da un difetto, non da simmetria** (17.08.2026): il 731
+     è invecchiato **alla prima passata utile** — dieci chiavi aggiunte
+     all'anteprima dell'hero — e non se ne è accorto nessuno perché il §2.7
+     aveva dato al conteggio un criterio *senza* l'obbligo, e perché la cifra
+     stava in **sei punti** invece che in uno. È esattamente la famiglia che
+     il §5.6 aveva già chiuso per i guardrail, ripetuta su un conteggio più
+     giovane: gli altri cinque — le due righe qui sotto, le due della testata di
+     `i18n/placeholders.ts` e il criterio dell'inventario delle promesse in
+     `docs/PROGRESS.md` — **ora rimandano qui invece di ripetere la cifra**.
+
+     **Il sesto è quello che vale**, perché mostra che il difetto non è
+     l'invecchiamento ma la ripetizione: era **un criterio vivo**, corretto due
+     giorni prima da 728 a 731 proprio in nome di questa regola, e allineato
+     alla cifra **giusta di allora**. Ripetere un numero è una promessa di
+     tornare a rileggerlo, e non la mantiene nessuno — nemmeno chi l'ha appena
+     scritta.
 
      **IL CONTO SI FA SULL'ALBERO SINTATTICO, NON CON UN GREP**, ed è la
      clausola senza la quale il criterio autorizzava proprio i numeri sbagliati
      che esiste per non far nascere (16.08.2026). La ragione è una proprietà del
-     file, non della fretta di chi conta: **62 delle 731 chiavi hanno il valore
+     file, non della fretta di chi conta: **62 chiavi hanno il valore
      sulla riga successiva**, perché la stringa non ci stava. Un motivo di
      ricerca per riga le prende o le perde a seconda che il suo `\s*` attraversi
      l'a capo — due implementazioni entrambe fedeli alla frase qui sopra e
@@ -97,8 +129,12 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
 
      Sull'albero non c'è niente da togliere: i commenti non sono nodi, e una
      proprietà o ha un letterale stringa per valore o non è una chiave foglia.
-     Verificato: **731 proprietà con inizializzatore letterale stringa, 109
-     oggetti, zero proprietà di altro tipo**, identici sui quattro dizionari.
+     Verificato: tante proprietà con inizializzatore letterale stringa quante
+     ne dichiara la riga qui sopra, **109 oggetti e zero proprietà di altro
+     tipo**, identici sui quattro dizionari. *(Il conteggio delle chiavi non si
+     ripete qui: era il secondo dei cinque punti che l'hanno fatto invecchiare.
+     Gli oggetti restano, perché sono l'altra metà della prova che l'albero non
+     lascia fuori niente — e non si sono mossi.)*
 
      **Il 663 dei verbali di M5.e non era invecchiato: era sbagliato quando è
      stato scritto.** Misurato su `de.ts` al merge della sua tranche, le chiavi
@@ -1835,6 +1871,38 @@ Home, Psicologi, Medico virtuale, Check-up, Piano AI, Profilo.
    tre mensili: dove i due divergono vince questo file, e il documento si aggiorna.
    È una card nella home, **non una rotta nuova**: non entra nel conto delle 26.
    Approvato dai founder il **06.08.2026** ai sensi del §2.6.
+
+2. **La home mostra due fatti, non quattro scorciatoie** (founder, 17.08.2026).
+   Le quattro tessere verso medico virtuale, check-up, piano e profilo erano
+   **quattro delle sei voci del menu**, cioè la stessa strada disegnata due
+   volte. Al loro posto **la data del prossimo check-up** e **i consulti di
+   medico virtuale dell'anno di piano**: due cose che si vedevano solo dentro
+   `/employee/profilo`, e nessun dato nuovo (§2.4). **Non sono link**, o
+   tornerebbe la duplicazione. Il badge "Fatto" resta: il §8 vuole che il
+   check-up completato di Laura si legga uguale in home, nel profilo e
+   nell'elenco dell'HR.
+
+3. **Il profilo si raggiunge dal riquadro dell'identità**, non dal menu
+   (founder, 17.08.2026) — con un'icona, che è dove chi usa un'app cerca le
+   proprie cose. **La rotta resta**: cambia come ci si arriva, quindi non è
+   scope. **L'effetto voluto sta su mobile**: la barra in basso mostrava le
+   prime cinque di sei voci, quindi Profilo lì non c'era affatto; con cinque
+   voci la barra è completa e la troncatura silenziosa sparisce.
+
+4. **Il medico virtuale arriva a una conclusione** (founder, 17.08.2026): un
+   arco di **quattro scambi** — la risposta a parola chiave, poi quanto dura,
+   quali altri sintomi, e l'orientamento — dopo il quale la casella **si spegne
+   e dice perché**, nel registro del pulsante del check-up. Prima ripeteva la
+   stessa frase all'infinito, che è la prima cosa che si vede provandolo due
+   volte.
+
+   **Il limite è normativo prima che editoriale**: il medico **consiglia e
+   orienta, non diagnostica e non prescrive**. Un software che diagnostica o fa
+   triage può ricadere nella normativa sui dispositivi medici in Svizzera e in
+   UE (*"Dubbi Business per CEO"* §2.2), con certificazioni lunghe e care.
+   **Nessuna frase dell'arco nomina un farmaco o afferma una causa**, e
+   l'ultima lo dichiara prima di indirizzare. È un vincolo su ogni frase che si
+   aggiungerà a quella chat, non una proprietà delle quattro di oggi.
 
 **Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — la parte in
 programma del contatore sale, l'appuntamento compare in home, lo slot sparisce dalla

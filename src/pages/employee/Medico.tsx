@@ -26,12 +26,46 @@ import { interpolate, t } from "@/lib/i18n";
 type Message = { from: "doctor" | "patient"; text: string };
 
 /*
+ * L'ARCO: quattro scambi, e finisce con un consiglio (17.08.2026).
+ *
+ * Prima la chat rispondeva per parola chiave e, quando non la trovava, ripeteva
+ * la stessa frase **all'infinito**: chi la prova due volte lo vede, ed è la
+ * prima cosa che un investitore fa. Ora c'è un arco — orientamento, e poi si
+ * chiude — che è anche il modo di dire a schermo cosa il servizio è: un medico
+ * che ascolta e indirizza.
+ *
+ * IL LIMITE È NORMATIVO PRIMA CHE EDITORIALE. Il medico **consiglia e orienta,
+ * non diagnostica e non prescrive**: un software che fa diagnosi o triage può
+ * ricadere nella normativa sui dispositivi medici in Svizzera e in UE
+ * (*"Dubbi Business per CEO"* §2.2), con certificazioni lunghe e care. Nessuna
+ * frase dell'arco nomina un farmaco o afferma una causa, e l'ultima lo dice
+ * esplicitamente prima di indirizzare.
+ */
+const ARC_LENGTH = 4;
+
+/*
  * Le risposte si leggono alla chiamata, non all'import (M5.e): a livello di
  * modulo `t` sarebbe valutato una volta sola, e con il cambio lingua il medico
  * continuerebbe a rispondere in italiano — in una schermata che è a video
  * durante il pitch.
  */
-function replyTo(question: string): string {
+function replyTo(question: string, turn: number): string {
+  /*
+   * Dal secondo scambio in poi la risposta **non dipende più da cosa si
+   * scrive**, ed è una scelta: le tre frasi sono scritte per valere su
+   * qualunque disturbo — quanto dura, quali altri sintomi, come orientarsi —
+   * quindi un secondo giro di parole chiave darebbe l'illusione di una
+   * comprensione che la simulazione non ha.
+   */
+  if (turn > 0) {
+    const arc = [
+      t.employee.doctor.arc.duration,
+      t.employee.doctor.arc.symptoms,
+      t.employee.doctor.arc.guidance,
+    ];
+    return arc[Math.min(turn, arc.length) - 1];
+  }
+
   const replies = [
     t.employee.doctor.reply.back,
     t.employee.doctor.reply.head,
@@ -39,8 +73,29 @@ function replyTo(question: string): string {
     t.employee.doctor.reply.sleep,
   ];
   const asked = question.toLowerCase();
-  const match = replies.find((reply) => asked.includes(reply.keyword));
+  const match = replies.find((reply) => mentions(asked, reply.keyword));
   return match?.text ?? t.employee.doctor.fallback;
+}
+
+/*
+ * La parola chiave si cerca **come parola intera**, non come sottostringa.
+ *
+ * Il confronto per sottostringa era un difetto già a verbale: in francese `dos`
+ * sta dentro `dose`, `dossier` e `adosser`, e in inglese `head` sta dentro
+ * `ahead`. Le due lookaround su `\p{L}` chiudono quei casi in tutte e quattro
+ * le lingue insieme, e reggono le lettere accentate — che `\b` non regge,
+ * perché in JavaScript conosce solo l'ASCII e `tête` gli finisce a metà.
+ *
+ * **Non chiude tutto, e va detto**: `back` dentro *"come back"* è una parola
+ * intera, quindi aggancia ancora. Lì a sbagliare non è il confine, è che la
+ * parola è la stessa — e distinguerle vorrebbe dire capire la frase.
+ *
+ * Le chiavi sono quattro per lingua e le scriviamo noi: se un giorno ne
+ * arrivasse una con un carattere speciale di espressione regolare, va
+ * protetta qui.
+ */
+function mentions(text: string, keyword: string): boolean {
+  return new RegExp(`(?<!\\p{L})${keyword}(?!\\p{L})`, "u").test(text);
 }
 
 /*
@@ -91,16 +146,28 @@ export default function Medico() {
   const company = companyQuery.data;
   if (company === undefined) return null;
 
+  /*
+   * Gli scambi si contano dai messaggi, non da un secondo stato: due numeri
+   * che descrivono la stessa cosa devono essere lo stesso numero (§5.5).
+   */
+  const asked = messages.filter((message) => message.from === "patient").length;
+  /*
+   * Chiusa **appena parte l'ultima domanda**, non quando arriva l'ultima
+   * risposta: fra le due c'è il tempo di scrittura, e una casella ancora viva
+   * lì in mezzo accetterebbe una quinta domanda a cui l'arco non risponde.
+   */
+  const closed = asked >= ARC_LENGTH;
+
   const send = (event: FormEvent) => {
     event.preventDefault();
     const question = draft.trim();
-    if (!question) return;
+    if (!question || closed) return;
 
     setMessages((previous) => [...previous, { from: "patient", text: question }]);
     setDraft("");
     setTyping(true);
 
-    const answer = replyTo(question);
+    const answer = replyTo(question, asked);
     replyTimer.current = window.setTimeout(() => {
       replyTimer.current = null;
       setMessages((previous) => [...previous, { from: "doctor", text: answer }]);
@@ -177,15 +244,26 @@ export default function Medico() {
           <div ref={bottomRef} />
         </div>
 
+        {/*
+          * A conversazione finita la casella **si spegne e dice perché**, che è
+          * il registro già usato dal pulsante del check-up e da quello della
+          * videochiamata: spento, con il motivo nell'etichetta. Un campo che
+          * accetta testo e non risponde più sembra rotto, ed è il modo peggiore
+          * di dichiarare una simulazione.
+          */}
         <form onSubmit={send} className="p-4 border-t border-border flex gap-2">
           <Input
             value={draft}
             onChange={(event) => setDraft(event.target.value)}
-            placeholder={t.employee.doctor.placeholder}
+            placeholder={
+              closed ? t.employee.doctor.closed : t.employee.doctor.placeholder
+            }
+            disabled={closed}
             className="flex-1"
           />
           <Button
             type="submit"
+            disabled={closed}
             className="bg-secondary hover:bg-secondary/90"
             aria-label={t.employee.doctor.send}
           >

@@ -308,8 +308,16 @@ function HeroProductPreview() {
             {t.healthSummary[health.summaryKey]}
           </span>
           <span className="bg-accent text-accent-foreground rounded-lg px-3 py-1.5 text-xs font-semibold">
+            {/*
+              * L'area **come il dizionario la scrive**, senza `.toLowerCase()`:
+              * in tedesco i sostantivi vogliono la maiuscola, e la
+              * trasformazione produceva "Fokus: schlaf" sulla prima schermata
+              * della presentazione. Era l'unico punto di `src/` in cui
+              * `toLowerCase()` toccava testo da mostrare — gli altri quattro
+              * normalizzano una ricerca o compongono un nome di file.
+              */}
             {interpolate(mockup.focus, {
-              area: t.healthArea[health.weakestArea].toLowerCase(),
+              area: t.healthArea[health.weakestArea],
             })}
           </span>
         </div>

@@ -23,24 +23,50 @@ import { interpolate, t } from "@/lib/i18n";
  * un'iscritta di Finanza che compare nell'elenco HR e fra i pazienti della
  * Dr.ssa Meier. Stesse iniziali devono voler dire la stessa persona.
  */
-function Identity() {
+function Identity({ onNavigate }: { onNavigate?: () => void }) {
   const { data: profile } = useEmployeeProfile();
   const { data: company } = useCompany();
 
   if (!profile || !company) return null;
 
+  /*
+   * IL RIQUADRO È LA PORTA DEL PROFILO (17.08.2026).
+   *
+   * "Profilo" è uscito dalle voci del menu ed è entrato qui, che è dove chi usa
+   * un'app va a cercare le proprie cose. La rotta non cambia: cambia come ci si
+   * arriva, quindi il §2.6 è soddisfatto — nessuna schermata nasce e nessuna
+   * muore.
+   *
+   * **Il nome accessibile dice la destinazione, non il contenuto.** Un link il
+   * cui testo è "Laura Bernasconi · Demo SA · Plus" annuncia chi sei, non dove
+   * porta, e la seconda è l'unica informazione che serve a chi lo incontra
+   * tabulando. È la stessa eccezione dichiarata per il pulsante del referto, e
+   * vale la stessa condizione: l'etichetta **non contraddice** il testo
+   * visibile, lo completa.
+   */
   return (
-    <div className="bg-accent rounded-lg p-3">
-      <p className="text-xs font-medium text-foreground">
-        {employeeDisplayName(profile)}
-      </p>
-      <p className="text-[10px] text-muted-foreground">
-        {interpolate(t.employee.identity, {
-          company: company.name,
-          plan: t.plan[company.plan.id],
-        })}
-      </p>
-    </div>
+    <Link
+      to="/employee/profilo"
+      onClick={onNavigate}
+      aria-label={t.employee.identityAction}
+      className="flex items-center gap-3 bg-accent rounded-lg p-3 hover:bg-accent/70 transition-colors"
+    >
+      <div className="min-w-0 flex-1">
+        <p className="text-xs font-medium text-foreground truncate">
+          {employeeDisplayName(profile)}
+        </p>
+        <p className="text-[10px] text-muted-foreground truncate">
+          {interpolate(t.employee.identity, {
+            company: company.name,
+            plan: t.plan[company.plan.id],
+          })}
+        </p>
+      </div>
+      <User
+        className="w-4 h-4 text-accent-foreground flex-shrink-0"
+        aria-hidden="true"
+      />
+    </Link>
   );
 }
 
@@ -63,7 +89,6 @@ export default function EmployeeNav() {
       label: t.employee.nav.checkup,
     },
     { path: "/employee/piano-ai", icon: Sparkles, label: t.employee.nav.aiPlan },
-    { path: "/employee/profilo", icon: User, label: t.employee.nav.profile },
   ];
 
   return (
@@ -135,6 +160,16 @@ export default function EmployeeNav() {
                 </Link>
               );
             })}
+            {/*
+              * Anche qui, e non è una ripetizione: `Identity` sta nella barra
+              * laterale, che sotto `lg` non esiste. Senza questa riga
+              * `/employee/profilo` non sarebbe raggiungibile da nessuna parte
+              * su schermo stretto — cioè una rotta senza porta, che è il
+              * vicolo cieco del §10 visto dall'altro lato.
+              */}
+            <div className="pt-2">
+              <Identity onNavigate={() => setOpen(false)} />
+            </div>
           </nav>
         )}
       </header>
@@ -142,7 +177,17 @@ export default function EmployeeNav() {
       {/* Mobile bottom nav */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-xl border-t border-border">
         <div className="flex justify-around py-2">
-          {navItems.slice(0, 5).map(({ path, icon: Icon, label }) => {
+          {/*
+            * LA BARRA IN BASSO LE MOSTRA TUTTE, e prima no.
+            *
+            * Diceva `.slice(0, 5)` su un elenco di sei: la sesta voce —
+            * Profilo — su mobile **non compariva affatto**, e la troncatura
+            * era silenziosa. Con Profilo passato al riquadro dell'identità le
+            * voci sono cinque e la barra è completa, quindi lo `slice` non
+            * toglieva più niente: restava solo il modo di far sparire in
+            * silenzio la prossima voce che qualcuno aggiunge.
+            */}
+          {navItems.map(({ path, icon: Icon, label }) => {
             const active = location.pathname === path;
             return (
               <Link
