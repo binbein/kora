@@ -1142,6 +1142,28 @@ la regola riguarda ogni serie che si aggiunge.
 | Raggi | quelli derivati da `--radius` | più morbidi (`rounded-2xl`) |
 | Tono | professionale, terza persona | caldo, seconda persona |
 
+### 6.5 Il riquadro dell'identità, in fondo alla barra di ogni portale
+
+Regola una volta sola, perché è già stata decisa due volte e alla terza ne
+uscirebbe una forma nuova (founder, 17.08.2026):
+
+- **l'icona sta a sinistra**, poi il nome e sotto il dettaglio. In tutti e tre i
+  portali, senza eccezioni: è la disposizione, non una preferenza di schermata;
+- **è un link solo dove esiste una schermata del profilo.** Oggi il dipendente,
+  che ha `/employee/profilo`; il professionista, che ha `/professional/profilo`;
+  **mai l'HR**, perché `/hr/profilo` non esiste ed è una decisione (§2.6) e non
+  una dimenticanza;
+- **l'icona dice cosa c'è dentro il riquadro, non dove porta il riquadro**:
+  una persona dove c'è una persona, un'azienda dove c'è un'azienda. Sull'HR il
+  riquadro mostra il cliente con organico e piano, quindi porta l'icona di
+  un'azienda.
+
+**L'ultimo punto è quello che regge gli altri due.** Un'icona da profilo su un
+riquadro che non porta da nessuna parte è **l'affordance che mente**, ed è lo
+stesso difetto che le voci del footer hanno costretto a correggere l'08.08.2026
+— lì l'affordance era rimasta nel layout dopo essere stata tolta dall'elemento.
+Qui la si eviterebbe al contrario, mettendola in un elemento che non la merita.
+
 ## 7. Microcopy
 
 - **Registro strumento** (HR, landing, professionista, admin): professionale,
