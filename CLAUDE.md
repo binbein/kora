@@ -73,41 +73,36 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      §5.6, i `.jsx` del §3 e le rotte del §10. Si contano le **chiavi foglia di
      tipo stringa** di un dizionario, **tolti prima i commenti**: la prosa che
      nomina una chiave non è una chiave, ed è la trappola che fa uscire un
-     numero diverso a ogni rilettura. Oggi sono **746**, uguali in tutti e
-     quattro i file (17.08.2026) — e che siano uguali non è una misura ma una
-     garanzia del tipo `Translated<Dictionary>`, che non compila se una manca.
+     numero diverso a ogni rilettura. Che i quattro file ne abbiano lo stesso
+     numero non è una misura ma una garanzia del tipo `Translated<Dictionary>`,
+     che non compila se una manca.
 
-     **Questa è l'unica riga che porta il numero, e porta anche l'obbligo che
-     al §5.6 mancava qui**: **chi aggiunge o toglie una chiave muove questo
-     numero nella stessa passata**, e **chi ne trova uno che non torna rimisura
-     col comando qui sotto prima di segnalare** — se il criterio è stato
-     applicato per intero, a essere invecchiata è la riga, e si aggiorna con la
-     data. Il numero si muove, il criterio no.
+     **IL NUMERO NON STA PIÙ QUI, ED È LA CORREZIONE DEL 17.08.2026.** Vive in
+     `EXPECTED_KEYS`, in `src/lib/i18n/placeholders.ts`, dove un guardrail lo
+     confronta con il conto vero **a ogni avvio**: in sviluppo una chiave in
+     più è una pagina bianca che dice il numero trovato, quello atteso e la
+     riga da cambiare. Chi aggiunge una stringa non deve più sapere che questa
+     sezione esiste, ed è tutto il punto — qui resta il criterio, che è la
+     parte che non si muove.
 
-     **"Nella stessa passata" e non "nello stesso commit", ed è una
-     correzione** presa mezz'ora dopo aver scritto la seconda forma
-     (17.08.2026): il §2.8 vuole le decisioni di questo file in un commit
-     `docs:` **separato dal codice**, quindi un obbligo per commit chiedeva di
-     violare l'altra regola per rispettare questa. A proteggere è comunque il
-     merge — il numero deve essere giusto in ciò che arriva su `master`, non a
-     metà di un branch — e la passata è l'unità che il merge misura.
+     **Perché la prosa non bastava, e la misura sono tre tentativi.** Il numero
+     è stato scritto qui con il suo criterio, poi con il criterio **e
+     l'obbligo** di muoverlo nella stessa passata, e tutte e due le volte è
+     invecchiato alla prima passata che aggiungeva una stringa. La seconda è
+     quella che decide: è arrivata **il giorno dopo** che l'obbligo era stato
+     scritto, e da una passata che il numero giusto **l'aveva misurato**,
+     scrivendolo nel proprio verbale senza riportarlo dov'era dichiarato. Un
+     obbligo che chiede di copiare una cifra da un file all'altro non è una
+     regola: è una speranza con una data.
 
-     **La regola nasce da un difetto, non da simmetria** (17.08.2026): il 731
-     è invecchiato **alla prima passata utile** — dieci chiavi aggiunte
-     all'anteprima dell'hero — e non se ne è accorto nessuno perché il §2.7
-     aveva dato al conteggio un criterio *senza* l'obbligo, e perché la cifra
-     stava in **sei punti** invece che in uno. È esattamente la famiglia che
-     il §5.6 aveva già chiuso per i guardrail, ripetuta su un conteggio più
-     giovane: gli altri cinque — le due righe qui sotto, le due della testata di
-     `i18n/placeholders.ts` e il criterio dell'inventario delle promesse in
-     `docs/PROGRESS.md` — **ora rimandano qui invece di ripetere la cifra**.
-
-     **Il sesto è quello che vale**, perché mostra che il difetto non è
-     l'invecchiamento ma la ripetizione: era **un criterio vivo**, corretto due
-     giorni prima da 728 a 731 proprio in nome di questa regola, e allineato
-     alla cifra **giusta di allora**. Ripetere un numero è una promessa di
-     tornare a rileggerlo, e non la mantiene nessuno — nemmeno chi l'ha appena
-     scritta.
+     *(Prima ancora la cifra stava in **sei punti** invece che in uno, ed è la
+     famiglia che il §5.6 aveva già chiuso per i guardrail: ripetere un numero
+     è una promessa di tornare a rileggerlo, e non la mantiene nessuno —
+     nemmeno chi l'ha appena scritta. Il caso che lo dimostra era **un criterio
+     vivo**, corretto due giorni prima da 728 a 731 proprio in nome di questa
+     regola e allineato alla cifra giusta di allora. Dal 17.08.2026 i cinque
+     punti di troppo rimandano qui; da oggi questo rimanda al codice, e a
+     riportare una cifra non resta nessuno.)*
 
      **IL CONTO SI FA SULL'ALBERO SINTATTICO, NON CON UN GREP**, ed è la
      clausola senza la quale il criterio autorizzava proprio i numeri sbagliati
@@ -130,17 +125,24 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      Sull'albero non c'è niente da togliere: i commenti non sono nodi, e una
      proprietà o ha un letterale stringa per valore o non è una chiave foglia.
      Verificato: tante proprietà con inizializzatore letterale stringa quante
-     ne dichiara la riga qui sopra, **109 oggetti e zero proprietà di altro
+     ne dichiara `EXPECTED_KEYS`, **109 oggetti e zero proprietà di altro
      tipo**, identici sui quattro dizionari. *(Il conteggio delle chiavi non si
      ripete qui: era il secondo dei cinque punti che l'hanno fatto invecchiare.
      Gli oggetti restano, perché sono l'altra metà della prova che l'albero non
      lascia fuori niente — e non si sono mossi.)*
 
+     **Il guardrail conta a runtime e dà lo stesso numero**, verificato sui
+     quattro dizionari il giorno in cui è nato: sull'albero i commenti non sono
+     nodi, a runtime non sono valori. Il comando resta qui perché è il modo di
+     rifare la misura **senza avviare l'applicazione** — e perché il criterio
+     va potuto leggere anche da chi sta guardando solo questo file.
+
      **Il 663 dei verbali di M5.e non era invecchiato: era sbagliato quando è
      stato scritto.** Misurato su `de.ts` al merge della sua tranche, le chiavi
      erano già ~721. I verbali non si riscrivono — sono resoconti datati — e a
-     chiudere la famiglia «due conteggi dello stesso oggetto senza criterio» è
-     questa riga, che è l'unico punto che le conta.
+     chiudere la famiglia «due conteggi dello stesso oggetto senza criterio»
+     sono il criterio qui sopra e il guardrail che lo esegue: adesso un secondo
+     conteggio dello stesso oggetto, se sbaglia, non arriva nemmeno a schermo.
    - **Mai concatenare stringhe per comporre frasi** (l'ordine delle parole cambia
      tra lingue). Sempre frasi complete con segnaposto:
      `"Hai usato {n} delle tue {max} sessioni"`, mai `"Hai usato " + n + ...`.
@@ -455,7 +457,8 @@ kora/
         mock/            ← l'implementazione finta: il dataset di §8 e §9, che si
                            cancella il giorno di `http/` (§5.7)
       i18n/              ← i quattro dizionari (it, de, fr, en), il registro
-                           delle lingue e la guardia dei segnaposto
+                           delle lingue e le due guardie dell'avvio: i
+                           segnaposto e il conteggio delle chiavi (§2.7)
       locale.ts          ← il tipo `Locale` e il default: modulo foglia, perché
                            lo leggono sia `format.ts` sia `i18n`
       format.ts          ← formatCHF, formatDate, formatPercent — unico punto
@@ -810,8 +813,8 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 108 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 108 posti.
+call site sono 109 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 109 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
 **Il criterio con cui i call site si contano**, perché una rilevazione futura non
@@ -819,7 +822,7 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **100 + 8 = 108** (16.08.2026). Restano fuori, e sono le tre trappole del
+Oggi **101 + 8 = 109** (17.08.2026). Restano fuori, e sono le tre trappole del
 conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
 nome lungo che **contiene** quello corto.
 
@@ -855,7 +858,8 @@ dice **perché** quel file è diverso e non solo che non si conta.
 diversa da quella scritta qui va confrontata **prima col criterio e poi col
 numero**: se il criterio è stato applicato per intero, a essere invecchiata è la
 riga, e si aggiorna con la data. Un guardrail nuovo è un call site nuovo, ed è
-esattamente ciò che è successo passando da 96 a 97 con la tranche tedesca.
+esattamente ciò che è successo passando da 96 a 97 con la tranche tedesca e da
+108 a 109 con il conteggio delle chiavi del §2.7 (17.08.2026).
 
 **Il numero compare in questa sezione più di una volta, e una sola porta la
 data.** È quella del criterio, qui sopra; le altre tre — le due che aprono la
@@ -881,7 +885,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 108 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 109 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 
