@@ -1776,6 +1776,32 @@ riaprire una decisione già presa (founder, 15.08.2026).
 
 ### A. Pubblica — `/`, `/roi`, `/pricing`, `/demo`
 1. **Landing**: hero, problema, tre livelli di valore, anteprima piani, privacy, CTA.
+
+   **L'anteprima dell'hero è di tre pannelli, uno per lato del prodotto** —
+   dipendente, HR, professionista (founder, 17.08.2026). Sono i tre che il pitch
+   percorre subito dopo, quindi il riquadro è **il sommario di quel giro** e
+   l'ordine non è decorativo. Non è una schermata nuova e il §2.6 non c'entra: è
+   lo stesso riquadro, che prima ne mescolava tre in uno.
+
+   **Nessuna cifra nuova** (§2.4): i due pannelli aggiunti mostrano numeri che il
+   provider già espone e che altre schermate già dicono — il risparmio e i giorni
+   evitati del trimestre corrente, i compensi del mese e i pazienti attivi della
+   Dr.ssa Meier. Se un pannello avesse bisogno di una cifra che non c'è, si
+   cambia cifra.
+
+   **Il cambio automatico si ferma al primo clic, e per sempre.** I tre pallini
+   sono il comando: durante la presentazione si clicca una volta all'inizio e da
+   lì il riquadro mostra quello che dice chi parla. Un carosello che riprende da
+   solo toglie la parola a chi la sta usando. Il ciclo è di **cinque secondi**, e
+   ha due obblighi che non sono opzionali: **non avanza a scheda nascosta** — il
+   browser sospende i timer e al ritorno il pannello risulterebbe saltato, che è
+   la stessa faccia del `visibilityState` di due sezioni più giù — e **non parte
+   affatto** con `prefers-reduced-motion`, dove restano i soli pallini.
+
+   **Il §6.2 non c'entra**: vieta le animazioni d'ingresso **dei grafici**, e qui
+   non ci sono grafici. Il passaggio fra i pannelli è una dissolvenza e non un
+   movimento, e l'animazione d'ingresso del riquadro resta quella di
+   framer-motion che il §3 tiene per questa schermata.
 2. **Calcolatore ROI** — *da costruire, non esiste*. Perdite oggi vs risparmio con
    KORA, il dettaglio delle quattro voci che si aggiorna con N, formule §9.
    Va costruito con la grafica e il layout di base44; il motore è `roi-model.ts`.
@@ -1892,6 +1918,22 @@ zero»*, ed era vera fino al giorno in cui è stata scritta. La stessa correzion
 con la stessa formulazione, è in `docs/PITCH.md`: se le due divergessero il
 difetto tornerebbe da qui, perché è questa la fonte.
 
+**La barra pubblica ha la voce "Admin"** (founder, 17.08.2026), accanto a
+Dipendenti, HR e Professionisti. ~~A `/admin` non porta nessun link, e l'unico
+modo di entrarci è l'indirizzo digitato.~~ Quella scelta costava più di quanto
+proteggesse: **digitare un indirizzo ricarica, e un ricaricamento azzera il
+provider**, che vive in memoria (§10) — quindi la richiesta demo inviata durante
+il giro spariva proprio mentre la si andava a mostrare. È da lì che nasceva la
+coreografia in quattro passi di `docs/PITCH.md`, che con la voce in barra non
+serve più.
+
+**Non era una difesa, ed è la ragione per cui cade senza sostituirla.** Un
+indirizzo non linkato non protegge niente da chi ha il link — è il caso che
+questa stessa voce descrive in apertura — e le guardie di ruolo concedono per
+costruzione. **A proteggere `/admin` resta il banner dei dati dimostrativi**, che
+non si tocca: adesso che la voce è in barra è l'unica difesa a schermo, e lo è
+più di prima.
+
 **Finita quando:** i totali di ogni schermata si ricavano dai dati e non sono
 scritti a mano. **Soddisfatto in M3**: la schermata ereditata faceva convivere
 "618 utenti attivi" con un tasso di attivazione che ne implicava 767, e un
@@ -1902,6 +1944,14 @@ fatturato del mese che non tornava con l'elenco delle aziende accanto.
 Il provider vive in memoria: lo stato sopravvive alla navigazione interna, non a un
 ricaricamento. Si parte dalla landing e si usano i link, mai la barra degli
 indirizzi.
+
+**Da qui la barra basta da sola, e le cinque aree si raggiungono tutte con un
+clic** (17.08.2026): la voce "Admin" ha chiuso l'ultimo caso che chiedeva
+l'indirizzo digitato, cioè l'unico punto in cui la regola qui sopra si
+contraddiceva — per vedere il back-office bisognava fare esattamente la cosa che
+azzera lo stato. **Non resta nessun tasto Indietro obbligatorio**, e la
+conseguenza operativa sta in `docs/PITCH.md`, che di quella coreografia era il
+proprietario.
 
 **La landing non si pre-apre in una scheda di sfondo**: l'animazione d'ingresso
 resta congelata finché la scheda non è visibile, e la prima schermata che
