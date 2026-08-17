@@ -73,16 +73,24 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      §5.6, i `.jsx` del §3 e le rotte del §10. Si contano le **chiavi foglia di
      tipo stringa** di un dizionario, **tolti prima i commenti**: la prosa che
      nomina una chiave non è una chiave, ed è la trappola che fa uscire un
-     numero diverso a ogni rilettura. Oggi sono **741**, uguali in tutti e
+     numero diverso a ogni rilettura. Oggi sono **746**, uguali in tutti e
      quattro i file (17.08.2026) — e che siano uguali non è una misura ma una
      garanzia del tipo `Translated<Dictionary>`, che non compila se una manca.
 
      **Questa è l'unica riga che porta il numero, e porta anche l'obbligo che
      al §5.6 mancava qui**: **chi aggiunge o toglie una chiave muove questo
-     numero nello stesso commit**, e **chi ne trova uno che non torna rimisura
+     numero nella stessa passata**, e **chi ne trova uno che non torna rimisura
      col comando qui sotto prima di segnalare** — se il criterio è stato
      applicato per intero, a essere invecchiata è la riga, e si aggiorna con la
      data. Il numero si muove, il criterio no.
+
+     **"Nella stessa passata" e non "nello stesso commit", ed è una
+     correzione** presa mezz'ora dopo aver scritto la seconda forma
+     (17.08.2026): il §2.8 vuole le decisioni di questo file in un commit
+     `docs:` **separato dal codice**, quindi un obbligo per commit chiedeva di
+     violare l'altra regola per rispettare questa. A proteggere è comunque il
+     merge — il numero deve essere giusto in ciò che arriva su `master`, non a
+     metà di un branch — e la passata è l'unità che il merge misura.
 
      **La regola nasce da un difetto, non da simmetria** (17.08.2026): il 731
      è invecchiato **alla prima passata utile** — dieci chiavi aggiunte
