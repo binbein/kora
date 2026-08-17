@@ -1019,6 +1019,19 @@ export const en: Dictionary = {
         analyticsLabel: "HR dashboard (anonymous)",
         analyticsValue: "Adoption {adoption} · Stress {trend} points",
         analyticsValueNoTrend: "Adoption {adoption}",
+
+        panelEmployee: "Employee portal",
+        panelHr: "HR portal",
+        panelProfessional: "Professional portal",
+        panelShow: "Show {panel}",
+
+        savingsLabel: "Savings this quarter",
+        avoidedDaysLabel: "Absence days avoided",
+        avoidedDaysValue: "{days} days this quarter",
+
+        earningsLabel: "Fees this month",
+        sessionsValue: "{sessions} sessions × {fee}",
+        patientsLabel: "Active patients",
       },
 
       problemTitle: "The hidden cost of workplace health",

@@ -970,6 +970,19 @@ export const de: Dictionary = {
         analyticsLabel: "HR-Dashboard (anonym)",
         analyticsValue: "Nutzung {adoption} · Stress {trend} Punkte",
         analyticsValueNoTrend: "Nutzung {adoption}",
+
+        panelEmployee: "Mitarbeitenden-Portal",
+        panelHr: "HR-Portal",
+        panelProfessional: "Fachpersonen-Portal",
+        panelShow: "{panel} anzeigen",
+
+        savingsLabel: "Einsparung im Quartal",
+        avoidedDaysLabel: "Vermiedene Fehltage",
+        avoidedDaysValue: "{days} Tage im Quartal",
+
+        earningsLabel: "Honorar des Monats",
+        sessionsValue: "{sessions} Sitzungen × {fee}",
+        patientsLabel: "Aktive Patientinnen",
       },
 
       problemTitle: "Die versteckten Kosten der Unternehmensgesundheit",

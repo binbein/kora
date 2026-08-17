@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -27,7 +28,12 @@ import {
   useEmployeeProfile,
   useHrReport,
   usePlans,
+  useProfessional,
+  useProfessionalEarnings,
+  useProfessionalPatients,
   useProfessionals,
+  usePortalProfessionalId,
+  useReferenceDate,
 } from "@/lib/data/queries";
 import { ErrorNotice } from "@/components/kora/StateNotice";
 import type { Plan } from "@/lib/data/types";
@@ -90,7 +96,89 @@ const PREVIEW_FEATURES: PlanFeatureKey[] = [
 ];
 
 /*
- * La miniatura del prodotto nell'hero.
+ * I tre pannelli dell'anteprima, nell'ordine in cui il pitch percorre il
+ * prodotto: dipendente, HR, professionista (`docs/PITCH.md`). Il riquadro
+ * dell'hero è il sommario di quel giro, quindi l'ordine non è decorativo.
+ */
+const HERO_PANELS = ["employee", "hr", "professional"] as const;
+type HeroPanel = (typeof HERO_PANELS)[number];
+
+/** Cinque secondi: il tempo di leggere tre righe, non di aspettarle. */
+const HERO_ROTATION_MS = 5000;
+
+/**
+ * Un blocco informativo del pannello: un'etichetta e il suo valore.
+ *
+ * Ha tre chiamanti per pannello e nove in tutto, quindi si guadagna il posto
+ * (§11): senza, la stessa scatola sarebbe scritta nove volte, e i tre pannelli
+ * potrebbero divergere di padding senza che nessuno se ne accorga.
+ */
+function HeroFact({
+  icon: Icon,
+  label,
+  value,
+  tone,
+}: {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+  tone: "secondary" | "primary";
+}) {
+  return (
+    <div
+      className={`rounded-lg p-3 flex items-center gap-3 ${tone === "secondary" ? "bg-secondary/10" : "bg-primary/5"}`}
+    >
+      <Icon
+        className={`w-5 h-5 flex-shrink-0 ${tone === "secondary" ? "text-secondary" : "text-primary"}`}
+        aria-hidden="true"
+      />
+      <div className="min-w-0">
+        <p className="text-xs font-medium">{label}</p>
+        <p className="text-[11px] text-muted-foreground tabular-nums">{value}</p>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * L'intestazione di un pannello: l'etichetta, il numero grande e l'icona.
+ *
+ * Il numero grande è **lo stesso posto** in tutti e tre — punteggio, risparmio,
+ * compensi — ed è ciò che permette al riquadro di cambiare pannello senza che
+ * l'occhio debba ricominciare da capo.
+ */
+function HeroHeadline({
+  icon: Icon,
+  label,
+  value,
+  suffix,
+}: {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+  suffix?: string;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-3 mb-2">
+      <div className="min-w-0">
+        <p className="text-xs text-muted-foreground">{label}</p>
+        <p className="text-3xl font-bold font-display text-primary tabular-nums">
+          {value}
+          {suffix ? (
+            <span className="text-lg text-muted-foreground">{suffix}</span>
+          ) : null}
+        </p>
+      </div>
+      <div className="w-16 h-16 rounded-full border-4 border-secondary flex items-center justify-center flex-shrink-0">
+        <Icon className="w-6 h-6 text-secondary" aria-hidden="true" />
+      </div>
+    </div>
+  );
+}
+
+/*
+ * La miniatura del prodotto nell'hero, che da 17.08.2026 sono **tre pannelli**
+ * e non uno.
  *
  * Legge dal provider, e non è pedanteria: il riquadro ereditato dichiarava un
  * punteggio di 74 dove Laura ne ha 78, un "Sonno 6.2h" che il §8 non contiene,
@@ -98,6 +186,16 @@ const PREVIEW_FEATURES: PlanFeatureKey[] = [
  * percentuale, e uno "Stress −8%" che la migrazione dell'area HR ha già
  * dimostrato non riproducibile dalla serie. Quattro cifre su quattro
  * sbagliate, sulla prima schermata che un investitore vede.
+ *
+ * **Nessuna cifra nuova per i due pannelli aggiunti** (§2.4): il risparmio e i
+ * giorni evitati sono quelli del report del trimestre corrente, i compensi e i
+ * pazienti quelli che il portale della Dr.ssa Meier mostra già. Sono le stesse
+ * letture, viste dall'hero.
+ *
+ * **Il cambio automatico si ferma per sempre al primo clic** (founder,
+ * 17.08.2026), non finché non si ricomincia: durante la presentazione si clicca
+ * una volta all'inizio e da lì comanda chi parla. Un carosello che riprende da
+ * solo dopo qualche secondo è la cosa che toglie la parola a chi sta parlando.
  */
 function HeroProductPreview() {
   const { data: profile } = useEmployeeProfile();
@@ -106,6 +204,54 @@ function HeroProductPreview() {
   const { data: report } = useHrReport(quarter);
   const { data: appointments } = useAppointments();
   const { data: professionals } = useProfessionals();
+  const { data: today } = useReferenceDate();
+  const { data: portalId } = usePortalProfessionalId();
+  const { data: portalProfessional } = useProfessional(portalId);
+  const { data: patients } = useProfessionalPatients(portalId);
+  const month = today
+    ? new Date(today.getFullYear(), today.getMonth(), 1)
+    : undefined;
+  const { data: earnings } = useProfessionalEarnings(portalId, month);
+
+  const [active, setActive] = useState<HeroPanel>(HERO_PANELS[0]);
+  /*
+   * Preso in mano: da qui il riquadro non si muove più da solo. È uno stato
+   * senza ritorno di proposito — non c'è nessun gesto che rimetta in moto la
+   * rotazione, perché l'unico momento in cui servirebbe è ricaricare la
+   * pagina, che durante la demo non si fa (§10).
+   */
+  const [taken, setTaken] = useState(false);
+  /*
+   * Letto **una volta al montaggio**: chi ha l'impostazione attiva ce l'ha
+   * prima di aprire la pagina, e seguire un cambio a metà sessione
+   * costerebbe una sottoscrizione per un caso che non esiste (§11). I tre
+   * pallini restano, quindi il riquadro resta comandabile: a sparire è il
+   * movimento, non la funzione.
+   */
+  const [reducedMotion] = useState(
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+
+  useEffect(() => {
+    if (taken || reducedMotion) return;
+    const id = window.setInterval(() => {
+      /*
+       * A scheda nascosta non si avanza. Il browser sospende i timer, quindi
+       * senza questa riga il ritorno alla scheda mostrerebbe un pannello
+       * saltato — ed è la terza faccia dello stesso `visibilityState` che
+       * questo repository ha già incontrato come animazioni congelate e come
+       * misure a zero (`docs/PROGRESS.md`).
+       */
+      if (document.hidden) return;
+      setActive(
+        (current) =>
+          HERO_PANELS[
+            (HERO_PANELS.indexOf(current) + 1) % HERO_PANELS.length
+          ],
+      );
+    }, HERO_ROTATION_MS);
+    return () => window.clearInterval(id);
+  }, [taken, reducedMotion]);
 
   /*
    * Qui i tre casi collassano di proposito (M5.b), come il riquadro della nav
@@ -114,8 +260,23 @@ function HeroProductPreview() {
    * disegnarlo. Un riquadro d'errore sulla **prima schermata che un
    * investitore vede** direbbe che il prodotto è rotto, mentre il testo
    * dell'hero accanto sta in piedi da solo.
+   *
+   * Il guardo è **uno solo per tutti e tre i pannelli**, e non è una svista: i
+   * pallini annunciano tre pannelli, quindi tre che si riducono a due sono un
+   * comando che porta a una scatola vuota. `company` resta nell'elenco pur non
+   * essendo reso da nessuno — l'anteprima descrive la dashboard di Demo SA, e
+   * senza l'azienda non ha niente di vero da descrivere.
    */
-  if (!profile || !company || !report || !appointments || !professionals) {
+  if (
+    !profile ||
+    !company ||
+    !report ||
+    !appointments ||
+    !professionals ||
+    !portalProfessional ||
+    !patients ||
+    !earnings
+  ) {
     return null;
   }
 
@@ -126,79 +287,161 @@ function HeroProductPreview() {
         (professional) => professional.id === next.professionalId,
       )
     : undefined;
+  const mockup = t.public.landing.mockup;
+  const panelNames: Record<HeroPanel, string> = {
+    employee: mockup.panelEmployee,
+    hr: mockup.panelHr,
+    professional: mockup.panelProfessional,
+  };
 
-  return (
-    <div className="relative">
-      <div className="bg-white rounded-2xl shadow-2xl border border-border/50 p-6 space-y-4">
-        <div className="flex items-center justify-between mb-2">
-          <div>
-            <p className="text-xs text-muted-foreground">
-              {t.public.landing.mockup.scoreLabel}
-            </p>
-            <p className="text-3xl font-bold font-display text-primary tabular-nums">
-              {formatNumber(health.score)}
-              <span className="text-lg text-muted-foreground">
-                {t.public.landing.mockup.scoreOutOf}
-              </span>
-            </p>
-          </div>
-          <div className="w-16 h-16 rounded-full border-4 border-secondary flex items-center justify-center">
-            <Heart className="w-6 h-6 text-secondary" aria-hidden="true" />
-          </div>
-        </div>
-
+  const panels: Record<HeroPanel, React.ReactNode> = {
+    employee: (
+      <>
+        <HeroHeadline
+          icon={Heart}
+          label={mockup.scoreLabel}
+          value={formatNumber(health.score)}
+          suffix={mockup.scoreOutOf}
+        />
         <div className="flex flex-wrap gap-2">
           <span className="bg-accent text-accent-foreground rounded-lg px-3 py-1.5 text-xs font-semibold">
             {t.healthSummary[health.summaryKey]}
           </span>
           <span className="bg-accent text-accent-foreground rounded-lg px-3 py-1.5 text-xs font-semibold">
-            {interpolate(t.public.landing.mockup.focus, {
+            {interpolate(mockup.focus, {
               area: t.healthArea[health.weakestArea].toLowerCase(),
             })}
           </span>
         </div>
-
         {/* L'appuntamento vero, non un "domani 10:00" con un nome inventato:
             la Dr.ssa Bianchi non è nel roster del §8. */}
         {next && withNext ? (
-          <div className="bg-secondary/10 rounded-lg p-3 flex items-center gap-3">
-            <Brain className="w-5 h-5 text-secondary flex-shrink-0" aria-hidden="true" />
-            <div>
-              <p className="text-xs font-medium">
-                {t.public.landing.mockup.nextSessionLabel}
-              </p>
-              <p className="text-[11px] text-muted-foreground tabular-nums">
-                {interpolate(t.public.landing.mockup.nextSessionValue, {
-                  weekday: formatWeekdayShort(next.start),
-                  time: formatTime(next.start),
-                  professional: professionalDisplayName(withNext),
-                })}
-              </p>
-            </div>
-          </div>
+          <HeroFact
+            icon={Brain}
+            tone="secondary"
+            label={mockup.nextSessionLabel}
+            value={interpolate(mockup.nextSessionValue, {
+              weekday: formatWeekdayShort(next.start),
+              time: formatTime(next.start),
+              professional: professionalDisplayName(withNext),
+            })}
+          />
         ) : null}
+      </>
+    ),
+    hr: (
+      <>
+        <HeroHeadline
+          icon={BarChart3}
+          label={mockup.savingsLabel}
+          value={formatCHF(report.savedChf)}
+        />
+        <HeroFact
+          icon={BarChart3}
+          tone="primary"
+          label={mockup.analyticsLabel}
+          value={
+            report.stressTrendPoints === null
+              ? interpolate(mockup.analyticsValueNoTrend, {
+                  adoption: formatPercent(report.adoptionPercent),
+                })
+              : interpolate(mockup.analyticsValue, {
+                  adoption: formatPercent(report.adoptionPercent),
+                  trend: formatSigned(report.stressTrendPoints),
+                })
+          }
+        />
+        <HeroFact
+          icon={CheckCircle2}
+          tone="secondary"
+          label={mockup.avoidedDaysLabel}
+          value={interpolate(mockup.avoidedDaysValue, {
+            days: formatNumber(report.avoidedAbsenceDays),
+          })}
+        />
+      </>
+    ),
+    professional: (
+      <>
+        <HeroHeadline
+          icon={Briefcase}
+          label={mockup.earningsLabel}
+          value={formatCHF(earnings.grossChf)}
+        />
+        <HeroFact
+          icon={Brain}
+          tone="secondary"
+          label={professionalDisplayName(portalProfessional)}
+          value={interpolate(mockup.sessionsValue, {
+            sessions: formatNumber(earnings.sessionsDelivered),
+            fee: formatCHF(earnings.feePerSession),
+          })}
+        />
+        <HeroFact
+          icon={UserCheck}
+          tone="primary"
+          label={mockup.patientsLabel}
+          value={formatNumber(patients.length)}
+        />
+      </>
+    ),
+  };
 
-        <div className="bg-primary/5 rounded-lg p-3 flex items-center gap-3">
-          <BarChart3 className="w-5 h-5 text-primary flex-shrink-0" aria-hidden="true" />
-          <div>
-            <p className="text-xs font-medium">
-              {t.public.landing.mockup.analyticsLabel}
-            </p>
-            <p className="text-[11px] text-muted-foreground tabular-nums">
-              {report.stressTrendPoints === null
-                ? interpolate(t.public.landing.mockup.analyticsValueNoTrend, {
-                    adoption: formatPercent(report.adoptionPercent),
-                  })
-                : interpolate(t.public.landing.mockup.analyticsValue, {
-                    adoption: formatPercent(report.adoptionPercent),
-                    trend: formatSigned(report.stressTrendPoints),
-                  })}
-            </p>
-          </div>
+  return (
+    <div>
+      {/*
+       * I tre pannelli stanno **impilati nella stessa cella di griglia**, non
+       * montati a turno: così l'altezza del riquadro è quella del pannello più
+       * alto e non cambia al cambio: un carosello che accorcia la pagina
+       * sposterebbe tutto ciò che gli sta sotto mentre l'investitore legge.
+       * Il passaggio è una dissolvenza e non un movimento (§6.4).
+       */}
+      <div className="relative">
+        <div className="grid">
+          {HERO_PANELS.map((panel) => (
+            <div
+              key={panel}
+              className={`col-start-1 row-start-1 transition-opacity duration-500 ${
+                panel === active ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
+              aria-hidden={panel !== active}
+            >
+              <div className="bg-white rounded-2xl shadow-2xl border border-border/50 p-6 space-y-4 h-full">
+                {panels[panel]}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="absolute -bottom-4 -right-4 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
+          <Shield className="w-3 h-3" aria-hidden="true" />{" "}
+          {t.public.landing.mockupSeal}
         </div>
       </div>
-      <div className="absolute -bottom-4 -right-4 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
-        <Shield className="w-3 h-3" aria-hidden="true" /> {t.public.landing.mockupSeal}
+
+      {/*
+       * I pallini sono il comando, non un indicatore: sono pulsanti veri, con
+       * un nome che dice quale pannello mostrano, e quello attivo lo dichiara
+       * con `aria-current`. Un puntino con `onClick` su un `div` sarebbe
+       * invisibile alla tastiera, che il §11 vuole percorribile.
+       */}
+      <div className="flex justify-center gap-2 mt-8">
+        {HERO_PANELS.map((panel) => (
+          <button
+            key={panel}
+            type="button"
+            onClick={() => {
+              setActive(panel);
+              setTaken(true);
+            }}
+            aria-label={interpolate(mockup.panelShow, {
+              panel: panelNames[panel],
+            })}
+            aria-current={panel === active}
+            className={`h-2.5 rounded-full transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+              panel === active ? "w-8 bg-primary" : "w-2.5 bg-border"
+            }`}
+          />
+        ))}
       </div>
     </div>
   );

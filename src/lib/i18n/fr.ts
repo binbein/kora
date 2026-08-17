@@ -1067,6 +1067,19 @@ export const fr: Dictionary = {
         analyticsLabel: "Tableau de bord RH (anonyme)",
         analyticsValue: "Adoption {adoption} · Stress {trend} points",
         analyticsValueNoTrend: "Adoption {adoption}",
+
+        panelEmployee: "Espace collaborateur",
+        panelHr: "Espace RH",
+        panelProfessional: "Espace professionnel",
+        panelShow: "Afficher {panel}",
+
+        savingsLabel: "Économie du trimestre",
+        avoidedDaysLabel: "Absences évitées",
+        avoidedDaysValue: "{days} jours sur le trimestre",
+
+        earningsLabel: "Honoraires du mois",
+        sessionsValue: "{sessions} séances × {fee}",
+        patientsLabel: "Patients actifs",
       },
 
       problemTitle: "Le coût caché de la santé en entreprise",

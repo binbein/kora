@@ -1302,6 +1302,25 @@ export const it = {
         analyticsValue: "Adozione {adoption} · Stress {trend} punti",
         /** Quando il trimestre più vecchio non ha un precedente da cui derivare il trend. */
         analyticsValueNoTrend: "Adozione {adoption}",
+
+        /* I tre pannelli (17.08.2026). I nomi sono quelli dei tre lati del
+           prodotto, non quelli delle voci di barra: "Mostra Dipendenti" direbbe
+           che il pallino porta a un elenco di persone. */
+        panelEmployee: "Portale dipendente",
+        panelHr: "Portale HR",
+        panelProfessional: "Portale professionista",
+        /** Il nome accessibile del pallino: "Mostra portale HR" */
+        panelShow: "Mostra {panel}",
+
+        savingsLabel: "Risparmio del trimestre",
+        avoidedDaysLabel: "Assenze evitate",
+        /** "16 giorni nel trimestre" */
+        avoidedDaysValue: "{days} giorni nel trimestre",
+
+        earningsLabel: "Compensi del mese",
+        /** "14 sessioni × CHF 80" */
+        sessionsValue: "{sessions} sessioni × {fee}",
+        patientsLabel: "Pazienti attivi",
       },
 
       problemTitle: "Il costo nascosto della salute aziendale",
