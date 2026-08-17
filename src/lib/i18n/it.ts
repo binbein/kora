@@ -143,11 +143,11 @@ export const it = {
       doctor: "Medico",
       checkup: "Check-up",
       aiPlan: "Piano AI",
-      profile: "Profilo",
     },
 
     /** "Demo SA · Plus" */
     identity: "{company} · {plan}",
+    identityAction: "Apri il tuo profilo",
 
     privacy:
       "La tua azienda vede solo dati aggregati e anonimi. La tua salute resta tua.",
@@ -208,12 +208,16 @@ export const it = {
         "{used} su {total} sessioni usate · {scheduled} in programma",
       book: "Prenota una sessione",
 
-      quickAction: {
-        doctor: "Medico virtuale",
-        checkup: "Check-up annuale",
-        aiPlan: "Piano di prevenzione",
-        profile: "Profilo salute",
-      },
+      /* I due dati che hanno preso il posto delle quattro azioni rapide
+         (17.08.2026): la home diceva quattro strade che il menu già disegna, e
+         non diceva nessuno dei due fatti che stavano solo nel profilo. */
+      checkupTitle: "Check-up annuale",
+      /** "Prossimo dal 15.03.2027" */
+      checkupNext: "Prossimo dal {date}",
+      checkupToBook: "Da prenotare",
+      doctorTitle: "Medico virtuale",
+      /** "2 consulti quest'anno" */
+      doctorConsults: "{n} consulti quest'anno",
       checkupDone: "Fatto",
 
       planTitle: "Dal tuo piano di prevenzione",
@@ -358,6 +362,23 @@ export const it = {
           text: "I disturbi del sonno sono molto comuni. Da quanto tempo ha difficoltà? Si sveglia durante la notte o fatica ad addormentarsi?",
         },
       },
+      /*
+       * L'arco, dal secondo scambio in poi: le tre frasi valgono per qualunque
+       * disturbo, e l'ultima **orienta senza diagnosticare** — non nomina un
+       * farmaco, non afferma una causa, e dice a chiare lettere che da qui una
+       * diagnosi non si fa.
+       *
+       * È anche il **secondo punto del prodotto in cui compare il 144**: fino a
+       * oggi stava nel solo disclaimer, ed è la lacuna che il
+       * `docs/CONTRATTO-DATI.md` §8.1 dichiara.
+       */
+      arc: {
+        duration: "Grazie. Mi aiuti a inquadrarlo: va avanti da giorni, da settimane o da più tempo? E capita tutti i giorni o a episodi?",
+        symptoms: "Chiaro. Nota altro insieme a questo — febbre, stanchezza, cambiamenti nel sonno o nell'appetito?",
+        guidance: "La ringrazio, mi basta per orientarla. Una diagnosi da qui non posso farla: se il disturbo è legato a stress o umore, prenoti una sessione con uno psicologo dalla sezione dedicata; altrimenti si rivolga al suo medico curante, che può visitarla. Se i sintomi peggiorano all'improvviso, chiami il 144.",
+      },
+      /* Spenta con il motivo nell'etichetta, come il pulsante del check-up. */
+      closed: "La conversazione dimostrativa finisce qui.",
       fallback:
         "Capisco. Può descrivermi meglio il disturbo? Da quanto tempo lo avverte?",
 

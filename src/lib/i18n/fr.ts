@@ -222,10 +222,10 @@ export const fr: Dictionary = {
       doctor: "Médecin",
       checkup: "Check-up",
       aiPlan: "Plan IA",
-      profile: "Profil",
     },
 
     identity: "{company} · {plan}",
+    identityAction: "Ouvrir mon profil",
 
     privacy:
       "Ton entreprise ne voit que des données agrégées et anonymes. Ta santé reste la tienne.",
@@ -271,12 +271,11 @@ export const fr: Dictionary = {
         "{used} séances utilisées sur {total} · {scheduled} prévues",
       book: "Réserver une séance",
 
-      quickAction: {
-        doctor: "Médecin virtuel",
-        checkup: "Check-up annuel",
-        aiPlan: "Plan de prévention",
-        profile: "Profil santé",
-      },
+      checkupTitle: "Check-up annuel",
+      checkupNext: "Prochain dès le {date}",
+      checkupToBook: "À réserver",
+      doctorTitle: "Médecin virtuel",
+      doctorConsults: "{n} consultations cette année",
       checkupDone: "Fait",
 
       planTitle: "De ton plan de prévention",
@@ -380,6 +379,12 @@ export const fr: Dictionary = {
           text: "Les troubles du sommeil sont très fréquents. Depuis combien de temps avez-vous des difficultés ? Vous réveillez-vous la nuit ou avez-vous du mal à vous endormir ?",
         },
       },
+      arc: {
+        duration: "Merci. Aidez-moi à situer les choses : cela dure depuis des jours, des semaines ou plus longtemps ? Et tous les jours ou par épisodes ?",
+        symptoms: "Très bien. Remarquez-vous autre chose en même temps — fièvre, fatigue, changements du sommeil ou de l'appétit ?",
+        guidance: "Merci, cela me suffit pour vous orienter. Je ne peux pas poser de diagnostic d'ici : si le trouble est lié au stress ou à l'humeur, réservez une séance avec un psychologue depuis la section dédiée ; sinon, adressez-vous à votre médecin traitant, qui peut vous examiner. Si les symptômes s'aggravent brusquement, appelez le 144.",
+      },
+      closed: "La conversation de démonstration s'arrête ici.",
       fallback:
         "Je comprends. Pouvez-vous mieux décrire le trouble ? Depuis combien de temps le ressentez-vous ?",
 

@@ -186,10 +186,10 @@ export const en: Dictionary = {
       doctor: "Doctor",
       checkup: "Check-up",
       aiPlan: "AI plan",
-      profile: "Profile",
     },
 
     identity: "{company} · {plan}",
+    identityAction: "Open your profile",
 
     privacy:
       "Your organisation only sees aggregated, anonymous data. Your health stays yours.",
@@ -234,12 +234,11 @@ export const en: Dictionary = {
         "You've used {used} of your {total} sessions · {scheduled} scheduled",
       book: "Book a session",
 
-      quickAction: {
-        doctor: "Virtual doctor",
-        checkup: "Annual check-up",
-        aiPlan: "Prevention plan",
-        profile: "Health profile",
-      },
+      checkupTitle: "Annual check-up",
+      checkupNext: "Next from {date}",
+      checkupToBook: "To book",
+      doctorTitle: "Virtual doctor",
+      doctorConsults: "{n} consultations this year",
       checkupDone: "Done",
 
       planTitle: "From your prevention plan",
@@ -343,6 +342,12 @@ export const en: Dictionary = {
           text: "Sleep problems are very common. How long have you had difficulties? Do you wake up during the night, or do you struggle to fall asleep?",
         },
       },
+      arc: {
+        duration: "Thank you. Help me place it: has it been going on for days, for weeks, or longer? And every day, or in episodes?",
+        symptoms: "Understood. Do you notice anything alongside it — fever, tiredness, changes in sleep or appetite?",
+        guidance: "Thank you, that is enough for me to point you in the right direction. I cannot make a diagnosis from here: if the trouble is linked to stress or mood, book a session with a psychologist from the dedicated section; otherwise please see your own doctor, who can examine you. If the symptoms worsen suddenly, call 144.",
+      },
+      closed: "The demonstration conversation ends here.",
       fallback:
         "I understand. Could you describe the problem in more detail? How long have you been feeling it?",
 
