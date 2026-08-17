@@ -370,6 +370,39 @@ export function employeeDisplayName(profile: EmployeeProfile): string {
   return `${profile.firstName} ${profile.lastName}`;
 }
 
+/**
+ * Le due metà del nome di un paziente, come le portano le proiezioni di **chi
+ * cura** — `ProfessionalSession` e `PatientSummary`, e nessun'altra.
+ *
+ * Sta qui come tipo e non come coppia di campi ripetuta due volte perché le due
+ * funzioni sotto devono poterlo ricevere da entrambe: sono la stessa persona
+ * vista da due elenchi della stessa professionista.
+ */
+export type PatientNamed = {
+  patientFirstName: string;
+  patientLastName: string;
+};
+
+/** Nome da mostrare a chi cura. Stessa ragione degli altri due qui sopra. */
+export function patientDisplayName(patient: PatientNamed): string {
+  return `${patient.patientFirstName} ${patient.patientLastName}`;
+}
+
+/**
+ * "L.B." — le iniziali **si derivano dal nome, non si scrivono accanto**.
+ *
+ * È il §5.5 applicato a una stringa: con un campo `patientInitials` accanto al
+ * nome ci sarebbero due valori per lo stesso fatto, e il giorno in cui uno dei
+ * due cambia la stessa persona comparirebbe con due grafie — su schermate che
+ * mostrano l'una o l'altra a seconda di chi guarda.
+ *
+ * È anche l'unico punto in cui la proiezione del back-office prende le sue: il
+ * nome non attraversa quel confine, le iniziali sì.
+ */
+export function patientInitials(patient: PatientNamed): string {
+  return `${patient.patientFirstName[0]}.${patient.patientLastName[0]}.`;
+}
+
 /** Quante sessioni sono state usate sul cap del piano, e quanto costa la successiva. */
 export type SessionEntitlement = {
   used: number;
@@ -533,19 +566,29 @@ export type Appointment = {
 };
 
 /**
- * Lo stesso appuntamento come lo vede **il professionista**: il paziente è
- * identificato da un id opaco e dalle iniziali, mai dal nome.
+ * Lo stesso appuntamento come lo vede **il professionista**, e il paziente ci
+ * arriva **con il suo nome** (founder, 17.08.2026).
  *
  * Sono due proiezioni di una sola entità memorizzata, non due entità: una
  * prenotazione fatta dal dipendente compare qui perché è lo stesso record
- * (§10.D). Che il nome non ci sia è una garanzia del contratto, non una scelta
- * di rendering: non esiste campo su cui possa arrivare.
+ * (§10.D).
+ *
+ * PERCHÉ IL NOME C'È, E PERCHÉ LA GARANZIA DEL §3 NON CADE. Una psicologa il
+ * nome della propria paziente lo conosce — glielo dice la persona che ha in
+ * cura — e mostrarle delle iniziali non protegge nessuno: confonde e basta. Ciò
+ * che il contratto garantisce non è che il nome non esista, è **verso chi non
+ * esce**: l'azienda e l'amministratore di piattaforma. Le loro proiezioni —
+ * `EmployeeDirectoryEntry` e `PlatformSession` — non hanno nessun campo su cui
+ * possa arrivare, e quella è la garanzia, non una scelta di rendering.
+ *
+ * Le **iniziali non sono un campo**: si derivano con `patientInitials`, perché
+ * due valori per lo stesso fatto sono due valori che possono divergere (§5.5).
  */
 export type ProfessionalSession = {
   id: string;
   patientId: string;
-  /** "L.B." — è tutto ciò che il professionista riceve del nome */
-  patientInitials: string;
+  patientFirstName: string;
+  patientLastName: string;
   start: Date;
   durationMinutes: number;
   status: AppointmentStatus;
@@ -622,7 +665,9 @@ export type SessionNote = {
  */
 export type PatientSummary = {
   patientId: string;
-  patientInitials: string;
+  /** Chi cura riceve il nome, come su `ProfessionalSession` e per la stessa ragione */
+  patientFirstName: string;
+  patientLastName: string;
   /** `null` quando è un paziente nuovo che non ha ancora fatto sedute */
   lastSessionAt: Date | null;
   nextSessionAt: Date | null;

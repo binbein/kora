@@ -546,8 +546,7 @@ export const en: Dictionary = {
       title: "Patients",
       count: "{n} active patients",
       privacy:
-        "Names are abbreviated for privacy. Clinical notes are visible to you only.",
-      name: "Patient {initials}",
+        "You see the names because you are the one following these people. The organisation receives neither names nor notes: its list carries initials only.",
       delivered: "{n} sessions delivered",
       next: "Next: {date}",
       noNext: "No session scheduled",

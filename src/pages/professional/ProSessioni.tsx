@@ -19,7 +19,12 @@ import {
   useSessionNote,
 } from '@/lib/data/queries';
 import { ErrorNotice } from '@/components/kora/StateNotice';
-import type { ProfessionalSession, SessionNote } from '@/lib/data/types';
+import {
+  patientDisplayName,
+  patientInitials,
+  type ProfessionalSession,
+  type SessionNote,
+} from '@/lib/data/types';
 
 /** Il callback esiste solo dove le sedute possono avere una nota: le erogate. */
 type NoteHandler = (session: ProfessionalSession) => void;
@@ -69,10 +74,10 @@ function SessionRow({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0 flex-1 basis-64">
           <div className={`w-10 h-10 rounded-xl ${tone} flex items-center justify-center text-sm font-bold flex-shrink-0`}>
-            {session.patientInitials}
+            {patientInitials(session)}
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-semibold truncate">{session.patientInitials}</p>
+            <p className="text-sm font-semibold truncate">{patientDisplayName(session)}</p>
             <p className="text-xs text-muted-foreground truncate">
               <span className="capitalize">{formatWeekday(session.start)}</span>{' '}
               <span className="tabular-nums">
@@ -272,7 +277,7 @@ export default function ProSessioni() {
           <DialogHeader>
             <DialogTitle>
               {interpolate(t.professional.sessions.note.title, {
-                patient: openSession ? openSession.patientInitials : '',
+                patient: openSession ? patientDisplayName(openSession) : '',
               })}
             </DialogTitle>
           </DialogHeader>

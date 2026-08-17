@@ -649,10 +649,14 @@ export const it = {
       title: "Pazienti",
       /** "6 pazienti attivi" */
       count: "{n} pazienti attivi",
+      /*
+       * DICEVA "I nomi sono abbreviati per privacy" ED È DIVENTATA FALSA IL
+       * 17.08.2026, quando la professionista ha cominciato a ricevere il nome
+       * dei propri pazienti. La frase nuova dice la stessa garanzia dal verso
+       * giusto: non che il nome non esista, ma **verso chi non esce**.
+       */
       privacy:
-        "I nomi sono abbreviati per privacy. Le note cliniche sono visibili solo a te.",
-      /** "Paziente L.B." */
-      name: "Paziente {initials}",
+        "Vedi il nome perché sei tu a seguire queste persone. L'azienda non riceve né i nomi né le note: il suo elenco porta le sole iniziali.",
       /** "9 sessioni erogate" */
       delivered: "{n} sessioni erogate",
       /** "Prossima: 24.09.2026" */

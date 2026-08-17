@@ -10,7 +10,7 @@ import type {
   PlatformUser,
   UserRole,
 } from "../types";
-import { sameQuarter } from "../types";
+import { patientDisplayName, patientInitials, sameQuarter } from "../types";
 import { COMPANY, PLANS, PLAN_LIST } from "./company";
 import { DEMO_TODAY } from "./demo-date";
 import { EMPLOYEE_DIRECTORY } from "./hr";
@@ -570,6 +570,12 @@ type IdentityClaim = {
   /** Il ruolo, dove la lista lo dichiara: ce l'ha solo il back-office. */
   role: UserRole | null;
   /**
+   * Il nome per esteso, **dove la lista ce l'ha**: l'agenda della professionista
+   * e gli utenti del back-office. L'estratto dell'HR non ce l'ha e non deve
+   * averlo — è la lista che l'azienda vede (17.08.2026).
+   */
+  fullName: string | null;
+  /**
    * L'id con cui le due liste di dipendenti si uniscono. Il back-office ha un
    * id suo (`user-mb`) che non è quello del dominio, quindi lì è `null`:
    * ricavarlo togliendo il prefisso sarebbe un aggancio su una convenzione di
@@ -592,6 +598,7 @@ const identityClaims: IdentityClaim[] = [
     companyId: COMPANY.id,
     departmentId: entry.departmentId,
     role: null,
+    fullName: null,
     personId: entry.employeeId,
     isEmployee: true,
     source: "l'elenco dipendenti dell'HR",
@@ -602,10 +609,12 @@ const identityClaims: IdentityClaim[] = [
    * non partecipano al confronto sul reparto.
    */
   ...PORTAL_SESSIONS.map((session) => ({
-    initials: session.patientInitials,
+    // derivate dal nome, non dichiarate: dal 17.08.2026 l'agenda porta il nome
+    initials: patientInitials(session),
     companyId: COMPANY.id,
     departmentId: null,
     role: null,
+    fullName: patientDisplayName(session),
     personId: session.patientId,
     isEmployee: true,
     source: "l'agenda del portale professionista",
@@ -615,6 +624,7 @@ const identityClaims: IdentityClaim[] = [
     companyId: user.companyId,
     departmentId: null,
     role: user.role,
+    fullName: `${user.firstName} ${user.lastName}`,
     personId: null,
     isEmployee: false,
     source: "gli utenti del back-office",
@@ -706,6 +716,26 @@ for (const [initials, group] of groupBy((claim) => claim.initials)) {
       `${initials} compare in ${employeeClaim?.source} e ha ruolo "${claim.role}" in ${claim.source}: in questo dataset chi non è "employee" non sta negli altri due elenchi, quindi sono due persone che le sole iniziali non distinguono (§8).`,
     );
   }
+
+  /*
+   * IL CONFRONTO NUOVO, E LO PORTA IL NOME (17.08.2026).
+   *
+   * Due liste dichiarano ora un nome per esteso: l'agenda della professionista e
+   * gli utenti del back-office. Se le stesse iniziali portano due nomi diversi,
+   * il §8 è violato **in un modo che i primi quattro confronti non vedono** —
+   * tornano tutti, perché il back-office non dichiara né reparto né id di
+   * dominio, ed è esattamente il buco da cui passò S.C. il 16.08.2026.
+   *
+   * È il caso di M.B.: Marco Bianchi è l'utente `user-mb` del back-office e il
+   * paziente del lunedì alle 14:00, e ora che il nome è a schermo da un lato
+   * solo dei due, chiamarlo in due modi sarebbe una collisione che nessuno
+   * vedrebbe leggendo — le iniziali continuerebbero a coincidere.
+   */
+  const names = declared(group, (claim) => claim.fullName);
+  assertInDev(
+    names.length <= 1,
+    `${initials} compare con più nomi — ${names.join(", ")} — su elenchi che il §8 tiene uniti per iniziali: o sono due persone e le iniziali vanno cambiate, o è una e il nome è scritto in due modi.`,
+  );
 }
 
 /*

@@ -126,8 +126,11 @@ export default function ProCalendario() {
                       >
                         {session && (
                           <div>
-                            <p className={`font-medium ${past ? 'text-muted-foreground' : 'text-secondary-strong'}`}>
-                              {session.patientInitials}
+                            {/* Il cognome, non le iniziali: la cella è stretta
+                                e il nome intero non ci sta, ma "Bianchi" dice
+                                chi è dove "M.B." chiedeva di ricordarselo. */}
+                            <p className={`font-medium truncate ${past ? 'text-muted-foreground' : 'text-secondary-strong'}`}>
+                              {session.patientLastName}
                             </p>
                             <p className="text-muted-foreground text-[10px]">
                               {t.sessionType[session.type]}

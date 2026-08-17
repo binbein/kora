@@ -17,6 +17,7 @@ import {
   type Invoice,
   type ServiceUsageMonth,
   type VirtualDoctorConsult,
+  patientInitials,
   sameQuarter,
   serviceOf,
   type Appointment,
@@ -328,7 +329,8 @@ export class MockDataProvider implements DataProvider {
     return sessions.map((session) => ({
       id: session.id,
       professionalId,
-      patientInitials: session.patientInitials,
+      // il nome non attraversa questo confine, le iniziali sì: si derivano qui
+      patientInitials: patientInitials(session),
       start: session.start,
       status: session.status,
       type: session.type,
@@ -363,7 +365,8 @@ export class MockDataProvider implements DataProvider {
       const completed = mine.filter((session) => session.status === "completed");
       summaries.push({
         patientId,
-        patientInitials: mine[0].patientInitials,
+        patientFirstName: mine[0].patientFirstName,
+        patientLastName: mine[0].patientLastName,
         lastSessionAt: completed[completed.length - 1]?.start ?? null,
         nextSessionAt:
           mine.find((session) => session.status === "scheduled")?.start ?? null,
@@ -632,9 +635,10 @@ export class MockDataProvider implements DataProvider {
       // deterministico: lo stesso slot non può produrre due id diversi
       id: `booked-${slot.professionalId}-${slot.start.getTime()}`,
       patientId: PORTAL_PATIENT_EMPLOYEE_ID,
-      // le iniziali si derivano dal profilo: è tutto ciò che il professionista
-      // riceve del nome, e scriverle a mano vorrebbe dire poterle sbagliare
-      patientInitials: `${LAURA.firstName[0]}.${LAURA.lastName[0]}.`,
+      // il nome viene dal profilo, non riscritto qui: è la stessa persona che il
+      // portale dipendente mostra, e due stringhe uguali possono divergere
+      patientFirstName: LAURA.firstName,
+      patientLastName: LAURA.lastName,
       start: slot.start,
       durationMinutes: slot.durationMinutes,
       status: "scheduled",

@@ -519,8 +519,7 @@ export const de: Dictionary = {
       title: "Patientinnen",
       count: "{n} aktive Patientinnen",
       privacy:
-        "Die Namen sind aus Datenschutzgründen abgekürzt. Die klinischen Notizen sehen nur Sie.",
-      name: "Patientin {initials}",
+        "Sie sehen die Namen, weil Sie diese Menschen begleiten. Das Unternehmen erhält weder Namen noch Notizen: seine Liste führt nur die Initialen.",
       delivered: "{n} durchgeführte Sitzungen",
       next: "Nächste: {date}",
       noNext: "Keine geplante Sitzung",
