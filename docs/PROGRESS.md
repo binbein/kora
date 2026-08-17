@@ -2063,7 +2063,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Trentadue passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Trentatré passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2076,8 +2076,9 @@ sospeso, il footer fuori dalla demo, i terzi e la simmetria del footer,
 l'identità collisa e gli stati limite, le simmetrie e le verifiche vere, la riga
 della sessione e i criteri che si contraddicevano, le parole e il perimetro,
 l'anteprima a tre pannelli e la voce Admin, la home e il medico, la cornice del
-trimestre, e **questa passata**, il conteggio che diventa un guardrail. Non
-aggiungono schermate e non spostano un numero a schermo.
+trimestre, il conteggio che diventa un guardrail, e **questa passata**,
+l'annullamento e l'identità. Non aggiungono schermate e non spostano un numero a
+schermo.
 
 **Fino al 17.08.2026 la riga finiva con "sono igiene del layer dati, del seam e
 del dizionario", e da questa passata non è più vero di tutte.** Le due metà si
@@ -4980,6 +4981,146 @@ una segnalazione su un difetto che non c'è. Adesso i buchi sono nominati tutti:
   può contare da sé all'avvio: le rotte si contano su `App.tsx` e i call site su
   un grep, e un guardrail che li verificasse dovrebbe leggere il proprio
   sorgente, che è un'altra cosa.
+
+#### L'annullamento e l'identità (17.08.2026)
+
+**Nove commit: cinque di codice — `feat:` ×4, `refactor:` ×1 — e quattro di
+documenti.** Totale e ripartizione dalla stessa misura,
+`git log --format='%s' master..HEAD`; il numero è `n + 1` perché il commit di
+chiusura conta sé stesso. **Nessun numero del §8 e del §9 si muove**, e le rotte
+restano **26**.
+
+È la passata più pesante di questa serie e **l'unica che allarga il contratto
+dati**: un metodo nuovo, un tipo nuovo, un campo nuovo su due proiezioni. Non
+allarga lo scope del §10 — nessuna schermata nasce.
+
+##### Una sessione in programma si può annullare
+
+Il dataset aveva **una** sessione annullata, seminata a mano, e nessun metodo
+che annullasse: la disdetta era fra i vuoti dell'MVP
+(`docs/CONTRATTO-DATI.md` §8.5). Adesso `cancelSession` esiste, dal lato del
+professionista, e si raggiunge dal calendario e dalla lista sessioni.
+
+**Rifiuta ciò che non è in programma e futuro, e le due metà non sono la stessa
+cosa.** Oggi coincidono perché lo stato si deriva dall'orologio; in produzione
+lo stato è un evento che qualcuno dichiara, e una seduta di ieri che nessuno ha
+chiuso resta `scheduled` — annullarla toglierebbe un compenso maturato. Sono
+una precondizione sola e non due rami: il secondo non è codice irraggiungibile,
+è la metà che tiene il metodo onesto il giorno del passaggio.
+
+**L'annullamento è una sovrapposizione, non una modifica**: `PORTAL_SESSIONS` è
+il dataset curato del §8 e resta intatto, la proiezione applica l'annullamento —
+come `hasNote`, che nasce dalle note e non dal record. Sta in una funzione sola
+perché la usano lettura e scrittura, e due punti che costruiscono la stessa
+forma sono due punti che possono divergere.
+
+**La nota libera è facoltativa e vive solo dove vive `SessionNote`**: sulla
+proiezione di chi cura. `PlatformSession` è la prova che non può arrivare
+altrove, perché il campo lì non c'è.
+
+**Il resto teneva già, e la verifica lo ha confermato invece di darlo per
+fatto**: lo slot torna prenotabile, il compenso non matura, il contatore non si
+muove, la cella si svuota. Tutti e quattro leggono `status`, ed è la ragione per
+cui non è stato necessario toccarne nessuno.
+
+##### Il professionista vede il nome. L'amministratore no
+
+Decisione dei founder, e la ragione è che **mostrare le iniziali a chi ha la
+persona in seduta non protegge nessuno**: quel nome glielo dice la paziente. La
+garanzia del contratto non cade, **cambia verso** — vale verso l'azienda e verso
+l'amministratore di piattaforma.
+
+**La scorciatoia avrebbe riaperto un difetto chiuso il 16.08.** `/admin/sessioni`
+leggeva `getProfessionalSessions`: aggiungere il nome a quel tipo lo avrebbe
+consegnato **anche al back-office**, accanto alla data di una seduta di
+psicologia — cioè il dato individuale che quel giorno è uscito da `PlatformUser`.
+E non si risolve facendo scegliere alla schermata cosa rendere, perché una
+scelta di rendering qualcuno può disfarla: si risolve nella forma del dato.
+
+`PlatformSession` è quindi la **terza vista dello stesso record**, dopo
+`Appointment` e `ProfessionalSession`, e il mock la costruisce campo per campo e
+non con uno spread — uno spread porterebbe con sé ogni campo che l'altra
+proiezione guadagnerà domani.
+
+**Le iniziali non sono più un campo**: si derivano dal nome. Con un campo
+accanto sarebbero stati due valori per lo stesso fatto, e sarebbero divergiuti
+**fra due schermate che ne mostrano una ciascuna**.
+
+**Otto nomi nuovi**, cognomi comuni per la regola del §8 letta al contrario di
+come vale per il roster: un paziente non è pubblico né cercabile, non ha una
+professione né un cantone accanto, quindi la terna che identifica una persona
+vera non esiste. **M.B. non è uno degli otto**: è Marco Bianchi, l'utente del
+back-office, e il guardrail delle identità ha guadagnato l'invariante che ne
+discende — stesse iniziali non possono portare due nomi diversi. È il buco da
+cui passò S.C., visto dal lato che il nome apre.
+
+##### Le biografie, e il verbale che mancava
+
+Il campo era nella demo ereditata come stringa scritta in pagina, ed è sparito
+il 07.08.2026 **senza che nessuna riga lo nominasse** — a differenza del numero
+d'albo, che ha la sua voce nel contratto. È la forma in negativo del difetto
+delle affermazioni invecchiate, e si chiude qui nel verso opposto: il campo
+torna **con la sua regola scritta**.
+
+Il tipo porta la chiave e il testo sta nei dizionari, come per la qualifica. Il
+vincolo, in tutte e quattro le lingue: **nessun nome di università, ospedale,
+clinica o associazione** — un cognome poco frequente più un ateneo preciso punta
+a una persona vera — e **nessun anno di esperienza**, che accanto alle zero
+sedute della Dr.ssa Keller sarebbe una contraddizione nella stessa schermata.
+
+##### Il profilo esce dal menu anche qui
+
+Stesso trattamento del portale dipendente e stessa disposizione del §6.5, che
+questa regola l'aveva già scritta prevedendo il professionista: icona a
+sinistra, link perché la schermata esiste, nome accessibile che dice la
+destinazione. Il riquadro è anche nel menu mobile, perché la barra laterale
+sotto `lg` non esiste — senza, la rotta sarebbe rimasta senza porta.
+
+##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato prima di ogni misura
+
+Il giro del marketplace per intero, **sulla build demo e con la console
+aperta**:
+
+- **una sola navigazione** per tutto il giro, console **senza un solo
+  messaggio**;
+- prenotata la Dr.ssa Meier **venerdì 25.09 alle 10:00**: `used` fermo a **3**,
+  in programma da **3 a 4**; la settimana del professionista passa da 5 a **6**
+  e il mese da 21 a **22**;
+- **annullata dal calendario** con una nota: settimana **6 → 5**, mese
+  **22 → 21**, la cella di venerdì alle 10:00 vuota;
+- **i quattro effetti**: lo slot delle 10:00 di venerdì **torna fra i
+  proponibili**, i compensi restano **14 sessioni, CHF 1'120, CHF 5'040**, il
+  contatore torna a `3 su 10 · 3 in programma`, e l'appuntamento sparisce dalla
+  home;
+- **la scheda "Annullate" mostra le due**, quella del dataset *"Annullata dal
+  paziente"* e la nuova *"Annullata dal professionista"* con la nota sotto;
+- **`/admin/sessioni` non porta un nome**: cercati tutti e otto più i due nomi
+  di battesimo di Laura e Marco, **zero occorrenze**; le righe portano le
+  iniziali e il totale resta **83**. La controprova statica è che nessuna delle
+  sei pagine admin chiama uno dei tre metodi che il nome ce l'hanno;
+- **i numeri del pitch fermi**: CHF 14'200, 16, 68%, 82, 41, 142 di 1'200, 62%,
+  −2;
+- **il dialogo di annullamento nelle quattro lingue**: nessun overflow di pagina
+  né di elemento, e le tre bio più lunghe fanno una riga in più in tedesco e
+  francese senza sfondare la card (212px contro 192);
+- `lint`, `typecheck`, `build` e `build:demo` a posto; guardrail **111 = 102 +
+  9**; **768 chiavi** ×4, e a dirlo è `EXPECTED_KEYS`, che le ha contate tre
+  volte durante la passata.
+
+##### Aperto e dichiarato
+
+- **La disdetta esiste da un lato solo.** `by_patient` resta un valore che solo
+  il dataset può scrivere: il metodo per il dipendente, la policy di preavviso,
+  chi paga una disdetta tardiva e la riprogrammazione sono nel
+  `docs/CONTRATTO-DATI.md` §8.5, che questa passata ha riscritto invece di
+  cancellare.
+- **La revisione madrelingua vale anche per le stringhe nuove** — le quattordici
+  del dialogo e le cinque bio — ed è la stessa voce in sospeso di M5.e. Due
+  domande nelle testate di `de.ts` e `fr.ts` sono state corrette qui: quella
+  tedesca citava una chiave che non esiste più, quella francese motivava il
+  maschile generico con un'assenza di dato che il nome ha smentito.
+- **`EmployeeHome` annida un `<div>` dentro un `<p>`**, dichiarato dalla passata
+  precedente e ancora fuori perimetro.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
