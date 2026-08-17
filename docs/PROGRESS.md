@@ -2057,7 +2057,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Ventinove passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Trenta passate mergiate fra la chiusura di M3 e oggi**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2068,9 +2068,9 @@ contratto, #46 la coda documentale che l'ha chiusa — l'allineamento del
 non dichiarati, i fatti corretti nei documenti, il perimetro e le promesse in
 sospeso, il footer fuori dalla demo, i terzi e la simmetria del footer,
 l'identità collisa e gli stati limite, le simmetrie e le verifiche vere, la riga
-della sessione e i criteri che si contraddicevano, le parole e il perimetro, e
-**questa passata**, l'anteprima a tre pannelli e la voce Admin. Non aggiungono
-schermate e non spostano un numero a schermo.
+della sessione e i criteri che si contraddicevano, le parole e il perimetro,
+l'anteprima a tre pannelli e la voce Admin, e **questa passata**, la home e il
+medico. Non aggiungono schermate e non spostano un numero a schermo.
 
 **Fino al 17.08.2026 la riga finiva con "sono igiene del layer dati, del seam e
 del dizionario", e da questa passata non è più vero di tutte.** Le due metà si
@@ -4537,6 +4537,148 @@ costruendo*, cioè il posto in cui è più facile crederci.
   un pannello. È voluto: i pallini annunciano tre pannelli, e tre che diventano
   due sono un comando che porta a una scatola vuota. `company` resta nell'elenco
   pur non essendo reso da nessuno, ed è il comportamento che aveva già.
+
+#### La home e il medico (17.08.2026)
+
+**Otto commit: quattro di codice — `feat:` ×3, `fix:` ×1 — e quattro di
+documenti.** Totale e ripartizione dalla stessa misura,
+`git log --format='%s' master..HEAD`; il numero è `n + 1` perché il commit di
+chiusura conta sé stesso. **Nessun numero del §8 e del §9 si muove**, e **le
+rotte restano 26**: `/employee/profilo` cambia porta, non esistenza.
+
+Si apre con la **chiusura della passata precedente** — due punti che la sua
+review ha trovato — e prosegue con tre decisioni dei founder sull'area
+dipendente.
+
+##### La chiusura: un numero in sei posti e una minuscola tedesca
+
+**Il conteggio delle chiavi era invecchiato alla prima passata utile.** Il §2.7
+gli aveva dato un criterio ma **non l'obbligo** che il §5.6 dà ai guardrail, e la
+cifra stava in **sei punti** invece che in uno: le dieci chiavi dell'anteprima
+dell'hero l'hanno mossa e nessuno l'ha seguita. Ora il numero vive **solo** nella
+riga datata del §2.7, con l'obbligo accanto, e gli altri cinque rimandano lì.
+
+**Il sesto punto è quello che insegna qualcosa**, ed è nostro: il criterio
+dell'inventario delle promesse, in questo file, corretto da 728 a 731 **due
+giorni prima proprio in nome di questa regola**, e invecchiato di nuovo. Non è
+l'invecchiamento il difetto, è **la ripetizione** — un numero ripetuto è una
+promessa di tornare a rileggerlo, e non la mantiene nemmeno chi l'ha appena
+scritta.
+
+**L'obbligo è stato corretto mezz'ora dopo essere stato scritto.** Diceva "nello
+stesso commit", e il §2.8 vuole le decisioni della costituzione in un commit
+`docs:` **separato dal codice**: due regole che non possono valere insieme. Dice
+"nella stessa passata", perché **a proteggere è il merge** e la passata è
+l'unità che il merge misura.
+
+**`Fokus: schlaf`** è sparito togliendo `.toLowerCase()` invece di aggiungere
+chiavi. Era **l'unico punto di `src/`** in cui quella trasformazione toccava
+testo da mostrare: gli altri quattro normalizzano una ricerca o compongono un
+nome di file, e sono stati controllati uno per uno.
+
+##### La home: due fatti al posto di quattro scorciatoie
+
+Le quattro tessere portavano a medico virtuale, check-up, piano e profilo —
+**quattro delle sei voci del menu**. Al loro posto la **data del prossimo
+check-up** e i **consulti di medico virtuale dell'anno**, che si vedevano solo
+dentro `/employee/profilo`.
+
+**Non sono link**, ed è la ragione per cui esistono: renderli cliccabili
+rimetterebbe la duplicazione da cui si è partiti. Il **badge "Fatto" resta**,
+perché è il vincolo del §8 — il check-up completato di Laura si legge uguale in
+tre schermate — e la card del check-up **esiste solo se il piano ce l'ha**, con
+la stessa regola del contatore coach.
+
+**La home si è accorciata**: 1296px prima, **1282px** dopo, misurati sulla stessa
+larghezza. Quattro tessere via, due card dentro.
+
+##### Il profilo cambia porta, e la barra mobile guarisce
+
+"Profilo" esce dal menu ed entra nel riquadro dell'identità. **La rotta resta**:
+cambia come ci si arriva.
+
+**L'effetto collaterale era un difetto vero.** La barra in basso su mobile
+faceva `.slice(0, 5)` su sei voci, quindi **Profilo lì non compariva affatto** e
+la troncatura era silenziosa. Con cinque voci la barra è completa e lo `slice`
+non toglieva più niente: restava solo il modo di far sparire in silenzio la
+prossima voce. È uscito.
+
+**Una cosa che il prompt non prevedeva, e senza la quale la rotta restava
+orfana**: `Identity` vive nella barra laterale, che sotto `lg` non esiste — con
+"Profilo" fuori dal menu, `/employee/profilo` non sarebbe stato raggiungibile da
+nessuna parte su schermo stretto. `Identity` è ora anche in fondo al menu
+mobile.
+
+##### Il medico: un arco che finisce
+
+Quattro scambi — la risposta a parola chiave, quanto dura, quali altri sintomi,
+l'orientamento — e poi la casella **si spegne e dice perché**. Prima ripeteva la
+stessa frase all'infinito: chi la prova due volte lo vede, ed è la prima cosa
+che si fa con una chat.
+
+**Il limite è normativo**: il medico consiglia e orienta, non diagnostica e non
+prescrive (*"Dubbi Business per CEO"* §2.2). Nessuna frase nomina un farmaco o
+afferma una causa, e l'ultima lo dice prima di indirizzare. Sta nel `CLAUDE.md`
+§10.B come vincolo su **ogni frase futura** di quella chat.
+
+**Il 144 esce dal solo disclaimer**, ed è il secondo punto del prodotto. **Il
+vuoto del §8.1 non si muove di un centimetro**, e le tre righe che dicevano "in
+un punto solo" sono state corrette dicendolo: due numeri nella stessa schermata
+restano zero percorsi dove il segnale arriva.
+
+**Le parole chiave si cercano come parola intera**, e chiude un difetto a
+verbale in due lingue insieme: `dos` non aggancia più `dose`, `dossier`,
+`adosser`, e `head` non aggancia `ahead`. Le lookaround sono su `\p{L}` e non
+`\b`, che in JavaScript conosce solo l'ASCII e taglia `tête` a metà. **Non
+chiude `back` dentro "come back"**: lì la parola è davvero la parola, e
+distinguerle vorrebbe dire capire la frase.
+
+##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato prima di ogni misura
+
+- **la home non si è allungata**: 1282 contro i 1296 di `master`, misurati sulla
+  stessa larghezza e su schede diverse perché la prima è andata cieca;
+- **i tre stati della lettura nuova**: `?fail=getVirtualDoctorConsults` mostra
+  l'errore di pagina con la nav intera, `:2` fa riuscire il "Riprova" e riporta
+  "2 consulti quest'anno", `?empty=` dà **"0 consulti quest'anno"**, che è il
+  vuoto legittimo;
+- **la lettura del check-up non è fallibile a livello di pagina**, ed è
+  preesistente: `getCheckupEligibility` è uno dei sei metodi che bloccano il boot
+  in `prefetchDemo`, quindi `?fail=` su di lui dà lo stato di bootstrap — *"Kora
+  non si è avviata"* — e non arriva mai alla home. Era così anche prima, perché
+  quella lettura era già nel `loadState` della pagina;
+- **l'arco per intero**: 9 bolle, l'ultima è l'orientamento, e a quel punto
+  `input.disabled` e `button.disabled` sono veri con il motivo nel placeholder.
+  La frase finale contiene il 144, non nomina farmaci e non afferma cause;
+- **la parola intera provata nei due versi** su undici casi: `dose`, `dossier`,
+  `adosser`, `ahead`, `schienale` non agganciano più; `dos`, `tête`, `head`,
+  `rücken`, `schiena` sì; `come back` aggancia ancora, come dichiarato;
+- **il placeholder di chiusura sta nel campo in tutte e quattro le lingue**: 278
+  / 213 / 303 / 288 px in un campo utile da 718;
+- **il giro del pitch sulla build demo**, con la console aperta: **una sola
+  navigazione**, console **senza un solo messaggio**, prenotazione Meier venerdì
+  25.09 con `used` fermo a 3 e in programma da 3 a 4, HR con tutti e dieci i
+  numeri, professionista da 5 a 6 sessioni e da 21 a 22 in agenda, richiesta demo
+  in tabella da **Admin** con telefono e banner, CHF 652'968 / 415 / 798;
+- **home e profilo dicono la stessa cosa senza ripetersi**: "Prossimo dal
+  15.03.2027" e "Fatto il 15.03.2026", "2 consulti quest'anno" e "2 quest'anno";
+- `lint`, `typecheck`, `build` e `build:demo` a posto; guardrail **108 = 100 +
+  8** invariati; **746 chiavi** ×4.
+
+##### Aperto e dichiarato
+
+- **`back` dentro "come back"** resta agganciato, ed è il residuo dichiarato
+  della parola intera. Chiuderlo vorrebbe dire capire la frase, che è un'altra
+  categoria di lavoro.
+- **La prima frase dell'arco chiede la durata dopo risposte che a volte la
+  chiedono già** — `sleep` e il `fallback` finiscono entrambi con "da quanto
+  tempo?". È scritta per non ripetersi ("mi aiuti a inquadrarlo… giorni,
+  settimane o più?"), ma la sovrapposizione c'è, e la si vede solo aprendo con
+  la parola "sonno". Il rimedio vero sarebbe una seconda frase per quei due
+  casi, cioè rimettere le parole chiave dove l'arco le ha tolte.
+- **La scheda del pannello va cieca quasi a ogni ricaricamento**, `innerWidth` a
+  0: è successo **quattro volte in questa passata**, e ogni misura geometrica è
+  stata rifatta su una scheda nuova. Non è più una trappola da annotare, è la
+  condizione normale in cui questo strumento lavora.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
