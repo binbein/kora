@@ -792,10 +792,10 @@ export const de: Dictionary = {
     nav: {
       pricing: "Pläne",
       roi: "ROI-Rechner",
-      demo: "Demo",
       employees: "Mitarbeitende",
       hr: "HR",
       professionals: "Fachpersonen",
+      admin: "Admin",
       login: "Anmelden",
       bookDemo: "Demo buchen",
       menu: "Menü öffnen",

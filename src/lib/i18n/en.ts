@@ -841,10 +841,10 @@ export const en: Dictionary = {
     nav: {
       pricing: "Plans",
       roi: "ROI calculator",
-      demo: "Demo",
       employees: "Employees",
       hr: "HR",
       professionals: "Professionals",
+      admin: "Admin",
       login: "Log in",
       bookDemo: "Book a demo",
       menu: "Open the menu",

@@ -1008,10 +1008,10 @@ export const it = {
     nav: {
       pricing: "Piani",
       roi: "Calcolatore ROI",
-      demo: "Demo",
       employees: "Dipendenti",
       hr: "HR",
       professionals: "Professionisti",
+      admin: "Admin",
       login: "Accedi",
       bookDemo: "Prenota una demo",
       /** Nome del pulsante che apre la barra sul mobile: lo legge chi non vede l'icona. */
