@@ -343,7 +343,7 @@ export const en: Dictionary = {
         },
       },
       arc: {
-        duration: "Thank you. Help me place it: has it been going on for days, for weeks, or longer? And every day, or in episodes?",
+        impact: "Thank you. How much does it weigh on your day: are you managing work and your usual activities as before, or have you had to give something up?",
         symptoms: "Understood. Do you notice anything alongside it — fever, tiredness, changes in sleep or appetite?",
         guidance: "Thank you, that is enough for me to point you in the right direction. I cannot make a diagnosis from here: if the trouble is linked to stress or mood, book a session with a psychologist from the dedicated section; otherwise please see your own doctor, who can examine you. If the symptoms worsen suddenly, call 144.",
       },

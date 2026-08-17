@@ -380,7 +380,7 @@ export const fr: Dictionary = {
         },
       },
       arc: {
-        duration: "Merci. Aidez-moi à situer les choses : cela dure depuis des jours, des semaines ou plus longtemps ? Et tous les jours ou par épisodes ?",
+        impact: "Merci. Dans quelle mesure cela pèse-t-il sur vos journées : arrivez-vous à travailler et à faire vos activités comme d'habitude, ou avez-vous dû renoncer à quelque chose ?",
         symptoms: "Très bien. Remarquez-vous autre chose en même temps — fièvre, fatigue, changements du sommeil ou de l'appétit ?",
         guidance: "Merci, cela me suffit pour vous orienter. Je ne peux pas poser de diagnostic d'ici : si le trouble est lié au stress ou à l'humeur, réservez une séance avec un psychologue depuis la section dédiée ; sinon, adressez-vous à votre médecin traitant, qui peut vous examiner. Si les symptômes s'aggravent brusquement, appelez le 144.",
       },

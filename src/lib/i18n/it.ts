@@ -373,7 +373,15 @@ export const it = {
        * `docs/CONTRATTO-DATI.md` §8.1 dichiara.
        */
       arc: {
-        duration: "Grazie. Mi aiuti a inquadrarlo: va avanti da giorni, da settimane o da più tempo? E capita tutti i giorni o a episodi?",
+        /*
+         * La prima domanda dell'arco riguarda **l'impatto sulla giornata**, e
+         * non la durata: `sleep` e `fallback` chiedono già "da quanto tempo",
+         * quindi la stessa domanda arrivava due volte di fila — e proprio sulla
+         * strada che il pitch percorre per prima, visto che l'area debole di
+         * Laura è il sonno. Nessuna delle cinque aperture chiede l'impatto, e
+         * per questo basta **una** frase invece di una variante per caso.
+         */
+        impact: "Grazie. Quanto le pesa nella giornata: riesce a lavorare e a fare le sue cose come sempre, o ha dovuto rinunciare a qualcosa?",
         symptoms: "Chiaro. Nota altro insieme a questo — febbre, stanchezza, cambiamenti nel sonno o nell'appetito?",
         guidance: "La ringrazio, mi basta per orientarla. Una diagnosi da qui non posso farla: se il disturbo è legato a stress o umore, prenoti una sessione con uno psicologo dalla sezione dedicata; altrimenti si rivolga al suo medico curante, che può visitarla. Se i sintomi peggiorano all'improvviso, chiami il 144.",
       },
