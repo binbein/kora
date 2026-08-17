@@ -4842,6 +4842,145 @@ più, e vale la pena saperlo prima della prossima verifica su un selettore.
   era di 225.6, quindi la conclusione regge per differenza — ma è una deduzione,
   non una misura, e va detto quale delle due è.
 
+#### Il conteggio che diventa un guardrail (17.08.2026)
+
+**Sei commit: tre di codice — `feat:` ×1, `fix:` ×2 — e tre di documenti.**
+Totale e ripartizione dalla stessa misura, `git log --format='%s' master..HEAD`;
+il numero è `n + 1` perché il commit di chiusura conta sé stesso. **Nessun numero
+del §8 e del §9 si muove**, le rotte restano **26** e a schermo cambia una
+frase sola.
+
+È la chiusura delle due passate precedenti, e l'unica delle tre voci che
+costruisce qualcosa è la prima — le altre due sono code della passata delle
+parole, chiuse in pochi minuti.
+
+##### Il numero delle chiavi passa dalla prosa al codice
+
+**Il difetto misurato tre volte, ed è la terza che decide.** Il conteggio delle
+chiavi di `it.ts` è stato scritto nel `CLAUDE.md` §2.7 prima con il solo
+criterio, poi con il criterio **e l'obbligo** di muoverlo nella stessa passata:
+tutte e due le volte è invecchiato alla prima passata che aggiungeva una
+stringa. La seconda volta **il giorno dopo che l'obbligo era stato scritto**, e
+per mano di una passata — la cornice del trimestre — che il numero giusto
+**l'aveva misurato**, scrivendo `750 chiavi ×4` nel proprio verbale mentre il
+§2.7 continuava a dichiarare 746.
+
+Da lì la diagnosi, che è tutto il valore della voce: **il difetto non è la
+distrazione, è il compito.** Chiedere a una persona di copiare una cifra da un
+file all'altro non funziona quando la persona è attenta, ha appena misurato il
+numero e ha l'obbligo scritto davanti. La stessa famiglia di `docs/PROGRESS.md`
+sui conteggi ripetuti, portata al suo caso limite: qui il numero era **in un
+posto solo** e non è bastato.
+
+**Il rimedio sta in `src/lib/i18n/placeholders.ts`**, che percorre già tutte le
+chiavi all'avvio dove i guardrail parlano: `EXPECTED_KEYS` accanto al codice che
+la verifica, una funzione ricorsiva che somma le foglie di tipo stringa, e un
+`assertInDev`. In sviluppo una chiave in più è **pagina bianca al primo
+ricaricamento**, cioè nel minuto in cui l'ha aggiunta chi l'ha aggiunta.
+
+**Il messaggio è scritto per chi non sa perché la pagina è bianca** — dice il
+numero trovato, quello atteso e la riga da cambiare:
+
+```
+[dataset] [i18n] il dizionario ha 750 chiavi stringa, EXPECTED_KEYS ne dichiara
+749. Se hai appena aggiunto o tolto una stringa il numero giusto è 750:
+scrivilo in EXPECTED_KEYS, src/lib/i18n/placeholders.ts. Il criterio sta nel
+CLAUDE.md §2.7.
+```
+
+**Si conta `it` e basta.** Che i quattro dizionari abbiano lo stesso numero non
+è una misura ma una garanzia di `Translated<Dictionary>`: contarli tutti e
+quattro sarebbe verificare il typecheck a runtime.
+
+**Il criterio non cambia, cambia chi lo applica.** Il conto a runtime
+sull'oggetto e quello del §2.7 sull'albero sintattico danno lo stesso numero —
+750 e 750, verificato sui quattro dizionari — perché i commenti non sono nodi
+sull'albero e non sono valori a runtime. Il comando resta nel §2.7: è il modo di
+rifare la misura senza avviare l'applicazione.
+
+**Il file non è stato rinominato**, benché ora ospiti due guardie e il nome ne
+dica una. `i18n/guardrails.ts` rimetterebbe il call site dentro il nome che il
+criterio del §5.6 esclude, ed è esattamente **come quel conteggio perse una
+chiamata** alla tranche tedesca: il file fu rinominato `placeholders.ts` per
+uscire da lì. La ragione sta ora nella sua testata.
+
+**Il §2.7 perde la cifra e tiene il criterio**; l'obbligo di muoverla a mano è
+uscito, perché a ricordarlo è la macchina. **I guardrail passano da 108 a 109** —
+`101 + 8` — e sono state mosse **tutte e quattro** le occorrenze della sezione,
+non la sola riga datata.
+
+##### Le due code della passata delle parole
+
+**`fr.ts` ed `en.ts` citavano un'etichetta che non esiste più**: "Sedute di
+carriera", accanto a `kpiSessions`, cioè il testo italiano com'era prima che
+quella passata lo portasse a "sessioni". Le testate di `de.ts` e `fr.ts` erano
+state allineate, i due commenti inline no, ed `en.ts` non era stato nominato. È
+la regola che quella passata si è data — **dentro `i18n` la citazione di
+un'etichetta è l'etichetta**, anche in un commento — e la sua stessa voce
+"aperto e dichiarato" collocava il residuo **fuori** da `i18n`. Ora ci sta
+davvero: zero occorrenze di "sedut\*" nei quattro dizionari.
+
+**La seconda frase dell'arco del medico chiedeva del sonno a chi aveva appena
+parlato di sonno.** Fra i sintomi associati elencava "cambiamenti nel sonno", e
+aprire con "sonno" è la strada che il pitch percorre per prima — l'area debole
+di Laura è quella. È la sovrapposizione che la passata precedente aveva chiuso
+sulla **prima** frase spostandola sull'impatto, una taglia più piccola: una voce
+in meno in un elenco di tre, in ognuna delle quattro lingue, e la congiunzione
+regge le due che restano.
+
+##### L'eccezione che il conto delle passate non dichiarava
+
+Il criterio diceva che **#25** era «l'unica» PR esclusa come sintesi
+retrospettiva, e l'elenco dei buchi si fermava a #33. **#35
+(`docs-sintesi-34`) è la stessa cosa** — un commit, un file, la sintesi di una
+passata già mergiata — e non compariva da nessuna parte in questo file.
+
+**Il totale non si muove**: 31 era giusto e 31 resta, perché #35 era già fuori
+per applicazione della regola. A essere incompleto era l'elenco delle ragioni, e
+il costo è concreto — chi rifà il conto trova #35, non trova la ragione, e apre
+una segnalazione su un difetto che non c'è. Adesso i buchi sono nominati tutti:
+#25 e #35, #27 e #42, #29–#33 e #36–#41.
+
+##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato prima di ogni misura
+
+- **il guardrail lancia davvero**: con `EXPECTED_KEYS` a 749 la pagina resta
+  bianca e la console porta il messaggio per intero; riportato a 750 la landing
+  torna, console pulita. È il ramo che nessun percorso produce da solo, provato
+  nei due versi;
+- **assente dalla produzione, presente nella demo**: `grep -F` su quattro
+  marcatori letterali — `chiavi stringa`, `EXPECTED_KEYS`, `Il criterio sta nel
+  CLAUDE.md`, e il `[dataset]` che fa da controprova — dà **0 in `build` e 1 in
+  `build:demo`** su tutti e quattro;
+- **l'arco del medico nelle quattro lingue**, aperto ogni volta con la parola
+  del sonno: la seconda frase non nomina più il sonno in nessuna — *"febbre,
+  stanchezza o cambiamenti nell'appetito?"*, `Fieber, Müdigkeit oder
+  Veränderungen beim Appetit?`, `fièvre, fatigue ou changements de l'appétit ?`,
+  `fever, tiredness or changes in appetite?` — e nessuna bolla né pagina va in
+  overflow;
+- **l'arco finisce come prima**: 9 bolle, l'ultima è l'orientamento con il 144,
+  campo e pulsante spenti con il motivo nel placeholder;
+- **i numeri del pitch fermi** su `/hr`: CHF 14'200, 16, 68%, 82, 41, 142 di
+  1'200, 62%, soglia 12, −2; e in home `3 su 10 sessioni usate · 3 in
+  programma`, `1 su 4`, "Fatto", "Prossimo dal 15.03.2027", "2 consulti
+  quest'anno";
+- `lint`, `typecheck`, `build` e `build:demo` a posto; guardrail **109 = 101 +
+  8**; **750 chiavi** ×4, e da oggi non è più una cifra che qualcuno riporta.
+
+##### Aperto e dichiarato
+
+- **`EmployeeHome` annida un `<div>` dentro un `<p>`**, ed è preesistente:
+  arriva da `f3ff66e`, la passata della home, dove il badge "Fatto" sta dentro
+  il `<p>` del titolo della card check-up. React lo segnala in sviluppo —
+  `validateDOMNesting` — e il browser chiude il paragrafo prima del `div`. **Non
+  toccato**: è fuori dal perimetro di questa passata, ed è una riga. Non
+  contraddice il *"console senza un solo messaggio"* di quel verbale: quella
+  misura era sulla build demo, dove React non emette questi avvisi.
+- **Il conteggio dei `.jsx`, delle rotte e dei call site resta prosa**, e questa
+  passata non lo cambia. Solo quello delle chiavi aveva un oggetto che il codice
+  può contare da sé all'avvio: le rotte si contano su `App.tsx` e i call site su
+  un grep, e un guardrail che li verificasse dovrebbe leggere il proprio
+  sorgente, che è un'altra cosa.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
