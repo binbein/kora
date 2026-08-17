@@ -929,6 +929,7 @@ export const it = {
       adoption: "Tasso di attivazione",
       usage: "Sessioni sul monte annuo",
       checkup: "Check-up completati",
+      virtualDoctor: "Consulti medico virtuale · nel trimestre",
       stress: "Stress medio",
       /** "−2 punti" */
       stressValue: "{points} punti",

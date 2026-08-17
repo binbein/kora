@@ -113,6 +113,34 @@ export function usageThrough(period: Quarter): Record<AppointmentKind, number> {
   return total;
 }
 
+/**
+ * L'utilizzo dei **soli mesi del trimestre**, che è un'altra grandezza da
+ * `usageThrough` e non una sua variante.
+ *
+ * Serve al medico virtuale del report (§3 del contratto): quel servizio non ha
+ * un monte annuo da consumare, quindi la domanda a cui risponde è "quanti in
+ * questo trimestre" e non "quanti finora". Le due funzioni stanno accanto
+ * perché chi ne sceglie una deve vedere l'altra.
+ */
+export function usageWithin(period: Quarter): Record<AppointmentKind, number> {
+  const rank = quarterRank(period);
+  const total: Record<AppointmentKind, number> = {
+    psychologist: 0,
+    virtual_doctor: 0,
+    coach: 0,
+    checkup: 0,
+  };
+
+  for (const entry of SERVICE_USAGE) {
+    if (quarterRank(quarterOf(entry.month)) !== rank) continue;
+    for (const kind of Object.keys(total) as AppointmentKind[]) {
+      total[kind] += entry.sessions[kind];
+    }
+  }
+
+  return total;
+}
+
 /** Le sedute di psicologo consumate dall'azienda fino a fine trimestre. */
 export function sessionsUsedThrough(period: Quarter): number {
   return usageThrough(period).psychologist;

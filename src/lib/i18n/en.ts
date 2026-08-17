@@ -757,6 +757,7 @@ export const en: Dictionary = {
       adoption: "Activation rate",
       usage: "Sessions of the annual volume",
       checkup: "Check-ups completed",
+      virtualDoctor: "Virtual doctor consultations · this quarter",
       stress: "Average stress",
       stressValue: "{points} points",
       savings: "Estimated savings",

@@ -800,6 +800,7 @@ export const fr: Dictionary = {
       adoption: "Taux d'activation",
       usage: "Séances sur le volume annuel",
       checkup: "Check-up réalisés",
+      virtualDoctor: "Consultations médecin virtuel · sur le trimestre",
       stress: "Stress moyen",
       stressValue: "{points} points",
       savings: "Économies estimées",

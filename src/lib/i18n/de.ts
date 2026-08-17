@@ -707,6 +707,7 @@ export const de: Dictionary = {
       adoption: "Aktivierungsrate",
       usage: "Sitzungen am Jahreskontingent",
       checkup: "Abgeschlossene Check-ups",
+      virtualDoctor: "Beratungen virtueller Arzt · im Quartal",
       stress: "Durchschnittlicher Stress",
       stressValue: "{points} Punkte",
       savings: "Geschätzte Einsparung",
