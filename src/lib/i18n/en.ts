@@ -1223,7 +1223,7 @@ export const en: Dictionary = {
       kpiTotal: "Professionals",
       kpiBookable: "Bookable",
       kpiVetting: "In vetting",
-      /* "Sedute di carriera" ha in inglese un aggettivo che le altre due lingue
+      /* "Sessioni di carriera" ha in inglese un aggettivo che le altre due lingue
          non avevano: `lifetime` dice il totale di sempre senza evocare una
          storia d'impiego, quindi il sottotitolo qui conferma invece di
          supplire. */

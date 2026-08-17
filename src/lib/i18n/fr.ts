@@ -1269,7 +1269,7 @@ export const fr: Dictionary = {
       kpiTotal: "Professionnels",
       kpiBookable: "Réservables",
       kpiVetting: "En vérification",
-      /* "Sedute di carriera" non ha un composto corto in francese che non
+      /* "Sessioni di carriera" non ha un composto corto in francese che non
          suoni come storia d'impiego: la distinzione dagli altri due conteggi
          si sposta tutta nel sottotitolo, come in tedesco. */
       kpiSessions: "Total des séances",
