@@ -123,6 +123,22 @@ export function useProfessionalSessions(professionalId: string | undefined) {
   });
 }
 
+/**
+ * Le sedute come le vede il back-office: le stesse, senza il nome.
+ *
+ * È una query a sé e non un filtro sulla precedente: le due letture portano
+ * **tipi diversi**, ed è lì che sta la garanzia — la proiezione della
+ * piattaforma non ha nessun campo su cui un nome possa arrivare. Condividerne
+ * una e scegliere cosa rendere sarebbe una scelta che qualcuno può disfare.
+ */
+export function usePlatformSessions(professionalId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.professional.platformSessions(professionalId ?? ""),
+    queryFn: () => dataProvider.getPlatformSessions(professionalId ?? ""),
+    enabled: professionalId !== undefined,
+  });
+}
+
 export function useProfessionalPatients(professionalId: string | undefined) {
   return useQuery({
     queryKey: queryKeys.professional.patients(professionalId ?? ""),

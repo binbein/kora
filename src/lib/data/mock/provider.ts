@@ -29,6 +29,7 @@ import {
   type Payout,
   type Plan,
   type PlanId,
+  type PlatformSession,
   type Professional,
   type ProfessionalEarnings,
   type ProfessionalSession,
@@ -309,6 +310,29 @@ export class MockDataProvider implements DataProvider {
     professionalId: string,
   ): Promise<ProfessionalSession[]> {
     return Promise.resolve(this.sessionsOf(professionalId));
+  }
+
+  /**
+   * La proiezione del back-office: le stesse sedute senza il nome.
+   *
+   * Si costruisce **dalla stessa lista** che riceve il professionista, campo per
+   * campo e non con uno spread: uno spread porterebbe qui ogni campo che
+   * `ProfessionalSession` guadagnerà domani — il nome del paziente, la nota di
+   * annullamento — e la garanzia del tipo verrebbe aggirata dall'implementazione
+   * che dovrebbe rispettarla.
+   */
+  async getPlatformSessions(
+    professionalId: string,
+  ): Promise<PlatformSession[]> {
+    const sessions = await this.getProfessionalSessions(professionalId);
+    return sessions.map((session) => ({
+      id: session.id,
+      professionalId,
+      patientInitials: session.patientInitials,
+      start: session.start,
+      status: session.status,
+      type: session.type,
+    }));
   }
 
   async getProfessionalPatients(

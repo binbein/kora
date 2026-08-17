@@ -556,6 +556,38 @@ export type ProfessionalSession = {
   cancellationReasonKey?: "by_patient" | "by_professional";
 };
 
+/**
+ * La stessa seduta come la vede **il back-office**: la terza proiezione, dopo
+ * quella del dipendente e quella del professionista.
+ *
+ * ESISTE PERCHÉ LE DUE VISTE HANNO DIRITTI DIVERSI, e prima ne condividevano
+ * una: `/admin/sessioni` leggeva `getProfessionalSessions`, cioè la proiezione
+ * di chi cura. Finché lì c'erano le sole iniziali la coincidenza non costava
+ * niente; dal momento in cui la professionista riceve il nome del paziente, la
+ * stessa lettura lo consegnerebbe **anche all'amministratore di piattaforma**,
+ * accanto alla data di una seduta di psicologia — che è esattamente ciò che è
+ * stato tolto il 16.08.2026 portando via `healthScore` da `PlatformUser`.
+ *
+ * **Non lo si risolve facendo scegliere alla schermata cosa rendere**: quella è
+ * una scelta che qualcuno può disfare. Qui non c'è **nessun campo su cui un
+ * nome possa arrivare**, ed è la stessa garanzia di forma che
+ * `EmployeeDirectoryEntry` dà dal lato dell'azienda.
+ *
+ * Porta il minimo che la schermata mostra: chi, quando, che tipo, com'è andata.
+ * Il compenso non è un campo — è la tariffa del professionista moltiplicata per
+ * le erogate, e un importo memorizzato accanto potrebbe smettere di tornare con
+ * lei (§5.5).
+ */
+export type PlatformSession = {
+  id: string;
+  professionalId: string;
+  /** "L.B." — e non esiste il campo che porterebbe il nome */
+  patientInitials: string;
+  start: Date;
+  status: AppointmentStatus;
+  type: SessionType;
+};
+
 /** Slot proponibile in prenotazione; diventa un `Appointment` se confermato. */
 export type AppointmentSlot = {
   professionalId: string;

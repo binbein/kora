@@ -22,6 +22,7 @@ import type {
   Payout,
   Plan,
   PlanId,
+  PlatformSession,
   Professional,
   ProfessionalEarnings,
   ProfessionalSession,
@@ -187,6 +188,23 @@ export interface DataProvider {
   getProfessionalSessions(
     professionalId: string,
   ): Promise<ProfessionalSession[]>;
+
+  /**
+   * Le stesse sedute come le vede **il back-office**: la terza proiezione.
+   *
+   * Non è `getProfessionalSessions` con un altro nome: quella serve **chi
+   * cura** e porta il nome del paziente, questa serve chi amministra la
+   * piattaforma e porta le iniziali, su un tipo che il nome non ha
+   * (`PlatformSession`). Le due letture si sono separate il giorno in cui la
+   * prima ha guadagnato il nome — prima erano la stessa perché dicevano la
+   * stessa cosa.
+   *
+   * Prende l'id perché nel dataset demo il back-office elenca l'agenda di una
+   * professionista sola, e la schermata lo dichiara: in produzione ne aggrega
+   * molte e prenderà un intervallo e una pagina
+   * (`docs/CONTRATTO-DATI.md` §6, §7).
+   */
+  getPlatformSessions(professionalId: string): Promise<PlatformSession[]>;
 
   /**
    * I pazienti di un professionista, ognuno con il suo conto di sessioni.

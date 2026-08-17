@@ -12,9 +12,9 @@ import { CalendarClock, CheckCircle2, ClipboardList, Coins } from "lucide-react"
 import KPICard from "@/components/shared/KPICard";
 import {
   loadState,
+  usePlatformSessions,
   usePortalProfessional,
   usePortalProfessionalId,
-  useProfessionalSessions,
 } from "@/lib/data/queries";
 import { EmptyNotice, ErrorNotice } from "@/components/kora/StateNotice";
 import { professionalDisplayName } from "@/lib/data/types";
@@ -36,8 +36,16 @@ import { interpolate, t } from "@/lib/i18n";
  * una demo ambientata a settembre.
  *
  * DEI PAZIENTI ESCONO LE SOLE INIZIALI, e a garantirlo è il tipo:
- * `ProfessionalSession` non ha nessun campo su cui un nome possa arrivare
- * (§10.D). Non è una scelta di rendering che qualcuno possa disfare.
+ * `PlatformSession` non ha nessun campo su cui un nome possa arrivare. Non è
+ * una scelta di rendering che qualcuno possa disfare.
+ *
+ * **Fino al 17.08.2026 la garanzia veniva da un'altra parte**, e leggere quella
+ * riga oggi porterebbe fuori strada: la schermata leggeva
+ * `getProfessionalSessions`, cioè la proiezione di chi cura, e la garanzia
+ * teneva perché **nemmeno lì** c'era un nome. Il giorno in cui la professionista
+ * ha cominciato a ricevere il nome dei propri pazienti quella lettura è
+ * diventata la strada per cui il nome sarebbe arrivato anche qui, e le due viste
+ * si sono separate in due tipi.
  */
 
 const STATUS_BADGE: Record<AppointmentStatus, string> = {
@@ -63,7 +71,7 @@ function statusLabel(status: AppointmentStatus): string {
 export default function AdminSessioni() {
   const portalIdQuery = usePortalProfessionalId();
   const professionalQuery = usePortalProfessional();
-  const sessionsQuery = useProfessionalSessions(portalIdQuery.data);
+  const sessionsQuery = usePlatformSessions(portalIdQuery.data);
 
   /* I tre casi (M5.b), registro strumento. `portalIdQuery` entra nel gruppo
      perché le altre due dipendono da lui e senza resterebbero in attesa. */
