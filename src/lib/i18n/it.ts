@@ -87,6 +87,33 @@ export const it = {
     coach_m: "Coach",
   },
 
+  /*
+   * Le biografie del roster (founder, 17.08.2026).
+   *
+   * IL VINCOLO, E VALE PER OGNI FRASE CHE SI AGGIUNGERÀ QUI: **nessun nome di
+   * università, ospedale, clinica o associazione**, e nessun anno di
+   * esperienza. Il primo perché un cognome più un ateneo preciso punta a una
+   * persona vera — è la prova di sicurezza con cui il §8 ha scelto questi
+   * cognomi; il secondo perché il dataset dice già quante sedute ognuno ha
+   * erogato, e "quindici anni di pratica" accanto a zero sedute è una
+   * contraddizione che si legge nella stessa schermata.
+   *
+   * Parlano quindi **del lavoro e non del curriculum**: cosa segue quella
+   * persona, e come.
+   */
+  professionalBio: {
+    colombo:
+      "Lavora sullo stress legato al lavoro: carichi che non rientrano, confini che saltano, decisioni che pesano. Il primo incontro serve a capire cosa serve davvero.",
+    rossi:
+      "Segue percorsi su burnout e ansia con un metodo pratico: pochi obiettivi per volta, verificati insieme a ogni incontro.",
+    meier:
+      "Si occupa di sonno e di ciò che lo tiene sveglio — ritmi irregolari, pensieri che tornano la sera, riposo che non ristora. Lavora per gradi, partendo dalle abitudini.",
+    fontana:
+      "Coaching su obiettivi professionali, passaggi di ruolo e decisioni da prendere. Non è un percorso clinico e non lo sostituisce.",
+    keller:
+      "Si occupa di stress lavorativo con attenzione alla prevenzione: riconoscere i segnali prima che diventino un problema.",
+  },
+
   specialty: {
     work_stress: "Stress lavorativo",
     burnout_anxiety: "Burnout e ansia",

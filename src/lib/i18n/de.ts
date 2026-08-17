@@ -114,6 +114,21 @@ export const de: Dictionary = {
     coach_m: "Coach",
   },
 
+  /* Kein Name einer Universität, einer Klinik oder eines Verbands, und keine
+     Berufsjahre: die Regel steht in `it.ts` und gilt für alle vier Sprachen. */
+  professionalBio: {
+    colombo:
+      "Arbeitet mit arbeitsbedingtem Stress: Aufgaben, die nicht mehr in den Tag passen, Grenzen, die verschwimmen, Entscheidungen, die schwer wiegen. Das erste Gespräch klärt, was wirklich gebraucht wird.",
+    rossi:
+      "Begleitet Wege aus Burnout und Angst, praktisch angelegt: wenige Ziele auf einmal, bei jedem Termin gemeinsam überprüft.",
+    meier:
+      "Beschäftigt sich mit Schlaf und mit dem, was ihn stört — unregelmässige Rhythmen, Gedanken, die abends wiederkommen, Ruhe, die nicht erholt. Arbeitet schrittweise, ausgehend von den Gewohnheiten.",
+    fontana:
+      "Coaching zu beruflichen Zielen, Rollenwechseln und anstehenden Entscheidungen. Kein klinischer Weg und kein Ersatz dafür.",
+    keller:
+      "Beschäftigt sich mit arbeitsbedingtem Stress, mit Blick auf Prävention: die Signale erkennen, bevor daraus ein Problem wird.",
+  },
+
   specialty: {
     work_stress: "Arbeitsstress",
     burnout_anxiety: "Burnout und Angst",

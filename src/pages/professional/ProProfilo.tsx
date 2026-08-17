@@ -67,6 +67,11 @@ export default function ProProfilo() {
                 </span>
               </Badge>
             </div>
+            {/* La bio è una frase del dizionario e non un campo di testo del
+                dataset: il tipo porta la chiave, come per la qualifica. */}
+            <p className="text-sm text-muted-foreground mt-4">
+              {t.professionalBio[professional.bioKey]}
+            </p>
           </div>
         </div>
       </Card>

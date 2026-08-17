@@ -131,6 +131,21 @@ export const en: Dictionary = {
     coach_m: "Coach",
   },
 
+  /* No university, clinic or association name, and no years of experience: the
+     rule lives in `it.ts` and holds for all four languages. */
+  professionalBio: {
+    colombo:
+      "Works on stress that comes from the job: workloads that no longer fit the day, boundaries that blur, decisions that weigh. The first meeting is there to work out what is actually needed.",
+    rossi:
+      "Follows burnout and anxiety with a practical method: few goals at a time, reviewed together at every session.",
+    meier:
+      "Works on sleep and on what keeps it away — irregular rhythms, thoughts that come back in the evening, rest that does not restore. Moves step by step, starting from habits.",
+    fontana:
+      "Coaching on professional goals, changes of role and decisions to be made. It is not a clinical path and does not replace one.",
+    keller:
+      "Works on job-related stress with an eye on prevention: recognising the signals before they turn into a problem.",
+  },
+
   specialty: {
     work_stress: "Work-related stress",
     burnout_anxiety: "Burnout and anxiety",

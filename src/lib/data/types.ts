@@ -476,6 +476,23 @@ export type Professional = {
    */
   qualificationKey: "psychologist_f" | "psychologist_m" | "coach_m";
   /**
+   * Chiave della biografia in `it.ts` (founder, 17.08.2026).
+   *
+   * **È una chiave e non un testo**, come la qualifica: la bio è una frase da
+   * mostrare, quindi vive nei dizionari e cambia con la lingua (§2.7). A
+   * differenza della qualifica la chiave **è la persona**, perché la bio è sua
+   * e non una categoria che si condivide — e per questo l'unione ha esattamente
+   * i cinque id del roster: aggiungere un professionista senza scrivergli la bio
+   * non compila.
+   *
+   * IL VINCOLO SUL TESTO STA NEL `docs/CONTRATTO-DATI.md` §6 e vale in tutte e
+   * quattro le lingue: **nessun nome di università, ospedale, clinica o
+   * associazione**. Un cognome poco frequente più un ateneo preciso punta a una
+   * persona vera, ed è la stessa prova di sicurezza con cui il §8 ha scelto i
+   * cognomi del roster.
+   */
+  bioKey: "colombo" | "rossi" | "meier" | "fontana" | "keller";
+  /**
    * 0–5, un decimale. **`null` per chi non ha ancora erogato sedute**: un
    * professionista in verifica non ha una valutazione, e uno zero si
    * leggerebbe come la peggiore possibile invece che come assente (§11).

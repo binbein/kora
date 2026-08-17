@@ -161,6 +161,21 @@ export const fr: Dictionary = {
     coach_m: "Coach",
   },
 
+  /* Aucun nom d'université, de clinique ou d'association, et aucune année
+     d'expérience : la règle est dans `it.ts` et vaut pour les quatre langues. */
+  professionalBio: {
+    colombo:
+      "Travaille sur le stress lié au travail : des charges qui ne tiennent plus dans la journée, des limites qui s'effacent, des décisions qui pèsent. Le premier entretien sert à cerner ce qu'il faut vraiment.",
+    rossi:
+      "Accompagne des parcours sur le burnout et l'anxiété avec une méthode concrète : peu d'objectifs à la fois, vérifiés ensemble à chaque séance.",
+    meier:
+      "S'occupe du sommeil et de ce qui l'empêche — rythmes irréguliers, pensées qui reviennent le soir, repos qui ne repose pas. Avance par étapes, en partant des habitudes.",
+    fontana:
+      "Coaching sur les objectifs professionnels, les changements de rôle et les décisions à prendre. Ce n'est pas un parcours clinique et cela ne le remplace pas.",
+    keller:
+      "S'occupe du stress professionnel avec une attention à la prévention : reconnaître les signaux avant qu'ils ne deviennent un problème.",
+  },
+
   specialty: {
     work_stress: "Stress au travail",
     burnout_anxiety: "Burnout et anxiété",
