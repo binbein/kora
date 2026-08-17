@@ -515,6 +515,27 @@ export const en: Dictionary = {
       startUnavailable: "Video call not active in this demo",
       addNote: "Add note",
       editNote: "Note",
+      cancel: {
+        action: "Cancel session",
+        actionLabel:
+          "Cancel the session with {patient} on {weekday} {date} at {time}",
+        title: "Cancel this session?",
+        summary: "{patient} · {weekday} {date}, {time}",
+        noteLabel: "Note (optional)",
+        notePlaceholder: "Why the session was cancelled",
+        notePrivacy:
+          "The note stays in your calendar: the patient's organisation does not see it.",
+        effect:
+          "The slot becomes bookable again and the session does not count towards your fees.",
+        keep: "Go back",
+        confirm: "Cancel the session",
+        confirming: "Cancelling",
+        error: {
+          title: "Session not cancelled",
+          body: "The session is still scheduled: please try again.",
+        },
+        noteShown: "Note: {note}",
+      },
       emptyUpcoming: "No session scheduled.",
       emptyCompleted: "No session delivered.",
       emptyCancelled: "No session cancelled.",

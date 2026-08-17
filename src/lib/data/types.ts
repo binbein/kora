@@ -597,6 +597,20 @@ export type ProfessionalSession = {
   hasNote: boolean;
   /** Chiave del motivo in `it.ts`, presente solo sulle sessioni annullate */
   cancellationReasonKey?: "by_patient" | "by_professional";
+  /**
+   * La nota libera che il professionista può lasciare annullando (17.08.2026).
+   *
+   * **Vive solo qui**, come `SessionNote`: nessun tipo che l'area HR o l'admin
+   * possano leggere ha un campo su cui possa arrivare, e `PlatformSession` è
+   * quello che lo dimostra — la stessa seduta, senza questo campo.
+   *
+   * Assente vuol dire **che una nota non c'è**, e copre due casi che le
+   * schermate non distinguono: la seduta non è annullata, oppure è stata
+   * annullata senza scrivere niente. È il prezzo di tenere il motivo e la nota
+   * come due campi piatti invece che come un oggetto solo — il motivo esisteva
+   * prima, e le schermate leggono la coppia (`docs/CONTRATTO-DATI.md` §3).
+   */
+  cancellationNote?: string;
 };
 
 /**

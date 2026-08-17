@@ -612,6 +612,40 @@ export const it = {
       startUnavailable: "Videochiamata non attiva nella demo",
       addNote: "Aggiungi nota",
       editNote: "Nota",
+      /*
+       * L'annullamento (17.08.2026).
+       *
+       * "Annulla la sessione" e non "Annulla" sul pulsante che conferma: in
+       * italiano "Annulla" è anche il modo standard di chiudere un dialogo
+       * senza fare niente, e nello stesso riquadro le due parole si
+       * contendevano il significato opposto. Chi torna indietro legge "Torna
+       * indietro".
+       */
+      cancel: {
+        action: "Annulla",
+        /** "Annulla la sessione di Marco Bianchi di lunedì 28.09.2026 alle 14:00" */
+        actionLabel:
+          "Annulla la sessione di {patient} di {weekday} {date} alle {time}",
+        title: "Annullare la sessione?",
+        /** "Marco Bianchi · lunedì 28.09.2026, 14:00" */
+        summary: "{patient} · {weekday} {date}, {time}",
+        noteLabel: "Nota (facoltativa)",
+        notePlaceholder: "Perché la sessione è stata annullata",
+        notePrivacy:
+          "La nota resta nella tua agenda: l'azienda del paziente non la vede.",
+        effect: "L'ora torna prenotabile e la sessione non entra nei compensi.",
+        keep: "Torna indietro",
+        confirm: "Annulla la sessione",
+        confirming: "Annullamento",
+        /* Dice cosa non è successo, come le altre mutation: la sessione è
+           ancora dov'era, e ritentare è lo stesso pulsante. */
+        error: {
+          title: "Sessione non annullata",
+          body: "La sessione è ancora in programma: riprova.",
+        },
+        /** "Nota: il paziente ha chiesto di spostare" */
+        noteShown: "Nota: {note}",
+      },
       emptyUpcoming: "Nessuna sessione in programma.",
       emptyCompleted: "Nessuna sessione erogata.",
       emptyCancelled: "Nessuna sessione annullata.",

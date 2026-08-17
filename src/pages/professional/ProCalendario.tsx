@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Calendar, Clock, User, Video } from 'lucide-react';
 import KPICard from '@/components/shared/KPICard';
@@ -20,12 +20,17 @@ import {
   useReferenceDate,
 } from '@/lib/data/queries';
 import { ErrorNotice } from '@/components/kora/StateNotice';
+import CancelSessionDialog from '@/components/professional/CancelSessionDialog';
+import { patientDisplayName, type ProfessionalSession } from '@/lib/data/types';
 
 export default function ProCalendario() {
   const todayQuery = useReferenceDate();
   const portalIdQuery = usePortalProfessionalId();
   const sessionsQuery = useProfessionalSessions(portalIdQuery.data);
   const patientsQuery = useProfessionalPatients(portalIdQuery.data);
+
+  /* Stato del dialogo, non del dominio: quale seduta si sta annullando. */
+  const [cancelling, setCancelling] = useState<ProfessionalSession | null>(null);
 
   /*
    * I tre casi (M5.b), registro strumento. `portalIdQuery` entra nel gruppo
@@ -113,30 +118,67 @@ export default function ProCalendario() {
                   {days.map((day) => {
                     const { session } = day.cells[row];
                     const past = session && session.status === 'completed';
+                    const cellClass = `p-1.5 rounded-lg text-xs min-h-[48px] border w-full text-left ${
+                      session
+                        ? past
+                          ? 'bg-muted/60 border-border'
+                          : 'bg-secondary/10 border-secondary/30'
+                        : 'bg-card border-border'
+                    }`;
+                    const content = session && (
+                      <div>
+                        {/* Il cognome, non le iniziali: la cella è stretta
+                            e il nome intero non ci sta, ma "Bianchi" dice
+                            chi è dove "M.B." chiedeva di ricordarselo. */}
+                        <p className={`font-medium truncate ${past ? 'text-muted-foreground' : 'text-secondary-strong'}`}>
+                          {session.patientLastName}
+                        </p>
+                        <p className="text-muted-foreground text-[10px]">
+                          {t.sessionType[session.type]}
+                        </p>
+                      </div>
+                    );
+
+                    /*
+                     * LA CELLA IN PROGRAMMA È IL GESTO, ed è un `button` vero e
+                     * non un `div` con un `onClick`: da tastiera dev'essere
+                     * raggiungibile e premibile come tutto il resto (§11), e il
+                     * nome accessibile dice **cosa fa il clic** — dentro la
+                     * cella c'è un cognome, che dice chi è ma non dove porta.
+                     *
+                     * Le altre celle restano `div`: una casella vuota o una
+                     * seduta passata non hanno niente da offrire, e un bersaglio
+                     * focalizzabile che non fa niente è peggio di nessun
+                     * bersaglio.
+                     */
+                    if (session && session.status === 'scheduled') {
+                      return (
+                        <button
+                          key={`${day.date.toISOString()}-${minuteOfDay}`}
+                          type="button"
+                          className={`${cellClass} hover:bg-secondary/20 transition-colors`}
+                          aria-label={interpolate(
+                            t.professional.sessions.cancel.actionLabel,
+                            {
+                              patient: patientDisplayName(session),
+                              weekday: formatWeekday(session.start),
+                              date: formatDate(session.start),
+                              time: formatTime(session.start),
+                            },
+                          )}
+                          onClick={() => setCancelling(session)}
+                        >
+                          {content}
+                        </button>
+                      );
+                    }
+
                     return (
                       <div
                         key={`${day.date.toISOString()}-${minuteOfDay}`}
-                        className={`p-1.5 rounded-lg text-xs min-h-[48px] border ${
-                          session
-                            ? past
-                              ? 'bg-muted/60 border-border'
-                              : 'bg-secondary/10 border-secondary/30'
-                            : 'bg-card border-border'
-                        }`}
+                        className={cellClass}
                       >
-                        {session && (
-                          <div>
-                            {/* Il cognome, non le iniziali: la cella è stretta
-                                e il nome intero non ci sta, ma "Bianchi" dice
-                                chi è dove "M.B." chiedeva di ricordarselo. */}
-                            <p className={`font-medium truncate ${past ? 'text-muted-foreground' : 'text-secondary-strong'}`}>
-                              {session.patientLastName}
-                            </p>
-                            <p className="text-muted-foreground text-[10px]">
-                              {t.sessionType[session.type]}
-                            </p>
-                          </div>
-                        )}
+                        {content}
                       </div>
                     );
                   })}
@@ -146,6 +188,12 @@ export default function ProCalendario() {
           </div>
         </Card>
       )}
+
+      <CancelSessionDialog
+        session={cancelling}
+        professionalId={portalIdQuery.data}
+        onClose={() => setCancelling(null)}
+      />
 
       <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
         <div className="flex items-center gap-1.5">

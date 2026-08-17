@@ -488,6 +488,27 @@ export const de: Dictionary = {
       startUnavailable: "Videoanruf in dieser Demo nicht aktiv",
       addNote: "Notiz hinzufügen",
       editNote: "Notiz",
+      cancel: {
+        action: "Absagen",
+        actionLabel:
+          "Sitzung von {patient} am {weekday}, {date} um {time} absagen",
+        title: "Sitzung absagen?",
+        summary: "{patient} · {weekday}, {date}, {time}",
+        noteLabel: "Notiz (optional)",
+        notePlaceholder: "Warum die Sitzung abgesagt wurde",
+        notePrivacy:
+          "Die Notiz bleibt in Ihrem Kalender: das Unternehmen der Patientin sieht sie nicht.",
+        effect:
+          "Die Zeit wird wieder buchbar und die Sitzung zählt nicht zum Honorar.",
+        keep: "Zurück",
+        confirm: "Sitzung absagen",
+        confirming: "Wird abgesagt",
+        error: {
+          title: "Sitzung nicht abgesagt",
+          body: "Die Sitzung ist weiterhin geplant: bitte erneut versuchen.",
+        },
+        noteShown: "Notiz: {note}",
+      },
       emptyUpcoming: "Keine geplante Sitzung.",
       emptyCompleted: "Keine durchgeführte Sitzung.",
       emptyCancelled: "Keine abgesagte Sitzung.",

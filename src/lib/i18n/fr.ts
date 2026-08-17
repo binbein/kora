@@ -554,6 +554,27 @@ export const fr: Dictionary = {
       startUnavailable: "Visioconférence inactive dans cette démo",
       addNote: "Ajouter une note",
       editNote: "Note",
+      cancel: {
+        action: "Annuler",
+        actionLabel:
+          "Annuler la séance de {patient} du {weekday} {date} à {time}",
+        title: "Annuler la séance ?",
+        summary: "{patient} · {weekday} {date}, {time}",
+        noteLabel: "Note (facultative)",
+        notePlaceholder: "Pourquoi la séance a été annulée",
+        notePrivacy:
+          "La note reste dans votre agenda : l'entreprise du patient ne la voit pas.",
+        effect:
+          "L'horaire redevient réservable et la séance ne compte pas dans la rémunération.",
+        keep: "Retour",
+        confirm: "Annuler la séance",
+        confirming: "Annulation",
+        error: {
+          title: "Séance non annulée",
+          body: "La séance est toujours prévue : réessayer.",
+        },
+        noteShown: "Note : {note}",
+      },
       emptyUpcoming: "Aucune séance prévue.",
       emptyCompleted: "Aucune séance effectuée.",
       emptyCancelled: "Aucune séance annulée.",
