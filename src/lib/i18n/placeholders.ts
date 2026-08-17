@@ -22,15 +22,15 @@ import { it } from "./it";
  * GIRA SOLO DOVE I GUARDRAIL PARLANO. La scansione intera è dentro il
  * confronto su `GUARDRAIL_MODE`, quindi in produzione il modo è un letterale
  * falso, il ramo è morto e il minificatore porta via funzione e messaggi: non
- * resta né il controllo né il costo di percorrere **731** chiavi.
+ * resta né il controllo né il costo di percorrere tutte le chiavi.
  *
- * *(Diceva 663, e non era un numero invecchiato: era sbagliato quando è stato
- * scritto — al merge della tranche tedesca le chiavi erano già ~721. Il criterio
- * con cui si contano sta nel `CLAUDE.md` §2.7, che è l'unico punto che le conta:
- * qui si cita, per non tenerne un secondo elenco che possa divergere. **E si fa
- * sull'albero sintattico, non con un grep**: 62 delle 731 hanno il valore sulla
- * riga successiva, quindi un motivo di ricerca per riga le prende o le perde a
- * seconda di come tratta l'a capo. Il comando sta nel §2.7.)*
+ * *(Questa testata ha portato la cifra due volte e l'ha sbagliata due volte:
+ * prima 663, che era falso già quando fu scritto, poi 731, invecchiato alla
+ * prima passata che aggiunse una chiave. Ora non la porta più — **quante sono
+ * lo dice il `CLAUDE.md` §2.7, che è l'unico punto che le conta**, insieme al
+ * criterio, al comando che lo esegue e all'obbligo di muovere il numero quando
+ * una chiave entra o esce. La frase qui sopra non ne ha bisogno: il costo è
+ * percorrerle tutte, quante che siano.)*
  */
 
 const PLACEHOLDER = /\{(\w+)\}/g;

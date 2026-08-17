@@ -73,14 +73,38 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      §5.6, i `.jsx` del §3 e le rotte del §10. Si contano le **chiavi foglia di
      tipo stringa** di un dizionario, **tolti prima i commenti**: la prosa che
      nomina una chiave non è una chiave, ed è la trappola che fa uscire un
-     numero diverso a ogni rilettura. Oggi sono **731**, uguali in tutti e
-     quattro i file (16.08.2026) — e che siano uguali non è una misura ma una
+     numero diverso a ogni rilettura. Oggi sono **741**, uguali in tutti e
+     quattro i file (17.08.2026) — e che siano uguali non è una misura ma una
      garanzia del tipo `Translated<Dictionary>`, che non compila se una manca.
+
+     **Questa è l'unica riga che porta il numero, e porta anche l'obbligo che
+     al §5.6 mancava qui**: **chi aggiunge o toglie una chiave muove questo
+     numero nello stesso commit**, e **chi ne trova uno che non torna rimisura
+     col comando qui sotto prima di segnalare** — se il criterio è stato
+     applicato per intero, a essere invecchiata è la riga, e si aggiorna con la
+     data. Il numero si muove, il criterio no.
+
+     **La regola nasce da un difetto, non da simmetria** (17.08.2026): il 731
+     è invecchiato **alla prima passata utile** — dieci chiavi aggiunte
+     all'anteprima dell'hero — e non se ne è accorto nessuno perché il §2.7
+     aveva dato al conteggio un criterio *senza* l'obbligo, e perché la cifra
+     stava in **sei punti** invece che in uno. È esattamente la famiglia che
+     il §5.6 aveva già chiuso per i guardrail, ripetuta su un conteggio più
+     giovane: gli altri cinque — le due righe qui sotto, le due della testata di
+     `i18n/placeholders.ts` e il criterio dell'inventario delle promesse in
+     `docs/PROGRESS.md` — **ora rimandano qui invece di ripetere la cifra**.
+
+     **Il sesto è quello che vale**, perché mostra che il difetto non è
+     l'invecchiamento ma la ripetizione: era **un criterio vivo**, corretto due
+     giorni prima da 728 a 731 proprio in nome di questa regola, e allineato
+     alla cifra **giusta di allora**. Ripetere un numero è una promessa di
+     tornare a rileggerlo, e non la mantiene nessuno — nemmeno chi l'ha appena
+     scritta.
 
      **IL CONTO SI FA SULL'ALBERO SINTATTICO, NON CON UN GREP**, ed è la
      clausola senza la quale il criterio autorizzava proprio i numeri sbagliati
      che esiste per non far nascere (16.08.2026). La ragione è una proprietà del
-     file, non della fretta di chi conta: **62 delle 731 chiavi hanno il valore
+     file, non della fretta di chi conta: **62 chiavi hanno il valore
      sulla riga successiva**, perché la stringa non ci stava. Un motivo di
      ricerca per riga le prende o le perde a seconda che il suo `\s*` attraversi
      l'a capo — due implementazioni entrambe fedeli alla frase qui sopra e
@@ -97,8 +121,12 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
 
      Sull'albero non c'è niente da togliere: i commenti non sono nodi, e una
      proprietà o ha un letterale stringa per valore o non è una chiave foglia.
-     Verificato: **731 proprietà con inizializzatore letterale stringa, 109
-     oggetti, zero proprietà di altro tipo**, identici sui quattro dizionari.
+     Verificato: tante proprietà con inizializzatore letterale stringa quante
+     ne dichiara la riga qui sopra, **109 oggetti e zero proprietà di altro
+     tipo**, identici sui quattro dizionari. *(Il conteggio delle chiavi non si
+     ripete qui: era il secondo dei cinque punti che l'hanno fatto invecchiare.
+     Gli oggetti restano, perché sono l'altra metà della prova che l'albero non
+     lascia fuori niente — e non si sono mossi.)*
 
      **Il 663 dei verbali di M5.e non era invecchiato: era sbagliato quando è
      stato scritto.** Misurato su `de.ts` al merge della sua tranche, le chiavi

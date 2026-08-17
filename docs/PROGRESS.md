@@ -5315,16 +5315,11 @@ schermate promettono **già oggi**, e quell'inventario serve prima: è il tavolo
 cui si decide la residenza dei dati, che il §2.1 dei *Dubbi* colloca **prima del
 primo pilot**, cioè prima dei contratti.
 
-**Il criterio**, perché il conto sia rifacibile: si contano le stringhe di
-`src/lib/i18n/it.ts` — **731 chiavi**, con il criterio e il comando che le
-contano nel `CLAUDE.md` §2.7, che è l'unico punto che le conta — che
-**affermano qualcosa che una privacy policy dovrà sostenere o smentire**.
-*(Diceva **728**, che non è nessuna delle misure note di quel file: era una
-cifra senza criterio, ed è il difetto che il §2.7 esiste per non produrre.
-Corretta il 17.08.2026. Non è un verbale che si lascia com'è: è un criterio
-**vivo**, scritto per essere rieseguito da chi costruirà l'MVP, e chi lo
-rieseguisse partendo da 728 non ritroverebbe il proprio punto di partenza.)*
-Restano fuori le etichette, i titoli
+**Il criterio**, perché il conto sia rifacibile: si scorrono **le chiavi
+stringa di `src/lib/i18n/it.ts`** — quante sono, con quale criterio e con quale
+comando lo dice il `CLAUDE.md` §2.7, che è l'unico punto che le conta — e si
+tengono quelle che **affermano qualcosa che una privacy policy dovrà sostenere o
+smentire**. Restano fuori le etichette, i titoli
 di colonna, gli stati vuoti e le stringhe che contengono una parola chiave senza
 fare un'affermazione: "Lugano, Svizzera" è un indirizzo, "scenario conservativo"
 è il modello ROI. Ogni promessa ha le sue tre traduzioni; **il conto è su `it.ts`
