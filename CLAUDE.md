@@ -1971,7 +1971,20 @@ sedute **erogate** (§5.5, e la tabella delle KPI di `docs/CONTRATTO-DATI.md` §
 una prenotazione nasce `scheduled`: farlo salire sarebbe un secondo numero pinnato
 sullo stesso fatto, e direbbe al dipendente che ha consumato una seduta che non ha
 ancora fatto. A muoversi è la parte in programma, e la frase le tiene distinte:
-*"3 su 10 sessioni usate · 1 in programma"*. Deciso dai founder il 07.08.2026.
+*"{used} su {total} sessioni usate · {scheduled} in programma"*. Deciso dai
+founder il 07.08.2026.
+
+**La frase si cita con i segnaposto, non con i suoi numeri** (18.08.2026). Fino a
+oggi questa riga scriveva *"3 su 10 sessioni usate · 1 in programma"*, e l'uno era
+falso: `{scheduled}` vale **3**, perché Laura ha tre sedute future — sono la sua
+ricorrenza del giovedì generata fino all'orizzonte del dataset, non un numero
+scritto da qualche parte. E i due conteggi arrivano da due letture diverse:
+`used` da `getEntitlement`, la parte in programma dal conto degli appuntamenti,
+che nessun campo di `SessionEntitlement` porta. **Nessun guardrail sorveglia
+quella cifra** — quello che c'è verifica *quale* sia la prossima seduta di Laura,
+non quante ne abbia — quindi un esempio con i numeri dentro invecchia a ogni
+seduta che entra nell'orizzonte, in silenzio. I segnaposto dicono la stessa cosa
+e non possono invecchiare.
 
 Ne discendono due guardrail dell'area: dopo una prenotazione `used` è invariato, e
 **nessun numero dell'area HR si muove** — le sessioni consumate dell'azienda contano
