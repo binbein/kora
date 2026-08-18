@@ -1040,6 +1040,24 @@ Regole:
   un censimento sul colore la vede. Due sintassi che si somigliano e che uno
   strumento distingue. Il racconto sta in `docs/PROGRESS.md`.
 
+  **Ed è falso una seconda volta, di un nodo, dal 18.08.2026** — stessa
+  disciplina della prima: si qualifica con la data, non si riscrive come se
+  avesse sempre detto il vero. Il nodo è **l'etichetta "alert" del marker sul
+  trend della dashboard HR**, `#808080` su fondo bianco, cioè **3.95:1** a 11px,
+  ed è testo informativo — dice su quale mese cade l'alert precoce. **Resta
+  aperto**: il rimedio cambia un colore, e i colori sono dei founder (la voce sta
+  in `docs/PROGRESS.md`, «Aperto e dichiarato» della passata del 18.08.2026).
+
+  **La lezione di metodo si allarga, ed è il terzo caso della stessa famiglia
+  ma il primo di forma diversa.** Le prime due riguardavano *come* si legge un
+  nodo — l'alpha nel token si vede, l'`opacity` sull'elemento no. Questa
+  riguarda **quali nodi si percorrono**: l'etichetta non è testo HTML, è un
+  `fill` dentro un `<svg>`, quindi non entra affatto nell'insieme che uno
+  strumento che cammina il DOM guarda. **Un censimento dichiara zero su ciò che
+  non ha guardato**, e i grafici sono l'unico posto di questa demo dove il testo
+  vive fuori dal DOM HTML: chi rifà la misura parte da lì, e conta prima quanti
+  nodi ha percorso.
+
   La sezione M5.a di
   `docs/PROGRESS.md` porta i conti e come ci si è arrivati, compresi i due
   punti che questa riga non poteva prevedere: il censimento vecchio era da grep
