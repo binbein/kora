@@ -138,7 +138,8 @@ export interface DataProvider {
   /**
    * L'elenco dipendenti che l'azienda può vedere: iniziali e reparto, mai un
    * nome. Nel dataset demo è un estratto di otto righe su 120 — la paginazione
-   * è M5 — e la schermata lo dichiara invece di far credere il contrario.
+   * è lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.12) — e la schermata lo
+   * dichiara invece di far credere il contrario.
    */
   getEmployeeDirectory(): Promise<EmployeeDirectoryEntry[]>;
 

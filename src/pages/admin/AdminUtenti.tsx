@@ -36,8 +36,9 @@ import { interpolate, t } from "@/lib/i18n";
  * e un guardrail lo verifica sul dataset.
  *
  * È un estratto e la schermata lo dichiara, come l'elenco dipendenti dell'HR:
- * la paginazione è M5, e sette righe presentate come "tutti gli utenti"
- * direbbero che la piattaforma ne ha sette.
+ * la paginazione è lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.12), e sette
+ * righe presentate come "tutti gli utenti" direbbero che la piattaforma ne ha
+ * sette.
  */
 export default function AdminUtenti() {
   const [search, setSearch] = useState("");

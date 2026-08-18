@@ -14,7 +14,10 @@ import { interpolate, t } from "@/lib/i18n";
  * portavano da nessuna parte, che è la definizione di vicolo cieco del §10 —
  * e il footer sta su tutte e quattro le rotte pubbliche. Creare le pagine
  * sarebbe scope nuovo (§2.6), quindi i founder hanno deciso l'08.08.2026 di
- * togliere l'affordance e lasciare il testo. Le pagine vere sono M5.
+ * togliere l'affordance e lasciare il testo. Le pagine vere sono **lavoro
+ * dell'MVP**: il blocco f) di M5 è stato ritirato dallo scope della demo il
+ * 15.08.2026 e il suo perimetro sta in `docs/PROGRESS.md` — non è cancellato,
+ * ha cambiato milestone.
  */
 export default function Footer() {
   const { data: referenceDate } = useReferenceDate();

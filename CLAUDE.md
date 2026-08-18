@@ -2243,6 +2243,19 @@ aperta in anticipo, va **portata in primo piano** prima di cominciare.
   è generico). Spiegare cosa è stato tolto e perché è mestiere di
   `docs/PROGRESS.md`: nel sorgente diventa archeologia che nessuno cancella più. Un
   `TODO` vale solo con una destinazione: `TODO M2: …`.
+- **Un commento che nomina una milestone è una data che scade** (18.08.2026), ed
+  è la stessa forma del `TODO` con una destinazione: si rilegge **il giorno in
+  cui quella milestone chiude o cambia perimetro**, insieme alle righe dei
+  documenti che dicono la stessa cosa. Senza questa regola una milestone che si
+  sposta lascia dietro di sé dei commenti che descrivono un prodotto che non
+  esiste più: al 18.08.2026 erano **nove**, e tre di loro dicevano il contrario
+  di quello che il codice accanto faceva — la guardia di ruolo «che è M5» era
+  stata scritta il 12.08, in due punti che non si parlavano, e la validazione
+  «vera è M5» esisteva dal giorno dopo. Gli altri sei mandavano a una milestone
+  il lavoro che nel frattempo era passato al perimetro dell'MVP. *(La review ne
+  aveva contati sette: gli ultimi due sono usciti cercando `M5` su tutto `src/`
+  mentre si chiudevano i primi, e sono duplicati esatti di due dei difetti già
+  in elenco — ragione in più per scrivere il criterio invece dell'elenco.)*
 - **Ogni numero a schermo passa da `format.ts`.** CHF con apostrofo: `CHF 14'200`.
   Il codice ereditato usa `toLocaleString()` senza locale e importi scritti a mano
   all'italiana (`CHF 8.250`, che in Svizzera si legge "otto virgola due").
