@@ -274,7 +274,23 @@ repository Next non dia niente per scontato.
 
   **Per la stessa ragione i componenti inutilizzati non si cancellano**, ed è
   un'eccezione dichiarata al §11: 33 dei 45 non li importa nessuno, ma sono
-  **l'ultima copia buona della generazione Tailwind 3**. Cancellarli non è
+  **l'ultima copia buona della generazione Tailwind 3**.
+
+  **Il magazzino è servito, ed è la prima volta** (18.08.2026): `popover.tsx` e
+  `calendar.tsx` sono usciti da lì per il salto a data del calendario
+  professionista (§10.D), senza un `shadcn add` e senza una dipendenza nuova —
+  react-day-picker e `@radix-ui/react-popover` erano già installati. È la
+  previsione su `form.tsx` nel verso opposto: lì una riga prevedeva un uso che
+  non è arrivato, qui due componenti tenuti "per quando serviranno" servono
+  davvero.
+
+  **La cautela sulle varianti `data-*` è stata eseguita, non ripetuta**: nessuno
+  dei due era mai stato renderizzato. Verificato a schermo — `popover.tsx` usa
+  la sintassi a parentesi (`data-[state=open]`, `data-[side=bottom]`) e Radix
+  scrive davvero `data-state`, `data-side` e `data-align` sul contenuto, con
+  l'animazione che parte; `calendar.tsx` non usa varianti `data-*` ma classi di
+  react-day-picker e `aria-selected`. Chi ne aggiunge un terzo rifà questa
+  verifica. Cancellarli non è
   reversibile a buon mercato — un `shadcn add` domani riporta la generazione
   Tailwind 4 con le varianti che non agganciano — e diversi servono già: slider e
   switch al check rapido, popover e scroll-area alla dashboard (M3), `form` alla
@@ -1137,6 +1153,22 @@ Regole:
   essere letto, e cambiarlo sposterebbe la luminosità di ogni schermata già
   approvata — che è precisamente l'opzione scartata il 10.08.2026. Un token in
   più non è la stessa cosa di un token cambiato.
+
+  **E dove un elemento non testuale è l'unico portatore visivo di
+  un'informazione** (18.08.2026). La riga qui sopra copre i riempimenti che
+  **non devono essere letti**; non copre il caso in cui a dire una cosa è un
+  segno e nient'altro. Lì vale la 1.4.11, cioè **3:1** e non 4.5 — ma il token
+  base non ci arriva lo stesso, quindi la soglia più bassa non salva niente e si
+  usa la variante `-strong`.
+
+  **Il caso che l'ha fatta nascere**: il puntino che nel mini calendario del
+  professionista dice *"qui c'è almeno una seduta"*. Su `secondary` stava a
+  **2.53:1** sulla banda della settimana e **2.83:1** sul bianco; su
+  `secondary-strong` misura **5.10** e **5.72** — misurato a schermo, non
+  dedotto dalla tabella. Resta vera l'altra metà della regola, ed è la ragione
+  per cui il caso è raro: quel segno **non è l'unico portatore**, perché la
+  frase per i lettori di schermo lo dice a parole. Il colore che porta
+  significato non è mai solo.
 
   **La ragione della scelta è la polarità del 07.08.2026**, che resta intatta:
   sulle KPI di trend il colore segue il beneficio, verde quando la metrica
@@ -2162,6 +2194,29 @@ demo scollegate.
 4. **Il profilo si raggiunge dal riquadro dell'identità**, non dal menu
    (founder, 17.08.2026), come nel portale dipendente e con la disposizione del
    §6.5. **La rotta resta**: cambia come ci si arriva, quindi non è scope.
+
+5. **Il calendario si sposta di settimana, e salta a una data** (founder,
+   18.08.2026). Non è una rotta nuova né una schermata nuova — è un comando in
+   più su una schermata che c'è, e **le rotte restano 26**.
+
+   **Le frecce da sole non bastavano**, ed è la misura che ha portato alla
+   decisione: l'agenda della demo copre sette mesi e mezzo, quindi rivedere un
+   percorso concluso costava ventotto clic. Il salto si apre **dall'etichetta
+   della settimana**, che è l'elemento che dice dove sei, così la riga dei
+   comandi non cresce.
+
+   **Cosa fa**: la settimana mostrata è una banda, si clicca un giorno e si
+   muove la settimana, e i giorni con almeno una seduta portano un segno che i
+   lettori di schermo sentono a parole. **Cosa non fa**: niente navigazione per
+   anno — l'agenda vive dentro un anno solo, e una freccia verso il 2025 è un
+   comando che non comanda — e **i giorni fuori dall'agenda sono spenti**,
+   insieme alle frecce del mese ai due bordi.
+
+   **Le KPI non seguono né le frecce né il salto**: sedute della settimana,
+   prossima seduta, agenda del mese e pazienti attivi restano ancorate a oggi,
+   perché rispondono a *come sto adesso*. È la disciplina della cornice del
+   trimestre (§10.C.1) applicata al contrario: qui il comando comanda la sola
+   griglia, e l'etichetta dichiara quale settimana si sta guardando.
 
 **Finita quando:** le righe settimanali sommano al totale del mese; i pazienti
 elencati sono lo stesso numero che dichiara la KPI; le date e i giorni della
