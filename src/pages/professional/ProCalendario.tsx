@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, ChevronLeft, ChevronRight, Clock, User, Video } from 'lucide-react';
+import { Calendar as DayPicker } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar, ChevronDown, ChevronLeft, ChevronRight, Clock, User, Video } from 'lucide-react';
 import KPICard from '@/components/shared/KPICard';
-import { addDays, startOfWeek } from '@/lib/dates';
-import { formatDate, formatNumber, formatTime, formatWeekday, formatWeekdayShort } from '@/lib/format';
+import { addDays, startOfWeek, weeksBetween } from '@/lib/dates';
+import { formatDate, formatMonthYear, formatNumber, formatTime, formatWeekday, formatWeekdayShort } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import {
   slotsOfWeek,
@@ -47,6 +49,9 @@ export default function ProCalendario() {
    */
   const [weekOffset, setWeekOffset] = useState(0);
 
+  /* Stato del popover, non del dominio: si apre, si sceglie, si chiude. */
+  const [pickerOpen, setPickerOpen] = useState(false);
+
   /*
    * I tre casi (M5.b), registro strumento. `portalIdQuery` entra nel gruppo
    * benché la pagina non ne mostri il valore: le altre due query sono abilitate
@@ -88,6 +93,22 @@ export default function ProCalendario() {
    * dichiara quale settimana si sta guardando.
    */
   const thisWeek = sessionsOfWeek(sessions, today);
+
+  /*
+   * I BORDI DELL'AGENDA SI DERIVANO DALLE SEDUTE (§5.5), non da due date
+   * scritte qui: vanno su `fromDate`/`toDate`, che limitano **insieme** la
+   * selezione e la navigazione dei mesi — così le frecce del mese si spengono
+   * ai bordi invece di portare su un mese interamente spento.
+   */
+  const starts = sessions.map((session) => session.start.getTime());
+  const agendaFrom = new Date(Math.min(...starts));
+  const agendaTo = new Date(Math.max(...starts));
+
+  /* I giorni con almeno una seduta: il puntino nel mini calendario. Le
+     annullate non contano, come per la griglia. */
+  const daysWithSessions = sessions
+    .filter((session) => session.status !== 'cancelled')
+    .map((session) => session.start);
 
   return (
     <div className="space-y-6">
@@ -145,18 +166,158 @@ export default function ProCalendario() {
           >
             <ChevronLeft className="w-4 h-4" aria-hidden="true" />
           </Button>
-          {/* La griglia cambia sotto senza che il focus si muova: il cambio va
-              annunciato, o chi legge con uno screen reader preme e non sente
-              niente. */}
-          <p
-            className="text-sm font-medium tabular-nums text-center"
-            aria-live="polite"
-          >
-            {interpolate(t.professional.calendar.week, {
-              from: formatDate(monday),
-              to: formatDate(addDays(monday, 6)),
-            })}
-          </p>
+          {/*
+            * IL SALTO A DATA SI APRE DALL'ETICHETTA (founder, 18.08.2026).
+            *
+            * Il trigger è l'elemento che dice **dove sei**, quindi la riga dei
+            * comandi non cresce di un elemento: l'agenda copre sette mesi e
+            * mezzo, e a sole frecce un percorso concluso sta a ventotto clic.
+            *
+            * La griglia cambia sotto senza che il focus si muova, quindi
+            * l'etichetta resta `aria-live`: chi legge con uno screen reader
+            * preme una freccia e sente la settimana nuova.
+            */}
+          <Popover open={pickerOpen} onOpenChange={setPickerOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="text-sm font-medium tabular-nums"
+              >
+                <span aria-live="polite">
+                  {interpolate(t.professional.calendar.week, {
+                    from: formatDate(monday),
+                    to: formatDate(addDays(monday, 6)),
+                  })}
+                </span>
+                <ChevronDown className="w-4 h-4 ml-1" aria-hidden="true" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="center">
+              {/*
+                * `mode="single"` **senza `selected`**: qui il clic sposta la
+                * settimana, non seleziona un giorno. Un giorno selezionato
+                * accenderebbe `day_selected`, che è `bg-primary` pieno, e
+                * finirebbe sopra la banda della settimana — due riempimenti
+                * nello stesso calendario si leggono come due stati dello
+                * stesso tipo.
+                *
+                * NIENTE `date-fns`: non è in `package.json`, è una dipendenza
+                * transitiva di react-day-picker, e importarla per passarne la
+                * `locale` significherebbe dipendere da qualcosa che nessuno ha
+                * dichiarato (§3). Al suo posto `formatters` e `labels`
+                * instradati su `format.ts`, che è l'unico punto da cui passa
+                * ciò che si legge (§11) — senza, la caption, le iniziali dei
+                * giorni e i nomi accessibili escono **in inglese** su un
+                * prodotto che parla quattro lingue.
+                */}
+              <DayPicker
+                mode="single"
+                defaultMonth={monday}
+                fromDate={agendaFrom}
+                toDate={agendaTo}
+                /* Esplicito: senza una locale react-day-picker aprirebbe la
+                   settimana di domenica, mentre `startOfWeek` è lunedì — la
+                   banda e la griglia sotto direbbero due settimane sfalsate. */
+                weekStartsOn={1}
+                /*
+                 * OGGI È QUELLO DELLA DEMO, NON QUELLO DELLA MACCHINA.
+                 *
+                 * Senza questa riga react-day-picker prende `new Date()` per
+                 * sé, quindi l'anello di "oggi" cadrebbe sulla data vera del
+                 * computer — cioè su un giorno qualunque dell'agenda, o su
+                 * nessuno — mentre tutto il resto della demo deriva da
+                 * `DEMO_TODAY` (§5.4). È il modo in cui una libreria chiama
+                 * `new Date()` al posto nostro.
+                 */
+                today={today}
+                modifiers={{
+                  shownWeek: { from: monday, to: addDays(monday, 6) },
+                  hasSessions: daysWithSessions,
+                }}
+                modifiersClassNames={{
+                  shownWeek: 'bg-accent text-accent-foreground rounded-none',
+                  /* `secondary-strong` e non `secondary`: il puntino è
+                     l'unico portatore visivo dell'informazione "qui c'è una
+                     seduta", quindi vale la soglia 3:1 del non-testo — e il
+                     token base sta a 2.53:1 sulla banda (§6.1). */
+                  hasSessions:
+                    "relative after:absolute after:bottom-1 after:left-1/2 after:-translate-x-1/2 after:h-1 after:w-1 after:rounded-full after:bg-secondary-strong after:content-['']",
+                }}
+                classNames={{
+                  /* Oggi è un anello e non un riempimento: il default di
+                     `ui/calendar.tsx` è `bg-accent`, cioè lo stesso fondo
+                     della banda, e sotto la banda sparirebbe. Si sovrascrive
+                     **dal call site** — `Calendar` mette `...classNames` in
+                     coda — invece di toccare un file congelato (§3). */
+                  day_today: 'ring-1 ring-inset ring-primary font-semibold',
+                  /* La cella si allarga perché ci stia "lun": la forma a due
+                     lettere Intl non la produce, e scriverla qui sarebbe un
+                     formato cablato (§11). */
+                  head_cell:
+                    'text-muted-foreground rounded-md w-10 font-normal text-[0.8rem]',
+                  day: 'h-8 w-10 p-0 font-normal aria-selected:opacity-100',
+                }}
+                formatters={{
+                  formatCaption: (month) => formatMonthYear(month),
+                  formatWeekdayName: (day) => formatWeekdayShort(day),
+                }}
+                labels={{
+                  labelPrevious: () => t.professional.calendar.pickerPreviousMonth,
+                  labelNext: () => t.professional.calendar.pickerNextMonth,
+                  labelWeekday: (day) => formatWeekday(day),
+                }}
+                /*
+                 * IL PUNTINO LO DEVE DIRE ANCHE A PAROLE, e `labels.labelDay`
+                 * non serve a niente: in react-day-picker 8.10 è **definito e
+                 * mai consumato** — verificato nel sorgente distribuito, dove
+                 * `labelPrevious`, `labelNext` e `labelWeekday` finiscono su un
+                 * `aria-label` e `labelDay` non compare da nessuna parte. I
+                 * pulsanti dei giorni non hanno nome accessibile oltre al
+                 * numero.
+                 *
+                 * La frase arriva quindi da `DayContent`, sempre **dal call
+                 * site**: il numero come prima, più un testo per i soli lettori
+                 * di schermo dove c'è una seduta. Il colore non è mai l'unica
+                 * cosa che porta un significato (§6.1).
+                 *
+                 * `components` sostituisce quello di `ui/calendar.tsx` invece
+                 * di fondersi — `{...props}` sta in coda — quindi le due icone
+                 * delle frecce vanno ripassate qui, o le frecce del mese
+                 * resterebbero vuote.
+                 */
+                components={{
+                  IconLeft: () => <ChevronLeft className="h-4 w-4" />,
+                  IconRight: () => <ChevronRight className="h-4 w-4" />,
+                  DayContent: ({ date, activeModifiers }) => (
+                    <>
+                      {formatNumber(date.getDate())}
+                      {activeModifiers.hasSessions === true && (
+                        <span className="sr-only">
+                          {interpolate(
+                            t.professional.calendar.pickerDayWithSessions,
+                            { date: formatDate(date) },
+                          )}
+                        </span>
+                      )}
+                    </>
+                  ),
+                }}
+                onSelect={(day) => {
+                  if (day === undefined) return;
+                  setWeekOffset(weeksBetween(today, day));
+                  setPickerOpen(false);
+                }}
+              />
+              <p className="px-3 pb-3 text-xs text-muted-foreground tabular-nums">
+                {interpolate(t.professional.calendar.pickerRange, {
+                  from: formatDate(agendaFrom),
+                  to: formatDate(agendaTo),
+                })}
+              </p>
+            </PopoverContent>
+          </Popover>
           <div className="flex items-center gap-2">
             {/* Solo fuori dalla settimana corrente: sulla settimana di oggi
                 sarebbe un comando che non fa niente. Senza, durante la

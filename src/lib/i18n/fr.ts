@@ -568,6 +568,10 @@ export const fr: Dictionary = {
       previousWeek: "Semaine précédente",
       nextWeek: "Semaine suivante",
       backToThisWeek: "Cette semaine",
+      pickerPreviousMonth: "Mois précédent",
+      pickerNextMonth: "Mois suivant",
+      pickerDayWithSessions: "{date}, avec des séances",
+      pickerRange: "L'agenda va du {from} au {to}.",
       empty: "Aucune séance cette semaine.",
     },
 

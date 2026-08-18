@@ -502,6 +502,10 @@ export const de: Dictionary = {
       previousWeek: "Vorherige Woche",
       nextWeek: "Nächste Woche",
       backToThisWeek: "Diese Woche",
+      pickerPreviousMonth: "Vorheriger Monat",
+      pickerNextMonth: "Nächster Monat",
+      pickerDayWithSessions: "{date}, mit Sitzungen",
+      pickerRange: "Die Agenda läuft vom {from} bis zum {to}.",
       empty: "Keine Sitzung in dieser Woche.",
     },
 
