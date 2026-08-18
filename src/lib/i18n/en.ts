@@ -522,6 +522,9 @@ export const en: Dictionary = {
       legendFree: "Free",
       legendPast: "Past",
       today: "today",
+      previousWeek: "Previous week",
+      nextWeek: "Next week",
+      backToThisWeek: "This week",
       empty: "No session this week.",
     },
 

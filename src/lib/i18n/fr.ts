@@ -565,6 +565,9 @@ export const fr: Dictionary = {
       legendFree: "Libre",
       legendPast: "Passée",
       today: "aujourd'hui",
+      previousWeek: "Semaine précédente",
+      nextWeek: "Semaine suivante",
+      backToThisWeek: "Cette semaine",
       empty: "Aucune séance cette semaine.",
     },
 

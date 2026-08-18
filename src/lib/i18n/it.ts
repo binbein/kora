@@ -644,6 +644,11 @@ export const it = {
       legendFree: "Libera",
       legendPast: "Passata",
       today: "oggi",
+      /* I nomi accessibili dicono dove portano: due frecce mute
+         lasciano chi tabula senza sapere cosa preme (§11). */
+      previousWeek: "Settimana precedente",
+      nextWeek: "Settimana successiva",
+      backToThisWeek: "Questa settimana",
       empty: "Nessuna sessione in questa settimana.",
     },
 
