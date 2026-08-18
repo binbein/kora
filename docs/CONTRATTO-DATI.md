@@ -259,6 +259,23 @@ annullata senza scrivere niente. È il prezzo di tenere il motivo e la nota come
 due campi piatti: in produzione, se la distinzione servisse, diventano un
 oggetto solo la cui assenza dice "non annullata".
 
+**La proiezione del dipendente porta l'annullamento, non la nota** (18.08.2026).
+`Appointment` ha ora `cancellationReasonKey`, e la lettura che lo espone —
+`getAppointments` — restituisce **anche le sedute annullate ancora future**:
+finché dava le sole in programma, una disdetta faceva sparire la riga e chi
+aveva prenotato non aveva nessun modo di saperlo. Le erogate restano fuori:
+quelle sono il contatore.
+
+**La nota di annullamento resta dove sta**, ed è la stessa forma di
+`SessionNote`: vive su `ProfessionalSession`, e `Appointment` **non ha il
+campo**. Chi la legge non è una decisione presa da questo contratto, ed è il
+motivo per cui il campo non c'è invece di esserci e non essere mostrato.
+
+**Chi conta gli appuntamenti in programma filtra sullo stato**, e il filtro
+appartiene a chi conta: la lista risponde a *cosa c'è sul mio calendario*, il
+contatore a *quante sedute ho in programma*, e sono due domande diverse sullo
+stesso insieme.
+
 `EmployeeDirectoryEntry` è l'altra metà della stessa garanzia, dal lato
 dell'azienda: porta iniziali e reparto e **non ha nessun campo su cui un nome
 possa arrivare**, esattamente come `ProfessionalSession`. Non porta nemmeno un
@@ -814,6 +831,15 @@ calendario e sul riepilogo compensi, che oggi condividono una fetch sola. Il
 parametro non è nell'interfaccia oggi: dichiararlo senza chiamanti non lo
 renderebbe più vero, e sarebbe un'opzione che nessuno passa (`CLAUDE.md` §11).
 
+**Dal 18.08.2026 il chiamante che lo vorrà esiste già, ed è il calendario**: si
+sposta di settimana in settimana senza limiti in nessuno dei due versi, quindi
+può uscire — e nella demo esce davvero — **dalla finestra di sedute che il
+provider tiene**. Oggi non è un difetto: fuori da quella finestra la settimana
+è vuota, e una settimana vuota è uno stato legittimo che la schermata rende. Il
+giorno del passaggio lo diventa, perché "vuota" e "non caricata" smettono di
+essere la stessa cosa a schermo — ed è lì che il calendario deve saper chiedere
+la settimana che mostra invece di filtrare ciò che ha.
+
 ## 7. Semplificazioni del dataset demo, non del contratto
 
 Dichiarate perché in produzione **saltano**, ed è bene che saltino rumorosamente
@@ -1159,6 +1185,9 @@ il ciclo vero ne ha di più:
   professionista meno le occupate, quindi un'ora liberata che non è una fascia
   dichiarata non torna proponibile — e non è un difetto, è l'assenza della
   pubblicazione della disponibilità, che è l'ultima voce di questo elenco.
+  **E quando invece ricompare, che ricompaia è una policy e non una
+  conseguenza**: la separazione fra l'invariante e l'assunzione sta in *"cosa
+  vuol dire occupato"*, qui sotto (18.08.2026).
 
   **Manca ancora, e sono quattro cose distinte:**
 
@@ -1176,7 +1205,16 @@ il ciclo vero ne ha di più:
   - **la riprogrammazione**, che non è un annullamento seguito da una
     prenotazione: le due sedute sono la stessa, e trattarle come due record
     perde il filo del percorso — che è precisamente ciò da cui `SessionType`
-    deriva "follow-up".
+    deriva "follow-up";
+  - **la notifica** (18.08.2026). Dal 18.08 il dipendente **vede**
+    l'annullamento — la seduta resta sul suo calendario con il suo stato e con
+    chi l'ha disdetta (§3) — ma lo vede **solo se apre l'applicazione**. In
+    produzione una disdetta parte da un'email o da una push, e con lei arrivano
+    la cadenza, il canale, e la domanda su cosa succede a chi **non ha una
+    casella aziendale** (§8.8, realtà del personale). Nessuna delle quattro voci
+    qui sopra la copre, ed è la metà che manca proprio ora che l'altra c'è: una
+    disdetta di domani mattina che il dipendente scopre dopodomani è, per lui,
+    una seduta mancata.
 - **La lista d'attesa**, che è la risposta alla promessa del Business Plan sul
   primo appuntamento entro 24 ore quando gli slot finiscono.
 - **La pubblicazione della disponibilità**: gli slot sono un dato del dataset, e
@@ -1204,8 +1242,28 @@ esclusi**: una seduta che finisce alle 17:30 e una che comincia alle 17:30 si
 `a.inizio < b.fine && b.inizio < a.fine`.
 
 **Le annullate non occupano la loro fascia**: da quando una seduta è annullata,
-quell'ora torna prenotabile da chiunque — altrimenti l'annullamento non
-libererebbe niente, che è il solo motivo per cui esiste.
+quell'ora non è più occupata — altrimenti l'annullamento non libererebbe niente,
+che è il solo motivo per cui esiste. **Questo è l'invariante**, e vale.
+
+**"E torna prenotabile da chiunque" è un'altra cosa, ed è una policy di prodotto
+che nessuno ha deciso** (18.08.2026). Fino a oggi questa riga la affermava di
+seguito all'invariante, come se ne fosse la seconda metà: non lo è. Una
+professionista che annulla può **non volere nessun altro a quell'ora** — è
+malata, o quel buco le serve — e le due strade producono prodotti diversi:
+l'ora torna sul mercato per default, oppure si chiude e la riapre lei. Oggi vale
+la prima, ed è **un'assunzione dell'implementazione, non una garanzia del
+contratto**.
+
+**È la faccia che si vede per prima della pubblicazione della disponibilità**,
+l'ultima voce dell'elenco qui sopra: finché una professionista non ha nessun
+posto dove dichiarare quando lavora, non ha nemmeno dove dire *"questa fascia
+no"*. Le due decisioni si prendono insieme.
+
+**Da leggere insieme al paragrafo del §8.5 su cosa il frontend fa oggi** —
+*liberare una fascia e riproporla sono due cose* — che sta poche righe più su:
+lì si dice che l'ora liberata non ricompare fra le proponibili se non era una
+fascia dichiarata, qui che **anche quando ricompare** è una scelta e non una
+conseguenza.
 
 **Vale in tre punti e non in uno**, e in produzione sono tre superfici diverse:
 ciò che l'elenco degli slot liberi non propone, ciò che la prenotazione rifiuta,
