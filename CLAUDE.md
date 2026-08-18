@@ -107,11 +107,16 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      **IL CONTO SI FA SULL'ALBERO SINTATTICO, NON CON UN GREP**, ed è la
      clausola senza la quale il criterio autorizzava proprio i numeri sbagliati
      che esiste per non far nascere (16.08.2026). La ragione è una proprietà del
-     file, non della fretta di chi conta: **62 chiavi hanno il valore
+     file, non della fretta di chi conta: **decine di chiavi hanno il valore
      sulla riga successiva**, perché la stringa non ci stava. Un motivo di
      ricerca per riga le prende o le perde a seconda che il suo `\s*` attraversi
      l'a capo — due implementazioni entrambe fedeli alla frase qui sopra e
-     lontane 62. Il comando che lo esegue davvero:
+     lontane di decine di chiavi. **Quante siano non si scrive qui**: il numero
+     cambia da una lingua all'altra — le quattro traduzioni vanno a capo dove
+     capita, non dove va a capo l'italiano — quindi una cifra sola direbbe il
+     falso su tre dizionari su quattro, e nessuna delle quattro serve a chi
+     legge: a decidere è il fatto, non la sua misura (18.08.2026). Il comando
+     che lo esegue davvero:
 
      ```
      node -e 'const ts=require("typescript"),fs=require("fs");
@@ -125,11 +130,15 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      Sull'albero non c'è niente da togliere: i commenti non sono nodi, e una
      proprietà o ha un letterale stringa per valore o non è una chiave foglia.
      Verificato: tante proprietà con inizializzatore letterale stringa quante
-     ne dichiara `EXPECTED_KEYS`, **109 oggetti e zero proprietà di altro
-     tipo**, identici sui quattro dizionari. *(Il conteggio delle chiavi non si
-     ripete qui: era il secondo dei cinque punti che l'hanno fatto invecchiare.
-     Gli oggetti restano, perché sono l'altra metà della prova che l'albero non
-     lascia fuori niente — e non si sono mossi.)*
+     ne dichiara `EXPECTED_KEYS`, **112 oggetti e zero proprietà di altro
+     tipo**, identici sui quattro dizionari (18.08.2026). *(Il conteggio delle
+     chiavi non si ripete qui: era il secondo dei cinque punti che l'hanno fatto
+     invecchiare. Gli oggetti restano, perché sono l'altra metà della prova che
+     l'albero non lascia fuori niente. Fino al 18.08.2026 questa riga diceva
+     **109** e aggiungeva «e non si sono mossi»: si erano mossi con le chiavi
+     di #62, ed è la stessa cifra ripetuta a mano che il resto della sezione ha
+     già consegnato al codice — qui resta perché è una prova sul metodo del
+     conteggio, non un numero che una schermata mostra.)*
 
      **Il guardrail conta a runtime e dà lo stesso numero**, verificato sui
      quattro dizionari il giorno in cui è nato: sull'albero i commenti non sono
