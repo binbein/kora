@@ -107,6 +107,15 @@ presentazione.
   che si è rotto in sala. Non cercare la navigazione a schermo — non c'è, e
   cercarla davanti a qualcuno costa più della frase.
 
+  **Se mostri l'annullamento, annulla quella seduta lì**, cioè le 10:00 di
+  venerdì 25.09 che hai appena prenotato — non una delle sedute che il
+  calendario porta già. Le disponibilità sono le fasce dichiarate della Dr.ssa
+  Meier meno quelle occupate: annullando la sua seduta ricorrente del giovedì
+  alle 17:30 quell'ora smette di occupare ma **non compare** fra gli slot
+  proponibili, perché non è una fascia del piano — e a schermo si legge come
+  "l'annullamento non ha liberato nulla" (`CLAUDE.md` §10.D.3). Con lo slot
+  appena prenotato il giro si chiude: sparisce prenotando, torna annullando.
+
 - **La richiesta demo si mostra alla fine, e non ha più una coreografia.**
   Compila il form da `/demo` durante il giro normale, e quando vuoi mostrarne
   l'esito clicca **Admin** nella barra: la richiesta è in tabella, con azienda,

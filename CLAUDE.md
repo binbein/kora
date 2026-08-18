@@ -2095,9 +2095,22 @@ demo scollegate.
    `SessionNote`: `PlatformSession` è la prova che non può arrivare altrove.
 
    **Quello che ne discende era già scritto per le annullate**, e va verificato
-   invece che dato per fatto: lo slot torna prenotabile, il compenso non matura,
+   invece che dato per fatto: l'ora torna libera, il compenso non matura,
    il contatore delle sessioni usate non si muove — conta le erogate — e la
-   cella del calendario si svuota. Metà del vuoto del
+   cella del calendario si svuota.
+
+   **"L'ora torna libera" non vuol dire "lo slot ricompare fra i proponibili"**,
+   ed è la precisazione senza la quale una prova a schermo smentisce questa riga
+   (18.08.2026). Gli slot offerti sono le **fasce del piano** della
+   professionista meno quelle occupate: annullando una seduta che non cade su
+   una di quelle fasce — le ricorrenti dei pazienti non ci cadono — quell'ora
+   smette di occupare e **non compare fra i proponibili**, perché non ci è mai
+   stata. La garanzia è quella del contratto, cioè che un'annullata non occupi
+   più la sua ora; il ricomparire vale per le sole fasce del piano, ed è il caso
+   della seduta appena prenotata. Da qui la conseguenza operativa in
+   `docs/PITCH.md`: davanti a un investitore si annulla quella.
+
+   Metà del vuoto del
    `docs/CONTRATTO-DATI.md` §8.5 si chiude qui; l'altra metà — preavviso, chi
    paga una disdetta tardiva, riprogrammazione, disdetta dal lato del dipendente
    — resta dichiarata lì.

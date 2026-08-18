@@ -1152,6 +1152,14 @@ il ciclo vero ne ha di più:
   accetta una nota libera che resta sulla proiezione di chi cura, e libera la
   fascia — una seduta annullata non occupa più la sua ora (§4).
 
+  **Liberare una fascia e riproporla sono due cose**, e chi implementa
+  l'elenco degli slot deve saperlo prima di scriverlo (18.08.2026): la
+  garanzia è che l'ora non risulti più occupata, non che ricompaia fra le
+  disponibilità. Nel frontend le disponibilità sono le fasce dichiarate della
+  professionista meno le occupate, quindi un'ora liberata che non è una fascia
+  dichiarata non torna proponibile — e non è un difetto, è l'assenza della
+  pubblicazione della disponibilità, che è l'ultima voce di questo elenco.
+
   **Manca ancora, e sono quattro cose distinte:**
 
   - **la disdetta dal lato del dipendente**, che è l'altra metà del verso:
