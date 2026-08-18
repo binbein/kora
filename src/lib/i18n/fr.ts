@@ -281,6 +281,9 @@ export const fr: Dictionary = {
       appointmentsTitle: "Tes prochains rendez-vous",
       appointmentsEmpty: "Tu n'as aucun rendez-vous prévu.",
       appointmentWhen: "{weekday} {date}, à {time}",
+      appointmentCancelled: "Annulé",
+      appointmentCancelledByProfessional: "{professional} a annulé ce rendez-vous.",
+      appointmentCancelledByPatient: "Tu as annulé ce rendez-vous.",
 
       /* I segnaposto ci sono tutti e cambiano posto: in francese "sur {total}"
          segue il sostantivo, e il guardrail confronta gli insiemi proprio per

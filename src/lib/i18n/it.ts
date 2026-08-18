@@ -223,6 +223,23 @@ export const it = {
       appointmentsEmpty: "Non hai appuntamenti in programma.",
       /** "giovedì 24.09.2026, alle 17:30" */
       appointmentWhen: "{weekday} {date}, alle {time}",
+      /*
+       * L'annullamento visto dal dipendente (18.08.2026). Registro
+       * consumer: la frase dice **chi** ha annullato, perché "l'hai
+       * annullato tu" e "l'ha annullato la professionista" sono due
+       * fatti diversi. La nota che la professionista può lasciare non
+       * arriva qui: vive sulla sua proiezione, non su questa.
+       */
+      appointmentCancelled: "Annullato",
+      /*
+       * Il nome apre la frase, come nelle altre tre lingue, e non è una scelta
+       * di stile: "l'ha annullato {professional}" chiede l'articolo davanti al
+       * titolo — *la* Dr.ssa Meier, *il* Dr. Rossi — e l'articolo lo decide il
+       * genere di chi cura, che il segnaposto non porta.
+       */
+      appointmentCancelledByProfessional:
+        "{professional} ha annullato questo appuntamento.",
+      appointmentCancelledByPatient: "Hai annullato questo appuntamento.",
 
       /** "3 su 10 sessioni usate" */
       sessions: "{used} su {total} sessioni usate",
