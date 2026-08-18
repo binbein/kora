@@ -568,13 +568,22 @@ export class MockDataProvider implements DataProvider {
 
   /*
    * Gli appuntamenti del dipendente sono le sue sessioni viste dall'altro lato:
-   * stesso record, proiezione diversa. Il professionista ne riceve le iniziali,
-   * il dipendente il professionista per intero.
+   * stesso record, proiezione diversa. Il professionista ne riceve il nome, il
+   * dipendente il professionista per intero.
    *
-   * Solo le sedute in programma, dalla più imminente: il contratto promette
-   * quell'ordine, quindi lo garantisce l'implementazione e non l'ordinamento
-   * con cui il dataset è costruito — in M3 la prenotazione aggiungerà sedute
-   * a runtime.
+   * Dalla più imminente: il contratto promette quell'ordine, quindi lo
+   * garantisce l'implementazione e non l'ordinamento con cui il dataset è
+   * costruito — la prenotazione aggiunge sedute a runtime.
+   *
+   * QUALI SEDUTE, E PERCHÉ NON SOLO LE `scheduled` (18.08.2026). Ci sono anche
+   * le **annullate ancora future**: senza, una disdetta della professionista
+   * faceva sparire la riga e il dipendente non aveva nessun modo di sapere che
+   * c'era stata. Le **erogate** restano fuori come sono sempre state — quelle
+   * sono il contatore.
+   *
+   * Un'annullata **passata** esce da sé, con la stessa condizione che regge le
+   * altre: quando la sua ora è passata non è più un appuntamento. È anche il
+   * motivo per cui l'avviso non ha bisogno di un gesto per toglierlo.
    */
   getAppointments(): Promise<Appointment[]> {
     const mine: Appointment[] = [];
@@ -582,7 +591,9 @@ export class MockDataProvider implements DataProvider {
     for (const professional of PROFESSIONALS) {
       for (const session of this.sessionsOf(professional.id)) {
         if (session.patientId !== PORTAL_PATIENT_EMPLOYEE_ID) continue;
-        if (session.status !== "scheduled") continue;
+        const upcomingCancellation =
+          session.status === "cancelled" && session.start > DEMO_TODAY;
+        if (session.status !== "scheduled" && !upcomingCancellation) continue;
         mine.push({
           id: session.id,
           kind: serviceOf(professional),
@@ -591,6 +602,7 @@ export class MockDataProvider implements DataProvider {
           durationMinutes: session.durationMinutes,
           status: session.status,
           type: session.type,
+          cancellationReasonKey: session.cancellationReasonKey,
         });
       }
     }

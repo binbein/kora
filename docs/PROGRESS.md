@@ -649,11 +649,18 @@ dataset con il messaggio giusto.
 - **La home elenca tutti gli appuntamenti in programma**, che oggi sono tre più
   quelli che si prenotano durante la demo. È voluto — è così che si vede
   comparire quello nuovo — ma se l'elenco crescesse troppo andrebbe accorciato.
-- **Il calendario del professionista mostra solo la settimana corrente.**
+- ~~**Il calendario del professionista mostra solo la settimana corrente.**
   Prenotando oltre il 27.09 la seduta compare nelle sedute in programma e non
   nella griglia. Non è un difetto di questa passata — il calendario è di M2 e non
   ha navigazione fra settimane — ma è la ragione per cui la prova a schermo è
-  stata fatta due volte, una dentro la settimana e una fuori.
+  stata fatta due volte, una dentro la settimana e una fuori.~~ → **chiuso il
+  18.08.2026**: il calendario si sposta di settimana, senza limiti, con il
+  ritorno a oggi in un clic. Il seam c'era dai tempi di M2 e non era mai stato
+  usato — `weekGrid` prende la settimana mostrata e oggi come due parametri
+  distinti — e a chiuderlo è stata la contraddizione fra due schermate dello
+  stesso portale: l'elenco pazienti dichiarava una prossima seduta che il
+  calendario non poteva raggiungere. Il racconto sta nella passata del
+  18.08.2026, in fondo alla sezione refinement.
 
 #### L'area pubblica (§10.A)
 
@@ -5423,6 +5430,185 @@ un founder … si tolgono dal repository e si ripulisce la storia con
 Il nome del file e il documento non dicono lo stesso numero, e a essere isolato è
 il nome. Non è un difetto del repository e non si rinomina qui: è una cosa da
 chiedere ai founder, insieme alla decisione di quando i PDF escono.
+
+#### L'annullamento visibile e le settimane (18.08.2026)
+
+**Tre di codice — `feat:` ×2, `fix:` ×1 — e quattro di documenti, contando il
+commit di chiusura.** Ripartizione da
+`git log --format='%s' master..HEAD | sed 's/:.*//' | sort | uniq -c`; **il
+totale lo dice git**, per la clausola del 18.08.2026 in testa a questo file.
+
+**Nessun numero del §8 e del §9 si muove**, le rotte restano **26**, nessuna
+schermata nasce. Il contratto cresce in tre punti e **solo in lettura**: un
+campo su `Appointment`, una riga sul periodo dei metodi del professionista, e
+una policy separata da un invariante.
+
+È la passata che chiude ciò che si vede **provando** l'annullamento costruito il
+17.08: tre difetti che nessun documento nominava, e che si trovano solo facendo
+il giro intero.
+
+##### Il dipendente sa che la sua seduta è stata annullata
+
+Era il più visibile dei tre e nessuna riga lo diceva: `getAppointments`
+restituiva le sole `scheduled`, quindi la disdetta della professionista faceva
+**sparire la riga** dal lato del dipendente. Non è una delle quattro voci che il
+`docs/CONTRATTO-DATI.md` §8.5 dichiarava mancanti — quelle riguardano il
+preavviso, chi paga, la riprogrammazione e la disdetta dal lato del paziente —
+era un buco che nessuno aveva nominato.
+
+**La lettura porta anche le annullate ancora future**, non le erogate: la
+domanda che risponde è *cosa c'è sul mio calendario*, e una seduta annullata di
+domani ci sta finché domani non passa. Le erogate restano il contatore.
+
+**IL PUNTO IN CUI QUESTA MODIFICA SI ROMPEVA IN SILENZIO, ed è il motivo per cui
+i consumatori si cercano prima**: `EmployeeHome` costruisce `{scheduled}`
+contando la lista filtrata per servizio, quindi con le annullate dentro la frase
+*"3 su 10 sessioni usate · N in programma"* sarebbe **salita di uno** nel momento
+esatto in cui il dipendente scopre che la seduta non c'è più. Il filtro sullo
+stato sta nel punto che conta. **E il secondo consumatore non era la home**: la
+`HeroProductPreview` della landing mostra `appointments[0]` come "prossimo
+appuntamento", e avrebbe annunciato una seduta disdetta.
+
+**Nessun gesto per togliere l'avviso**, ed è una decisione: toglierlo sarebbe una
+scrittura nuova sul provider per un gesto che nessuno ha chiesto, tenerlo per
+sempre sarebbe il vicolo cieco del §10. Sparisce da sé quando la sua ora passa,
+che è il comportamento che la lettura già dà.
+
+**La nota di annullamento non esce verso il dipendente**: vive su
+`ProfessionalSession`, e `Appointment` non ha il campo — la stessa forma di
+`SessionNote`. Chi la legge è una decisione di prodotto che nessuno ha preso.
+
+**Il §8.5 guadagna la voce che mancava: la notifica non esiste.** Il dipendente
+l'annullamento lo vede **solo se apre l'applicazione**, e questa passata rende
+quel vuoto visibile proprio perché ne costruisce metà.
+
+##### Il calendario si sposta di settimana
+
+Difetto dichiarato da M3, e a schermo produceva una contraddizione fra due
+schermate dello stesso portale: `/professional/pazienti` diceva *"prossima
+seduta 01.10"* e il calendario non poteva arrivarci.
+
+**Il seam c'era dai tempi di M2 e non era mai stato usato**: `weekGrid` prende la
+settimana mostrata e oggi come **due parametri distinti**, e la pagina passava
+`today` a tutti e due. Adesso il primo è la settimana navigata, quindi il
+marcatore "oggi" non viaggia con la griglia.
+
+**Le KPI non seguono la navigazione** (decisione della passata): sedute della
+settimana, prossima seduta, agenda del mese e pazienti attivi restano ancorate a
+oggi, perché rispondono a *come sto adesso*. È la disciplina della cornice del
+trimestre letta al contrario — lì ciò che segue il comando sta dentro la
+cornice, qui **il comando comanda la sola griglia** — e l'etichetta sopra la
+griglia dichiara quale settimana mostra. Per questo l'etichetta è **scesa** dal
+sottotitolo di pagina alla riga dei comandi.
+
+**I comandi in cima alla card e non ai lati**, per due ragioni che si vedono: le
+righe della griglia si ricavano dalle sedute della settimana, quindi la sua
+altezza cambia navigando e su una settimana vuota è **zero** — due frecce
+centrate verticalmente si centrerebbero su niente — e l'ordine di tabulazione
+attraverserebbe tutta la griglia. **La riga sta fuori dal ramo del vuoto**, o da
+una settimana senza sedute non si tornerebbe più indietro.
+
+**Nessun limite in nessuno dei due versi.** Una settimana senza sedute è uno
+stato vero e la card lo dice a parole; una freccia disabilitata a un confine
+inventato invita la domanda "perché è grigia?" dentro trenta minuti contati. Il
+ritorno a oggi è un clic e compare **solo** fuori dalla settimana corrente.
+
+**Il contratto guadagna una riga e non cambia**: il §6 diceva già che in
+produzione `getProfessionalSessions` prenderà un intervallo. Adesso il chiamante
+che lo vorrà **esiste**, perché la navigazione esce davvero dalla finestra di
+sedute che il provider tiene — e quel giorno "vuota" e "non caricata" smettono
+di essere la stessa cosa a schermo.
+
+##### Il badge "Annullata" era sotto l'AA, ed è il terzo zero falso
+
+`bg-destructive/10 text-destructive` misurava **3.30:1** e il badge del motivo
+**3.76:1**, mentre il `Badge` di shadcn è testo normale: la soglia è 4.5. Il
+rimedio non era una decisione nuova — `destructive-strong` esiste dall'11.08 per
+questo — e ora misurano **4.92** e **5.60**.
+
+**Perché il censimento non li aveva visti**: stanno dentro
+`TabsContent value="cancelled"`, e Radix **non monta i contenuti dei tab
+chiusi**. Non erano nodi difficili da leggere: **non erano nodi**. È la terza
+forma della stessa famiglia — dopo l'`opacity` che il colore non porta e il
+`fill` dentro un `<svg>` — e da qui il `CLAUDE.md` §6.1 chiede che un censimento
+dichiari **quanti nodi ha percorso**, perché è l'unico numero che distingue
+"niente sotto soglia" da "non ho guardato".
+
+##### Il censimento rifatto su ciò che il DOM non contiene
+
+Viewport 1280×900, `innerWidth` verificato prima di ogni misura, e per ogni
+superficie il numero di **nodi percorsi** e di **nodi di testo controllati**:
+
+| superficie | percorsi | controllati | sotto soglia |
+|---|---|---|---|
+| `/professional` calendario, settimana corrente | 141 | 46 | 0 |
+| dialogo di annullamento | 16 | 8 | 0 |
+| `/professional/sessioni` · In programma | 292 | 120 | 0 |
+| · Erogate | 796 | 390 | 0 |
+| · Annullate | 51 | 18 | **0, dopo il fix** |
+| dialogo nota di sessione | 19 | 6 | 0 |
+| `/employee/psicologi` · Psicologi | 109 | 39 | 0 |
+| · Coach | 65 | 21 | 0 |
+| dialogo di prenotazione, con giorno e ora scelti | 23 | 12 | 0 |
+| `/employee/checkup` | 88 | 28 | 0 |
+| dialogo referto (i due badge "Da tenere d'occhio") | 38 | 20 | 0 |
+| `/hr?fail=getCompany` | 31 | 10 | 0 |
+| `/hr?empty=getRoiSnapshot` | 46 | 15 | 0 |
+| `/hr?role=employee`, accesso negato | 11 | 4 | 0 |
+
+**I controlli disabilitati sono esenti dalla 1.4.3 e vanno saltati**: la sola
+lista sessioni ne ha **18**, tutti a 3.10:1 per l'`opacity` che shadcn mette su
+`:disabled`. Uno strumento che non li salta trova diciotto difetti che non
+esistono — ed è il modo più rapido per far perdere fiducia in un censimento che
+altrove ha ragione.
+
+##### La policy che il contratto affermava come invariante
+
+Il `docs/CONTRATTO-DATI.md` §8.5 diceva al backend che *"da quando una seduta è
+annullata, quell'ora torna prenotabile da chiunque"*. **La prima metà è un
+invariante e resta**; la seconda è una **policy di prodotto che nessuno ha
+deciso**: una professionista che annulla può non volere nessun altro a
+quell'ora. Le due sono state separate con la data, e la decisione è nominata
+accanto alla **pubblicazione della disponibilità**, di cui è la faccia che si
+vede per prima.
+
+##### Verificato a schermo, viewport 1280×900
+
+Il giro intero del marketplace, nell'ordine:
+
+- **prenotato** venerdì 25.09 alle 10:00 dal portale dipendente: settimana del
+  professionista **5 → 6**, mese **21 → 22**, la cella compare nella griglia;
+- **annullato dal calendario** con una nota: settimana **6 → 5**, mese
+  **22 → 21**, la cella si svuota;
+- **tornato dal dipendente**: la riga **resta** con *"Dr.ssa Meier ha annullato
+  questo appuntamento."* e il badge "Annullato", e il contatore in programma
+  **scende** da 4 a 3 — non sale;
+- **letta la prossima seduta** nell'elenco pazienti e **raggiunta dal
+  calendario** con la freccia avanti: la settimana 28.09–04.10 mostra Kunz il 29
+  e Bernasconi il 1° ottobre;
+- **navigazione oltre il dataset**: la settimana del 19.10 è vuota, la card lo
+  dice, e "Questa settimana" riporta a oggi in un clic;
+- **le manopole sui metodi toccati**: `?fail=getAppointments` e
+  `?fail=getProfessionalSessions` rendono l'errore di sempre,
+  `?empty=getAppointments` la frase esistente sugli appuntamenti,
+  `?empty=getProfessionalSessions` la settimana vuota **con i comandi ancora
+  lì**;
+- **in tedesco** la riga dei comandi tiene — "Vorherige Woche", "Diese Woche",
+  "Nächste Woche", nessun overflow orizzontale su calendario, home e sessioni;
+- **11 rotte percorse con un listener sugli errori**: zero;
+- `lint`, `typecheck`, `build` e `build:demo` a posto; guardrail **111 = 102 +
+  9**, invariati; **775 chiavi** ×4.
+
+##### Trovato e non toccato
+
+- **Il dialogo di annullamento promette la riproposizione**: *"L'ora torna
+  prenotabile e la sessione non entra nei compensi."* È la stessa imprecisione
+  che i documenti hanno corretto il 18.08 — l'ora si libera, ma ricompare fra
+  le proponibili **solo** se è una fascia del piano — e per lo slot che il
+  pitch annulla è vera. Non toccata: sono quattro stringhe, e la frase giusta
+  dipende dalla policy che il contratto ha appena dichiarato non decisa.
+- **La legenda resta sotto una settimana vuota**: tre voci che spiegano celle
+  che non ci sono. Preesistente al ramo del vuoto, una riga, fuori perimetro.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

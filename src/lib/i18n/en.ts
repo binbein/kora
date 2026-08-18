@@ -243,6 +243,9 @@ export const en: Dictionary = {
       appointmentsTitle: "Your next appointments",
       appointmentsEmpty: "You don't have any appointments scheduled.",
       appointmentWhen: "{weekday} {date} at {time}",
+      appointmentCancelled: "Cancelled",
+      appointmentCancelledByProfessional: "{professional} cancelled this appointment.",
+      appointmentCancelledByPatient: "You cancelled this appointment.",
 
       sessions: "You've used {used} of your {total} sessions",
       sessionsWithScheduled:
@@ -519,6 +522,9 @@ export const en: Dictionary = {
       legendFree: "Free",
       legendPast: "Past",
       today: "today",
+      previousWeek: "Previous week",
+      nextWeek: "Next week",
+      backToThisWeek: "This week",
       empty: "No session this week.",
     },
 

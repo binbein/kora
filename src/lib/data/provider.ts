@@ -275,9 +275,17 @@ export interface DataProvider {
    */
   getEntitlement(kind: CappedServiceKind): Promise<SessionEntitlement>;
   /**
-   * Gli appuntamenti **in programma** della persona, dal più imminente. Le
-   * sedute già erogate non sono appuntamenti da elencare: sono il contatore
+   * Gli appuntamenti della persona che **non sono ancora passati**, dal più
+   * imminente: quelli in programma e quelli **annullati ma ancora futuri**.
+   *
+   * Le sedute già erogate non sono appuntamenti da elencare: sono il contatore
    * (`getEntitlement`), che è il conto di quelle.
+   *
+   * **Le annullate ci sono dal 18.08.2026**, perché senza di loro una disdetta
+   * della professionista faceva sparire la seduta e basta: chi aveva prenotato
+   * non aveva nessun modo di saperlo. Chi consuma questa lista per **contare**
+   * gli appuntamenti in programma filtra sullo stato — è il contatore della
+   * home, e il filtro sta nel punto che conta, non qui.
    */
   getAppointments(): Promise<Appointment[]>;
   /** Slot proponibili per un professionista, già filtrati sui liberi. */

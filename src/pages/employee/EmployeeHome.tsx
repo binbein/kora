@@ -153,6 +153,22 @@ function ServiceCounter({
   );
 }
 
+/*
+ * LA RIGA DICE ANCHE CHE UNA SEDUTA È STATA ANNULLATA (18.08.2026).
+ *
+ * Prima la lettura dava le sole `scheduled`, quindi una disdetta della
+ * professionista faceva sparire la riga: chi aveva prenotato non aveva nessun
+ * modo di saperlo. Adesso la seduta **resta al suo posto** con il suo stato e
+ * con chi l'ha annullata.
+ *
+ * SENZA NESSUN GESTO, ed è una scelta: un avviso che si toglie sarebbe una
+ * scrittura nuova sul provider per un gesto che nessuno ha chiesto, e uno che
+ * resta per sempre sarebbe il vicolo cieco del §10. Sparisce da sé quando la
+ * sua ora passa, perché da lì non è più un appuntamento.
+ *
+ * Il tono è quello del portale professionista, dove l'annullata ha già una
+ * resa: `destructive-strong` sul testo, token base sul bordo (§6.1).
+ */
 function AppointmentRow({
   appointment,
   professional,
@@ -160,12 +176,15 @@ function AppointmentRow({
   appointment: Appointment;
   professional: Professional | undefined;
 }) {
+  const cancelled = appointment.status === "cancelled";
+  const professionalName = professional
+    ? professionalDisplayName(professional)
+    : "";
+
   return (
     <div className="flex items-center justify-between gap-3 py-3 border-b border-border last:border-0">
       <div>
-        <p className="text-sm font-medium">
-          {professional ? professionalDisplayName(professional) : ""}
-        </p>
+        <p className="text-sm font-medium">{professionalName}</p>
         <p className="text-xs text-muted-foreground tabular-nums">
           {interpolate(t.employee.home.appointmentWhen, {
             weekday: formatWeekday(appointment.start),
@@ -173,9 +192,32 @@ function AppointmentRow({
             time: formatTime(appointment.start),
           })}
         </p>
+        {/* Il motivo è opzionale sul tipo — assente vuol dire che la seduta non
+            è annullata — quindi la frase nasce con lui. La nota libera della
+            professionista non arriva da questa parte: non è un campo di
+            `Appointment` (§3 del contratto). */}
+        {cancelled && appointment.cancellationReasonKey && (
+          <p className="text-xs text-destructive-strong mt-1">
+            {appointment.cancellationReasonKey === "by_professional"
+              ? interpolate(
+                  t.employee.home.appointmentCancelledByProfessional,
+                  { professional: professionalName },
+                )
+              : t.employee.home.appointmentCancelledByPatient}
+          </p>
+        )}
       </div>
-      <Badge variant="outline" className="flex-shrink-0">
-        {t.sessionType[appointment.type]}
+      <Badge
+        variant="outline"
+        className={
+          cancelled
+            ? "flex-shrink-0 text-destructive-strong border-destructive/30"
+            : "flex-shrink-0"
+        }
+      >
+        {cancelled
+          ? t.employee.home.appointmentCancelled
+          : t.sessionType[appointment.type]}
       </Badge>
     </div>
   );
@@ -229,8 +271,20 @@ export default function EmployeeHome() {
     return null;
   }
 
+  /*
+   * IL FILTRO SULLO STATO STA QUI, NON NELLA LETTURA (18.08.2026).
+   *
+   * `getAppointments` porta anche le annullate ancora future, perché la riga
+   * qui sopra deve poterle mostrare; **il contatore conta le sole in
+   * programma**, o la frase "{scheduled} in programma" salirebbe di uno
+   * annullando — cioè direbbe il falso nel momento esatto in cui il dipendente
+   * scopre che la seduta non c'è più.
+   */
   const scheduledFor = (kind: CappedServiceKind) =>
-    appointments.filter((appointment) => appointment.kind === kind).length;
+    appointments.filter(
+      (appointment) =>
+        appointment.kind === kind && appointment.status === "scheduled",
+    ).length;
 
   /*
    * Il consiglio viene dall'area su cui il piano si apre, che è quella debole

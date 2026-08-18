@@ -229,6 +229,9 @@ export const de: Dictionary = {
       appointmentsTitle: "Deine nächsten Termine",
       appointmentsEmpty: "Du hast keine geplanten Termine.",
       appointmentWhen: "{weekday} {date}, um {time}",
+      appointmentCancelled: "Abgesagt",
+      appointmentCancelledByProfessional: "{professional} hat den Termin abgesagt.",
+      appointmentCancelledByPatient: "Du hast den Termin abgesagt.",
 
       sessions: "{used} von {total} Sitzungen genutzt",
       sessionsWithScheduled:
@@ -496,6 +499,9 @@ export const de: Dictionary = {
       legendFree: "Frei",
       legendPast: "Vergangen",
       today: "heute",
+      previousWeek: "Vorherige Woche",
+      nextWeek: "Nächste Woche",
+      backToThisWeek: "Diese Woche",
       empty: "Keine Sitzung in dieser Woche.",
     },
 

@@ -281,7 +281,12 @@ function HeroProductPreview() {
   }
 
   const health = profile.healthProfile;
-  const next = appointments[0];
+  /* La prima **in programma**: da quando la lettura porta anche le annullate
+     ancora future (§3 del contratto), `appointments[0]` poteva essere una
+     seduta disdetta, e il pannello l'avrebbe annunciata come la prossima. */
+  const next = appointments.find(
+    (appointment) => appointment.status === "scheduled",
+  );
   const withNext = next
     ? professionals.find(
         (professional) => professional.id === next.professionalId,

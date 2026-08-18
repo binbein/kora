@@ -571,6 +571,18 @@ export type SessionType = "session" | "first_visit" | "follow_up";
 /**
  * L'appuntamento come lo vede **il dipendente**: il professionista è
  * identificato per intero, il paziente è implicito perché è chi guarda.
+ *
+ * PORTA ANCHE LE ANNULLATE FUTURE (18.08.2026), e non è un dettaglio di
+ * elenco: finché questa proiezione dava le sole `scheduled`, una seduta
+ * annullata dalla professionista **spariva** dal lato del dipendente, che non
+ * aveva nessun modo di sapere che c'era stata una disdetta. La domanda a cui
+ * questa lettura risponde è *cosa c'è sul mio calendario*, e una seduta
+ * annullata di domani ci sta finché domani non passa.
+ *
+ * LA NOTA DI ANNULLAMENTO NON ARRIVA QUI, ed è la stessa forma di
+ * `SessionNote`: è testo libero che la professionista scrive per sé, vive su
+ * `ProfessionalSession` e questo tipo **non ha il campo**. Chi la legge è una
+ * decisione di prodotto che nessuno ha preso.
  */
 export type Appointment = {
   id: string;
@@ -580,6 +592,14 @@ export type Appointment = {
   durationMinutes: number;
   status: AppointmentStatus;
   type: SessionType;
+  /**
+   * Chi ha annullato, presente **solo sulle annullate** (§2 del contratto).
+   *
+   * Il dipendente deve poter distinguere "l'hai annullata tu" da "l'ha
+   * annullata la professionista": sono due fatti diversi, e l'enumerazione ha
+   * due valori proprio per questo.
+   */
+  cancellationReasonKey?: "by_patient" | "by_professional";
 };
 
 /**

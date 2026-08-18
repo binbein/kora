@@ -42,10 +42,17 @@ function SessionRow({
   onNote?: NoteHandler;
   onCancel?: CancelHandler;
 }) {
+  /*
+   * `-strong` sul testo, token base sul riempimento (§6.1). Lo stato annullato
+   * stava su `text-destructive`, cioè **3.30:1** sulla tinta `/10` mentre il
+   * `Badge` di shadcn è testo normale: la soglia è 4.5. Con
+   * `destructive-strong` sono 4.93:1, e il riempimento non si muove — è il
+   * verde accanto che questa riga ha sempre fatto giusto.
+   */
   const tone = {
     scheduled: 'bg-secondary/10 text-secondary-strong',
     completed: 'bg-primary/10 text-primary',
-    cancelled: 'bg-destructive/10 text-destructive',
+    cancelled: 'bg-destructive/10 text-destructive-strong',
   }[session.status];
 
   /*
@@ -138,7 +145,7 @@ function SessionRow({
               non è annullata (`CONTRATTO-DATI.md` §2) — quindi il badge nasce
               con lui: senza, usciva un rettangolo rosso vuoto. */}
           {session.status === 'cancelled' && session.cancellationReasonKey && (
-            <Badge variant="outline" className="text-destructive border-destructive/30">
+            <Badge variant="outline" className="text-destructive-strong border-destructive/30">
               {t.cancellationReason[session.cancellationReasonKey]}
             </Badge>
           )}
