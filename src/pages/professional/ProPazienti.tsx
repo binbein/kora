@@ -5,7 +5,7 @@ import { Shield } from 'lucide-react';
 import { formatCHF, formatDate, formatNumber } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import { loadState, usePortalProfessionalId, useProfessionalPatients } from '@/lib/data/queries';
-import { ErrorNotice } from '@/components/kora/StateNotice';
+import { EmptyNotice, ErrorNotice } from '@/components/kora/StateNotice';
 import {
   patientDisplayName,
   patientInitials,
@@ -83,6 +83,16 @@ export default function ProPazienti() {
         <Shield className="w-4 h-4 mt-0.5 text-secondary flex-shrink-0" aria-hidden="true" />
         <span>{t.professional.patients.privacy}</span>
       </div>
+
+      {/* Il vuoto: un profilo appena entrato nella rete non ha nessuno in
+          carico, e la lista lasciava il titolo con "0 pazienti" e poi il
+          nulla. La `Card` la mette il call site, perché `EmptyNotice` non
+          disegna il proprio contenitore. */}
+      {patients.length === 0 && (
+        <Card>
+          <EmptyNotice text={t.professional.patients.empty} />
+        </Card>
+      )}
 
       <div className="space-y-3">
         {patients.map((patient) => (

@@ -26,10 +26,16 @@ import { ErrorNotice } from "@/components/kora/StateNotice";
  * `useMutation` avvolta in un hook che nessun altro chiama è il wrapper che il
  * §11 non vuole.
  *
- * NON INVALIDA NIENTE, oggi. A leggere le richieste sarà il back-office, che è
- * l'ultima area da migrare: la lettura e la sua invalidazione nascono lì,
- * insieme, invece di essere indovinate adesso (`docs/CONTRATTO-DATI.md` §2, §4).
- * Il record però si salva davvero, quindi l'admin lo troverà.
+ * INVALIDA LE RICHIESTE DEL BACK-OFFICE, che è chi le legge: la riga sta nel
+ * corpo di questo file, sull'`onSuccess` della mutation, ed è quella che fa
+ * comparire in `/admin` una richiesta inviata durante la demo senza ricaricare
+ * (`docs/CONTRATTO-DATI.md` §2, §4).
+ *
+ * *(Fino al 18.08.2026 questa testata diceva "NON INVALIDA NIENTE, oggi" —
+ * vero finché nessuno leggeva le richieste, e smentito dal commento inline
+ * dello stesso file da quando l'area pubblica di M3 ha chiuso la riga. Due
+ * commenti contraddittori nello stesso file: a restare indietro era quello che
+ * si legge per primo.)*
  *
  * LA VALIDAZIONE È QUELLA DELLO SCHEMA QUI SOTTO, ed è l'unica (M5.c). Il
  * `noValidate` sul form spegne quella del browser: due validatori sono due

@@ -633,6 +633,7 @@ export const fr: Dictionary = {
       withinCap: "{used} sur {total} comprises",
       overCap: "{total} comprises + {extra} à {price}",
       capReached: "Séances comprises épuisées",
+      empty: "Aucun patient suivi.",
     },
 
     payments: {

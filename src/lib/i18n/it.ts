@@ -732,6 +732,7 @@ export const it = {
       /** "10 incluse + 2 a CHF 28" */
       overCap: "{total} incluse + {extra} a {price}",
       capReached: "Sessioni incluse esaurite",
+      empty: "Nessun paziente in carico.",
     },
 
     payments: {
@@ -1148,7 +1149,8 @@ export const it = {
        * l'affordance da link è stata tolta, perché un testo che si illumina al
        * passaggio del mouse e non porta da nessuna parte è un vicolo cieco
        * (§10), e le pagine vere sarebbero scope nuovo (§2.6). Decisione dei
-       * founder dell'08.08.2026; sono lavoro di M5.
+       * founder dell'08.08.2026; sono lavoro dell'MVP, da quando il blocco f)
+       * di M5 è stato ritirato dallo scope della demo (15.08.2026).
        */
       companyTitle: "Azienda",
       companyAbout: "Chi siamo",
@@ -1494,8 +1496,11 @@ export const it = {
       finalCta: "Prenota una demo",
     },
 
-    /* La richiesta di demo (§10.A.4). La validazione vera è M5: qui bastano i
-       `required` del browser, e il form non finge di controllare altro. */
+    /* La richiesta di demo (§10.A.4). La validazione è lo schema `zod` del
+       blocco c) di M5, ed è l'unica: il form porta `noValidate`, quindi quella
+       del browser è spenta apposta. (Fino al 18.08.2026 questa riga diceva il
+       contrario — "bastano i `required` del browser" — ed era vera prima di
+       M5.c.) */
     demoRequest: {
       title: "Prenota una demo",
       subtitle:
@@ -1554,8 +1559,9 @@ export const it = {
    * piattaforma, quindi terza persona e metrico, come l'area HR.
    *
    * Non ha valore narrativo per il pitch, ma ha valore di prodotto: serve dopo.
-   * Il banner "dati dimostrativi" resta finché la guardia di ruolo non arriva
-   * con M5.
+   * Il banner "dati dimostrativi" **resta anche adesso che la guardia di ruolo
+   * c'è** (12.08.2026): in demo concede per costruzione, quindi la difesa a
+   * schermo è il banner. Stessa correzione di `AdminLayout` (18.08.2026).
    */
   admin: {
     portalName: "Admin interno",
@@ -1571,8 +1577,9 @@ export const it = {
       "Back-office interno · dati dimostrativi. Aziende, persone e strutture di questa sezione sono di fantasia e non descrivono clienti reali.",
 
     /* L'estratto si dichiara, come per l'elenco dipendenti dell'HR: la
-       paginazione è M5, e far credere che la piattaforma abbia sette utenti
-       sarebbe peggio che dire quanti se ne stanno mostrando. */
+       paginazione è lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.12), e far
+       credere che la piattaforma abbia sette utenti sarebbe peggio che dire
+       quanti se ne stanno mostrando. */
     extractNote: "Estratto di {shown} righe su {total}. La ricerca completa arriva con la messa in produzione.",
 
     companies: {

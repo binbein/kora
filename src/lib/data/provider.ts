@@ -138,7 +138,8 @@ export interface DataProvider {
   /**
    * L'elenco dipendenti che l'azienda può vedere: iniziali e reparto, mai un
    * nome. Nel dataset demo è un estratto di otto righe su 120 — la paginazione
-   * è M5 — e la schermata lo dichiara invece di far credere il contrario.
+   * è lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.12) — e la schermata lo
+   * dichiara invece di far credere il contrario.
    */
   getEmployeeDirectory(): Promise<EmployeeDirectoryEntry[]>;
 
@@ -391,15 +392,19 @@ export interface DataProvider {
   /**
    * Registra una richiesta di demo dal form pubblico.
    *
-   * **Non invalida nessuna query, oggi**: chi legge le richieste è il
-   * back-office, che è l'ultima area da migrare. La lettura —
-   * `getDemoRequests` — nasce con il suo consumatore e con la sua riga nella
-   * tabella di `docs/CONTRATTO-DATI.md` §4, invece di essere dichiarata adesso
-   * per indovinare una superficie di invalidazione che fra un passo si sa
-   * (§2 del contratto).
+   * **Invalida `platform.demoRequests()`**: chi legge le richieste è il
+   * back-office, e da quando esiste — `getDemoRequests`, qui sotto — una
+   * richiesta inviata durante la demo compare in `/admin` senza ricaricare. È
+   * la riga della tabella di `docs/CONTRATTO-DATI.md` §4, che questa lettura
+   * ha guadagnato nascendo con il suo consumatore invece di essere dichiarata
+   * prima (§2 del contratto).
    *
-   * Il record viene comunque conservato, così l'admin lo troverà: il provider
-   * vive in memoria e lo stato sopravvive alla navigazione interna (§10).
+   * *(Fino al 18.08.2026 questa docstring diceva "non invalida nessuna query,
+   * oggi", ed era vera finché nessuno leggeva le richieste: l'area pubblica di
+   * M3 ha chiuso la riga e non è risalita fin qui.)*
+   *
+   * Il record vive in memoria e lo stato sopravvive alla navigazione interna,
+   * non a un ricaricamento (§10).
    */
   submitDemoRequest(input: DemoRequestInput): Promise<DemoRequest>;
 

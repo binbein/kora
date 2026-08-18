@@ -57,7 +57,7 @@ export default function HRNav() {
           <div className="p-4 border-t border-border">
             {/*
               * LA STESSA DISPOSIZIONE DEL RIQUADRO DIPENDENTE, NON LO STESSO
-              * RIQUADRO (§6.4).
+              * RIQUADRO (§6.5).
               *
               * Icona a sinistra come là, ma **l'icona di un'azienda**: qui non
               * c'è una persona, ci sono un cliente, il suo organico e il suo

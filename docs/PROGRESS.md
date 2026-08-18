@@ -46,6 +46,16 @@ hanno smesso di divergere. Il criterio, deciso dai founder il 15.08.2026:
   15.08.2026 dalla seconda passata che ha usato il criterio, ed è il buco che ha
   trovato usandolo: la sua sottosezione dichiarò sei con cinque commit sul
   branch, ed è invecchiata appena la passata ne ha guadagnato un settimo.)*
+- **E se nessuno lo aggiorna, la predizione resta scritta**: è successo il
+  17.08.2026, alla prima passata in cui qualcosa è arrivato dopo il verbale, e
+  l'obbligo qui sopra c'era già. Da qui **la clausola che chiude il buco per
+  davvero** (18.08.2026): un commit che arriva dopo il verbale **riapre la
+  cifra**, e chi non se la sente di riaprirla ha la seconda strada — **il
+  verbale dichiara la ripartizione e non il totale**, che lo dica git. È la
+  stessa scelta che il `CLAUDE.md` §5.6 ha fatto per i call site e il §2.7 per
+  le chiavi: quando un numero deve essere ricontato da qualcuno, prima o poi
+  nessuno lo riconta. La ripartizione non ha lo stesso difetto — si misura con
+  lo stesso comando e non predice niente.
 
 Vale da questa passata in avanti. Le voci più vecchie non si riscrivono: sono
 verbali, e un conteggio sbagliato che qualcuno trova si corregge lì con la sua
@@ -1221,7 +1231,7 @@ la review lo campioni invece di fidarsi.
 | `/hr/privacy` | strumento | `null` | — | `ErrorNotice` di pagina |
 | `/professional` calendario | strumento | `null` | frase esistente sulla settimana | `ErrorNotice` di pagina |
 | `/professional/sessioni` | strumento | `null` | frasi esistenti sui tre pannelli | `ErrorNotice` di pagina, e `…note.error` sul salvataggio |
-| `/professional/pazienti` | strumento | `null` | — | `ErrorNotice` di pagina |
+| `/professional/pazienti` | strumento | `null` | `EmptyNotice` `professional.patients.empty` *(dal 18.08.2026; qui c'era un `—`, ed era la sola casella sbagliata della tabella)* | `ErrorNotice` di pagina |
 | `/professional/pagamenti` | strumento | `null` | `EmptyNotice` `professional.profile.empty` | `ErrorNotice` di pagina |
 | `/professional/profilo` | strumento | `null` | `EmptyNotice` `professional.profile.empty` | `ErrorNotice` di pagina |
 | `/professional` badge nav | — | `null` | `null` | `null` (decorativo: i tre collassano) |
@@ -4845,9 +4855,13 @@ più, e vale la pena saperlo prima della prossima verifica su un selettore.
 
 #### Il conteggio che diventa un guardrail (17.08.2026)
 
-**Sei commit: tre di codice — `feat:` ×1, `fix:` ×2 — e tre di documenti.**
-Totale e ripartizione dalla stessa misura, `git log --format='%s' master..HEAD`;
-il numero è `n + 1` perché il commit di chiusura conta sé stesso. **Nessun numero
+**Sette commit: quattro di codice — `feat:` ×1, `fix:` ×3 — e tre di
+documenti**, misurati a chiusura avvenuta con
+`git log --format='%s' ff2ca80^..ff2ca80^2`. *(La sottosezione dichiarava
+**sei**, con `fix:` ×2, ed era la predizione `n + 1` scritta nel commit di
+chiusura: `06a1b88` è arrivato dopo, e nessuno è risalito a riaprire la cifra.
+Corretta il 18.08.2026, insieme alla clausola che quel buco lo chiude — sta in
+«Come una passata conta i propri commit».)* **Nessun numero
 del §8 e del §9 si muove**, le rotte restano **26** e a schermo cambia una
 frase sola.
 
@@ -4969,13 +4983,17 @@ una segnalazione su un difetto che non c'è. Adesso i buchi sono nominati tutti:
 
 ##### Aperto e dichiarato
 
-- **`EmployeeHome` annida un `<div>` dentro un `<p>`**, ed è preesistente:
+- ~~**`EmployeeHome` annida un `<div>` dentro un `<p>`**, ed è preesistente:
   arriva da `f3ff66e`, la passata della home, dove il badge "Fatto" sta dentro
   il `<p>` del titolo della card check-up. React lo segnala in sviluppo —
   `validateDOMNesting` — e il browser chiude il paragrafo prima del `div`. **Non
-  toccato**: è fuori dal perimetro di questa passata, ed è una riga. Non
-  contraddice il *"console senza un solo messaggio"* di quel verbale: quella
-  misura era sulla build demo, dove React non emette questi avvisi.
+  toccato**: è fuori dal perimetro di questa passata, ed è una riga.~~ →
+  **chiuso da questa stessa passata**, con `06a1b88`, che ha portato quel titolo
+  a `<div>`: il commit è arrivato **dopo** il verbale, e nessuna riga lo ha
+  collegato a questa — è lo stesso commit che ha lasciato indietro la
+  ripartizione qui sopra. *(Barrato il 18.08.2026.)* Non contraddice il
+  *"console senza un solo messaggio"* di questo verbale: quella misura era sulla
+  build demo, dove React non emette questi avvisi.
 - **Il conteggio dei `.jsx`, delle rotte e dei call site resta prosa**, e questa
   passata non lo cambia. Solo quello delle chiavi aveva un oggetto che il codice
   può contare da sé all'avvio: le rotte si contano su `App.tsx` e i call site su
@@ -5119,8 +5137,244 @@ aperta**:
   domande nelle testate di `de.ts` e `fr.ts` sono state corrette qui: quella
   tedesca citava una chiave che non esiste più, quella francese motivava il
   maschile generico con un'assenza di dato che il nome ha smentito.
-- **`EmployeeHome` annida un `<div>` dentro un `<p>`**, dichiarato dalla passata
-  precedente e ancora fuori perimetro.
+- ~~**`EmployeeHome` annida un `<div>` dentro un `<p>`**, dichiarato dalla
+  passata precedente e ancora fuori perimetro.~~ → **era già chiuso mentre
+  questa riga lo dichiarava aperto**: `06a1b88`, nella passata precedente, aveva
+  portato quel titolo a `<div>` dopo che il suo verbale era stato scritto.
+  **Il commit ha corpo vuoto e nessun trailer**, quindi non dice cosa chiude, e
+  questo è il difetto vero: due verbali hanno dichiarato aperto un difetto che
+  il repository non aveva più. *(Barrato il 18.08.2026, dopo aver verificato
+  che in tutto `src/` non resta nessun annidamento proibito.)*
+
+#### L'allineamento fra codice e verbali (18.08.2026)
+
+**Undici di documenti e due di codice — `fix:` ×2 — più il commit di chiusura,
+che è un `docs:`.** La ripartizione è misurata con
+`git log --format='%s' master..HEAD | sed 's/:.*//' | sort | uniq -c`; **il
+totale non si scrive**, e lo dice git. È la clausola che questa stessa passata
+ha aggiunto al criterio del 15.08 (in testa a questo file), applicata dal primo
+verbale che poteva applicarla: un totale predetto è la cosa che il commit
+successivo smentisce in silenzio.
+
+**Ed è servita subito, che è la prova che valeva la pena scriverla.** La review
+ha aggiunto quattro commit dopo questo verbale — la seconda qualifica dello zero
+del §6.1, i nove commenti che rimandavano a M5, la formattazione e questa
+riga — e **si è riaperta la sola ripartizione**, da sette a undici: il totale
+non c'era da riaprire, perché non era stato scritto. La differenza fra le due
+metà del criterio si vede meglio qui che in qualunque spiegazione.
+
+**Nessun numero del §8 e del §9 si muove**, le rotte restano **26**, e nessun
+colore, token o riga del §6.1 è stato toccato. A schermo cambiano due cose: una
+frase dove non ce n'era nessuna, e tre tooltip che ora passano da `format.ts`.
+
+È la passata che chiude i disallineamenti fra il codice e i verbali accumulati
+fino a #62. Non costruisce niente: rimette d'accordo ciò che è scritto con ciò
+che è, e prepara la sesta passata senza anticiparla.
+
+##### Le cifre della costituzione, rimisurate
+
+Il `CLAUDE.md` §2.7 aveva le **ultime due cifre ripetute a mano** della sezione
+che ha consegnato al codice il conteggio delle chiavi. Erano invecchiate
+entrambe, ognuna a modo suo.
+
+**Gli oggetti erano 109 e sono 112**, cresciuti con le chiavi di #62, e la riga
+diceva *"e non si sono mossi"*. La cifra resta — è l'altra metà della prova che
+l'albero sintattico non lascia fuori nessuna proprietà — e la clausola che ne
+dichiarava l'immobilità è uscita.
+
+**Le chiavi con il valore sulla riga successiva erano dichiarate 62 e sono 69**,
+e questa cifra è uscita del tutto: non è la stessa nelle quattro lingue — 69,
+77, 76, 72 — perché ogni traduzione va a capo dove capita, quindi un numero solo
+sarebbe falso su tre dizionari su quattro. **A reggere la clausola sull'albero
+sintattico è il fatto, non la misura**: un motivo di ricerca per riga le prende
+o le perde a seconda che il suo `\s*` attraversi l'a capo, e questo è vero a 62
+come a 69.
+
+##### Le tre manopole, e l'esempio del contatore
+
+**`?role=` esisteva dal blocco d) di M5 e il §4 ne dichiarava due.** Non è un
+dettaglio di conteggio: è la manopola che rende raggiungibile il ramo che nega
+di `RequireRole`, cioè ciò su cui il §10.E poggia la frase «in demo le guardie
+non negano l'accesso a niente». Il `README.md` diceva già tre.
+
+**Il §10.B citava il contatore come *"3 su 10 sessioni usate · 1 in
+programma"*, e l'uno è tre.** Le sedute future di Laura sono tre — la sua
+ricorrenza del giovedì, generata fino all'orizzonte del dataset — e i due
+conteggi arrivano da due letture diverse: `used` da `getEntitlement`, la parte
+in programma dal conto degli appuntamenti. **La cifra è stata tolta, non
+corretta**: la frase con i segnaposto dice esattamente ciò che quel paragrafo
+esiste per dire, e non può invecchiare a ogni seduta che entra nell'orizzonte —
+che è come è invecchiata questa, in silenzio, perché nessun guardrail la
+sorveglia.
+
+##### Il criterio che mancava al §7
+
+La parola vecchia — "sedute" — si conta **sui valori dei dizionari e non sui
+commenti**, ed è la stessa disciplina dei call site e delle chiavi. Serviva
+perché la misura senza criterio è già arrivata: un `grep` su `it.ts` trova due
+occorrenze, tutte e due nel commento che regola le biografie, e il §7 esenta i
+commenti da sempre. **Il commento resta e il verbale di #61 non si tocca** —
+era vero quando fu scritto: a mancare era la riga che dice su cosa si conta.
+
+##### Quattro commenti smentiti dal proprio codice
+
+Nessuno cambia comportamento, e tutti dicevano al lettore successivo qualcosa
+che il file accanto aveva smesso di fare: `submitDemoRequest` che «non invalida
+nessuna query» mentre invalida le richieste del back-office, la stessa
+affermazione nella testata di `DemoRequest.tsx` **smentita dal corpo dello
+stesso file**, `query-keys.ts` che dichiara `getSessionNote` senza chiamanti
+mentre `useSessionNote` si presenta come «il primo lettore», e `HRNav` che cita
+il §6.4 per una regola che è il §6.5. Più il blocco che descrive la richiesta
+demo in `mock/provider.ts`, che stava sopra `getSession()`.
+
+**Sono la stessa famiglia dei verbali qui sotto**: un'affermazione vera il
+giorno in cui è stata scritta, in un punto che nessuno rilegge quando la cosa
+descritta cambia.
+
+##### I due difetti di comportamento
+
+**`ProPazienti` non rendeva la lista vuota**, ed era l'unica delle 27 schermate:
+con `?empty=getProfessionalPatients` restavano il titolo, «0 pazienti attivi»,
+il banner privacy e poi il nulla. Ora usa `EmptyNotice` dentro una `Card`, come
+le sei schermate che già lo facevano, e la casella `—` della tabella di M5.b è
+stata corretta con la data. La stringa è nei quattro dizionari, quindi
+`EXPECTED_KEYS` passa da **768 a 769**.
+
+**Tre `<Tooltip>` di recharts sulla dashboard HR non avevano `formatter`**, cioè
+tre numeri a schermo che non passavano da `format.ts` (§11) sulla schermata su
+cui il pitch si regge. `AdminAnalytics` li formatta tutti e cinque, quindi la
+forma era già nel repository. I conteggi vanno su `formatNumber`, il trend dello
+stress su `formatPercent`, che è come la tabella dei reparti scrive già gli
+stessi punteggi. **Oggi non si vedeva** — due o tre cifre — e si sarebbe visto
+al primo dato a quattro cifre o in francese.
+
+##### Liberare un'ora non è riproporla
+
+Il §10.D.3 diceva che annullando «lo slot torna prenotabile» e il contratto che
+l'annullamento «libera la fascia». **Provandolo, le due frasi divergono**: le
+disponibilità sono le fasce dichiarate della professionista meno le occupate,
+quindi annullando la ricorrente del giovedì di Laura quell'ora smette di
+occupare e **non compare** fra i proponibili, perché non è una fascia del piano.
+
+La garanzia vera è quella del contratto. Il ricomparire vale per le fasce del
+piano, cioè per **la seduta che il pitch ha appena prenotato** — ed è per questo
+che `docs/PITCH.md` adesso dice quale annullamento si mostra: annullare una
+seduta seminata davanti a un investitore si legge come «l'annullamento non ha
+liberato nulla».
+
+##### Le tre cose trovate in review
+
+Sono arrivate dopo il verbale, sullo stesso branch, e sono tutte di documenti.
+
+**Lo zero del §6.1 è falso una seconda volta, di un nodo.** L'etichetta "alert"
+del marker sul trend sta a 3.95:1, ed è testo informativo: la riga è stata
+qualificata con la data, come la prima volta con i quattro nodi del footer.
+**La lezione di metodo si allarga**, ed è la parte che serve: le prime due
+volte il difetto era *come* si legge un nodo — l'alpha dentro il token si vede,
+l'`opacity` sull'elemento no — questa volta è **quali nodi si percorrono**. Un
+`fill` dentro un `<svg>` non entra nell'insieme che uno strumento sul DOM HTML
+guarda, quindi il censimento dichiarava zero su ciò che non aveva guardato. Il
+difetto **resta aperto**: il rimedio cambia un colore.
+
+**I commenti che rimandavano a M5 erano nove, non uno.** Il `Footer.tsx`
+dichiarato qui sotto era la punta di una famiglia, e la famiglia si chiude
+insieme perché il criterio è uno solo — che ora sta nel `CLAUDE.md` §11,
+accanto alla regola sui `TODO` con una destinazione. **Tre dicevano il contrario
+di quello che il codice accanto faceva**: due volte il banner del back-office
+«finché non c'è una guardia di ruolo, che è M5» — in `AdminLayout` e nella
+testata admin di `it.ts`, scritta il 12.08 — e la validazione «vera è M5»,
+mentre `noValidate` spegne apposta quella del browser dal blocco c). **Sei
+mandavano a una milestone lavoro passato al perimetro dell'MVP**: la
+paginazione in quattro punti e le pagine del footer in due.
+
+**La review ne aveva contati sette**: gli ultimi due sono usciti cercando `M5`
+su tutto `src/` mentre si chiudevano i primi, e sono duplicati esatti di due
+difetti già in elenco. È l'argomento del criterio contro l'elenco, capitato
+dentro il commit che scriveva il criterio.
+
+**E un a capo mancante**, che in Markdown fondeva in uno i due paragrafi finali
+del §7, più tre righe di prosa oltre le ~80 colonne del file — una a 110,
+perché un ritorno a capo aveva incollato la parentesi di chiusura alla frase
+successiva.
+
+##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato prima di ogni misura
+
+- **il vuoto e l'errore dei pazienti nei due versi**:
+  `?empty=getProfessionalPatients` rende «Nessun paziente in carico.» sotto il
+  banner privacy, `?fail=` sullo stesso metodo rende l'`ErrorNotice` di prima
+  con il suo «Riprova»;
+- **i tre tooltip, con il puntatore vero**: 142 sulla ciambella, *"Media
+  azienda : 50% · Vendite : 51%"* sul trend, e i quattro conteggi di servizio
+  sulle barre dell'utilizzo;
+- **27 rotte percorse in sviluppo**: `p div, p p, p ul, p ol, p h1…, p table,
+  p form` a **zero** su tutte, e nessun `validateDOMNesting` in console — è la
+  verifica che ha permesso di barrare il difetto dichiarato aperto in due
+  verbali;
+- **i numeri del pitch fermi** su `/hr`: CHF 14'200, 16, 68%, 82, 41, 142 di
+  1'200, 62%, soglia 12, −2;
+- `lint`, `typecheck`, `build` e `build:demo` a posto; guardrail **111 = 102 +
+  9**, invariati; **769 chiavi** ×4, e a dirlo è `EXPECTED_KEYS`.
+
+##### Rilevato e non toccato — l'inventario del giallo
+
+Serve alla decisione dei founder che sblocca la sesta passata, e **niente di ciò
+che segue è stato cambiato**: nessun colore, nessun token, nessuna riga del
+§6.1. Misurato a schermo con `innerWidth` controllato prima di ogni numero, sul
+colore composito effettivo e non sulla classe.
+
+| dove | cosa dice | resa | contrasto |
+|---|---|---|---|
+| `HRDashboard.tsx:419` banner alert precoce | **allarme** | `bg-warning/15`, bordo pieno | titolo **13.76:1**, corpo **4.62:1**, icona decorativa |
+| `HRDashboard.tsx:633` barra stress "medio" | **dato** | `bg-warning` pieno | nessun testo sopra |
+| `HRDashboard.tsx:718` marker dell'alert sul trend | **allarme** | punto `warning` con bordo `foreground` | l'etichetta è testo di recharts, sotto |
+| `HRDashboard.tsx:60`, `AdminAnalytics.tsx:55` serie check-up | **dato** | tinta della fetta e della barra | nessun testo sopra |
+| `AdminProfessionisti.tsx:157` "In verifica" | **attesa** | `bg-warning/20 text-foreground` | **13.93:1** |
+| `AdminProvider.tsx:130` "In convenzionamento" | **attesa** | `bg-warning/20 text-foreground` | **13.93:1** |
+| `AdminAziende.tsx:236` "In attivazione" | **attesa** | `bg-warning/20 text-foreground` | **13.93:1** |
+| `ProPazienti.tsx:122` "Nuovo" | **dato** | `border-warning`, fondo bianco | testo **15.17:1**, bordo **1.53:1** |
+| `Checkup.tsx:290` "Da tenere d'occhio" | **allarme** (misurazione fuori norma) | `border-warning`, fondo `muted/50` | testo **14.18:1**, bordo **1.43:1** |
+| `Psicologi.tsx:327` stella della valutazione | **dato** | `fill-warning text-warning` | **1.53:1**, `aria-hidden`, con la cifra accanto |
+| `StateNotice.tsx:28` | — | solo il commento che cita la regola del §6.1 | — |
+
+**La misura che conta più delle altre**: le tre attese stanno a `bg-warning/20`
+e l'allarme della dashboard a `bg-warning/15`, cioè **l'attesa è più forte
+dell'allarme**. È il contrario di ciò che la sesta passata dà per scontato, e va
+saputo prima di decidere: il giallo oggi non distingue i tre significati, e i
+tre significati esistono — un'attesa, un allarme e un dato.
+
+**Due cose che l'elenco di partenza non aveva**, e che il censimento ha trovato:
+la **stella della valutazione** in `Psicologi.tsx`, che è un uso del giallo come
+dato puro, e il fatto che `AdminAziende` non si raggiunge da `/admin/aziende` ma
+da `/admin`.
+
+##### Aperto e dichiarato
+
+- **L'etichetta "alert" del marker sul trend sta a 3.95:1**, 11px, e non è un
+  uso del token `warning`: è il grigio predefinito di recharts, `#808080`, su
+  fondo bianco. È **sotto l'AA per il testo normale**, ed è testo informativo —
+  dice dove cade il mese dell'alert. **Non toccato**: è fuori dal perimetro di
+  questa passata, che non doveva cambiare colori. Va portato con l'inventario
+  qui sopra alla decisione dei founder, perché è sulla schermata del pitch e
+  perché il censimento di M5.a non poteva vederlo — misurava il colore
+  calcolato dei nodi HTML, e questo è un `fill` dentro un `<svg>`. **Dalla
+  review il `CLAUDE.md` §6.1 lo dichiara**: quello "zero informativi" è falso
+  di questo nodo dal 18.08.2026, ed è la seconda volta che va qualificato.
+- ~~**Il commento di `Footer.tsx` dice ancora «Le pagine vere sono M5»**,
+  mentre il blocco f) è stato ritirato dallo scope della demo il 15.08.2026.~~ →
+  **chiuso dalla review, sullo stesso branch**, e non da solo: era uno di
+  **nove**, e la famiglia è stata chiusa insieme con il criterio che le
+  discende nel `CLAUDE.md` §11. Il racconto sta qui sopra, «Le tre cose trovate
+  in review».
+- **Il piano delle passate mandava i verbali fuori dal repository.**
+  `.claude/refinement-plan/kora-piano-migliorie.md` diceva di scrivere il
+  verbale in `../../../../Downloads/PROGRESS.md`. Corretto sul posto in
+  `docs/PROGRESS.md`, **e registrato qui perché quel file non è versionato**:
+  `.claude/` è in `.gitignore`, quindi la correzione non ha un commit e questa
+  riga è l'unica prova che è stata fatta. Le passate 6 e 7 leggono quella riga
+  per prima.
+- **`.git/index.lock` era rimasto da una sessione precedente** — file vuoto del
+  17.08 alle 23:31, nessun processo git attivo — e bloccava il primo commit.
+  Rimosso.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

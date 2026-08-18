@@ -549,7 +549,10 @@ export default function HRDashboard() {
                   <Cell key={entry.kind} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip />
+              {/* Ogni numero a schermo passa da `format.ts` (§11), e il tooltip
+                  di recharts è a schermo quanto il resto: senza `formatter` i
+                  valori escono dal formattatore predefinito della libreria. */}
+              <Tooltip formatter={(value) => formatNumber(Number(value))} />
             </PieChart>
           </ResponsiveContainer>
           <div className="flex flex-wrap gap-3 justify-center mt-2">
@@ -668,7 +671,10 @@ export default function HRDashboard() {
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis dataKey="month" tick={{ fontSize: 12 }} />
               <YAxis tick={{ fontSize: 12 }} domain={[0, 100]} />
-              <Tooltip />
+              {/* Punteggi di stress: la tabella qui sopra li scrive con
+                  `formatPercent`, e due rese dello stesso numero nella stessa
+                  schermata sono due numeri che possono divergere (§5.5). */}
+              <Tooltip formatter={(value) => formatPercent(Number(value))} />
               <Legend
                 content={({ payload }) => (
                   <ul className="mt-2 space-y-1">
@@ -733,7 +739,7 @@ export default function HRDashboard() {
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis dataKey="month" tick={{ fontSize: 12 }} />
               <YAxis tick={{ fontSize: 12 }} />
-              <Tooltip />
+              <Tooltip formatter={(value) => formatNumber(Number(value))} />
               {SERVICE_ORDER.map((kind) => (
                 <Bar
                   key={kind}

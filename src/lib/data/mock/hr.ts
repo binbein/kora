@@ -30,7 +30,8 @@ import { usageThrough, usageWithin } from "./service-usage";
  * L'elenco che l'HR vede.
  *
  * SEMPLIFICAZIONE DICHIARATA: sono otto righe su 120 dipendenti. Un elenco vero
- * si pagina e si cerca, ed è M5; qui la schermata dice che è un estratto invece
+ * si pagina e si cerca, ed è lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.12);
+ * qui la schermata dice che è un estratto invece
  * di far credere che l'azienda abbia otto persone — che è quello che fa il
  * codice ereditato, dove l'intestazione conta "6/8 attivati" accanto a una
  * dashboard che ne dichiara 82 su 120.

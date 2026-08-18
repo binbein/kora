@@ -799,14 +799,6 @@ export class MockDataProvider implements DataProvider {
     return Promise.resolve(answer);
   }
 
-  /*
-   * La richiesta di demo (§10.A.4).
-   *
-   * L'id è progressivo e la data è quella della demo: nessun `Math.random()` e
-   * nessun `new Date()`, come per la prenotazione. Due invii identici restano
-   * due richieste, perché lo sono — a differenza di uno slot, che è occupato o
-   * libero.
-   */
   getSession(): Promise<Session> {
     return Promise.resolve(this.session);
   }
@@ -821,6 +813,14 @@ export class MockDataProvider implements DataProvider {
     return Promise.resolve(this.session);
   }
 
+  /*
+   * La richiesta di demo (§10.A.4).
+   *
+   * L'id è progressivo e la data è quella della demo: nessun `Math.random()` e
+   * nessun `new Date()`, come per la prenotazione. Due invii identici restano
+   * due richieste, perché lo sono — a differenza di uno slot, che è occupato o
+   * libero.
+   */
   submitDemoRequest(input: DemoRequestInput): Promise<DemoRequest> {
     assertInDevOutsidePromise(
       input.companyName.trim() !== "" && input.email.trim() !== "",

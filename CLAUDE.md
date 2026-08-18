@@ -107,11 +107,16 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      **IL CONTO SI FA SULL'ALBERO SINTATTICO, NON CON UN GREP**, ed è la
      clausola senza la quale il criterio autorizzava proprio i numeri sbagliati
      che esiste per non far nascere (16.08.2026). La ragione è una proprietà del
-     file, non della fretta di chi conta: **62 chiavi hanno il valore
+     file, non della fretta di chi conta: **decine di chiavi hanno il valore
      sulla riga successiva**, perché la stringa non ci stava. Un motivo di
      ricerca per riga le prende o le perde a seconda che il suo `\s*` attraversi
      l'a capo — due implementazioni entrambe fedeli alla frase qui sopra e
-     lontane 62. Il comando che lo esegue davvero:
+     lontane di decine di chiavi. **Quante siano non si scrive qui**: il numero
+     cambia da una lingua all'altra — le quattro traduzioni vanno a capo dove
+     capita, non dove va a capo l'italiano — quindi una cifra sola direbbe il
+     falso su tre dizionari su quattro, e nessuna delle quattro serve a chi
+     legge: a decidere è il fatto, non la sua misura (18.08.2026). Il comando
+     che lo esegue davvero:
 
      ```
      node -e 'const ts=require("typescript"),fs=require("fs");
@@ -125,11 +130,15 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      Sull'albero non c'è niente da togliere: i commenti non sono nodi, e una
      proprietà o ha un letterale stringa per valore o non è una chiave foglia.
      Verificato: tante proprietà con inizializzatore letterale stringa quante
-     ne dichiara `EXPECTED_KEYS`, **109 oggetti e zero proprietà di altro
-     tipo**, identici sui quattro dizionari. *(Il conteggio delle chiavi non si
-     ripete qui: era il secondo dei cinque punti che l'hanno fatto invecchiare.
-     Gli oggetti restano, perché sono l'altra metà della prova che l'albero non
-     lascia fuori niente — e non si sono mossi.)*
+     ne dichiara `EXPECTED_KEYS`, **112 oggetti e zero proprietà di altro
+     tipo**, identici sui quattro dizionari (18.08.2026). *(Il conteggio delle
+     chiavi non si ripete qui: era il secondo dei cinque punti che l'hanno fatto
+     invecchiare. Gli oggetti restano, perché sono l'altra metà della prova che
+     l'albero non lascia fuori niente. Fino al 18.08.2026 questa riga diceva
+     **109** e aggiungeva «e non si sono mossi»: si erano mossi con le chiavi
+     di #62, ed è la stessa cifra ripetuta a mano che il resto della sezione ha
+     già consegnato al codice — qui resta perché è una prova sul metodo del
+     conteggio, non un numero che una schermata mostra.)*
 
      **Il guardrail conta a runtime e dà lo stesso numero**, verificato sui
      quattro dizionari il giorno in cui è nato: sull'albero i commenti non sono
@@ -638,11 +647,16 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
     `null` e le liste vuote rendono il vuoto, `isError` rende l'errore — e la
     regola sta scritta una volta in `loadState`, che **non conosce le forme**:
     il vuoto lo decide la schermata. La dimostrazione è
-    `data/fault-injection.ts`, un `Proxy` con due manopole (`?fail`, `?empty`)
-    che **esiste solo in sviluppo** e sparisce da entrambe le altre build,
-    misurato col grep. Da qui `query-client.ts` non ritenta più — un tentativo
-    automatico mette in pausa la query a scheda non visibile, e una query in
-    pausa è un quarto caso indistinguibile dall'attesa. Il racconto e
+    `data/fault-injection.ts`, un `Proxy` con **tre** manopole (`?fail`,
+    `?empty`, `?role`) che **esiste solo in sviluppo** e sparisce da entrambe
+    le altre build, misurato col grep. *(Diceva due, ed era vero fino al
+    blocco d): la terza è `?role=`, che fissa la sessione e rende
+    raggiungibile il ramo che nega di `RequireRole` — cioè il pezzo su cui il
+    §10.E poggia una frase intera. Il `README.md` diceva già tre; a essere
+    indietro era questa riga, corretta il 18.08.2026.)* Da qui
+    `query-client.ts` non ritenta più — un tentativo automatico mette in pausa
+    la query a scheda non visibile, e una query in pausa è un quarto caso
+    indistinguibile dall'attesa. Il racconto e
     l'inventario schermata per schermata sono in `docs/PROGRESS.md`.
   - **c) Validazione dei form**, con `zod` e `react-hook-form`, che il §3 tiene
     installati apposta. **Porta con sé la decisione rimandata sulla guardia di
@@ -1027,6 +1041,24 @@ Regole:
   un censimento sul colore la vede. Due sintassi che si somigliano e che uno
   strumento distingue. Il racconto sta in `docs/PROGRESS.md`.
 
+  **Ed è falso una seconda volta, di un nodo, dal 18.08.2026** — stessa
+  disciplina della prima: si qualifica con la data, non si riscrive come se
+  avesse sempre detto il vero. Il nodo è **l'etichetta "alert" del marker sul
+  trend della dashboard HR**, `#808080` su fondo bianco, cioè **3.95:1** a 11px,
+  ed è testo informativo — dice su quale mese cade l'alert precoce. **Resta
+  aperto**: il rimedio cambia un colore, e i colori sono dei founder (la voce sta
+  in `docs/PROGRESS.md`, «Aperto e dichiarato» della passata del 18.08.2026).
+
+  **La lezione di metodo si allarga, ed è il terzo caso della stessa famiglia
+  ma il primo di forma diversa.** Le prime due riguardavano *come* si legge un
+  nodo — l'alpha nel token si vede, l'`opacity` sull'elemento no. Questa
+  riguarda **quali nodi si percorrono**: l'etichetta non è testo HTML, è un
+  `fill` dentro un `<svg>`, quindi non entra affatto nell'insieme che uno
+  strumento che cammina il DOM guarda. **Un censimento dichiara zero su ciò che
+  non ha guardato**, e i grafici sono l'unico posto di questa demo dove il testo
+  vive fuori dal DOM HTML: chi rifà la misura parte da lì, e conta prima quanti
+  nodi ha percorso.
+
   La sezione M5.a di
   `docs/PROGRESS.md` porta i conti e come ci si è arrivati, compresi i due
   punti che questa riga non poteva prevedere: il censimento vecchio era da grep
@@ -1207,6 +1239,18 @@ Qui la si eviterebbe al contrario, mettendola in un elemento che non la merita.
   la doppia parola si vede. I commenti del sorgente e la prosa di questo file
   descrivono il dominio e non sono interfaccia — si allineano quando si tocca il
   punto in cui stanno, come i `.jsx` del §3, non con una passata a tappeto.
+
+  **Il criterio con cui si conta la parola vecchia, perché la prossima misura
+  non ne produca una seconda** (18.08.2026): si contano le occorrenze nei
+  **valori** dei dizionari — le stringhe che il §2.7 conta come chiavi foglia —
+  e **non nei commenti**, nemmeno in quelli che stanno dentro `i18n`. È la
+  stessa disciplina dei call site (§5.6) e delle chiavi (§2.7): due rilevazioni
+  dello stesso oggetto senza una regola scritta danno due numeri, e qui la
+  differenza è già arrivata. Un `grep -c` su un dizionario oggi conta **due**
+  occorrenze di "sedute" in `it.ts`, tutte e due nel commento che regola le
+  biografie: **non sono una violazione**, per la riga qui sopra, e il commento
+  resta dov'è. A essere invecchiata è la misura fatta senza il criterio, non il
+  codice.
 
   **La doppia parola può esistere in una lingua sola, e va cercata lingua per
   lingua**: al momento dell'allineamento tedesco, francese e inglese usavano già
@@ -1958,7 +2002,20 @@ sedute **erogate** (§5.5, e la tabella delle KPI di `docs/CONTRATTO-DATI.md` §
 una prenotazione nasce `scheduled`: farlo salire sarebbe un secondo numero pinnato
 sullo stesso fatto, e direbbe al dipendente che ha consumato una seduta che non ha
 ancora fatto. A muoversi è la parte in programma, e la frase le tiene distinte:
-*"3 su 10 sessioni usate · 1 in programma"*. Deciso dai founder il 07.08.2026.
+*"{used} su {total} sessioni usate · {scheduled} in programma"*. Deciso dai
+founder il 07.08.2026.
+
+**La frase si cita con i segnaposto, non con i suoi numeri** (18.08.2026). Fino
+a oggi questa riga scriveva *"3 su 10 sessioni usate · 1 in programma"*, e l'uno
+era falso: `{scheduled}` vale **3**, perché Laura ha tre sedute future — sono la
+sua ricorrenza del giovedì generata fino all'orizzonte del dataset, non un
+numero scritto da qualche parte. E i due conteggi arrivano da due letture diverse:
+`used` da `getEntitlement`, la parte in programma dal conto degli appuntamenti,
+che nessun campo di `SessionEntitlement` porta. **Nessun guardrail sorveglia
+quella cifra** — quello che c'è verifica *quale* sia la prossima seduta di Laura,
+non quante ne abbia — quindi un esempio con i numeri dentro invecchia a ogni
+seduta che entra nell'orizzonte, in silenzio. I segnaposto dicono la stessa cosa
+e non possono invecchiare.
 
 Ne discendono due guardrail dell'area: dopo una prenotazione `used` è invariato, e
 **nessun numero dell'area HR si muove** — le sessioni consumate dell'azienda contano
@@ -2058,9 +2115,22 @@ demo scollegate.
    `SessionNote`: `PlatformSession` è la prova che non può arrivare altrove.
 
    **Quello che ne discende era già scritto per le annullate**, e va verificato
-   invece che dato per fatto: lo slot torna prenotabile, il compenso non matura,
+   invece che dato per fatto: l'ora torna libera, il compenso non matura,
    il contatore delle sessioni usate non si muove — conta le erogate — e la
-   cella del calendario si svuota. Metà del vuoto del
+   cella del calendario si svuota.
+
+   **"L'ora torna libera" non vuol dire "lo slot ricompare fra i proponibili"**,
+   ed è la precisazione senza la quale una prova a schermo smentisce questa riga
+   (18.08.2026). Gli slot offerti sono le **fasce del piano** della
+   professionista meno quelle occupate: annullando una seduta che non cade su
+   una di quelle fasce — le ricorrenti dei pazienti non ci cadono — quell'ora
+   smette di occupare e **non compare fra i proponibili**, perché non ci è mai
+   stata. La garanzia è quella del contratto, cioè che un'annullata non occupi
+   più la sua ora; il ricomparire vale per le sole fasce del piano, ed è il caso
+   della seduta appena prenotata. Da qui la conseguenza operativa in
+   `docs/PITCH.md`: davanti a un investitore si annulla quella.
+
+   Metà del vuoto del
    `docs/CONTRATTO-DATI.md` §8.5 si chiude qui; l'altra metà — preavviso, chi
    paga una disdetta tardiva, riprogrammazione, disdetta dal lato del dipendente
    — resta dichiarata lì.
@@ -2175,6 +2245,19 @@ aperta in anticipo, va **portata in primo piano** prima di cominciare.
   è generico). Spiegare cosa è stato tolto e perché è mestiere di
   `docs/PROGRESS.md`: nel sorgente diventa archeologia che nessuno cancella più. Un
   `TODO` vale solo con una destinazione: `TODO M2: …`.
+- **Un commento che nomina una milestone è una data che scade** (18.08.2026), ed
+  è la stessa forma del `TODO` con una destinazione: si rilegge **il giorno in
+  cui quella milestone chiude o cambia perimetro**, insieme alle righe dei
+  documenti che dicono la stessa cosa. Senza questa regola una milestone che si
+  sposta lascia dietro di sé dei commenti che descrivono un prodotto che non
+  esiste più: al 18.08.2026 erano **nove**, e tre di loro dicevano il contrario
+  di quello che il codice accanto faceva — la guardia di ruolo «che è M5» era
+  stata scritta il 12.08, in due punti che non si parlavano, e la validazione
+  «vera è M5» esisteva dal giorno dopo. Gli altri sei mandavano a una milestone
+  il lavoro che nel frattempo era passato al perimetro dell'MVP. *(La review ne
+  aveva contati sette: gli ultimi due sono usciti cercando `M5` su tutto `src/`
+  mentre si chiudevano i primi, e sono duplicati esatti di due dei difetti già
+  in elenco — ragione in più per scrivere il criterio invece dell'elenco.)*
 - **Ogni numero a schermo passa da `format.ts`.** CHF con apostrofo: `CHF 14'200`.
   Il codice ereditato usa `toLocaleString()` senza locale e importi scritti a mano
   all'italiana (`CHF 8.250`, che in Svizzera si legge "otto virgola due").

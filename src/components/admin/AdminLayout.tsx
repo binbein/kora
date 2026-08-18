@@ -18,9 +18,15 @@ import { t } from "@/lib/i18n";
  * Il guscio del back-office (CLAUDE.md §10.E).
  *
  * Il banner "dati dimostrativi" è di M0 e **resta**: chiunque abbia il link
- * vede il back-office con l'elenco dei clienti, e finché non c'è una guardia di
- * ruolo — che è M5, e va scritta da zero sui nostri ruoli — il banner è ciò che
- * impedisce di scambiarlo per un ambiente vero.
+ * vede il back-office con l'elenco dei clienti, e il banner è ciò che impedisce
+ * di scambiarlo per un ambiente vero.
+ *
+ * **Le guardie di ruolo esistono dal 12.08.2026** (blocco d di M5), e non
+ * cambiano questa riga: in demo `RequireRole` concede per costruzione, quindi a
+ * proteggere questa schermata da chi ha il link resta il banner — adesso più di
+ * prima, perché la barra pubblica ha la voce "Admin". *(Fino al 18.08.2026 qui
+ * si leggeva "finché non c'è una guardia di ruolo, che è M5": il §10.E e
+ * `docs/PITCH.md` erano stati corretti il 15.08, il sorgente no.)*
  */
 export default function AdminLayout() {
   const location = useLocation();
