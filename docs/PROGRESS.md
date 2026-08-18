@@ -5433,10 +5433,23 @@ chiedere ai founder, insieme alla decisione di quando i PDF escono.
 
 #### L'annullamento visibile e le settimane (18.08.2026)
 
-**Tre di codice — `feat:` ×2, `fix:` ×1 — e quattro di documenti, contando il
+**Quattro di codice — `feat:` ×3, `fix:` ×1 — e sette di documenti, contando il
 commit di chiusura.** Ripartizione da
-`git log --format='%s' master..HEAD | sed 's/:.*//' | sort | uniq -c`; **il
+`git log --format='%s' <base>..HEAD | sed 's/:.*//' | sort | uniq -c`; **il
 totale lo dice git**, per la clausola del 18.08.2026 in testa a questo file.
+
+**LA RIPARTIZIONE SI RIAPRE, ED È LA SECONDA VOLTA IN DUE GIORNI.** Diceva *tre
+di codice e quattro di documenti*, e la seconda metà della passata — il salto a
+data, approvato dai founder dopo un mock — è arrivata dopo il verbale, su una
+PR sua. **Si aggiorna la sezione invece di aprirne una seconda**: è la stessa
+passata, e il criterio in testa a questo file dice che un commit arrivato dopo
+riapre la cifra. Che sia servito **due volte in due giorni** è il modo in cui si
+sa che serviva: la prima volta l'aveva scritto una review, questa volta un
+blocco di lavoro nuovo.
+
+*(Il conto va fatto dalla base della passata e non da `master`: la prima metà è
+stata mergiata prima che la seconda cominciasse, quindi da lì `master..HEAD`
+misura solo il seguito.)*
 
 **Nessun numero del §8 e del §9 si muove**, le rotte restano **26**, nessuna
 schermata nasce. Il contratto cresce in tre punti e **solo in lettura**: un
@@ -5445,7 +5458,8 @@ una policy separata da un invariante.
 
 È la passata che chiude ciò che si vede **provando** l'annullamento costruito il
 17.08: tre difetti che nessun documento nominava, e che si trovano solo facendo
-il giro intero.
+il giro intero. **Poi il calendario ha guadagnato il salto a data**, e la sezione
+lo racconta in fondo.
 
 ##### Il dipendente sa che la sua seduta è stata annullata
 
@@ -5599,6 +5613,112 @@ Il giro intero del marketplace, nell'ordine:
 - `lint`, `typecheck`, `build` e `build:demo` a posto; guardrail **111 = 102 +
   9**, invariati; **775 chiavi** ×4.
 
+##### Il salto a data (seconda metà, 18.08.2026)
+
+**Approvato dai founder dopo un mock**, e la ragione è una misura: la
+navigazione a frecce costruita poche ore prima non basta su un'agenda che copre
+**sette mesi e mezzo** — dal 03.03.2026 al 13.10.2026, derivati dalle sedute e
+non scritti — dove rivedere un percorso concluso costa ventotto clic.
+
+**Il trigger è l'etichetta della settimana**, cioè l'elemento che dice dove sei:
+la riga dei comandi non cresce di un elemento. Dentro, il `Popover` e il
+`Calendar` che il repository aveva già.
+
+**La settimana è una banda, non una selezione.** `mode="single"` senza
+`selected`: un giorno selezionato accenderebbe `day_selected`, che è `bg-primary`
+pieno, e finirebbe sopra la banda — due riempimenti nello stesso calendario si
+leggono come due stati dello stesso tipo. Qui il clic **sposta la settimana**.
+Oggi resta un anello, sovrascritto **dal call site** perché il default di
+`ui/calendar.tsx` è lo stesso `bg-accent` della banda: sotto la banda sparirebbe.
+
+**I bordi dell'agenda si derivano** e vanno su `fromDate`/`toDate`, che limitano
+insieme selezione e navigazione dei mesi — le frecce del mese si spengono ai
+bordi invece di portare su un mese interamente spento. Niente navigazione per
+anno.
+
+##### Le tre cose che la libreria ha fatto trovare
+
+**`date-fns` non si importa**, ed è la prima: react-day-picker genera testo suo
+— caption, iniziali dei giorni, nomi accessibili — e senza intervento esce
+**tutto in inglese**. La strada ovvia sarebbe passargli una `locale` di
+`date-fns`, che però è una **dipendenza transitiva** che nessuno ha dichiarato
+(§3). Al suo posto `formatters` e `labels` instradati su `format.ts`, con i due
+formattatori che esistevano già.
+
+**`today` va passato, o la libreria chiama `new Date()` per noi.** Senza,
+l'anello di "oggi" cade sulla data vera della macchina mentre tutto il resto
+della demo deriva da `DEMO_TODAY` (§5.4). È una violazione del §5.4 **scritta
+dentro una libreria**, e si trova solo guardando dove cade l'anello.
+
+**`labels.labelDay` è morto in react-day-picker 8.10**: definito e mai
+consumato — verificato nel sorgente distribuito, dove `labelPrevious`,
+`labelNext` e `labelWeekday` finiscono su un `aria-label` e `labelDay` non
+compare. I pulsanti dei giorni non hanno nome accessibile oltre al numero,
+quindi il puntino dice la sua informazione **a parole** da `DayContent`, con
+una frase per i soli lettori di schermo. Passare `components` dal call site
+**sostituisce** quello di `ui/calendar.tsx` invece di fondersi, quindi le due
+icone delle frecce sono state ripassate lì — o le frecce del mese restavano
+vuote. Tutto dal call site: `ui/calendar.tsx` e `ui/popover.tsx` non sono stati
+toccati.
+
+##### L'aritmetica delle settimane, e il cambio d'ora dentro l'agenda
+
+`weeksBetween` sta in `dates.ts` e usa `Math.round`. **Non è pigrizia**: due
+mezzanotti locali a sette giorni di distanza distano `7 × 86'400'000`
+millisecondi **solo se in mezzo non cambia l'ora**, e l'agenda comincia il
+03.03.2026 mentre l'ora legale entra il 29.03.2026 — il confine cade **dentro**
+l'intervallo navigabile. Misurato: dal lunedì di oggi a quello del 02.03.2026 il
+quoziente è **−28.994**, che troncato dà −28 e arrotondato −29. Con la divisione
+secca il mini calendario avrebbe evidenziato una settimana e la griglia ne
+avrebbe mostrata un'altra.
+
+**Sta in `dates.ts` benché abbia un chiamante solo**, ed è una scelta dichiarata
+contro il §11: ha vinto la ragione di `overlaps` — è il file in cui chi incontra
+la trappola la viene a cercare, ed è aritmetica sui giorni, non presentazione.
+Dentro la schermata, il commento che spiega il cambio d'ora sarebbe archeologia
+che la prima ripulitura toglie.
+
+##### Il puntino era sotto soglia, ed è un difetto del mock
+
+Il segno che dice *"qui c'è almeno una seduta"* stava su `secondary`: **2.53:1**
+sulla banda e **2.83:1** sul bianco, mentre è un elemento non testuale che porta
+un'informazione — soglia **3:1** (1.4.11). Su `secondary-strong` misura **5.10**
+e **5.72**, misurati a schermo. Il `CLAUDE.md` §6.1 guadagna la clausola che
+mancava: la regola diceva che le varianti `-strong` si usano dove il colore è
+testo, e non copriva il caso di un segno che è l'unico portatore visivo.
+
+##### Verificato a schermo, viewport 1280×900
+
+- **il salto funziona nei due sensi**: dal 21–27.09 a 31.08–06.09 con un clic, e
+  l'etichetta e l'intestazione della griglia dicono la stessa settimana;
+- **il cambio d'ora**: scelto il 04.03.2026, l'etichetta e la griglia dicono
+  entrambe **02.03–08.03**, e riaprendo il calendarietto la banda copre 2–8 marzo;
+- **i due bordi**: a marzo la freccia del mese precedente è spenta e 1 e 2 marzo
+  non si scelgono; a ottobre è spenta quella successiva e i giorni dal 14 in poi
+  sono spenti;
+- **oggi è un anello e sta su 23**, non sulla data della macchina;
+- **quattro lingue**, caption e riga dei giorni: *settembre 2026* / *September
+  2026* / *septembre 2026* / *September 2026*, con `lun mar mer…`, `Mo Di Mi…`,
+  `lun. mar. mer.…`, `Mon Tue Wed…`; nomi accessibili delle frecce e riga
+  dell'intervallo tradotti, **zero inglese** e nessun overflow orizzontale;
+- **il focus torna sul trigger** dopo la scelta, e il popover si chiude;
+- `lint`, `typecheck` a zero; **779 chiavi** ×4.
+
+##### La tastiera non è stata provata a mano, e va detto
+
+Il pannello del browser di questa sessione **non consegna eventi di tastiera
+alla pagina**: verificato, non supposto — `Tab` non muove il focus e `Escape`
+non chiude un popover che il DOM dichiara aperto. Nemmeno gli eventi
+sintetizzati servono, perché non producono l'attivazione nativa di un pulsante.
+Nessun browser reale era collegato per rifare la prova altrove.
+
+**Quello che è verificato**: il trigger è un `button` vero con
+`aria-haspopup="dialog"` e `aria-expanded` che si muove, i giorni sono pulsanti
+dentro una tabella `role="grid"`, e **il focus torna sul trigger** alla chiusura.
+**Quello che resta da provare in venti secondi**: apertura con Invio, frecce fra
+i giorni, Escape. È la stessa famiglia della nota del §11 sul misurare a scheda
+nascosta — lo strumento mente, e conviene saperlo prima.
+
 ##### Trovato e non toccato
 
 - **Il dialogo di annullamento promette la riproposizione**: *"L'ora torna
@@ -5607,8 +5727,13 @@ Il giro intero del marketplace, nell'ordine:
   le proponibili **solo** se è una fascia del piano — e per lo slot che il
   pitch annulla è vera. Non toccata: sono quattro stringhe, e la frase giusta
   dipende dalla policy che il contratto ha appena dichiarato non decisa.
-- **La legenda resta sotto una settimana vuota**: tre voci che spiegano celle
-  che non ci sono. Preesistente al ramo del vuoto, una riga, fuori perimetro.
+- ~~**La legenda resta sotto una settimana vuota**: tre voci che spiegano celle
+  che non ci sono.~~ → **chiusa dalla seconda metà della passata**, insieme
+  all'altra coda: `getAppointments` assegnava `cancellationReasonKey` anche
+  quando non pertiene, cioè la proprietà con dentro `undefined` — mentre il §2
+  del contratto vuole che un campo `?` **non ci sia**. È la stessa famiglia
+  della sentinella a zero di `employeeCount`: non la forma sbagliata, il
+  significato sbagliato.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
