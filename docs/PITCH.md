@@ -95,17 +95,24 @@ presentazione.
   stessa sessione nel calendario. È un record solo visto da due lati, e si vede che
   lo slot è sparito dai liberi.
 
-  **Prenota dentro la settimana visibile** — **venerdì 25.09 alle 10:00** è lo
-  slot provato in M3 e funziona. Il calendario del professionista mostra **solo
-  la settimana corrente** (lun 21 – dom 27.09) e non ha navigazione fra
-  settimane: uno slot preso oltre il 27 compare fra le sessioni in programma ma
-  **non nella griglia**, e a metà pitch si legge come un difetto invece che come
-  il limite dichiarato che è (`docs/PROGRESS.md`, area dipendente).
+  **Prenota venerdì 25.09 alle 10:00**: è lo slot provato, cade nella settimana
+  corrente e si vede senza spostarsi.
 
-  **Se chiedono di vedere la settimana successiva**, la risposta è che nella demo
-  il calendario si ferma a quella corrente: è un limite dichiarato, non qualcosa
-  che si è rotto in sala. Non cercare la navigazione a schermo — non c'è, e
-  cercarla davanti a qualcuno costa più della frase.
+  **Il calendario si sposta di settimana** (18.08.2026), con le due frecce in
+  cima alla griglia e "Questa settimana" per tornare: se chiedono di vedere la
+  settimana successiva, **mostragliela**. È anche il modo di rispondere alla
+  domanda che nasce dall'elenco pazienti — *"prossima seduta 01.10"* — che prima
+  il calendario non poteva raggiungere.
+
+  **Le quattro KPI in alto non seguono le frecce**, ed è voluto: dicono come va
+  **adesso** — sedute di questa settimana, prossima seduta, agenda del mese,
+  pazienti attivi — mentre a muoversi è la sola griglia, con l'etichetta che
+  dichiara quale settimana mostra. Se qualcuno lo nota, è la stessa disciplina
+  della cornice del trimestre nella dashboard HR.
+
+  **Navigando abbastanza avanti la settimana è vuota**, e la card lo dice: il
+  dataset finisce, non la demo. Torna con "Questa settimana" invece di premere
+  la freccia indietro più volte.
 
   **Se mostri l'annullamento, annulla quella seduta lì**, cioè le 10:00 di
   venerdì 25.09 che hai appena prenotato — non una delle sedute che il
@@ -115,6 +122,12 @@ presentazione.
   proponibili, perché non è una fascia del piano — e a schermo si legge come
   "l'annullamento non ha liberato nulla" (`CLAUDE.md` §10.D.3). Con lo slot
   appena prenotato il giro si chiude: sparisce prenotando, torna annullando.
+
+  **E poi torna dal dipendente**, che dal 18.08.2026 l'annullamento lo vede: la
+  seduta resta nella sua home con "Annullato" e con chi l'ha disdetta, e il
+  contatore in programma **scende**. È il terzo lato dello stesso record — dopo
+  la prenotazione che compare nel calendario e la disdetta che lo svuota — e si
+  mostra in un clic, senza dire una parola in più.
 
 - **La richiesta demo si mostra alla fine, e non ha più una coreografia.**
   Compila il form da `/demo` durante il giro normale, e quando vuoi mostrarne
@@ -290,6 +303,43 @@ portale della Dr.ssa Meier.
 qui la privacy non è una promessa scritta nell'informativa, è una proprietà della
 forma dei dati — la stessa disciplina per cui i font sono self-hostati e le
 richieste esterne a runtime sono zero (`CLAUDE.md` §3).
+
+### "E se due persone hanno le stesse iniziali?"
+
+Arriva **subito dopo** quella sulla privacy, cioè mentre `/admin/sessioni`
+mostra "M.B." accanto al "Marco Bianchi" del portale della professionista. Tre
+fatti, in quest'ordine.
+
+**Primo, e va detto per primo perché rende credibile il resto: nella demo non
+succede, ed è un vincolo del dataset — non una proprietà del prodotto.** Nessuna
+coppia di persone condivide le iniziali, e a sorvegliarlo c'è un guardrail che
+fa fallire l'avvio se qualcuno ne aggiunge una: è il modo in cui le tre liste di
+persone restano unibili a mano mentre i dati sono finti.
+
+**Secondo: in produzione le liste si uniscono per id vero**, e le iniziali
+tornano a essere quello che sono — una resa. Il vincolo del dataset cade insieme
+al guardrail che lo sorveglia, perché non serve più a niente
+(`docs/CONTRATTO-DATI.md` §7).
+
+**Terzo, ed è la parte onesta: quello che resta aperto è cosa vede chi guarda
+due righe uguali**, ed è una scelta di prodotto che non abbiamo ancora preso
+(§8.8). La strada facile — un identificatore accanto alle iniziali — è
+**esattamente ciò che quelle schermate esistono per non dare**: un pseudonimo
+stabile identifica, e a quel punto l'anonimato è una parola. Le strade sono tre
+— un discriminante che non identifica, l'ordinamento come unica chiave di riga,
+o l'ammissione che due righe possano leggersi uguali — e si citano, non se ne
+sceglie una in sala.
+
+**Due dettagli che rafforzano la risposta**, e sono di questa demo: i posti in
+cui l'ambiguità morde sono **due** — l'elenco dipendenti dell'HR e le sessioni
+del back-office — perché dal 17.08.2026 i pazienti e le sedute della
+professionista portano il nome. Restringere quell'elenco **è tutto il guadagno**:
+due dei quattro posti erano proprio quelli di chi la persona la conosce.
+
+**Non promettere una soluzione e non dire "è in roadmap"**: è la stessa
+disciplina della risposta sull'escalation clinica, e per la stessa ragione — la
+domanda dopo è *"e quando succede?"*, e a una funzione descritta e non costruita
+non c'è niente da rispondere.
 
 ### "Se rispondo al check rapido, la dashboard si muove?"
 
