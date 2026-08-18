@@ -1221,6 +1221,17 @@ Qui la si eviterebbe al contrario, mettendola in un elemento che non la merita.
   descrivono il dominio e non sono interfaccia — si allineano quando si tocca il
   punto in cui stanno, come i `.jsx` del §3, non con una passata a tappeto.
 
+  **Il criterio con cui si conta la parola vecchia, perché la prossima misura
+  non ne produca una seconda** (18.08.2026): si contano le occorrenze nei
+  **valori** dei dizionari — le stringhe che il §2.7 conta come chiavi foglia —
+  e **non nei commenti**, nemmeno in quelli che stanno dentro `i18n`. È la
+  stessa disciplina dei call site (§5.6) e delle chiavi (§2.7): due rilevazioni
+  dello stesso oggetto senza una regola scritta danno due numeri, e qui la
+  differenza è già arrivata. Un `grep -c` su un dizionario oggi conta **due**
+  occorrenze di "sedute" in `it.ts`, tutte e due nel commento che regola le
+  biografie: **non sono una violazione**, per la riga qui sopra, e il commento
+  resta dov'è. A essere invecchiata è la misura fatta senza il criterio, non il
+  codice.
   **La doppia parola può esistere in una lingua sola, e va cercata lingua per
   lingua**: al momento dell'allineamento tedesco, francese e inglese usavano già
   un termine solo — `Sitzung`, `séance`, `session` — per entrambe le italiane.
