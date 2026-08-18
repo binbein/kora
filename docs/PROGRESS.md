@@ -5376,6 +5376,54 @@ da `/admin`.
   17.08 alle 23:31, nessun processo git attivo — e bloccava il primo commit.
   Rimosso.
 
+#### L'igiene del repository (18.08.2026)
+
+**Un commit, di documenti: questo.** Niente di `src/` cambia, e non cambia
+nessun documento tranne questa voce — il resto della passata non è un diff, è
+roba tolta da attorno al repository.
+
+**Due branch morti, cancellati dopo averli verificati.** `spike/report-pdf`
+aveva **un commit solo** — `a845a98`, lo spike di html2canvas e jspdf del
+10.08 — e `git log master..spike/report-pdf` dava quello e nient'altro: lo
+spike ha già dato il suo esito, `lib/report-pdf.ts` esiste e M4 è chiusa dalla
+PR #19 dello stesso giorno, quindi tenerlo era conservare materiale che il §11
+non vuole. `m5e-lingue-infrastruttura-de` era **interamente dentro master** —
+zero commit avanti — e non era mai stato cancellato dopo la PR #36.
+
+**Su origin non c'era più niente da cancellare, e vale la pena saperlo**: i due
+`git push --delete` hanno risposto *remote ref does not exist*. I rami erano già
+spariti da GitHub e a sopravvivere erano i **riferimenti di tracciamento
+locali**, che nessun `branch -a` distingue da un ramo vero: li ha tolti
+`git fetch --prune`. Chi ricontrolla con `branch -a` senza aver mai fatto prune
+vede rami che non esistono.
+
+**`_to_delete/` è stata cancellata, e con lei l'esclusione locale.** Era esclusa
+in `.git/info/exclude`, che non si eredita clonando — quindi il repository non
+la ignorava affatto: la ignorava **questa macchina**. Delle due strade si è
+presa la seconda, e la ragione è che il contenuto non era materiale da tenere:
+68 file, 1.6 MB, fermi dal 15.08 — due tarball e 66 fra lock git orfani e
+oggetti temporanei. **Verificato voce per voce prima di cancellare**: ogni file
+dei due archivi esiste ancora oggi nell'albero di lavoro, quindi non portavano
+niente che git e il disco non abbiano già. E `kora-analysis.tar.gz` conteneva
+**una seconda copia non tracciata dei due PDF riservati**, cioè l'opposto di ciò
+che il §3 chiede il giorno in cui quei PDF dovranno uscire anche dalla storia.
+
+**Nessuna riga è finita in `.gitignore`**: ignorare per tutti una cartella che
+non deve esistere è la stessa cosa che il §11 rifiuta altrove — codice, o
+configurazione, messo lì per un caso che non c'è.
+
+**I PDF non si toccano, ed è la verifica che è stata chiesta.** La riga del §3
+regge come obbligo con un innesco — *"al primo ingresso di qualcuno che non sia
+un founder … si tolgono dal repository e si ripulisce la storia con
+`git filter-repo`"* — e non come nota. Niente da correggere.
+
+**Nota a margine, riportata e non corretta**: il file si chiama
+`KORA_BusinessPlan_v6.pdf` e alla prima pagina dichiara **«VERSIONE 5.0 · Giugno
+2026»**; *"Dubbi Business per CEO"* cita a sua volta *"Business Plan KORA v5.0"*.
+Il nome del file e il documento non dicono lo stesso numero, e a essere isolato è
+il nome. Non è un difetto del repository e non si rinomina qui: è una cosa da
+chiedere ai founder, insieme alla decisione di quando i PDF escono.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
