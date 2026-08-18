@@ -63,10 +63,14 @@ export const queryKeys = {
     /*
      * La nota sta sotto la radice, e non è un dettaglio di ordinamento:
      * `saveSessionNote` invalida `["professional", id]` (CONTRATTO-DATI §4), e
-     * una chiave fuori di lì resterebbe ferma sulla nota appena scritta. Oggi
-     * nessuno legge le note — `getSessionNote` è una lettura esposta senza
-     * chiamante, che il contratto ammette (§2) — quindi il difetto non si vede:
-     * si vedrebbe al primo lettore, che è il momento peggiore per scoprirlo.
+     * una chiave fuori di lì resterebbe ferma sulla nota appena scritta. La
+     * precauzione ha avuto il suo lettore — `useSessionNote`, che `ProSessioni`
+     * apre riaprendo il dialogo della nota — e lì la scelta si è dimostrata
+     * invece di restare una cautela.
+     *
+     * *(Fino al 18.08.2026 questo commento diceva che nessuno legge le note e
+     * che il difetto "si vedrebbe al primo lettore": il primo lettore è
+     * arrivato, e la riga che lo prevedeva non è stata riletta.)*
      */
     sessionNote: (professionalId: string, sessionId: string) =>
       ["professional", professionalId, "session-note", sessionId] as const,
