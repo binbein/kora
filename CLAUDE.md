@@ -1049,15 +1049,39 @@ Regole:
   aperto**: il rimedio cambia un colore, e i colori sono dei founder (la voce sta
   in `docs/PROGRESS.md`, «Aperto e dichiarato» della passata del 18.08.2026).
 
-  **La lezione di metodo si allarga, ed è il terzo caso della stessa famiglia
-  ma il primo di forma diversa.** Le prime due riguardavano *come* si legge un
+  **Ed è falso una terza volta, di due nodi, dal 18.08.2026.** Il badge dello
+  stato annullato e quello del motivo, in `ProSessioni`, stavano sul token base
+  — **3.30:1** sulla tinta `/10` e **3.76:1** sulla card — mentre il `Badge` di
+  shadcn è `text-xs font-semibold`, cioè testo normale con soglia 4.5.
+  **Corretti nella stessa passata**, perché il rimedio non è una decisione
+  nuova: `destructive-strong` esiste dall'11.08.2026 per questo caso, e ora
+  misurano **4.92** e **5.60**.
+
+  **Perché il censimento non li aveva visti, ed è la parte che vale più della
+  correzione**: stanno dentro `TabsContent value="cancelled"`, e `Tabs` apre su
+  `upcoming`. **Radix non monta i contenuti dei tab chiusi**, quindi quei nodi
+  non esistevano nel DOM nel momento in cui lo strumento lo percorreva.
+
+  **La lezione di metodo si allarga due volte, e le tre forme sono diverse.** Le prime due riguardavano *come* si legge un
   nodo — l'alpha nel token si vede, l'`opacity` sull'elemento no. Questa
   riguarda **quali nodi si percorrono**: l'etichetta non è testo HTML, è un
   `fill` dentro un `<svg>`, quindi non entra affatto nell'insieme che uno
-  strumento che cammina il DOM guarda. **Un censimento dichiara zero su ciò che
-  non ha guardato**, e i grafici sono l'unico posto di questa demo dove il testo
-  vive fuori dal DOM HTML: chi rifà la misura parte da lì, e conta prima quanti
-  nodi ha percorso.
+  strumento che cammina il DOM guarda. La terza è **quali nodi ci sono**: un tab
+  chiuso, un dialogo non aperto e uno stato che solo `?fail` produce non stanno
+  nel DOM finché nessuno li chiede.
+
+  **Un censimento dichiara zero su ciò che non ha guardato**, e da qui **dice
+  anche quanti nodi ha percorso**, non solo quanti erano sotto soglia: è l'unico
+  numero che distingue "non c'è niente sotto soglia" da "non ho guardato". Chi
+  rifà la misura apre i due `Tabs` dell'applicazione, ogni dialogo, e gli stati
+  che vivono solo dietro `?fail`, `?empty` e `?role`.
+
+  **Una nota che serve a non contare falsi positivi**: i controlli disabilitati
+  sono **esenti** dalla 1.4.3, e in questa demo non sono pochi — la sola lista
+  sessioni ne ha 18, tutti a 3.10:1 per l'`opacity` che shadcn mette su
+  `:disabled`. Uno strumento che non li salta trova diciotto difetti che non
+  esistono, ed è il modo più veloce per far perdere fiducia in un censimento che
+  altrove ha ragione.
 
   La sezione M5.a di
   `docs/PROGRESS.md` porta i conti e come ci si è arrivati, compresi i due
