@@ -732,6 +732,7 @@ export const it = {
       /** "10 incluse + 2 a CHF 28" */
       overCap: "{total} incluse + {extra} a {price}",
       capReached: "Sessioni incluse esaurite",
+      empty: "Nessun paziente in carico.",
     },
 
     payments: {
