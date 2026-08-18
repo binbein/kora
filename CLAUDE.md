@@ -647,9 +647,13 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
     `null` e le liste vuote rendono il vuoto, `isError` rende l'errore — e la
     regola sta scritta una volta in `loadState`, che **non conosce le forme**:
     il vuoto lo decide la schermata. La dimostrazione è
-    `data/fault-injection.ts`, un `Proxy` con due manopole (`?fail`, `?empty`)
-    che **esiste solo in sviluppo** e sparisce da entrambe le altre build,
-    misurato col grep. Da qui `query-client.ts` non ritenta più — un tentativo
+    `data/fault-injection.ts`, un `Proxy` con **tre** manopole (`?fail`,
+    `?empty`, `?role`) che **esiste solo in sviluppo** e sparisce da entrambe
+    le altre build, misurato col grep. *(Diceva due, ed era vero fino al blocco
+    d): la terza è `?role=`, che fissa la sessione e rende raggiungibile il ramo
+    che nega di `RequireRole` — cioè il pezzo su cui il §10.E poggia una frase
+    intera. Il `README.md` diceva già tre; a essere indietro era questa riga,
+    corretta il 18.08.2026.)* Da qui `query-client.ts` non ritenta più — un tentativo
     automatico mette in pausa la query a scheda non visibile, e una query in
     pausa è un quarto caso indistinguibile dall'attesa. Il racconto e
     l'inventario schermata per schermata sono in `docs/PROGRESS.md`.
