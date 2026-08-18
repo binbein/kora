@@ -649,13 +649,14 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
     il vuoto lo decide la schermata. La dimostrazione è
     `data/fault-injection.ts`, un `Proxy` con **tre** manopole (`?fail`,
     `?empty`, `?role`) che **esiste solo in sviluppo** e sparisce da entrambe
-    le altre build, misurato col grep. *(Diceva due, ed era vero fino al blocco
-    d): la terza è `?role=`, che fissa la sessione e rende raggiungibile il ramo
-    che nega di `RequireRole` — cioè il pezzo su cui il §10.E poggia una frase
-    intera. Il `README.md` diceva già tre; a essere indietro era questa riga,
-    corretta il 18.08.2026.)* Da qui `query-client.ts` non ritenta più — un tentativo
-    automatico mette in pausa la query a scheda non visibile, e una query in
-    pausa è un quarto caso indistinguibile dall'attesa. Il racconto e
+    le altre build, misurato col grep. *(Diceva due, ed era vero fino al
+    blocco d): la terza è `?role=`, che fissa la sessione e rende
+    raggiungibile il ramo che nega di `RequireRole` — cioè il pezzo su cui il
+    §10.E poggia una frase intera. Il `README.md` diceva già tre; a essere
+    indietro era questa riga, corretta il 18.08.2026.)* Da qui
+    `query-client.ts` non ritenta più — un tentativo automatico mette in pausa
+    la query a scheda non visibile, e una query in pausa è un quarto caso
+    indistinguibile dall'attesa. Il racconto e
     l'inventario schermata per schermata sono in `docs/PROGRESS.md`.
   - **c) Validazione dei form**, con `zod` e `react-hook-form`, che il §3 tiene
     installati apposta. **Porta con sé la decisione rimandata sulla guardia di
@@ -1250,6 +1251,7 @@ Qui la si eviterebbe al contrario, mettendola in un elemento che non la merita.
   biografie: **non sono una violazione**, per la riga qui sopra, e il commento
   resta dov'è. A essere invecchiata è la misura fatta senza il criterio, non il
   codice.
+
   **La doppia parola può esistere in una lingua sola, e va cercata lingua per
   lingua**: al momento dell'allineamento tedesco, francese e inglese usavano già
   un termine solo — `Sitzung`, `séance`, `session` — per entrambe le italiane.
@@ -2003,11 +2005,11 @@ ancora fatto. A muoversi è la parte in programma, e la frase le tiene distinte:
 *"{used} su {total} sessioni usate · {scheduled} in programma"*. Deciso dai
 founder il 07.08.2026.
 
-**La frase si cita con i segnaposto, non con i suoi numeri** (18.08.2026). Fino a
-oggi questa riga scriveva *"3 su 10 sessioni usate · 1 in programma"*, e l'uno era
-falso: `{scheduled}` vale **3**, perché Laura ha tre sedute future — sono la sua
-ricorrenza del giovedì generata fino all'orizzonte del dataset, non un numero
-scritto da qualche parte. E i due conteggi arrivano da due letture diverse:
+**La frase si cita con i segnaposto, non con i suoi numeri** (18.08.2026). Fino
+a oggi questa riga scriveva *"3 su 10 sessioni usate · 1 in programma"*, e l'uno
+era falso: `{scheduled}` vale **3**, perché Laura ha tre sedute future — sono la
+sua ricorrenza del giovedì generata fino all'orizzonte del dataset, non un
+numero scritto da qualche parte. E i due conteggi arrivano da due letture diverse:
 `used` da `getEntitlement`, la parte in programma dal conto degli appuntamenti,
 che nessun campo di `SessionEntitlement` porta. **Nessun guardrail sorveglia
 quella cifra** — quello che c'è verifica *quale* sia la prossima seduta di Laura,
