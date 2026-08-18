@@ -46,6 +46,16 @@ hanno smesso di divergere. Il criterio, deciso dai founder il 15.08.2026:
   15.08.2026 dalla seconda passata che ha usato il criterio, ed è il buco che ha
   trovato usandolo: la sua sottosezione dichiarò sei con cinque commit sul
   branch, ed è invecchiata appena la passata ne ha guadagnato un settimo.)*
+- **E se nessuno lo aggiorna, la predizione resta scritta**: è successo il
+  17.08.2026, alla prima passata in cui qualcosa è arrivato dopo il verbale, e
+  l'obbligo qui sopra c'era già. Da qui **la clausola che chiude il buco per
+  davvero** (18.08.2026): un commit che arriva dopo il verbale **riapre la
+  cifra**, e chi non se la sente di riaprirla ha la seconda strada — **il
+  verbale dichiara la ripartizione e non il totale**, che lo dica git. È la
+  stessa scelta che il `CLAUDE.md` §5.6 ha fatto per i call site e il §2.7 per
+  le chiavi: quando un numero deve essere ricontato da qualcuno, prima o poi
+  nessuno lo riconta. La ripartizione non ha lo stesso difetto — si misura con
+  lo stesso comando e non predice niente.
 
 Vale da questa passata in avanti. Le voci più vecchie non si riscrivono: sono
 verbali, e un conteggio sbagliato che qualcuno trova si corregge lì con la sua
@@ -1221,7 +1231,7 @@ la review lo campioni invece di fidarsi.
 | `/hr/privacy` | strumento | `null` | — | `ErrorNotice` di pagina |
 | `/professional` calendario | strumento | `null` | frase esistente sulla settimana | `ErrorNotice` di pagina |
 | `/professional/sessioni` | strumento | `null` | frasi esistenti sui tre pannelli | `ErrorNotice` di pagina, e `…note.error` sul salvataggio |
-| `/professional/pazienti` | strumento | `null` | — | `ErrorNotice` di pagina |
+| `/professional/pazienti` | strumento | `null` | `EmptyNotice` `professional.patients.empty` *(dal 18.08.2026; qui c'era un `—`, ed era la sola casella sbagliata della tabella)* | `ErrorNotice` di pagina |
 | `/professional/pagamenti` | strumento | `null` | `EmptyNotice` `professional.profile.empty` | `ErrorNotice` di pagina |
 | `/professional/profilo` | strumento | `null` | `EmptyNotice` `professional.profile.empty` | `ErrorNotice` di pagina |
 | `/professional` badge nav | — | `null` | `null` | `null` (decorativo: i tre collassano) |
@@ -4845,9 +4855,13 @@ più, e vale la pena saperlo prima della prossima verifica su un selettore.
 
 #### Il conteggio che diventa un guardrail (17.08.2026)
 
-**Sei commit: tre di codice — `feat:` ×1, `fix:` ×2 — e tre di documenti.**
-Totale e ripartizione dalla stessa misura, `git log --format='%s' master..HEAD`;
-il numero è `n + 1` perché il commit di chiusura conta sé stesso. **Nessun numero
+**Sette commit: quattro di codice — `feat:` ×1, `fix:` ×3 — e tre di
+documenti**, misurati a chiusura avvenuta con
+`git log --format='%s' ff2ca80^..ff2ca80^2`. *(La sottosezione dichiarava
+**sei**, con `fix:` ×2, ed era la predizione `n + 1` scritta nel commit di
+chiusura: `06a1b88` è arrivato dopo, e nessuno è risalito a riaprire la cifra.
+Corretta il 18.08.2026, insieme alla clausola che quel buco lo chiude — sta in
+«Come una passata conta i propri commit».)* **Nessun numero
 del §8 e del §9 si muove**, le rotte restano **26** e a schermo cambia una
 frase sola.
 
@@ -4969,13 +4983,17 @@ una segnalazione su un difetto che non c'è. Adesso i buchi sono nominati tutti:
 
 ##### Aperto e dichiarato
 
-- **`EmployeeHome` annida un `<div>` dentro un `<p>`**, ed è preesistente:
+- ~~**`EmployeeHome` annida un `<div>` dentro un `<p>`**, ed è preesistente:
   arriva da `f3ff66e`, la passata della home, dove il badge "Fatto" sta dentro
   il `<p>` del titolo della card check-up. React lo segnala in sviluppo —
   `validateDOMNesting` — e il browser chiude il paragrafo prima del `div`. **Non
-  toccato**: è fuori dal perimetro di questa passata, ed è una riga. Non
-  contraddice il *"console senza un solo messaggio"* di quel verbale: quella
-  misura era sulla build demo, dove React non emette questi avvisi.
+  toccato**: è fuori dal perimetro di questa passata, ed è una riga.~~ →
+  **chiuso da questa stessa passata**, con `06a1b88`, che ha portato quel titolo
+  a `<div>`: il commit è arrivato **dopo** il verbale, e nessuna riga lo ha
+  collegato a questa — è lo stesso commit che ha lasciato indietro la
+  ripartizione qui sopra. *(Barrato il 18.08.2026.)* Non contraddice il
+  *"console senza un solo messaggio"* di questo verbale: quella misura era sulla
+  build demo, dove React non emette questi avvisi.
 - **Il conteggio dei `.jsx`, delle rotte e dei call site resta prosa**, e questa
   passata non lo cambia. Solo quello delle chiavi aveva un oggetto che il codice
   può contare da sé all'avvio: le rotte si contano su `App.tsx` e i call site su
@@ -5119,8 +5137,14 @@ aperta**:
   domande nelle testate di `de.ts` e `fr.ts` sono state corrette qui: quella
   tedesca citava una chiave che non esiste più, quella francese motivava il
   maschile generico con un'assenza di dato che il nome ha smentito.
-- **`EmployeeHome` annida un `<div>` dentro un `<p>`**, dichiarato dalla passata
-  precedente e ancora fuori perimetro.
+- ~~**`EmployeeHome` annida un `<div>` dentro un `<p>`**, dichiarato dalla
+  passata precedente e ancora fuori perimetro.~~ → **era già chiuso mentre
+  questa riga lo dichiarava aperto**: `06a1b88`, nella passata precedente, aveva
+  portato quel titolo a `<div>` dopo che il suo verbale era stato scritto.
+  **Il commit ha corpo vuoto e nessun trailer**, quindi non dice cosa chiude, e
+  questo è il difetto vero: due verbali hanno dichiarato aperto un difetto che
+  il repository non aveva più. *(Barrato il 18.08.2026, dopo aver verificato
+  che in tutto `src/` non resta nessun annidamento proibito.)*
 
 ### Punto di partenza — cosa c'è e cosa manca
 
