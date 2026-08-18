@@ -114,6 +114,12 @@ presentazione.
   dataset finisce, non la demo. Torna con "Questa settimana" invece di premere
   la freccia indietro più volte.
 
+  **Il salto a data non serve al giro**: l'etichetta della settimana apre un
+  calendarietto (18.08.2026), ma è un comando per chi lavora, non per la
+  presentazione. In sala bastano le frecce — aprire un calendario davanti a un
+  investitore invita a scegliere una data a caso e ad atterrare su una settimana
+  che non racconta niente.
+
   **Se mostri l'annullamento, annulla quella seduta lì**, cioè le 10:00 di
   venerdì 25.09 che hai appena prenotato — non una delle sedute che il
   calendario porta già. Le disponibilità sono le fasce dichiarate della Dr.ssa
