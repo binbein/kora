@@ -5148,13 +5148,20 @@ aperta**:
 
 #### L'allineamento fra codice e verbali (18.08.2026)
 
-**Sette di documenti e due di codice — `fix:` ×2 — più il commit di chiusura,
+**Undici di documenti e due di codice — `fix:` ×2 — più il commit di chiusura,
 che è un `docs:`.** La ripartizione è misurata con
 `git log --format='%s' master..HEAD | sed 's/:.*//' | sort | uniq -c`; **il
 totale non si scrive**, e lo dice git. È la clausola che questa stessa passata
 ha aggiunto al criterio del 15.08 (in testa a questo file), applicata dal primo
 verbale che poteva applicarla: un totale predetto è la cosa che il commit
-successivo smentisce in silenzio, e a smentirlo è appena successo.
+successivo smentisce in silenzio.
+
+**Ed è servita subito, che è la prova che valeva la pena scriverla.** La review
+ha aggiunto quattro commit dopo questo verbale — la seconda qualifica dello zero
+del §6.1, i nove commenti che rimandavano a M5, la formattazione e questa
+riga — e **si è riaperta la sola ripartizione**, da sette a undici: il totale
+non c'era da riaprire, perché non era stato scritto. La differenza fra le due
+metà del criterio si vede meglio qui che in qualunque spiegazione.
 
 **Nessun numero del §8 e del §9 si muove**, le rotte restano **26**, e nessun
 colore, token o riga del §6.1 è stato toccato. A schermo cambiano due cose: una
@@ -5255,6 +5262,41 @@ che `docs/PITCH.md` adesso dice quale annullamento si mostra: annullare una
 seduta seminata davanti a un investitore si legge come «l'annullamento non ha
 liberato nulla».
 
+##### Le tre cose trovate in review
+
+Sono arrivate dopo il verbale, sullo stesso branch, e sono tutte di documenti.
+
+**Lo zero del §6.1 è falso una seconda volta, di un nodo.** L'etichetta "alert"
+del marker sul trend sta a 3.95:1, ed è testo informativo: la riga è stata
+qualificata con la data, come la prima volta con i quattro nodi del footer.
+**La lezione di metodo si allarga**, ed è la parte che serve: le prime due
+volte il difetto era *come* si legge un nodo — l'alpha dentro il token si vede,
+l'`opacity` sull'elemento no — questa volta è **quali nodi si percorrono**. Un
+`fill` dentro un `<svg>` non entra nell'insieme che uno strumento sul DOM HTML
+guarda, quindi il censimento dichiarava zero su ciò che non aveva guardato. Il
+difetto **resta aperto**: il rimedio cambia un colore.
+
+**I commenti che rimandavano a M5 erano nove, non uno.** Il `Footer.tsx`
+dichiarato qui sotto era la punta di una famiglia, e la famiglia si chiude
+insieme perché il criterio è uno solo — che ora sta nel `CLAUDE.md` §11,
+accanto alla regola sui `TODO` con una destinazione. **Tre dicevano il contrario
+di quello che il codice accanto faceva**: due volte il banner del back-office
+«finché non c'è una guardia di ruolo, che è M5» — in `AdminLayout` e nella
+testata admin di `it.ts`, scritta il 12.08 — e la validazione «vera è M5»,
+mentre `noValidate` spegne apposta quella del browser dal blocco c). **Sei
+mandavano a una milestone lavoro passato al perimetro dell'MVP**: la
+paginazione in quattro punti e le pagine del footer in due.
+
+**La review ne aveva contati sette**: gli ultimi due sono usciti cercando `M5`
+su tutto `src/` mentre si chiudevano i primi, e sono duplicati esatti di due
+difetti già in elenco. È l'argomento del criterio contro l'elenco, capitato
+dentro il commit che scriveva il criterio.
+
+**E un a capo mancante**, che in Markdown fondeva in uno i due paragrafi finali
+del §7, più tre righe di prosa oltre le ~80 colonne del file — una a 110,
+perché un ritorno a capo aveva incollato la parentesi di chiusura alla frase
+successiva.
+
 ##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato prima di ogni misura
 
 - **il vuoto e l'errore dei pazienti nei due versi**:
@@ -5314,12 +5356,15 @@ da `/admin`.
   questa passata, che non doveva cambiare colori. Va portato con l'inventario
   qui sopra alla decisione dei founder, perché è sulla schermata del pitch e
   perché il censimento di M5.a non poteva vederlo — misurava il colore
-  calcolato dei nodi HTML, e questo è un `fill` dentro un `<svg>`.
-- **Il commento di `Footer.tsx` dice ancora «Le pagine vere sono M5»**, mentre
-  il blocco f) è stato ritirato dallo scope della demo il 15.08.2026 e il suo
-  lavoro è nel perimetro dell'MVP, in fondo a questo file. È la stessa famiglia
-  dei quattro commenti corretti qui sopra, trovata dopo aver chiuso quel commit:
-  una riga, e nessuno la rilegge finché non serve.
+  calcolato dei nodi HTML, e questo è un `fill` dentro un `<svg>`. **Dalla
+  review il `CLAUDE.md` §6.1 lo dichiara**: quello "zero informativi" è falso
+  di questo nodo dal 18.08.2026, ed è la seconda volta che va qualificato.
+- ~~**Il commento di `Footer.tsx` dice ancora «Le pagine vere sono M5»**,
+  mentre il blocco f) è stato ritirato dallo scope della demo il 15.08.2026.~~ →
+  **chiuso dalla review, sullo stesso branch**, e non da solo: era uno di
+  **nove**, e la famiglia è stata chiusa insieme con il criterio che le
+  discende nel `CLAUDE.md` §11. Il racconto sta qui sopra, «Le tre cose trovate
+  in review».
 - **Il piano delle passate mandava i verbali fuori dal repository.**
   `.claude/refinement-plan/kora-piano-migliorie.md` diceva di scrivere il
   verbale in `../../../../Downloads/PROGRESS.md`. Corretto sul posto in
