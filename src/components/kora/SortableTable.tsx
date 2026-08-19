@@ -33,7 +33,7 @@ import { getLocale, t } from "@/lib/i18n";
  * dire niente e **la colonna non si ordina**. La regola resta; **l'esempio che
  * portava era sbagliato** (19.08.2026): dava per priva di scala proprio lo
  * stato della seduta, che l'ordine ce l'aveva già — è quello delle schede di
- * `/professional/sessioni`, e ora è `STATUS_RANK` in `AdminSessioni.tsx`. Le
+ * `/professional/sessions`, e ora è `STATUS_RANK` in `AdminSessioni.tsx`. Le
  * quattro lingue non c'entravano: quel rischio è dell'etichetta tradotta, cioè
  * di ciò che il rango evita.
  */

@@ -108,10 +108,10 @@ const AppRoutes = () => (
       }
     >
       <Route index element={<ProCalendario />} />
-      <Route path="sessioni" element={<ProSessioni />} />
-      <Route path="pazienti" element={<ProPazienti />} />
-      <Route path="pagamenti" element={<ProPagamenti />} />
-      <Route path="profilo" element={<ProProfilo />} />
+      <Route path="sessions" element={<ProSessioni />} />
+      <Route path="patients" element={<ProPazienti />} />
+      <Route path="payments" element={<ProPagamenti />} />
+      <Route path="profile" element={<ProProfilo />} />
     </Route>
 
     {/* Admin portal */}

@@ -25,7 +25,7 @@ function ProfessionalBadge({ onNavigate }: { onNavigate?: () => void }) {
    *
    * **Da quando il riquadro è un link questo ramo toglie anche una porta**, e
    * resta com'è: la voce del menu non c'è più, quindi con il profilo illeggibile
-   * `/professional/profilo` è irraggiungibile dalla barra. È il caso in cui la
+   * `/professional/profile` è irraggiungibile dalla barra. È il caso in cui la
    * destinazione è **proprio ciò che non si è potuto leggere** — un link verso
    * la schermata di un profilo che non arriva porterebbe a una pagina vuota.
    */
@@ -44,7 +44,7 @@ function ProfessionalBadge({ onNavigate }: { onNavigate?: () => void }) {
    */
   return (
     <Link
-      to="/professional/profilo"
+      to="/professional/profile"
       onClick={onNavigate}
       aria-label={t.professional.identityAction}
       className="flex items-center gap-3 bg-accent rounded-lg p-3 hover:bg-accent/70 transition-colors"
@@ -76,17 +76,17 @@ export default function ProNav() {
   const navItems = [
     { path: "/professional", icon: Calendar, label: t.professional.nav.calendar },
     {
-      path: "/professional/sessioni",
+      path: "/professional/sessions",
       icon: ClipboardList,
       label: t.professional.nav.sessions,
     },
     {
-      path: "/professional/pazienti",
+      path: "/professional/patients",
       icon: Users,
       label: t.professional.nav.patients,
     },
     {
-      path: "/professional/pagamenti",
+      path: "/professional/payments",
       icon: CreditCard,
       label: t.professional.nav.payments,
     },
@@ -164,7 +164,7 @@ export default function ProNav() {
             {/*
               * Anche qui, come in `EmployeeNav` e per la stessa ragione: il
               * riquadro vive nella barra laterale, che sotto `lg` non esiste.
-              * Senza questa riga `/professional/profilo` non sarebbe
+              * Senza questa riga `/professional/profile` non sarebbe
               * raggiungibile da nessuna parte su schermo stretto — una rotta
               * senza porta, cioè il vicolo cieco del §10.
               */}
