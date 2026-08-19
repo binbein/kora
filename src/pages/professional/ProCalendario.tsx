@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Calendar as DayPicker } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar, ChevronDown, ChevronLeft, ChevronRight, Clock, User, Video } from 'lucide-react';
@@ -8,6 +8,7 @@ import KPICard from '@/components/shared/KPICard';
 import { addDays, startOfWeek, weeksBetween } from '@/lib/dates';
 import { formatDate, formatMonthYear, formatNumber, formatTime, formatWeekday, formatWeekdayShort } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
+import { cn } from '@/lib/utils';
 import {
   slotsOfWeek,
   nextSession,
@@ -236,8 +237,30 @@ export default function ProCalendario() {
                   shownWeek: { from: monday, to: addDays(monday, 6) },
                   hasSessions: daysWithSessions,
                 }}
+                /*
+                 * LE CLASSI DI react-day-picker NON SI FONDONO, ed è la
+                 * trappola di questo blocco: né `classNames` con i default di
+                 * `ui/calendar.tsx` — lo spread `...classNames` **sostituisce**
+                 * la voce, non la estende — né due utility in conflitto fra
+                 * loro, perché la libreria concatena stringhe e non passa da
+                 * `twMerge` come fa `cn`. Fra `rounded-none` e `rounded-md`
+                 * decide l'ordine con cui Tailwind le emette nel foglio, che
+                 * non è una regola su cui appoggiarsi.
+                 *
+                 * È la stessa famiglia della cautela sulle varianti `data-*`
+                 * (§3): una cosa che sembra funzionare, e funziona per
+                 * un'altra ragione.
+                 *
+                 * Da qui le due righe qui sotto: la voce `day` si **ricompone**
+                 * a partire da `buttonVariants`, e la banda impone i suoi
+                 * angoli con `!` invece di sperare di arrivare dopo.
+                 */
                 modifiersClassNames={{
-                  shownWeek: 'bg-accent text-accent-foreground rounded-none',
+                  /* La settimana è **una banda**, non sette pillole: gli angoli
+                     quadrati sono ciò che la fa leggere come un blocco solo, e
+                     `!rounded-none` li impone contro il `rounded-md` che
+                     `buttonVariants` porta su ogni giorno. */
+                  shownWeek: 'bg-accent text-accent-foreground !rounded-none',
                   /* `secondary-strong` e non `secondary`: il puntino è
                      l'unico portatore visivo dell'informazione "qui c'è una
                      seduta", quindi vale la soglia 3:1 del non-testo — e il
@@ -257,7 +280,16 @@ export default function ProCalendario() {
                      formato cablato (§11). */
                   head_cell:
                     'text-muted-foreground rounded-md w-10 font-normal text-[0.8rem]',
-                  day: 'h-8 w-10 p-0 font-normal aria-selected:opacity-100',
+                  /* Ricomposta e non riscritta: `ui/calendar.tsx` mette qui
+                     `buttonVariants({ variant: 'ghost' })`, che porta l'hover e
+                     **l'anello di focus** del blocco a) di M5 (§6.1).
+                     Sostituendo la voce per intero i giorni li avevano persi, e
+                     da tastiera restava l'outline del browser. L'unica cosa che
+                     cambia è la larghezza, `w-8` → `w-10`. */
+                  day: cn(
+                    buttonVariants({ variant: 'ghost' }),
+                    'h-8 w-10 p-0 font-normal aria-selected:opacity-100',
+                  ),
                 }}
                 formatters={{
                   formatCaption: (month) => formatMonthYear(month),
