@@ -56,6 +56,19 @@ const STATUS_BADGE: Record<AppointmentStatus, string> = {
 };
 
 /*
+ * La scala dello stato, e **non è una scelta di questa schermata**: è l'ordine
+ * delle tre schede di `/professional/sessioni`, che il portale mostra da M2 —
+ * in programma, erogate, annullate. Due ordini per la stessa enumerazione
+ * sarebbero due rese dello stesso fatto che possono divergere (§5.5), quindi
+ * qui si cita quello che c'è invece di sceglierne uno.
+ */
+const STATUS_RANK: Record<AppointmentStatus, number> = {
+  scheduled: 1,
+  completed: 2,
+  cancelled: 3,
+};
+
+/*
  * L'etichetta si legge alla chiamata, non all'import (M5.e): una mappa
  * costruita a livello di modulo cattura il dizionario di allora, e con il
  * cambio lingua resterebbe in italiano in silenzio.
@@ -80,20 +93,25 @@ export default function AdminSessioni() {
    * È LA TABELLA PER CUI L'ORDINAMENTO ESISTE: 82 righe, contro le cinque-otto
    * delle altre sei.
    *
-   * DUE COLONNE NON SI ORDINANO, e sono due ragioni diverse.
+   * UNA COLONNA NON SI ORDINA: **il professionista**, perché nella demo porta
+   * lo stesso valore su tutte le righe — l'agenda è quella della Dr.ssa Meier e
+   * la schermata lo dichiara nel sottotitolo (`docs/CONTRATTO-DATI.md` §7). Una
+   * freccia che non cambia niente è un comando che non comanda. Torna il giorno
+   * in cui il back-office aggrega più agende, che è la stessa riga del
+   * contratto.
    *
-   * **Lo stato**, perché i suoi tre valori non stanno su una linea: una seduta
-   * annullata non viene "dopo" una erogata, e il percorso si biforca invece di
-   * salire. Un ordine inventato qui sarebbe una cifra inventata altrove (§2.4),
-   * e l'unica alternativa — l'alfabetico sulla parola tradotta — darebbe un
-   * ordine diverso in ognuna delle quattro lingue, cioè il difetto peggiore
-   * possibile su una demo che le offre tutte dal selettore.
+   * LO STATO SI ORDINA SU UNA SCALA DEL DOMINIO, come il percorso del check-up
+   * nell'elenco HR e i tre piani del portafoglio: il rango è `STATUS_RANK`, che
+   * cita l'ordine delle schede del portale professionista invece di sceglierne
+   * uno qui.
    *
-   * **Il professionista**, perché nella demo la colonna porta lo stesso valore
-   * su tutte le righe: l'agenda è quella della Dr.ssa Meier e la schermata lo
-   * dichiara nel sottotitolo (`docs/CONTRATTO-DATI.md` §7). Una freccia che non
-   * cambia niente è un comando che non comanda. Torna il giorno in cui il
-   * back-office aggrega più agende, che è la stessa riga del contratto.
+   * **Fino al 19.08.2026 non si ordinava**, e la ragione stava in due metà di
+   * cui una sola reggeva. Quella vera — l'alfabetico sulla parola tradotta
+   * darebbe quattro ordini in quattro lingue — vale se si ordina l'etichetta, ed
+   * è precisamente ciò che una mappa di rango evita: questa schermata ne aveva
+   * già due sotto gli occhi, `CHECKUP_RANK` e `PLAN_RANK`, scritte nella stessa
+   * passata. Quella falsa era la prima: **l'ordine non stava da inventare**,
+   * esisteva già nel prodotto a due schermate di distanza.
    *
    * IL PAZIENTE SI ORDINA PER INIZIALI, cioè per una **resa** e non per un
    * nome: qui il nome non arriva, ed è la garanzia del §3 del contratto. Nella
@@ -111,6 +129,7 @@ export default function AdminSessioni() {
         session.status === "completed"
           ? (professionalQuery.data?.sessionFee ?? null)
           : null,
+      status: (session) => STATUS_RANK[session.status],
     },
     (session) => session.start.toISOString(),
   );
@@ -193,7 +212,7 @@ export default function AdminSessioni() {
               <SortableHead {...sortProps("patient")}>
                 {t.admin.sessions.colPatient}
               </SortableHead>
-              {/* Non ordinabili, e le due ragioni stanno in testa al file. */}
+              {/* L'unica non ordinabile, e la ragione sta in testa al file. */}
               <TableHead>{t.admin.sessions.colProfessional}</TableHead>
               <SortableHead {...sortProps("date")}>
                 {t.admin.sessions.colDate}
@@ -204,7 +223,9 @@ export default function AdminSessioni() {
               <SortableHead {...sortProps("fee")}>
                 {t.admin.sessions.colFee}
               </SortableHead>
-              <TableHead>{t.admin.sessions.colStatus}</TableHead>
+              <SortableHead {...sortProps("status")}>
+                {t.admin.sessions.colStatus}
+              </SortableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
