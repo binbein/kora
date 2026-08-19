@@ -35,15 +35,15 @@ export default function AdminLayout() {
   /* Le etichette si leggono al render, non all'import: vedi `PublicNav`. */
   const navItems = [
     { path: "/admin", icon: Building2, label: t.admin.nav.companies },
-    { path: "/admin/utenti", icon: Users, label: t.admin.nav.users },
+    { path: "/admin/users", icon: Users, label: t.admin.nav.users },
     {
-      path: "/admin/professionisti",
+      path: "/admin/professionals",
       icon: Briefcase,
       label: t.admin.nav.professionals,
     },
-    { path: "/admin/sessioni", icon: ClipboardList, label: t.admin.nav.sessions },
+    { path: "/admin/sessions", icon: ClipboardList, label: t.admin.nav.sessions },
     {
-      path: "/admin/provider",
+      path: "/admin/providers",
       icon: MapPin,
       label: t.admin.nav.checkupProviders,
     },

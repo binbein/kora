@@ -49,7 +49,7 @@ export const queryKeys = {
      * non sotto quella della piattaforma, ed è la stessa ragione per cui gli
      * slot stanno qui: è la sua agenda, vista da un'altra parte. Da lì una
      * prenotazione o un annullamento — che invalidano la radice — se la portano
-     * dietro, e `/admin/sessioni` non resta indietro rispetto al portale che
+     * dietro, e `/admin/sessions` non resta indietro rispetto al portale che
      * mostra le stesse sedute.
      */
     platformSessions: (professionalId: string) =>

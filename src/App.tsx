@@ -124,10 +124,10 @@ const AppRoutes = () => (
       }
     >
       <Route index element={<AdminAziende />} />
-      <Route path="utenti" element={<AdminUtenti />} />
-      <Route path="professionisti" element={<AdminProfessionisti />} />
-      <Route path="sessioni" element={<AdminSessioni />} />
-      <Route path="provider" element={<AdminProvider />} />
+      <Route path="users" element={<AdminUtenti />} />
+      <Route path="professionals" element={<AdminProfessionisti />} />
+      <Route path="sessions" element={<AdminSessioni />} />
+      <Route path="providers" element={<AdminProvider />} />
       <Route path="analytics" element={<AdminAnalytics />} />
     </Route>
 
