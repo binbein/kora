@@ -92,9 +92,9 @@ const AppRoutes = () => (
       }
     >
       <Route index element={<HRDashboard />} />
-      <Route path="dipendenti" element={<HRDipendenti />} />
+      <Route path="employees" element={<HRDipendenti />} />
       <Route path="report" element={<HRReport />} />
-      <Route path="fatturazione" element={<HRFatturazione />} />
+      <Route path="billing" element={<HRFatturazione />} />
       <Route path="privacy" element={<HRPrivacy />} />
     </Route>
 
