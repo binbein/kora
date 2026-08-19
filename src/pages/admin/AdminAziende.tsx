@@ -233,7 +233,7 @@ export default function AdminAziende() {
                     className={
                       company.active
                         ? "bg-secondary/10 text-secondary-strong"
-                        : "bg-warning/20 text-foreground"
+                        : "bg-waiting text-waiting-foreground"
                     }
                   >
                     {company.active

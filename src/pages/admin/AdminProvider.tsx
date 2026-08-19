@@ -127,7 +127,7 @@ export default function AdminProvider() {
                     className={
                       provider.status === "active"
                         ? "bg-secondary/10 text-secondary-strong"
-                        : "bg-warning/20 text-foreground"
+                        : "bg-waiting text-waiting-foreground"
                     }
                   >
                     {provider.status === "active"

@@ -154,7 +154,7 @@ export default function AdminProfessionisti() {
                     className={
                       isBookable(professional)
                         ? "bg-secondary/10 text-secondary-strong"
-                        : "bg-warning/20 text-foreground"
+                        : "bg-waiting text-waiting-foreground"
                     }
                   >
                     {isBookable(professional)

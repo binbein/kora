@@ -199,7 +199,7 @@ export default function ProPagamenti() {
                   className={
                     payout.status === 'paid'
                       ? 'bg-secondary/10 text-secondary-strong'
-                      : 'bg-muted text-muted-foreground'
+                      : 'bg-waiting text-waiting-foreground'
                   }
                 >
                   {payout.status === 'paid' ? (

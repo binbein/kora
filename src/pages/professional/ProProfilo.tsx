@@ -116,9 +116,13 @@ export default function ProProfilo() {
            * mostrava l'etichetta a sinistra e il nulla a destra — che si legge
            * come un dato mancante invece che come lo stato che è.
            *
-           * Il non-ancora è neutro e non `destructive`: il §6.1 riserva quel
-           * token ad alert e stati critici, e un mandato da firmare è un passo
-           * del vetting, non un guasto.
+           * IL NON-ANCORA È UN'ATTESA, e dal 19.08.2026 ha un token suo
+           * (§6.1). Non è `destructive` — quel token è riservato ad alert e
+           * stati critici, e un mandato da firmare è un passo del vetting, non
+           * un guasto — e non è più nemmeno neutro: il grigio dice "spento",
+           * non "in corso", ed era la terza resa che questo prodotto dava alla
+           * stessa cosa. Le altre due erano il giallo del back-office e la
+           * fattura HR, che si leggeva come pagata.
            */}
           <div className="flex items-center justify-between py-2 border-b border-border">
             <span className="text-muted-foreground">{t.professional.profile.documents}</span>
@@ -127,7 +131,7 @@ export default function ProProfilo() {
                 <CheckCircle2 className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.profile.verified}
               </Badge>
             ) : (
-              <Badge variant="outline" className="text-muted-foreground">
+              <Badge className="bg-waiting text-waiting-foreground">
                 <Clock className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.profile.documentsPending}
               </Badge>
             )}
@@ -139,7 +143,7 @@ export default function ProProfilo() {
                 <CheckCircle2 className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.profile.signed}
               </Badge>
             ) : (
-              <Badge variant="outline" className="text-muted-foreground">
+              <Badge className="bg-waiting text-waiting-foreground">
                 <Clock className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.profile.mandatePending}
               </Badge>
             )}
