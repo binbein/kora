@@ -1105,9 +1105,21 @@ Regole:
   disciplina della prima: si qualifica con la data, non si riscrive come se
   avesse sempre detto il vero. Il nodo è **l'etichetta "alert" del marker sul
   trend della dashboard HR**, `#808080` su fondo bianco, cioè **3.95:1** a 11px,
-  ed è testo informativo — dice su quale mese cade l'alert precoce. **Resta
-  aperto**: il rimedio cambia un colore, e i colori sono dei founder (la voce sta
-  in `docs/PROGRESS.md`, «Aperto e dichiarato» della passata del 18.08.2026).
+  ed è testo informativo — dice su quale mese cade l'alert precoce. ~~**Resta
+  aperto**: il rimedio cambia un colore, e i colori sono dei founder.~~ →
+  **chiuso il 19.08.2026**, dalla passata che i colori li tocca per mandato:
+  l'etichetta ha ora un `fill` esplicito su `muted-foreground`, **5.10:1**, e
+  resta sotto il marker nella gerarchia del grafico.
+
+  **E il censimento che l'ha chiuso ne ha trovato un secondo della stessa
+  forma**, che nessuna delle tre volte precedenti aveva nominato: le etichette
+  della ciambella del mix piani in `/admin/analytics`. Restituendo una stringa,
+  recharts le dipinge con il colore della fetta — sul Plus il teal, **2.83:1** a
+  16px — quindi tre etichette identiche uscivano a tre contrasti diversi.
+  Corrette nella stessa passata, tutte e tre su `foreground`: **15.17:1**.
+  Percorsi **88 nodi di testo** dentro gli `<svg>` della dashboard HR e **123**
+  in `/admin/analytics`, e da qui la clausola qui sotto sui nodi percorsi vale
+  anche per chi conta dentro un grafico.
 
   **Ed è falso una terza volta, di due nodi, dal 18.08.2026.** Il badge dello
   stato annullato e quello del motivo, in `ProSessioni`, stavano sul token base
