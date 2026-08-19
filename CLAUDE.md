@@ -1272,6 +1272,14 @@ Regole:
   "Nuovo" dei pazienti e "Da tenere d'occhio" del referto, che sono **dati** o
   segnalazioni cliniche e non attese.
 
+  **E resta neutro il "Non iscritto" dell'elenco dipendenti**, che alla prima
+  lettura sembrava il settimo punto: **non è un'attesa**, perché nessuno in Kora
+  sta lavorando su quella persona — è il denominatore della curva di adozione,
+  quello che il sottotitolo della schermata dichiara come *"82 iscritti su
+  120"*. La regola nuova **non guadagna un'eccezione**: quella riga non aspetta.
+  Fino al 19.08.2026 diceva "In attesa", ed è la parola che era sbagliata, non
+  il colore (§7).
+
   **Dichiarato anche nella palette `.dark`**, che è inerte e resta completa: un
   token che esiste in una palette sola è un buco che si vede il giorno in cui
   qualcuno accende il tema scuro.
@@ -1408,6 +1416,30 @@ Qui la si eviterebbe al contrario, mettendola in un elemento che non la merita.
   un termine solo — `Sitzung`, `séance`, `session` — per entrambe le italiane.
   Chi traduce **non** eredita il difetto, quindi non è dal conteggio delle
   quattro lingue che lo si scopre.
+
+  **Il secondo caso è "attivo", ed è la forma opposta** (19.08.2026): non una
+  cosa con due parole, ma **una parola con due significati**, e uno dei due era
+  preso in prestito da una definizione del contratto. L'elenco dipendenti
+  dell'HR chiamava **"Attivo"** chi ha attivato l'account — cioè `enrolled`, 82
+  persone — mentre un clic più in là la dashboard chiama **attivi** quelli che
+  hanno usato almeno un servizio nel trimestre, che sono 41 e che la tabella
+  delle KPI di `docs/CONTRATTO-DATI.md` §3 definisce alla lettera. Due schermate
+  adiacenti dello stesso portale, una parola, due conteggi.
+
+  **Il rimedio non inventa una quinta parola**, ed è la regola che vale oltre il
+  caso: le parole erano già nel dizionario — *"{enrolled} iscritti su {total}"*
+  nel sottotitolo della stessa schermata — quindi il badge dice **"Iscritto /
+  Non iscritto"**, e in tedesco, francese e inglese la coppia viene dalla stessa
+  riga (`angemeldet`, `inscrits`, `enrolled`). Coniarne una nuova avrebbe
+  riaperto il difetto che la correzione chiude.
+
+  **"Attivo" resta libero dove descrive un'altra cosa**, e la verifica si fa
+  guardando **la parola** e non le due chiavi: un piano attivo, un'azienda o una
+  struttura attiva, il tasso di attivazione, un paziente attivo del portale
+  professionista — che ha la sua definizione nella stessa tabella — e l'utente
+  attivo del back-office, che è un flag di account con "Inattivo" per opposto.
+  Il criterio è che la parola sia libera dove descrive **una persona dell'area
+  HR**, ed è lì che il prestito morde.
 - La privacy è un argomento di vendita: la nota *"Dati aggregati e anonimi · soglia
   minima {n} dipendenti misurati per reparto"* con icona lucchetto è sempre visibile
   in dashboard. Dice **"misurati"**, non "dipendenti" né "iscritti": la soglia conta
