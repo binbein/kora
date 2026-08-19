@@ -2201,9 +2201,16 @@ la copre, ed è scope fuori milestone. Si conta.
 **Il criterio, perché il conto sia rifacibile.** Si contano le PR mergiate dopo
 quella che chiude M3 (#14), **esclusa la milestone**: M4 è #19 e ha la sua
 sezione. Le **docs-only si contano**, e non è una scelta nuova — #15 è
-docs-only ed era già dentro i "quattro" della frase originale. **Oggi è l'unica
-fra quelle contate**: #25 è docs-only ma esce per l'eccezione qui sotto, e #21
-sembra docs-only dal nome del branch ma tocca `src/lib/data/mock/people.ts`.
+docs-only ed era già dentro i "quattro" della frase originale. Due casi che
+sembrano contraddire la regola e non la contraddicono: #25 è docs-only ma esce
+per l'eccezione qui sotto, e #21 sembra docs-only dal nome del branch ma tocca
+`src/lib/data/mock/people.ts`.
+
+*(Fino al 19.08.2026 la riga aggiungeva che #15 era «oggi l'unica fra quelle
+contate», ed era falso dal 15.08.2026: docs-only e contate sono anche #45, #50,
+#51, #52, #64 e la passata che sta togliendo questa frase. **La regola resta e
+la fotografia esce**, come per le altre tre cifre dello stesso giorno: quante
+siano invecchia a ogni passata documentale che si mergia, e sono già sei.)*
 
 **L'unica eccezione, e chiude una ricorsione.** Una PR il cui **solo contenuto
 è la sintesi retrospettiva di una passata già mergiata** appartiene a quella
@@ -5840,6 +5847,20 @@ cifra che vive nella prosa la può rinfrescare solo una persona, e riaprirla è 
 promessa di tornare — la stessa che il §2.7 ha visto non mantenere da chi il
 numero giusto l'aveva appena misurato.
 
+##### L'ultima fotografia dello stesso paragrafo
+
+**«#15 è oggi l'unica docs-only fra quelle contate»** stava dentro il criterio
+del conto delle passate, cioè nella sezione che questa passata aveva appena
+riscritto, ed era **falso dal 15.08.2026**: docs-only e contate sono anche #45,
+#50, #51, #52, #64 e questa. **Il rimedio è quello delle altre tre cifre di
+oggi** — la regola resta, *le docs-only si contano*, e la fotografia esce:
+quante siano invecchia a ogni passata documentale che si mergia, e sono già sei.
+
+Restano i due casi che sembrano contraddire la regola e non la contraddicono —
+#25, docs-only ma esclusa come sintesi retrospettiva, e #21, che dal nome del
+branch sembra docs-only e tocca `mock/people.ts` — perché quelli **spiegano il
+criterio** invece di misurarlo.
+
 ##### Le quattro voci del `CLAUDE.md`
 
 | | cosa diceva | rimedio |
@@ -5855,9 +5876,9 @@ era stata la passata che il §3 racconta due paragrafi più sotto — `popover` 
 li importa nessuno"* ha due letture: **nessun file fuori da `ui/`**, e allora
 sono **31**, oppure **nessun file, nemmeno un pari**, e allora sono **26**,
 perché `separator`, `sheet`, `skeleton` e `tooltip` li importa solo
-`sidebar.tsx`, e `toggle` solo `toggle-group.tsx`. Senza criterio il conto non è ripetibile; e siccome **la ragione
-per cui si tengono non dipende da quanti sono**, la frase dice "la maggior
-parte" e non perde niente.
+`sidebar.tsx`, e `toggle` solo `toggle-group.tsx`. Senza criterio il conto non è
+ripetibile; e siccome **la ragione per cui si tengono non dipende da quanti
+sono**, la frase dice "la maggior parte" e non perde niente.
 
 **I quattro esempi erano l'unica delle cinque voci che descrive il codice**, ed
 è la frase che *giustifica* la conservazione: `slider` lo importa `Roi.tsx` e
@@ -5898,11 +5919,11 @@ due paragrafi che non si parlavano, ora si citano.
 
 ##### Trovato e non toccato
 
-- **«#15 è oggi l'unica docs-only fra quelle contate»**, nel criterio del conto
-  delle passate, è falso dal 15.08.2026: **#45, #50, #51, #52 e #64 sono
-  docs-only** e sono contate, e questa passata è la sesta. È una riga viva e non
-  un verbale, quindi andrebbe corretta — ma è la sesta voce di un piano che ne
-  aveva cinque, e si segnala invece di allargarlo.
+- ~~**«#15 è oggi l'unica docs-only fra quelle contate»** andrebbe corretta, ma
+  è la sesta voce di un piano che ne aveva cinque.~~ → **chiusa dai founder
+  nella stessa passata**, ed è la voce qui sopra: la frase stava dentro la
+  sezione appena riscritta, quindi chiuderla **finisce il paragrafo invece di
+  allargare il piano**.
 - **Le due letture del «33 dei 45» sono uscite 31 e 26**, mentre il piano di
   questa passata le dava come 30 e 31. La divergenza è di criterio e non di
   codice — il piano non diceva quali due insiemi — e i due di qui sono scritti
