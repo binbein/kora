@@ -12,12 +12,39 @@ import { QueryClient } from "@tanstack/react-query";
  * L'unico modo in cui un dato si rinfresca è che una mutation invalidi la sua
  * chiave, che è la meccanica che il §5.2 vuole — esplicita e tracciabile,
  * invece di un timer che decide per conto suo mentre qualcuno presenta.
+ *
+ * `gcTime: Infinity` NON È LA STESSA MANOPOLA, ed è la riga senza la quale
+ * quella qui sopra non basta. Sono due decisioni distinte su due momenti
+ * diversi:
+ *
+ *   - `staleTime` decide quando un dato va **rifatto**;
+ *   - `gcTime` decide quando una query **senza osservatori** viene **buttata**.
+ *
+ * Le query che `prefetchDemo` scalda e che nessuno ha ancora montato non hanno
+ * osservatori: con il default di **cinque minuti** sparivano dalla cache, e chi
+ * arrivava in `/admin` a fine giro le trovava fredde — cioè uno sfarfallio di
+ * scheletro davanti a un investitore, che è precisamente ciò che il prefetch
+ * esiste per evitare. **Il guardrail della cache fredda lo diceva**, ed era nel
+ * giusto: a essere sbagliata era la configurazione, non il controllo.
+ *
+ * A `Infinity` non si perde niente e non si raccoglie niente: il provider vive
+ * in memoria per la durata della sessione, il dataset non cambia, e la cache è
+ * riempita prima del primo paint per costruzione. Il giorno di `http/` questa
+ * riga si ridecide con la rete vera in mano, come il tentativo automatico qui
+ * sotto.
+ *
+ * È LA SECONDA VOLTA CHE QUESTO FILE CONFONDE DUE COMPORTAMENTI DI
+ * REACT-QUERY, e vale la pena scriverlo: la prima fu `retry: 1`, tolto in M5.b
+ * perché il retryer mette in pausa a scheda nascosta. Tutte e due le volte il
+ * difetto era invisibile finché nessuno esercitava il caso — un fallimento
+ * allora, cinque minuti di attesa adesso.
  */
 export const queryClientInstance = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       staleTime: Infinity,
+      gcTime: Infinity,
       /*
        * NESSUN TENTATIVO AUTOMATICO, e la ragione non è la comodità.
        *
