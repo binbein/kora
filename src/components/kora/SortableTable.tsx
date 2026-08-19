@@ -25,11 +25,17 @@ import { getLocale, t } from "@/lib/i18n";
  * schermo confrontata con `localeCompare` nel locale attivo: due lingue
  * ordinano le stesse righe in modo diverso, ed è giusto — si ordina ciò che si
  * legge. Le enumerazioni fanno eccezione **solo dove hanno una scala del
- * dominio** (il percorso del check-up, i tre piani): lì l'ordine è un fatto e
- * non una convenzione tipografica, quindi il call site passa un numero e la
- * lingua non lo tocca. Dove una scala non c'è e leggerle in ordine alfabetico
- * non vuol dire niente — lo stato di una seduta — la colonna **non si ordina**,
- * e la ragione sta in `AdminSessioni.tsx`.
+ * dominio** — il percorso del check-up, i tre piani, lo stato di una seduta:
+ * lì l'ordine è un fatto e non una convenzione tipografica, quindi il call site
+ * passa un numero e la lingua non lo tocca.
+ *
+ * Dove una scala non c'è, leggere l'enumerazione in ordine alfabetico non vuol
+ * dire niente e **la colonna non si ordina**. La regola resta; **l'esempio che
+ * portava era sbagliato** (19.08.2026): dava per priva di scala proprio lo
+ * stato della seduta, che l'ordine ce l'aveva già — è quello delle schede di
+ * `/professional/sessioni`, e ora è `STATUS_RANK` in `AdminSessioni.tsx`. Le
+ * quattro lingue non c'entravano: quel rischio è dell'etichetta tradotta, cioè
+ * di ciò che il rango evita.
  */
 
 /** Il valore su cui una colonna si ordina. `null` è il vuoto, e sta in fondo. */
