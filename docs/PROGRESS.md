@@ -43,9 +43,9 @@ totale né la ripartizione, e il conto lo fa git.**
   il punto è che **nel verbale non ci vanno**;
 - **il commit di chiusura conta sé stesso**, quindi il numero della sua
   sottosezione era l'unico che non si poteva misurare mentre lo si scriveva: si
-  scriveva `n + 1`, cioè si prediceva. Ne discende l'obbligo che chiude il buco — **chi
-  aggiunge un commit dopo la chiusura aggiorna quel numero nello stesso
-  commit**, perché da lì in poi la predizione è falsa. *(Clausola aggiunta il
+  scriveva `n + 1`, cioè si prediceva. Ne discese l'obbligo di chiudere il
+  buco — **chi aggiunge un commit dopo la chiusura aggiorna quel numero nello
+  stesso commit**, perché da lì in poi la predizione era falsa. *(Clausola aggiunta il
   15.08.2026 dalla seconda passata che ha usato il criterio, ed è il buco che ha
   trovato usandolo: la sua sottosezione dichiarò sei con cinque commit sul
   branch, ed è invecchiata appena la passata ne ha guadagnato un settimo.)*
