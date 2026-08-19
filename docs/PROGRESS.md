@@ -6144,6 +6144,14 @@ anello — non il tasto che la ordina.
 
 ##### Trovato e non toccato
 
+- **C'è un settimo punto che aspetta, e il piano non lo elencava**: il badge
+  **"In attesa"** dell'elenco dipendenti dell'HR, cioè il dipendente che non ha
+  ancora attivato l'account. È `variant="outline"`, quindi resta neutro accanto
+  ai sei portati su `waiting` — e la parola che porta è letteralmente
+  *"attesa"*. **Non toccato**: i punti approvati sono sei, e questo starebbe
+  sulla schermata che il pitch percorre. La domanda è la stessa dei sei — tutto
+  ciò che aspetta si dice allo stesso modo — oppure l'iscrizione di un
+  dipendente non è un'attesa come le altre, e allora vale la pena scriverlo.
 - **Il dialogo di annullamento promette ancora che l'ora "torna prenotabile"**,
   mentre i documenti hanno separato l'invariante dalla policy il 18.08.2026.
   Sono quattro stringhe e la frase giusta dipende da una policy non decisa: è la
