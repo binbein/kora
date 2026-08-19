@@ -130,22 +130,23 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      Sull'albero non c'è niente da togliere: i commenti non sono nodi, e una
      proprietà o ha un letterale stringa per valore o non è una chiave foglia.
      Verificato: tante proprietà con inizializzatore letterale stringa quante
-     ne dichiara `EXPECTED_KEYS`, **112 oggetti e zero proprietà di altro
-     tipo**, identici sui quattro dizionari (18.08.2026). **Gli oggetti sono le
-     proprietà il cui valore è un oggetto**, ed è la mezza riga di criterio che
-     mancava (19.08.2026): contando invece i letterali oggetto dell'albero sono
-     **113**, perché la radice del dizionario è un letterale che non è
-     proprietà di nessuno — due numeri dallo stesso albero, cioè la cosa che
-     questa sezione esiste per non produrre.
+     ne dichiara `EXPECTED_KEYS`, **zero proprietà di altro tipo**, e i quattro
+     dizionari **identici** fra loro. Sono i due invarianti che reggono la
+     prova, e nessuno dei due dipende da quante siano. **Gli oggetti sono le
+     proprietà il cui valore è un oggetto**, e i letterali oggetto dell'albero
+     sono **uno in più**, perché la radice del dizionario è un letterale che
+     non è proprietà di nessuno: è la mezza riga di criterio senza la quale lo
+     stesso albero dà due numeri.
 
-     *(Il conteggio delle
-     chiavi non si ripete qui: era il secondo dei cinque punti che l'hanno fatto
-     invecchiare. Gli oggetti restano, perché sono l'altra metà della prova che
-     l'albero non lascia fuori niente. Fino al 18.08.2026 questa riga diceva
-     **109** e aggiungeva «e non si sono mossi»: si erano mossi con le chiavi
-     di #62, ed è la stessa cifra ripetuta a mano che il resto della sezione ha
-     già consegnato al codice — qui resta perché è una prova sul metodo del
-     conteggio, non un numero che una schermata mostra.)*
+     **Quanti siano non si scrive più (19.08.2026), e la ragione è una prova.**
+     La riga ha dichiarato **109** fino al 18.08.2026, poi **112**, e il 112 è
+     invecchiato in **quarantotto ore** — `common.sort` ha aggiunto un oggetto.
+     La passata del 19.08.2026 aveva dato un criterio a tre cifre e ne aveva
+     tolte due, il conto delle passate e i componenti shadcn inutilizzati,
+     tenendo solo questa: **le due tolte non sono invecchiate, l'unica tenuta
+     sì, alla prima passata successiva.** Un criterio accanto a una cifra rende
+     il conto *rifacibile*; non lo rende *rifatto*, e a rifarlo deve tornare
+     qualcuno.
 
      **Il guardrail conta a runtime e dà lo stesso numero**, verificato sui
      quattro dizionari il giorno in cui è nato: sull'albero i commenti non sono
