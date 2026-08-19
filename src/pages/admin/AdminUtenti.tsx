@@ -6,7 +6,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
@@ -19,6 +18,8 @@ import {
   usePlatformUsers,
 } from "@/lib/data/queries";
 import { ErrorNotice } from "@/components/kora/StateNotice";
+import { SortableHead, useSortedRows } from "@/components/kora/SortableTable";
+import type { PlatformUser } from "@/lib/data/types";
 import { currentPlatformMonth } from "@/lib/platform-metrics";
 import { formatMonthYear, formatNumber } from "@/lib/format";
 import { interpolate, t } from "@/lib/i18n";
@@ -40,11 +41,39 @@ import { interpolate, t } from "@/lib/i18n";
  * righe presentate come "tutti gli utenti" direbbero che la piattaforma ne ha
  * sette.
  */
+const NO_USERS: PlatformUser[] = [];
+
 export default function AdminUtenti() {
   const [search, setSearch] = useState("");
   const usersQuery = usePlatformUsers();
   const companiesQuery = useClientCompanies();
   const monthsQuery = usePlatformMonths();
+
+  const companyOf = (companyId: string) =>
+    companiesQuery.data?.find((company) => company.id === companyId)?.name ?? "";
+
+  /* La ricerca filtra e l'ordinamento ordina, in quest'ordine: si ordina quello
+     che si vede. Le due cose stanno prima dei tre casi perché sono hook e
+     chiusure sopra un dato che può non essere ancora arrivato. */
+  const needle = search.trim().toLowerCase();
+  const matching = (usersQuery.data ?? NO_USERS).filter(
+    (user) =>
+      needle === "" ||
+      `${user.firstName} ${user.lastName}`.toLowerCase().includes(needle) ||
+      companyOf(user.companyId).toLowerCase().includes(needle),
+  );
+  const { rows: filtered, sortProps } = useSortedRows(
+    matching,
+    {
+      name: (user) => `${user.firstName} ${user.lastName}`,
+      email: (user) => user.email,
+      company: (user) => companyOf(user.companyId),
+      role: (user) => t.admin.role[user.role],
+      status: (user) => user.active,
+      joined: (user) => user.joinedAt,
+    },
+    (user) => `${user.lastName} ${user.firstName}`,
+  );
 
   /* I tre casi (M5.b), registro strumento. La lista filtrata ha già il suo
      vuoto più sotto — è quello della ricerca senza risultati, che è un caso
@@ -61,21 +90,6 @@ export default function AdminUtenti() {
   }
 
   const currentMonth = currentPlatformMonth(months);
-
-  const companyName = (companyId: string) =>
-    companies.find((company) => company.id === companyId)?.name ?? "";
-
-  const needle = search.trim().toLowerCase();
-  const filtered =
-    needle === ""
-      ? users
-      : users.filter(
-          (user) =>
-            `${user.firstName} ${user.lastName}`
-              .toLowerCase()
-              .includes(needle) ||
-            companyName(user.companyId).toLowerCase().includes(needle),
-        );
 
   /*
    * IL PUNTEGGIO MEDIO ARRIVA GIÀ AGGREGATO, e non è una riduzione su queste
@@ -165,17 +179,29 @@ export default function AdminUtenti() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>{t.admin.users.colName}</TableHead>
-                <TableHead>{t.admin.users.colEmail}</TableHead>
-                <TableHead>{t.admin.users.colCompany}</TableHead>
-                <TableHead>{t.admin.users.colRole}</TableHead>
+                <SortableHead {...sortProps("name")}>
+                  {t.admin.users.colName}
+                </SortableHead>
+                <SortableHead {...sortProps("email")}>
+                  {t.admin.users.colEmail}
+                </SortableHead>
+                <SortableHead {...sortProps("company")}>
+                  {t.admin.users.colCompany}
+                </SortableHead>
+                <SortableHead {...sortProps("role")}>
+                  {t.admin.users.colRole}
+                </SortableHead>
                 {/* Nessuna colonna con il punteggio: la riga porta nome,
                     cognome ed email, e un dato sanitario individuale accanto
                     a un'identità in chiaro è ciò che la decisione del
                     16.08.2026 ha tolto dal contratto. La media sta fra le KPI,
                     aggregata. */}
-                <TableHead>{t.admin.users.colStatus}</TableHead>
-                <TableHead>{t.admin.users.colJoined}</TableHead>
+                <SortableHead {...sortProps("status")}>
+                  {t.admin.users.colStatus}
+                </SortableHead>
+                <SortableHead {...sortProps("joined")}>
+                  {t.admin.users.colJoined}
+                </SortableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -188,7 +214,7 @@ export default function AdminUtenti() {
                     {user.email}
                   </TableCell>
                   <TableCell className="text-muted-foreground text-xs">
-                    {companyName(user.companyId)}
+                    {companyOf(user.companyId)}
                   </TableCell>
                   <TableCell>
                     <Badge variant="outline">{t.admin.role[user.role]}</Badge>
