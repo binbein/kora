@@ -1236,6 +1236,45 @@ Regole:
   **Il rosso non era nel censimento**, che contò solo il teal: a 3.78:1 passa la
   soglia del non-testo ma non quella del testo, quindi un inventario che lo
   ignora dichiara "zero punti sotto soglia" senza esserlo.
+- **`--waiting`: l'attesa ha un token suo** (founder, 18.08.2026, eseguito il
+  19.08.2026). Tutto ciò che aspetta si dice allo stesso modo — "in
+  convenzionamento", "in verifica", "in attivazione", la fattura non ancora
+  pagata, il compenso del mese in corso, i documenti e il mandato da firmare —
+  e lo dice con un colore proprio.
+
+  | token | HSL | testo su di lui | ΔE dal fondo dell'alert | ΔE dall'ambra piena |
+  |---|---|---|---|---|
+  | **`waiting`** | `46 94% 78%` | **11.95** ✓ | **35.1** | **16.5** |
+
+  **Perché un token e non un `warning` più chiaro.** Due significati che si
+  distinguono per la **trasparenza** dello stesso colore si sfaldano al primo
+  cambio di fondo, e qui si erano già sfaldati: l'attesa stava a
+  `bg-warning/20` e l'allarme a `bg-warning/15`, cioè **l'attesa era più forte
+  dell'allarme**. Due token separati non possono collassare, ed è la stessa
+  scelta di `secondary-strong` e `destructive-strong` — **un token in più non è
+  un token cambiato**.
+
+  **Il §6.1 non si riscrive, ed è il guadagno di questa strada.** La regola per
+  cui `warning` e `destructive` sono riservati ad alert e stati critici — *è il
+  loro essere rari a farli notare* — resta vera parola per parola, perché
+  l'attesa **esce** da `warning` invece di diluirlo. Le altre due strade erano
+  alzare l'allarme, cioè cambiare una schermata già approvata, e restringere la
+  decisione a due punti, cioè lasciare tre rese per la stessa cosa.
+
+  **Il contrasto si misura affiancando**, e così è stato: un giallo che passa la
+  soglia da solo e sparisce accanto all'allarme non risolverebbe il problema per
+  cui esiste. Le due ΔE della tabella sono misurate a schermo con il chip
+  dell'attesa dentro il banner dell'alert precoce.
+
+  **Giallo non vuol dire attesa.** Restano su `warning` il banner dell'alert
+  precoce e il marker sul trend, che sono **l'allarme**; restano dove sono la
+  barra dello stress "medio", la serie dei check-up dei grafici, il badge
+  "Nuovo" dei pazienti e "Da tenere d'occhio" del referto, che sono **dati** o
+  segnalazioni cliniche e non attese.
+
+  **Dichiarato anche nella palette `.dark`**, che è inerte e resta completa: un
+  token che esiste in una palette sola è un buco che si vede il giorno in cui
+  qualcuno accende il tema scuro.
 - **Solo light mode.** `index.css` definisce una palette `.dark` completa che nessun
   componente attiva: resta lì, inerte. Nessun toggle e nessun `next-themes` finché
   non è una decisione dei founder.
