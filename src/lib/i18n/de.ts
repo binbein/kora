@@ -711,7 +711,8 @@ export const de: Dictionary = {
     employees: {
       title: "Mitarbeitende",
       subtitle: "{enrolled} von {total} angemeldet · nur anonyme Daten",
-      sampleNote: "Die Tabelle zeigt einen Auszug von {n} Mitarbeitenden.",
+      sampleNote:
+        "Die Tabelle zeigt einen Auszug von {n} Mitarbeitenden von {total}: sortiert wird der Auszug.",
       empty: "Keine Mitarbeitenden anzuzeigen.",
       privacyNote:
         "Die Namen sind abgekürzt. Kora zeigt dem Unternehmen nie individuelle Gesundheitsdaten.",

@@ -987,7 +987,8 @@ export const it = {
       /* La tabella è un estratto e lo dice: il codice ereditato contava
          "6/8 attivati" accanto a una dashboard che ne dichiarava 82 su 120, e
          chi leggeva entrambe trovava due aziende diverse. */
-      sampleNote: "La tabella mostra un estratto di {n} dipendenti.",
+      sampleNote:
+        "La tabella mostra un estratto di {n} dipendenti su {total}: ordinarla ordina l'estratto.",
       /* Nessun dipendente da elencare: succede a un'azienda appena attivata,
          come Betulla nel portafoglio del back-office (§8). */
       empty: "Nessun dipendente da mostrare.",

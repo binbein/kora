@@ -1,10 +1,11 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table';
 import { Lock } from 'lucide-react';
 import PrivacyBanner from '@/components/shared/PrivacyBanner';
 import { EmptyNotice, ErrorNotice } from '@/components/kora/StateNotice';
+import { SortableHead, useSortedRows } from '@/components/kora/SortableTable';
 import { formatNumber } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import {
@@ -15,6 +16,21 @@ import {
   useEmployeeDirectory,
   useRoiSnapshot,
 } from '@/lib/data/queries';
+import type { EmployeeDirectoryEntry } from '@/lib/data/types';
+
+/*
+ * IL CHECK-UP SI ORDINA PER IL PERCORSO, NON PER LA PAROLA. Le tre voci stanno
+ * su una linea — disponibile, prenotato, fatto — quindi l'ordine è un fatto del
+ * dominio e non cambia con la lingua. Chi non ha attivato l'account ha `null`,
+ * che non è un quarto gradino: è il vuoto, e sta in fondo in tutte e due le
+ * direzioni.
+ */
+const CHECKUP_RANK: Record<
+  NonNullable<EmployeeDirectoryEntry['checkupStatus']>,
+  number
+> = { available: 1, booked: 2, completed: 3 };
+
+const NO_ENTRIES: EmployeeDirectoryEntry[] = [];
 
 /*
  * L'elenco dipendenti dell'area HR (CLAUDE.md §10.C).
@@ -30,6 +46,23 @@ export default function HRDipendenti() {
   const snapshotQuery = useRoiSnapshot(currentQuarterQuery.data);
   const departmentsQuery = useDepartments();
   const directoryQuery = useEmployeeDirectory();
+
+  const departmentName = (id: string) =>
+    departmentsQuery.data?.find((department) => department.id === id)?.name ?? id;
+
+  /* L'ordinamento sta prima dei tre casi perché è un hook: la lista è vuota
+     finché il dato non arriva, e ordinare zero righe non costa niente. */
+  const { rows: entries, sortProps } = useSortedRows(
+    directoryQuery.data ?? NO_ENTRIES,
+    {
+      employee: (entry) => entry.initials,
+      department: (entry) => departmentName(entry.departmentId),
+      enrolled: (entry) => entry.enrolled,
+      checkup: (entry) =>
+        entry.checkupStatus === null ? null : CHECKUP_RANK[entry.checkupStatus],
+    },
+    (entry) => entry.initials,
+  );
 
   /* I tre casi (M5.b). */
   const page = loadState([
@@ -56,8 +89,6 @@ export default function HRDipendenti() {
     return null;
   }
 
-  const departmentName = (id: string) =>
-    departments.find((department) => department.id === id)?.name ?? id;
 
   return (
     <div className="space-y-6">
@@ -84,14 +115,22 @@ export default function HRDipendenti() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t.hr.employees.columnEmployee}</TableHead>
-              <TableHead>{t.hr.employees.columnDepartment}</TableHead>
-              <TableHead>{t.hr.employees.columnStatus}</TableHead>
-              <TableHead>{t.hr.employees.columnCheckup}</TableHead>
+              <SortableHead {...sortProps('employee')}>
+                {t.hr.employees.columnEmployee}
+              </SortableHead>
+              <SortableHead {...sortProps('department')}>
+                {t.hr.employees.columnDepartment}
+              </SortableHead>
+              <SortableHead {...sortProps('enrolled')}>
+                {t.hr.employees.columnStatus}
+              </SortableHead>
+              <SortableHead {...sortProps('checkup')}>
+                {t.hr.employees.columnCheckup}
+              </SortableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {directory.map((entry) => (
+            {entries.map((entry) => (
               <TableRow key={entry.employeeId}>
                 <TableCell className="font-medium">{entry.initials}</TableCell>
                 <TableCell className="text-muted-foreground">
@@ -118,11 +157,17 @@ export default function HRDipendenti() {
       </Card>
 
       {/* La nota dichiara che la tabella è un estratto: senza righe non ha
-          niente da dichiarare, e l'`EmptyNotice` lo dice già. */}
+          niente da dichiarare, e l'`EmptyNotice` lo dice già.
+
+          DALL'ORDINAMENTO IN POI DICE ANCHE SU QUANTI, e che a ordinarsi è
+          l'estratto: chi ordina per stato vede in cima i non iscritti di
+          queste otto righe e potrebbe crederli tutti quelli dell'azienda,
+          che sono 120 (§7 del contratto, la paginazione è lavoro dell'MVP). */}
       {directory.length > 0 && (
         <p className="text-xs text-muted-foreground">
           {interpolate(t.hr.employees.sampleNote, {
             n: formatNumber(directory.length),
+            total: formatNumber(company.employeeCount),
           })}
         </p>
       )}
