@@ -131,7 +131,12 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      proprietà o ha un letterale stringa per valore o non è una chiave foglia.
      Verificato: tante proprietà con inizializzatore letterale stringa quante
      ne dichiara `EXPECTED_KEYS`, **112 oggetti e zero proprietà di altro
-     tipo**, identici sui quattro dizionari (18.08.2026). *(Il conteggio delle
+     tipo**, identici sui quattro dizionari (18.08.2026). **Gli oggetti sono le
+     proprietà il cui valore è un oggetto**, ed è la mezza riga di criterio che
+     mancava (19.08.2026): contando invece i letterali oggetto dell'albero sono
+     **113**, perché la radice del dizionario è un letterale che non è
+     proprietà di nessuno — due numeri dallo stesso albero, cioè la cosa che
+     questa sezione esiste per non produrre. *(Il conteggio delle
      chiavi non si ripete qui: era il secondo dei cinque punti che l'hanno fatto
      invecchiare. Gli oggetti restano, perché sono l'altra metà della prova che
      l'albero non lascia fuori niente. Fino al 18.08.2026 questa riga diceva
@@ -970,7 +975,14 @@ scelta si rivede insieme al resto il giorno del passaggio a produzione vera
 `import.meta.env.DEV` e `MODE` con letterali al build, quindi il modo diventa una
 costante e il minificatore butta via i rami morti **insieme ai messaggi**: nel
 bundle di produzione non si trova né il controllo né il testo che avrebbe
-stampato. La build demo costa 8 KB in più su ~1.1 MB.
+stampato. **La build demo costa circa 11 KB in più**, misurati il 19.08.2026
+come differenza fra i due `dist/assets/index-*.js` — il chunk in cui i guardrail
+vivono — e rimisurabili con due build di fila.
+
+**La cifra assoluta del bundle è uscita da questa riga lo stesso giorno**:
+diceva `~1.1 MB` quando quel chunk stava a 1.46 MB, ed è una cifra che cambia a
+ogni dipendenza senza dire niente a nessuno. **L'informazione è lo scarto** —
+quanto costa far parlare i guardrail — e quella si rimisura in un comando.
 
 **Un log della build demo non autorizza a proseguire.** Dopo il log
 l'inizializzazione continua, quindi le schermate si disegnano lo stesso — con i
