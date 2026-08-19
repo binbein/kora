@@ -273,8 +273,20 @@ repository Next non dia niente per scontato.
   aggiunge, non ciò che c'è.**
 
   **Per la stessa ragione i componenti inutilizzati non si cancellano**, ed è
-  un'eccezione dichiarata al §11: 33 dei 45 non li importa nessuno, ma sono
-  **l'ultima copia buona della generazione Tailwind 3**.
+  un'eccezione dichiarata al §11: **la maggior parte dei 45 non la importa
+  nessuno**, ma sono **l'ultima copia buona della generazione Tailwind 3**.
+
+  **La cifra è uscita da questa riga il 19.08.2026, e non per invecchiamento** —
+  che pure c'era, perché diceva **33** e il giorno prima `popover` e `calendar`
+  erano usciti dal magazzino (riga qui sotto). È uscita perché **non aveva un
+  criterio, e senza criterio i conti sono due**: *"non li importa nessuno"* può
+  voler dire **nessun file fuori da `ui/`**, e allora sono 31, oppure **nessun
+  file, nemmeno un loro pari**, e allora sono 26 — cinque componenti li importa
+  solo `sidebar.tsx`. È la famiglia dei call site (§5.6) e delle chiavi (§2.7),
+  e qui il rimedio costa meno che là: **la ragione per cui si tengono non
+  dipende da quanti sono**, quindi togliere la cifra non toglie niente alla
+  frase. Chi la volesse conta gli import, dichiarando quale dei due insiemi
+  conta.
 
   **Il magazzino è servito, ed è la prima volta** (18.08.2026): `popover.tsx` e
   `calendar.tsx` sono usciti da lì per il salto a data del calendario
