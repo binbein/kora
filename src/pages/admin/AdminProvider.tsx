@@ -4,7 +4,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
@@ -12,7 +11,9 @@ import { CheckCircle2, Clock, MapPin, Building } from "lucide-react";
 import KPICard from "@/components/shared/KPICard";
 import { loadState, useCheckupProviders, usePlatformMonths } from "@/lib/data/queries";
 import { EmptyNotice, ErrorNotice } from "@/components/kora/StateNotice";
+import { SortableHead, useSortedRows } from "@/components/kora/SortableTable";
 import { formatNumber } from "@/lib/format";
+import type { CheckupProvider } from "@/lib/data/types";
 import { interpolate, t } from "@/lib/i18n";
 
 /*
@@ -30,8 +31,22 @@ import { interpolate, t } from "@/lib/i18n";
  * derivato dalla serie di piattaforma; la distanza prende il loro posto in
  * tabella, ed è un dato che esiste davvero.
  */
+const NO_PROVIDERS: CheckupProvider[] = [];
+
 export default function AdminProvider() {
   const providersQuery = useCheckupProviders();
+
+  const { rows: providerRows, sortProps } = useSortedRows(
+    providersQuery.data ?? NO_PROVIDERS,
+    {
+      name: (provider) => provider.name,
+      city: (provider) => provider.city,
+      address: (provider) => provider.address,
+      distance: (provider) => provider.distanceKm,
+      status: (provider) => provider.status === "active",
+    },
+    (provider) => provider.name,
+  );
   const monthsQuery = usePlatformMonths();
 
   /* I tre casi (M5.b), registro strumento. */
@@ -98,15 +113,25 @@ export default function AdminProvider() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t.admin.checkupProviders.colName}</TableHead>
-              <TableHead>{t.admin.checkupProviders.colCity}</TableHead>
-              <TableHead>{t.admin.checkupProviders.colAddress}</TableHead>
-              <TableHead>{t.admin.checkupProviders.colDistance}</TableHead>
-              <TableHead>{t.admin.checkupProviders.colStatus}</TableHead>
+              <SortableHead {...sortProps("name")}>
+                {t.admin.checkupProviders.colName}
+              </SortableHead>
+              <SortableHead {...sortProps("city")}>
+                {t.admin.checkupProviders.colCity}
+              </SortableHead>
+              <SortableHead {...sortProps("address")}>
+                {t.admin.checkupProviders.colAddress}
+              </SortableHead>
+              <SortableHead {...sortProps("distance")}>
+                {t.admin.checkupProviders.colDistance}
+              </SortableHead>
+              <SortableHead {...sortProps("status")}>
+                {t.admin.checkupProviders.colStatus}
+              </SortableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {providers.map((provider) => (
+            {providerRows.map((provider) => (
               <TableRow key={provider.id}>
                 <TableCell className="font-medium">{provider.name}</TableCell>
                 <TableCell className="text-muted-foreground">
