@@ -766,8 +766,8 @@ export const en: Dictionary = {
       columnDepartment: "Department",
       columnStatus: "Status",
       columnCheckup: "Check-up",
-      enrolled: "Active",
-      notEnrolled: "Pending",
+      enrolled: "Enrolled",
+      notEnrolled: "Not enrolled",
       checkup: {
         completed: "Completed",
         booked: "Booked",

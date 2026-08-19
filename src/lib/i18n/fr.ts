@@ -814,8 +814,8 @@ export const fr: Dictionary = {
       columnDepartment: "Département",
       columnStatus: "Statut",
       columnCheckup: "Check-up",
-      enrolled: "Actif",
-      notEnrolled: "En attente",
+      enrolled: "Inscrit",
+      notEnrolled: "Non inscrit",
       checkup: {
         completed: "Réalisé",
         booked: "Réservé",

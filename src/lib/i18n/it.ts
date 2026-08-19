@@ -998,8 +998,15 @@ export const it = {
       columnDepartment: "Reparto",
       columnStatus: "Stato",
       columnCheckup: "Check-up",
-      enrolled: "Attivo",
-      notEnrolled: "In attesa",
+      /* "ISCRITTO", NON "ATTIVO" (19.08.2026). La riga rende `enrolled`, cioè
+         chi ha attivato l'account, mentre un clic più in là la dashboard
+         chiama **attivi** quelli che hanno usato almeno un servizio nel
+         trimestre — la definizione della tabella delle KPI del
+         `docs/CONTRATTO-DATI.md` §3. Sono 82 e 41: due schermate adiacenti,
+         una parola sola, due conteggi. La parola non è nuova, viene dal
+         sottotitolo di questa stessa schermata. */
+      enrolled: "Iscritto",
+      notEnrolled: "Non iscritto",
       checkup: {
         completed: "Completato",
         booked: "Prenotato",
