@@ -55,6 +55,15 @@
 
     --warning: 42 90% 68%;
     --warning-foreground: 207 28% 15%;
+    /* L'ATTESA HA UN TOKEN SUO, E NON È UN `warning` PIÙ CHIARO (§6.1,
+       18.08.2026). Due significati che si distinguono per la trasparenza dello
+       stesso colore si sfaldano al primo cambio di fondo, ed è com'era: l'attesa
+       stava a `bg-warning/20` e l'allarme a `bg-warning/15`, cioè l'attesa era
+       più forte dell'allarme. Due token separati non possono collassare.
+       11.95:1 con il proprio testo; ΔE 35 dal fondo del banner d'alert e 16.5
+       dall'ambra piena, cioè si distingue accanto a tutti e due. */
+    --waiting: 46 94% 78%;
+    --waiting-foreground: 207 28% 15%;
     --executive: 260 28% 35%;
     --executive-foreground: 0 0% 98%;
   }
@@ -94,6 +103,11 @@
     --sidebar-ring: 172 73% 39%;
     --warning: 42 90% 68%;
     --warning-foreground: 207 28% 15%;
+    /* La palette scura è inerte e resta completa: un token che esiste in una
+       palette sola è un buco che si vede il giorno in cui qualcuno accende il
+       tema scuro. 6.58:1 con il proprio testo. */
+    --waiting: 46 60% 24%;
+    --waiting-foreground: 46 95% 85%;
     --executive: 260 28% 50%;
     --executive-foreground: 0 0% 98%;
   }
