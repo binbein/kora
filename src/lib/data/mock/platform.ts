@@ -94,7 +94,7 @@ export const CLIENT_COMPANIES: ClientCompany[] = [
   {
     /*
      * L'unico non avviato. Sull'Essenziale e non sul Plus: 85 dipendenti stanno
-     * nella banda 20–100 che `/pricing` dichiara per quel piano, e il codice
+     * nella banda 20–100 che `/plans` dichiara per quel piano, e il codice
      * ereditato lo dava sul Plus, cioè in disaccordo con l'altra schermata
      * della stessa demo (§8).
      */

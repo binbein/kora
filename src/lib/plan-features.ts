@@ -9,11 +9,11 @@ import { interpolate, t } from "@/lib/i18n";
  * sta qui e non nel provider: quali voci un listino mostra e in che ordine è
  * una decisione della schermata, non del contratto dati.
  *
- * ESISTE PERCHÉ I CHIAMANTI SONO DUE: le card di `/pricing` e l'anteprima
+ * ESISTE PERCHÉ I CHIAMANTI SONO DUE: le card di `/plans` e l'anteprima
  * piani della landing. Elencando le voci a mano in due JSX le due schermate
  * potrebbero dire cose diverse dello stesso piano, ed è già successo — nel
  * codice ereditato la landing dava all'Executive "Coach + psichiatra" e
- * `/pricing` "Coach + psichiatra se necessario", mentre il §9 dà un tetto di 6
+ * `/plans` "Coach + psichiatra se necessario", mentre il §9 dà un tetto di 6
  * sessioni e lo psichiatra **incluso**.
  *
  * Da qui una card non può divergere dal piano, perché non ha più niente da cui

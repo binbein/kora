@@ -77,7 +77,7 @@ const fadeIn = {
  * Le voci che l'anteprima mostra di ogni piano.
  *
  * È un sottoinsieme **dichiarato per chiave**, non "le prime cinque": le righe
- * vengono da `plan-features.ts` come quelle di `/pricing`, quindi le due
+ * vengono da `plan-features.ts` come quelle di `/plans`, quindi le due
  * schermate possono mostrarne un numero diverso ma non possono dirne una
  * diversa (§10.A).
  */
@@ -834,7 +834,7 @@ export default function Landing() {
           )}
           <p className="text-center mt-8">
             <Link
-              to="/pricing"
+              to="/plans"
               className="text-sm text-secondary-strong hover:underline font-medium"
             >
               {t.public.landing.plansAll}
