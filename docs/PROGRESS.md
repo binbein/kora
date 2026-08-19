@@ -6065,20 +6065,35 @@ durante la demo è la cosa che azzera il provider (§10).
 **Su cosa si ordina, e la regola sta in tre righe.** Si ordina per il valore che
 la riga **mostra**, con `localeCompare` nel locale attivo: due lingue ordinano
 diversamente le stesse righe, ed è giusto — si ordina ciò che si legge. Fanno
-eccezione le enumerazioni **che hanno una scala del dominio**, e sono due: i tre
-piani, che si ordinano sul **prezzo** — in tedesco e in inglese l'alfabetico
-direbbe che l'Executive è il primo dei tre — e il check-up dell'elenco HR, che è
-un **percorso**: disponibile, prenotato, fatto.
+eccezione le enumerazioni **che hanno una scala del dominio**, e sono ~~due~~
+**tre**: i tre piani, che si ordinano sul **prezzo** — in tedesco e in inglese
+l'alfabetico direbbe che l'Executive è il primo dei tre — il check-up
+dell'elenco HR, che è un **percorso** (disponibile, prenotato, fatto), e lo
+**stato di una seduta** in `/admin/sessioni`, aggiunto il 19.08.2026 dalla voce
+qui sotto.
 
-**Due colonne non si ordinano, e sono due ragioni diverse.** Lo **stato di una
-seduta** in `/admin/sessioni`, perché i suoi tre valori non stanno su una linea:
-`cancelled` non viene "dopo" `completed`, il percorso si biforca, e l'unica
-alternativa — l'alfabetico sulla parola tradotta — darebbe un ordine diverso in
-ognuna delle quattro lingue. È il caso che il §11 chiama codice che nessuno può
-verificare, spostato su una scelta di prodotto: **se un ordine difendibile non
-c'è, la colonna non si ordina.** E il **professionista**, perché nella demo
-porta lo stesso valore su tutte le righe — un portale solo (`§7` del contratto) —
-e una freccia che non cambia niente è un comando che non comanda.
+~~**Due colonne non si ordinano, e sono due ragioni diverse.**~~ → **una sola**,
+il **professionista**, perché nella demo porta lo stesso valore su tutte le
+righe — un portale solo (`§7` del contratto) — e una freccia che non cambia
+niente è un comando che non comanda.
+
+**Lo stato si ordina, e la ragione per cui non lo faceva stava in due metà di
+cui una sola reggeva** (19.08.2026, dalla passata che ha aggiunto la colonna). La metà vera —
+l'alfabetico sulla parola tradotta darebbe un ordine diverso in ognuna delle
+quattro lingue — **vale se si ordina l'etichetta**, ed è precisamente ciò che
+una mappa di rango evita: questa passata ne aveva già scritte due, `CHECKUP_RANK`
+e `PLAN_RANK`, e la conclusione le contraddiceva senza accorgersene. La metà
+falsa era l'altra: *"i tre valori non stanno su una linea"*, mentre **l'ordine
+esisteva già nel prodotto** — è quello delle tre schede di
+`/professional/sessioni`, che il portale mostra da M2, e `STATUS_RANK` lo cita
+invece di sceglierne uno. Due ordini per la stessa enumerazione sarebbero state
+due rese dello stesso fatto che possono divergere (`CLAUDE.md` §5.5).
+
+**Resta vera la regola che quella voce enunciava** — *se un ordine difendibile
+non c'è, la colonna non si ordina* — e a cadere è l'esempio che portava: era il
+caso in cui l'ordine c'era, a due schermate di distanza. Il §11 chiama codice
+che nessuno può verificare quello che non ha un criterio; qui il criterio c'era
+già, e a mancare era la rilettura.
 
 **I vuoti stanno in fondo in tutte e due le direzioni**: un valore che non c'è
 non è né grande né piccolo, quindi non ha un posto nella scala. Si vede sulla
@@ -6156,7 +6171,24 @@ lascia fuori niente.
   provato alla lettera sull'elenco HR e sulle richieste demo;
 - **`/admin/sessioni`**: 82 righe, data crescente e decrescente, compenso
   crescente con i **trattini in fondo** e le sedute a pari importo tenute
-  insieme dalla data; **"Professionista" e "Stato" non hanno pulsante**;
+  insieme dalla data; **"Professionista" non ha pulsante**. *(Diceva «e
+  "Stato"»: corretto il 19.08.2026 con la colonna, e le sue verifiche sono
+  nell'elenco qui sotto.)*
+- **lo stato di `/admin/sessioni`** (19.08.2026): crescente `In programma 18 →
+  Erogata 63 → Annullata 1`, decrescente che specchia i tre gruppi, terzo clic
+  che riporta all'ordine del dato — dove l'annullata sta **in mezzo**, fra le
+  erogate, perché quello è l'ordine dell'agenda. Dentro ogni gruppo la data
+  resta crescente in tutte e due le direzioni, che è la chiave secondaria di
+  questa tabella;
+- **lo stesso in tedesco, e non si è mossa una riga**: le 82 righe escono nella
+  **stessa identica sequenza** che in italiano — confrontate iniziali e data una
+  per una — mentre l'alfabetico avrebbe messo `Abgesagt` in cima. È la prova
+  diretta dell'obiezione da cui la colonna era stata esclusa;
+- **una seduta annullata dal portale professionista si sposta di gruppo**:
+  disdetta L.B. del 24.09 alle 17:30 dal calendario, la KPI "in programma" del
+  back-office passa da 18 a 17 e la riga arriva in fondo con le annullate, che
+  diventano due, senza compenso. Le tre KPI e i tre gruppi continuano a sommare
+  a 82;
 - **il portafoglio**: piano crescente `Essenziale ×2 → Plus ×2 → Executive`,
   cioè il prezzo e non l'alfabeto, e al contrario i due Plus restano nello
   stesso ordine fra loro;
