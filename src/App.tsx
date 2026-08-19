@@ -75,11 +75,11 @@ const AppRoutes = () => (
       }
     >
       <Route index element={<EmployeeHome />} />
-      <Route path="psicologi" element={<Psicologi />} />
-      <Route path="medico" element={<Medico />} />
+      <Route path="psychologists" element={<Psicologi />} />
+      <Route path="doctor" element={<Medico />} />
       <Route path="checkup" element={<Checkup />} />
-      <Route path="piano-ai" element={<PianoAI />} />
-      <Route path="profilo" element={<Profilo />} />
+      <Route path="ai-plan" element={<PianoAI />} />
+      <Route path="profile" element={<Profilo />} />
     </Route>
 
     {/* HR portal */}
