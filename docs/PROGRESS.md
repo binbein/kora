@@ -2080,7 +2080,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Trentatré passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Le passate mergiate fra la chiusura di M3 e oggi, per nome**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2093,9 +2093,28 @@ sospeso, il footer fuori dalla demo, i terzi e la simmetria del footer,
 l'identità collisa e gli stati limite, le simmetrie e le verifiche vere, la riga
 della sessione e i criteri che si contraddicevano, le parole e il perimetro,
 l'anteprima a tre pannelli e la voce Admin, la home e il medico, la cornice del
-trimestre, il conteggio che diventa un guardrail, e **questa passata**,
-l'annullamento e l'identità. Non aggiungono schermate e non spostano un numero a
-schermo.
+trimestre, il conteggio che diventa un guardrail, l'annullamento e l'identità,
+l'allineamento fra codice e verbali, l'igiene del repository, l'annullamento
+visibile con la navigazione fra settimane e il salto a data, e i criteri e i
+conteggi. Non aggiungono schermate e non spostano un numero a schermo.
+
+**Il numero è uscito da questa riga il 19.08.2026, ed è la terza volta che
+invecchiava.** Diceva *"Trentatré passate"* mentre l'elenco si fermava
+all'annullamento e all'identità, cioè al 17.08.2026: mancavano le tre che
+seguono, e **"questa passata"** — un deittico dentro un file che cresce —
+indicava ormai la penultima. Prima aveva detto cinque quando erano otto e
+undici quando erano tredici. **Non è stato riportato a trentasei**: sarebbe
+stata la quarta stesura dello stesso difetto, e la dottrina è già scritta —
+**si cita ciò che non si muove**, che il `CLAUDE.md` §5.6 ha fissato per i
+guardrail e che il perimetro dell'MVP applica nominando i gruppi invece di
+numerarli. **I nomi non si muovono**, l'elenco per nome dice la stessa cosa, e
+chi vuole la cifra la ottiene contando l'elenco — come si contano le
+sottosezioni qui sotto.
+
+**Le due cifre datate restano dove sono**: il «totale — 31» della parentesi qui
+sotto e quello del verbale del 17.08.2026 sono resoconti di misure fatte quel
+giorno. È il criterio del `CLAUDE.md` §10 — un verbale è un resoconto datato, un
+criterio è rivolto a chi verrà — e si corregge la riga viva, non il verbale.
 
 **Fino al 17.08.2026 la riga finiva con "sono igiene del layer dati, del seam e
 del dizionario", e da questa passata non è più vero di tutte.** Le due metà si
