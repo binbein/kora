@@ -706,7 +706,18 @@ export const it = {
         notePlaceholder: "Perché la sessione è stata annullata",
         notePrivacy:
           "La nota resta nella tua agenda: l'azienda del paziente non la vede.",
-        effect: "L'ora torna prenotabile e la sessione non entra nei compensi.",
+        /*
+         * DICE L'INVARIANTE E NON LA POLICY (19.08.2026). Diceva "l'ora torna
+         * prenotabile", ed era la promessa che i documenti hanno smesso di fare
+         * il 18.08.2026: le disponibilità sono le fasce dichiarate della
+         * professionista meno quelle occupate, quindi un'ora liberata che non è
+         * una fascia dichiarata **non torna proponibile** — e a schermo si
+         * leggeva come un annullamento che non libera niente. Quello che resta
+         * vero è che l'ora non è più occupata e che la seduta non matura
+         * compenso. **Cosa succeda alla fascia non si dice**, perché è una
+         * policy che i founder non hanno preso (`CLAUDE.md` §10.D.3).
+         */
+        effect: "L'ora non è più occupata e la sessione non entra nei compensi.",
         keep: "Torna indietro",
         confirm: "Annulla la sessione",
         confirming: "Annullamento",

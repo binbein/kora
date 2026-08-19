@@ -601,7 +601,7 @@ export const fr: Dictionary = {
         notePrivacy:
           "La note reste dans votre agenda : l'entreprise du patient ne la voit pas.",
         effect:
-          "L'horaire redevient réservable et la séance ne compte pas dans la rémunération.",
+          "L'horaire n'est plus occupé et la séance ne compte pas dans la rémunération.",
         keep: "Retour",
         confirm: "Annuler la séance",
         confirming: "Annulation",

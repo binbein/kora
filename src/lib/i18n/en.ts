@@ -557,7 +557,7 @@ export const en: Dictionary = {
         notePrivacy:
           "The note stays in your calendar: the patient's organisation does not see it.",
         effect:
-          "The slot becomes bookable again and the session does not count towards your fees.",
+          "The hour is no longer taken and the session does not count towards your fees.",
         keep: "Go back",
         confirm: "Cancel the session",
         confirming: "Cancelling",
