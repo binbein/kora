@@ -5944,7 +5944,11 @@ due paragrafi che non si parlavano, ora si citano.
 
 **Questo verbale non conta i propri commit**, ed è la seconda passata scritta
 nella forma decisa il giorno prima: dice cosa ha fatto, e il conto lo dà git con
-il comando in testa a questo file. **Nessun numero del §8 e del §9 si muove** —
+il comando in testa a questo file. **Ed è il primo caso in cui la regola nuova
+si vede lavorare**: la review ha aggiunto commit dopo il verbale — la parola
+dell'elenco dipendenti e la cifra del §2.7 — e non ha imposto niente, perché non
+c'era nessuna cifra da riaprire. Due giorni fa sarebbe stata la terza
+riapertura in tre giorni. **Nessun numero del §8 e del §9 si muove** —
 verificati a schermo alla cifra, elenco più sotto — le rotte restano **26** e
 nessuna schermata nasce. `EXPECTED_KEYS` passa da **779 a 780**: la passata
 aggiunge **una** stringa ai quattro dizionari.
@@ -5998,6 +6002,40 @@ restano su `warning` il banner dell'alert e il marker sul trend, che sono
 l'**allarme**; restano dove sono la barra dello stress "medio", la serie dei
 check-up dei due grafici, il badge "Nuovo" dei pazienti e "Da tenere d'occhio"
 del referto, che sono **dati** o segnalazioni cliniche.
+
+##### Il settimo punto non era un'attesa: era una parola
+
+La passata aveva segnalato come settimo punto il badge **"In attesa"**
+dell'elenco dipendenti dell'HR, e la review ha trovato che il difetto non era il
+colore. La riga rende `enrolled` — chi ha **attivato l'account**, 82 persone — e
+scriveva **"Attivo"**; un clic più in là la dashboard chiama **attivi** quelli
+che hanno usato almeno un servizio nel trimestre, che sono **41** e che la
+tabella delle KPI di `docs/CONTRATTO-DATI.md` §3 definisce alla lettera. Due
+schermate adiacenti dello stesso portale, una parola, due conteggi: è il §7 —
+*una cosa, una parola* — nella forma opposta a "sessioni/sedute", perché qui la
+parola è una e i significati sono due.
+
+**Il badge è stato rinominato, non colorato**: "Iscritto / Non iscritto", e le
+parole **non sono nuove** — vengono dal sottotitolo della stessa schermata,
+*"82 iscritti su 120"*, e lingua per lingua dalla stessa riga (`angemeldet`,
+`inscrits`, `enrolled`). Coniarne una quinta avrebbe riaperto il difetto che la
+correzione chiude.
+
+**"Non iscritto" resta neutro, e la regola nuova non guadagna un'eccezione**:
+quella riga **non aspetta** — nessuno in Kora sta lavorando su quella persona —
+ed è il denominatore della curva di adozione. Il `CLAUDE.md` §6.1 lo dice
+accanto alle altre cose che restano fuori dal giallo, e il §7 registra il caso:
+è la seconda volta che la regola pesca una parola presa in prestito da una
+definizione del contratto.
+
+**La parola è stata cercata, non le due chiavi.** Passate in rassegna tutte le
+occorrenze di "attivo" nei quattro dizionari: restano dove sono il **piano**
+attivo della fatturazione, l'**azienda** e la **struttura** attiva del
+back-office, il **tasso di attivazione**, la videochiamata non attiva della
+demo, il **paziente attivo** del portale professionista — che ha la sua
+definizione nella stessa tabella delle KPI — e l'**utente attivo** del
+back-office, che è un flag di account con "Inattivo" per opposto. Il criterio è
+che la parola sia libera dove descrive **una persona dell'area HR**.
 
 ##### Le sette tabelle si ordinano
 
@@ -6093,6 +6131,24 @@ testo dentro gli `<svg>` della dashboard HR e **123** in `/admin/analytics`,
 tutti e due a viewport reale. Dopo le correzioni: **zero** sotto soglia su
 entrambe.
 
+##### La cifra degli oggetti del §2.7 esce, e la ragione è una prova
+
+`common.sort` ha aggiunto **un oggetto** ai quattro dizionari, quindi i 112 del
+`CLAUDE.md` §2.7 sono diventati 113. **Non è stata riportata a 113: è uscita.**
+
+**È la prova che mancava alla passata del 19.08.2026**, che a tre cifre aveva
+dato un criterio e ne aveva tolte due — il conto delle passate e i componenti
+shadcn inutilizzati — tenendo solo questa perché era «una prova sul metodo del
+conteggio». **Le due tolte non sono invecchiate; l'unica tenuta sì, in
+quarantotto ore.** Un criterio accanto a una cifra rende il conto *rifacibile*;
+non lo rende *rifatto*, e a rifarlo deve tornare qualcuno.
+
+Restano nel §2.7 il criterio — *gli oggetti sono le proprietà il cui valore è un
+oggetto*, e i letterali dell'albero sono uno in più perché c'è la radice — e i
+due invarianti che non dipendono dal contenuto: **zero proprietà di altro tipo**
+e **i quattro dizionari identici fra loro**. Sono quelli a dire che l'albero non
+lascia fuori niente.
+
 ##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato prima di ogni misura
 
 - **le sette tabelle ordinano**, e il giro completo è stato fatto su ognuna:
@@ -6114,6 +6170,12 @@ entrambe.
 - **le quattro lingue** sull'elenco HR: intestazioni tradotte, la frase per i
   lettori di schermo in ognuna, **zero overflow orizzontale**, `<html lang>`
   corretto;
+- **`/hr` e `/hr/dipendenti` in fila, che è il modo in cui il difetto si
+  vedeva**, e in tutte e quattro le lingue: la KPI dice *"Dipendenti attivi ·
+  41 · almeno un servizio nel trimestre"* e l'elenco dice *"Iscritto / Non
+  iscritto"* sotto un sottotitolo che dice *"82 iscritti su 120"* — e lo stesso
+  in tedesco, francese e inglese, con la coppia presa dalla riga del
+  sottotitolo;
 - **26 rotte percorse con la sola navigazione interna**, zero overflow
   orizzontale, **zero errori, zero promise rifiutate e `console.error` mai
   chiamato**;
@@ -6144,14 +6206,10 @@ anello — non il tasto che la ordina.
 
 ##### Trovato e non toccato
 
-- **C'è un settimo punto che aspetta, e il piano non lo elencava**: il badge
-  **"In attesa"** dell'elenco dipendenti dell'HR, cioè il dipendente che non ha
-  ancora attivato l'account. È `variant="outline"`, quindi resta neutro accanto
-  ai sei portati su `waiting` — e la parola che porta è letteralmente
-  *"attesa"*. **Non toccato**: i punti approvati sono sei, e questo starebbe
-  sulla schermata che il pitch percorre. La domanda è la stessa dei sei — tutto
-  ciò che aspetta si dice allo stesso modo — oppure l'iscrizione di un
-  dipendente non è un'attesa come le altre, e allora vale la pena scriverlo.
+- ~~**C'è un settimo punto che aspetta, e il piano non lo elencava**: il badge
+  "In attesa" dell'elenco dipendenti dell'HR.~~ → **chiuso dalla review, e non
+  come gli altri sei**: non era un'attesa ed è stato **rinominato**, perché a
+  essere sbagliata era la parola. La voce sta qui sopra.
 - **Il dialogo di annullamento promette ancora che l'ora "torna prenotabile"**,
   mentre i documenti hanno separato l'invariante dalla policy il 18.08.2026.
   Sono quattro stringhe e la frase giusta dipende da una policy non decisa: è la
