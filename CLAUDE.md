@@ -2082,6 +2082,31 @@ schermate. Riscriverli sarebbe correggere il verbale di una misura fatta davvero
 questa riga esiste perché chi cerca `27 rotte` trovi la lettura qui invece di
 riaprire una decisione già presa (founder, 15.08.2026).
 
+**Gli indirizzi cambiano, e i verbali no** (19.08.2026). La rinomina delle rotte
+in inglese ha spostato quindici indirizzi su ventisei, e `docs/PROGRESS.md` ne
+cita quelli vecchi in decine di righe: **i verbali citano gli indirizzi del
+giorno in cui furono scritti, la mappa corrente sta in questo §10, e chi trova un
+indirizzo che non risolve ha trovato un verbale, non un difetto.**
+
+**Non è una deroga: è la regola dei verbali applicata a un secondo oggetto.** Le
+righe qui sopra la dicono per i conteggi — *"27 rotte" resta com'era* — e questa
+la dice per gli indirizzi, che sono la stessa cosa vista da un'altra faccia: un
+resoconto datato descrive il prodotto di quel giorno, e correggerlo lo
+falsificherebbe invece di aggiornarlo. Senza questa riga la prima sessione che
+rilegge `PROGRESS.md` apre trenta segnalazioni su altrettanti indirizzi morti.
+
+**Dentro `PROGRESS.md` non è però tutto verbale**, ed è la metà che va aggiornata:
+l'inventario delle schermate, il perimetro dell'MVP e le decisioni in sospeso
+**descrivono il presente**. Il criterio che li separa è quello scritto il
+19.08.2026 per i conteggi — **un verbale è un resoconto datato, un criterio è
+rivolto a chi verrà** — e si applica riga per riga, non al file. **In caso di
+dubbio è un verbale**: aggiornare una riga morta la fa mentire su una data,
+lasciare viva una riga vecchia costa una rilettura.
+
+**`docs/PITCH.md`, `docs/CONTRATTO-DATI.md`, `README.md` e questo file si
+aggiornano invece**, tutti e quattro: non sono verbali, descrivono il presente, e
+il §3 lo dice già dei loro tre mestieri.
+
 ### A. Pubblica — `/`, `/roi`, `/pricing`, `/demo`
 1. **Landing**: hero, problema, tre livelli di valore, anteprima piani, privacy, CTA.
 
