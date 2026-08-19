@@ -131,7 +131,14 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      proprietà o ha un letterale stringa per valore o non è una chiave foglia.
      Verificato: tante proprietà con inizializzatore letterale stringa quante
      ne dichiara `EXPECTED_KEYS`, **112 oggetti e zero proprietà di altro
-     tipo**, identici sui quattro dizionari (18.08.2026). *(Il conteggio delle
+     tipo**, identici sui quattro dizionari (18.08.2026). **Gli oggetti sono le
+     proprietà il cui valore è un oggetto**, ed è la mezza riga di criterio che
+     mancava (19.08.2026): contando invece i letterali oggetto dell'albero sono
+     **113**, perché la radice del dizionario è un letterale che non è
+     proprietà di nessuno — due numeri dallo stesso albero, cioè la cosa che
+     questa sezione esiste per non produrre.
+
+     *(Il conteggio delle
      chiavi non si ripete qui: era il secondo dei cinque punti che l'hanno fatto
      invecchiare. Gli oggetti restano, perché sono l'altra metà della prova che
      l'albero non lascia fuori niente. Fino al 18.08.2026 questa riga diceva
@@ -273,8 +280,21 @@ repository Next non dia niente per scontato.
   aggiunge, non ciò che c'è.**
 
   **Per la stessa ragione i componenti inutilizzati non si cancellano**, ed è
-  un'eccezione dichiarata al §11: 33 dei 45 non li importa nessuno, ma sono
-  **l'ultima copia buona della generazione Tailwind 3**.
+  un'eccezione dichiarata al §11: **la maggior parte dei 45 non la importa
+  nessuno**, ma sono **l'ultima copia buona della generazione Tailwind 3**.
+
+  **La cifra è uscita da questa riga il 19.08.2026, e non per invecchiamento** —
+  che pure c'era, perché diceva **33** e il giorno prima `popover` e `calendar`
+  erano usciti dal magazzino (riga qui sotto). È uscita perché **non aveva un
+  criterio, e senza criterio i conti sono due**: *"non li importa nessuno"* può
+  voler dire **nessun file fuori da `ui/`**, e allora sono 31, oppure **nessun
+  file, nemmeno un loro pari**, e allora sono 26 — cinque li importa soltanto un
+  pari, quattro `sidebar.tsx` e uno `toggle-group.tsx`. È la famiglia dei call
+  site (§5.6) e delle chiavi (§2.7),
+  e qui il rimedio costa meno che là: **la ragione per cui si tengono non
+  dipende da quanti sono**, quindi togliere la cifra non toglie niente alla
+  frase. Chi la volesse conta gli import, dichiarando quale dei due insiemi
+  conta.
 
   **Il magazzino è servito, ed è la prima volta** (18.08.2026): `popover.tsx` e
   `calendar.tsx` sono usciti da lì per il salto a data del calendario
@@ -292,10 +312,27 @@ repository Next non dia niente per scontato.
   react-day-picker e `aria-selected`. Chi ne aggiunge un terzo rifà questa
   verifica. Cancellarli non è
   reversibile a buon mercato — un `shadcn add` domani riporta la generazione
-  Tailwind 4 con le varianti che non agganciano — e diversi servono già: slider e
-  switch al check rapido, popover e scroll-area alla dashboard (M3), `form` alla
-  validazione con `zod` e `react-hook-form`, che il §3 tiene installati apposta
-  (M5).
+  Tailwind 4 con le varianti che non agganciano — **e la ragione è questa, non
+  gli usi previsti**.
+
+  **I quattro esempi che questa riga portava erano sbagliati tutti e quattro**,
+  corretti il 19.08.2026 misurando gli import. Elencava *"slider e switch al
+  check rapido, popover e scroll-area alla dashboard (M3), `form` alla
+  validazione con `zod` e `react-hook-form` (M5)"*, e il quinto — `form` — era
+  già corretto dal 12.08.2026, qui sotto. Gli altri:
+
+  - **`slider`** lo importa `pages/public/Roi.tsx`, non il check rapido, che usa
+    solo `Card` e le icone di lucide;
+  - **`popover`** lo importa `pages/professional/ProCalendario.tsx`, cioè il
+    salto a data della riga qui sopra, non la dashboard;
+  - **`switch`** e **`scroll-area`**: non li importa nessuno.
+
+  **Erano previsioni, come quella su `form`**: scritte prima che quelle
+  schermate esistessero, e mai rilette quando sono arrivate. **La conclusione
+  non si muove, ed è il punto** — la conservazione non ha mai poggiato sugli usi
+  previsti ma sulla copia buona, e il 18.08.2026 quella ragione si è dimostrata
+  da sé, con due componenti tenuti "per quando serviranno" che hanno servito
+  davvero.
 
   **La previsione su `form` non si è avverata, e si corregge invece di restare
   smentita in silenzio** (12.08.2026). Il blocco c) di M5 ha costruito la
@@ -941,7 +978,14 @@ scelta si rivede insieme al resto il giorno del passaggio a produzione vera
 `import.meta.env.DEV` e `MODE` con letterali al build, quindi il modo diventa una
 costante e il minificatore butta via i rami morti **insieme ai messaggi**: nel
 bundle di produzione non si trova né il controllo né il testo che avrebbe
-stampato. La build demo costa 8 KB in più su ~1.1 MB.
+stampato. **La build demo costa circa 11 KB in più**, misurati il 19.08.2026
+come differenza fra i due `dist/assets/index-*.js` — il chunk in cui i guardrail
+vivono — e rimisurabili con due build di fila.
+
+**La cifra assoluta del bundle è uscita da questa riga lo stesso giorno**:
+diceva `~1.1 MB` quando quel chunk stava a 1.46 MB, ed è una cifra che cambia a
+ogni dipendenza senza dire niente a nessuno. **L'informazione è lo scarto** —
+quanto costa far parlare i guardrail — e quella si rimisura in un comando.
 
 **Un log della build demo non autorizza a proseguire.** Dopo il log
 l'inizializzazione continua, quindi le schermate si disegnano lo stesso — con i

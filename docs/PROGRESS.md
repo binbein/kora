@@ -25,41 +25,69 @@ lì.
 Quasi ogni voce di questo file si apre dichiarando quanti commit ha, e finora
 quel conteggio non aveva un criterio scritto — a differenza dei call site
 (`CLAUDE.md` §5.6) e dei `.jsx` (`CLAUDE.md` §3), che ce l'hanno e per questo
-hanno smesso di divergere. Il criterio, deciso dai founder il 15.08.2026:
+hanno smesso di divergere. Il criterio, deciso dai founder il 15.08.2026, **con
+la conclusione a cui è arrivato il 19.08.2026: il verbale non scrive più né il
+totale né la ripartizione, e il conto lo fa git.**
 
 - **codice** è `feat:`, `fix:` e `refactor:`; **documenti** è `docs:`. Non ci
   sono altre categorie, e un commit sta in una sola;
 - **si conta sul branch, a chiusura avvenuta**, non a memoria e non durante:
   `git log --format='%s' <merge>^..<merge>^2` elenca esattamente i commit della
   passata, e `| sed 's/:.*//' | sort | uniq -c` ne dà la ripartizione;
-- **se si scrive la ripartizione si scrive anche il totale, dalla stessa
-  misura.** È la parte che vale più delle altre due: il difetto che ha fatto
-  scrivere questa regola aveva il **totale giusto e la ripartizione sbagliata**
-  — «cinque commit di codice e uno di documenti» su un branch di tre e tre — ed
-  è la firma di due numeri presi in due momenti. Un solo comando, due numeri che
-  non possono divergere;
+- ~~**se si scrive la ripartizione si scrive anche il totale, dalla stessa
+  misura.**~~ → **non si scrive né l'una né l'altro** (19.08.2026), e la ragione
+  per cui la clausola era nata resta vera: il difetto che ha fatto scrivere
+  questa regola aveva il **totale giusto e la ripartizione sbagliata** —
+  «cinque commit di codice e uno di documenti» su un branch di tre e tre — ed è
+  la firma di due numeri presi in due momenti. Un solo comando li dà entrambi;
+  il punto è che **nel verbale non ci vanno**;
 - **il commit di chiusura conta sé stesso**, quindi il numero della sua
-  sottosezione è l'unico che non si può misurare mentre lo si scrive: si scrive
-  `n + 1`, cioè si predice. Ne discende l'obbligo che chiude il buco — **chi
-  aggiunge un commit dopo la chiusura aggiorna quel numero nello stesso
-  commit**, perché da lì in poi la predizione è falsa. *(Clausola aggiunta il
+  sottosezione era l'unico che non si poteva misurare mentre lo si scriveva: si
+  scriveva `n + 1`, cioè si prediceva. Ne discese l'obbligo di chiudere il
+  buco — **chi aggiunge un commit dopo la chiusura aggiorna quel numero nello
+  stesso commit**, perché da lì in poi la predizione era falsa. *(Clausola aggiunta il
   15.08.2026 dalla seconda passata che ha usato il criterio, ed è il buco che ha
   trovato usandolo: la sua sottosezione dichiarò sei con cinque commit sul
   branch, ed è invecchiata appena la passata ne ha guadagnato un settimo.)*
 - **E se nessuno lo aggiorna, la predizione resta scritta**: è successo il
   17.08.2026, alla prima passata in cui qualcosa è arrivato dopo il verbale, e
-  l'obbligo qui sopra c'era già. Da qui **la clausola che chiude il buco per
-  davvero** (18.08.2026): un commit che arriva dopo il verbale **riapre la
-  cifra**, e chi non se la sente di riaprirla ha la seconda strada — **il
-  verbale dichiara la ripartizione e non il totale**, che lo dica git. È la
-  stessa scelta che il `CLAUDE.md` §5.6 ha fatto per i call site e il §2.7 per
-  le chiavi: quando un numero deve essere ricontato da qualcuno, prima o poi
-  nessuno lo riconta. La ripartizione non ha lo stesso difetto — si misura con
-  lo stesso comando e non predice niente.
+  l'obbligo qui sopra c'era già. Da qui la clausola del 18.08.2026: un commit
+  che arriva dopo il verbale **riapre la cifra**, e chi non se la sente di
+  riaprirla ha la seconda strada — **il verbale dichiara la ripartizione e non
+  il totale**, che lo dica git;
+- **e da qui la conclusione, che è la sola forma che regge** (19.08.2026): **il
+  verbale non conta i commit**. Dice cosa la passata ha fatto, e chi vuole il
+  numero lo prende dal comando qui sopra, che lo dà per intero e in qualunque
+  momento. È la stessa scelta che il `CLAUDE.md` §2.7 ha fatto per le chiavi e
+  il §5.6 per i call site: **il conto lo fa chi può rifarlo da solo.**
 
-Vale da questa passata in avanti. Le voci più vecchie non si riscrivono: sono
-verbali, e un conteggio sbagliato che qualcuno trova si corregge lì con la sua
-data, come è stato fatto per quello del residuo della nota di sessione.
+**Perché la clausola del 18.08 non bastava, e la misura sono tre cifre
+sbagliate.** Copriva il totale e lasciava scoperta la ripartizione, che è la
+metà che nessuno riapre — e il totale, nell'unico verbale scritto sotto quella
+clausola, non era nemmeno stato scritto. Le tre:
+
+1. **15.08.2026** — «cinque commit di codice e uno di documenti» su un branch di
+   tre e tre: totale giusto, ripartizione sbagliata, due numeri presi in due
+   momenti;
+2. **17.08.2026** — il conteggio che diventa un guardrail dichiarò **sei**
+   commit; `06a1b88` è arrivato dopo il verbale e nessuno è risalito a riaprire
+   la cifra. Corretta il giorno dopo, dalla clausola che ne è nata;
+3. **18.08.2026** — l'annullamento visibile dichiarò «`feat:` ×3, `fix:` ×1»
+   sulle due PR insieme, e i `fix:` erano **tre**. Era già sbagliata **alla
+   riapertura** — `6a056c6` stava dentro #65 dal principio — e lo è diventata di
+   due quando `eff29d8` è arrivato dopo il verbale. È la clausola nuova
+   smentita dal primo verbale che l'ha usata, sulla metà che non copriva.
+
+**Tre non è una distrazione: è una proprietà del modo in cui si contava.** Una
+cifra che vive nella prosa può essere rinfrescata solo da una persona, e
+riaprirla è una promessa di tornare — la stessa promessa che il §2.7 del
+`CLAUDE.md` ha visto non mantenere da chi il numero giusto l'aveva appena
+misurato. Tolta la cifra, non c'è niente da riaprire.
+
+Vale da questa passata in avanti, **che è anche la prima scritta nella forma
+nuova**. Le voci più vecchie non si riscrivono: sono verbali, e un conteggio
+sbagliato che qualcuno trova si corregge lì con la sua data, come è stato fatto
+per quello del residuo della nota di sessione.
 
 ## Stato
 
@@ -2080,7 +2108,7 @@ department"**, cioè il nome del reparto come lo scrive il dataset.
 
 ### Refinement fra le milestone
 
-**Trentatré passate mergiate fra la chiusura di M3 e oggi**: quattro
+**Le passate mergiate fra la chiusura di M3 e oggi, per nome**: quattro
 nell'intervallo M3 → M4 (PR #15–#18), sette dopo M4 (PR #20–#24, #26 e #28),
 **#34** — le uscite dai tre portali, che arriva dopo i primi quattro blocchi di
 M5 — **#39**, l'overflow della landing del 14.08.2026, fra la tranche tedesca e
@@ -2093,9 +2121,28 @@ sospeso, il footer fuori dalla demo, i terzi e la simmetria del footer,
 l'identità collisa e gli stati limite, le simmetrie e le verifiche vere, la riga
 della sessione e i criteri che si contraddicevano, le parole e il perimetro,
 l'anteprima a tre pannelli e la voce Admin, la home e il medico, la cornice del
-trimestre, il conteggio che diventa un guardrail, e **questa passata**,
-l'annullamento e l'identità. Non aggiungono schermate e non spostano un numero a
-schermo.
+trimestre, il conteggio che diventa un guardrail, l'annullamento e l'identità,
+l'allineamento fra codice e verbali, l'igiene del repository, l'annullamento
+visibile con la navigazione fra settimane e il salto a data, e i criteri e i
+conteggi. Non aggiungono schermate e non spostano un numero a schermo.
+
+**Il numero è uscito da questa riga il 19.08.2026, ed è la terza volta che
+invecchiava.** Diceva *"Trentatré passate"* mentre l'elenco si fermava
+all'annullamento e all'identità, cioè al 17.08.2026: mancavano le tre che
+seguono, e **"questa passata"** — un deittico dentro un file che cresce —
+indicava ormai la penultima. Prima aveva detto cinque quando erano otto e
+undici quando erano tredici. **Non è stato riportato a trentasei**: sarebbe
+stata la quarta stesura dello stesso difetto, e la dottrina è già scritta —
+**si cita ciò che non si muove**, che il `CLAUDE.md` §5.6 ha fissato per i
+guardrail e che il perimetro dell'MVP applica nominando i gruppi invece di
+numerarli. **I nomi non si muovono**, l'elenco per nome dice la stessa cosa, e
+chi vuole la cifra la ottiene contando l'elenco — come si contano le
+sottosezioni qui sotto.
+
+**Le due cifre datate restano dove sono**: il «totale — 31» della parentesi qui
+sotto e quello del verbale del 17.08.2026 sono resoconti di misure fatte quel
+giorno. È il criterio del `CLAUDE.md` §10 — un verbale è un resoconto datato, un
+criterio è rivolto a chi verrà — e si corregge la riga viva, non il verbale.
 
 **Fino al 17.08.2026 la riga finiva con "sono igiene del layer dati, del seam e
 del dizionario", e da questa passata non è più vero di tutte.** Le due metà si
@@ -2154,9 +2201,16 @@ la copre, ed è scope fuori milestone. Si conta.
 **Il criterio, perché il conto sia rifacibile.** Si contano le PR mergiate dopo
 quella che chiude M3 (#14), **esclusa la milestone**: M4 è #19 e ha la sua
 sezione. Le **docs-only si contano**, e non è una scelta nuova — #15 è
-docs-only ed era già dentro i "quattro" della frase originale. **Oggi è l'unica
-fra quelle contate**: #25 è docs-only ma esce per l'eccezione qui sotto, e #21
-sembra docs-only dal nome del branch ma tocca `src/lib/data/mock/people.ts`.
+docs-only ed era già dentro i "quattro" della frase originale. Due casi che
+sembrano contraddire la regola e non la contraddicono: #25 è docs-only ma esce
+per l'eccezione qui sotto, e #21 sembra docs-only dal nome del branch ma tocca
+`src/lib/data/mock/people.ts`.
+
+*(Fino al 19.08.2026 la riga aggiungeva che #15 era «oggi l'unica fra quelle
+contate», ed era falso dal 15.08.2026: docs-only e contate sono anche #45, #50,
+#51, #52, #64 e la passata che sta togliendo questa frase. **La regola resta e
+la fotografia esce**, come per le altre tre cifre dello stesso giorno: quante
+siano invecchia a ogni passata documentale che si mergia, e sono già sei.)*
 
 **L'unica eccezione, e chiude una ricorsione.** Una PR il cui **solo contenuto
 è la sintesi retrospettiva di una passata già mergiata** appartiene a quella
@@ -5433,10 +5487,20 @@ chiedere ai founder, insieme alla decisione di quando i PDF escono.
 
 #### L'annullamento visibile e le settimane (18.08.2026)
 
-**Quattro di codice — `feat:` ×3, `fix:` ×1 — e sette di documenti, contando il
-commit di chiusura.** Ripartizione da
-`git log --format='%s' <base>..HEAD | sed 's/:.*//' | sort | uniq -c`; **il
-totale lo dice git**, per la clausola del 18.08.2026 in testa a questo file.
+~~**Quattro di codice — `feat:` ×3, `fix:` ×1 — e sette di documenti, contando
+il commit di chiusura.**~~ → **erano `feat:` ×3, `fix:` ×3 e `docs:` ×7** sulle
+due PR insieme, rimisurati il 19.08.2026 con il comando che questa riga già
+citava —
+`git log --format='%s' <base>..HEAD | sed 's/:.*//' | sort | uniq -c`. I `fix:`
+erano tre: `6a056c6`, i badge dell'annullata portati ad AA, **stava dentro #65
+dal principio**, quindi la cifra era già sbagliata di uno quando la passata l'ha
+riaperta; `eff29d8`, l'anello di focus dei giorni, è arrivato **dopo** il
+verbale, e nessuno l'ha riaperta una seconda volta. Documenti e `feat:`
+tornavano.
+
+**È il verbale che ha smentito la clausola del 18.08 usandola**, ed è da qui che
+nasce la conclusione del 19.08.2026 in testa a questo file: **i verbali non
+contano più i commit**, e questa riga resta come l'ultima che ci ha provato.
 
 **LA RIPARTIZIONE SI RIAPRE, ED È LA SECONDA VOLTA IN DUE GIORNI.** Diceva *tre
 di codice e quattro di documenti*, e la seconda metà della passata — il salto a
@@ -5734,6 +5798,146 @@ nascosta — lo strumento mente, e conviene saperlo prima.
   del contratto vuole che un campo `?` **non ci sia**. È la stessa famiglia
   della sentinella a zero di `employeeCount`: non la forma sbagliata, il
   significato sbagliato.
+
+#### I criteri e i conteggi (19.08.2026)
+
+**Questo verbale non conta i propri commit**, ed è la prima applicazione della
+clausola che la passata ha appena scritto in testa a questo file: dice cosa ha
+fatto, e il conto lo dà git con il comando che sta lì. **Solo documenti** —
+`git diff --stat` non tocca nessun file sotto `src/`, quindi `lint` e
+`typecheck` non potevano muoversi e infatti restano a zero. **Nessun numero del
+§8 e del §9 si muove**, le rotte restano **26**, `EXPECTED_KEYS` e il conto dei
+guardrail non sono stati toccati.
+
+Chiude **sei cifre di prosa invecchiate** — cinque del piano più una che il
+piano non aveva, chiusa dai founder mentre la passata correva — e **completa due
+criteri che avevano già fallito una volta ciascuno**. Va prima della sesta
+passata perché la sesta chiuderà con un verbale che dichiara una ripartizione:
+correggere la regola dopo averla sbagliata una terza volta è ciò che questo file
+spende energia per non fare.
+
+##### I due criteri, e in tutti e due il rimedio è stato togliere il numero
+
+**Il conto delle passate è uscito dal paragrafo che le elenca.** Diceva
+*"Trentatré passate"* e l'elenco si fermava all'annullamento e all'identità: ne
+mancavano tre — l'allineamento fra codice e verbali, l'igiene del repository, e
+l'annullamento visibile con le settimane e il salto a data — e **"questa
+passata"**, un deittico dentro un file che cresce, indicava ormai la penultima.
+**Non è stato riportato a trentasei**: era il terzo invecchiamento della stessa
+riga in dieci giorni, e la dottrina era già scritta per i guardrail — *si cita
+ciò che non si muove* (`CLAUDE.md` §5.6). I nomi non si muovono; la cifra la
+ottiene chi conta l'elenco.
+
+**Il verbale non conta più i commit.** Delle due strade — riaprire la
+ripartizione insieme al totale, oppure smettere di scriverli — è stata scelta la
+seconda, che è quella che il `CLAUDE.md` §2.7 ha preso per le chiavi e il §5.6
+per i call site: **il conto lo fa chi può rifarlo da solo**. La prima è la stessa
+speranza con una cifra diversa, e ha fallito due volte su due.
+
+**La prova che la clausola del 18.08 non bastava era già nel file.** Copriva il
+totale e lasciava scoperta la ripartizione — e nel primo verbale scritto sotto
+quella clausola il totale non era nemmeno stato scritto. Quel verbale —
+l'annullamento visibile — dichiarava «`feat:` ×3, `fix:` ×1» sulle due PR
+insieme: i `fix:` erano
+**tre**. `6a056c6` stava dentro #65 dal principio, quindi la cifra era sbagliata
+già alla riapertura; `eff29d8` è arrivato dopo il verbale, e nessuno l'ha
+riaperta una seconda volta. **Corretta con la data**, dove sta.
+
+**Tre cifre di commit sbagliate in cinque giorni non sono una distrazione**: una
+cifra che vive nella prosa la può rinfrescare solo una persona, e riaprirla è una
+promessa di tornare — la stessa che il §2.7 ha visto non mantenere da chi il
+numero giusto l'aveva appena misurato.
+
+##### L'ultima fotografia dello stesso paragrafo
+
+**«#15 è oggi l'unica docs-only fra quelle contate»** stava dentro il criterio
+del conto delle passate, cioè nella sezione che questa passata aveva appena
+riscritto, ed era **falso dal 15.08.2026**: docs-only e contate sono anche #45,
+#50, #51, #52, #64 e questa. **Il rimedio è quello delle altre tre cifre di
+oggi** — la regola resta, *le docs-only si contano*, e la fotografia esce:
+quante siano invecchia a ogni passata documentale che si mergia, e sono già sei.
+
+Restano i due casi che sembrano contraddire la regola e non la contraddicono —
+#25, docs-only ma esclusa come sintesi retrospettiva, e #21, che dal nome del
+branch sembra docs-only e tocca `mock/people.ts` — perché quelli **spiegano il
+criterio** invece di misurarlo.
+
+##### Le quattro voci del `CLAUDE.md`
+
+| | cosa diceva | rimedio |
+|---|---|---|
+| §3, componenti tenuti | «33 dei 45 non li importa nessuno» | **cifra tolta**: non aveva un criterio, e i conti sono due |
+| §3, esempi d'uso | «slider e switch al check rapido, popover e scroll-area alla dashboard» | **corretti con la data**: tutti e quattro sbagliati |
+| §2.7, oggetti | «112 oggetti» | **mezza riga di criterio**: sono le proprietà con valore oggetto, e i letterali dell'albero sono 113 |
+| §5.6, bundle | «8 KB in più su ~1.1 MB» | **scarto rimisurato**, cifra assoluta tolta |
+
+**Il «33» non è stato riallineato, ed è la ragione che conta.** A invecchiarlo
+era stata la passata che il §3 racconta due paragrafi più sotto — `popover` e
+`calendar` usciti dal magazzino il 18.08.2026 — ma il difetto vero è che *"non
+li importa nessuno"* ha due letture: **nessun file fuori da `ui/`**, e allora
+sono **31**, oppure **nessun file, nemmeno un pari**, e allora sono **26**,
+perché `separator`, `sheet`, `skeleton` e `tooltip` li importa solo
+`sidebar.tsx`, e `toggle` solo `toggle-group.tsx`. Senza criterio il conto non è
+ripetibile; e siccome **la ragione per cui si tengono non dipende da quanti
+sono**, la frase dice "la maggior parte" e non perde niente.
+
+**I quattro esempi erano l'unica delle cinque voci che descrive il codice**, ed
+è la frase che *giustifica* la conservazione: `slider` lo importa `Roi.tsx` e
+non il check rapido, `popover` lo importa `ProCalendario.tsx` e non la
+dashboard, `switch` e `scroll-area` non li importa nessuno. Erano previsioni,
+come quella su `form` corretta il 12.08.2026, scritte prima che quelle schermate
+esistessero. **La conclusione non si muove**: la conservazione poggia sulla
+copia buona della generazione Tailwind 3, non sugli usi previsti — e il
+18.08.2026 quella ragione si è dimostrata da sé. Le due righe, che stavano in
+due paragrafi che non si parlavano, ora si citano.
+
+##### Come sono state misurate, perché le misure si rifanno
+
+- **gli import di `ui/`**: si scorrono i `from "@/components/ui/<nome>"` di
+  `src/`, una volta escludendo `src/components/ui/` e una volta contando anche i
+  pari. I due insiemi differiscono di cinque, e sono quelli nominati qui sopra;
+- **gli oggetti di `it.ts`**: sull'albero di TypeScript, `PropertyAssignment` con
+  inizializzatore `ObjectLiteralExpression` — 112 — contro tutti gli
+  `ObjectLiteralExpression` — 113, perché c'è la radice. Identici sui quattro
+  dizionari;
+- **lo scarto del bundle**: due build di fila, `dist/assets/index-*.js` a
+  **1'456'004** byte in demo e **1'444'319** in produzione, cioè **11'685 byte**.
+  Il totale di `dist/` dà lo stesso scarto, che è la controprova che il
+  differenziale sta tutto in quel chunk;
+- **la ripartizione di #65 + #66**: `git log --no-merges --format='%s'` sulle due
+  PR, `docs:` ×7, `feat:` ×3, `fix:` ×3.
+
+##### Verificato
+
+- **`git diff --stat` contro `master`: nessun file sotto `src/`**, e i soli tre
+  file toccati sono `CLAUDE.md`, `docs/PROGRESS.md` e il verbale che stai
+  leggendo, che sta nel secondo;
+- `lint` e `typecheck` a zero, `build` e `build:demo` passano — eseguiti prima
+  della prima riga, perché lo scarto del bundle è una misura di questa passata;
+- **niente verifiche a schermo, e va detto perché**: non c'è niente di nuovo a
+  schermo. È la stessa forma delle passate documentali del 15.08.2026, che è il
+  modello di questa.
+
+##### Trovato e non toccato
+
+- ~~**«#15 è oggi l'unica docs-only fra quelle contate»** andrebbe corretta, ma
+  è la sesta voce di un piano che ne aveva cinque.~~ → **chiusa dai founder
+  nella stessa passata**, ed è la voce qui sopra: la frase stava dentro la
+  sezione appena riscritta, quindi chiuderla **finisce il paragrafo invece di
+  allargare il piano**.
+- **Le due letture del «33 dei 45» sono uscite 31 e 26**, mentre il piano di
+  questa passata le dava come 30 e 31. La divergenza è di criterio e non di
+  codice — il piano non diceva quali due insiemi — e i due di qui sono scritti
+  con il loro criterio proprio perché una terza misura non ne produca un terzo.
+- **L'etichetta "alert" del marker sul trend resta a 3.95:1** (`CLAUDE.md` §6.1,
+  passata del 18.08.2026): il rimedio cambia un colore, quindi è dei founder.
+- **Il 73 di `AVERAGE_HEALTH_SCORE` non è ancora nel `CLAUDE.md` §8**, dichiarato
+  aperto dal 16.08.2026: è una cifra del dataset che il §2.4 non copre.
+- **Il dialogo di annullamento promette ancora che l'ora "torna prenotabile"**,
+  mentre i documenti hanno separato l'invariante dalla policy il 18.08.2026.
+  Sono quattro stringhe, e la frase giusta dipende da una policy non decisa.
+- **Il «8 KB su ~1.1 MB» del verbale pre-pitch del 10.08.2026 resta dov'è**: è un
+  resoconto datato, e a essere viva era la riga del `CLAUDE.md` §5.6.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
