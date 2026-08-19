@@ -723,7 +723,25 @@ export default function HRDashboard() {
                   r={6}
                   fill="hsl(var(--warning))"
                   stroke="hsl(var(--foreground))"
-                  label={{ value: t.hr.trendAlertMarker, position: 'top', fontSize: 11 }}
+                  /* L'ETICHETTA HA UN COLORE, E PRIMA NO. Senza `fill`
+                     recharts la disegna con il proprio grigio predefinito,
+                     `#808080`, che su fondo bianco dà **3.95:1** a 11px: sotto
+                     l'AA per il testo normale, su un testo informativo — dice
+                     su quale mese cade l'alert. Era il nodo che teneva falso
+                     lo "zero" del §6.1 dal 18.08.2026, e non l'aveva visto
+                     nessun censimento perché è un `fill` dentro un `<svg>` e
+                     non un nodo di testo del DOM.
+
+                     `muted-foreground` e non `foreground`: **5.10:1**, sopra
+                     la soglia, e resta nella gerarchia del grafico — il
+                     marker è il segno, l'etichetta lo nomina e non deve
+                     competere con lui. */
+                  label={{
+                    value: t.hr.trendAlertMarker,
+                    position: 'top',
+                    fontSize: 11,
+                    fill: 'hsl(var(--muted-foreground))',
+                  }}
                 />
               )}
             </LineChart>
