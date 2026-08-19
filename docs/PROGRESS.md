@@ -5809,11 +5809,12 @@ fatto, e il conto lo dà git con il comando che sta lì. **Solo documenti** —
 §8 e del §9 si muove**, le rotte restano **26**, `EXPECTED_KEYS` e il conto dei
 guardrail non sono stati toccati.
 
-Chiude cinque cifre di prosa invecchiate e **completa due criteri che avevano
-già fallito una volta ciascuno**. Va prima della sesta passata perché la sesta
-chiuderà con un verbale che dichiara una ripartizione: correggere la regola dopo
-averla sbagliata una terza volta è ciò che questo file spende energia per non
-fare.
+Chiude **sei cifre di prosa invecchiate** — cinque del piano più una che il
+piano non aveva, chiusa dai founder mentre la passata correva — e **completa due
+criteri che avevano già fallito una volta ciascuno**. Va prima della sesta
+passata perché la sesta chiuderà con un verbale che dichiara una ripartizione:
+correggere la regola dopo averla sbagliata una terza volta è ciò che questo file
+spende energia per non fare.
 
 ##### I due criteri, e in tutti e due il rimedio è stato togliere il numero
 
