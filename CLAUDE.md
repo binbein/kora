@@ -1732,6 +1732,16 @@ activation racconta l'onboarding invece di essere una scala scelta a mano.
   **54'414**, che moltiplicato per 12 dà i **CHF 652'968** dell'elenco. Due
   strade, lo stesso numero;
 - **activation** = 415 iscritti ÷ 798 organico dei clienti attivi = **52%**;
+- **profilo salute medio di piattaforma: 73**, ed è **dichiarato, non derivato**
+  (founder, 19.08.2026). È l'unico numero di questa sezione che non si ricava da
+  altri: dietro non c'è una seconda sorgente, esattamente come per le sedute di
+  carriera del roster, e chi legge non deve poterlo prendere per derivato. Fino
+  al 16.08.2026 a schermo era la media di **sette punteggi individuali** scritti
+  sugli utenti del back-office — cioè sette cifre non ratificate al posto di una,
+  e sette dati sanitari attaccati a nome, cognome ed email; il 73 è il valore che
+  quella media dava, tenuto perché la schermata non si muovesse. In produzione lo
+  calcolerà il backend mese per mese dalle risposte vere
+  (`docs/CONTRATTO-DATI.md` §7);
 - **sessioni di piattaforma**: la serie di Demo SA (§8) è la curva di adozione
   di riferimento, e ogni altro cliente è quella curva scalata sul rapporto fra
   gli iscritti, contata dal suo mese di ingresso. Non serve nessun numero nuovo,

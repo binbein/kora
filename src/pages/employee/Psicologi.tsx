@@ -54,8 +54,13 @@ import { interpolate, t } from "@/lib/i18n";
  * l'appuntamento — non compariva nemmeno.
  */
 
-/** Quale servizio la schermata sta mostrando: sta nell'URL, così la home ci arriva. */
-const SERVICE_PARAM = "servizio";
+/**
+ * Quale servizio la schermata sta mostrando: sta nell'URL, così la home ci
+ * arriva. Il nome del parametro è **in inglese come le rotte** (`CLAUDE.md`
+ * §10): si legge nella barra degli indirizzi accanto a `/employee/psychologists`,
+ * quindi è superficie del prodotto e non un dettaglio di implementazione.
+ */
+const SERVICE_PARAM = "service";
 
 function serviceFromParam(value: string | null): CappedServiceKind {
   return value === "coach" ? "coach" : "psychologist";

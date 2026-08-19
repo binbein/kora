@@ -2124,9 +2124,9 @@ l'anteprima a tre pannelli e la voce Admin, la home e il medico, la cornice del
 trimestre, il conteggio che diventa un guardrail, l'annullamento e l'identità,
 l'allineamento fra codice e verbali, l'igiene del repository, l'annullamento
 visibile con la navigazione fra settimane e il salto a data, i criteri e i
-conteggi, le attese e l'ordinamento, l'ordinamento dello stato della seduta, e
-la rinomina delle rotte in inglese. Non aggiungono schermate e non spostano un
-numero a schermo.
+conteggi, le attese e l'ordinamento, l'ordinamento dello stato della seduta, la
+rinomina delle rotte in inglese, e la demo pronta. Non aggiungono schermate e
+non spostano un numero a schermo.
 
 **Il numero è uscito da questa riga il 19.08.2026, ed è la terza volta che
 invecchiava.** Diceva *"Trentatré passate"* mentre l'elenco si fermava
@@ -5933,10 +5933,12 @@ due paragrafi che non si parlavano, ora si citano.
   con il loro criterio proprio perché una terza misura non ne produca un terzo.
 - **L'etichetta "alert" del marker sul trend resta a 3.95:1** (`CLAUDE.md` §6.1,
   passata del 18.08.2026): il rimedio cambia un colore, quindi è dei founder.
-- **Il 73 di `AVERAGE_HEALTH_SCORE` non è ancora nel `CLAUDE.md` §8**, dichiarato
-  aperto dal 16.08.2026: è una cifra del dataset che il §2.4 non copre.
-- **Il dialogo di annullamento promette ancora che l'ora "torna prenotabile"**,
-  mentre i documenti hanno separato l'invariante dalla policy il 18.08.2026.
+- ~~**Il 73 di `AVERAGE_HEALTH_SCORE` non è ancora nel `CLAUDE.md` §8**,
+  dichiarato aperto dal 16.08.2026: è una cifra del dataset che il §2.4 non
+  copre.~~ → **chiuso il 19.08.2026** (verbale «La demo pronta»).
+- ~~**Il dialogo di annullamento promette ancora che l'ora "torna
+  prenotabile"**, mentre i documenti hanno separato l'invariante dalla policy il
+  18.08.2026.~~ → **chiuso il 19.08.2026** (verbale «La demo pronta»).
   Sono quattro stringhe, e la frase giusta dipende da una policy non decisa.
 - **Il «8 KB su ~1.1 MB» del verbale pre-pitch del 10.08.2026 resta dov'è**: è un
   resoconto datato, e a essere viva era la riga del `CLAUDE.md` §5.6.
@@ -6247,8 +6249,8 @@ anello — non il tasto che la ordina.
   mentre i documenti hanno separato l'invariante dalla policy il 18.08.2026.
   Sono quattro stringhe e la frase giusta dipende da una policy non decisa: è la
   stessa voce lasciata aperta dalla passata precedente.
-- **Il 73 di `AVERAGE_HEALTH_SCORE` non è ancora nel `CLAUDE.md` §8**, aperto
-  dal 16.08.2026.
+- ~~**Il 73 di `AVERAGE_HEALTH_SCORE` non è ancora nel `CLAUDE.md` §8**, aperto
+  dal 16.08.2026.~~ → **chiuso il 19.08.2026** (verbale «La demo pronta»).
 - **Nessun componente nuovo è uscito dal magazzino di `ui/`**: `SortableTable`
   importa `table.tsx`, che sette schermate importavano già. La riga del §3 sul
   magazzino non si è mossa.
@@ -6371,9 +6373,155 @@ raddoppiato il diff di una passata il cui unico valore è essere verificabile.
   sessione avanzata la trova fredda, che è il caso normale di una presentazione
   di trenta minuti. Serve una misura fatta apposta, e non è lavoro da aprire
   qui;
-- **il dialogo di annullamento promette ancora che l'ora "torna prenotabile"**, e
-  il **73** di `AVERAGE_HEALTH_SCORE` non è ancora nel `CLAUDE.md` §8: sono le due
-  voci che le due passate precedenti lasciano aperte.
+- ~~**il dialogo di annullamento promette ancora che l'ora "torna
+  prenotabile"**, e il **73** di `AVERAGE_HEALTH_SCORE` non è ancora nel
+  `CLAUDE.md` §8: sono le due voci che le due passate precedenti lasciano
+  aperte.~~ → **chiuse tutte e due il 19.08.2026** (verbale «La demo pronta»).
+
+#### La demo pronta (19.08.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il comando
+in testa a questo file. La passata non costruisce niente: **toglie una promessa,
+sistema una manopola, mette a verbale una cifra**. A schermo cambia **una frase
+sola**; le rotte restano **26**, le schermate **27**, `EXPECTED_KEYS` resta
+**780** ×4 — nessuna chiave nuova, si riscrive un valore — e i guardrail **111 =
+102 + 9**. `typecheck` e `lint` a zero.
+
+**Il 73 entra nel `CLAUDE.md` §8, ed è l'unico numero che si muove**, per la
+decisione dei founder del 19.08.2026 (punto 4 qui sotto).
+
+##### La cache scaldata veniva buttata dopo cinque minuti
+
+`staleTime` e `gcTime` **non sono la stessa manopola**, e il commento di
+`lib/query-client.ts` le confondeva — diceva che *"`staleTime: Infinity` completa
+la stessa idea: la cache viene scaldata prima del primo paint"*, che è la ragione
+per cui nessuno se n'era accorto:
+
+- **`staleTime`** decide quando un dato va **rifatto**;
+- **`gcTime`** decide quando una query **senza osservatori** viene **buttata**.
+
+Le query che `data/prefetch.ts` scalda e che nessuno monta non hanno osservatori:
+con il default di cinque minuti sparivano dalla cache, e chi arrivava in `/admin`
+a fine giro le trovava fredde. **Il guardrail aveva ragione**: ha segnalato una
+cache fredda vera, e a essere sbagliata era la configurazione. Il rimedio è
+`gcTime: Infinity`, e la ragione stava già tutta nel progetto — il provider vive
+in memoria per la sessione, il dataset non cambia, e la cache è riempita prima
+del primo paint per costruzione: non c'è niente da raccogliere, e raccoglierlo
+fabbrica la condizione che il guardrail esiste per vietare.
+
+**È la seconda volta che quel file confonde due comportamenti di react-query** —
+la prima fu `retry: 1`, tolto in M5.b — e tutte e due le volte il difetto si
+vedeva solo in un caso che nessuno esercitava: un fallimento allora, cinque
+minuti di attesa adesso. Il commento ora dice che sono due manopole e quale fa
+cosa, e `docs/CONTRATTO-DATI.md` §5 annota la scelta accanto al tentativo
+automatico, per chi scriverà il backend: con una rete vera una risposta tenuta
+per sempre è un dato vecchio, non un risparmio.
+
+**La verifica è stata fatta con l'attesa, ed è la parte che non si poteva
+scorciare**, perché un controllo rapido passa sia prima sia dopo la correzione.
+Due giri identici sulla **build demo**, ognuno in una scheda nuova — così la
+console non porta la memoria del giro precedente — con la stessa strada:
+`/admin` e le sue cinque sottopagine, solo link interni.
+
+| | attesa senza toccare niente | log dei guardrail |
+|---|---|---|
+| **prima** della correzione | **8 minuti** | **7** |
+| **dopo** la correzione | **7 minuti e 21 secondi** | **zero** |
+
+Le sette chiavi fredde erano `["session"]` — quella che legge la guardia di ogni
+portale — le quattro di piattaforma (`clients`, `demo-requests`, `users`,
+`months`), `["professional","meier","platform-sessions"]` e
+`["checkup","providers"]`. **Tre parlavano già entrando in `/admin`**, cioè prima
+di qualunque sottopagina.
+
+##### L'ultimo frammento d'indirizzo in italiano
+
+`SERVICE_PARAM` passa da `servizio` a **`service`**: è quello che restava dopo la
+rinomina delle rotte, e si vede nella barra accanto a `/employee/psychologists`.
+**Sta nella mappa del §10 con le quindici rotte**, e non come dettaglio di
+implementazione: è un indirizzo, quindi è una decisione dei founder come le
+altre.
+
+**Controllato che non ce ne siano altri**: gli unici altri parametri di query
+sono le tre manopole di sviluppo — `?fail`, `?empty`, `?role` — che erano già
+inglesi. Il capitolo si chiude qui.
+
+##### Il dialogo di annullamento ha smesso di promettere
+
+`professional.sessions.cancel.effect` diceva **"L'ora torna prenotabile e la
+sessione non entra nei compensi."** La seconda metà è vera; la prima è la
+promessa che i documenti hanno smesso di fare il 18.08.2026, quando hanno
+separato l'invariante dalla policy: le disponibilità sono le fasce dichiarate
+della professionista meno quelle occupate, quindi un'ora liberata che non è una
+fascia dichiarata **non torna proponibile**, e a schermo si leggeva come un
+annullamento che non libera niente.
+
+Ora dice **"L'ora non è più occupata e la sessione non entra nei compensi."** —
+l'invariante e nient'altro. **La policy non è decisa e non è stata decisa qui**:
+il silenzio su cosa succeda alla fascia è la parte corretta. Una chiave, quattro
+dizionari, `EXPECTED_KEYS` fermo. **È l'ultimo punto del prodotto che ancora
+affermava ciò che i documenti avevano corretto**, e chiude una voce aperta da due
+passate.
+
+##### Il 73 entra nel §8
+
+`AVERAGE_HEALTH_SCORE` stava in `mock/platform.ts` e non nel `CLAUDE.md` §8,
+dichiarato aperto dal 16.08.2026: finché restava fuori era una cifra del dataset
+che il §2.4 non copre. Trascritto dove vivono gli altri numeri di piattaforma —
+798 coperti, 415 iscritti, il 52% di attivazione, i CHF 652'968 — **su decisione
+dei founder del 19.08.2026**, e **dichiarato come valore dichiarato e non
+derivato**, come le sedute di carriera del roster: dietro non c'è una seconda
+sorgente, e chi legge il §8 non deve poterlo prendere per derivato. Le tre voci
+di «trovato e non toccato» che lo portavano sono barrate con la data, dove
+stanno.
+
+##### Il giro del pitch, dall'inizio alla fine
+
+Fatto sulla **build demo**, con la console aperta, viewport 1280×900, seguendo
+`docs/PITCH.md`: **solo link interni e mai un ricaricamento**.
+
+- **landing** con il clic su un pallino dell'anteprima, che ferma il carosello:
+  il pannello HR dice CHF 14'200, 68%, −2 punti, 16 giorni;
+- **dipendente**: check rapido toccato e registrato, prenotazione di **venerdì
+  25.09 alle 10:00** con la Dr.ssa Meier, medico virtuale che risponde, check-up
+  con il referto di marzo, piano di prevenzione, profilo;
+- **HR**: dashboard con i sei KPI e i quattro grafici — **58 elementi disegnati
+  dentro quattro `<svg>`**, quindi nessuna ciambella vuota — il selettore che
+  cambia davvero i dati (2° trimestre: CHF 11'800, 13 giorni, 59%, 34 attivi, 86
+  sessioni) e torna al corrente; elenco dipendenti, report, fatturazione,
+  privacy;
+- **professionista**: la seduta prenotata è nel calendario (settimana 5→6, mese
+  21→22), la settimana successiva si raggiunge con la freccia e **le KPI non la
+  seguono**, l'annullamento mostra **la frase nuova** e svuota la cella (6→5,
+  22→21); sessioni, pazienti, pagamenti con CHF 1'120 e 5'040, profilo;
+- **ritorno dal dipendente**: la seduta annullata resta in home con *"Annullato"*
+  e *"Dr.ssa Meier ha annullato questo appuntamento"*;
+- **`/roi`**: i cinque numeri di ancoraggio a N=100, e a N=300 tutto scala per
+  tre mentre il rapporto resta **2.35:1**;
+- **richiesta demo** compilata e inviata, con la conferma che non nomina
+  l'azienda;
+- **Admin per ultimo**: la richiesta è in tabella — *Prova Generale SA · Anna
+  Keller · 23.09.2026* — e il resto del back-office è al suo posto, 73 compreso.
+
+**Zero log dei guardrail sull'intero giro**, zero errori in console, zero
+overflow orizzontale.
+
+##### Trovato e non toccato
+
+- **la tabella dello stress per reparto non segue il selettore di trimestre**, ed
+  è fuori perimetro per la ragione scritta nel piano: chiuderlo richiede un metodo
+  nuovo sul provider, quindi un cambio del contratto, che è una passata sua. Dalla
+  riorganizzazione del 17.08 quel blocco sta fuori dalla cornice e dichiara il
+  proprio periodo nel titolo — *"Stress per reparto · ultimo mese"* — quindi non
+  si legge più come un errore;
+- **il PDF del report non è stato scaricato in questo giro**: il pannello del
+  browser blocca i download, quindi provarlo qui non direbbe niente. È lavoro di
+  M4 e questa passata non lo tocca — resta da rifare a mano prima della
+  presentazione, come dice `docs/PITCH.md`;
+- **`Invio` nella chat del medico non è stato esercitato davvero**: il tasto
+  sintetico non produce l'invio nativo, ed è la stessa nota già scritta per i
+  pulsanti d'intestazione. Verificato invece che l'input **sta dentro un
+  `<form>`**, cioè che un Invio vero lo invia.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

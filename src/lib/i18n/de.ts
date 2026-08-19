@@ -534,7 +534,7 @@ export const de: Dictionary = {
         notePrivacy:
           "Die Notiz bleibt in Ihrem Kalender: das Unternehmen der Patientin sieht sie nicht.",
         effect:
-          "Die Zeit wird wieder buchbar und die Sitzung zählt nicht zum Honorar.",
+          "Die Zeit ist nicht mehr belegt und die Sitzung zählt nicht zum Honorar.",
         keep: "Zurück",
         confirm: "Sitzung absagen",
         confirming: "Wird abgesagt",

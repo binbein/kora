@@ -384,7 +384,7 @@ export default function EmployeeHome() {
             iconWrapClass="bg-executive/10"
             iconClass="text-executive"
             buttonClass="bg-executive hover:bg-executive/90"
-            to="/employee/psychologists?servizio=coach"
+            to="/employee/psychologists?service=coach"
           />
         )}
       </div>
