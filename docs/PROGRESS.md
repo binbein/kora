@@ -1248,33 +1248,33 @@ la review lo campioni invece di fidarsi.
 | `/` landing | strumento | `null` | — | `ErrorNotice` nella sola sezione piani |
 | `/` hero preview | — | `null` | `null` | `null` (mockup: i tre collassano) |
 | `/roi` | strumento | `null` | `EmptyNotice` `public.roi.empty` | `ErrorNotice` sotto la nav |
-| `/pricing` | strumento | `null` | `EmptyNotice` `public.plans.empty` | `ErrorNotice` sotto la nav |
+| `/plans` | strumento | `null` | `EmptyNotice` `public.plans.empty` | `ErrorNotice` sotto la nav |
 | `/demo` | strumento | — | — | `ErrorNotice` `public.demoRequest.error` sotto il pulsante |
 | `/employee` home | consumer | `null` | frase esistente sugli appuntamenti | `ErrorNotice` di pagina |
 | `/employee` contatori | consumer | `null` | — | `ErrorNotice` nella sola card |
 | `/employee` check rapido | consumer | `null` | — | `ErrorNotice` `employee.state.error` sulla lettura, `…rapidCheck.error` sulla scrittura |
-| `/employee/psicologi` | consumer | `null` | frase esistente sull'elenco | `ErrorNotice` di pagina |
-| `/employee/psicologi` dialogo | consumer | `null` | frase esistente sugli slot | `ErrorNotice`, e `…dialog.error` sulla prenotazione |
-| `/employee/medico` | consumer | `null` | — | `ErrorNotice` di pagina |
+| `/employee/psychologists` | consumer | `null` | frase esistente sull'elenco | `ErrorNotice` di pagina |
+| `/employee/psychologists` dialogo | consumer | `null` | frase esistente sugli slot | `ErrorNotice`, e `…dialog.error` sulla prenotazione |
+| `/employee/doctor` | consumer | `null` | — | `ErrorNotice` di pagina |
 | `/employee/checkup` | consumer | `null` | `EmptyNotice` `…checkup.networkEmpty` | `ErrorNotice` di pagina, e uno nel dialogo referto |
-| `/employee/piano-ai` | consumer | `null` | — | `ErrorNotice` di pagina |
-| `/employee/profilo` | consumer | `null` | — | `ErrorNotice` di pagina |
+| `/employee/ai-plan` | consumer | `null` | — | `ErrorNotice` di pagina |
+| `/employee/profile` | consumer | `null` | — | `ErrorNotice` di pagina |
 | `/hr` dashboard | strumento | `null` | `EmptyNotice` `hr.quarterEmpty`, **con intestazione e selettore** | `ErrorNotice` di pagina |
-| `/hr/dipendenti` | strumento | `null` | `EmptyNotice` `hr.employees.empty`; sottotitolo tolto se manca lo snapshot | `ErrorNotice` di pagina |
+| `/hr/employees` | strumento | `null` | `EmptyNotice` `hr.employees.empty`; sottotitolo tolto se manca lo snapshot | `ErrorNotice` di pagina |
 | `/hr/report` | strumento | `null` | `EmptyNotice` `hr.quarterEmpty`, **senza il pulsante di download** | `ErrorNotice` di pagina |
-| `/hr/fatturazione` | strumento | `null` | `EmptyNotice` `hr.billing.invoicesEmpty` | `ErrorNotice` di pagina |
+| `/hr/billing` | strumento | `null` | `EmptyNotice` `hr.billing.invoicesEmpty` | `ErrorNotice` di pagina |
 | `/hr/privacy` | strumento | `null` | — | `ErrorNotice` di pagina |
 | `/professional` calendario | strumento | `null` | frase esistente sulla settimana | `ErrorNotice` di pagina |
-| `/professional/sessioni` | strumento | `null` | frasi esistenti sui tre pannelli | `ErrorNotice` di pagina, e `…note.error` sul salvataggio |
-| `/professional/pazienti` | strumento | `null` | `EmptyNotice` `professional.patients.empty` *(dal 18.08.2026; qui c'era un `—`, ed era la sola casella sbagliata della tabella)* | `ErrorNotice` di pagina |
-| `/professional/pagamenti` | strumento | `null` | `EmptyNotice` `professional.profile.empty` | `ErrorNotice` di pagina |
-| `/professional/profilo` | strumento | `null` | `EmptyNotice` `professional.profile.empty` | `ErrorNotice` di pagina |
+| `/professional/sessions` | strumento | `null` | frasi esistenti sui tre pannelli | `ErrorNotice` di pagina, e `…note.error` sul salvataggio |
+| `/professional/patients` | strumento | `null` | `EmptyNotice` `professional.patients.empty` *(dal 18.08.2026; qui c'era un `—`, ed era la sola casella sbagliata della tabella)* | `ErrorNotice` di pagina |
+| `/professional/payments` | strumento | `null` | `EmptyNotice` `professional.profile.empty` | `ErrorNotice` di pagina |
+| `/professional/profile` | strumento | `null` | `EmptyNotice` `professional.profile.empty` | `ErrorNotice` di pagina |
 | `/professional` badge nav | — | `null` | `null` | `null` (decorativo: i tre collassano) |
 | `/admin` aziende | strumento | `null` | `EmptyNotice` su clienti e su richieste | `ErrorNotice` sui due blocchi |
-| `/admin/utenti` | strumento | `null` | frase esistente sulla ricerca | `ErrorNotice` di pagina |
-| `/admin/professionisti` | strumento | `null` | `EmptyNotice` `admin.professionals.empty` | `ErrorNotice` di pagina |
-| `/admin/sessioni` | strumento | `null` | `EmptyNotice` `professional.profile.empty` | `ErrorNotice` di pagina |
-| `/admin/provider` | strumento | `null` | `EmptyNotice` `admin.checkupProviders.empty` | `ErrorNotice` di pagina |
+| `/admin/users` | strumento | `null` | frase esistente sulla ricerca | `ErrorNotice` di pagina |
+| `/admin/professionals` | strumento | `null` | `EmptyNotice` `admin.professionals.empty` | `ErrorNotice` di pagina |
+| `/admin/sessions` | strumento | `null` | `EmptyNotice` `professional.profile.empty` | `ErrorNotice` di pagina |
+| `/admin/providers` | strumento | `null` | `EmptyNotice` `admin.checkupProviders.empty` | `ErrorNotice` di pagina |
 | `/admin/analytics` | strumento | `null` | `EmptyNotice` `admin.analytics.empty` | `ErrorNotice` di pagina |
 | 404 | strumento | — | — | — (non legge dal provider) |
 | bootstrap | strumento | — | — | `ErrorNotice` `common.state.boot`, senza layout |
@@ -2124,8 +2124,9 @@ l'anteprima a tre pannelli e la voce Admin, la home e il medico, la cornice del
 trimestre, il conteggio che diventa un guardrail, l'annullamento e l'identità,
 l'allineamento fra codice e verbali, l'igiene del repository, l'annullamento
 visibile con la navigazione fra settimane e il salto a data, i criteri e i
-conteggi, e le attese e l'ordinamento. Non aggiungono schermate e non spostano
-un numero a schermo.
+conteggi, le attese e l'ordinamento, l'ordinamento dello stato della seduta, e
+la rinomina delle rotte in inglese. Non aggiungono schermate e non spostano un
+numero a schermo.
 
 **Il numero è uscito da questa riga il 19.08.2026, ed è la terza volta che
 invecchiava.** Diceva *"Trentatré passate"* mentre l'elenco si fermava
@@ -6259,6 +6260,120 @@ anello — non il tasto che la ordina.
   stato del componente, quindi uscire dalla schermata e tornarci riporta
   l'ordine del dato. Ricordarlo sarebbe stato uno stato in più da tenere
   allineato, per un gesto che durante la demo si rifà in un clic.
+
+#### Le rotte in inglese (19.08.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il comando
+in testa a questo file. **Un commit per area**, più quello che scrive la regola e
+quello che aggiorna i documenti: un errore si isola aprendo un commit solo.
+**Nessun numero del §8 e del §9 si muove**, le rotte restano **26** e le
+schermate **27**, `EXPECTED_KEYS` resta **780** e i guardrail **111 = 102 + 9**.
+
+**Quindici indirizzi su ventisei passano in inglese**, con la mappa approvata dai
+founder (`CLAUDE.md` §10). Le cinque aree non si toccano, `/professional`
+compreso — è la stessa parola nelle due lingue — e **tre righe della mappa sono
+decisioni e non traduzioni**: `/plans` allinea l'indirizzo all'entità del dominio,
+`/employee/doctor` accorcia un termine che il prodotto scrive per intero,
+`/admin/providers` pluralizza. Stanno scritte nel §10 con la loro ragione, perché
+sembrano sviste e non lo sono.
+
+##### La regola è stata scritta prima di toccare il codice
+
+È il vincolo che valeva più del codice, ed è il primo commit del branch: **i
+verbali citano gli indirizzi del giorno in cui furono scritti**, la mappa
+corrente sta nel `CLAUDE.md` §10, e chi trova un indirizzo che non risolve ha
+trovato un verbale, non un difetto. Senza quella riga questa passata lasciava
+dietro di sé decine di righe che sembrano rotte — la gran parte in questo file —
+e la prima sessione che le rilegge apre altrettante segnalazioni.
+
+**Ma dentro questo file non è tutto verbale**, ed è la metà che è stata
+aggiornata: **16 righe vive**, tutte nell'inventario delle schermate di M5.b, che
+non è un resoconto datato ma la tabella che dice **cosa rende ogni schermata nei
+tre casi** — chi la legge oggi la usa per sapere dove guardare. Restano com'erano
+le 38 citazioni che stanno dentro verbali datati, comprese quelle della sezione
+delle decisioni chiuse, che sono resoconti con la loro data in testa. Il criterio
+applicato riga per riga è quello del 19.08.2026: *un verbale è un resoconto
+datato, un criterio è rivolto a chi verrà*, e in caso di dubbio è un verbale.
+
+**Gli altri quattro documenti descrivono il presente e si aggiornano**:
+`CLAUDE.md`, `docs/PITCH.md`, `docs/CONTRATTO-DATI.md` e il `README.md` — che
+però non nominava nessun indirizzo, quindi non è stato toccato.
+
+##### Il codice, e i punti che si dimenticano
+
+**I dizionari non contengono nessuna rotta**, ricontrollato prima di cominciare:
+zero letterali di indirizzo nei valori dei quattro file di `i18n/`. **Le quattro
+lingue non sono state toccate** e `EXPECTED_KEYS` non si muove. Le uniche
+occorrenze dentro `it.ts` erano **due commenti** che nominavano `/pricing`, e
+sono andate con l'indirizzo.
+
+**Le sottorotte sono dichiarate relative in `App.tsx`**, quindi ogni area è una
+manciata di letterali; a costare non è il codice ma i documenti. Fuori dai nav i
+punti che un giro dei soli menu salterebbe erano sei — landing, card dei piani,
+calcolatore ROI, richiesta demo, footer e `RequireRole` — e sono stati percorsi
+tutti.
+
+**`RequireRole` non è stato toccato, ed è il punto che meritava il controllo**:
+costruisce un indirizzo invece di scriverlo in un `<Link>`, ma quello che
+costruisce è la **radice del portale** — `/employee`, `/hr`, `/professional`,
+`/admin` — cioè le quattro che la mappa lascia dove sono. Era un rischio vero e
+si è risolto in una lettura.
+
+**I nomi dei file non cambiano**, ed è una decisione scritta nel `CLAUDE.md` §3:
+`Psicologi.tsx` e `HRDipendenti.tsx` restano come sono. Le rotte sono la
+superficie del prodotto, i nomi dei file sono interni, e rinominarli avrebbe
+raddoppiato il diff di una passata il cui unico valore è essere verificabile.
+
+##### Verificato a schermo, viewport 1280×900
+
+- **le 26 rotte percorse con i soli link interni**, area per area, più la **404**
+  che è la ventisettesima schermata e l'unica che chiede la barra degli
+  indirizzi: `/admin/utenti` risponde *"L'indirizzo /admin/utenti non corrisponde
+  a nessuna pagina"*, che è insieme la prova che la 404 regge e che il vecchio
+  indirizzo è davvero morto;
+- **i sei punti fuori dai nav**: la landing porta `/plans`, `/roi`, `/demo` e i
+  quattro portali; le card dei piani e il calcolatore rimandano a `/plans` e
+  `/demo`; il footer alle cinque aree; la richiesta demo torna alla home;
+- **il giro del marketplace, intero**: prenotato lo slot di **venerdì 25.09 alle
+  10:00** dal portale dipendente, comparso nel calendario della professionista —
+  sedute della settimana da 5 a 6, agenda del mese da 21 a 22 — annullato dalla
+  lista sessioni — in programma da 19 a 18, annullate da 1 a 2 — e visto dal
+  dipendente, che legge *"Annullato"* e *"Dr.ssa Meier ha annullato questo
+  appuntamento"*. Attraversa cinque delle rotte rinominate;
+- **i numeri del pitch fermi**: CHF 14'200 e 16 giorni, 68% e 82 su 120, 41
+  attivi, 142 di 1'200, 62%, soglia 12, −2 punti; i cinque del calcolatore a
+  N=100 — 1'289'500, 221'150, 66'000, 155'150 e **2.35:1**; CHF 1'120 e 5'040 nei
+  compensi; 652'968, 415 e 798 nel back-office;
+- **`npm run build` e `npm run build:demo` passano**, e la seconda è stata
+  **servita e percorsa con la console aperta**: landing → `/plans` → `/admin` →
+  `/admin/sessions` con le sue 82 righe, **zero log**, che è il caso in cui i
+  guardrail parlerebbero;
+- `typecheck` e `lint` a zero;
+- **la spazzata dei residui**: sotto `src/` non resta **nessun** letterale di
+  indirizzo in italiano.
+
+##### Trovato e non toccato
+
+- **il parametro di query della pagina psicologi è ancora `?servizio=coach`**, ed
+  è l'unico pezzo di indirizzo rimasto in italiano — `SERVICE_PARAM` in
+  `Psicologi.tsx`. **Non è nella mappa approvata**, quindi non è stato rinominato:
+  è la stessa disciplina per cui le rotte le decidono i founder. Il giorno in cui
+  lo si vuole inglese sono due letterali e una riga di questo elenco;
+- **in sviluppo il guardrail della cache fredda ha parlato cinque volte**, su
+  chiavi del back-office che `prefetchDemo` scalda davvero —
+  `platform.clients`, `.users`, `.months`, `.demo-requests` e
+  `professional.platform-sessions`. **Non viene da questa passata**: la rinomina
+  non tocca il layer dati, le cinque chiavi sono in elenco, e la build demo
+  percorsa con la console aperta non ha loggato niente. **La causa non è
+  stabilita** e non è stata indagata oltre: l'ipotesi da provare per prima è il
+  `gcTime` predefinito di react-query, che dopo cinque minuti scarta una query
+  precaricata e mai osservata — se è quella, un giro che arriva in `/admin` a
+  sessione avanzata la trova fredda, che è il caso normale di una presentazione
+  di trenta minuti. Serve una misura fatta apposta, e non è lavoro da aprire
+  qui;
+- **il dialogo di annullamento promette ancora che l'ora "torna prenotabile"**, e
+  il **73** di `AVERAGE_HEALTH_SCORE` non è ancora nel `CLAUDE.md` §8: sono le due
+  voci che le due passate precedenti lasciano aperte.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
