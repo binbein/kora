@@ -649,6 +649,17 @@ export const it = {
       previousWeek: "Settimana precedente",
       nextWeek: "Settimana successiva",
       backToThisWeek: "Questa settimana",
+      /*
+       * Il salto a data (18.08.2026). Queste quattro stringhe sono il
+       * testo che react-day-picker genererebbe **in inglese**: i nomi
+       * accessibili delle frecce del mese, quello di un giorno con
+       * sedute, e la riga che dichiara l'intervallo dell'agenda.
+       */
+      pickerPreviousMonth: "Mese precedente",
+      pickerNextMonth: "Mese successivo",
+      /** "24.09.2026, con sessioni" */
+      pickerDayWithSessions: "{date}, con sessioni",
+      pickerRange: "L'agenda va dal {from} al {to}.",
       empty: "Nessuna sessione in questa settimana.",
     },
 

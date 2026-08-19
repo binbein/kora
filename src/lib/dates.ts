@@ -50,6 +50,33 @@ export function overlaps(
   return aStart.getTime() < bEnd && bStart.getTime() < aEnd;
 }
 
+/**
+ * Quante settimane separano due date, contate fra i loro lunedì.
+ *
+ * **`Math.round` non è pigrizia, ed è la riga da non semplificare.** Due
+ * mezzanotti locali a sette giorni di distanza distano `7 × 86'400'000`
+ * millisecondi **solo se in mezzo non cambia l'ora**: attraversando il confine
+ * dell'ora legale ne distano un'ora in meno, e una divisione intera dà **6**
+ * dove le settimane sono 7. Non è un caso di scuola — l'agenda della demo
+ * comincia il 02.03.2026 e in Europa l'ora legale entra il 29.03.2026, quindi
+ * il confine cade **dentro** l'intervallo navigabile: il mini calendario
+ * evidenzierebbe una settimana e la griglia ne mostrerebbe un'altra.
+ *
+ * STA QUI E NON NEL SUO UNICO CHIAMANTE, ed è una scelta contro il §11 di
+ * `CLAUDE.md` fatta con gli occhi aperti (18.08.2026). La regola dice che una
+ * funzione con un chiamante solo è di solito una riga dentro il chiamante; qui
+ * ha vinto l'altra ragione, la stessa di `overlaps`: **questo è il file in cui
+ * chi incontra la trappola la viene a cercare**, ed è aritmetica sui giorni,
+ * non presentazione. Dentro una schermata, il commento qui sopra sarebbe
+ * archeologia che la prima ripulitura toglie.
+ */
+export function weeksBetween(from: Date, to: Date): number {
+  const WEEK_IN_MS = 7 * 24 * 60 * 60 * 1000;
+  return Math.round(
+    (startOfWeek(to).getTime() - startOfWeek(from).getTime()) / WEEK_IN_MS,
+  );
+}
+
 /** Due istanti che cadono nello stesso giorno di calendario. */
 export function isSameDay(a: Date, b: Date): boolean {
   return (

@@ -602,7 +602,13 @@ export class MockDataProvider implements DataProvider {
           durationMinutes: session.durationMinutes,
           status: session.status,
           type: session.type,
-          cancellationReasonKey: session.cancellationReasonKey,
+          /* Lo spread condizionale, come per la nota: assegnare sempre il campo
+             mette la proprietà con dentro `undefined` anche su una seduta in
+             programma, e il §2 del contratto dice che un campo `?` **non c'è**
+             quando non pertiene. */
+          ...(session.cancellationReasonKey === undefined
+            ? {}
+            : { cancellationReasonKey: session.cancellationReasonKey }),
         });
       }
     }
