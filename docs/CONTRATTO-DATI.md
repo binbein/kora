@@ -689,6 +689,13 @@ consumate si sommano dalla serie di utilizzo, che copre i dodici mesi chiusi.
   una presentazione dal vivo l'attesa è tempo morto da spiegare.
 - La cache viene riempita prima del primo paint, e un guardrail in sviluppo
   segnala qualunque query che si monti a cache fredda.
+- **La cache non si svuota mai da sola**, ed è una configurazione della demo da
+  ridecidere il giorno di `http/`, come il tentativo automatico qui sotto: il
+  client tiene `gcTime: Infinity` perché il dataset vive in memoria per la durata
+  della sessione e non cambia, quindi buttare una query precaricata e mai montata
+  fabbricherebbe la cache fredda che il guardrail vieta. Con una rete vera la
+  domanda torna aperta — lì una risposta tenuta per sempre è un dato vecchio, non
+  un risparmio.
 - Le schermate si sospendono su `data === undefined`, **mai su `isFetching`**:
   dopo una mutation il dato precedente è ancora a schermo, ed è il caso che non
   deve far lampeggiare nulla.
