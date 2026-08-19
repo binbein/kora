@@ -5480,10 +5480,20 @@ chiedere ai founder, insieme alla decisione di quando i PDF escono.
 
 #### L'annullamento visibile e le settimane (18.08.2026)
 
-**Quattro di codice — `feat:` ×3, `fix:` ×1 — e sette di documenti, contando il
-commit di chiusura.** Ripartizione da
-`git log --format='%s' <base>..HEAD | sed 's/:.*//' | sort | uniq -c`; **il
-totale lo dice git**, per la clausola del 18.08.2026 in testa a questo file.
+~~**Quattro di codice — `feat:` ×3, `fix:` ×1 — e sette di documenti, contando
+il commit di chiusura.**~~ → **erano `feat:` ×3, `fix:` ×3 e `docs:` ×7** sulle
+due PR insieme, rimisurati il 19.08.2026 con il comando che questa riga già
+citava —
+`git log --format='%s' <base>..HEAD | sed 's/:.*//' | sort | uniq -c`. I `fix:`
+erano tre: `6a056c6`, i badge dell'annullata portati ad AA, **stava dentro #65
+dal principio**, quindi la cifra era già sbagliata di uno quando la passata l'ha
+riaperta; `eff29d8`, l'anello di focus dei giorni, è arrivato **dopo** il
+verbale, e nessuno l'ha riaperta una seconda volta. Documenti e `feat:`
+tornavano.
+
+**È il verbale che ha smentito la clausola del 18.08 usandola**, ed è da qui che
+nasce la conclusione del 19.08.2026 in testa a questo file: **i verbali non
+contano più i commit**, e questa riga resta come l'ultima che ci ha provato.
 
 **LA RIPARTIZIONE SI RIAPRE, ED È LA SECONDA VOLTA IN DUE GIORNI.** Diceva *tre
 di codice e quattro di documenti*, e la seconda metà della passata — il salto a
