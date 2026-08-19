@@ -304,10 +304,27 @@ repository Next non dia niente per scontato.
   react-day-picker e `aria-selected`. Chi ne aggiunge un terzo rifà questa
   verifica. Cancellarli non è
   reversibile a buon mercato — un `shadcn add` domani riporta la generazione
-  Tailwind 4 con le varianti che non agganciano — e diversi servono già: slider e
-  switch al check rapido, popover e scroll-area alla dashboard (M3), `form` alla
-  validazione con `zod` e `react-hook-form`, che il §3 tiene installati apposta
-  (M5).
+  Tailwind 4 con le varianti che non agganciano — **e la ragione è questa, non
+  gli usi previsti**.
+
+  **I quattro esempi che questa riga portava erano sbagliati tutti e quattro**,
+  corretti il 19.08.2026 misurando gli import. Elencava *"slider e switch al
+  check rapido, popover e scroll-area alla dashboard (M3), `form` alla
+  validazione con `zod` e `react-hook-form` (M5)"*, e il quinto — `form` — era
+  già corretto dal 12.08.2026, qui sotto. Gli altri:
+
+  - **`slider`** lo importa `pages/public/Roi.tsx`, non il check rapido, che usa
+    solo `Card` e le icone di lucide;
+  - **`popover`** lo importa `pages/professional/ProCalendario.tsx`, cioè il
+    salto a data della riga qui sopra, non la dashboard;
+  - **`switch`** e **`scroll-area`**: non li importa nessuno.
+
+  **Erano previsioni, come quella su `form`**: scritte prima che quelle
+  schermate esistessero, e mai rilette quando sono arrivate. **La conclusione
+  non si muove, ed è il punto** — la conservazione non ha mai poggiato sugli usi
+  previsti ma sulla copia buona, e il 18.08.2026 quella ragione si è dimostrata
+  da sé, con due componenti tenuti "per quando serviranno" che hanno servito
+  davvero.
 
   **La previsione su `form` non si è avverata, e si corregge invece di restare
   smentita in silenzio** (12.08.2026). Il blocco c) di M5 ha costruito la
