@@ -4,7 +4,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
@@ -12,8 +11,9 @@ import { Building2, Users, TrendingUp, UserCheck } from "lucide-react";
 import KPICard from "@/components/shared/KPICard";
 import { loadState, useClientCompanies, useDemoRequests, usePlans } from "@/lib/data/queries";
 import { EmptyNotice, ErrorNotice } from "@/components/kora/StateNotice";
+import { SortableHead, useSortedRows } from "@/components/kora/SortableTable";
 import { annualRevenueOf } from "@/lib/platform-metrics";
-import type { PlanId } from "@/lib/data/types";
+import type { ClientCompany, DemoRequest, PlanId } from "@/lib/data/types";
 import {
   formatCHF,
   formatDate,
@@ -32,8 +32,25 @@ import { interpolate, t } from "@/lib/i18n";
  * prova che il giro `submitDemoRequest` → invalidazione → rilettura è chiuso
  * (`docs/CONTRATTO-DATI.md` §4).
  */
+const NO_REQUESTS: DemoRequest[] = [];
+
 function DemoRequests() {
   const requestsQuery = useDemoRequests();
+
+  /* L'ordine di partenza resta quello del dato — dalla più recente — perché
+     la tabella nasce non ordinata: il primo clic è dell'utente. */
+  const { rows: requests, sortProps } = useSortedRows(
+    requestsQuery.data ?? NO_REQUESTS,
+    {
+      company: (request) => request.companyName,
+      contact: (request) => request.contactName,
+      email: (request) => request.email,
+      phone: (request) => request.phone,
+      employees: (request) => request.employeeCount,
+      received: (request) => request.submittedAt,
+    },
+    (request) => request.companyName,
+  );
 
   /* I tre casi (M5.b): la tabella richieste ha una lettura sua, e il vuoto —
      nessuna richiesta ancora arrivata — è lo stato in cui il pitch la apre. */
@@ -41,8 +58,7 @@ function DemoRequests() {
   if (block.state === "error") {
     return <ErrorNotice copy={t.common.state.error} onRetry={block.retry} />;
   }
-  const requests = requestsQuery.data;
-  if (requests === undefined) return null;
+  if (requestsQuery.data === undefined) return null;
 
   return (
     <Card className="overflow-x-auto">
@@ -55,12 +71,24 @@ function DemoRequests() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t.admin.demoRequests.colCompany}</TableHead>
-              <TableHead>{t.admin.demoRequests.colContact}</TableHead>
-              <TableHead>{t.admin.demoRequests.colEmail}</TableHead>
-              <TableHead>{t.admin.demoRequests.colPhone}</TableHead>
-              <TableHead>{t.admin.demoRequests.colEmployees}</TableHead>
-              <TableHead>{t.admin.demoRequests.colReceived}</TableHead>
+              <SortableHead {...sortProps("company")}>
+                {t.admin.demoRequests.colCompany}
+              </SortableHead>
+              <SortableHead {...sortProps("contact")}>
+                {t.admin.demoRequests.colContact}
+              </SortableHead>
+              <SortableHead {...sortProps("email")}>
+                {t.admin.demoRequests.colEmail}
+              </SortableHead>
+              <SortableHead {...sortProps("phone")}>
+                {t.admin.demoRequests.colPhone}
+              </SortableHead>
+              <SortableHead {...sortProps("employees")}>
+                {t.admin.demoRequests.colEmployees}
+              </SortableHead>
+              <SortableHead {...sortProps("received")}>
+                {t.admin.demoRequests.colReceived}
+              </SortableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -113,6 +141,20 @@ function DemoRequests() {
  * non produce un franco.
  */
 
+/*
+ * I tre piani hanno una scala e la scala è il prezzo (§9), quindi la colonna
+ * si ordina su quella e non sull'etichetta: in tedesco e in inglese le tre
+ * parole cadono in un ordine alfabetico diverso, e un listino che cambia
+ * ordine con la lingua direbbe che l'Executive è il primo dei tre.
+ */
+const PLAN_RANK: Record<PlanId, number> = {
+  essenziale: 1,
+  plus: 2,
+  executive: 3,
+};
+
+const NO_COMPANIES: ClientCompany[] = [];
+
 const PLAN_BADGE: Record<PlanId, string> = {
   essenziale: "bg-muted text-muted-foreground",
   plus: "bg-secondary/10 text-secondary-strong",
@@ -122,6 +164,27 @@ const PLAN_BADGE: Record<PlanId, string> = {
 export default function AdminAziende() {
   const companiesQuery = useClientCompanies();
   const plansQuery = usePlans();
+
+  /* Il ricavo si ordina sul numero che la riga calcola, anche dove la cella lo
+     dichiara potenziale: è lo stesso importo, e la frase attorno non cambia la
+     grandezza. */
+  const { rows: companyRows, sortProps } = useSortedRows(
+    companiesQuery.data ?? NO_COMPANIES,
+    {
+      name: (company) => company.name,
+      industry: (company) => t.admin.industry[company.industry],
+      employees: (company) => company.employeeCount,
+      plan: (company) => PLAN_RANK[company.planId],
+      city: (company) => company.city,
+      clientSince: (company) => company.clientSince,
+      revenue: (company) =>
+        plansQuery.data === undefined
+          ? null
+          : annualRevenueOf(company, plansQuery.data),
+      status: (company) => company.active,
+    },
+    (company) => company.name,
+  );
 
   /* I tre casi (M5.b), registro strumento. */
   const page = loadState([companiesQuery, plansQuery]);
@@ -188,18 +251,34 @@ export default function AdminAziende() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t.admin.companies.colName}</TableHead>
-              <TableHead>{t.admin.companies.colIndustry}</TableHead>
-              <TableHead>{t.admin.companies.colEmployees}</TableHead>
-              <TableHead>{t.admin.companies.colPlan}</TableHead>
-              <TableHead>{t.admin.companies.colCity}</TableHead>
-              <TableHead>{t.admin.companies.colClientSince}</TableHead>
-              <TableHead>{t.admin.companies.colRevenue}</TableHead>
-              <TableHead>{t.admin.companies.colStatus}</TableHead>
+              <SortableHead {...sortProps("name")}>
+                {t.admin.companies.colName}
+              </SortableHead>
+              <SortableHead {...sortProps("industry")}>
+                {t.admin.companies.colIndustry}
+              </SortableHead>
+              <SortableHead {...sortProps("employees")}>
+                {t.admin.companies.colEmployees}
+              </SortableHead>
+              <SortableHead {...sortProps("plan")}>
+                {t.admin.companies.colPlan}
+              </SortableHead>
+              <SortableHead {...sortProps("city")}>
+                {t.admin.companies.colCity}
+              </SortableHead>
+              <SortableHead {...sortProps("clientSince")}>
+                {t.admin.companies.colClientSince}
+              </SortableHead>
+              <SortableHead {...sortProps("revenue")}>
+                {t.admin.companies.colRevenue}
+              </SortableHead>
+              <SortableHead {...sortProps("status")}>
+                {t.admin.companies.colStatus}
+              </SortableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {companies.map((company) => (
+            {companyRows.map((company) => (
               <TableRow key={company.id}>
                 <TableCell className="font-medium">{company.name}</TableCell>
                 <TableCell className="text-muted-foreground">
@@ -233,7 +312,7 @@ export default function AdminAziende() {
                     className={
                       company.active
                         ? "bg-secondary/10 text-secondary-strong"
-                        : "bg-warning/20 text-foreground"
+                        : "bg-waiting text-waiting-foreground"
                     }
                   >
                     {company.active

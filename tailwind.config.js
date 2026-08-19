@@ -50,6 +50,11 @@ module.exports = {
           DEFAULT: 'hsl(var(--warning))',
           foreground: 'hsl(var(--warning-foreground))'
         },
+        /* L'attesa (§6.1): un token suo, non una trasparenza di `warning`. */
+        waiting: {
+          DEFAULT: 'hsl(var(--waiting))',
+          foreground: 'hsl(var(--waiting-foreground))'
+        },
         executive: {
           DEFAULT: 'hsl(var(--executive))',
           foreground: 'hsl(var(--executive-foreground))'

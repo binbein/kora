@@ -17,8 +17,9 @@ import {
   usePortalProfessionalId,
 } from "@/lib/data/queries";
 import { EmptyNotice, ErrorNotice } from "@/components/kora/StateNotice";
+import { SortableHead, useSortedRows } from "@/components/kora/SortableTable";
 import { professionalDisplayName } from "@/lib/data/types";
-import type { AppointmentStatus } from "@/lib/data/types";
+import type { AppointmentStatus, PlatformSession } from "@/lib/data/types";
 import { formatCHF, formatDate, formatNumber, formatTime } from "@/lib/format";
 import { interpolate, t } from "@/lib/i18n";
 
@@ -68,10 +69,51 @@ function statusLabel(status: AppointmentStatus): string {
   return labels[status];
 }
 
+const NO_SESSIONS: PlatformSession[] = [];
+
 export default function AdminSessioni() {
   const portalIdQuery = usePortalProfessionalId();
   const professionalQuery = usePortalProfessional();
   const sessionsQuery = usePlatformSessions(portalIdQuery.data);
+
+  /*
+   * È LA TABELLA PER CUI L'ORDINAMENTO ESISTE: 82 righe, contro le cinque-otto
+   * delle altre sei.
+   *
+   * DUE COLONNE NON SI ORDINANO, e sono due ragioni diverse.
+   *
+   * **Lo stato**, perché i suoi tre valori non stanno su una linea: una seduta
+   * annullata non viene "dopo" una erogata, e il percorso si biforca invece di
+   * salire. Un ordine inventato qui sarebbe una cifra inventata altrove (§2.4),
+   * e l'unica alternativa — l'alfabetico sulla parola tradotta — darebbe un
+   * ordine diverso in ognuna delle quattro lingue, cioè il difetto peggiore
+   * possibile su una demo che le offre tutte dal selettore.
+   *
+   * **Il professionista**, perché nella demo la colonna porta lo stesso valore
+   * su tutte le righe: l'agenda è quella della Dr.ssa Meier e la schermata lo
+   * dichiara nel sottotitolo (`docs/CONTRATTO-DATI.md` §7). Una freccia che non
+   * cambia niente è un comando che non comanda. Torna il giorno in cui il
+   * back-office aggrega più agende, che è la stessa riga del contratto.
+   *
+   * IL PAZIENTE SI ORDINA PER INIZIALI, cioè per una **resa** e non per un
+   * nome: qui il nome non arriva, ed è la garanzia del §3 del contratto. Nella
+   * demo tiene perché stesse iniziali vogliono dire stessa persona — un vincolo
+   * del dataset con un guardrail dietro — e in produzione cade insieme a lui
+   * (§8.8): due omonimi finirebbero adiacenti senza essere la stessa persona.
+   */
+  const { rows: sessionRows, sortProps } = useSortedRows(
+    sessionsQuery.data ?? NO_SESSIONS,
+    {
+      patient: (session) => session.patientInitials,
+      date: (session) => session.start,
+      type: (session) => t.sessionType[session.type],
+      fee: (session) =>
+        session.status === "completed"
+          ? (professionalQuery.data?.sessionFee ?? null)
+          : null,
+    },
+    (session) => session.start.toISOString(),
+  );
 
   /* I tre casi (M5.b), registro strumento. `portalIdQuery` entra nel gruppo
      perché le altre due dipendono da lui e senza resterebbero in attesa. */
@@ -148,16 +190,25 @@ export default function AdminSessioni() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t.admin.sessions.colPatient}</TableHead>
+              <SortableHead {...sortProps("patient")}>
+                {t.admin.sessions.colPatient}
+              </SortableHead>
+              {/* Non ordinabili, e le due ragioni stanno in testa al file. */}
               <TableHead>{t.admin.sessions.colProfessional}</TableHead>
-              <TableHead>{t.admin.sessions.colDate}</TableHead>
-              <TableHead>{t.admin.sessions.colType}</TableHead>
-              <TableHead>{t.admin.sessions.colFee}</TableHead>
+              <SortableHead {...sortProps("date")}>
+                {t.admin.sessions.colDate}
+              </SortableHead>
+              <SortableHead {...sortProps("type")}>
+                {t.admin.sessions.colType}
+              </SortableHead>
+              <SortableHead {...sortProps("fee")}>
+                {t.admin.sessions.colFee}
+              </SortableHead>
               <TableHead>{t.admin.sessions.colStatus}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {sessions.map((session) => (
+            {sessionRows.map((session) => (
               <TableRow key={session.id}>
                 <TableCell className="font-medium">
                   {session.patientInitials}

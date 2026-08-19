@@ -264,12 +264,33 @@ export default function AdminAnalytics() {
                   dataKey="value"
                   nameKey="name"
                   isAnimationActive={false}
-                  label={({ name, value }) =>
-                    interpolate(t.admin.analytics.planMixEntry, {
-                      plan: String(name),
-                      count: formatNumber(Number(value)),
-                    })
-                  }
+                  /* L'ETICHETTA HA UN COLORE SUO, E NON QUELLO DELLA FETTA.
+                     Restituendo una stringa recharts la disegna con il `fill`
+                     del settore: sul Plus è il teal, cioè **2.83:1** a 16px, e
+                     tre etichette identiche finivano su tre contrasti diversi
+                     — 5.10, 2.83 e 7.44 — perché il colore lo decideva il
+                     grafico e non chi scrive. È la stessa famiglia
+                     dell'etichetta del marker sul trend della dashboard HR,
+                     trovata dal censimento dello stesso giorno (19.08.2026): è
+                     testo dentro un `<svg>`, quindi un censimento che cammina
+                     il DOM non lo vede.
+
+                     Posizione e ancoraggio arrivano da recharts e non si
+                     toccano: cambia il `fill`, che sale a **15.17:1**. */
+                  label={({ name, value, x, y, textAnchor, dominantBaseline }) => (
+                    <text
+                      x={x}
+                      y={y}
+                      textAnchor={textAnchor}
+                      dominantBaseline={dominantBaseline}
+                      fill="hsl(var(--foreground))"
+                    >
+                      {interpolate(t.admin.analytics.planMixEntry, {
+                        plan: String(name),
+                        count: formatNumber(Number(value)),
+                      })}
+                    </text>
+                  )}
                 >
                   {planMix.map((entry) => (
                     <Cell key={entry.planId} fill={PLAN_COLOR[entry.planId]} />

@@ -64,6 +64,16 @@ export const it = {
       toPortal: "Vai alla tua area",
       toHome: "Torna alla home",
     },
+
+    /* L'ordinamento delle tabelle. Una frase sola per tutte e sette: dice
+       l'**azione**, mentre lo stato — crescente, decrescente, nessuno — lo
+       porta `aria-sort` sulla cella. Non è un `aria-label`, che
+       sostituirebbe l'etichetta della colonna: è una frase in più per i soli
+       lettori di schermo, quindi chi ascolta sente il nome della colonna e
+       poi cosa fa il pulsante. */
+    sort: {
+      action: "ordina per questa colonna",
+    },
   },
 
   /* La 404. `body` è una frase intera con segnaposto e non due pezzi cuciti
@@ -977,7 +987,8 @@ export const it = {
       /* La tabella è un estratto e lo dice: il codice ereditato contava
          "6/8 attivati" accanto a una dashboard che ne dichiarava 82 su 120, e
          chi leggeva entrambe trovava due aziende diverse. */
-      sampleNote: "La tabella mostra un estratto di {n} dipendenti.",
+      sampleNote:
+        "La tabella mostra un estratto di {n} dipendenti su {total}: ordinarla ordina l'estratto.",
       /* Nessun dipendente da elencare: succede a un'azienda appena attivata,
          come Betulla nel portafoglio del back-office (§8). */
       empty: "Nessun dipendente da mostrare.",
@@ -987,8 +998,15 @@ export const it = {
       columnDepartment: "Reparto",
       columnStatus: "Stato",
       columnCheckup: "Check-up",
-      enrolled: "Attivo",
-      notEnrolled: "In attesa",
+      /* "ISCRITTO", NON "ATTIVO" (19.08.2026). La riga rende `enrolled`, cioè
+         chi ha attivato l'account, mentre un clic più in là la dashboard
+         chiama **attivi** quelli che hanno usato almeno un servizio nel
+         trimestre — la definizione della tabella delle KPI del
+         `docs/CONTRATTO-DATI.md` §3. Sono 82 e 41: due schermate adiacenti,
+         una parola sola, due conteggi. La parola non è nuova, viene dal
+         sottotitolo di questa stessa schermata. */
+      enrolled: "Iscritto",
+      notEnrolled: "Non iscritto",
       checkup: {
         completed: "Completato",
         booked: "Prenotato",

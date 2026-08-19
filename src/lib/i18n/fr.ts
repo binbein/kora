@@ -141,6 +141,13 @@ export const fr: Dictionary = {
       toPortal: "Accéder à mon espace",
       toHome: "Retour à l'accueil",
     },
+
+    /* Le tri des tableaux : une seule formule pour les sept. Elle dit
+       l'**action** ; l'état est porté par `aria-sort` sur la cellule.
+       L'infinitif, comme les trois libellés de bouton du fichier. */
+    sort: {
+      action: "trier selon cette colonne",
+    },
   },
 
   notFound: {
@@ -798,7 +805,8 @@ export const fr: Dictionary = {
     employees: {
       title: "Collaborateurs",
       subtitle: "{enrolled} inscrits sur {total} · données anonymes uniquement",
-      sampleNote: "Le tableau montre un extrait de {n} collaborateurs.",
+      sampleNote:
+        "Le tableau montre un extrait de {n} collaborateurs sur {total} : le tri porte sur l'extrait.",
       empty: "Aucun collaborateur à afficher.",
       privacyNote:
         "Les noms sont abrégés. Kora ne montre jamais de données de santé individuelles à l'entreprise.",
@@ -806,8 +814,8 @@ export const fr: Dictionary = {
       columnDepartment: "Département",
       columnStatus: "Statut",
       columnCheckup: "Check-up",
-      enrolled: "Actif",
-      notEnrolled: "En attente",
+      enrolled: "Inscrit",
+      notEnrolled: "Non inscrit",
       checkup: {
         completed: "Réalisé",
         booked: "Réservé",

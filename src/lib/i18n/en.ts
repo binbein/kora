@@ -108,6 +108,12 @@ export const en: Dictionary = {
       toPortal: "Go to your area",
       toHome: "Back to home",
     },
+
+    /* Table sorting: one phrase for all seven. It names the **action**; the
+       state is carried by `aria-sort` on the cell. */
+    sort: {
+      action: "sort by this column",
+    },
   },
 
   notFound: {
@@ -751,7 +757,8 @@ export const en: Dictionary = {
     employees: {
       title: "Employees",
       subtitle: "{enrolled} enrolled of {total} · anonymous data only",
-      sampleNote: "The table shows an extract of {n} employees.",
+      sampleNote:
+        "The table shows an extract of {n} employees out of {total}: sorting sorts the extract.",
       empty: "No employee to show.",
       privacyNote:
         "Names are abbreviated. Kora never shows individual health data to the organisation.",
@@ -759,8 +766,8 @@ export const en: Dictionary = {
       columnDepartment: "Department",
       columnStatus: "Status",
       columnCheckup: "Check-up",
-      enrolled: "Active",
-      notEnrolled: "Pending",
+      enrolled: "Enrolled",
+      notEnrolled: "Not enrolled",
       checkup: {
         completed: "Completed",
         booked: "Booked",

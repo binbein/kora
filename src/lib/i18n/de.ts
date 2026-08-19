@@ -98,6 +98,12 @@ export const de: Dictionary = {
       toPortal: "Zum eigenen Bereich",
       toHome: "Zur Startseite",
     },
+
+    /* Die Sortierung der Tabellen: eine Wendung für alle sieben. Sie nennt die
+       **Aktion**; den Zustand trägt `aria-sort` an der Zelle. */
+    sort: {
+      action: "nach dieser Spalte sortieren",
+    },
   },
 
   notFound: {
@@ -705,7 +711,8 @@ export const de: Dictionary = {
     employees: {
       title: "Mitarbeitende",
       subtitle: "{enrolled} von {total} angemeldet · nur anonyme Daten",
-      sampleNote: "Die Tabelle zeigt einen Auszug von {n} Mitarbeitenden.",
+      sampleNote:
+        "Die Tabelle zeigt einen Auszug von {n} Mitarbeitenden von {total}: sortiert wird der Auszug.",
       empty: "Keine Mitarbeitenden anzuzeigen.",
       privacyNote:
         "Die Namen sind abgekürzt. Kora zeigt dem Unternehmen nie individuelle Gesundheitsdaten.",
@@ -713,8 +720,8 @@ export const de: Dictionary = {
       columnDepartment: "Abteilung",
       columnStatus: "Status",
       columnCheckup: "Check-up",
-      enrolled: "Aktiv",
-      notEnrolled: "Ausstehend",
+      enrolled: "Angemeldet",
+      notEnrolled: "Nicht angemeldet",
       checkup: {
         completed: "Abgeschlossen",
         booked: "Gebucht",

@@ -144,7 +144,18 @@ export default function HRFatturazione() {
                 <span className="text-sm font-semibold tabular-nums">
                   {formatCHF(invoice.employeeCount * invoice.unitPriceChf)}
                 </span>
-                <Badge className="bg-secondary/10 text-secondary-strong text-xs">
+                {/* LA FATTURA IN ATTESA NON SI RENDE COME LA PAGATA. Fino al
+                    19.08.2026 le due uscivano con la stessa classe e a cambiare
+                    era la sola parola, quindi chi leggeva in fretta leggeva
+                    "pagato" su una fattura che non lo è. L'attesa ha un token
+                    suo (§6.1). */}
+                <Badge
+                  className={
+                    invoice.status === 'paid'
+                      ? 'bg-secondary/10 text-secondary-strong text-xs'
+                      : 'bg-waiting text-waiting-foreground text-xs'
+                  }
+                >
                   {invoice.status === 'paid'
                     ? t.hr.billing.invoicePaid
                     : t.hr.billing.invoicePending}

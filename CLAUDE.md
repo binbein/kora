@@ -130,22 +130,23 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      Sull'albero non c'è niente da togliere: i commenti non sono nodi, e una
      proprietà o ha un letterale stringa per valore o non è una chiave foglia.
      Verificato: tante proprietà con inizializzatore letterale stringa quante
-     ne dichiara `EXPECTED_KEYS`, **112 oggetti e zero proprietà di altro
-     tipo**, identici sui quattro dizionari (18.08.2026). **Gli oggetti sono le
-     proprietà il cui valore è un oggetto**, ed è la mezza riga di criterio che
-     mancava (19.08.2026): contando invece i letterali oggetto dell'albero sono
-     **113**, perché la radice del dizionario è un letterale che non è
-     proprietà di nessuno — due numeri dallo stesso albero, cioè la cosa che
-     questa sezione esiste per non produrre.
+     ne dichiara `EXPECTED_KEYS`, **zero proprietà di altro tipo**, e i quattro
+     dizionari **identici** fra loro. Sono i due invarianti che reggono la
+     prova, e nessuno dei due dipende da quante siano. **Gli oggetti sono le
+     proprietà il cui valore è un oggetto**, e i letterali oggetto dell'albero
+     sono **uno in più**, perché la radice del dizionario è un letterale che
+     non è proprietà di nessuno: è la mezza riga di criterio senza la quale lo
+     stesso albero dà due numeri.
 
-     *(Il conteggio delle
-     chiavi non si ripete qui: era il secondo dei cinque punti che l'hanno fatto
-     invecchiare. Gli oggetti restano, perché sono l'altra metà della prova che
-     l'albero non lascia fuori niente. Fino al 18.08.2026 questa riga diceva
-     **109** e aggiungeva «e non si sono mossi»: si erano mossi con le chiavi
-     di #62, ed è la stessa cifra ripetuta a mano che il resto della sezione ha
-     già consegnato al codice — qui resta perché è una prova sul metodo del
-     conteggio, non un numero che una schermata mostra.)*
+     **Quanti siano non si scrive più (19.08.2026), e la ragione è una prova.**
+     La riga ha dichiarato **109** fino al 18.08.2026, poi **112**, e il 112 è
+     invecchiato in **quarantotto ore** — `common.sort` ha aggiunto un oggetto.
+     La passata del 19.08.2026 aveva dato un criterio a tre cifre e ne aveva
+     tolte due, il conto delle passate e i componenti shadcn inutilizzati,
+     tenendo solo questa: **le due tolte non sono invecchiate, l'unica tenuta
+     sì, alla prima passata successiva.** Un criterio accanto a una cifra rende
+     il conto *rifacibile*; non lo rende *rifatto*, e a rifarlo deve tornare
+     qualcuno.
 
      **Il guardrail conta a runtime e dà lo stesso numero**, verificato sui
      quattro dizionari il giorno in cui è nato: sull'albero i commenti non sono
@@ -1105,9 +1106,21 @@ Regole:
   disciplina della prima: si qualifica con la data, non si riscrive come se
   avesse sempre detto il vero. Il nodo è **l'etichetta "alert" del marker sul
   trend della dashboard HR**, `#808080` su fondo bianco, cioè **3.95:1** a 11px,
-  ed è testo informativo — dice su quale mese cade l'alert precoce. **Resta
-  aperto**: il rimedio cambia un colore, e i colori sono dei founder (la voce sta
-  in `docs/PROGRESS.md`, «Aperto e dichiarato» della passata del 18.08.2026).
+  ed è testo informativo — dice su quale mese cade l'alert precoce. ~~**Resta
+  aperto**: il rimedio cambia un colore, e i colori sono dei founder.~~ →
+  **chiuso il 19.08.2026**, dalla passata che i colori li tocca per mandato:
+  l'etichetta ha ora un `fill` esplicito su `muted-foreground`, **5.10:1**, e
+  resta sotto il marker nella gerarchia del grafico.
+
+  **E il censimento che l'ha chiuso ne ha trovato un secondo della stessa
+  forma**, che nessuna delle tre volte precedenti aveva nominato: le etichette
+  della ciambella del mix piani in `/admin/analytics`. Restituendo una stringa,
+  recharts le dipinge con il colore della fetta — sul Plus il teal, **2.83:1** a
+  16px — quindi tre etichette identiche uscivano a tre contrasti diversi.
+  Corrette nella stessa passata, tutte e tre su `foreground`: **15.17:1**.
+  Percorsi **88 nodi di testo** dentro gli `<svg>` della dashboard HR e **123**
+  in `/admin/analytics`, e da qui la clausola qui sotto sui nodi percorsi vale
+  anche per chi conta dentro un grafico.
 
   **Ed è falso una terza volta, di due nodi, dal 18.08.2026.** Il badge dello
   stato annullato e quello del motivo, in `ProSessioni`, stavano sul token base
@@ -1224,6 +1237,53 @@ Regole:
   **Il rosso non era nel censimento**, che contò solo il teal: a 3.78:1 passa la
   soglia del non-testo ma non quella del testo, quindi un inventario che lo
   ignora dichiara "zero punti sotto soglia" senza esserlo.
+- **`--waiting`: l'attesa ha un token suo** (founder, 18.08.2026, eseguito il
+  19.08.2026). Tutto ciò che aspetta si dice allo stesso modo — "in
+  convenzionamento", "in verifica", "in attivazione", la fattura non ancora
+  pagata, il compenso del mese in corso, i documenti e il mandato da firmare —
+  e lo dice con un colore proprio.
+
+  | token | HSL | testo su di lui | ΔE dal fondo dell'alert | ΔE dall'ambra piena |
+  |---|---|---|---|---|
+  | **`waiting`** | `46 94% 78%` | **11.95** ✓ | **35.1** | **16.5** |
+
+  **Perché un token e non un `warning` più chiaro.** Due significati che si
+  distinguono per la **trasparenza** dello stesso colore si sfaldano al primo
+  cambio di fondo, e qui si erano già sfaldati: l'attesa stava a
+  `bg-warning/20` e l'allarme a `bg-warning/15`, cioè **l'attesa era più forte
+  dell'allarme**. Due token separati non possono collassare, ed è la stessa
+  scelta di `secondary-strong` e `destructive-strong` — **un token in più non è
+  un token cambiato**.
+
+  **Il §6.1 non si riscrive, ed è il guadagno di questa strada.** La regola per
+  cui `warning` e `destructive` sono riservati ad alert e stati critici — *è il
+  loro essere rari a farli notare* — resta vera parola per parola, perché
+  l'attesa **esce** da `warning` invece di diluirlo. Le altre due strade erano
+  alzare l'allarme, cioè cambiare una schermata già approvata, e restringere la
+  decisione a due punti, cioè lasciare tre rese per la stessa cosa.
+
+  **Il contrasto si misura affiancando**, e così è stato: un giallo che passa la
+  soglia da solo e sparisce accanto all'allarme non risolverebbe il problema per
+  cui esiste. Le due ΔE della tabella sono misurate a schermo con il chip
+  dell'attesa dentro il banner dell'alert precoce.
+
+  **Giallo non vuol dire attesa.** Restano su `warning` il banner dell'alert
+  precoce e il marker sul trend, che sono **l'allarme**; restano dove sono la
+  barra dello stress "medio", la serie dei check-up dei grafici, il badge
+  "Nuovo" dei pazienti e "Da tenere d'occhio" del referto, che sono **dati** o
+  segnalazioni cliniche e non attese.
+
+  **E resta neutro il "Non iscritto" dell'elenco dipendenti**, che alla prima
+  lettura sembrava il settimo punto: **non è un'attesa**, perché nessuno in Kora
+  sta lavorando su quella persona — è il denominatore della curva di adozione,
+  quello che il sottotitolo della schermata dichiara come *"82 iscritti su
+  120"*. La regola nuova **non guadagna un'eccezione**: quella riga non aspetta.
+  Fino al 19.08.2026 diceva "In attesa", ed è la parola che era sbagliata, non
+  il colore (§7).
+
+  **Dichiarato anche nella palette `.dark`**, che è inerte e resta completa: un
+  token che esiste in una palette sola è un buco che si vede il giorno in cui
+  qualcuno accende il tema scuro.
 - **Solo light mode.** `index.css` definisce una palette `.dark` completa che nessun
   componente attiva: resta lì, inerte. Nessun toggle e nessun `next-themes` finché
   non è una decisione dei founder.
@@ -1357,6 +1417,30 @@ Qui la si eviterebbe al contrario, mettendola in un elemento che non la merita.
   un termine solo — `Sitzung`, `séance`, `session` — per entrambe le italiane.
   Chi traduce **non** eredita il difetto, quindi non è dal conteggio delle
   quattro lingue che lo si scopre.
+
+  **Il secondo caso è "attivo", ed è la forma opposta** (19.08.2026): non una
+  cosa con due parole, ma **una parola con due significati**, e uno dei due era
+  preso in prestito da una definizione del contratto. L'elenco dipendenti
+  dell'HR chiamava **"Attivo"** chi ha attivato l'account — cioè `enrolled`, 82
+  persone — mentre un clic più in là la dashboard chiama **attivi** quelli che
+  hanno usato almeno un servizio nel trimestre, che sono 41 e che la tabella
+  delle KPI di `docs/CONTRATTO-DATI.md` §3 definisce alla lettera. Due schermate
+  adiacenti dello stesso portale, una parola, due conteggi.
+
+  **Il rimedio non inventa una quinta parola**, ed è la regola che vale oltre il
+  caso: le parole erano già nel dizionario — *"{enrolled} iscritti su {total}"*
+  nel sottotitolo della stessa schermata — quindi il badge dice **"Iscritto /
+  Non iscritto"**, e in tedesco, francese e inglese la coppia viene dalla stessa
+  riga (`angemeldet`, `inscrits`, `enrolled`). Coniarne una nuova avrebbe
+  riaperto il difetto che la correzione chiude.
+
+  **"Attivo" resta libero dove descrive un'altra cosa**, e la verifica si fa
+  guardando **la parola** e non le due chiavi: un piano attivo, un'azienda o una
+  struttura attiva, il tasso di attivazione, un paziente attivo del portale
+  professionista — che ha la sua definizione nella stessa tabella — e l'utente
+  attivo del back-office, che è un flag di account con "Inattivo" per opposto.
+  Il criterio è che la parola sia libera dove descrive **una persona dell'area
+  HR**, ed è lì che il prestito morde.
 - La privacy è un argomento di vendita: la nota *"Dati aggregati e anonimi · soglia
   minima {n} dipendenti misurati per reparto"* con icona lucchetto è sempre visibile
   in dashboard. Dice **"misurati"**, non "dipendenti" né "iscritti": la soglia conta

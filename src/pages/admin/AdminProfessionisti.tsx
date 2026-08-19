@@ -4,7 +4,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
@@ -12,7 +11,9 @@ import { Briefcase, CheckCircle2, Clock, Star, XCircle } from "lucide-react";
 import KPICard from "@/components/shared/KPICard";
 import { loadState, useProfessionals } from "@/lib/data/queries";
 import { EmptyNotice, ErrorNotice } from "@/components/kora/StateNotice";
+import { SortableHead, useSortedRows } from "@/components/kora/SortableTable";
 import { isBookable, professionalDisplayName } from "@/lib/data/types";
+import type { Professional } from "@/lib/data/types";
 import { formatCHF, formatList, formatNumber, formatRating } from "@/lib/format";
 import { t } from "@/lib/i18n";
 
@@ -31,8 +32,33 @@ import { t } from "@/lib/i18n";
  * back-office elenca tutti perché seguire chi è in verifica è il suo mestiere,
  * la prenotazione filtra su `isBookable`.
  */
+const NO_PROFESSIONALS: Professional[] = [];
+
 export default function AdminProfessionisti() {
   const professionalsQuery = useProfessionals();
+
+  /* Le due colonne dei controlli si ordinano sul booleano, non sull'icona:
+     `false` prima in ordine crescente, cioè chi deve ancora essere verificato
+     in cima — che è la domanda per cui il back-office esiste. */
+  const { rows: professionalRows, sortProps } = useSortedRows(
+    professionalsQuery.data ?? NO_PROFESSIONALS,
+    {
+      name: (professional) => professionalDisplayName(professional),
+      qualification: (professional) =>
+        t.qualification[professional.qualificationKey],
+      specialty: (professional) => t.specialty[professional.specialty],
+      languages: (professional) =>
+        formatList(
+          professional.languages.map((language) => t.language[language]),
+        ),
+      fee: (professional) => professional.sessionFee,
+      sessions: (professional) => professional.totalSessions,
+      documents: (professional) => professional.documentsVerified,
+      mandate: (professional) => professional.mandateSigned,
+      status: (professional) => isBookable(professional),
+    },
+    (professional) => professionalDisplayName(professional),
+  );
 
   /* I tre casi (M5.b), registro strumento. */
   const page = loadState([professionalsQuery]);
@@ -90,19 +116,37 @@ export default function AdminProfessionisti() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t.admin.professionals.colName}</TableHead>
-              <TableHead>{t.admin.professionals.colQualification}</TableHead>
-              <TableHead>{t.admin.professionals.colSpecialty}</TableHead>
-              <TableHead>{t.admin.professionals.colLanguages}</TableHead>
-              <TableHead>{t.admin.professionals.colFee}</TableHead>
-              <TableHead>{t.admin.professionals.colSessions}</TableHead>
-              <TableHead>{t.admin.professionals.colDocuments}</TableHead>
-              <TableHead>{t.admin.professionals.colMandate}</TableHead>
-              <TableHead>{t.admin.professionals.colStatus}</TableHead>
+              <SortableHead {...sortProps("name")}>
+                {t.admin.professionals.colName}
+              </SortableHead>
+              <SortableHead {...sortProps("qualification")}>
+                {t.admin.professionals.colQualification}
+              </SortableHead>
+              <SortableHead {...sortProps("specialty")}>
+                {t.admin.professionals.colSpecialty}
+              </SortableHead>
+              <SortableHead {...sortProps("languages")}>
+                {t.admin.professionals.colLanguages}
+              </SortableHead>
+              <SortableHead {...sortProps("fee")}>
+                {t.admin.professionals.colFee}
+              </SortableHead>
+              <SortableHead {...sortProps("sessions")}>
+                {t.admin.professionals.colSessions}
+              </SortableHead>
+              <SortableHead {...sortProps("documents")}>
+                {t.admin.professionals.colDocuments}
+              </SortableHead>
+              <SortableHead {...sortProps("mandate")}>
+                {t.admin.professionals.colMandate}
+              </SortableHead>
+              <SortableHead {...sortProps("status")}>
+                {t.admin.professionals.colStatus}
+              </SortableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {professionals.map((professional) => (
+            {professionalRows.map((professional) => (
               <TableRow key={professional.id}>
                 <TableCell className="font-medium whitespace-nowrap">
                   {professionalDisplayName(professional)}
@@ -154,7 +198,7 @@ export default function AdminProfessionisti() {
                     className={
                       isBookable(professional)
                         ? "bg-secondary/10 text-secondary-strong"
-                        : "bg-warning/20 text-foreground"
+                        : "bg-waiting text-waiting-foreground"
                     }
                   >
                     {isBookable(professional)
