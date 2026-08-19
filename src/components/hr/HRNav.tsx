@@ -21,9 +21,9 @@ export default function HRNav() {
   /* Le etichette si leggono al render, non all'import: vedi `PublicNav`. */
   const navItems = [
     { path: '/hr', icon: LayoutDashboard, label: t.hr.navDashboard },
-    { path: '/hr/dipendenti', icon: Users, label: t.hr.navEmployees },
+    { path: '/hr/employees', icon: Users, label: t.hr.navEmployees },
     { path: '/hr/report', icon: FileText, label: t.hr.navReport },
-    { path: '/hr/fatturazione', icon: CreditCard, label: t.hr.navBilling },
+    { path: '/hr/billing', icon: CreditCard, label: t.hr.navBilling },
     { path: '/hr/privacy', icon: Shield, label: t.hr.navPrivacy },
   ];
 
@@ -61,7 +61,7 @@ export default function HRNav() {
               *
               * Icona a sinistra come là, ma **l'icona di un'azienda**: qui non
               * c'è una persona, ci sono un cliente, il suo organico e il suo
-              * piano. E **non è un link**, perché `/hr/profilo` non esiste ed è
+              * piano. E **non è un link**, perché `/hr/profile` non esiste ed è
               * una decisione (§2.6), non una dimenticanza.
               *
               * Da qui la scelta dell'icona: un'icona da profilo su un riquadro

@@ -360,7 +360,7 @@ export default function EmployeeHome() {
           iconWrapClass="bg-secondary/10"
           iconClass="text-secondary"
           buttonClass="bg-primary hover:bg-primary/90 text-primary-foreground"
-          to="/employee/psicologi"
+          to="/employee/psychologists"
         />
         {/*
           * IL CONTATORE COACH ESISTE SOLO SE IL PIANO HA IL COACH.
@@ -384,7 +384,7 @@ export default function EmployeeHome() {
             iconWrapClass="bg-executive/10"
             iconClass="text-executive"
             buttonClass="bg-executive hover:bg-executive/90"
-            to="/employee/psicologi?servizio=coach"
+            to="/employee/psychologists?servizio=coach"
           />
         )}
       </div>
@@ -395,7 +395,7 @@ export default function EmployeeHome() {
         * Qui c'erano quattro tessere verso medico virtuale, check-up, piano di
         * prevenzione e profilo: **quattro delle sei voci del menu di sinistra**,
         * cioè la stessa strada disegnata due volte. Al loro posto due cose che
-        * la home non diceva e che stavano solo dentro `/employee/profilo`.
+        * la home non diceva e che stavano solo dentro `/employee/profile`.
         *
         * **Non sono link, ed è la ragione per cui esistono**: rifarli
         * cliccabili rimetterebbe la duplicazione da cui si è partiti. Al medico
@@ -479,7 +479,7 @@ export default function EmployeeHome() {
               {goals[weakest.goalKey]}
             </p>
             <Button size="sm" variant="outline" className="mt-3" asChild>
-              <Link to="/employee/piano-ai">{t.employee.home.planCta}</Link>
+              <Link to="/employee/ai-plan">{t.employee.home.planCta}</Link>
             </Button>
           </div>
         </div>

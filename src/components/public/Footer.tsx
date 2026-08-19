@@ -42,7 +42,7 @@ export default function Footer() {
               {t.public.footer.platformTitle}
             </h4>
             <Link
-              to="/pricing"
+              to="/plans"
               className="block text-sm opacity-80 hover:opacity-100 transition-opacity"
             >
               {t.public.footer.platformPricing}

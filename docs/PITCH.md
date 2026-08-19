@@ -282,7 +282,7 @@ risponde meglio. Tre fatti, tutti verificabili:
    sanno al massimo che una nota esiste, mai cosa dice (`CLAUDE.md` §10.D).
 
    **È il fatto più facile da mostrare, e va mostrato invece che detto**:
-   `/professional/pazienti` fa "Marco Bianchi", `/admin/sessioni` fa "M.B.", ed
+   `/professional/patients` fa "Marco Bianchi", `/admin/sessions` fa "M.B.", ed
    è la stessa seduta. Chi guarda vede la garanzia funzionare, non la sente
    promettere.
 
@@ -302,7 +302,7 @@ esiste da qualche parte**: l'elenco dipendenti porta iniziali e reparto e **non
 ha nessun campo su cui un nome possa arrivare**, e lo stato del check-up dice se
 è stato fatto, mai cosa ha detto (`docs/CONTRATTO-DATI.md` §3). Finché nessuna
 schermata mostrava un nome la frase era vera e poco interessante; adesso dice
-esattamente dove passa il confine, e si mostra aprendo `/hr/dipendenti` dopo il
+esattamente dove passa il confine, e si mostra aprendo `/hr/employees` dopo il
 portale della Dr.ssa Meier.
 
 **Va detto come il punto più forte del prodotto, non come una rassicurazione**:
@@ -312,7 +312,7 @@ richieste esterne a runtime sono zero (`CLAUDE.md` §3).
 
 ### "E se due persone hanno le stesse iniziali?"
 
-Arriva **subito dopo** quella sulla privacy, cioè mentre `/admin/sessioni`
+Arriva **subito dopo** quella sulla privacy, cioè mentre `/admin/sessions`
 mostra "M.B." accanto al "Marco Bianchi" del portale della professionista. Tre
 fatti, in quest'ordine.
 

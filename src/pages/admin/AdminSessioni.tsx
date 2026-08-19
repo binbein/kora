@@ -57,7 +57,7 @@ const STATUS_BADGE: Record<AppointmentStatus, string> = {
 
 /*
  * La scala dello stato, e **non è una scelta di questa schermata**: è l'ordine
- * delle tre schede di `/professional/sessioni`, che il portale mostra da M2 —
+ * delle tre schede di `/professional/sessions`, che il portale mostra da M2 —
  * in programma, erogate, annullate. Due ordini per la stessa enumerazione
  * sarebbero due rese dello stesso fatto che possono divergere (§5.5), quindi
  * qui si cita quello che c'è invece di sceglierne uno.

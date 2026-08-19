@@ -29,7 +29,7 @@ export default function PublicNav() {
    * sbagliare.
    */
   const navItems = [
-    { path: "/pricing", label: t.public.nav.pricing },
+    { path: "/plans", label: t.public.nav.pricing },
     { path: "/roi", label: t.public.nav.roi },
     /*
      * "Demo" è uscita, "Admin" è entrata (founder, 17.08.2026), e le due

@@ -655,7 +655,7 @@ export type ProfessionalSession = {
  * quella del dipendente e quella del professionista.
  *
  * ESISTE PERCHÉ LE DUE VISTE HANNO DIRITTI DIVERSI, e prima ne condividevano
- * una: `/admin/sessioni` leggeva `getProfessionalSessions`, cioè la proiezione
+ * una: `/admin/sessions` leggeva `getProfessionalSessions`, cioè la proiezione
  * di chi cura. Finché lì c'erano le sole iniziali la coincidenza non costava
  * niente; dal momento in cui la professionista riceve il nome del paziente, la
  * stessa lettura lo consegnerebbe **anche all'amministratore di piattaforma**,

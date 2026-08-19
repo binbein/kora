@@ -46,7 +46,7 @@ function Identity({ onNavigate }: { onNavigate?: () => void }) {
    */
   return (
     <Link
-      to="/employee/profilo"
+      to="/employee/profile"
       onClick={onNavigate}
       aria-label={t.employee.identityAction}
       className="flex items-center gap-3 bg-accent rounded-lg p-3 hover:bg-accent/70 transition-colors"
@@ -78,17 +78,17 @@ export default function EmployeeNav() {
   const navItems = [
     { path: "/employee", icon: Home, label: t.employee.nav.home },
     {
-      path: "/employee/psicologi",
+      path: "/employee/psychologists",
       icon: Brain,
       label: t.employee.nav.psychologists,
     },
-    { path: "/employee/medico", icon: Stethoscope, label: t.employee.nav.doctor },
+    { path: "/employee/doctor", icon: Stethoscope, label: t.employee.nav.doctor },
     {
       path: "/employee/checkup",
       icon: ClipboardCheck,
       label: t.employee.nav.checkup,
     },
-    { path: "/employee/piano-ai", icon: Sparkles, label: t.employee.nav.aiPlan },
+    { path: "/employee/ai-plan", icon: Sparkles, label: t.employee.nav.aiPlan },
   ];
 
   return (
@@ -163,7 +163,7 @@ export default function EmployeeNav() {
             {/*
               * Anche qui, e non è una ripetizione: `Identity` sta nella barra
               * laterale, che sotto `lg` non esiste. Senza questa riga
-              * `/employee/profilo` non sarebbe raggiungibile da nessuna parte
+              * `/employee/profile` non sarebbe raggiungibile da nessuna parte
               * su schermo stretto — cioè una rotta senza porta, che è il
               * vicolo cieco del §10 visto dall'altro lato.
               */}

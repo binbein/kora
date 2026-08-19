@@ -51,7 +51,7 @@ const AppRoutes = () => (
     {/* Public */}
     <Route path="/" element={<Landing />} />
     <Route path="/roi" element={<Roi />} />
-    <Route path="/pricing" element={<Pricing />} />
+    <Route path="/plans" element={<Pricing />} />
     <Route path="/demo" element={<DemoRequest />} />
 
     {/*
@@ -75,11 +75,11 @@ const AppRoutes = () => (
       }
     >
       <Route index element={<EmployeeHome />} />
-      <Route path="psicologi" element={<Psicologi />} />
-      <Route path="medico" element={<Medico />} />
+      <Route path="psychologists" element={<Psicologi />} />
+      <Route path="doctor" element={<Medico />} />
       <Route path="checkup" element={<Checkup />} />
-      <Route path="piano-ai" element={<PianoAI />} />
-      <Route path="profilo" element={<Profilo />} />
+      <Route path="ai-plan" element={<PianoAI />} />
+      <Route path="profile" element={<Profilo />} />
     </Route>
 
     {/* HR portal */}
@@ -92,9 +92,9 @@ const AppRoutes = () => (
       }
     >
       <Route index element={<HRDashboard />} />
-      <Route path="dipendenti" element={<HRDipendenti />} />
+      <Route path="employees" element={<HRDipendenti />} />
       <Route path="report" element={<HRReport />} />
-      <Route path="fatturazione" element={<HRFatturazione />} />
+      <Route path="billing" element={<HRFatturazione />} />
       <Route path="privacy" element={<HRPrivacy />} />
     </Route>
 
@@ -108,10 +108,10 @@ const AppRoutes = () => (
       }
     >
       <Route index element={<ProCalendario />} />
-      <Route path="sessioni" element={<ProSessioni />} />
-      <Route path="pazienti" element={<ProPazienti />} />
-      <Route path="pagamenti" element={<ProPagamenti />} />
-      <Route path="profilo" element={<ProProfilo />} />
+      <Route path="sessions" element={<ProSessioni />} />
+      <Route path="patients" element={<ProPazienti />} />
+      <Route path="payments" element={<ProPagamenti />} />
+      <Route path="profile" element={<ProProfilo />} />
     </Route>
 
     {/* Admin portal */}
@@ -124,10 +124,10 @@ const AppRoutes = () => (
       }
     >
       <Route index element={<AdminAziende />} />
-      <Route path="utenti" element={<AdminUtenti />} />
-      <Route path="professionisti" element={<AdminProfessionisti />} />
-      <Route path="sessioni" element={<AdminSessioni />} />
-      <Route path="provider" element={<AdminProvider />} />
+      <Route path="users" element={<AdminUtenti />} />
+      <Route path="professionals" element={<AdminProfessionisti />} />
+      <Route path="sessions" element={<AdminSessioni />} />
+      <Route path="providers" element={<AdminProvider />} />
       <Route path="analytics" element={<AdminAnalytics />} />
     </Route>
 

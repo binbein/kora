@@ -234,6 +234,15 @@ repository Next non dia niente per scontato.
   Il layer dati (§5) è TS strict senza `any` — è il contratto con l'API futura e
   in JavaScript quel contratto non esisterebbe.
 
+  **I nomi dei file non seguono le rotte, ed è una decisione** (founder,
+  19.08.2026). Le rotte sono passate in inglese (§10) e i file restano come
+  sono: `Psicologi.tsx`, `Medico.tsx`, `HRDipendenti.tsx`, `ProPagamenti.tsx` e
+  gli altri. **Le rotte sono la superficie del prodotto, i nomi dei file sono
+  interni**: rinominarli avrebbe raddoppiato il diff di una passata il cui unico
+  valore è essere verificabile, e avrebbe reso più difficile seguire la storia
+  di ogni file attraverso la rinomina. Rotte inglesi e file italiani è una
+  scelta, e senza questa riga la prossima sessione la riapre.
+
   **A M3 chiusa restano quattro `.jsx`, e non sono dimenticanze**: `HRLayout`,
   `ProLayout`, `KoraLogo` e `PageNotFound`. **Nessuna migrazione di M3 li ha
   toccati**: i due layout sono i wrapper di quindici righe che montano nav e
@@ -1347,8 +1356,8 @@ uscirebbe una forma nuova (founder, 17.08.2026):
 - **l'icona sta a sinistra**, poi il nome e sotto il dettaglio. In tutti e tre i
   portali, senza eccezioni: è la disposizione, non una preferenza di schermata;
 - **è un link solo dove esiste una schermata del profilo.** Oggi il dipendente,
-  che ha `/employee/profilo`; il professionista, che ha `/professional/profilo`;
-  **mai l'HR**, perché `/hr/profilo` non esiste ed è una decisione (§2.6) e non
+  che ha `/employee/profile`; il professionista, che ha `/professional/profile`;
+  **mai l'HR**, perché `/hr/profile` non esiste ed è una decisione (§2.6) e non
   una dimenticanza;
 - **l'icona dice cosa c'è dentro il riquadro, non dove porta il riquadro**:
   una persona dove c'è una persona, un'azienda dove c'è un'azienda. Sull'HR il
@@ -1697,7 +1706,7 @@ Ratificati dai founder il **08.08.2026**, insieme ai nove valori nuovi che il
 | Betulla Assicurazioni SA | 85 | Essenziale | 07.2026 | 0 |
 
 **Betulla è sull'Essenziale, non sul Plus.** Il codice ereditato la dava sul
-Plus con 85 dipendenti, mentre `/pricing` dichiara il Plus per aziende da 100 a
+Plus con 85 dipendenti, mentre `/plans` dichiara il Plus per aziende da 100 a
 300: le due schermate della stessa demo si contraddicevano, e 85 sta nella
 banda 20–100 dell'Essenziale. Il mix piani che ne esce è **2 Essenziale, 2
 Plus, 1 Executive**.
@@ -2082,7 +2091,64 @@ schermate. Riscriverli sarebbe correggere il verbale di una misura fatta davvero
 questa riga esiste perché chi cerca `27 rotte` trovi la lettura qui invece di
 riaprire una decisione già presa (founder, 15.08.2026).
 
-### A. Pubblica — `/`, `/roi`, `/pricing`, `/demo`
+**Gli indirizzi cambiano, e i verbali no** (19.08.2026). La rinomina delle rotte
+in inglese ha spostato quindici indirizzi su ventisei, e `docs/PROGRESS.md` ne
+cita quelli vecchi in decine di righe: **i verbali citano gli indirizzi del
+giorno in cui furono scritti, la mappa corrente sta in questo §10, e chi trova un
+indirizzo che non risolve ha trovato un verbale, non un difetto.**
+
+**Non è una deroga: è la regola dei verbali applicata a un secondo oggetto.** Le
+righe qui sopra la dicono per i conteggi — *"27 rotte" resta com'era* — e questa
+la dice per gli indirizzi, che sono la stessa cosa vista da un'altra faccia: un
+resoconto datato descrive il prodotto di quel giorno, e correggerlo lo
+falsificherebbe invece di aggiornarlo. Senza questa riga la prima sessione che
+rilegge `PROGRESS.md` apre trenta segnalazioni su altrettanti indirizzi morti.
+
+**Dentro `PROGRESS.md` non è però tutto verbale**, ed è la metà che va aggiornata:
+l'inventario delle schermate, il perimetro dell'MVP e le decisioni in sospeso
+**descrivono il presente**. Il criterio che li separa è quello scritto il
+19.08.2026 per i conteggi — **un verbale è un resoconto datato, un criterio è
+rivolto a chi verrà** — e si applica riga per riga, non al file. **In caso di
+dubbio è un verbale**: aggiornare una riga morta la fa mentire su una data,
+lasciare viva una riga vecchia costa una rilettura.
+
+**`docs/PITCH.md`, `docs/CONTRATTO-DATI.md`, `README.md` e questo file si
+aggiornano invece**, tutti e quattro: non sono verbali, descrivono il presente, e
+il §3 lo dice già dei loro tre mestieri.
+
+**Le rotte sono in inglese, e le tre righe che non sono traduzioni** (founder,
+19.08.2026). La rinomina ha portato in inglese quindici indirizzi su ventisei;
+le altre undici erano già inglesi o restano tali — `/`, `/roi`, `/demo`,
+`/employee`, `/employee/checkup`, `/hr`, `/hr/report`, `/hr/privacy`,
+`/professional`, `/admin`, `/admin/analytics`. **Le cinque aree non si toccano**,
+e `/professional` in particolare: è la stessa parola nelle due lingue, e le
+alternative peggiorano — `practitioner` è clinico e uno dei cinque è un coach,
+`provider` è già preso dalle strutture check-up.
+
+Tre righe sono **decisioni e non traduzioni**, e stanno qui perché senza questa
+riga la prima sessione che le rilegge le "corregge":
+
+- **`/plans` e non `/pricing`.** `/pricing` era già inglese: a cambiare è
+  l'allineamento dell'indirizzo all'entità del dominio — il tipo è `Plan`, il
+  metodo `getPlans()`, e le card leggono da lì (§10.A.3). La ragione contraria è
+  stata considerata e scartata: `/pricing` risponde alla domanda *"quanto
+  costa"*, che è il motivo per cui il calcolatore è stato staccato su `/roi` il
+  07.08.2026. I founder hanno scelto l'entità.
+- **`/employee/doctor` e non `/employee/virtual-doctor`.** È **l'unica rotta che
+  accorcia un termine di dominio**: il prodotto quella cosa la chiama "medico
+  virtuale" ovunque, e l'entità è `VirtualDoctorConsult`. Il §7 non è violato —
+  *una cosa, una parola* vale **sul testo a schermo**, cioè sui dizionari, e
+  nessuna etichetta è cambiata — ma la scelta va dichiarata perché sembra una
+  svista e non lo è.
+- **`/admin/providers` e non `/admin/provider`.** Nemmeno questa è una
+  traduzione: è la pluralizzazione che toglie l'unica asimmetria rimasta
+  nell'area, dove le altre rotte sono già plurali. La parola resta quella delle
+  strutture check-up.
+
+**Il conto non si muove**: quindici più undici fanno le **26** rotte dello scope
+di questo §10, e le schermate restano **27**.
+
+### A. Pubblica — `/`, `/roi`, `/plans`, `/demo`
 1. **Landing**: hero, problema, tre livelli di valore, anteprima piani, privacy, CTA.
 
    **L'anteprima dell'hero è di tre pannelli, uno per lato del prodotto** —
@@ -2117,7 +2183,7 @@ riaprire una decisione già presa (founder, 15.08.2026).
    **Sta su una rotta sua, `/roi`**, decisa dai founder il 07.08.2026: è il terzo
    dei tre pezzi che il pitch mostra (§4), e un pezzo che si mostra da solo deve
    avere un indirizzo a cui portarlo, non una sezione da raggiungere scorrendo.
-   Tenerlo fuori da `/pricing` evita anche due campi "numero di dipendenti" nella
+   Tenerlo fuori da `/plans` evita anche due campi "numero di dipendenti" nella
    stessa pagina: lì il simulatore risponde *"quanto costa"*, qui il calcolatore
    risponde *"quanto stai già perdendo"*, e sono due domande che non si mescolano.
 3. **Prezzi**: i tre piani + simulatore di costo. Il quarto piano
@@ -2149,7 +2215,7 @@ Home, Psicologi, Medico virtuale, Check-up, Piano AI, Profilo.
    **quattro delle sei voci del menu**, cioè la stessa strada disegnata due
    volte. Al loro posto **la data del prossimo check-up** e **i consulti di
    medico virtuale dell'anno di piano**: due cose che si vedevano solo dentro
-   `/employee/profilo`, e nessun dato nuovo (§2.4). **Non sono link**, o
+   `/employee/profile`, e nessun dato nuovo (§2.4). **Non sono link**, o
    tornerebbe la duplicazione. Il badge "Fatto" resta: il §8 vuole che il
    check-up completato di Laura si legga uguale in home, nel profilo e
    nell'elenco dell'HR.
@@ -2276,7 +2342,7 @@ demo scollegate.
    piattaforma. Le loro proiezioni — `EmployeeDirectoryEntry` e
    `PlatformSession` — non hanno nessun campo su cui possa arrivare.
 
-   **`/admin/sessioni` riceve una proiezione sua**, ed è la parte da non
+   **`/admin/sessions` riceve una proiezione sua**, ed è la parte da non
    scorciare: quella schermata leggeva la stessa lettura del portale, e con il
    nome sul tipo lo avrebbe consegnato al back-office accanto alla data di una
    seduta di psicologia — cioè il dato individuale che il 16.08.2026 è uscito da

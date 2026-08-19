@@ -1223,7 +1223,7 @@ export const it = {
 
     /*
      * Il calcolatore ROI (§10.A.2). Risponde a "quanto stai già perdendo",
-     * mentre il simulatore di `/pricing` risponde a "quanto costa": è la
+     * mentre il simulatore di `/plans` risponde a "quanto costa": è la
      * ragione per cui stanno su due rotte e non condividono un campo
      * "numero di dipendenti".
      */
@@ -1403,7 +1403,7 @@ export const it = {
       },
     },
 
-    /* Il simulatore di costo di `/pricing`: risponde a "quanto costa", che è
+    /* Il simulatore di costo di `/plans`: risponde a "quanto costa", che è
        la domanda che il calcolatore di `/roi` non fa. */
     costSimulator: {
       title: "Calcola il costo",

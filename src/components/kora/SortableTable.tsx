@@ -16,7 +16,7 @@ import { getLocale, t } from "@/lib/i18n";
  * loro ordine.
  *
  * **Un componente solo per sette tabelle.** Le altre sei hanno da cinque a otto
- * righe e non ne avrebbero bisogno; a chiederlo è `/admin/sessioni`, che ne ha
+ * righe e non ne avrebbero bisogno; a chiederlo è `/admin/sessions`, che ne ha
  * 82. Con una primitiva sola metterlo ovunque non costa niente e toglie la
  * domanda "perché qui sì e là no", che è la stessa ragione per cui i tre
  * portali hanno tutti l'uscita col logo.
@@ -33,7 +33,7 @@ import { getLocale, t } from "@/lib/i18n";
  * dire niente e **la colonna non si ordina**. La regola resta; **l'esempio che
  * portava era sbagliato** (19.08.2026): dava per priva di scala proprio lo
  * stato della seduta, che l'ordine ce l'aveva già — è quello delle schede di
- * `/professional/sessioni`, e ora è `STATUS_RANK` in `AdminSessioni.tsx`. Le
+ * `/professional/sessions`, e ora è `STATUS_RANK` in `AdminSessioni.tsx`. Le
  * quattro lingue non c'entravano: quel rischio è dell'etichetta tradotta, cioè
  * di ciò che il rango evita.
  */

@@ -33,7 +33,7 @@ import { interpolate, t } from "@/lib/i18n";
  *
  * IL PREZZO ARRIVA DAL PROVIDER. `computeRoi` lo prende come parametro proprio
  * per non essere una seconda fonte di quella cifra: qui viene da `Plan`, come
- * nelle card di `/pricing`, così le due schermate non possono dire due prezzi
+ * nelle card di `/plans`, così le due schermate non possono dire due prezzi
  * diversi.
  */
 
@@ -44,7 +44,7 @@ import { interpolate, t } from "@/lib/i18n";
  * il 2.35:1 dell'ancoraggio. Un selettore di piano darebbe ~3.4:1
  * sull'Essenziale e ~1.2:1 sull'Executive, e il numero che l'investitore ha
  * letto sul documento smetterebbe di essere *il* numero. Chi confronta i piani
- * va su `/pricing`, che è la pagina che risponde a quella domanda.
+ * va su `/plans`, che è la pagina che risponde a quella domanda.
  */
 const CALCULATOR_PLAN_ID: PlanId = "plus";
 
@@ -358,7 +358,7 @@ export default function Roi() {
               </Link>
             </Button>
             <Button size="lg" variant="outline" className="px-8" asChild>
-              <Link to="/pricing">{t.public.roi.ctaPricing}</Link>
+              <Link to="/plans">{t.public.roi.ctaPricing}</Link>
             </Button>
           </div>
         </div>
