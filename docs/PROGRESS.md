@@ -25,22 +25,25 @@ lì.
 Quasi ogni voce di questo file si apre dichiarando quanti commit ha, e finora
 quel conteggio non aveva un criterio scritto — a differenza dei call site
 (`CLAUDE.md` §5.6) e dei `.jsx` (`CLAUDE.md` §3), che ce l'hanno e per questo
-hanno smesso di divergere. Il criterio, deciso dai founder il 15.08.2026:
+hanno smesso di divergere. Il criterio, deciso dai founder il 15.08.2026, **con
+la conclusione a cui è arrivato il 19.08.2026: il verbale non scrive più né il
+totale né la ripartizione, e il conto lo fa git.**
 
 - **codice** è `feat:`, `fix:` e `refactor:`; **documenti** è `docs:`. Non ci
   sono altre categorie, e un commit sta in una sola;
 - **si conta sul branch, a chiusura avvenuta**, non a memoria e non durante:
   `git log --format='%s' <merge>^..<merge>^2` elenca esattamente i commit della
   passata, e `| sed 's/:.*//' | sort | uniq -c` ne dà la ripartizione;
-- **se si scrive la ripartizione si scrive anche il totale, dalla stessa
-  misura.** È la parte che vale più delle altre due: il difetto che ha fatto
-  scrivere questa regola aveva il **totale giusto e la ripartizione sbagliata**
-  — «cinque commit di codice e uno di documenti» su un branch di tre e tre — ed
-  è la firma di due numeri presi in due momenti. Un solo comando, due numeri che
-  non possono divergere;
+- ~~**se si scrive la ripartizione si scrive anche il totale, dalla stessa
+  misura.**~~ → **non si scrive né l'una né l'altro** (19.08.2026), e la ragione
+  per cui la clausola era nata resta vera: il difetto che ha fatto scrivere
+  questa regola aveva il **totale giusto e la ripartizione sbagliata** —
+  «cinque commit di codice e uno di documenti» su un branch di tre e tre — ed è
+  la firma di due numeri presi in due momenti. Un solo comando li dà entrambi;
+  il punto è che **nel verbale non ci vanno**;
 - **il commit di chiusura conta sé stesso**, quindi il numero della sua
-  sottosezione è l'unico che non si può misurare mentre lo si scrive: si scrive
-  `n + 1`, cioè si predice. Ne discende l'obbligo che chiude il buco — **chi
+  sottosezione era l'unico che non si poteva misurare mentre lo si scriveva: si
+  scriveva `n + 1`, cioè si prediceva. Ne discende l'obbligo che chiude il buco — **chi
   aggiunge un commit dopo la chiusura aggiorna quel numero nello stesso
   commit**, perché da lì in poi la predizione è falsa. *(Clausola aggiunta il
   15.08.2026 dalla seconda passata che ha usato il criterio, ed è il buco che ha
@@ -48,18 +51,43 @@ hanno smesso di divergere. Il criterio, deciso dai founder il 15.08.2026:
   branch, ed è invecchiata appena la passata ne ha guadagnato un settimo.)*
 - **E se nessuno lo aggiorna, la predizione resta scritta**: è successo il
   17.08.2026, alla prima passata in cui qualcosa è arrivato dopo il verbale, e
-  l'obbligo qui sopra c'era già. Da qui **la clausola che chiude il buco per
-  davvero** (18.08.2026): un commit che arriva dopo il verbale **riapre la
-  cifra**, e chi non se la sente di riaprirla ha la seconda strada — **il
-  verbale dichiara la ripartizione e non il totale**, che lo dica git. È la
-  stessa scelta che il `CLAUDE.md` §5.6 ha fatto per i call site e il §2.7 per
-  le chiavi: quando un numero deve essere ricontato da qualcuno, prima o poi
-  nessuno lo riconta. La ripartizione non ha lo stesso difetto — si misura con
-  lo stesso comando e non predice niente.
+  l'obbligo qui sopra c'era già. Da qui la clausola del 18.08.2026: un commit
+  che arriva dopo il verbale **riapre la cifra**, e chi non se la sente di
+  riaprirla ha la seconda strada — **il verbale dichiara la ripartizione e non
+  il totale**, che lo dica git;
+- **e da qui la conclusione, che è la sola forma che regge** (19.08.2026): **il
+  verbale non conta i commit**. Dice cosa la passata ha fatto, e chi vuole il
+  numero lo prende dal comando qui sopra, che lo dà per intero e in qualunque
+  momento. È la stessa scelta che il `CLAUDE.md` §2.7 ha fatto per le chiavi e
+  il §5.6 per i call site: **il conto lo fa chi può rifarlo da solo.**
 
-Vale da questa passata in avanti. Le voci più vecchie non si riscrivono: sono
-verbali, e un conteggio sbagliato che qualcuno trova si corregge lì con la sua
-data, come è stato fatto per quello del residuo della nota di sessione.
+**Perché la clausola del 18.08 non bastava, e la misura sono tre cifre
+sbagliate.** Copriva il totale e lasciava scoperta la ripartizione, che è la
+metà che nessuno riapre — e il totale, nell'unico verbale scritto sotto quella
+clausola, non era nemmeno stato scritto. Le tre:
+
+1. **15.08.2026** — «cinque commit di codice e uno di documenti» su un branch di
+   tre e tre: totale giusto, ripartizione sbagliata, due numeri presi in due
+   momenti;
+2. **17.08.2026** — il conteggio che diventa un guardrail dichiarò **sei**
+   commit; `06a1b88` è arrivato dopo il verbale e nessuno è risalito a riaprire
+   la cifra. Corretta il giorno dopo, dalla clausola che ne è nata;
+3. **18.08.2026** — l'annullamento visibile dichiarò «`feat:` ×3, `fix:` ×1»
+   sulle due PR insieme, e i `fix:` erano **tre**. Era già sbagliata **alla
+   riapertura** — `6a056c6` stava dentro #65 dal principio — e lo è diventata di
+   due quando `eff29d8` è arrivato dopo il verbale. È la clausola nuova
+   smentita dal primo verbale che l'ha usata, sulla metà che non copriva.
+
+**Tre non è una distrazione: è una proprietà del modo in cui si contava.** Una
+cifra che vive nella prosa può essere rinfrescata solo da una persona, e
+riaprirla è una promessa di tornare — la stessa promessa che il §2.7 del
+`CLAUDE.md` ha visto non mantenere da chi il numero giusto l'aveva appena
+misurato. Tolta la cifra, non c'è niente da riaprire.
+
+Vale da questa passata in avanti, **che è anche la prima scritta nella forma
+nuova**. Le voci più vecchie non si riscrivono: sono verbali, e un conteggio
+sbagliato che qualcuno trova si corregge lì con la sua data, come è stato fatto
+per quello del residuo della nota di sessione.
 
 ## Stato
 
