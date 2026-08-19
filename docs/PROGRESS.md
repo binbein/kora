@@ -5933,10 +5933,12 @@ due paragrafi che non si parlavano, ora si citano.
   con il loro criterio proprio perché una terza misura non ne produca un terzo.
 - **L'etichetta "alert" del marker sul trend resta a 3.95:1** (`CLAUDE.md` §6.1,
   passata del 18.08.2026): il rimedio cambia un colore, quindi è dei founder.
-- **Il 73 di `AVERAGE_HEALTH_SCORE` non è ancora nel `CLAUDE.md` §8**, dichiarato
-  aperto dal 16.08.2026: è una cifra del dataset che il §2.4 non copre.
-- **Il dialogo di annullamento promette ancora che l'ora "torna prenotabile"**,
-  mentre i documenti hanno separato l'invariante dalla policy il 18.08.2026.
+- ~~**Il 73 di `AVERAGE_HEALTH_SCORE` non è ancora nel `CLAUDE.md` §8**,
+  dichiarato aperto dal 16.08.2026: è una cifra del dataset che il §2.4 non
+  copre.~~ → **chiuso il 19.08.2026** (verbale «La demo pronta»).
+- ~~**Il dialogo di annullamento promette ancora che l'ora "torna
+  prenotabile"**, mentre i documenti hanno separato l'invariante dalla policy il
+  18.08.2026.~~ → **chiuso il 19.08.2026** (verbale «La demo pronta»).
   Sono quattro stringhe, e la frase giusta dipende da una policy non decisa.
 - **Il «8 KB su ~1.1 MB» del verbale pre-pitch del 10.08.2026 resta dov'è**: è un
   resoconto datato, e a essere viva era la riga del `CLAUDE.md` §5.6.
@@ -6247,8 +6249,8 @@ anello — non il tasto che la ordina.
   mentre i documenti hanno separato l'invariante dalla policy il 18.08.2026.
   Sono quattro stringhe e la frase giusta dipende da una policy non decisa: è la
   stessa voce lasciata aperta dalla passata precedente.
-- **Il 73 di `AVERAGE_HEALTH_SCORE` non è ancora nel `CLAUDE.md` §8**, aperto
-  dal 16.08.2026.
+- ~~**Il 73 di `AVERAGE_HEALTH_SCORE` non è ancora nel `CLAUDE.md` §8**, aperto
+  dal 16.08.2026.~~ → **chiuso il 19.08.2026** (verbale «La demo pronta»).
 - **Nessun componente nuovo è uscito dal magazzino di `ui/`**: `SortableTable`
   importa `table.tsx`, che sette schermate importavano già. La riga del §3 sul
   magazzino non si è mossa.
@@ -6371,9 +6373,10 @@ raddoppiato il diff di una passata il cui unico valore è essere verificabile.
   sessione avanzata la trova fredda, che è il caso normale di una presentazione
   di trenta minuti. Serve una misura fatta apposta, e non è lavoro da aprire
   qui;
-- **il dialogo di annullamento promette ancora che l'ora "torna prenotabile"**, e
-  il **73** di `AVERAGE_HEALTH_SCORE` non è ancora nel `CLAUDE.md` §8: sono le due
-  voci che le due passate precedenti lasciano aperte.
+- ~~**il dialogo di annullamento promette ancora che l'ora "torna
+  prenotabile"**, e il **73** di `AVERAGE_HEALTH_SCORE` non è ancora nel
+  `CLAUDE.md` §8: sono le due voci che le due passate precedenti lasciano
+  aperte.~~ → **chiuse tutte e due il 19.08.2026** (verbale «La demo pronta»).
 
 ### Punto di partenza — cosa c'è e cosa manca
 
