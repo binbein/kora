@@ -434,7 +434,7 @@ anche il modo in cui in produzione lo si permessiona e lo si traccia.
 
 > **Questa frase è stata falsa fino al 16.08.2026, e adesso è vera.**
 > `PlatformUser` portava `healthScore` — il punteggio del profilo salute della
-> singola persona — accanto a nome, cognome ed email, e `/admin/utenti` lo
+> singola persona — accanto a nome, cognome ed email, e `/admin/users` lo
 > rendeva in una colonna. Era **l'unica eccezione** a ciò che questo paragrafo
 > dichiara per l'intero contratto, e nessun'altra riga la nominava: chi leggeva
 > qui non aveva modo di scoprirla.
