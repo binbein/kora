@@ -2123,8 +2123,9 @@ della sessione e i criteri che si contraddicevano, le parole e il perimetro,
 l'anteprima a tre pannelli e la voce Admin, la home e il medico, la cornice del
 trimestre, il conteggio che diventa un guardrail, l'annullamento e l'identità,
 l'allineamento fra codice e verbali, l'igiene del repository, l'annullamento
-visibile con la navigazione fra settimane e il salto a data, e i criteri e i
-conteggi. Non aggiungono schermate e non spostano un numero a schermo.
+visibile con la navigazione fra settimane e il salto a data, i criteri e i
+conteggi, e le attese e l'ordinamento. Non aggiungono schermate e non spostano
+un numero a schermo.
 
 **Il numero è uscito da questa riga il 19.08.2026, ed è la terza volta che
 invecchiava.** Diceva *"Trentatré passate"* mentre l'elenco si fermava
@@ -5938,6 +5939,228 @@ due paragrafi che non si parlavano, ora si citano.
   Sono quattro stringhe, e la frase giusta dipende da una policy non decisa.
 - **Il «8 KB su ~1.1 MB» del verbale pre-pitch del 10.08.2026 resta dov'è**: è un
   resoconto datato, e a essere viva era la riga del `CLAUDE.md` §5.6.
+
+#### Le attese e l'ordinamento (19.08.2026)
+
+**Questo verbale non conta i propri commit**, ed è la seconda passata scritta
+nella forma decisa il giorno prima: dice cosa ha fatto, e il conto lo dà git con
+il comando in testa a questo file. **Nessun numero del §8 e del §9 si muove** —
+verificati a schermo alla cifra, elenco più sotto — le rotte restano **26** e
+nessuna schermata nasce. `EXPECTED_KEYS` passa da **779 a 780**: la passata
+aggiunge **una** stringa ai quattro dizionari.
+
+Tre cose: un token per l'attesa, l'ordinamento di sette tabelle, e la chiusura
+del difetto AA che aspettava una passata che toccasse i colori — che è questa.
+
+##### Tutto ciò che aspetta si dice allo stesso modo, e con un colore suo
+
+**Il difetto vero era uno solo, e stava in `HRFatturazione`**: la fattura in
+attesa usciva con la **stessa classe** della pagata — `bg-secondary/10
+text-secondary-strong` — e a cambiare era la sola parola. Chi legge in fretta
+leggeva "pagato" su una fattura che non lo è. Gli altri cinque punti erano
+disomogeneità: tre badge del back-office già gialli, il compenso in attesa del
+professionista e i due badge del suo profilo, grigi neutri — e il grigio dice
+"spento", non "in corso".
+
+**La strada scelta dai founder è un token**, `--waiting`, e non un `warning` più
+chiaro: due significati che si distinguono per la **trasparenza** dello stesso
+colore si sfaldano al primo cambio di fondo, e qui si erano già sfaldati —
+l'attesa stava a `bg-warning/20` e l'allarme a `bg-warning/15`, cioè l'attesa
+era **più forte** dell'allarme. La regola del `CLAUDE.md` §6.1 su `warning` e
+`destructive` **non è stata riscritta**, ed è il guadagno della strada: l'attesa
+esce da `warning` invece di diluirlo.
+
+| | misura |
+|---|---|
+| testo su `waiting` | **11.95:1** (`text-xs`, cioè testo normale: soglia 4.5) |
+| ΔE fra `waiting` e il fondo del banner d'alert | **35.1** |
+| ΔE fra `waiting` e l'ambra piena del bordo | **16.5** |
+| `waiting` nella palette scura | **6.58:1**, dichiarata benché inerte |
+
+**Le due ΔE sono misurate affiancando**, non una schermata per volta: il chip
+dell'attesa è stato inserito **dentro** il banner dell'alert precoce della
+dashboard HR, che è il solo punto in cui i due gialli si toccano davvero. Un
+giallo che passa la soglia da solo e sparisce accanto all'allarme non
+risolverebbe il problema per cui esiste.
+
+**Due dei sei punti non sono raggiungibili nel dataset**, e sono stati provati
+rompendolo ad arte — la tecnica della passata pre-pitch del 10.08.2026 — e
+ripristinandolo subito: tutte le fatture sono `paid` (§ dei difetti noti di
+M2), e la professionista del portale ha documenti e mandato in ordine. Con una
+fattura del mese in corso portata a `pending` il chip esce giallo a 11.95:1
+accanto alle tre pagate in teal; con il mandato della Dr.ssa Meier non firmato,
+"Da firmare" esce giallo accanto a "Verificati" in teal, sulla stessa card.
+**Senza quella prova la correzione più importante della passata sarebbe stata
+verificata solo leggendo il codice.**
+
+**Giallo non vuol dire attesa, e la metà che non si tocca vale quanto l'altra**:
+restano su `warning` il banner dell'alert e il marker sul trend, che sono
+l'**allarme**; restano dove sono la barra dello stress "medio", la serie dei
+check-up dei due grafici, il badge "Nuovo" dei pazienti e "Da tenere d'occhio"
+del referto, che sono **dati** o segnalazioni cliniche.
+
+##### Le sette tabelle si ordinano
+
+**Sono sette e non sei**, ed è un conto di tabelle e non di schermate: `/admin`
+ne porta **due**, il portafoglio clienti e le richieste demo. Il criterio sta
+accanto al numero, come per i call site e per le rotte — si contano gli
+elementi `<table>` che il §10 elenca fra le rotte dello scope: `/hr/dipendenti`,
+`/admin` ×2, `/admin/utenti`, `/admin/professionisti`, `/admin/sessioni`,
+`/admin/provider`.
+
+**Un componente solo**, `components/kora/SortableTable.tsx`, perché sei tabelle
+su sette hanno da cinque a otto righe e non ne avrebbero bisogno: a chiederlo è
+`/admin/sessioni`, che ne ha **82**. Con una primitiva sola metterlo ovunque non
+costa niente e toglie la domanda "perché qui sì e là no".
+
+**È presentazione e non dominio**: nessuna chiave di cache cambia, nessun metodo
+prende un parametro nuovo, il provider non sa che esiste — la stessa ragione per
+cui il raggruppamento settimanale del calendario non sta nell'interfaccia
+(`docs/CONTRATTO-DATI.md` §2). **Ordinare non è filtrare**: le righe restano
+quelle.
+
+**Tre stati e non due.** Non ordinato → crescente → decrescente → non ordinato:
+il terzo clic riporta la tabella all'ordine del dato. Senza, una volta ordinata
+una colonna non si tornerebbe più a com'era **senza ricaricare**, e ricaricare
+durante la demo è la cosa che azzera il provider (§10).
+
+**Su cosa si ordina, e la regola sta in tre righe.** Si ordina per il valore che
+la riga **mostra**, con `localeCompare` nel locale attivo: due lingue ordinano
+diversamente le stesse righe, ed è giusto — si ordina ciò che si legge. Fanno
+eccezione le enumerazioni **che hanno una scala del dominio**, e sono due: i tre
+piani, che si ordinano sul **prezzo** — in tedesco e in inglese l'alfabetico
+direbbe che l'Executive è il primo dei tre — e il check-up dell'elenco HR, che è
+un **percorso**: disponibile, prenotato, fatto.
+
+**Due colonne non si ordinano, e sono due ragioni diverse.** Lo **stato di una
+seduta** in `/admin/sessioni`, perché i suoi tre valori non stanno su una linea:
+`cancelled` non viene "dopo" `completed`, il percorso si biforca, e l'unica
+alternativa — l'alfabetico sulla parola tradotta — darebbe un ordine diverso in
+ognuna delle quattro lingue. È il caso che il §11 chiama codice che nessuno può
+verificare, spostato su una scelta di prodotto: **se un ordine difendibile non
+c'è, la colonna non si ordina.** E il **professionista**, perché nella demo
+porta lo stesso valore su tutte le righe — un portale solo (`§7` del contratto) —
+e una freccia che non cambia niente è un comando che non comanda.
+
+**I vuoti stanno in fondo in tutte e due le direzioni**: un valore che non c'è
+non è né grande né piccolo, quindi non ha un posto nella scala. Si vede sulla
+colonna del compenso di `/admin/sessioni`, dove le sedute non erogate portano il
+trattino, e sui dipendenti non dichiarati delle richieste demo.
+
+**La chiave secondaria è dichiarata tabella per tabella e resta crescente in
+tutte e due le direzioni**: due righe con lo stesso valore hanno un ordine loro
+invece di dipendere da quello in cui sono arrivate, e **non si scambiano di
+posto a ogni clic**. Si vede sul portafoglio: ordinando per piano al contrario,
+i due Plus restano Demo SA e poi Genziana Tech.
+
+**Due tabelle ordinano per iniziali**, `/hr/dipendenti` e `/admin/sessioni`,
+perché lì un nome non arriva — è la garanzia del §3 del contratto. Nella demo
+tiene perché stesse iniziali vogliono dire stessa persona, che è un vincolo del
+dataset con un guardrail dietro; **in produzione cade**, e il §8.8 lo dichiara
+già: due omonimi finirebbero adiacenti senza essere la stessa persona. Non è
+stato aggiunto niente al contratto.
+
+**L'accessibilità sta dove ha significato**: `aria-sort` sul `<th>` — tutte e
+sette usano `ui/table.tsx`, quindi sono tabelle vere — e il pulsante **dentro**
+la cella, con l'etichetta visibile più una frase per i soli lettori di schermo.
+Non è un `aria-label`: quello sostituirebbe l'etichetta della colonna, ed è lo
+scarto fra chi legge e chi ascolta che `RapidCheckCard` evita dal 08.08.2026.
+
+**La nota dell'estratto è stata rinforzata**, ed era il rischio vero
+dell'ordinamento su `/hr/dipendenti`: chi ordina per stato vede in cima i non
+iscritti **di otto righe** e può crederli tutti quelli dell'azienda. Ora dice su
+quanti — *"un estratto di 8 dipendenti su 120: ordinarla ordina l'estratto"* — in
+tutte e quattro le lingue.
+
+##### Il difetto AA che aspettava, e il secondo che il censimento ha trovato
+
+**L'etichetta "alert"** del marker sul trend stava a **3.95:1**: è il grigio
+predefinito di recharts, `#808080`, a 11px, su un testo informativo — dice su
+quale mese cade l'alert precoce. Ora ha un `fill` esplicito su
+`muted-foreground`, **5.10:1**, che sta sopra la soglia e **resta sotto il
+marker** nella gerarchia del grafico.
+
+**Il censimento ne ha trovato un secondo, ed è la ragione per cui si fa.** Le
+etichette della ciambella del mix piani in `/admin/analytics` restituivano una
+stringa, quindi recharts le dipingeva **con il colore della fetta**: tre
+etichette identiche a tre contrasti diversi — 5.10, **2.83** e 7.44 — e quella
+sotto soglia era il Plus, cioè il teal. Corrette tutte e tre su `foreground`,
+**15.17:1**, con posizione e ancoraggio lasciati a recharts.
+
+**Quanti nodi sono stati percorsi**, che è il numero che distingue "non c'è
+niente sotto soglia" da "non ho guardato" (`CLAUDE.md` §6.1): **88** nodi di
+testo dentro gli `<svg>` della dashboard HR e **123** in `/admin/analytics`,
+tutti e due a viewport reale. Dopo le correzioni: **zero** sotto soglia su
+entrambe.
+
+##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato prima di ogni misura
+
+- **le sette tabelle ordinano**, e il giro completo è stato fatto su ognuna:
+  crescente, decrescente, e il terzo clic che riporta all'ordine del dato —
+  provato alla lettera sull'elenco HR e sulle richieste demo;
+- **`/admin/sessioni`**: 82 righe, data crescente e decrescente, compenso
+  crescente con i **trattini in fondo** e le sedute a pari importo tenute
+  insieme dalla data; **"Professionista" e "Stato" non hanno pulsante**;
+- **il portafoglio**: piano crescente `Essenziale ×2 → Plus ×2 → Executive`,
+  cioè il prezzo e non l'alfabeto, e al contrario i due Plus restano nello
+  stesso ordine fra loro;
+- **`/admin/utenti`**: la ricerca filtra e l'ordinamento ordina quello che
+  resta — cercando "demo" restano due righe e si ordinano;
+- **le richieste demo**: due richieste inviate dal form durante il giro, e la
+  tabella le ordina; il terzo clic riporta la più recente in cima;
+- **da tastiera**: `Tab` porta il fuoco sui pulsanti d'intestazione, che
+  rispondono a `:focus-visible` con l'anello `primary` — `outline: auto
+  rgb(17,57,90)`, **11.95:1**;
+- **le quattro lingue** sull'elenco HR: intestazioni tradotte, la frase per i
+  lettori di schermo in ognuna, **zero overflow orizzontale**, `<html lang>`
+  corretto;
+- **26 rotte percorse con la sola navigazione interna**, zero overflow
+  orizzontale, **zero errori, zero promise rifiutate e `console.error` mai
+  chiamato**;
+- **i numeri del pitch fermi**: CHF 14'200, 16 giorni, 68%, 82 iscritti su 120,
+  41 attivi, 142 di 1'200, 62%, soglia 12, −2 punti; CHF 1'120 e CHF 5'040 nei
+  compensi; CHF 652'968, 415 e 798 nel back-office;
+- `lint`, `typecheck`, `build` e `build:demo` a posto; guardrail **111 = 102 +
+  9**, invariati; **780 chiavi** ×4, e a dirlo è `EXPECTED_KEYS`.
+
+##### Due cose sullo strumento, e sono due vecchie conoscenze
+
+**La prima scheda è andata cieca a metà sessione** — `innerWidth` a **0** —
+mentre censiva gli `<svg>` della dashboard: il conto dava 13 nodi di testo dove
+la scheda buona ne trova 88. Tutto rifatto su scheda nuova, ed è la quarta volta
+in cinque giorni che questo file la registra.
+
+**Il DOM letto nello stesso tick del clic non è ancora cambiato**: la prima
+prova sull'ordinamento diceva che le righe non si muovevano e che `aria-sort`
+restava a `none`. Con 120 ms di attesa fra il clic e la lettura, tutto al suo
+posto. È la stessa trappola di M5.b, e va detto che **si ripresenta identica**
+alla prima verifica scritta di fretta.
+
+**L'attivazione da tastiera resta sulla parola dello standard**, come per il
+pulsante del referto del 16.08.2026: `Tab` muove il fuoco davvero e l'anello si
+vede, ma `Invio` e `Spazio` sintetici non producono l'attivazione nativa, quindi
+ciò che è misurato è che l'intestazione è un `<button>` focalizzabile con il suo
+anello — non il tasto che la ordina.
+
+##### Trovato e non toccato
+
+- **Il dialogo di annullamento promette ancora che l'ora "torna prenotabile"**,
+  mentre i documenti hanno separato l'invariante dalla policy il 18.08.2026.
+  Sono quattro stringhe e la frase giusta dipende da una policy non decisa: è la
+  stessa voce lasciata aperta dalla passata precedente.
+- **Il 73 di `AVERAGE_HEALTH_SCORE` non è ancora nel `CLAUDE.md` §8**, aperto
+  dal 16.08.2026.
+- **Nessun componente nuovo è uscito dal magazzino di `ui/`**: `SortableTable`
+  importa `table.tsx`, che sette schermate importavano già. La riga del §3 sul
+  magazzino non si è mossa.
+- **Le tabelle non si filtrano**, e non è un residuo: filtrare è un'altra cosa
+  da ordinare, e l'unica ricerca del prodotto — quella degli utenti — esisteva
+  già. Su otto righe un filtro non serve a nessuno, e su 82 la domanda vera è la
+  paginazione, che è lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.12).
+- **L'ordinamento non sopravvive alla navigazione**, ed è voluto: vive nello
+  stato del componente, quindi uscire dalla schermata e tornarci riporta
+  l'ordine del dato. Ricordarlo sarebbe stato uno stato in più da tenere
+  allineato, per un gesto che durante la demo si rifà in un clic.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
