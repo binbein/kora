@@ -64,6 +64,16 @@ export const it = {
       toPortal: "Vai alla tua area",
       toHome: "Torna alla home",
     },
+
+    /* L'ordinamento delle tabelle. Una frase sola per tutte e sette: dice
+       l'**azione**, mentre lo stato — crescente, decrescente, nessuno — lo
+       porta `aria-sort` sulla cella. Non è un `aria-label`, che
+       sostituirebbe l'etichetta della colonna: è una frase in più per i soli
+       lettori di schermo, quindi chi ascolta sente il nome della colonna e
+       poi cosa fa il pulsante. */
+    sort: {
+      action: "ordina per questa colonna",
+    },
   },
 
   /* La 404. `body` è una frase intera con segnaposto e non due pezzi cuciti

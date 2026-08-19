@@ -66,7 +66,7 @@ import { it } from "./it";
  * dizionari — 750 e 750 — il giorno in cui questo controllo è nato. Il criterio
  * non è cambiato: è cambiato chi lo applica.
  */
-const EXPECTED_KEYS = 779;
+const EXPECTED_KEYS = 780;
 
 const PLACEHOLDER = /\{(\w+)\}/g;
 

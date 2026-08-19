@@ -98,6 +98,12 @@ export const de: Dictionary = {
       toPortal: "Zum eigenen Bereich",
       toHome: "Zur Startseite",
     },
+
+    /* Die Sortierung der Tabellen: eine Wendung für alle sieben. Sie nennt die
+       **Aktion**; den Zustand trägt `aria-sort` an der Zelle. */
+    sort: {
+      action: "nach dieser Spalte sortieren",
+    },
   },
 
   notFound: {

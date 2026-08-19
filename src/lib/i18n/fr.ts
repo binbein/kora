@@ -141,6 +141,13 @@ export const fr: Dictionary = {
       toPortal: "Accéder à mon espace",
       toHome: "Retour à l'accueil",
     },
+
+    /* Le tri des tableaux : une seule formule pour les sept. Elle dit
+       l'**action** ; l'état est porté par `aria-sort` sur la cellule.
+       L'infinitif, comme les trois libellés de bouton du fichier. */
+    sort: {
+      action: "trier selon cette colonne",
+    },
   },
 
   notFound: {

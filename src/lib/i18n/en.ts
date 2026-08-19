@@ -108,6 +108,12 @@ export const en: Dictionary = {
       toPortal: "Go to your area",
       toHome: "Back to home",
     },
+
+    /* Table sorting: one phrase for all seven. It names the **action**; the
+       state is carried by `aria-sort` on the cell. */
+    sort: {
+      action: "sort by this column",
+    },
   },
 
   notFound: {
