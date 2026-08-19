@@ -136,7 +136,9 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
      mancava (19.08.2026): contando invece i letterali oggetto dell'albero sono
      **113**, perché la radice del dizionario è un letterale che non è
      proprietà di nessuno — due numeri dallo stesso albero, cioè la cosa che
-     questa sezione esiste per non produrre. *(Il conteggio delle
+     questa sezione esiste per non produrre.
+
+     *(Il conteggio delle
      chiavi non si ripete qui: era il secondo dei cinque punti che l'hanno fatto
      invecchiare. Gli oggetti restano, perché sono l'altra metà della prova che
      l'albero non lascia fuori niente. Fino al 18.08.2026 questa riga diceva
@@ -286,8 +288,9 @@ repository Next non dia niente per scontato.
   erano usciti dal magazzino (riga qui sotto). È uscita perché **non aveva un
   criterio, e senza criterio i conti sono due**: *"non li importa nessuno"* può
   voler dire **nessun file fuori da `ui/`**, e allora sono 31, oppure **nessun
-  file, nemmeno un loro pari**, e allora sono 26 — cinque componenti li importa
-  solo `sidebar.tsx`. È la famiglia dei call site (§5.6) e delle chiavi (§2.7),
+  file, nemmeno un loro pari**, e allora sono 26 — cinque li importa soltanto un
+  pari, quattro `sidebar.tsx` e uno `toggle-group.tsx`. È la famiglia dei call
+  site (§5.6) e delle chiavi (§2.7),
   e qui il rimedio costa meno che là: **la ragione per cui si tengono non
   dipende da quanti sono**, quindi togliere la cifra non toglie niente alla
   frase. Chi la volesse conta gli import, dichiarando quale dei due insiemi

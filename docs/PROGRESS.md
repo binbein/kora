@@ -5854,8 +5854,8 @@ era stata la passata che il §3 racconta due paragrafi più sotto — `popover` 
 `calendar` usciti dal magazzino il 18.08.2026 — ma il difetto vero è che *"non
 li importa nessuno"* ha due letture: **nessun file fuori da `ui/`**, e allora
 sono **31**, oppure **nessun file, nemmeno un pari**, e allora sono **26**,
-perché `separator`, `sheet`, `skeleton`, `toggle` e `tooltip` li importa solo
-`sidebar.tsx`. Senza criterio il conto non è ripetibile; e siccome **la ragione
+perché `separator`, `sheet`, `skeleton` e `tooltip` li importa solo
+`sidebar.tsx`, e `toggle` solo `toggle-group.tsx`. Senza criterio il conto non è ripetibile; e siccome **la ragione
 per cui si tengono non dipende da quanti sono**, la frase dice "la maggior
 parte" e non perde niente.
 
