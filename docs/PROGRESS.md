@@ -1191,6 +1191,13 @@ testo è ancora nel campo. Il messaggio sta sotto il pulsante che l'ha causato e
 
 ##### La dimostrazione: due manopole, e solo in sviluppo
 
+*(Diceva due, ed era vero quando è stato scritto: le manopole sono **tre**, e
+la terza è `?role=`, arrivata col blocco d). Titolo e corpo restano — è un
+verbale — e la spiegazione sta nel `CLAUDE.md` §4, blocco b), che è dove va
+letta; il `README.md` diceva già tre. Nota aggiunta il 20.08.2026: il
+18.08.2026 lo stesso fatto era stato corretto là e nel `README.md`, e questo
+punto, che è il più visibile del file sull'argomento, era rimasto indietro.)*
+
 `data/fault-injection.ts` è un `Proxy` sull'implementazione mock, montato da
 `index.ts` **solo** quando `GUARDRAIL_MODE` vale `"throw"`. `?fail=metodo[:n]`
 produce il guasto, `?empty=metodo` il vuoto legittimo — e senza la seconda
