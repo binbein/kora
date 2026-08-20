@@ -639,6 +639,16 @@ numeri**: quelli ammessi restano i soli trascritti in §8 e §9 (§2.4). Se una 
 del BP serve e qui non c'è, si chiede ai founder e si aggiunge qui — non la si
 legge dal PDF e la si scrive in un componente.
 
+**Il nome del file mente sulla versione, e va saputo prima di andare a
+controllare una citazione** (20.08.2026). Il file si chiama
+`KORA_BusinessPlan_v6.pdf`, e il documento dentro è la **versione 5.0 di giugno
+2026**: lo dicono il frontespizio, i metadati del PDF — `/Title (KORA Business
+Plan v5.0)` — e il piè di pagina, che la ripete a ogni pagina. **Le pagine
+citate in §9 sono quelle di questo PDF**, quindi i rimandi sono giusti: a
+mentire è soltanto il nome del file. **Non si rinomina e non si tocca la storia
+di git** (founder, 20.08.2026) — un rename costerebbe più di quanto chiarisca,
+e questa riga chiarisce tutto quello che serve.
+
 Sono documenti riservati e il repository è privato: **verificare che lo resti**
 prima di aggiungere collaboratori o di rendere pubblico alcunché. Il repository
 del backend nascerà con `docs/CONTRATTO-DATI.md`, non con i PDF.
@@ -649,6 +659,13 @@ un collaboratore esterno — si tolgono dal repository e si ripulisce la storia 
 `git filter-repo`, perché toglierli da `HEAD` non li toglie dai commit passati. **A
 uscire sono i PDF, non il repository**: il codice e la sua storia restano qui, e il
 §5.7 vale intero — non esiste un frontend nuovo per l'MVP.
+
+**E costa un commit solo, misurato** (20.08.2026): i due PDF sono entrati
+insieme con `2b81f54` del 07.08.2026, e in tutta la storia — verificata su
+`--all` — **nessun altro commit tocca un `.pdf`**. La riscrittura toccherà quel
+commit e nient'altro, che è il caso più economico in cui `git filter-repo`
+possa trovarsi. La riga sta qui perché la clausola descriveva un'operazione
+senza dire quanto costa, e chi la eseguirà non avrà questa conversazione.
 
 ## 4. Come si lavora — le milestone
 
