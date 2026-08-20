@@ -1200,7 +1200,7 @@ il ciclo vero ne ha di più:
   conseguenza**: la separazione fra l'invariante e l'assunzione sta in *"cosa
   vuol dire occupato"*, qui sotto (18.08.2026).
 
-  **Manca ancora, e sono quattro cose distinte:**
+  **Manca ancora, e ognuna è una decisione a sé:**
 
   - **la disdetta dal lato del dipendente**, che è l'altra metà del verso:
     `by_patient` esiste nell'enumerazione ed è oggi un valore che **solo il
