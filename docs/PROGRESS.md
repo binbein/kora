@@ -2133,7 +2133,8 @@ l'allineamento fra codice e verbali, l'igiene del repository, l'annullamento
 visibile con la navigazione fra settimane e il salto a data, i criteri e i
 conteggi, le attese e l'ordinamento, l'ordinamento dello stato della seduta, la
 rinomina delle rotte in inglese, la demo pronta, le cifre nelle
-parentetiche, e i rimandi del contratto. Non aggiungono schermate e
+parentetiche, i rimandi del contratto, e i fatti del Business Plan. Non
+aggiungono schermate e
 non spostano un numero a schermo.
 
 **I numeri sono tre e contano tre cose diverse**, ed è la riga che mancava
@@ -6934,6 +6935,158 @@ di forma: «§8, gruppo Ciclo dell'appuntamento» è più lungo di «§8.5».
 - **`.git/index.lock` si riforma fra un commit e l'altro**, e non è un fatto
   della macchina: lo creano i controlli in sola lettura del founder attraverso
   il bridge del desktop. Si rimuove prima di committare.
+
+#### I fatti del Business Plan (20.08.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il
+comando in testa a questo file. **È la terza passata documentale della
+giornata**, dopo «Le cifre nelle parentetiche» e «I rimandi del contratto».
+`git diff --name-only` contro `master` non tocca **nessun file sotto `src/`**;
+`typecheck` e `lint` a zero, eseguiti perché sono quella prova. **Nessun numero
+del §8 e del §9 si muove**, le rotte restano **26** e le schermate **27**,
+`EXPECTED_KEYS` **780**, i guardrail **111 = 102 + 9**.
+
+**Si chiama così perché il riallineamento non è stato fatto qui.** Una revisione
+ha letto i due PDF di `docs/` contro `CLAUDE.md` e `docs/PITCH.md`, e la passata
+**registra** ciò che ne è uscito invece di eseguirlo: i quattro fatti sono
+difetti **del Business Plan**, che vive fuori da questo repository.
+
+##### La decisione che regge tutta la passata: §9 non guadagna niente
+
+**Founder, 20.08.2026, ed è il vincolo principale.** §9 è l'elenco dei numeri
+**che il prodotto può mostrare**; un numero sbagliato del BP **non diventa
+ammissibile perché lo abbiamo trovato** — diventa una cosa da correggere alla
+fonte. Da qui:
+
+- **§9 resta com'è**, compresa la frase *«il 19.5:1 dell'executive summary è un
+  terzo rapporto ancora (perdite totali / costo)»*. Il **CHF 220–440** della p.3
+  non ci entra, **e non ci entra nemmeno come rimando**;
+- **`docs/PITCH.md` non è stato toccato**, e non guadagna una risposta pronta sul
+  quarto rapporto: scriverla porterebbe quel numero **in sala**, che è
+  esattamente ciò che la decisione evita;
+- **`roi-model.ts` non è stato toccato** e i cinque numeri di ancoraggio restano
+  1'289'500 / 221'150 / 66'000 / 155'150 / **2,35:1**.
+
+**La voce di «Decisioni in sospeso» è il loro unico posto**, ed è scritta
+dicendolo, perché la prossima sessione che la legge non provi a «completare» il
+lavoro trascrivendo le cifre.
+
+##### I quattro fatti, verificati sul PDF e non sulla segnalazione
+
+| | dove | cosa dice il BP |
+|---|---|---|
+| soglia di anonimato | **p.11**, parte A3 | *«soglia min. 15 dip per anonimato LPD»*, e **non dice su quale insieme** |
+| check rapido | **p.7** | *«ogni dipendente risponde ogni mese a 3 domande rapide (30 secondi)»* |
+| quarto rapporto | **p.3** | *«per ogni CHF 55 investiti per dipendente … CHF 220–440»*, cioè fra 4:1 e 8:1 |
+| aritmetica delle perdite | **p.6** | *«4,3 abbandoni × CHF 50.000»* → **217.000** (il prodotto è 215.000); ricerca e sostituzione **45.000** contro i 47'000 del modello |
+
+**I primi due sono l'unico caso in cui una regola scritta non è stata eseguita
+fuori dal repository.** `CLAUDE.md` §10.B.1 dichiara che *dove i due divergono
+vince questo file e il documento si aggiorna*, e `docs/PITCH.md` la richiama alla
+lettera per la soglia: il documento non si è aggiornato, né sulla soglia né sul
+check rapido.
+
+**Il 220–440 è stato ricalcolato, non dedotto.** A N=100 il risparmio netto per
+dipendente è **CHF 129 al mese**, il lordo **184**, le perdite **1'074**: contro
+i 55 danno 2,35 · 3,35 · 19,5. **Nessuna delle tre dà 4:1–8:1.**
+
+**Sul punto 4 il totale regge, ed è la parte che tiene il prodotto fuori dal
+difetto**: 217 + 45 fa **262.000** da entrambe le parti, ed è il valore che la
+p.7 usa due volte — nella card «Al turnover» e nella tabella del ROI
+conservativo. I cinque numeri di ancoraggio non si muovono.
+
+##### Il 19,5:1 ha due difetti distinti, e il repository ne conosceva uno
+
+Il primo lo conosciamo: è **un rapporto diverso dagli altri due**, e `CLAUDE.md`
+§9 lo dichiara *«perdite totali / costo»*.
+
+Il secondo **il repository non lo sapeva**: la **p.6** etichetta quella riga
+*«ROI potenziale (perdite evitate / costo KORA)»* mentre il calcolo è
+`1.289.500 / 66.000`. *«Perdite evitate»* sarebbe il **risparmio**, CHF 221'150,
+che su 66'000 dà **3,35:1**.
+
+**Sta dentro il punto 3 e non accanto perché non è un quinto difetto: è il
+meccanismo che rende pericoloso il quarto rapporto.** Un rapporto **definito**
+diversamente si spiega in sala; un rapporto **etichettato** come risparmio
+recuperato no — chi legge non sta valutando una definizione, sta leggendo nel
+nostro documento che risparmia 19,5 volte quello che paga.
+
+**La p.4 porta lo stesso numero nudo**, sotto la sola dicitura «ROI potenziale»,
+senza formula: è la p.6 a etichettarlo, e la p.4 a metterlo in vetrina.
+
+##### La risposta pronta di `PITCH.md` regge, ed è stata verificata prima di dirlo
+
+Non è stata corretta perché **non ne aveva bisogno**, e la verifica era dovuta:
+la risposta *«Perché il ROI è 2.35:1? Nel documento ho letto 19.5:1»* spiega
+**l'aritmetica** e non il titolo della riga — *«il 19.5:1 … è perdite totali ÷
+costo — cioè misura quanto è grande il problema, **non quanto ne
+recuperiamo**»*. Quell'ultima mezza frase nega esattamente la lettura che
+l'etichetta della p.6 suggerisce, quindi tiene anche contro di lei.
+
+**E l'attribuzione della risposta è corretta**: *«il 19.5:1 dell'executive
+summary»* — la p.4 **è** l'executive summary, e il numero c'è.
+
+##### La versione del Business Plan, e il campione su cui l'ho letta
+
+Il file si chiama `KORA_BusinessPlan_v6.pdf` e il documento dentro è la
+**versione 5.0 di giugno 2026**, su tre riscontri indipendenti: il
+**frontespizio** («VERSIONE 5.0 · DATA Giugno 2026»), i **metadati** (`/Title
+(KORA Business Plan v5.0)`, `/CreationDate D:20260720`) e il **piè di pagina**.
+La chiusura del documento, a p.25, dice *«Documento preparato giugno 2026»*.
+
+**Il piè di pagina l'ho letto su sette pagine e non su venticinque, e il
+campione si dichiara**: **1, 2, 3, 6, 7, 11 e 25**, cioè la prima, l'ultima e
+cinque in mezzo, tutte identiche. È un elemento di template di pagina, e la 25
+lo porta uguale alla 1 — ma «tutte e 25» sarebbe una cifra che non ho misurato,
+quindi il `CLAUDE.md` §3 dice *«il piè di pagina»* e basta. **Un campione
+dichiarato è una misura, un campione taciuto è una cifra senza criterio.**
+
+**Le pagine citate in §9 sono quelle di questo PDF** — verificate p.4 (margini
+68–79%), p.7 e p.11 (disponibilità minima 8h/settimana) — quindi i rimandi del
+§9 sono giusti e a mentire è soltanto il nome del file. **Nessun rename e
+nessun tocco alla storia**, per decisione dei founder.
+
+##### Il costo della clausola di scadenza, misurato
+
+La clausola del §3 prevede `git filter-repo` al primo ingresso di qualcuno che
+non sia un founder, e descriveva un'operazione **senza dirne il prezzo**.
+
+I due PDF sono entrati **insieme, con un commit solo**: `2b81f54` del
+07.08.2026, *«docs: add business plan and ceo doubts documents»*. Controprova su
+tutta la storia con `git log --all`: **nessun altro commit tocca un `.pdf`**, e
+ogni file ha un blob solo. La riscrittura toccherà quel commit e nient'altro.
+
+##### Verificato
+
+- **`git diff --name-only` contro `master`: nessun file sotto `src/`**, e i due
+  soli file toccati sono `CLAUDE.md` e questo;
+- `typecheck` e `lint` a **zero**;
+- **`docs/PITCH.md` e `src/lib/roi-model.ts` non compaiono nel diff**, ed è la
+  prova delle due cose che la decisione dei founder vietava di toccare;
+- **niente verifiche a schermo**: non c'è niente di nuovo a schermo. Stessa forma
+  delle altre passate documentali.
+
+##### Come sono state misurate
+
+- **la versione**: metadati letti dai byte del PDF (`/Title`, `/CreationDate`,
+  `/Count`), e frontespizio e piè di pagina letti come pagine;
+- **i quattro fatti**: aperte le pagine 3, 4, 6, 7, 11 e 25 e lette contro
+  `CLAUDE.md` §8, §9 e §10.B.1, invece di fidarsi della segnalazione;
+- **il 220–440**: ricalcolato dai cinque numeri di ancoraggio, dividendo per 100
+  dipendenti e per 12 mesi;
+- **il commit dei PDF**: `git log --oneline --all -- '*.pdf'`, più
+  `git log --all --format='%h' --name-only` filtrato su `.pdf` per la
+  controprova, e `git rev-list --all --objects` per i blob.
+
+##### Trovato e non toccato
+
+- **`/CreationDate` dice 20.07.2026 mentre il documento si dichiara di giugno
+  2026.** Non è una contraddizione: è un documento datato giugno esportato in
+  luglio, ed è il caso normale. Registrato perché chi rifà la verifica dei
+  metadati lo incontra e non deve chiedersi se sia un difetto;
+- **la riga «ROI potenziale» della p.4 non ha nessuna formula accanto**, quindi
+  non è etichettata male — è solo priva di contesto. Il difetto di etichetta è
+  della p.6, ed è lì che la voce lo colloca.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
