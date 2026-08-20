@@ -2165,7 +2165,7 @@ distinzione fra misurare e prevedere che il criterio di conteggio in testa a
 questo file tiene su un numero. Quello che resta vero, e che era il contenuto
 utile di quella frase, è **dove va il lavoro quando non c'è una richiesta
 aperta**: il perimetro dell'MVP (`docs/CONTRATTO-DATI.md` §8) e le decisioni in
-sospeso. **Quelle che hanno una sottosezione loro sono le
+sospeso. **Le passate che hanno una sottosezione loro sono le
 sottosezioni qui sotto**, e si contano leggendole invece di fidarsi di una cifra
 in prosa: la riga diceva **sette** quando erano già tredici, ed è lo stesso
 difetto della testa di questo file due schermate più su — un numero scritto
