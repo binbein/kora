@@ -2128,6 +2128,38 @@ conteggi, le attese e l'ordinamento, l'ordinamento dello stato della seduta, la
 rinomina delle rotte in inglese, e la demo pronta. Non aggiungono schermate e
 non spostano un numero a schermo.
 
+**I numeri sono tre e contano tre cose diverse**, ed è la riga che mancava
+accanto all'elenco (20.08.2026): le **PR mergiate** sotto il criterio in fondo
+a questa sezione, le **passate**, che sono i nomi di questo elenco, e i
+**verbali scritti**, che sono le sottosezioni `####` qui sotto. Nessuno dei tre
+conteggi vale per gli altri due. **Il criterio non si riscrive qui**: sta dov'è,
+con le sue esclusioni, e questa riga rimanda invece di duplicarlo — un secondo
+criterio è la stessa cosa di un secondo elenco.
+
+**Perché divergono, con un caso nominato per ragione.** Fra PR e passate ce n'è
+una: **una passata può alimentare due PR**, e
+`feat-annullamento-visibile-e-settimane` è stato riaperto dopo il primo merge —
+#65 e #66 escono dallo stesso branch, e nell'elenco sono un nome solo, che
+nomina il contenuto di entrambe. Fra passate e verbali le ragioni sono tre, e
+insieme coprono tutti i nomi che non hanno una sottosezione:
+
+- le più vecchie sono **nominate collettivamente** e non una per una — sono
+  dentro «quattro nell'intervallo M3 → M4» e «sette dopo M4», che sono gruppi
+  con un intervallo di PR e non nomi singoli;
+- una passata può essere **verbalizzata dentro la sottosezione di un'altra**:
+  #69, l'ordinamento dello stato della seduta, sta dentro «Le attese e
+  l'ordinamento», che glielo attribuisce per data;
+- una passata può **non avere un verbale da nessuna parte**, ed è la sola delle
+  tre che descrive qualcosa che manca invece di qualcosa che sta altrove: #47,
+  l'allineamento del `README.md`, di questo file ha cambiato la sola riga con
+  cui si è aggiunta all'elenco.
+
+**Il criterio in fondo conta PR e non passate, e non è una svista**: le sue
+esclusioni sono tutte di forma PR — *una PR il cui solo contenuto è la sintesi
+di una passata già mergiata*, *tocca solo `docs/PITCH.md`* — quindi un criterio
+che contasse passate dovrebbe rifondarle una per una. Si lascia dov'è e si dice
+cosa conta.
+
 **Il numero è uscito da questa riga il 19.08.2026, ed è la terza volta che
 invecchiava.** Diceva *"Trentatré passate"* mentre l'elenco si fermava
 all'annullamento e all'identità, cioè al 17.08.2026: mancavano le tre che
@@ -2137,9 +2169,11 @@ undici quando erano tredici. **Non è stato riportato a trentasei**: sarebbe
 stata la quarta stesura dello stesso difetto, e la dottrina è già scritta —
 **si cita ciò che non si muove**, che il `CLAUDE.md` §5.6 ha fissato per i
 guardrail e che il perimetro dell'MVP applica nominando i gruppi invece di
-numerarli. **I nomi non si muovono**, l'elenco per nome dice la stessa cosa, e
-chi vuole la cifra la ottiene contando l'elenco — come si contano le
-sottosezioni qui sotto.
+numerarli. **I nomi non si muovono**, e l'elenco per nome dice la stessa cosa.
+**Chi vuole una cifra dice prima quale insieme conta**: contare l'elenco non è
+applicare il criterio in fondo alla sezione, e non è contare le sottosezioni —
+sono tre insiemi e nessuno dei tre conteggi vale per gli altri, per le ragioni
+scritte sotto l'elenco.
 
 **Le due cifre datate restano dove sono**: il «totale — 31» della parentesi qui
 sotto e quello del verbale del 17.08.2026 sono resoconti di misure fatte quel
