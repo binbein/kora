@@ -7571,6 +7571,94 @@ prevedeva.
   sconti a volume nemmeno, e a 150 dipendenti la preselezione esce a **CHF 38** —
   identico all'Essenziale — offrendo medico virtuale illimitato e check-up annuale
   che l'Essenziale non ha. Verificato alla cifra.
+- **Il Business Plan da riallineare** (20.08.2026). Una revisione ha letto i due
+  PDF di `docs/` contro `CLAUDE.md` e `docs/PITCH.md`, e ne sono usciti quattro
+  fatti che **non sono difetti del prodotto**: sono difetti del documento, e il
+  documento vive fuori da questo repository.
+
+  1. **La soglia di anonimato.** Il BP **p.11** (parte A3) dà *"soglia min. 15
+     dip per anonimato LPD"*; la demo usa **12 dipendenti misurati nel periodo**,
+     con la motivazione in `CLAUDE.md` §8. **La regola per cui il documento si
+     aggiorna è già scritta** — `CLAUDE.md` §10.B.1 la fissa per il check rapido,
+     *dove i due divergono vince questo file e il documento si aggiorna*, e
+     `docs/PITCH.md` la richiama alla lettera per la soglia — **e il documento
+     non si è aggiornato**. Il BP deve anche dire **su quale dei due insiemi** la
+     soglia si applica, perché oggi non lo dice: è la metà che rende la cifra
+     ambigua, ed è la ragione per cui il pitch ha una risposta pronta su quel
+     confronto.
+
+     **Il ragionamento dei "Dubbi Business per CEO" §2.4 va rifatto**: costruisce
+     un argomento intero sulla soglia a 15 — *"in un'azienda da 30 persone quasi
+     nessun reparto supererà mai la soglia"* — e a 12 la sua conclusione può
+     cambiare.
+
+  2. **Il check rapido.** Il BP **p.7** lo descrive come *"ogni dipendente
+     risponde ogni mese a 3 domande rapide (30 secondi)"*; la demo fa **una
+     domanda, un tocco** (`CLAUDE.md` §8 e §10.B.1). Stessa regola del punto
+     sopra, e stessa inadempienza: è il §10.B.1 che la dichiara, proprio su
+     questo caso, e il documento non si è aggiornato.
+
+  3. **Il quarto rapporto di ROI, e la sua etichetta.** Il BP **p.3** scrive
+     *"per ogni CHF 55 investiti per dipendente, le aziende svizzere risparmiano
+     in media CHF 220–440"*, cioè un rapporto fra **4:1 e 8:1**. `CLAUDE.md` §9 e
+     `docs/PITCH.md` ne conoscono tre — 19,5:1 perdite totali su costo, 3,35:1
+     risparmio lordo su costo, 2,35:1 risparmio netto su costo, che è l'unico che
+     si mostra — e li disinnescano; **questo non esce da nessuna delle tre
+     formule** e non è censito da nessuna parte. Finché è lì, un investitore che
+     ha letto la p.3 ha in mano un quarto numero a cui il pitch non ha una
+     risposta. Il BP deve toglierlo o ricondurlo a una delle tre.
+
+     **E lo stesso numero ha un secondo difetto, che è ciò che rende pericoloso
+     il primo**: la **p.6** etichetta la riga *"ROI potenziale (perdite evitate /
+     costo KORA)"* mentre il calcolo è `1.289.500 / 66.000`, cioè perdite
+     **totali** su costo. *"Perdite evitate"* sarebbe il risparmio — CHF 221'150
+     — che su 66'000 dà **3,35:1**. Un rapporto **definito** diversamente si
+     spiega in sala; un rapporto **etichettato** come risparmio recuperato no,
+     perché chi legge non sta valutando una definizione: sta leggendo, nel nostro
+     documento, che risparmia 19,5 volte quello che paga.
+
+     **`CLAUDE.md` §9 conosce già l'aritmetica** e la dichiara *"perdite totali /
+     costo"*. Quello che il repository **non sapeva** è che il BP la etichetta
+     male: sono **due difetti distinti dello stesso numero**, e il BP li porta
+     tutti e due. *(La p.4, l'executive summary, porta lo stesso 19,5:1 sotto la
+     sola dicitura "ROI potenziale", senza formula: lì il numero è nudo, ed è la
+     p.6 a etichettarlo.)*
+
+  4. **L'aritmetica della tabella delle perdite, p.6.** Due righe non tornano con
+     il modello:
+
+     - **turnover**: la riga scrive *"4,3 abbandoni × CHF 50.000 costo medio"* e
+       dà **CHF 217.000**, ma il prodotto è **215.000**;
+     - **ricerca e sostituzione**: il BP dà **CHF 45.000**, il modello usa **CHF
+       470 per dipendente**, cioè **47'000** a N=100.
+
+     **Il totale non cambia** — le due voci sommano a **CHF 262.000** da entrambe
+     le parti, ed è il valore che il BP stesso usa due volte a p.7 — quindi i
+     cinque numeri di ancoraggio del §9 restano intatti e **`roi-model.ts` non si
+     tocca**. Ma chi ricalcola voce per voce trova due righe che non combaciano.
+     Il BP deve allineare lo split o dichiarare da cosa esce il 217.000.
+
+  **Perché è una decisione e non un compito.** Nessuno dei quattro si chiude
+  scrivendo codice o correggendo una riga di questo repository: si chiudono
+  **modificando il Business Plan**, che è un documento commerciale con una sua
+  versione e un suo destinatario. E su ognuno c'è una scelta che non è nostra —
+  la soglia si riporta a 12 o si riformula sull'insieme giusto, il check rapido
+  si riporta a una domanda o il prodotto ne aggiunge due, il 220–440 si toglie o
+  si riconduce, lo split del turnover si allinea o si dichiara.
+
+  **§9 non è stato toccato, ed è la parte da non fraintendere** (founder,
+  20.08.2026). §9 è l'elenco dei numeri **che il prodotto può mostrare**, e un
+  numero sbagliato del BP non diventa ammissibile perché lo abbiamo trovato:
+  diventa una cosa da correggere alla fonte. Il 220–440 non entra in §9 **e non
+  ci entra nemmeno come rimando**, e `docs/PITCH.md` **non guadagna una risposta
+  pronta** — scriverla porterebbe quel numero in sala, che è esattamente ciò che
+  la decisione evita. **Questa voce è il suo unico posto.**
+
+  **Proprietario: i founder**, che sono gli autori del documento. **Il trigger è
+  la prossima versione del Business Plan**, e i quattro si chiudono in una
+  stesura sola: toccano quattro pagine diverse dello stesso file, e aprirlo
+  quattro volte è il modo di allinearne tre.
+
 *(Erano in sospeso anche l'emoji nel saluto della home dipendente, decisa il
 07.08.2026 — si toglie — e la **palette con la CTA verde piena**, decisa il
 10.08.2026 — le CTA passano su `primary`. Entrambe fra le decisioni chiuse, ed
