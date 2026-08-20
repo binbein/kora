@@ -6895,13 +6895,6 @@ sottosezione di §8, per **12 occorrenze** — una riga ne porta due — su **ci
 gruppi diversi**: §8.2, §8.5, §8.6, §8.8 e §8.9. Più **una** in `CLAUDE.md`
 §10.D.3.
 
-**La misura è di prima di questa passata, e dopo il grep ne conta uno in più**,
-che va dichiarato invece di lasciarlo scoprire a chi rifà il conto: il
-preambolo corretto qui sopra **cita la forma** `§8.5` come esempio di
-sottosezione, e un grep non distingue una citazione della forma da un rimando.
-Chi rifà la misura la fa a **12 righe e 13 occorrenze** e ne toglie quella del
-preambolo, oppure conta i soli rimandi dentro il corpo del documento.
-
 **E i tre rimandi per nome di gruppo stanno tutti in `docs/PROGRESS.md`**:
 dentro il contratto la convenzione non è applicata nemmeno una volta.
 
