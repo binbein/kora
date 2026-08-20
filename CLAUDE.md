@@ -660,6 +660,13 @@ un collaboratore esterno — si tolgono dal repository e si ripulisce la storia 
 uscire sono i PDF, non il repository**: il codice e la sua storia restano qui, e il
 §5.7 vale intero — non esiste un frontend nuovo per l'MVP.
 
+**E costa un commit solo, misurato** (20.08.2026): i due PDF sono entrati
+insieme con `2b81f54` del 07.08.2026, e in tutta la storia — verificata su
+`--all` — **nessun altro commit tocca un `.pdf`**. La riscrittura toccherà quel
+commit e nient'altro, che è il caso più economico in cui `git filter-repo`
+possa trovarsi. La riga sta qui perché la clausola descriveva un'operazione
+senza dire quanto costa, e chi la eseguirà non avrà questa conversazione.
+
 ## 4. Come si lavora — le milestone
 
 Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
