@@ -454,9 +454,11 @@ anche il modo in cui in produzione lo si permessiona e lo si traccia.
 >
 > **Per chi scriverà il backend**: `assessmentCompleted` non è il punteggio
 > reso booleano, ed esporlo derivandolo da *"esiste un punteggio"* è ciò che
-> rimetterebbe il dato individuale sulla stessa riga per un'altra strada. I valori
-delle misure sono **stringhe** — "120/80 mmHg", "Ritmo sinusale" — perché sono
-letture con la loro unità, non grandezze che il client debba riformattare.
+> rimetterebbe il dato individuale sulla stessa riga per un'altra strada.
+
+I valori delle misure sono **stringhe** — "120/80 mmHg", "Ritmo sinusale" —
+perché sono letture con la loro unità, non grandezze che il client debba
+riformattare.
 
 ### Compensi
 
