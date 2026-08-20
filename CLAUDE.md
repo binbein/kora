@@ -1431,11 +1431,20 @@ Qui la si eviterebbe al contrario, mettendola in un elemento che non la merita.
   e **non nei commenti**, nemmeno in quelli che stanno dentro `i18n`. È la
   stessa disciplina dei call site (§5.6) e delle chiavi (§2.7): due rilevazioni
   dello stesso oggetto senza una regola scritta danno due numeri, e qui la
-  differenza è già arrivata. Un `grep -c` su un dizionario oggi conta **due**
-  occorrenze di "sedute" in `it.ts`, tutte e due nel commento che regola le
-  biografie: **non sono una violazione**, per la riga qui sopra, e il commento
-  resta dov'è. A essere invecchiata è la misura fatta senza il criterio, non il
-  codice.
+  differenza è già arrivata. **Un `grep -c` su un dizionario pesca anche nei
+  commenti**: "sedute" in `it.ts` ci compare, e nei valori non c'è, quindi
+  quello che il grep trova **non è una violazione** — per la riga qui sopra — e
+  i commenti restano dove sono. A essere invecchiata è la misura fatta senza il
+  criterio, non il codice.
+
+  **Quante siano non si scrive** (20.08.2026), e la ragione è la cifra che
+  stava qui. Diceva **due**, «tutte e due nel commento che regola le
+  biografie», ed è invecchiata **il giorno stesso in cui è stata scritta**:
+  `68a4720`, il salto a data del calendario, ne ha portata una terza in un
+  commento diverso, e le due frasi sono del 18.08.2026 tutte e due. Riportarla
+  a tre la farebbe invecchiare alla prima passata che tocca un commento, cioè
+  esattamente come è invecchiata questa — **il fatto che serve è che un grep
+  grezzo peschi nei commenti, non quante volte lo faccia.**
 
   **La doppia parola può esistere in una lingua sola, e va cercata lingua per
   lingua**: al momento dell'allineamento tedesco, francese e inglese usavano già
