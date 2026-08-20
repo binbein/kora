@@ -297,14 +297,32 @@ repository Next non dia niente per scontato.
   che pure c'era, perché diceva **33** e il giorno prima `popover` e `calendar`
   erano usciti dal magazzino (riga qui sotto). È uscita perché **non aveva un
   criterio, e senza criterio i conti sono due**: *"non li importa nessuno"* può
-  voler dire **nessun file fuori da `ui/`**, e allora sono 31, oppure **nessun
-  file, nemmeno un loro pari**, e allora sono 26 — cinque li importa soltanto un
-  pari, quattro `sidebar.tsx` e uno `toggle-group.tsx`. È la famiglia dei call
+  voler dire **nessun file fuori da `ui/`**, oppure **nessun file, nemmeno un
+  loro pari** — cinque li importa soltanto un pari, quattro `sidebar.tsx` e uno
+  `toggle-group.tsx`. È la famiglia dei call
   site (§5.6) e delle chiavi (§2.7),
   e qui il rimedio costa meno che là: **la ragione per cui si tengono non
   dipende da quanti sono**, quindi togliere la cifra non toglie niente alla
   frase. Chi la volesse conta gli import, dichiarando quale dei due insiemi
   conta.
+
+  **E il criterio ha un secondo asse** (20.08.2026): chi conta dichiara **anche
+  se il codice morto vale come importatore**, e i due insiemi qui sopra si
+  contano in quattro modi. Il caso è uno solo ed è `checkbox`, importato
+  soltanto da `FlexiblePlanCard.jsx` — che a sua volta non lo importa nessuno,
+  perché il piano "Personalizzato" è in sospeso (§10.A.3) — e contarlo o no
+  sposta di uno **entrambi** gli insiemi. Una regola senza la sua istanza manda
+  il prossimo a cercarla, ed è per questo che il caso sta scritto accanto al
+  criterio.
+
+  **Le due cifre che stavano qui non erano sbagliate né invecchiate**, ed è il
+  motivo per cui questa riga non è una correzione: erano i due insiemi contati
+  **escludendo** il codice morto, cioè una scelta legittima che il paragrafo non
+  aveva dichiarato di aver preso. Escono per due ragioni insieme —
+  **dipendevano da un criterio taciuto, e si muovono al primo import** — quindi
+  tanto riportarle
+  quanto lasciarle sarebbe stata la stessa promessa di tornare a rileggerle che
+  il 19.08.2026 ha già sciolto su questo paragrafo.
 
   **Il magazzino è servito, ed è la prima volta** (18.08.2026): `popover.tsx` e
   `calendar.tsx` sono usciti da lì per il salto a data del calendario
@@ -1415,11 +1433,20 @@ Qui la si eviterebbe al contrario, mettendola in un elemento che non la merita.
   e **non nei commenti**, nemmeno in quelli che stanno dentro `i18n`. È la
   stessa disciplina dei call site (§5.6) e delle chiavi (§2.7): due rilevazioni
   dello stesso oggetto senza una regola scritta danno due numeri, e qui la
-  differenza è già arrivata. Un `grep -c` su un dizionario oggi conta **due**
-  occorrenze di "sedute" in `it.ts`, tutte e due nel commento che regola le
-  biografie: **non sono una violazione**, per la riga qui sopra, e il commento
-  resta dov'è. A essere invecchiata è la misura fatta senza il criterio, non il
-  codice.
+  differenza è già arrivata. **Un `grep -c` su un dizionario pesca anche nei
+  commenti**: "sedute" in `it.ts` ci compare, e nei valori non c'è, quindi
+  quello che il grep trova **non è una violazione** — per la riga qui sopra — e
+  i commenti restano dove sono. A essere invecchiata è la misura fatta senza il
+  criterio, non il codice.
+
+  **Quante siano non si scrive** (20.08.2026), e la ragione è la cifra che
+  stava qui. Diceva **due**, «tutte e due nel commento che regola le
+  biografie», ed è invecchiata **il giorno stesso in cui è stata scritta**:
+  `68a4720`, il salto a data del calendario, ne ha portata una terza in un
+  commento diverso, e le due frasi sono del 18.08.2026 tutte e due. Riportarla
+  a tre la farebbe invecchiare alla prima passata che tocca un commento, cioè
+  esattamente come è invecchiata questa — **il fatto che serve è che un grep
+  grezzo peschi nei commenti, non quante volte lo faccia.**
 
   **La doppia parola può esistere in una lingua sola, e va cercata lingua per
   lingua**: al momento dell'allineamento tedesco, francese e inglese usavano già

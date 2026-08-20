@@ -1191,6 +1191,13 @@ testo è ancora nel campo. Il messaggio sta sotto il pulsante che l'ha causato e
 
 ##### La dimostrazione: due manopole, e solo in sviluppo
 
+*(Diceva due, ed era vero quando è stato scritto: le manopole sono **tre**, e
+la terza è `?role=`, arrivata col blocco d). Titolo e corpo restano — è un
+verbale — e la spiegazione sta nel `CLAUDE.md` §4, blocco b), che è dove va
+letta; il `README.md` diceva già tre. Nota aggiunta il 20.08.2026: il
+18.08.2026 lo stesso fatto era stato corretto là e nel `README.md`, e questo
+punto, che è il più visibile del file sull'argomento, era rimasto indietro.)*
+
 `data/fault-injection.ts` è un `Proxy` sull'implementazione mock, montato da
 `index.ts` **solo** quando `GUARDRAIL_MODE` vale `"throw"`. `?fail=metodo[:n]`
 produce il guasto, `?empty=metodo` il vuoto legittimo — e senza la seconda
@@ -2125,8 +2132,41 @@ trimestre, il conteggio che diventa un guardrail, l'annullamento e l'identità,
 l'allineamento fra codice e verbali, l'igiene del repository, l'annullamento
 visibile con la navigazione fra settimane e il salto a data, i criteri e i
 conteggi, le attese e l'ordinamento, l'ordinamento dello stato della seduta, la
-rinomina delle rotte in inglese, e la demo pronta. Non aggiungono schermate e
+rinomina delle rotte in inglese, la demo pronta, e le cifre nelle
+parentetiche. Non aggiungono schermate e
 non spostano un numero a schermo.
+
+**I numeri sono tre e contano tre cose diverse**, ed è la riga che mancava
+accanto all'elenco (20.08.2026): le **PR mergiate** sotto il criterio in fondo
+a questa sezione, le **passate**, che sono i nomi di questo elenco, e i
+**verbali scritti**, che sono le sottosezioni `####` qui sotto. Nessuno dei tre
+conteggi vale per gli altri due. **Il criterio non si riscrive qui**: sta dov'è,
+con le sue esclusioni, e questa riga rimanda invece di duplicarlo — un secondo
+criterio è la stessa cosa di un secondo elenco.
+
+**Perché divergono, con un caso nominato per ragione.** Fra PR e passate ce n'è
+una: **una passata può alimentare due PR**, e
+`feat-annullamento-visibile-e-settimane` è stato riaperto dopo il primo merge —
+#65 e #66 escono dallo stesso branch, e nell'elenco sono un nome solo, che
+nomina il contenuto di entrambe. Fra passate e verbali le ragioni sono tre, e
+insieme coprono tutti i nomi che non hanno una sottosezione:
+
+- le più vecchie sono **nominate collettivamente** e non una per una — sono
+  dentro «quattro nell'intervallo M3 → M4» e «sette dopo M4», che sono gruppi
+  con un intervallo di PR e non nomi singoli;
+- una passata può essere **verbalizzata dentro la sottosezione di un'altra**:
+  #69, l'ordinamento dello stato della seduta, sta dentro «Le attese e
+  l'ordinamento», che glielo attribuisce per data;
+- una passata può **non avere un verbale da nessuna parte**, ed è la sola delle
+  tre che descrive qualcosa che manca invece di qualcosa che sta altrove: #47,
+  l'allineamento del `README.md`, di questo file ha cambiato la sola riga con
+  cui si è aggiunta all'elenco.
+
+**Il criterio in fondo conta PR e non passate, e non è una svista**: le sue
+esclusioni sono tutte di forma PR — *una PR il cui solo contenuto è la sintesi
+di una passata già mergiata*, *tocca solo `docs/PITCH.md`* — quindi un criterio
+che contasse passate dovrebbe rifondarle una per una. Si lascia dov'è e si dice
+cosa conta.
 
 **Il numero è uscito da questa riga il 19.08.2026, ed è la terza volta che
 invecchiava.** Diceva *"Trentatré passate"* mentre l'elenco si fermava
@@ -2137,9 +2177,11 @@ undici quando erano tredici. **Non è stato riportato a trentasei**: sarebbe
 stata la quarta stesura dello stesso difetto, e la dottrina è già scritta —
 **si cita ciò che non si muove**, che il `CLAUDE.md` §5.6 ha fissato per i
 guardrail e che il perimetro dell'MVP applica nominando i gruppi invece di
-numerarli. **I nomi non si muovono**, l'elenco per nome dice la stessa cosa, e
-chi vuole la cifra la ottiene contando l'elenco — come si contano le
-sottosezioni qui sotto.
+numerarli. **I nomi non si muovono**, e l'elenco per nome dice la stessa cosa.
+**Chi vuole una cifra dice prima quale insieme conta**: contare l'elenco non è
+applicare il criterio in fondo alla sezione, e non è contare le sottosezioni —
+sono tre insiemi e nessuno dei tre conteggi vale per gli altri, per le ragioni
+scritte sotto l'elenco.
 
 **Le due cifre datate restano dove sono**: il «totale — 31» della parentesi qui
 sotto e quello del verbale del 17.08.2026 sono resoconti di misure fatte quel
@@ -2165,15 +2207,30 @@ distinzione fra misurare e prevedere che il criterio di conteggio in testa a
 questo file tiene su un numero. Quello che resta vero, e che era il contenuto
 utile di quella frase, è **dove va il lavoro quando non c'è una richiesta
 aperta**: il perimetro dell'MVP (`docs/CONTRATTO-DATI.md` §8) e le decisioni in
-sospeso. **Quelle che hanno una sottosezione loro sono le
+sospeso. **Le passate che hanno una sottosezione loro sono le
 sottosezioni qui sotto**, e si contano leggendole invece di fidarsi di una cifra
 in prosa: la riga diceva **sette** quando erano già tredici, ed è lo stesso
 difetto della testa di questo file due schermate più su — un numero scritto
-accanto alla lista che lo smentisce. *(Corretta il 15.08.2026 togliendo il
-conteggio, non allineandolo. A trovarla non è stata la spazzata degli avverbi,
-che cerca «oggi» e «ora» accanto a un numero: qui l'avverbio non c'era, e a
-denunciarla è stata la lista. Chi rifà quella spazzata deve saperlo prima — il
-criterio «numero + avverbio» non copre tutta la famiglia.)* La sintesi sta qui
+accanto alla lista che lo smentisce. **Stesso difetto, misure diverse**
+(20.08.2026): il «sette» conta le **sottosezioni**, cioè l'antenato di quello
+che oggi si ottiene contandole, mentre la cifra in testa al file conta le
+**passate**. Sono due delle quattro progressioni di questo file, e senza questa
+mezza riga si leggono in fila come se fossero una sola. *(Corretta il 15.08.2026
+togliendo il conteggio, non allineandolo. A trovarla non è stata la spazzata
+degli avverbi, che cerca «oggi» e «ora» accanto a un numero: qui l'avverbio non
+c'era, e a denunciarla è stata la lista. Chi rifà quella spazzata deve saperlo
+prima — il criterio «numero + avverbio» non copre tutta la famiglia.)*
+
+*(**Il terzo membro è il numero dentro una parentetica** (20.08.2026), e la
+prova che il posto è questo — e insieme che questa riga da sola non basta — è
+che **la spazzata del 19.08.2026 ce l'aveva davanti e non l'ha applicata**: le
+cifre che le sono sfuggite stavano in incisi, corsivi e note fra parentesi,
+cioè dove una passata che cerca **righe** non guarda. Da qui si cerca la cosa
+che sta invecchiando, cioè **le cifre**: si passano in rassegna i numeri del
+testo, in lettere e in numeri, e per ognuno si chiede se accanto ha il criterio
+che lo rifà. L'avverbio è un indizio, non la ricerca — e una riga che dice dove
+si nascondono senza dire come si cercano invecchia come quelle che denuncia.)*
+La sintesi sta qui
 perché **il dettaglio è in git e il quadro no**: chi riprende deve sapere che
 queste cose esistono prima di riscoprirle.
 
@@ -6523,11 +6580,206 @@ overflow orizzontale.
   pulsanti d'intestazione. Verificato invece che l'input **sta dentro un
   `<form>`**, cioè che un Invio vero lo invia.
 
+#### Le cifre nelle parentetiche (20.08.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il
+comando in testa a questo file. **Solo documenti**: `git diff --stat` contro
+`master` tocca `CLAUDE.md` e questo file e **nessun file sotto `src/`**,
+verificato con `git diff --name-only`. `typecheck` e `lint` escono a zero — non
+potevano muoversi, e sono stati eseguiti perché è quella la prova che `src/` è
+fermo. **Nessun numero del §8 e del §9 si muove**, le rotte restano **26** e le
+schermate **27**, `EXPECTED_KEYS` resta **780** e i guardrail **111 = 102 + 9**.
+
+**Cinque cifre di prosa che la passata del 19.08.2026 non ha raggiunto**, più
+due cose trovate dentro righe che questa passata stava già modificando. Il
+rimedio è sempre lo stesso e non è nuovo: **si toglie la cifra e si lascia il
+criterio**, perché una cifra accanto a un criterio rende il conto *rifacibile* e
+non lo rende *rifatto*.
+
+##### Perché quelle cinque erano sopravvissute, ed è il rilievo che vale più delle correzioni
+
+**Stavano in parentetiche, e una passata che cerca cifre invecchiate cerca
+righe.** La spazzata del 19.08.2026 aveva davanti a sé la riga che elenca i modi
+in cui una cifra sfugge — il criterio «numero + avverbio» e il numero denunciato
+dalla lista accanto — e non l'ha applicata a sé stessa. Il terzo membro è
+adesso scritto lì, ed è **il numero dentro una parentetica**.
+
+**Con una clausola che la riga non aveva, e senza la quale sarebbe invecchiata
+come le altre**: dice anche **cosa si cerca**, cioè le cifre e non gli avverbi.
+Si passano in rassegna i numeri del testo, in lettere e in numeri, e per ognuno
+si chiede se accanto ha il criterio che lo rifà. L'avverbio è un indizio, non la
+ricerca.
+
+##### Le progressioni di conteggio di questo file sono quattro, non tre
+
+È il rilievo che la verifica ha prodotto e non ha una riga viva dove stare per
+intero. Quattro oggetti diversi hanno avuto ognuno la propria serie di cifre
+scritte e smentite:
+
+| | oggetto | la serie | dove |
+|---|---|---|---|
+| **A** | le **passate**, contate dalla sezione refinement | 5 quando erano 8 · 11 quando erano 13 · 33 quando erano 36 | qui |
+| **B** | le **passate**, contate dal paragrafo «Stato» | 11 mentre la sezione diceva 13 · 17 quando erano 20 | in testa al file |
+| **C** | le **sottosezioni** | 7 quando erano già 13 | qui |
+| **D** | i **commit di una passata** | tre cifre sbagliate in cinque giorni (15, 17 e 18.08.2026) | nei verbali |
+
+**Due di loro si leggevano come una, ed è il difetto chiuso in questa passata.**
+La riga che porta il «sette» di **C** aggiunge *«ed è lo stesso difetto della
+testa di questo file due schermate più su»*, che rimanda a **B** — e le due
+serie **finiscono sullo stesso 13**. Messe in fila senza dire cosa contano si
+leggono come una progressione sola, mentre sono due oggetti diversi: le
+sottosezioni e le passate. È lo stesso difetto come *famiglia* e due misure
+diverse come *conteggio*, e adesso la mezza riga lo dice.
+
+##### I tre insiemi della sezione refinement
+
+Tre numeri vivevano sullo stesso oggetto e la sezione non diceva che sono tre:
+le **PR mergiate** sotto il criterio in fondo alla sezione, le **passate** che
+sono i nomi dell'elenco, e i **verbali scritti** che sono le sottosezioni.
+La riga che diceva *«chi vuole la cifra la ottiene contando l'elenco — come si
+contano le sottosezioni qui sotto»* asseriva **due** equivalenze, e sono false
+tutte e due.
+
+**Le ragioni della divergenza sono nominate una per una, non lasciate in
+astratto**, e coprono ogni nome dell'elenco che una sottosezione non ce l'ha:
+
+- **fra PR e passate**: una passata può alimentare due PR —
+  `feat-annullamento-visibile-e-settimane` è stato riaperto dopo il primo merge,
+  #65 e #66 escono dallo stesso branch, e nell'elenco sono un nome solo;
+- **fra passate e verbali**, tre casi: le più vecchie sono **nominate
+  collettivamente** e non una per una; una passata può essere **verbalizzata
+  dentro la sottosezione di un'altra** (#69 dentro «Le attese e l'ordinamento»,
+  che glielo attribuisce per data); e una passata può **non avere un verbale da
+  nessuna parte** — #47, l'allineamento del `README.md`, che di questo file ha
+  cambiato la sola riga con cui si è aggiunta all'elenco. La terza è l'unica che
+  descrive qualcosa che **manca** invece di qualcosa che sta altrove.
+
+**Nessuna delle tre cifre è stata scritta**, ed è la dottrina del 19.08.2026
+applicata al caso che l'ha prodotta. **Il criterio in fondo non è stato
+riscritto**: conta PR e non passate perché le sue esclusioni sono tutte di forma
+PR — *«una PR il cui solo contenuto è la sintesi di una passata già mergiata»*,
+*«tocca solo `docs/PITCH.md`»* — quindi un criterio che contasse passate
+dovrebbe rifondarle una per una. La riga nuova rimanda invece di duplicarlo: un
+secondo criterio è la stessa cosa di un secondo elenco.
+
+##### Le due cifre del `CLAUDE.md`, e perché nessuna delle due era sbagliata
+
+**§3, i componenti tenuti.** Il paragrafo nominava i due insiemi — nessun
+importatore fuori da `ui/`, e nessun importatore affatto — e taceva il **secondo
+asse del criterio**: se il codice morto valga come importatore. Il caso è uno
+solo, `checkbox`, importato soltanto da `FlexiblePlanCard.jsx`, che a sua volta
+non lo importa nessuno perché il piano "Personalizzato" è in sospeso (§10.A.3),
+e contarlo o no sposta di uno **entrambi** gli insiemi — che quindi si contano
+in quattro modi.
+
+**Le due cifre che stavano lì non erano né sbagliate né invecchiate**, ed è la
+parte da non leggere come una correzione: erano la lettura che il codice morto
+lo esclude, cioè una scelta legittima che il paragrafo non aveva dichiarato di
+aver preso. Escono per due ragioni insieme — **dipendevano da un criterio
+taciuto, e si muovono al primo import** — quindi tanto riportarle quanto
+lasciarle sarebbe stata la stessa promessa di tornare a rileggerle che il
+19.08.2026 aveva già sciolto su quel paragrafo. Il caso sta scritto accanto al
+criterio perché **una regola senza la sua istanza manda il prossimo a cercarla**.
+
+**§7, la parola vecchia.** La parentetica diceva che un `grep -c` conta **due**
+occorrenze di "sedute" in `it.ts`, *«tutte e due nel commento che regola le
+biografie»*. Sono tre, e la terza sta in un commento diverso: `68a4720`, il
+salto a data del calendario, l'ha portata **il 18.08.2026**, cioè il giorno
+stesso in cui quella frase è stata scritta. **La regola non è mai stata
+violata** — il criterio conta i valori, e nei valori non ce n'è nessuna, su
+tutti e quattro i dizionari — quindi a uscire è la sola fotografia: riportarla a
+tre l'avrebbe fatta invecchiare alla prima passata che tocca un commento.
+
+##### Le due parentesi mancanti di questo file
+
+**«Punto di partenza» correggeva una cifra su due.** Diceva *«47 componenti
+shadcn (**oggi sono 45**: …)»* e *«25 rotte»* nuda, mentre oggi sono **26** — e
+lo dice questo stesso file quindici righe più sotto. È un verbale, quindi le
+cifre originali restano e si aggiunge la parentesi mancante, nella forma che
+quella accanto usava già.
+
+**M5.b si intitola «due manopole» e le manopole sono tre.** `?role` è arrivata
+col blocco d), e il 18.08.2026 il fatto è stato corretto nel `CLAUDE.md` §4 e
+nel `README.md` ma non qui, che è il punto più visibile del file
+sull'argomento. È un verbale: titolo e corpo restano, la nota porta la data e
+**rimanda al `CLAUDE.md` §4** invece di ripetere la spiegazione.
+
+##### Un pronome senza soggetto, e la data è di un'altra passata
+
+*«Quelle che hanno una sottosezione loro»* non aveva antecedente: la frase che
+la precede finisce sul perimetro dell'MVP e sulle decisioni in sospeso, e
+nessuno dei due ha una sottosezione qui. **Il soggetto sono le passate**, e a
+dirlo è git — la stesura che quella clausola ha sostituito, in `6de0f4d`,
+leggeva *«più le sette che hanno una sottosezione loro qui sotto»*.
+
+**Si è staccato il 17.08.2026**, quando la passata che ha separato le due metà
+ha riscritto la frase precedente; la clausola non è mai stata toccata. È un
+difetto di quella passata e ha il suo commit, invece di sparire dentro quello
+sui tre insiemi.
+
+**Non è stata spostata**, benché stia dentro un paragrafo che parla d'altro: la
+parentetica che la segue è il criterio della spazzata, e spostare la frase o
+lascia la parentetica orfana o porta via un criterio dal punto in cui è nato.
+
+##### Verificato
+
+- **`git diff --name-only` contro `master`: nessun file sotto `src/`**, e i due
+  soli file toccati sono `CLAUDE.md` e `docs/PROGRESS.md`;
+- `typecheck` e `lint` a **zero**, eseguiti per provare quel «nessun file» e non
+  perché qualcosa potesse muoversi;
+- **gli invarianti rimisurati alla cifra**: guardrail **102 + 9 = 111** col
+  criterio del `CLAUDE.md` §5.6, `EXPECTED_KEYS` **780** e i quattro dizionari a
+  780 chiavi foglia sull'albero di TypeScript, rotte **26** in `App.tsx`, col
+  criterio per intero perché nessuno dei tre passaggi si indovina: gli elementi
+  `<Route>` sono **31** — 27 con un `path=` più 4 `<Route index>` — meno il
+  catch-all fanno le **30** rotte dichiarate, e meno i quattro `path` che
+  avvolgono i portali, che sono i **layout** e non rotte, fanno **26**. Un
+  `grep -o '<Route'` ne dà 33, perché pesca anche `<Routes>` e `<Router>`;
+- **niente verifiche a schermo, e va detto perché**: non c'è niente di nuovo a
+  schermo. È la stessa forma delle passate documentali del 15.08.2026 e del
+  19.08.2026.
+
+##### Come sono state misurate, perché le misure si rifanno
+
+- **i due insiemi di `ui/`, sui due assi**: si scorrono i `from
+  "@/components/ui/<nome>"` di `src/`, una volta escludendo
+  `src/components/ui/` e una volta contando anche i pari, e ogni volta
+  dichiarando se `FlexiblePlanCard.jsx` vale come importatore. Due insiemi per
+  due scelte fanno **quattro conti**, e le quattro cifre sono tutte diverse;
+- **le occorrenze di "sedute"**: `grep -c` sul file per il totale grezzo, e
+  l'albero di TypeScript per quelle nei valori — `PropertyAssignment` con
+  inizializzatore letterale stringa il cui testo contiene la parola;
+- **i tre insiemi della sezione**: le PR con `git log --merges` filtrato sul
+  criterio in fondo alla sezione, le passate contando i nomi dell'elenco, i
+  verbali contando i `####` fra l'intestazione della sezione e quella
+  successiva;
+- **il branch riaperto**: `git log --merges` mostra
+  `feat-annullamento-visibile-e-settimane` **due volte**, ed è l'unico branch
+  della storia che compaia più di una volta;
+- **il soggetto perduto**: `git log -L` sulla riga, che risale alla stesura
+  precedente.
+
+##### Trovato e non toccato
+
+- **le quindici esclusioni del criterio sono state riverificate sui file
+  toccati**, non sulla prosa, e tornano tutte: #19 è M4, #25 e #35 toccano solo
+  `docs/PROGRESS.md`, #27 e #42 solo `docs/PITCH.md`, #29–#33 e #36–#38, #40 e
+  #41 sono M5. Non è un difetto, è la misura che regge la riga nuova;
+- **`FlexiblePlanCard.jsx` è l'unico codice morto vero fuori da `ui/`**:
+  controllati anche i tre `*Nav` che un conteggio ingenuo dà per orfani, e sono
+  importati per percorso relativo dai rispettivi layout. Serve a chi rifarà la
+  misura dei due insiemi;
+- **`.git/index.lock` era rimasto da una sessione precedente**, vuoto e senza
+  nessun processo git a tenerlo, e ha fatto fallire il primo commit. Rimosso.
+  Non è un fatto del repository ma della macchina, ed è annotato perché la
+  prossima sessione che lo incontra non lo legga come un difetto del lavoro.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
-professionista, admin), design system e navigazione, 47 componenti shadcn
-(**oggi sono 45**: il sistema di toast, che ne contava tre, è uscito il
+professionista, admin; **oggi sono 26**: `/roi` è stata approvata il 07.08.2026
+e costruita in M3 — `CLAUDE.md` §10), design system e navigazione, 47 componenti
+shadcn (**oggi sono 45**: il sistema di toast, che ne contava tre, è uscito il
 07.08.2026 — decisione qui sotto), grafici recharts.
 
 Ereditato e **non** funzionante. Questa è la fotografia del primo commit, e le
