@@ -1162,8 +1162,7 @@ Le domande da chiudere, tutte e tre di prodotto prima che di implementazione:
   resta sospesa quando uno dei due non risponde;
 - **entro quale finestra.** Un compenso che matura senza scadenza non si chiude
   mai, e il riepilogo mensile del portale professionista — che si consolida al
-  quinto del mese dopo (§3, compensi) — ha bisogno di sapere quando il mese è
-  definitivo;
+  quinto del mese dopo — ha bisogno di sapere quando il mese è definitivo;
 - **cosa succede se i due lati non concordano.** È il caso che genera la mancata
   presentazione qui sotto, e non è lo stesso problema: lì manca uno **stato**, qui
   manca **chi lo scrive**.
