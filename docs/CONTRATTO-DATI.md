@@ -11,9 +11,13 @@ in trenta minuti, non a vincolare l'API. Dove una scelta del dataset ha
 conseguenze sul contratto, è detto esplicitamente.
 
 **Come si leggono i rimandi**, perché qui se ne incrociano di due documenti:
-`§N` da solo è **una sezione di questo documento**, che ne ha otto e nessuna
-sottosezione numerata; i rimandi a `CLAUDE.md` portano **sempre il nome del
-file**.
+`§N` da solo è **una sezione di questo documento**, o una sua sottosezione —
+`§3` come `§8.5`; i rimandi a `CLAUDE.md` portano **sempre il nome del file**.
+
+**Quante siano non si scrive, perché il §8 cresce per inserzione**
+(20.08.2026): questa riga dichiarava otto sezioni e «nessuna sottosezione
+numerata» mentre il §8 ne aveva già dodici, e una cifra nuova invecchierebbe
+alla prossima voce del perimetro.
 
 La regola era applicata a metà e si scioglieva per esclusione, perché i numeri
 alti non potevano che essere della costituzione. **Il §8 di questo documento
