@@ -11,9 +11,13 @@ in trenta minuti, non a vincolare l'API. Dove una scelta del dataset ha
 conseguenze sul contratto, è detto esplicitamente.
 
 **Come si leggono i rimandi**, perché qui se ne incrociano di due documenti:
-`§N` da solo è **una sezione di questo documento**, che ne ha otto e nessuna
-sottosezione numerata; i rimandi a `CLAUDE.md` portano **sempre il nome del
-file**.
+`§N` da solo è **una sezione di questo documento**, o una sua sottosezione —
+`§3` come `§8.x`; i rimandi a `CLAUDE.md` portano **sempre il nome del file**.
+
+**Quante siano non si scrive, perché il §8 cresce per inserzione**
+(20.08.2026): questa riga dichiarava otto sezioni e «nessuna sottosezione
+numerata» mentre il §8 ne aveva già dodici, e una cifra nuova invecchierebbe
+alla prossima voce del perimetro.
 
 La regola era applicata a metà e si scioglieva per esclusione, perché i numeri
 alti non potevano che essere della costituzione. **Il §8 di questo documento
@@ -450,9 +454,11 @@ anche il modo in cui in produzione lo si permessiona e lo si traccia.
 >
 > **Per chi scriverà il backend**: `assessmentCompleted` non è il punteggio
 > reso booleano, ed esporlo derivandolo da *"esiste un punteggio"* è ciò che
-> rimetterebbe il dato individuale sulla stessa riga per un'altra strada. I valori
-delle misure sono **stringhe** — "120/80 mmHg", "Ritmo sinusale" — perché sono
-letture con la loro unità, non grandezze che il client debba riformattare.
+> rimetterebbe il dato individuale sulla stessa riga per un'altra strada.
+
+I valori delle misure sono **stringhe** — "120/80 mmHg", "Ritmo sinusale" —
+perché sono letture con la loro unità, non grandezze che il client debba
+riformattare.
 
 ### Compensi
 
@@ -1158,8 +1164,7 @@ Le domande da chiudere, tutte e tre di prodotto prima che di implementazione:
   resta sospesa quando uno dei due non risponde;
 - **entro quale finestra.** Un compenso che matura senza scadenza non si chiude
   mai, e il riepilogo mensile del portale professionista — che si consolida al
-  quinto del mese dopo (§3, compensi) — ha bisogno di sapere quando il mese è
-  definitivo;
+  quinto del mese dopo — ha bisogno di sapere quando il mese è definitivo;
 - **cosa succede se i due lati non concordano.** È il caso che genera la mancata
   presentazione qui sotto, e non è lo stesso problema: lì manca uno **stato**, qui
   manca **chi lo scrive**.
@@ -1196,7 +1201,7 @@ il ciclo vero ne ha di più:
   conseguenza**: la separazione fra l'invariante e l'assunzione sta in *"cosa
   vuol dire occupato"*, qui sotto (18.08.2026).
 
-  **Manca ancora, e sono quattro cose distinte:**
+  **Manca ancora, e ognuna è una decisione a sé:**
 
   - **la disdetta dal lato del dipendente**, che è l'altra metà del verso:
     `by_patient` esiste nell'enumerazione ed è oggi un valore che **solo il

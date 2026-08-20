@@ -2132,8 +2132,8 @@ trimestre, il conteggio che diventa un guardrail, l'annullamento e l'identità,
 l'allineamento fra codice e verbali, l'igiene del repository, l'annullamento
 visibile con la navigazione fra settimane e il salto a data, i criteri e i
 conteggi, le attese e l'ordinamento, l'ordinamento dello stato della seduta, la
-rinomina delle rotte in inglese, la demo pronta, e le cifre nelle
-parentetiche. Non aggiungono schermate e
+rinomina delle rotte in inglese, la demo pronta, le cifre nelle
+parentetiche, e i rimandi del contratto. Non aggiungono schermate e
 non spostano un numero a schermo.
 
 **I numeri sono tre e contano tre cose diverse**, ed è la riga che mancava
@@ -6773,6 +6773,167 @@ lascia la parentetica orfana o porta via un criterio dal punto in cui è nato.
   nessun processo git a tenerlo, e ha fatto fallire il primo commit. Rimosso.
   Non è un fatto del repository ma della macchina, ed è annotato perché la
   prossima sessione che lo incontra non lo legga come un difetto del lavoro.
+
+#### I rimandi del contratto (20.08.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il
+comando in testa a questo file. **È la seconda passata documentale della
+giornata**, dopo «Le cifre nelle parentetiche», e tocca un file solo:
+`docs/CONTRATTO-DATI.md`. `git diff --name-only` contro `master` non tocca
+**nessun file sotto `src/`**; `typecheck` e `lint` a zero, eseguiti perché sono
+quella prova. **Nessun numero del §8 e del §9 si muove**, le rotte restano
+**26** e le schermate **27**, `EXPECTED_KEYS` **780**, i guardrail **111 = 102 +
+9**.
+
+**Nessun invariante, nessuna KPI, nessuna forma di tipo è cambiata.** Tre
+riparazioni sono rimandi e conteggi, una è formattazione con effetto sul senso.
+
+**Perché su questo documento pesa di più.** Il contratto **nasce nel repository
+del backend** (`CLAUDE.md` §3, §5.7), dove `CLAUDE.md` potrebbe non esserci: un
+rimando rotto lì non ha un secondo posto in cui essere verificato.
+
+##### Il preambolo contava le sezioni, e il §8 gliele ha fatte crescere sotto
+
+La convenzione dei rimandi dichiarava che un `§N` nudo è una sezione di questo
+documento, *«che ne ha otto e nessuna sottosezione numerata»*. Le sottosezioni
+numerate sono **dodici**, `8.1`–`8.12`, e il documento stesso ci rimanda.
+
+**È invecchiata con la sezione che ha reso viva quella regola**: il §8 è nato
+con sette gruppi il 15.08.2026, è passato a dieci lo stesso giorno e a dodici il
+17.08. **Il conteggio esce invece di andare a dodici** — invecchierebbe alla
+prossima voce del perimetro — e la riga dice il vero senza cifre: un `§N` nudo è
+una sezione **o una sua sottosezione**, `§3` come `§8.5`.
+
+##### L'elenco di ciò che manca al ciclo dell'appuntamento diceva quattro ed erano cinque
+
+*«Manca ancora, e sono quattro cose distinte»* seguito da cinque punti. **Il
+quinto si autodenuncia**: è la notifica, arrivata il 18.08.2026, e scrive
+*«Nessuna delle quattro voci qui sopra la copre»*.
+
+**Il numero esce, non va a cinque.** È la famiglia del `CLAUDE.md` §5.6 e §2.7,
+e l'elenco crescerà ancora — §8.5 è il gruppo con più decisioni aperte del
+documento. Quello che l'intestazione portava è che le voci sono **distinte**, e
+sopravvive senza contarle.
+
+**La frase dentro il quinto punto non è stata toccata**: le quattro voci di cui
+parla sono quelle sopra di lei, ed è corretta.
+
+##### Un rimando che mandava dove la regola non è, e dove non dovrà mai essere
+
+*«il riepilogo mensile del portale professionista — che si consolida al quinto
+del mese dopo (§3, compensi)»*. Il §3 *Compensi* non contiene quel fatto: parla
+di sedute erogate, di `FullCapacityReference` e dell'invariante fra i tre
+metodi.
+
+**La regola però esiste, e sta nel posto sbagliato.** È nel docblock di
+`payoutHistory`, in `src/lib/data/mock/professional-portal.ts` — *«Kora paga
+entro il 5 del mese successivo, quindi il mese in corso è sempre in attesa e i
+precedenti sono pagati»* — ed è implementata: `paidOn` è il giorno 5 del mese
+seguente e il mese corrente è `pending`.
+
+**Il rimando è stato tolto e la regola non è stata aggiunta al §3**, ed è una
+decisione con tre ragioni. La prima: il §3 dice cosa il contratto **garantisce**,
+e il consolidamento non è fra le garanzie — nessun metodo e nessun invariante ci
+poggia sopra. La seconda, che è quella che decide: scriverlo lì **ratificherebbe
+il 5** come regola di dominio, e quella cifra non è in `CLAUDE.md` §8 né §9,
+quindi per il §2.4 è una decisione dei founder e non di una passata documentale
+— è la stessa forma di `AVERAGE_HEALTH_SCORE`, rimasto aperto dal 16 al
+19.08.2026. La terza: §8.5 è dove vivono le cose non decise, e lì la frase è già
+formulata come domanda aperta.
+
+##### Il blockquote del riquadro 16.08.2026 si interrompeva a metà frase
+
+La riga perdeva il prefisso `>` dopo *«…per un'altra strada. I valori»*, quindi
+*«I valori delle misure sono stringhe»* risultava spezzata fra dentro e fuori la
+citazione e si leggeva come continuazione della frase su `assessmentCompleted` —
+che parla di `PlatformUser`, mentre questa parla di `CheckupReport`.
+
+**Formattazione, contenuto invariato**, e git dice che la frase è più vecchia
+del riquadro: è un paragrafo a sé di `e306bff` (07.08.2026), e il riquadro
+inserito il 16.08.2026 le ha inghiottito le prime due parole. È tornata fuori,
+dove appartiene.
+
+##### Aperto e dichiarato — `Payout` ha due campi e nessuna regola
+
+**È il rilievo più azionabile della passata, e non è stato aperto qui su
+decisione dei founder** (20.08.2026). Va scritto per intero perché chi aprirà
+quella passata non debba rifare la scoperta:
+
+- **i due campi sono nel contratto**: `Payout.status` (`"paid" | "pending"`) e
+  `Payout.paidOn` (`Date | null`, commentato *«quando è stato pagato; `null`
+  finché è in attesa»*) stanno in `src/lib/data/types.ts`, cioè fra le entità
+  che il backend erediterà;
+- **la regola che li decide sta in `mock/`**: il docblock e il corpo di
+  `payoutHistory`, in `src/lib/data/mock/professional-portal.ts`;
+- **e `mock/` si cancella** il giorno del passaggio (`CLAUDE.md` §5.7). Chi
+  scrive il backend eredita due campi e nessuna regola: niente dice quando
+  `status` passa da `pending` a `paid`, né da cosa si calcola `paidOn`;
+- **il 5 non è ratificato**: non compare in `CLAUDE.md` §8 né §9, quindi non è
+  una cifra ammessa dal §2.4.
+
+**Perché non si apre un gruppo di §8 adesso**, e sono tre ragioni di perimetro,
+non di merito: aprire un gruppo è una decisione su *quale* posto occupa —
+il §8 dichiara che «l'ordine dei gruppi è quello in cui vanno affrontati»,
+quindi un gruppo nuovo va collocato e non appeso in fondo; richiede di decidere
+**cosa** il gruppo chiede, che non è una riga — solo la cadenza del pagamento, o
+tutto il lato uscite, con documento, contestazione di una seduta e ritenute; e
+va decisa **insieme al §8.4**, il co-payment, che è l'altra metà dello stesso
+buco. **Il contratto non sa registrare né il denaro che entra oltre il cap né
+quello che esce verso chi cura**, ed è la frase che tiene insieme i due gruppi.
+
+##### Aperto e dichiarato — la convenzione del 17.08.2026 è stata adottata e mai estesa
+
+Il 17.08.2026 un'inserzione di tre gruppi in mezzo al §8 ha rinumerato quelli
+dopo, e i rimandi alla paginazione sono passati a **nominare il gruppo invece
+del numero** — «§8, gruppo Paginazione» — con l'eccezione dichiarata di `§8.1`,
+che non si sposta perché è primo per una ragione dichiarata. È la disciplina di
+*si cita ciò che non si muove* applicata a un rimando.
+
+**Non è stata estesa, e la misura sull'intero documento è questa**: dentro
+`docs/CONTRATTO-DATI.md` ci sono **11 righe** con un rimando numerico a una
+sottosezione di §8, per **12 occorrenze** — una riga ne porta due — su **cinque
+gruppi diversi**: §8.2, §8.5, §8.6, §8.8 e §8.9. Più **una** in `CLAUDE.md`
+§10.D.3.
+
+**E i tre rimandi per nome di gruppo stanno tutti in `docs/PROGRESS.md`**:
+dentro il contratto la convenzione non è applicata nemmeno una volta.
+
+**Contata sul solo §8.5 sembrerebbe una svista** — sono quattro righe — **e su
+cinque gruppi è quello che è**: una convenzione adottata e non estesa, che
+invecchierà tutta insieme alla prossima inserzione nel perimetro. **La
+conversione è una passata sua**, perché tocca anche `CLAUDE.md` ed è una scelta
+di forma: «§8, gruppo Ciclo dell'appuntamento» è più lungo di «§8.5».
+
+##### Verificato
+
+- **`git diff --name-only` contro `master`: nessun file sotto `src/`**, e i due
+  soli file toccati sono `docs/CONTRATTO-DATI.md` e questo;
+- `typecheck` e `lint` a **zero**;
+- **niente verifiche a schermo**: non c'è niente di nuovo a schermo. Stessa
+  forma delle altre passate documentali.
+
+##### Come sono state misurate
+
+- **le sottosezioni del §8**: `grep -n '^### 8\.'` sul documento;
+- **i rimandi numerici**: `grep -nE '§8\.[0-9]+'` escluse le intestazioni, per
+  le righe, e `grep -oE` per le occorrenze — i due numeri differiscono di uno ed
+  è la riga che ne porta due;
+- **dove vive la regola del quinto del mese**: cercata in `CLAUDE.md`,
+  `docs/`, `README.md` e `src/`, e trovata in un punto solo;
+- **l'età della frase sulle stringhe**: `git log -L` sulla riga.
+
+##### Trovato e non toccato
+
+- **il §7 dichiara già la doppia sorgente dell'elenco dipendenti**, e una riga
+  in più sarebbe stata il secondo elenco che questo documento vieta in apertura.
+  La riga è *«l'intestazione conta l'azienda e non la tabella: in produzione
+  `getEmployeeDirectory` prenderà una pagina e un filtro»*, e dice il fatto per
+  intero. **Il `CLAUDE.md` §5.5 non è in tensione**: 8 righe mostrate e 82
+  persone iscritte non descrivono la stessa cosa, quindi non c'è nessun
+  invariante da salvare. Registrato perché la domanda si ripresenterà;
+- **`.git/index.lock` si riforma fra un commit e l'altro**, e non è un fatto
+  della macchina: lo creano i controlli in sola lettura del founder attraverso
+  il bridge del desktop. Si rimuove prima di committare.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
