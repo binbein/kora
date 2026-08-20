@@ -297,14 +297,30 @@ repository Next non dia niente per scontato.
   che pure c'era, perché diceva **33** e il giorno prima `popover` e `calendar`
   erano usciti dal magazzino (riga qui sotto). È uscita perché **non aveva un
   criterio, e senza criterio i conti sono due**: *"non li importa nessuno"* può
-  voler dire **nessun file fuori da `ui/`**, e allora sono 31, oppure **nessun
-  file, nemmeno un loro pari**, e allora sono 26 — cinque li importa soltanto un
-  pari, quattro `sidebar.tsx` e uno `toggle-group.tsx`. È la famiglia dei call
+  voler dire **nessun file fuori da `ui/`**, oppure **nessun file, nemmeno un
+  loro pari** — cinque li importa soltanto un pari, quattro `sidebar.tsx` e uno
+  `toggle-group.tsx`. È la famiglia dei call
   site (§5.6) e delle chiavi (§2.7),
   e qui il rimedio costa meno che là: **la ragione per cui si tengono non
   dipende da quanti sono**, quindi togliere la cifra non toglie niente alla
   frase. Chi la volesse conta gli import, dichiarando quale dei due insiemi
   conta.
+
+  **E le letture sono tre, non due** (20.08.2026): chi conta dichiara **anche
+  se il codice morto vale come importatore**, o i due insiemi qui sopra ne
+  diventano quattro. Il caso è uno solo ed è `checkbox`, importato soltanto da
+  `FlexiblePlanCard.jsx` — che a sua volta non lo importa nessuno, perché il
+  piano "Personalizzato" è in sospeso (§10.A.3) — e contarlo o no sposta di uno
+  **entrambe** le letture. Una regola senza la sua istanza manda il prossimo a
+  cercarla, ed è per questo che il caso sta scritto accanto al criterio.
+
+  **Le due cifre che stavano qui non erano sbagliate né invecchiate**, ed è il
+  motivo per cui questa riga non è una correzione: erano la lettura che il
+  codice morto lo esclude, cioè una scelta legittima che il paragrafo non aveva
+  dichiarato di aver preso. Escono per due ragioni insieme — **dipendevano da
+  un criterio taciuto, e si muovono al primo import** — quindi tanto riportarle
+  quanto lasciarle sarebbe stata la stessa promessa di tornare a rileggerle che
+  il 19.08.2026 ha già sciolto su questo paragrafo.
 
   **Il magazzino è servito, ed è la prima volta** (18.08.2026): `popover.tsx` e
   `calendar.tsx` sono usciti da lì per il salto a data del calendario
