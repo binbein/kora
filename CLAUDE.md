@@ -639,6 +639,16 @@ numeri**: quelli ammessi restano i soli trascritti in §8 e §9 (§2.4). Se una 
 del BP serve e qui non c'è, si chiede ai founder e si aggiunge qui — non la si
 legge dal PDF e la si scrive in un componente.
 
+**Il nome del file mente sulla versione, e va saputo prima di andare a
+controllare una citazione** (20.08.2026). Il file si chiama
+`KORA_BusinessPlan_v6.pdf`, e il documento dentro è la **versione 5.0 di giugno
+2026**: lo dicono il frontespizio, i metadati del PDF — `/Title (KORA Business
+Plan v5.0)` — e il piè di pagina, che la ripete a ogni pagina. **Le pagine
+citate in §9 sono quelle di questo PDF**, quindi i rimandi sono giusti: a
+mentire è soltanto il nome del file. **Non si rinomina e non si tocca la storia
+di git** (founder, 20.08.2026) — un rename costerebbe più di quanto chiarisca,
+e questa riga chiarisce tutto quello che serve.
+
 Sono documenti riservati e il repository è privato: **verificare che lo resti**
 prima di aggiungere collaboratori o di rendere pubblico alcunché. Il repository
 del backend nascerà con `docs/CONTRATTO-DATI.md`, non con i PDF.
