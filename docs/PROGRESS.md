@@ -6664,12 +6664,13 @@ secondo criterio è la stessa cosa di un secondo elenco.
 
 ##### Le due cifre del `CLAUDE.md`, e perché nessuna delle due era sbagliata
 
-**§3, le letture dei componenti tenuti.** Il paragrafo ne nominava due — nessun
-importatore fuori da `ui/`, e nessun importatore affatto — e ce n'è una terza:
-**se il codice morto valga come importatore**. Il caso è uno solo, `checkbox`,
-importato soltanto da `FlexiblePlanCard.jsx`, che a sua volta non lo importa
-nessuno perché il piano "Personalizzato" è in sospeso (§10.A.3), e contarlo o no
-sposta di uno **entrambe** le letture.
+**§3, i componenti tenuti.** Il paragrafo nominava i due insiemi — nessun
+importatore fuori da `ui/`, e nessun importatore affatto — e taceva il **secondo
+asse del criterio**: se il codice morto valga come importatore. Il caso è uno
+solo, `checkbox`, importato soltanto da `FlexiblePlanCard.jsx`, che a sua volta
+non lo importa nessuno perché il piano "Personalizzato" è in sospeso (§10.A.3),
+e contarlo o no sposta di uno **entrambi** gli insiemi — che quindi si contano
+in quattro modi.
 
 **Le due cifre che stavano lì non erano né sbagliate né invecchiate**, ed è la
 parte da non leggere come una correzione: erano la lettura che il codice morto
@@ -6738,10 +6739,11 @@ lascia la parentetica orfana o porta via un criterio dal punto in cui è nato.
 
 ##### Come sono state misurate, perché le misure si rifanno
 
-- **le tre letture di `ui/`**: si scorrono i `from "@/components/ui/<nome>"` di
-  `src/`, una volta escludendo `src/components/ui/`, una volta contando anche i
-  pari, e ogni volta dichiarando se `FlexiblePlanCard.jsx` conta. Le tre
-  scelte danno tre coppie di numeri diverse, ed è il punto;
+- **i due insiemi di `ui/`, sui due assi**: si scorrono i `from
+  "@/components/ui/<nome>"` di `src/`, una volta escludendo
+  `src/components/ui/` e una volta contando anche i pari, e ogni volta
+  dichiarando se `FlexiblePlanCard.jsx` vale come importatore. Due insiemi per
+  due scelte fanno **quattro conti**, e le quattro cifre sono tutte diverse;
 - **le occorrenze di "sedute"**: `grep -c` sul file per il totale grezzo, e
   l'albero di TypeScript per quelle nei valori — `PropertyAssignment` con
   inizializzatore letterale stringa il cui testo contiene la parola;
@@ -6764,7 +6766,7 @@ lascia la parentetica orfana o porta via un criterio dal punto in cui è nato.
 - **`FlexiblePlanCard.jsx` è l'unico codice morto vero fuori da `ui/`**:
   controllati anche i tre `*Nav` che un conteggio ingenuo dà per orfani, e sono
   importati per percorso relativo dai rispettivi layout. Serve a chi rifarà la
-  misura delle tre letture;
+  misura dei due insiemi;
 - **`.git/index.lock` era rimasto da una sessione precedente**, vuoto e senza
   nessun processo git a tenerlo, e ha fatto fallire il primo commit. Rimosso.
   Non è un fatto del repository ma della macchina, ed è annotato perché la

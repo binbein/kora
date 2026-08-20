@@ -306,19 +306,21 @@ repository Next non dia niente per scontato.
   frase. Chi la volesse conta gli import, dichiarando quale dei due insiemi
   conta.
 
-  **E le letture sono tre, non due** (20.08.2026): chi conta dichiara **anche
-  se il codice morto vale come importatore**, o i due insiemi qui sopra ne
-  diventano quattro. Il caso è uno solo ed è `checkbox`, importato soltanto da
-  `FlexiblePlanCard.jsx` — che a sua volta non lo importa nessuno, perché il
-  piano "Personalizzato" è in sospeso (§10.A.3) — e contarlo o no sposta di uno
-  **entrambe** le letture. Una regola senza la sua istanza manda il prossimo a
-  cercarla, ed è per questo che il caso sta scritto accanto al criterio.
+  **E il criterio ha un secondo asse** (20.08.2026): chi conta dichiara **anche
+  se il codice morto vale come importatore**, e i due insiemi qui sopra si
+  contano in quattro modi. Il caso è uno solo ed è `checkbox`, importato
+  soltanto da `FlexiblePlanCard.jsx` — che a sua volta non lo importa nessuno,
+  perché il piano "Personalizzato" è in sospeso (§10.A.3) — e contarlo o no
+  sposta di uno **entrambi** gli insiemi. Una regola senza la sua istanza manda
+  il prossimo a cercarla, ed è per questo che il caso sta scritto accanto al
+  criterio.
 
   **Le due cifre che stavano qui non erano sbagliate né invecchiate**, ed è il
-  motivo per cui questa riga non è una correzione: erano la lettura che il
-  codice morto lo esclude, cioè una scelta legittima che il paragrafo non aveva
-  dichiarato di aver preso. Escono per due ragioni insieme — **dipendevano da
-  un criterio taciuto, e si muovono al primo import** — quindi tanto riportarle
+  motivo per cui questa riga non è una correzione: erano i due insiemi contati
+  **escludendo** il codice morto, cioè una scelta legittima che il paragrafo non
+  aveva dichiarato di aver preso. Escono per due ragioni insieme —
+  **dipendevano da un criterio taciuto, e si muovono al primo import** — quindi
+  tanto riportarle
   quanto lasciarle sarebbe stata la stessa promessa di tornare a rileggerle che
   il 19.08.2026 ha già sciolto su questo paragrafo.
 
