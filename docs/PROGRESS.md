@@ -6729,10 +6729,12 @@ lascia la parentetica orfana o porta via un criterio dal punto in cui è nato.
   perché qualcosa potesse muoversi;
 - **gli invarianti rimisurati alla cifra**: guardrail **102 + 9 = 111** col
   criterio del `CLAUDE.md` §5.6, `EXPECTED_KEYS` **780** e i quattro dizionari a
-  780 chiavi foglia sull'albero di TypeScript, rotte **26** in `App.tsx` — e il
-  criterio, perché un conteggio grezzo ne dà **30**: i quattro `path` che
-  avvolgono i portali sono i **layout**, e la rotta radice di ognuno è il suo
-  `<Route index>`;
+  780 chiavi foglia sull'albero di TypeScript, rotte **26** in `App.tsx`, col
+  criterio per intero perché nessuno dei tre passaggi si indovina: gli elementi
+  `<Route>` sono **31** — 27 con un `path=` più 4 `<Route index>` — meno il
+  catch-all fanno le **30** rotte dichiarate, e meno i quattro `path` che
+  avvolgono i portali, che sono i **layout** e non rotte, fanno **26**. Un
+  `grep -o '<Route'` ne dà 33, perché pesca anche `<Routes>` e `<Router>`;
 - **niente verifiche a schermo, e va detto perché**: non c'è niente di nuovo a
   schermo. È la stessa forma delle passate documentali del 15.08.2026 e del
   19.08.2026.
