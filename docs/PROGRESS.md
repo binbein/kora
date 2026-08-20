@@ -6575,8 +6575,9 @@ overflow orizzontale.
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
-professionista, admin), design system e navigazione, 47 componenti shadcn
-(**oggi sono 45**: il sistema di toast, che ne contava tre, è uscito il
+professionista, admin; **oggi sono 26**: `/roi` è stata approvata il 07.08.2026
+e costruita in M3 — `CLAUDE.md` §10), design system e navigazione, 47 componenti
+shadcn (**oggi sono 45**: il sistema di toast, che ne contava tre, è uscito il
 07.08.2026 — decisione qui sotto), grafici recharts.
 
 Ereditato e **non** funzionante. Questa è la fotografia del primo commit, e le
