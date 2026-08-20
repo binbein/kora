@@ -2203,11 +2203,26 @@ sospeso. **Le passate che hanno una sottosezione loro sono le
 sottosezioni qui sotto**, e si contano leggendole invece di fidarsi di una cifra
 in prosa: la riga diceva **sette** quando erano già tredici, ed è lo stesso
 difetto della testa di questo file due schermate più su — un numero scritto
-accanto alla lista che lo smentisce. *(Corretta il 15.08.2026 togliendo il
-conteggio, non allineandolo. A trovarla non è stata la spazzata degli avverbi,
-che cerca «oggi» e «ora» accanto a un numero: qui l'avverbio non c'era, e a
-denunciarla è stata la lista. Chi rifà quella spazzata deve saperlo prima — il
-criterio «numero + avverbio» non copre tutta la famiglia.)* La sintesi sta qui
+accanto alla lista che lo smentisce. **Stesso difetto, misure diverse**
+(20.08.2026): il «sette» conta le **sottosezioni**, cioè l'antenato di quello
+che oggi si ottiene contandole, mentre la cifra in testa al file conta le
+**passate**. Sono due delle quattro progressioni di questo file, e senza questa
+mezza riga si leggono in fila come se fossero una sola. *(Corretta il 15.08.2026
+togliendo il conteggio, non allineandolo. A trovarla non è stata la spazzata
+degli avverbi, che cerca «oggi» e «ora» accanto a un numero: qui l'avverbio non
+c'era, e a denunciarla è stata la lista. Chi rifà quella spazzata deve saperlo
+prima — il criterio «numero + avverbio» non copre tutta la famiglia.)*
+
+*(**Il terzo membro è il numero dentro una parentetica** (20.08.2026), e la
+prova che il posto è questo — e insieme che questa riga da sola non basta — è
+che **la spazzata del 19.08.2026 ce l'aveva davanti e non l'ha applicata**: le
+cifre che le sono sfuggite stavano in incisi, corsivi e note fra parentesi,
+cioè dove una passata che cerca **righe** non guarda. Da qui si cerca la cosa
+che sta invecchiando, cioè **le cifre**: si passano in rassegna i numeri del
+testo, in lettere e in numeri, e per ognuno si chiede se accanto ha il criterio
+che lo rifà. L'avverbio è un indizio, non la ricerca — e una riga che dice dove
+si nascondono senza dire come si cercano invecchia come quelle che denuncia.)*
+La sintesi sta qui
 perché **il dettaglio è in git e il quadro no**: chi riprende deve sapere che
 queste cose esistono prima di riscoprirle.
 
