@@ -284,7 +284,7 @@ export const en: Dictionary = {
         body: "Tap again to try once more.",
       },
       done: "Thanks, recorded.",
-      doneHint: "We'll ask how you're doing again in a few days.",
+      doneHint: "You can still change your answer today. Then we'll ask you again.",
     },
 
     psychologists: {

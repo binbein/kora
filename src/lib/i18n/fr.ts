@@ -326,7 +326,7 @@ export const fr: Dictionary = {
         body: "Appuie à nouveau pour réessayer.",
       },
       done: "Merci, c'est enregistré.",
-      doneHint: "On te redemandera comment tu vas dans quelques jours.",
+      doneHint: "Tu peux encore changer ta réponse aujourd'hui. Ensuite, on te redemandera.",
     },
 
     psychologists: {

@@ -270,7 +270,7 @@ export const de: Dictionary = {
         body: "Tipp erneut, um es nochmals zu versuchen.",
       },
       done: "Danke, erfasst.",
-      doneHint: "Wir fragen dich in ein paar Tagen wieder, wie es dir geht.",
+      doneHint: "Du kannst deine Antwort heute noch ändern. Danach fragen wir dich wieder.",
     },
 
     psychologists: {

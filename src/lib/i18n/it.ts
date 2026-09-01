@@ -303,7 +303,7 @@ export const it = {
         body: "Tocca di nuovo per riprovare.",
       },
       done: "Grazie, registrato.",
-      doneHint: "Ti richiediamo come stai fra qualche giorno.",
+      doneHint: "Puoi cambiare la risposta finché è oggi. Poi te lo chiediamo di nuovo.",
     },
 
     /*

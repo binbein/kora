@@ -68,7 +68,18 @@ const FACE_IDLE =
  */
 const FACE_CHOSEN =
   "border-secondary bg-card text-foreground ring-2 ring-secondary shadow-sm";
-const FACE_MUTED = "border-transparent bg-transparent text-muted-foreground/40";
+
+/*
+ * I NON SCELTI RESTANO PREMIBILI, e l'hover è ciò che lo dice.
+ *
+ * A riposo sono spenti, perché il segno della risposta è la scelta e non il
+ * resto della riga; ma un bersaglio che si può premere deve reagire, o si
+ * legge come disabilitato. L'hover è quello di `FACE_IDLE` — la coppia
+ * `accent` del §6.1 — quindi passandoci sopra il volto torna leggibile senza
+ * togliere l'anello alla scelta corrente.
+ */
+const FACE_MUTED =
+  "border-transparent bg-transparent text-muted-foreground/40 hover:border-secondary/40 hover:bg-accent/50 hover:text-accent-foreground";
 
 export default function RapidCheckCard() {
   const queryClient = useQueryClient();
@@ -159,7 +170,23 @@ export default function RapidCheckCard() {
               key={value}
               type="button"
               onClick={() => submit.mutate(value)}
-              disabled={answered || submit.isPending}
+              /*
+               * SI PUÒ CORREGGERE FINCHÉ È OGGI, e non c'è nessuna conferma.
+               *
+               * I cinque bersagli sono larghi e affiancati, quindi il tocco
+               * sbagliato è un caso normale e non un incidente. Le due strade
+               * erano interporre un dialogo o rendere il gesto reversibile:
+               * un dialogo raddoppierebbe **una domanda, un tocco** (§8) sulla
+               * scrittura più piccola del dominio, e nel pitch trasformerebbe
+               * in una procedura la card che risponde a "da dove vengono i
+               * numeri di stress?".
+               *
+               * Da qui `answered` non disabilita più niente: resta solo
+               * l'attesa della scrittura in corso. Chi rimette `answered ||`
+               * qui davanti riapre il difetto, non ne chiude uno — il
+               * provider riscrive la risposta senza guardare cosa c'era.
+               */
+              disabled={submit.isPending}
               /*
                * L'etichetta è visibile e **non c'è un `aria-label` sopra**: il
                * testo dentro il pulsante è già il suo nome accessibile, e un
