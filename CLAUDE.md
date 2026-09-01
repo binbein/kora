@@ -941,8 +941,8 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 113 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 113 posti.
+call site sono 115 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 115 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
 **Il criterio con cui i call site si contano**, perché una rilevazione futura non
@@ -950,7 +950,7 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **102 + 11 = 113** (01.09.2026). Restano fuori, e sono le tre trappole del
+Oggi **102 + 13 = 115** (01.09.2026). Restano fuori, e sono le tre trappole del
 conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
 nome lungo che **contiene** quello corto.
 
@@ -988,15 +988,18 @@ numero**: se il criterio è stato applicato per intero, a essere invecchiata è 
 riga, e si aggiorna con la data. Un guardrail nuovo è un call site nuovo, ed è
 esattamente ciò che è successo passando da 96 a 97 con la tranche tedesca, da
 108 a 109 con il conteggio delle chiavi del §2.7, da 109 a 111 con
-l'annullamento e il nome dei pazienti (17.08.2026) e da 111 a 113 con il
-messaggio al paziente (01.09.2026), che di guardrail ne porta due.
+l'annullamento e il nome dei pazienti (17.08.2026), da 111 a 113 con il
+messaggio al paziente (01.09.2026), che di guardrail ne porta due, e da 113 a
+115 con la chiusura delle fasce.
 
-**E chi lo ricontasse con un `grep` trova un `112` che non è dei guardrail**
-(01.09.2026): sta nel §2.7 e conta gli **oggetti** di un dizionario. Una
-sostituzione cieca del numero corromperebbe quella riga, ed è la ragione per
-cui questa avvertenza sta accanto al conto invece che nella memoria di chi l'ha
-scoperto — due grandezze diverse hanno avuto lo stesso valore, e succederà
-ancora.
+**E chi lo ricontasse con un `grep` trova cifre che non sono dei guardrail**
+(01.09.2026), che è la ragione per cui questa avvertenza sta accanto al conto
+invece che nella memoria di chi l'ha scoperta. Ne sono già uscite due, e sono
+di due specie diverse: **un `112` nel §2.7**, che conta gli **oggetti** di un
+dizionario — due grandezze diverse con lo stesso valore — e **un `113` dentro
+`#11395A`**, l'esadecimale di `primary` nel §6.1, dove la cifra non è nemmeno un
+numero. Una sostituzione cieca corromperebbe l'una o l'altro, e succederà
+ancora: **si guardano i riscontri uno per uno**, non si sostituisce.
 
 **Il numero compare in questa sezione più di una volta, e una sola porta la
 data.** È quella del criterio, qui sopra; le altre tre — le due che aprono la
@@ -1022,7 +1025,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 113 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 115 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 
