@@ -270,10 +270,41 @@ finché dava le sole in programma, una disdetta faceva sparire la riga e chi
 aveva prenotato non aveva nessun modo di saperlo. Le erogate restano fuori:
 quelle sono il contatore.
 
-**La nota di annullamento resta dove sta**, ed è la stessa forma di
-`SessionNote`: vive su `ProfessionalSession`, e `Appointment` **non ha il
-campo**. Chi la legge non è una decisione presa da questo contratto, ed è il
-motivo per cui il campo non c'è invece di esserci e non essere mostrato.
+**I testi dell'annullamento sono due, con due destinatari** (founder,
+01.09.2026). Fino ad allora ce n'era uno solo e questa sezione dichiarava che
+*«chi lo legge non è una decisione presa da questo contratto»*: la decisione è
+stata presa, e la forma che le è stata data è la parte che conta.
+
+| campo | dove vive | chi lo legge |
+|---|---|---|
+| `ProfessionalSession.cancellationNote` | solo lì | **solo chi cura** |
+| `ProfessionalSession.cancellationMessage` | lì **e** su `Appointment` | chi cura, e il paziente |
+
+**`Appointment` continua a non avere `cancellationNote`**, ed è la stessa forma
+di `SessionNote`: il campo non c'è, invece di esserci e non essere mostrato.
+
+**Due campi e non uno con un interruttore, ed è la decisione.** La strada
+scartata era una spunta *"rendi visibile al paziente"* sopra il testo che
+esiste già, e non è stata scartata per gusto: è **la forma che questo documento
+rifiuta altrove**, e il §3 lo dice su `PlatformSession` con le stesse parole —
+*non lo si risolve facendo scegliere alla schermata cosa rendere, perché quella
+è una scelta che qualcuno può disfare*. Una spunta lasciata attiva per
+distrazione manda al paziente una **valutazione clinica**, e quel danno non si
+ripara: non esiste un ritiro. Con due campi il testo che attraversa il confine è
+quello che qualcuno ha scritto **per** attraversarlo, e non c'è nessuno stato da
+sbagliare.
+
+**Per chi scrive il backend ne discende un invariante, non una convenzione**: il
+testo di `cancellationNote` non deve poter comparire in nessuna risposta che il
+dipendente riceve, e a garantirlo è l'assenza del campo — non un filtro. Le
+quattro combinazioni sono tutte legittime: solo la nota, solo il messaggio,
+entrambi, nessuno dei due.
+
+**`cancellationMessage` assente vuol dire che un messaggio non c'è**, e copre
+due casi che le schermate non distinguono — la seduta non è annullata, oppure è
+stata annullata senza scrivere niente al paziente. È lo stesso prezzo già
+dichiarato per `cancellationNote`, e si paga allo stesso modo: le schermate
+leggono la coppia con il motivo.
 
 **Chi conta gli appuntamenti in programma filtra sullo stato**, e il filtro
 appartiene a chi conta: la lista risponde a *cosa c'è sul mio calendario*, il
@@ -1187,8 +1218,18 @@ il ciclo vero ne ha di più:
 
   **C'è**: `cancelSession`, dal lato del professionista. Rifiuta ciò che non è
   in programma e futuro, valorizza `cancellationReasonKey` a `by_professional`,
-  accetta una nota libera che resta sulla proiezione di chi cura, e libera la
-  fascia — una seduta annullata non occupa più la sua ora (§4).
+  accetta **due testi facoltativi con due destinatari** — la nota resta sulla
+  proiezione di chi cura, il messaggio arriva anche al paziente (§3,
+  01.09.2026) — e libera la fascia: una seduta annullata non occupa più la sua
+  ora (§4).
+
+  **Le cinque voci qui sotto non si muovono di un centimetro**, e vale la pena
+  dirlo perché il messaggio al paziente le sfiora tutte senza chiuderne
+  nessuna: la disdetta dal lato del dipendente resta inesistente, la policy di
+  preavviso non è decisa, chi paga una disdetta tardiva nemmeno, la
+  riprogrammazione non è un annullamento più una prenotazione, e **la notifica
+  resta la voce più vicina** — una riga che il paziente legge *se apre
+  l'applicazione* non è una riga che gli arriva.
 
   **Liberare una fascia e riproporla sono due cose**, e chi implementa
   l'elenco degli slot deve saperlo prima di scriverlo (18.08.2026): la
