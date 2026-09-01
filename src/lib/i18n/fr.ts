@@ -573,6 +573,9 @@ export const fr: Dictionary = {
       legendFree: "Libre",
       legendPast: "Passée",
       legendClosed: "Fermée",
+      availabilityNote:
+        "Les plages libres et fermées sont votre disponibilité : ici vous les fermez et les rouvrez.",
+      slotFree: "Libre",
       slotClosed: "Fermée",
       slotCloseLabel: "Fermer la plage du {weekday} {date} à {time}",
       slotReopenLabel: "Rouvrir la plage du {weekday} {date} à {time}",

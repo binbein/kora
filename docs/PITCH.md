@@ -146,6 +146,13 @@ presentazione.
   poi chiudi. Chiudere prima toglie di mezzo lo slot provato — è l'unica fascia
   libera della settimana corrente — e il giro resta senza il suo primo tempo.
 
+  **Dillo prima che te lo chiedano: qui si gestiscono le eccezioni, non si
+  pubblica l'agenda.** Dichiarare fasce nuove e la ricorrenza settimanale sono
+  lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.5); quello che si vede è
+  chiudere e riaprire ore **già pubblicate**, e la riga sotto la griglia lo
+  dice — *"le fasce libere e chiuse sono la tua disponibilità"*. Detta prima è
+  una scelta di scope; detta dopo la domanda sembra una dimenticanza.
+
   **E poi torna dal dipendente**, che dal 18.08.2026 l'annullamento lo vede: la
   seduta resta nella sua home con "Annullato" e con chi l'ha disdetta, e il
   contatore in programma **scende**. È il terzo lato dello stesso record — dopo

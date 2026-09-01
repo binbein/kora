@@ -2134,8 +2134,8 @@ visibile con la navigazione fra settimane e il salto a data, i criteri e i
 conteggi, le attese e l'ordinamento, l'ordinamento dello stato della seduta, la
 rinomina delle rotte in inglese, la demo pronta, le cifre nelle
 parentetiche, i rimandi del contratto, i fatti del Business Plan, il check
-rapido con la soglia e i badge, il messaggio di annullamento, e la chiusura
-delle fasce. Non aggiungono schermate e
+rapido con la soglia e i badge, il messaggio di annullamento, la chiusura
+delle fasce, e la griglia delle fasce. Non aggiungono schermate e
 non spostano un numero a schermo.
 
 **I numeri sono tre e contano tre cose diverse**, ed è la riga che mancava
@@ -7597,6 +7597,184 @@ diversa dal primo: un **`113` dentro `#11395A`**, l'esadecimale di `primary` nel
 `112` del §2.7 che conta gli oggetti di un dizionario. L'avvertenza accanto al
 conto adesso dice che le specie sono due e che **i riscontri si leggono uno per
 uno invece di sostituirli**.
+
+#### La griglia delle fasce (02.09.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il
+comando in testa a questo file. **È resa e testo, più una riga di layer dati
+che i founder hanno autorizzato a passata aperta**: `provider.ts`, `types.ts`,
+`schedule.ts`, `mock/` e `docs/CONTRATTO-DATI.md` **non compaiono nel diff**;
+`prefetch.ts` sì, ed è l'eccezione dichiarata più sotto. Nessuna schermata
+nuova, rotte **26** e schermate **27**, nessun numero del §8 e del §9 mosso,
+guardrail **115 = 102 + 13** invariati. `EXPECTED_KEYS` passa da **789 a
+791** — due chiavi nuove nei quattro dizionari, contate sull'albero e non
+stimate. `build`, `build:demo`, `lint` e `typecheck` a zero.
+
+**Comportamento invariato, ed è la premessa**: quali celle sono un `button` e
+quali no non è cambiato. A cambiare è cosa si vede.
+
+##### La fascia libera e la cella vuota erano disegnate uguali
+
+`bg-card border-border` era **la stessa classe** per l'offerta e per il niente.
+Nella settimana della demo la Dr.ssa Meier ha **una** fascia libera — venerdì
+25.09 alle 10:00 — e **diciannove** celle vuote: venti riquadri bianchi
+identici, di cui uno cliccabile. Misurato dopo il rimedio, ed è il conto che
+dice cos'era prima: `19` celle senza bordo, `1` con il bordo dell'offerta.
+
+**Il segno primario della libera è il testo**, come per la chiusa e per la
+stessa ragione (§6.1, 1.4.11): la cella porta la sua etichetta — `slotFree` —
+invece di affidare il significato alla tinta.
+
+**Il fondo non poteva essere una tinta, e la misura lo decide.** I cinque fondi
+di questa griglia stanno tutti dentro **ΔE 6.6** l'uno dall'altro — la palette
+è pallida per costruzione — quindi *nessun* verde pallido avrebbe separato la
+libera dalla prenotata: `bg-secondary/10` e `bg-accent/50` distano nove punti
+su 255. Il bianco è l'unica cosa che le altre quattro non hanno, e a portare il
+segno è il **bordo da 2px su `secondary-strong`**, 5.72:1 sul proprio fondo,
+sopra il 3:1 che la 1.4.11 chiede.
+
+**La vuota arretra**: niente fondo e **niente bordo**. Non offre niente, e
+adesso non lo promette.
+
+**Rendere e poter cliccare si decidono sullo stesso predicato**, ed è una riga
+in più che la richiesta non chiedeva: `offerta` è la fascia libera **e futura**,
+cioè esattamente l'insieme che diventa un `button`. Una fascia passata arretra
+con le vuote invece di disegnarsi come un'offerta che il provider
+rifiuterebbe — l'affordanza che mente dell'08.08.2026, qui prevenuta invece che
+corretta. Nel dataset non è raggiungibile (le fasce nascono tutte a
+`DEMO_TODAY + n`, con `n ≥ 1`), e costa zero scriverla giusta.
+
+##### La legenda insegnava il contrario di quello che c'era
+
+Il quadratino di **«Libera» era `bg-card border-border`**, cioè il disegno
+della cella **vuota**: la legenda diceva che tutti i riquadri bianchi erano
+fasce libere, e ce n'era una su venti. Ora ogni voce porta il disegno vero
+della cella che nomina — verificato leggendo `width`, `border-width` e
+`border-style` di tutti e quattro gli swatch, in tutte e quattro le lingue.
+
+**La cella vuota non ha una voce, e non è una dimenticanza**: non ha più un
+aspetto proprio da nominare, e un quadratino invisibile manderebbe chi legge a
+cercare una cosa che non c'è.
+
+**Gli swatch passano da `w-3` a `w-4`**: su dodici pixel un bordo da due ne
+lascia otto di fondo, e i due che il bordo lo hanno spesso si leggevano come
+due bordi e basta.
+
+##### Da dove vengono le fasce, e perché la frase sta nella legenda
+
+Il nome è dei founder — **«la tua disponibilità»** — e il posto è una decisione
+della passata, scritta nel commento accanto: **la griglia contiene anche le
+sedute**, quindi un titolo sopra di lei mentirebbe sulle celle prenotate e
+passate. La frase deve nominare le sole libere e chiuse, e l'unico posto in cui
+può farlo senza ripeterne i nomi è **accanto alle voci che le nominano già**.
+
+**Non promette il verbo che manca.** Dichiarare fasce nuove e la ricorrenza
+settimanale restano lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.5): la riga
+dice da dove vengono quelle che ci sono e cosa se ne può fare, e si ferma lì.
+
+##### La prova a cinque, e perché è in due fotogrammi
+
+**Il dataset non le mette insieme, e va detto invece di aggirarlo.** La Dr.ssa
+Meier ha **una** fascia nella settimana corrente e **tre** nella successiva
+(`SLOT_PLAN`, giorni +2, +5, +6, +7 da `DEMO_TODAY`), e nessuna cade nel
+passato. Quindi:
+
+- la **settimana corrente** dà passata, prenotata, libera e vuota — le uniche
+  sedute erogate della finestra stanno qui;
+- la **successiva** dà prenotata, libera, chiusa e vuota, chiudendone una delle
+  tre — ma non ha nessuna seduta erogata.
+
+**Quattro per fotogramma è il massimo**, e i due condividono tre stati, quindi
+il confronto è ancorato. L'alternativa era rompere il dataset ad arte per la
+durata di uno screenshot — la tecnica del 10.08.2026 — e il perimetro di questa
+passata dice di non toccare `mock/`.
+
+**Le cinque non si confondono, e il discriminante non è il fondo per nessuna
+coppia.** Misurato sui colori compositati veri, non sulle classi:
+
+| coppia | cosa le separa | misura |
+|---|---|---|
+| libera / vuota | bordo 2px contro **nessun bordo** | 5.72:1 sul fondo della cella |
+| libera / prenotata | tinta e spessore del bordo | ΔE **47.2**, 2px contro 1px |
+| libera / chiusa | solido contro tratteggiato | ΔE **29.7** |
+| libera / passata | tinta del bordo | ΔE **55.6** |
+| chiusa / passata | **tratteggio 2px** | ΔE bordo **45.3** (deciso il 01.09) |
+| chiusa / vuota | tratteggio contro niente | 4.62:1 |
+| prenotata / passata | **colore del testo** | ΔE **29.7** (teal contro grigio) |
+| prenotata / vuota · passata / vuota | presenza del riquadro e del testo | — |
+
+**I fondi non separano niente, ed è il fatto da tenere**: prenotata, passata,
+chiusa, libera e vuota stanno dentro **ΔE 6.6**, e passata / chiusa dentro
+**1.8**. Questa griglia si legge dai **telai** e dal **colore del testo**, mai
+dal riempimento — è la conclusione a cui la passata del 01.09 era arrivata per
+la chiusa, misurata qui per tutte e cinque.
+
+##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato prima di ogni misura
+
+**E il controllo è servito**: la prima scheda riportava `innerWidth: 0`, cioè la
+trappola del §11, sciolta imponendo il viewport.
+
+- **il giro dei tre tempi regge**: prenotata, annullata, chiusa e riaperta la
+  fascia di venerdì 25.09, con la cella che cambia disegno a ogni passaggio;
+- **le quattro lingue, cambiate davvero dal selettore**: l'etichetta della cella
+  sta su **una riga** in tutte e quattro — `Libera` 36px, `Libre` 29, `Free` 25,
+  `Frei` 21 in una cella da 151 — e la più larga delle chiuse è la tedesca,
+  `Geschlossen` a **73px**;
+- **la riga della disponibilità sta su una riga in tutte e quattro**, in un
+  contenitore da 960: `it` 405px, `de` **607**, `fr` 491, `en` 403. Il tedesco
+  chiede il **50% in più** dell'italiano, che è la misura del §2.7 ripetuta su
+  un'altra stringa;
+- **zero overflow orizzontale** in tutte e quattro le lingue;
+- **la legenda porta il disegno vero**: `1px solid`, `1px solid`, `2px solid`,
+  `2px dashed`, e **nessuna voce per la vuota**;
+- `build`, `build:demo`, `lint` e `typecheck` a zero; `EXPECTED_KEYS` **791**
+  ×4, e a dirlo è il guardrail.
+
+##### Trovato e non toccato
+
+- ~~**`professional.ownSlots` non è scaldata da `prefetchDemo`**, quindi il
+  guardrail della cache fredda parla **a ogni ingresso nel calendario**. Il
+  rimedio è una riga in `prefetch.ts`, cioè **layer dati**, fuori dal perimetro
+  di una passata di resa e testo.~~ → **chiuso qui, sullo stesso branch**: i
+  founder hanno **riaperto il perimetro di una riga** a passata aperta, con la
+  ragione che il perimetro era stato scritto **prima di sapere che il buco
+  esistesse** — è un difetto della stessa schermata, trovato dalla stessa
+  passata, su un log che `docs/PITCH.md` classifica come blocco durante la
+  prova generale.
+
+  **Era preesistente, ed è stato verificato invece che dedotto**: `git stash`,
+  ricaricato su master pulito, stesso errore, `git stash pop`. Nasce con la
+  chiusura delle fasce del 01.09.2026 — `prefetch.ts` scaldava
+  `professional.slots` e nessuno aveva aggiunto la lettura nuova all'elenco. È
+  il punto debole che la testata di quella funzione dichiara: **una chiave
+  dimenticata non rompe niente**, fa uno sfarfallio, e qui faceva un
+  `console.error` sulla schermata che il pitch percorre.
+
+  **Sta nel blocco del portale e non in quello su tutti i professionisti**, ed
+  è la distinzione che le chiavi facevano già: `professional.slots` è una
+  lettura del **marketplace** — chi prenota guarda la disponibilità di
+  chiunque, quindi si scalda per ognuno del corpo professionale — mentre
+  `ownSlots` è una lettura del **portale**, e di portali ce n'è uno solo.
+  Scaldarla per tutti sarebbe precaricare agende che nessuna schermata chiede.
+  Va quindi dove `professionalId` è già in mano, accanto a profilo, sedute,
+  pazienti e compensi, e la ragione è scritta nel commento accanto alla riga.
+
+  **Provato nei due versi sulla build demo**, che è dove il log conta
+  (`CLAUDE.md` §5.6): senza la riga, entrando nel calendario dai soli link
+  interni la console porta *`["professional","meier","own-slots"] si monta a
+  cache fredda`*; con la riga, **console muta** sulle cinque rotte del portale,
+  chiusura e riapertura di una fascia comprese, e **una sola navigazione** per
+  tutto il giro;
+- **il `CLAUDE.md` §10.D non nomina questa passata**, e non è stato toccato di
+  proposito: è la terza voce che quella sezione dovrebbe avere e non ha — dopo
+  i due testi dell'annullamento e la chiusura delle fasce, tutti e due del
+  01.09.2026 — e i founder hanno la decisione in sospeso su come registrarli
+  insieme. Aggiungere qui la terza avrebbe deciso al posto loro;
+- **`prenotata` e `passata` si separano solo per il colore del testo**, ΔE
+  29.7, perché i loro fondi distano ΔE 4.4 e i loro bordi stanno a 1.19 e
+  1.23:1 sul proprio fondo. È preesistente e non è stato cambiato: è una resa
+  approvata, e questa passata l'ha **misurata** invece di ereditarla senza
+  numeri. Chi la rivedesse ha qui il punto di partenza.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

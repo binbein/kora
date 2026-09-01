@@ -506,6 +506,9 @@ export const de: Dictionary = {
       legendFree: "Frei",
       legendPast: "Vergangen",
       legendClosed: "Geschlossen",
+      availabilityNote:
+        "Die freien und geschlossenen Zeitfenster sind Ihre Verfügbarkeit: hier schliessen und öffnen Sie sie wieder.",
+      slotFree: "Frei",
       slotClosed: "Geschlossen",
       slotCloseLabel: "Zeitfenster am {weekday} {date} um {time} schliessen",
       slotReopenLabel: "Zeitfenster am {weekday} {date} um {time} wieder öffnen",
