@@ -637,14 +637,39 @@ export default function HRDashboard() {
                     />
                   )}
                 </div>
-                <div className="w-32 flex-shrink-0 text-right">
+                {/*
+                  * `w-40` E NON `w-32`, E A DECIDERLO È IL TEDESCO.
+                  *
+                  * L'etichetta più lunga della colonna è "Unter der Schwelle",
+                  * che con il lucchetto e il suo gap misura **146px**: in
+                  * `w-32` (128px) andava a capo, e `w-36` (144) non sarebbe
+                  * bastato per due pixel. L'inglese ne chiede 126, l'italiano
+                  * 98. I punteggi degli altri reparti stanno sotto i 98 in
+                  * tutte e quattro le lingue, quindi la larghezza la detta
+                  * questa riga (§2.7: niente larghezze fisse che il tedesco
+                  * non regge).
+                  */}
+                <div className="w-40 flex-shrink-0 text-right">
                   {score === null ? (
+                    /*
+                     * L'ETICHETTA DICE PERCHÉ, E NON LO DICE UN HOVER.
+                     *
+                     * Qui c'era `t.common.none`, cioè un trattino, e il motivo
+                     * stava nel solo `title`: un tooltip nativo compare dopo un
+                     * secondo di fermata, non esiste sul touch, e in una demo
+                     * proiettata non lo vede nessuno. Questa è la riga che
+                     * dimostra la garanzia di privacy dell'intero prodotto, e
+                     * si leggeva come un dato mancante.
+                     *
+                     * Il `title` resta, ed è diventato la spiegazione lunga di
+                     * un'etichetta che ora si legge da sola.
+                     */
                     <span
                       className="inline-flex items-center gap-1.5 text-sm text-muted-foreground"
                       title={t.hr.suppressedTooltip}
                     >
                       <Lock className="w-3.5 h-3.5" aria-hidden="true" />
-                      {t.common.none}
+                      {t.hr.suppressed}
                     </span>
                   ) : (
                     <span className="text-sm font-semibold tabular-nums">
