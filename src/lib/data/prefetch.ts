@@ -85,6 +85,30 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
       queryKey: queryKeys.professional.sessions(professionalId),
       queryFn: () => dataProvider.getProfessionalSessions(professionalId),
     }),
+    /*
+     * LE FASCE STANNO QUI E NON NEL BLOCCO SU TUTTI I PROFESSIONISTI, ed è la
+     * distinzione che le chiavi fanno già.
+     *
+     * `professional.slots` è una lettura del **marketplace**: chi prenota
+     * guarda la disponibilità di chiunque, quindi si scalda per ognuno del
+     * corpo professionale, in fondo a questa lista. `ownSlots` è una lettura
+     * del **portale**: le fasce le amministra chi le tiene, e di portali ce
+     * n'è uno solo — scaldarle per tutti vorrebbe dire precaricare agende che
+     * nessuna schermata chiede. Per questo sta nel blocco che ha già
+     * `professionalId` in mano, accanto a profilo, sedute, pazienti e
+     * compensi: sono tutte letture di quella professionista lì.
+     *
+     * Senza questa riga il guardrail della cache fredda parlava **a ogni
+     * ingresso nel calendario** (02.09.2026). La chiave è nata con la chiusura
+     * delle fasce del 01.09.2026 e nessuno l'aveva aggiunta all'elenco: è il
+     * punto debole che la testata di questa funzione dichiara — una chiave
+     * dimenticata non rompe niente — e in build demo era un `console.error`
+     * sulla schermata che il pitch percorre.
+     */
+    queryClient.prefetchQuery({
+      queryKey: queryKeys.professional.ownSlots(professionalId),
+      queryFn: () => dataProvider.getProfessionalSlots(professionalId),
+    }),
     queryClient.prefetchQuery({
       queryKey: queryKeys.professional.patients(professionalId),
       queryFn: () => dataProvider.getProfessionalPatients(professionalId),
