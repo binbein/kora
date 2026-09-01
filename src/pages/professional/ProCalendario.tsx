@@ -11,6 +11,7 @@ import { interpolate, t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import {
   slotsOfWeek,
+  slotsOfWeekRange,
   nextSession,
   sessionsOfMonth,
   sessionsOfWeek,
@@ -21,10 +22,14 @@ import {
   usePortalProfessionalId,
   useProfessionalPatients,
   useProfessionalSessions,
+  useProfessionalSlots,
   useReferenceDate,
 } from '@/lib/data/queries';
 import { ErrorNotice } from '@/components/kora/StateNotice';
 import CancelSessionDialog from '@/components/professional/CancelSessionDialog';
+import { dataProvider } from '@/lib/data';
+import { queryKeys } from '@/lib/data/query-keys';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patientDisplayName, type ProfessionalSession } from '@/lib/data/types';
 
 export default function ProCalendario() {
@@ -32,6 +37,29 @@ export default function ProCalendario() {
   const portalIdQuery = usePortalProfessionalId();
   const sessionsQuery = useProfessionalSessions(portalIdQuery.data);
   const patientsQuery = useProfessionalPatients(portalIdQuery.data);
+  const ownSlotsQuery = useProfessionalSlots(portalIdQuery.data);
+  const queryClient = useQueryClient();
+
+  /*
+   * APRE E CHIUDE UNA FASCIA, e invalida **due radici** per la ragione già
+   * scritta su `CancelSessionDialog`: la fascia è un fatto solo che i due lati
+   * del marketplace leggono da due liste diverse — di qua l'agenda, di là ciò
+   * che il dipendente può prenotare.
+   */
+  const setSlot = useMutation({
+    mutationFn: (input: { start: Date; status: 'open' | 'closed' }) =>
+      dataProvider.setSlotStatus(
+        portalIdQuery.data ?? '',
+        input.start,
+        input.status,
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.professional.root(portalIdQuery.data ?? ''),
+      });
+      queryClient.invalidateQueries({ queryKey: queryKeys.employee.root() });
+    },
+  });
 
   /* Stato del dialogo, non del dominio: quale seduta si sta annullando. */
   const [cancelling, setCancelling] = useState<ProfessionalSession | null>(null);
@@ -59,7 +87,13 @@ export default function ProCalendario() {
    * solo quando l'id è arrivato, quindi senza di lui resterebbero `undefined`
    * per sempre e il guasto si travestirebbe da attesa.
    */
-  const page = loadState([todayQuery, portalIdQuery, sessionsQuery, patientsQuery]);
+  const page = loadState([
+    todayQuery,
+    portalIdQuery,
+    sessionsQuery,
+    patientsQuery,
+    ownSlotsQuery,
+  ]);
   if (page.state === 'error') {
     return <ErrorNotice copy={t.common.state.error} onRetry={page.retry} />;
   }
@@ -67,7 +101,13 @@ export default function ProCalendario() {
   const today = todayQuery.data;
   const sessions = sessionsQuery.data;
   const patients = patientsQuery.data;
-  if (today === undefined || sessions === undefined || patients === undefined) {
+  const ownSlots = ownSlotsQuery.data;
+  if (
+    today === undefined ||
+    sessions === undefined ||
+    patients === undefined ||
+    ownSlots === undefined
+  ) {
     return null;
   }
 
@@ -80,8 +120,8 @@ export default function ProCalendario() {
    */
   const shownWeek = addDays(startOfWeek(today), weekOffset * 7);
   const week = sessionsOfWeek(sessions, shownWeek);
-  const slots = slotsOfWeek(week);
-  const days = weekGrid(sessions, shownWeek, today);
+  const slots = slotsOfWeek(week, slotsOfWeekRange(ownSlots, shownWeek));
+  const days = weekGrid(sessions, ownSlots, shownWeek, today);
   const monday = startOfWeek(shownWeek);
   const next = nextSession(sessions);
 
@@ -402,14 +442,43 @@ export default function ProCalendario() {
                     {formatTime(new Date(2000, 0, 1, 0, minuteOfDay))}
                   </div>
                   {days.map((day) => {
-                    const { session } = day.cells[row];
+                    const { session, slot } = day.cells[row];
                     const past = session && session.status === 'completed';
+                    /*
+                     * LA FASCIA SI VEDE SOLO SE NON C'È UNA SEDUTA SOPRA: la
+                     * cella dice una cosa sola, e la seduta dice di più. I due
+                     * campi restano distinti sul tipo (`schedule.ts`), ed è qui
+                     * che si decide quale vince.
+                     */
+                    const fascia = session ? null : slot;
+                    const chiusa = fascia?.status === 'closed';
+                    /*
+                     * IL BORDO TRATTEGGIATO È IL SEGNO PRIMARIO DELLA CHIUSA,
+                     * non un complemento del colore (01.09.2026).
+                     *
+                     * `bg-muted/60` è già la seduta passata, quindi chiusa e
+                     * passata finirebbero su due gradazioni dello stesso token —
+                     * e la differenza fra i due fondi è di **sei punti su 255**,
+                     * cioè niente. Il tratteggio è **l'unica cosa che
+                     * nessun'altra cella ha**, ed è ciò che soddisfa la 1.4.11
+                     * del §6.1 senza affidare il significato alla tinta.
+                     *
+                     * **È `border-2` e a piena intensità, e la prima stesura non
+                     * lo era**: a 1px con `muted-foreground/50` il segno spariva
+                     * nello screenshot della griglia, cioè falliva la prova per
+                     * cui esiste — riconoscere la cella senza leggerne il testo
+                     * e senza passarci sopra il mouse. A 2px pieni il bordo dà
+                     * **4.6:1** sul fondo della cella, sopra il 3:1 che la
+                     * 1.4.11 chiede a un segno non testuale.
+                     */
                     const cellClass = `p-1.5 rounded-lg text-xs min-h-[48px] border w-full text-left ${
                       session
                         ? past
                           ? 'bg-muted/60 border-border'
                           : 'bg-secondary/10 border-secondary/30'
-                        : 'bg-card border-border'
+                        : chiusa
+                          ? 'bg-muted border-2 border-dashed border-muted-foreground'
+                          : 'bg-card border-border'
                     }`;
                     const content = session && (
                       <div>
@@ -459,6 +528,52 @@ export default function ProCalendario() {
                       );
                     }
 
+                    /*
+                     * LA FASCIA È IL SECONDO GESTO DELLA GRIGLIA, e segue la
+                     * stessa regola della seduta in programma: `button` vero,
+                     * raggiungibile da tastiera, con un nome accessibile che
+                     * dice **cosa fa il clic** e non cosa c'è dentro la cella —
+                     * dentro non c'è niente, il che rende la regola più
+                     * necessaria e non meno.
+                     *
+                     * Una fascia passata non è un bersaglio: il provider la
+                     * rifiuterebbe, e un pulsante che porta a un rifiuto è
+                     * peggio di nessun pulsante. Resta `div`, come le altre
+                     * celle che non offrono niente.
+                     */
+                    if (fascia && fascia.start > today) {
+                      return (
+                        <button
+                          key={`${day.date.toISOString()}-${minuteOfDay}`}
+                          type="button"
+                          className={`${cellClass} ${chiusa ? 'hover:bg-muted/70' : 'hover:bg-accent/50'} transition-colors disabled:cursor-default`}
+                          disabled={setSlot.isPending}
+                          aria-label={interpolate(
+                            chiusa
+                              ? t.professional.calendar.slotReopenLabel
+                              : t.professional.calendar.slotCloseLabel,
+                            {
+                              weekday: formatWeekday(fascia.start),
+                              date: formatDate(fascia.start),
+                              time: formatTime(fascia.start),
+                            },
+                          )}
+                          onClick={() =>
+                            setSlot.mutate({
+                              start: fascia.start,
+                              status: chiusa ? 'open' : 'closed',
+                            })
+                          }
+                        >
+                          {chiusa && (
+                            <span className="text-muted-foreground">
+                              {t.professional.calendar.slotClosed}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    }
+
                     return (
                       <div
                         key={`${day.date.toISOString()}-${minuteOfDay}`}
@@ -497,6 +612,10 @@ export default function ProCalendario() {
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded bg-card border border-border" />
           {t.professional.calendar.legendFree}
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded bg-muted border-2 border-dashed border-muted-foreground" />
+          {t.professional.calendar.legendClosed}
         </div>
       </div>
       )}
