@@ -22,6 +22,8 @@ import {
   serviceOf,
   type Appointment,
   type AppointmentSlot,
+  type ProfessionalSlot,
+  type SlotStatus,
   type Company,
   type Department,
   type EarlyAlert,
@@ -146,6 +148,21 @@ export class MockDataProvider implements DataProvider {
   >();
 
   /*
+   * Le fasce che la professionista ha chiuso durante la demo (01.09.2026).
+   *
+   * È una **sovrapposizione** su `INITIAL_SLOTS`, come `cancellations` lo è su
+   * `PORTAL_SESSIONS`, e per la stessa ragione: il piano delle fasce è dataset
+   * curato del §8 e non si tocca, quindi la chiusura vive qui e la lettura la
+   * applica in proiezione. Un ricaricamento riporta le fasce al loro posto,
+   * come tutto lo stato del provider (`CLAUDE.md` §10).
+   *
+   * La chiave è `professionalId` più l'istante d'inizio, che è l'identità di
+   * una fascia finché le fasce sono generate — il perché sta su
+   * `ProfessionalSlot`.
+   */
+  private readonly closedSlots = new Set<string>();
+
+  /*
    * L'ultima risposta al check rapido. Non entra nelle serie del §8, ed è una
    * scelta: quelle dodici curve raccontano la storia che il pitch spiega, e un
    * tocco fatto davanti a un investitore non deve poterla muovere. Serve a
@@ -216,6 +233,24 @@ export class MockDataProvider implements DataProvider {
    * dipendente e lo slot che torna libero leggono tutti `status`, ed è la
    * ragione per cui non serve toccarne nessuno.
    */
+  /*
+   * La chiave di una fascia dentro `closedSlots`.
+   *
+   * Sta in una funzione perché la usano in tre — la lettura, la scrittura e il
+   * filtro degli slot liberi — e tre punti che costruiscono la stessa chiave
+   * sono tre punti che possono divergere (§5.5).
+   */
+  private slotKey(professionalId: string, start: Date): string {
+    return `${professionalId}@${start.getTime()}`;
+  }
+
+  /** Le fasce dichiarate di quel professionista, in ordine di orario. */
+  private slotsOf(professionalId: string): AppointmentSlot[] {
+    return INITIAL_SLOTS.filter(
+      (slot) => slot.professionalId === professionalId,
+    ).sort((a, b) => a.start.getTime() - b.start.getTime());
+  }
+
   private applyCancellation(session: ProfessionalSession): ProfessionalSession {
     const cancelled = this.cancellations.get(session.id);
     if (cancelled === undefined) return session;
@@ -709,13 +744,25 @@ export class MockDataProvider implements DataProvider {
      * oggi non lo produce, ma è il difetto corretto sugli slot fra loro il
      * 15.08.2026 e lasciato asimmetrico da questo lato.
      */
+    /*
+     * LA SECONDA SOTTRAZIONE: LE FASCE CHIUSE (01.09.2026).
+     *
+     * Fino a qui l'elenco toglieva una cosa sola — le fasce occupate da una
+     * seduta — e l'unico modo che la professionista aveva di liberarsi un'ora
+     * era che ci fosse una seduta da annullare. Un impegno personale su un'ora
+     * libera non aveva nessuna rappresentazione, e quell'ora restava
+     * prenotabile.
+     *
+     * **Le due sottrazioni sono indipendenti**: una fascia può essere chiusa e
+     * occupata insieme, e ognuna basta da sola a toglierla dai proponibili.
+     */
     const busy = this.sessionsOf(professionalId).filter(
       (session) => session.status !== "cancelled",
     );
     return Promise.resolve(
-      INITIAL_SLOTS.filter(
+      this.slotsOf(professionalId).filter(
         (slot) =>
-          slot.professionalId === professionalId &&
+          !this.closedSlots.has(this.slotKey(professionalId, slot.start)) &&
           !busy.some((session) =>
             overlaps(
               slot.start,
@@ -726,6 +773,84 @@ export class MockDataProvider implements DataProvider {
           ),
       ),
     );
+  }
+
+  getProfessionalSlots(professionalId: string): Promise<ProfessionalSlot[]> {
+    return Promise.resolve(
+      this.slotsOf(professionalId).map(({ start, durationMinutes }) => ({
+        start,
+        durationMinutes,
+        status: this.closedSlots.has(this.slotKey(professionalId, start))
+          ? ("closed" as const)
+          : ("open" as const),
+      })),
+    );
+  }
+
+  /*
+   * Apre o chiude una fascia. I tre rifiuti e la loro natura stanno
+   * sull'interfaccia, che è dove li legge chi scriverà il backend.
+   *
+   * Lancia anche in produzione, come `requireProfessional` e `cancelSession`:
+   * sono invarianti dell'API e non del dataset, e un'implementazione che al
+   * loro posto inventasse un esito farebbe sparire il difetto invece di
+   * mostrarlo.
+   */
+  async setSlotStatus(
+    professionalId: string,
+    start: Date,
+    status: SlotStatus,
+  ): Promise<ProfessionalSlot> {
+    const slot = this.slotsOf(professionalId).find(
+      (entry) => entry.start.getTime() === start.getTime(),
+    );
+
+    assertInDevOutsidePromise(
+      slot !== undefined,
+      `${professionalId} non ha una fascia che comincia alle ${start.toISOString()}.`,
+    );
+    if (slot === undefined) {
+      throw new Error(
+        `Nessuna fascia di "${professionalId}" alle ${start.toISOString()}.`,
+      );
+    }
+
+    /*
+     * Le due precondizioni, e sono di natura diversa — il perché sta sul
+     * metodo dell'interfaccia. La prima è del dominio e vale identica in
+     * produzione; la seconda è la stessa regola con l'orologio della demo al
+     * posto di quello vero (`CLAUDE.md` §5.4).
+     */
+    const occupata = this.sessionsOf(professionalId).some(
+      (session) =>
+        session.status === "scheduled" &&
+        overlaps(
+          slot.start,
+          slot.durationMinutes,
+          session.start,
+          session.durationMinutes,
+        ),
+    );
+    if (occupata) {
+      throw new Error(
+        `La fascia di "${professionalId}" alle ${start.toISOString()} è occupata da una seduta in programma: per liberarla si annulla la seduta.`,
+      );
+    }
+    if (slot.start <= DEMO_TODAY) {
+      throw new Error(
+        `La fascia di "${professionalId}" alle ${start.toISOString()} è passata.`,
+      );
+    }
+
+    const key = this.slotKey(professionalId, slot.start);
+    if (status === "closed") this.closedSlots.add(key);
+    else this.closedSlots.delete(key);
+
+    return {
+      start: slot.start,
+      durationMinutes: slot.durationMinutes,
+      status,
+    };
   }
 
   /*
@@ -781,6 +906,25 @@ export class MockDataProvider implements DataProvider {
     assertInDevOutsidePromise(
       slot.start.getDay() !== 0 && slot.start.getDay() !== 6,
       "Prenotata una seduta nel fine settimana.",
+    );
+
+    /*
+     * UNA FASCIA CHIUSA NON SI PRENOTA, E IL CONTROLLO STA QUI (01.09.2026).
+     *
+     * `getAvailableSlots` la toglie già dall'elenco, ma verificarlo **là**
+     * sarebbe tautologico — è la stessa funzione che decide cosa è libero,
+     * quindi se il suo filtro si rompe si rompe anche la verifica. È la
+     * ragione già scritta sui due controlli qui sopra, applicata alla
+     * sottrazione nuova: si guarda **l'archivio delle chiuse**, che è
+     * indipendente da chi costruisce l'elenco.
+     *
+     * Il caso che coglie non è teorico: chi prenota tiene lo slot in uno stato
+     * locale (`Psicologi.tsx`), quindi fra l'elenco e la conferma la fascia può
+     * essere stata chiusa dall'altro lato del marketplace.
+     */
+    assertInDevOutsidePromise(
+      !this.closedSlots.has(this.slotKey(slot.professionalId, slot.start)),
+      `Prenotata la fascia di ${slot.professionalId} alle ${slot.start.toISOString()}, che è chiusa: la schermata sta proponendo uno slot che la professionista ha tolto.`,
     );
 
     /*

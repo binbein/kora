@@ -347,6 +347,15 @@ export function useAvailableSlots(professionalId: string | undefined) {
   });
 }
 
+/** Le fasce dichiarate con il loro stato, per chi le amministra (§10.D). */
+export function useProfessionalSlots(professionalId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.professional.ownSlots(professionalId ?? ""),
+    queryFn: () => dataProvider.getProfessionalSlots(professionalId ?? ""),
+    enabled: professionalId !== undefined,
+  });
+}
+
 export function useEmployeeProfile() {
   return useQuery({
     queryKey: queryKeys.employee.profile(),

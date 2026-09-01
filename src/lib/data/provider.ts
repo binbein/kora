@@ -2,6 +2,8 @@ import type {
   AiHealthPlan,
   Appointment,
   AppointmentSlot,
+  ProfessionalSlot,
+  SlotStatus,
   CappedServiceKind,
   CheckupEligibility,
   CheckupProvider,
@@ -314,7 +316,15 @@ export interface DataProvider {
    * home, e il filtro sta nel punto che conta, non qui.
    */
   getAppointments(): Promise<Appointment[]>;
-  /** Slot proponibili per un professionista, già filtrati sui liberi. */
+  /**
+   * Slot proponibili per un professionista, già filtrati sui liberi.
+   *
+   * **DUE SOTTRAZIONI E NON UNA** (01.09.2026): dalle fasce dichiarate si
+   * tolgono quelle occupate da una seduta non annullata **e quelle che la
+   * professionista ha chiuso**. La seconda è arrivata con `setSlotStatus`, e
+   * senza di lei una fascia chiusa restava prenotabile — cioè la chiusura non
+   * avrebbe chiuso niente.
+   */
   getAvailableSlots(professionalId: string): Promise<AppointmentSlot[]>;
 
   /**
@@ -330,6 +340,63 @@ export interface DataProvider {
    * erogate (§10.B).
    */
   bookAppointment(slot: AppointmentSlot): Promise<Appointment>;
+
+  // --- Le fasce, dal lato di chi le amministra (§10.D) -----------------------
+
+  /**
+   * Le fasce dichiarate di un professionista, ognuna con il suo stato.
+   *
+   * **Non è `getAvailableSlots` con un campo in più**, e i due non si
+   * sostituiscono: quello restituisce `AppointmentSlot`, cioè **ciò che si può
+   * prenotare**, ed è la lista che alimenta `bookAppointment`; questo
+   * restituisce `ProfessionalSlot`, cioè **ciò che la professionista
+   * amministra**, comprese le fasce che ha chiuso e che nessuno deve poter
+   * prenotare. Un tipo solo con lo stato dentro finirebbe come input di
+   * prenotazione, ed è la ragione scritta su `ProfessionalSlot`.
+   *
+   * Porta le fasce **occupate** come porta le libere: a dire che un'ora è presa
+   * è la seduta, che il calendario ha già da `getProfessionalSessions`, e una
+   * lista che le togliesse costringerebbe la griglia a ricostruirle.
+   */
+  getProfessionalSlots(professionalId: string): Promise<ProfessionalSlot[]>;
+
+  /**
+   * Apre o chiude una fascia dichiarata.
+   *
+   * **UNA SCRITTURA CON LO STATO DESIDERATO, NON DUE METODI SPECULARI.** Un
+   * `openSlot` e un `closeSlot` sarebbero due superfici di invalidazione da
+   * tenere allineate a mano per una differenza che sta in un valore, ed è la
+   * stessa ragione per cui `saveSessionNote` è un upsert invece di una coppia
+   * crea/aggiorna. Il chiamante dice **dove vuole arrivare**, e chiedere lo
+   * stato in cui la fascia è già è legittimo: la richiesta è soddisfatta.
+   *
+   * **RIFIUTA TRE COSE, E LE TRE NON SONO DELLA STESSA NATURA:**
+   *
+   * - **la fascia che non esiste** — è del dominio, e un backend risponderebbe
+   *   404. Vale identico in produzione;
+   * - **la fascia occupata da una seduta in programma** — è del dominio, e un
+   *   backend risponderebbe 409. Chiudere un'ora già presa non vuol dire
+   *   niente: il gesto che libera quell'ora è l'annullamento, e ha il suo
+   *   metodo. Vale identico in produzione;
+   * - **la fascia passata** — la **regola** è del dominio (chiudere un'ora già
+   *   trascorsa non cambia niente per nessuno), ma **l'implementazione è
+   *   dell'orologio della demo**: qui "passata" si misura su `DEMO_TODAY` e non
+   *   su `new Date()` (`CLAUDE.md` §5.4), quindi il confine si sposta con il
+   *   dataset invece che con il calendario. È la stessa struttura a due metà
+   *   che `cancelSession` dichiara sulla sua precondizione.
+   *
+   * **La fascia si identifica con l'istante d'inizio**, e il perché — e fino a
+   * quando — sta su `ProfessionalSlot`.
+   *
+   * **Invalida due radici**, quella del professionista e quella del dipendente,
+   * per la ragione già scritta su `cancelSession` e `bookAppointment`: la fascia
+   * è un fatto solo che i due lati leggono da due liste diverse.
+   */
+  setSlotStatus(
+    professionalId: string,
+    start: Date,
+    status: SlotStatus,
+  ): Promise<ProfessionalSlot>;
 
   // --- Check rapido (§8, §10.B) ---------------------------------------------
 
