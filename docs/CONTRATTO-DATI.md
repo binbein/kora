@@ -633,18 +633,27 @@ compensi e pagamenti.
 | `enterAs` | `["session"]` |
 
 ~~Sono tutte le scritture del dominio: dopo l'area pubblica non ne restano
-fuori.~~ → **cinque da M5.d**, e la quinta è di natura diversa dalle altre
-quattro: `enterAs` non scrive un dato del dominio ma la sessione, quindi
-invalida solo sé stessa. Concedere un ruolo non muove nessun numero, e far
-rileggere altro sarebbe rileggere mezza applicazione per un cambio di porta.
+fuori.~~ → **a contarle basta la tabella qui sopra**, e la prosa dice invece
+cosa le distingue fra loro. *(Ha dichiarato «cinque» e poi «sei», e la seconda
+cifra è invecchiata con `setSlotStatus`: è il numero in prosa accanto alla
+lista che lo smentisce, la famiglia che il `CLAUDE.md` §5.6 e §2.7 hanno
+sciolto scrivendo il criterio invece del valore. Tolta il 02.09.2026 —
+aggiornarla oggi vuol dire riaggiornarla alla prossima scrittura.)*
 
-**È anche la sola che in produzione può sparire**: il ruolo lo concederà
-l'autenticazione (§6). Le altre quattro restano.
+**`enterAs` è di natura diversa da tutte le altre**: non scrive un dato del
+dominio ma la sessione, quindi invalida solo sé stessa. Concedere un ruolo non
+muove nessun numero, e far rileggere altro sarebbe rileggere mezza
+applicazione per un cambio di porta. **È anche la sola che in produzione può
+sparire**: il ruolo lo concederà l'autenticazione (§6).
 
-**Sei dal 17.08.2026**, con `cancelSession`. **È la prima scrittura che non
-inserisce**: `saveSessionNote` è un upsert e le altre quattro sono
-inserimenti, mentre questa **cambia lo stato di un record che esiste** — ed è
-il primo passo dentro il ciclo dell'appuntamento che il §8.5 descrive.
+**Le scritture del dominio si dividono in due, ed è la distinzione che conta
+per chi implementa**: quelle che **inseriscono** un record — `bookAppointment`,
+`submitRapidCheck`, `submitDemoRequest` — e quelle che **cambiano un record
+che esiste già**. `saveSessionNote` e `setSlotStatus` sono **upsert**: prendono
+lo stato desiderato e non chiedono a chi chiama di sapere cosa c'era. Diverso
+ancora è `cancelSession`, che **cambia lo stato di un record esistente e non
+lo scrive da capo** — è stata la prima a farlo (17.08.2026), ed è il primo
+passo dentro il ciclo dell'appuntamento che il §8.5 descrive.
 
 **`bookAppointment` invalida due radici perché scrive un record solo.**
 `Appointment` e `ProfessionalSession` sono due proiezioni della stessa seduta
