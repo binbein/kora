@@ -238,6 +238,7 @@ export const de: Dictionary = {
       appointmentCancelled: "Abgesagt",
       appointmentCancelledByProfessional: "{professional} hat den Termin abgesagt.",
       appointmentCancelledByPatient: "Du hast den Termin abgesagt.",
+      appointmentMessageFrom: "{professional} hat dir geschrieben:",
 
       sessions: "{used} von {total} Sitzungen genutzt",
       sessionsWithScheduled:
@@ -533,6 +534,10 @@ export const de: Dictionary = {
         notePlaceholder: "Warum die Sitzung abgesagt wurde",
         notePrivacy:
           "Die Notiz bleibt in Ihrem Kalender: das Unternehmen der Patientin sieht sie nicht.",
+        messageToggle: "Auch eine Nachricht an {patient} schreiben",
+        messageLabel: "Nachricht an die Patientin",
+        messagePlaceholder: "Ich bin krank, ich melde mich für einen neuen Termin",
+        messagePrivacy: "{patient} liest diese Nachricht in der App.",
         effect:
           "Die Zeit ist nicht mehr belegt und die Sitzung zählt nicht zum Honorar.",
         keep: "Zurück",

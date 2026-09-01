@@ -250,6 +250,9 @@ export const it = {
       appointmentCancelledByProfessional:
         "{professional} ha annullato questo appuntamento.",
       appointmentCancelledByPatient: "Hai annullato questo appuntamento.",
+      /* La voce della professionista, non quella della piattaforma: la riga
+         attribuisce, e la resa la stacca dal testo di sistema (01.09.2026). */
+      appointmentMessageFrom: "{professional} ti ha scritto:",
 
       /** "3 su 10 sessioni usate" */
       sessions: "{used} su {total} sessioni usate",
@@ -706,6 +709,15 @@ export const it = {
         notePlaceholder: "Perché la sessione è stata annullata",
         notePrivacy:
           "La nota resta nella tua agenda: l'azienda del paziente non la vede.",
+        /*
+         * IL MESSAGGIO AL PAZIENTE È UN SECONDO CAMPO (01.09.2026), non una
+         * spunta sulla nota qui sopra: la spunta apre una casella vuota, e i
+         * due testi non si toccano mai.
+         */
+        messageToggle: "Scrivi anche un messaggio a {patient}",
+        messageLabel: "Messaggio per il paziente",
+        messagePlaceholder: "Sono malata, ti ricontatto per rifissare",
+        messagePrivacy: "{patient} leggerà questo messaggio nella sua app.",
         /*
          * DICE L'INVARIANTE E NON LA POLICY (19.08.2026). Diceva "l'ora torna
          * prenotabile", ed era la promessa che i documenti hanno smesso di fare

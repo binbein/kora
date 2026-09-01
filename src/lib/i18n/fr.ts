@@ -291,6 +291,7 @@ export const fr: Dictionary = {
       appointmentCancelled: "Annulé",
       appointmentCancelledByProfessional: "{professional} a annulé ce rendez-vous.",
       appointmentCancelledByPatient: "Tu as annulé ce rendez-vous.",
+      appointmentMessageFrom: "{professional} t'a écrit :",
 
       /* I segnaposto ci sono tutti e cambiano posto: in francese "sur {total}"
          segue il sostantivo, e il guardrail confronta gli insiemi proprio per
@@ -600,6 +601,10 @@ export const fr: Dictionary = {
         notePlaceholder: "Pourquoi la séance a été annulée",
         notePrivacy:
           "La note reste dans votre agenda : l'entreprise du patient ne la voit pas.",
+        messageToggle: "Écrire aussi un message à {patient}",
+        messageLabel: "Message au patient",
+        messagePlaceholder: "Je suis malade, je propose une nouvelle date",
+        messagePrivacy: "{patient} lira ce message dans son application.",
         effect:
           "L'horaire n'est plus occupé et la séance ne compte pas dans la rémunération.",
         keep: "Retour",

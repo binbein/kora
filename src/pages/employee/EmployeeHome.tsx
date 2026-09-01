@@ -193,9 +193,10 @@ function AppointmentRow({
           })}
         </p>
         {/* Il motivo è opzionale sul tipo — assente vuol dire che la seduta non
-            è annullata — quindi la frase nasce con lui. La nota libera della
+            è annullata — quindi la frase nasce con lui. La **nota** della
             professionista non arriva da questa parte: non è un campo di
-            `Appointment` (§3 del contratto). */}
+            `Appointment` (§3 del contratto). Il **messaggio** sì, ed è la riga
+            qui sotto. */}
         {cancelled && appointment.cancellationReasonKey && (
           <p className="text-xs text-destructive-strong mt-1">
             {appointment.cancellationReasonKey === "by_professional"
@@ -205,6 +206,35 @@ function AppointmentRow({
                 )
               : t.employee.home.appointmentCancelledByPatient}
           </p>
+        )}
+        {/*
+          * LA RIGA CHE LA PROFESSIONISTA HA SCRITTO AL PAZIENTE (01.09.2026).
+          *
+          * Sta sotto chi ha annullato perché è il seguito di quella frase: la
+          * disdetta è il fatto, questa è la voce di chi l'ha decisa. **Si
+          * stacca dal testo di sistema** — filetto a sinistra, testo su
+          * `foreground` e un corpo più grande delle due righe sopra — perché a
+          * parlare non è più la piattaforma, e leggerla nel grigio degli avvisi
+          * la farebbe sembrare un'altra riga di log.
+          *
+          * **Ed è attribuita**: senza il nome davanti, un "sono malata" senza
+          * soggetto è la piattaforma che dice una cosa che non può aver detto.
+          *
+          * Nasce con il campo, che è `?`: assente vuol dire che un messaggio
+          * non c'è — la seduta non è annullata, oppure lo è senza che nessuno
+          * abbia scritto niente.
+          */}
+        {appointment.cancellationMessage && (
+          <div className="mt-2 border-l-2 border-secondary/40 pl-3">
+            <p className="text-xs text-muted-foreground">
+              {interpolate(t.employee.home.appointmentMessageFrom, {
+                professional: professionalName,
+              })}
+            </p>
+            <p className="text-sm text-foreground mt-0.5">
+              {appointment.cancellationMessage}
+            </p>
+          </div>
         )}
       </div>
       <Badge
