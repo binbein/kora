@@ -2441,9 +2441,28 @@ demo scollegate.
    rifiutato.
 
    Il motivo resta l'enumerazione di due valori che c'era già — chi ha annullato
-   — e vale `by_professional`. In più il dialogo accetta **una nota libera
-   facoltativa**, che vive **solo sulla proiezione di chi cura**, come
-   `SessionNote`: `PlatformSession` è la prova che non può arrivare altrove.
+   — e vale `by_professional`.
+
+   **Il dialogo accetta due testi facoltativi con due destinatari** (founder,
+   01.09.2026), e la decisione non è che ce ne siano due: è che sono **due
+   campi e non un interruttore**. La **nota** resta dove vive `SessionNote`,
+   sulla proiezione di chi cura; il **messaggio** attraversa il confine e il
+   paziente lo legge, attribuito a chi l'ha scritto. La strada scartata era una
+   spunta *"rendi visibile al paziente"* sopra il testo che esiste già, e a
+   scartarla è la stessa ragione per cui il nome del paziente non arriva al
+   back-office (voce 2): **non lo si risolve facendo scegliere alla schermata
+   cosa rendere**, perché una spunta lasciata attiva per distrazione manda al
+   paziente una valutazione clinica, e quel danno non ha un ritiro. Con due
+   campi il testo che passa è quello scritto **per** passare.
+
+   `PlatformSession` non ha nessuno dei due, e la forma dei tipi è la garanzia:
+   sta in `docs/CONTRATTO-DATI.md` §3, che è dove il backend la eredita, e qui
+   non si ripete.
+
+   **La spunta apre la seconda casella, non pubblica la prima.** Nasce vuota e
+   **non si pre-riempie mai con la nota privata**: sarebbe l'interruttore
+   travestito, con un clic in meno fra il testo per sé e il paziente che lo
+   legge.
 
    **Quello che ne discende era già scritto per le annullate**, e va verificato
    invece che dato per fatto: l'ora torna libera, il compenso non matura,
@@ -2458,8 +2477,10 @@ demo scollegate.
    smette di occupare e **non compare fra i proponibili**, perché non ci è mai
    stata. La garanzia è quella del contratto, cioè che un'annullata non occupi
    più la sua ora; il ricomparire vale per le sole fasce del piano, ed è il caso
-   della seduta appena prenotata. Da qui la conseguenza operativa in
-   `docs/PITCH.md`: davanti a un investitore si annulla quella.
+   della seduta appena prenotata — **e da lì solo se quella fascia non è
+   chiusa**, che dal 01.09.2026 è un gesto che esiste (voce 6). Da qui la
+   conseguenza operativa in `docs/PITCH.md`: davanti a un investitore si annulla
+   quella.
 
    Metà del vuoto del
    `docs/CONTRATTO-DATI.md` §8.5 si chiude qui; l'altra metà — preavviso, chi
@@ -2493,10 +2514,62 @@ demo scollegate.
    trimestre (§10.C.1) applicata al contrario: qui il comando comanda la sola
    griglia, e l'etichetta dichiara quale settimana si sta guardando.
 
+6. **Una fascia dichiarata si chiude e si riapre** (founder, 01.09.2026), con
+   un clic sulla cella del calendario. Non è una rotta nuova né una schermata
+   nuova — è un gesto in più su una schermata che c'è, e **le rotte restano
+   26**.
+
+   **Il caso che la motiva**: fino ad allora l'unico modo che la professionista
+   aveva di liberarsi un'ora era che ci fosse **una seduta da annullare**. Un
+   impegno personale su un'ora libera non aveva nessuna rappresentazione, e
+   dopo una disdetta l'ora tornava proponibile — che a volte è giusto e a volte
+   no. È la risposta di chi cura alla policy che il
+   `docs/CONTRATTO-DATI.md` §8.5 dichiara non decisa.
+
+   **`setSlotStatus` è una scrittura sola con lo stato desiderato**, non un
+   `openSlot` e un `closeSlot`: due metodi speculari sarebbero due superfici di
+   invalidazione da tenere allineate a mano per una differenza che sta in un
+   valore. Rifiuta la fascia inesistente, quella occupata da una seduta in
+   programma e quella passata.
+
+   **`ProfessionalSlot` nasce accanto ad `AppointmentSlot` invece di
+   aggiungergli uno stato**, ed è la parte da non scorciare: `AppointmentSlot` è
+   **anche l'input di `bookAppointment`**, quindi uno stato appeso lì vorrebbe
+   dire che **chi prenota dichiara lo stato della fascia**. I due tipi
+   coincidevano finora solo perché la fascia non aveva stato; adesso uno è ciò
+   che si può prenotare e l'altro ciò che la professionista amministra.
+
+   **Cosa non c'è, ed è una scelta di scope già presa**: **dichiarare fasce
+   nuove non esiste**, e nemmeno la ricorrenza settimanale. La disponibilità si
+   pubblica altrove — oggi da nessuna parte — e resta lavoro dell'MVP, elencata
+   in `docs/CONTRATTO-DATI.md` §8.5 con l'altra metà che qui si chiude. Ne
+   discende un vincolo da sapere prima: **finché le fasce sono generate,
+   l'identità di una fascia è la coppia professionista + istante d'inizio**, ed
+   è così che il metodo la prende.
+
+   **La griglia dice cosa sono le sue celle** (02.09.2026), e non è un dettaglio
+   di stile: la fascia libera e la cella vuota erano disegnate uguali, cioè la
+   schermata prometteva venti bersagli e ne aveva uno. Il segno primario è **il
+   testo** — la cella porta la sua etichetta — perché i cinque fondi di questa
+   griglia stanno tutti dentro ΔE 6.6 e il colore non può portare da solo il
+   significato (§6.1, 1.4.11). La cella vuota non ha più né fondo né bordo:
+   **ciò che non offre niente non si disegna**.
+
+   **E la griglia dice da dove vengono le fasce**: una riga sotto la legenda le
+   chiama *"la tua disponibilità"*. Sta lì e non sopra la griglia perché la
+   griglia contiene **anche le sedute**, e un titolo mentirebbe sulle celle
+   prenotate e passate.
+
+   **Il giro del pitch la chiama il terzo tempo e ne dichiara l'ordine
+   vincolante**: la coreografia sta in `docs/PITCH.md` e qui non si ripete.
+
 **Finita quando:** le righe settimanali sommano al totale del mese; i pazienti
 elencati sono lo stesso numero che dichiara la KPI; le date e i giorni della
-settimana coincidono con il calendario vero (oggi sbagliano in tutti e quattro i
-punti in cui compaiono, §11).
+settimana coincidono con il calendario vero. *(La riga aggiungeva «oggi
+sbagliano in tutti e quattro i punti in cui compaiono», ed era vera fino a M2:
+il §11 dichiara quelle quattro coppie sparite con la lista che le conteneva, e
+«da lì non ne resta nessuna». Corretta il 02.09.2026 — un criterio con dentro
+un «oggi» invecchia il giorno in cui il criterio è soddisfatto.)*
 
 **Eccezione dichiarata.** «Una prenotazione fatta in §10.B compare nel calendario»
 non si verifica alla chiusura di M2, perché il lato dipendente è M3. Il contratto
