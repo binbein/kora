@@ -88,7 +88,22 @@ export default function HRFatturazione() {
           <h3 className="font-semibold flex items-center gap-2">
             <CreditCard className="w-4 h-4 text-primary" aria-hidden="true" /> {t.hr.billing.planTitle}
           </h3>
-          <Badge className="bg-secondary/10 text-secondary-strong">
+          {/*
+            * IL FONDO È RIPETUTO IN `hover:`, E NON È DI TROPPO.
+            *
+            * `badge.tsx` ha `defaultVariants: { variant: "default" }`, e quella
+            * variante porta `hover:bg-primary/80`: un `className` che passa
+            * solo il fondo a riposo sovrascrive quello e **non** l'`hover:`,
+            * che è un'altra classe. Il risultato è un badge che diventa blu
+            * petrolio pieno al passaggio del mouse — cioè un'etichetta che
+            * finge di essere premibile, mentre è un `<div>` senza `onClick`.
+            *
+            * Si corregge **al call site e non nella definizione**, perché
+            * `src/components/ui/` è congelato e il §6.1 lo dice per questo file
+            * esatto. Chi toglie l'`hover:` credendolo un duplicato riapre il
+            * difetto.
+            */}
+          <Badge className="bg-secondary/10 text-secondary-strong hover:bg-secondary/10">
             {t.plan[company.plan.id]}
           </Badge>
         </div>
@@ -152,8 +167,8 @@ export default function HRFatturazione() {
                 <Badge
                   className={
                     invoice.status === 'paid'
-                      ? 'bg-secondary/10 text-secondary-strong text-xs'
-                      : 'bg-waiting text-waiting-foreground text-xs'
+                      ? 'bg-secondary/10 text-secondary-strong text-xs hover:bg-secondary/10'
+                      : 'bg-waiting text-waiting-foreground text-xs hover:bg-waiting'
                   }
                 >
                   {invoice.status === 'paid'

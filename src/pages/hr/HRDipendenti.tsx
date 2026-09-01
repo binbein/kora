@@ -139,7 +139,7 @@ export default function HRDipendenti() {
                 <TableCell>
                   <Badge
                     variant={entry.enrolled ? 'default' : 'outline'}
-                    className={entry.enrolled ? 'bg-secondary/10 text-secondary-strong' : ''}
+                    className={entry.enrolled ? 'bg-secondary/10 text-secondary-strong hover:bg-secondary/10' : ''}
                   >
                     {entry.enrolled ? t.hr.employees.enrolled : t.hr.employees.notEnrolled}
                   </Badge>

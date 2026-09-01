@@ -151,8 +151,8 @@ export default function AdminProvider() {
                   <Badge
                     className={
                       provider.status === "active"
-                        ? "bg-secondary/10 text-secondary-strong"
-                        : "bg-waiting text-waiting-foreground"
+                        ? "bg-secondary/10 text-secondary-strong hover:bg-secondary/10"
+                        : "bg-waiting text-waiting-foreground hover:bg-waiting"
                     }
                   >
                     {provider.status === "active"

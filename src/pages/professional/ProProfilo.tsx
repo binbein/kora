@@ -51,7 +51,7 @@ export default function ProProfilo() {
             </p>
             <div className="flex flex-wrap gap-2 mt-3">
               {professional.rating !== null ? (
-                <Badge className="bg-executive/10 text-executive">
+                <Badge className="bg-executive/10 text-executive hover:bg-executive/10">
                   <Star className="w-3 h-3 mr-1" aria-hidden="true" />
                   <span className="tabular-nums">
                     {formatRating(professional.rating)}
@@ -127,11 +127,11 @@ export default function ProProfilo() {
           <div className="flex items-center justify-between py-2 border-b border-border">
             <span className="text-muted-foreground">{t.professional.profile.documents}</span>
             {professional.documentsVerified ? (
-              <Badge className="bg-secondary/10 text-secondary-strong">
+              <Badge className="bg-secondary/10 text-secondary-strong hover:bg-secondary/10">
                 <CheckCircle2 className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.profile.verified}
               </Badge>
             ) : (
-              <Badge className="bg-waiting text-waiting-foreground">
+              <Badge className="bg-waiting text-waiting-foreground hover:bg-waiting">
                 <Clock className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.profile.documentsPending}
               </Badge>
             )}
@@ -139,11 +139,11 @@ export default function ProProfilo() {
           <div className="flex items-center justify-between py-2">
             <span className="text-muted-foreground">{t.professional.profile.mandate}</span>
             {professional.mandateSigned ? (
-              <Badge className="bg-secondary/10 text-secondary-strong">
+              <Badge className="bg-secondary/10 text-secondary-strong hover:bg-secondary/10">
                 <CheckCircle2 className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.profile.signed}
               </Badge>
             ) : (
-              <Badge className="bg-waiting text-waiting-foreground">
+              <Badge className="bg-waiting text-waiting-foreground hover:bg-waiting">
                 <Clock className="w-3 h-3 mr-1" aria-hidden="true" /> {t.professional.profile.mandatePending}
               </Badge>
             )}

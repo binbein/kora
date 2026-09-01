@@ -50,9 +50,9 @@ import { interpolate, t } from "@/lib/i18n";
  */
 
 const STATUS_BADGE: Record<AppointmentStatus, string> = {
-  scheduled: "bg-secondary/10 text-secondary-strong",
-  completed: "bg-primary/10 text-primary",
-  cancelled: "bg-muted text-muted-foreground",
+  scheduled: "bg-secondary/10 text-secondary-strong hover:bg-secondary/10",
+  completed: "bg-primary/10 text-primary hover:bg-primary/10",
+  cancelled: "bg-muted text-muted-foreground hover:bg-muted",
 };
 
 /*

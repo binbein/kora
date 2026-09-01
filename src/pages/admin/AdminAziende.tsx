@@ -156,9 +156,9 @@ const PLAN_RANK: Record<PlanId, number> = {
 const NO_COMPANIES: ClientCompany[] = [];
 
 const PLAN_BADGE: Record<PlanId, string> = {
-  essenziale: "bg-muted text-muted-foreground",
-  plus: "bg-secondary/10 text-secondary-strong",
-  executive: "bg-executive/10 text-executive",
+  essenziale: "bg-muted text-muted-foreground hover:bg-muted",
+  plus: "bg-secondary/10 text-secondary-strong hover:bg-secondary/10",
+  executive: "bg-executive/10 text-executive hover:bg-executive/10",
 };
 
 export default function AdminAziende() {
@@ -311,8 +311,8 @@ export default function AdminAziende() {
                   <Badge
                     className={
                       company.active
-                        ? "bg-secondary/10 text-secondary-strong"
-                        : "bg-waiting text-waiting-foreground"
+                        ? "bg-secondary/10 text-secondary-strong hover:bg-secondary/10"
+                        : "bg-waiting text-waiting-foreground hover:bg-waiting"
                     }
                   >
                     {company.active
