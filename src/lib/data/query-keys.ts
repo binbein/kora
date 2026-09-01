@@ -40,6 +40,14 @@ export const queryKeys = {
      */
     slots: (professionalId: string) =>
       ["professional", professionalId, "slots"] as const,
+    /*
+     * Le fasce **con il loro stato**, che è una lettura diversa dai proponibili
+     * qui sopra: quella dice cosa si può prenotare, questa cosa la
+     * professionista amministra. Sono due chiavi perché sono due domande, e
+     * stanno sotto la stessa radice perché a invalidarle sono gli stessi fatti.
+     */
+    ownSlots: (professionalId: string) =>
+      ["professional", professionalId, "own-slots"] as const,
     profile: (professionalId: string) =>
       ["professional", professionalId, "profile"] as const,
     sessions: (professionalId: string) =>

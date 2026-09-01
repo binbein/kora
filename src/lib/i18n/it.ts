@@ -656,6 +656,12 @@ export const it = {
       legendBooked: "Prenotata",
       legendFree: "Libera",
       legendPast: "Passata",
+      legendClosed: "Chiusa",
+      /* La cella non ha altro testo, quindi il nome accessibile dice **cosa fa
+         il clic** e non cosa c'è dentro: dentro non c'è niente. */
+      slotClosed: "Chiusa",
+      slotCloseLabel: "Chiudi la fascia di {weekday} {date} alle {time}",
+      slotReopenLabel: "Riapri la fascia di {weekday} {date} alle {time}",
       today: "oggi",
       /* I nomi accessibili dicono dove portano: due frecce mute
          lasciano chi tabula senza sapere cosa preme (§11). */

@@ -728,11 +728,53 @@ export type PlatformSession = {
   type: SessionType;
 };
 
-/** Slot proponibile in prenotazione; diventa un `Appointment` se confermato. */
+/**
+ * Slot proponibile in prenotazione; diventa un `Appointment` se confermato.
+ *
+ * **È ciò che si può prenotare**, ed è anche l'input di `bookAppointment`: lo
+ * restituisce `getAvailableSlots` e lo ripassa chi prenota. `ProfessionalSlot`,
+ * qui sotto, è l'altra metà — ciò che la professionista **amministra** — e i
+ * due hanno un mestiere ciascuno.
+ */
 export type AppointmentSlot = {
   professionalId: string;
   start: Date;
   durationMinutes: number;
+};
+
+/** Aperta si può prenotare, chiusa no: è la professionista a deciderlo. */
+export type SlotStatus = "open" | "closed";
+
+/**
+ * Una fascia dichiarata **vista da chi la amministra**, con il suo stato
+ * (01.09.2026).
+ *
+ * **PERCHÉ UN TIPO E NON UN CAMPO SU `AppointmentSlot`.** Quello è anche
+ * **l'input di `bookAppointment`**, quindi uno stato appeso lì vorrebbe dire
+ * che **chi prenota dichiara lo stato della fascia** — e
+ * `bookAppointment({ …, status: "closed" })` compilerebbe. È il confine del §2
+ * del contratto fra modelli di lettura e input di scrittura, quello che il caso
+ * `DemoRequest` mostra al meglio: **è lo stesso campo, e cambia forma
+ * attraversando il confine**. Finora i due tipi coincidevano solo perché la
+ * fascia non aveva stato.
+ *
+ * Non ripete `professionalId`, come `ProfessionalSession`: l'id è l'argomento
+ * del metodo che lo restituisce.
+ *
+ * **L'IDENTITÀ DI UNA FASCIA È OGGI UNA COPPIA, E NON LO RESTERÀ.**
+ * `setSlotStatus` identifica la fascia con professionista + istante d'inizio, e
+ * funziona **finché le fasce sono generate**, come oggi: `INITIAL_SLOTS` nasce
+ * da un piano, quindi due fasce della stessa persona non possono cominciare
+ * insieme e la coppia è una chiave. Dal giorno in cui la professionista **ne
+ * dichiara di nuove** — la metà che il `docs/CONTRATTO-DATI.md` §8 lascia
+ * aperta — una fascia diventa un record con un'identità propria, e questo
+ * metodo prenderà un id invece di una data. Non è un problema adesso; è scritto
+ * qui perché è dove nasce, e chi arriva da lì non deve riscoprirlo.
+ */
+export type ProfessionalSlot = {
+  start: Date;
+  durationMinutes: number;
+  status: SlotStatus;
 };
 
 /**
