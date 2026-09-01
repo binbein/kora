@@ -657,6 +657,13 @@ export const it = {
       legendFree: "Libera",
       legendPast: "Passata",
       legendClosed: "Chiusa",
+      /* Da dove vengono le fasce, e non è un titolo sopra la griglia: la
+         griglia contiene anche le sedute, quindi "la tua disponibilità" detto
+         di tutta la griglia mentirebbe sulle prenotate e sulle passate.
+         Dichiarare fasce nuove non c'è (CONTRATTO-DATI §8.5), e la frase non
+         lo promette. */
+      availabilityNote:
+        "Le fasce libere e chiuse sono la tua disponibilità: qui la chiudi e la riapri.",
       /* L'etichetta dentro la cella, che è il segno primario di tutte e due:
          il colore non è mai l'unica cosa che porta un significato (§6.1). Il
          nome accessibile dice invece **cosa fa il clic**, ed è un'altra

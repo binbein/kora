@@ -659,7 +659,26 @@ export default function ProCalendario() {
       {/* La legenda spiega le celle, quindi vive con loro: su una settimana
           senza sedute restava a descrivere tre colori che non c'erano. */}
       {slots.length > 0 && (
-      <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
+      <div className="space-y-2 text-xs text-muted-foreground">
+        {/*
+          * DA DOVE VENGONO LE FASCE, E LA FRASE STA QUI E NON SOPRA LA GRIGLIA
+          * (founder, 02.09.2026).
+          *
+          * La griglia contiene **anche le sedute**, quindi un titolo "La tua
+          * disponibilità" sopra di lei mentirebbe sulle celle prenotate e su
+          * quelle passate — direbbe di tutta la griglia una cosa vera di due
+          * celle su cinque. La frase deve nominare le sole libere e chiuse, e
+          * l'unico posto in cui può farlo senza ripeterne i nomi è **accanto
+          * alle voci che le nominano già**: la legenda. Vale la ragione che
+          * quel blocco porta scritta da prima — le spiegazioni delle celle
+          * vivono con le celle — applicata alla provenienza invece che al
+          * colore.
+          *
+          * **Dichiarare fasce nuove non esiste**, ed è dichiarato mancante nel
+          * `docs/CONTRATTO-DATI.md` §8.5: la frase dice da dove vengono quelle
+          * che ci sono e cosa si può farne, e non promette il verbo che manca.
+          */}
+        <p>{t.professional.calendar.availabilityNote}</p>
         {/*
           * OGNI QUADRATINO PORTA IL DISEGNO VERO DELLA SUA CELLA, ed è la metà
           * del difetto che si vedeva peggio (02.09.2026): quello di "Libera"
@@ -675,21 +694,23 @@ export default function ProCalendario() {
           * otto di fondo, e i due quadratini che il bordo lo hanno spesso —
           * libera e chiusa — si leggevano come due bordi e basta.
           */}
-        <div className="flex items-center gap-1.5">
-          <div className="w-4 h-4 rounded bg-secondary/10 border border-secondary/30" />
-          {t.professional.calendar.legendBooked}
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-4 h-4 rounded bg-muted/60 border border-border" />
-          {t.professional.calendar.legendPast}
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-4 h-4 rounded bg-card border-2 border-secondary-strong" />
-          {t.professional.calendar.legendFree}
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-4 h-4 rounded bg-muted border-2 border-dashed border-muted-foreground" />
-          {t.professional.calendar.legendClosed}
+        <div className="flex flex-wrap gap-4">
+          <div className="flex items-center gap-1.5">
+            <div className="w-4 h-4 rounded bg-secondary/10 border border-secondary/30" />
+            {t.professional.calendar.legendBooked}
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-4 h-4 rounded bg-muted/60 border border-border" />
+            {t.professional.calendar.legendPast}
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-4 h-4 rounded bg-card border-2 border-secondary-strong" />
+            {t.professional.calendar.legendFree}
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-4 h-4 rounded bg-muted border-2 border-dashed border-muted-foreground" />
+            {t.professional.calendar.legendClosed}
+          </div>
         </div>
       </div>
       )}
