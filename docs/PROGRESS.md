@@ -2134,8 +2134,8 @@ visibile con la navigazione fra settimane e il salto a data, i criteri e i
 conteggi, le attese e l'ordinamento, l'ordinamento dello stato della seduta, la
 rinomina delle rotte in inglese, la demo pronta, le cifre nelle
 parentetiche, i rimandi del contratto, i fatti del Business Plan, il check
-rapido con la soglia e i badge, e il messaggio di annullamento. Non aggiungono
-schermate e
+rapido con la soglia e i badge, il messaggio di annullamento, e la chiusura
+delle fasce. Non aggiungono schermate e
 non spostano un numero a schermo.
 
 **I numeri sono tre e contano tre cose diverse**, ed è la riga che mancava
@@ -7441,6 +7441,137 @@ sta nel §5.6 invece che nella memoria di chi l'ha scoperto.
   che il paziente legge *se apre l'applicazione* non è una riga che gli arriva.
   Il messaggio rende quella lacuna più visibile invece di ridurla, ed è scritto
   nel contratto accanto alle altre quattro.
+
+#### La chiusura delle fasce (01.09.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git. **Nessuna
+schermata nuova**: rotte **26**, schermate **27**, nessun numero del §8 e del §9
+mosso. `EXPECTED_KEYS` passa da **785 a 789**, i guardrail da **113 a 115**.
+`build`, `lint` e `typecheck` a zero.
+
+**Chiude metà di una voce del perimetro dell'MVP.** Il
+`docs/CONTRATTO-DATI.md` §8 dava «la pubblicazione della disponibilità» come
+mancante intera: adesso la professionista **chiude e riapre** le fasce che ha,
+mentre **dichiararne di nuove** e la **ricorrenza settimanale** restano fuori.
+
+**Il caso che la motiva**: fino a ieri l'unico modo che aveva di liberarsi
+un'ora era che ci fosse **una seduta da annullare**. Un impegno personale su
+un'ora libera non aveva nessuna rappresentazione e quell'ora restava
+prenotabile; e dopo una disdetta l'ora tornava proponibile e il paziente poteva
+riprendersela — che a volte è giusto e a volte no.
+
+##### Il dataset non è stato toccato, ed è stato verificato prima
+
+`SLOT_PLAN` dà alla Dr.ssa Meier quattro fasce, e **la settimana corrente ne
+contiene una**: venerdì 25.09 alle 10:00. Le altre tre stanno nella settimana
+successiva, che la freccia raggiunge. Basta a mostrare la funzione senza
+allargare la storia curata del §8, e la verifica è stata fatta **prima** di
+scrivere codice, non dopo.
+
+**Ne discende una conseguenza operativa, e sta in `docs/PITCH.md`**: quell'unica
+fascia libera è **lo slot che il pitch prescrive di prenotare**, quindi l'ordine
+del giro è vincolante — prenota, annulla, poi chiudi.
+
+##### Un tipo di lettura separato, e non un campo in più
+
+`ProfessionalSlot` nasce accanto ad `AppointmentSlot` invece di aggiungergli uno
+stato, e la ragione è che **quello è anche l'input di `bookAppointment`**: uno
+stato appeso lì vorrebbe dire che **chi prenota dichiara lo stato della fascia**,
+e `bookAppointment({ …, status: "closed" })` compilerebbe. È il confine del §2
+del contratto fra modelli di lettura e input di scrittura — quello che il caso
+`DemoRequest` mostra al meglio — e i due tipi coincidevano finora **solo perché
+la fascia non aveva stato**. Ognuno ha adesso un mestiere: `AppointmentSlot` è
+ciò che si può prenotare, `ProfessionalSlot` ciò che la professionista
+amministra.
+
+**Una scrittura sola con lo stato desiderato**, non un `openSlot` e un
+`closeSlot`: due metodi speculari sarebbero due superfici di invalidazione da
+tenere allineate a mano per una differenza che sta in un valore, ed è la ragione
+per cui `saveSessionNote` è un upsert.
+
+**I tre rifiuti non sono della stessa natura, e il commento lo dice**: la fascia
+inesistente e quella occupata da una seduta in programma sono **del dominio** —
+404 e 409 per un backend vero, e valgono identiche in produzione; la fascia
+passata è una **regola del dominio con un'implementazione dell'orologio della
+demo**, perché "passata" si misura su `DEMO_TODAY` (`CLAUDE.md` §5.4). È la
+stessa struttura a due metà che `cancelSession` dichiara sulla sua
+precondizione.
+
+**L'identità di una fascia è oggi una coppia e non lo resterà**, ed è annotato
+sui tipi perché è dove lo incontra chi legge: professionista più istante
+d'inizio è una chiave **finché le fasce sono generate**. Il giorno in cui la
+professionista ne dichiara di nuove, una fascia diventa un record con
+un'identità propria e `setSlotStatus` prende un id.
+
+##### Le fasce non erano mai state renderizzate, e questa è la parte che costava
+
+`weekGrid` e `slotsOfWeek` costruivano le righe **dalle sole sedute**: una
+fascia libera non aveva una riga, e le celle vuote erano solo i giorni in cui
+nessuno aveva preso quell'ora. Quindi «cliccare su uno slot libero» **non era un
+gesto da aggiungere a una cella esistente** — prima la griglia doveva mostrare
+le fasce.
+
+`slotsOfWeek` unisce ora gli orari delle sedute e quelli delle fasce, e una
+cella è una seduta, una fascia, oppure niente. **I due campi restano distinti
+sul tipo e non collassano in uno stato solo**: una fascia può essere occupata, e
+a decidere cosa mostrare è la schermata — la seduta vince perché dice di più —
+ma la griglia non le toglie il resto. Le funzioni restano pure.
+
+##### La resa della fascia chiusa è stata cambiata dopo la prova, non prima
+
+Il bordo tratteggiato è **il segno primario** e non un complemento del colore:
+`bg-muted/60` è già la seduta passata, quindi chiusa e passata finirebbero su
+due gradazioni dello stesso token — e i due fondi differiscono di **sei punti su
+255**, cioè niente.
+
+**La prima stesura non passava la prova, ed è la parte istruttiva.** A `1px` con
+`muted-foreground/50` il tratteggio **spariva nello screenshot della griglia**:
+la cella chiusa era indistinguibile da una libera senza leggerne il testo, cioè
+falliva esattamente il controllo per cui esiste. Portato a **`border-2` a piena
+intensità**, le tre celle — passata, chiusa, libera — si riconoscono nello
+screenshot ridotto senza leggere niente e senza passarci sopra il mouse.
+
+**La prova è visiva e non si fa con `getComputedStyle`**, e va detto perché
+costa tempo a chi la rifà: nel pannello del browser lo stile calcolato di quella
+cella ha restituito valori che **nessuna regola del foglio produce** — bianco su
+un elemento con `bg-muted`, mentre un clone dello stesso nodo fuori dalla
+griglia rendeva correttamente. Le regole c'erano, colpivano l'elemento e
+vincevano per specificità. **A decidere è stato lo screenshot**, che è anche il
+criterio che i founder avevano posto.
+
+##### Il guardrail sta dal lato della prenotazione
+
+Una fascia chiusa non si prenota, e il controllo guarda **l'archivio delle
+chiuse** invece dell'elenco dei proponibili: verificarlo là sarebbe stato
+tautologico — è la stessa funzione che decide cosa è libero, quindi se il suo
+filtro si rompe si rompe anche la verifica. È la ragione già scritta sui due
+controlli accanto.
+
+**Il caso che coglie non è teorico**: chi prenota tiene lo slot in uno stato
+locale, quindi fra l'elenco e la conferma la fascia può essere stata chiusa
+dall'altro lato del marketplace.
+
+##### Verificato a schermo, viewport 1280×900
+
+- **il giro dei tre tempi, per intero**: prenotato venerdì 25.09 alle 10:00 e lo
+  slot sparisce dai proponibili; annullata la seduta e **torna**; chiusa la
+  fascia e **non torna più**; riaperta e ricompare. I quattro passaggi letti dal
+  portale del dipendente, non dal codice;
+- **le tre celle vicine** — passata, chiusa, libera — riconoscibili nello
+  screenshot senza leggere il testo;
+- **le quattro lingue** sulla griglia: le due etichette del gesto, il testo della
+  cella e la legenda a quattro voci;
+- `build`, `lint` e `typecheck` a zero.
+
+##### Ricontare la cifra dei guardrail ha trovato una seconda trappola
+
+Il conto passa a **115**, e i punti del `CLAUDE.md` in cui compare sono stati
+**ricontati e non ripresi**. È uscito un secondo falso positivo, di specie
+diversa dal primo: un **`113` dentro `#11395A`**, l'esadecimale di `primary` nel
+§6.1, dove le cifre **non sono un numero**. Il primo, già registrato, era un
+`112` del §2.7 che conta gli oggetti di un dizionario. L'avvertenza accanto al
+conto adesso dice che le specie sono due e che **i riscontri si leggono uno per
+uno invece di sostituirli**.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
