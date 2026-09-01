@@ -7601,13 +7601,14 @@ uno invece di sostituirli**.
 #### La griglia delle fasce (02.09.2026)
 
 **Questo verbale non conta i propri commit**, e il conto lo dà git con il
-comando in testa a questo file. **È resa e testo**: `provider.ts`, `types.ts`,
-`schedule.ts`, `mock/` e `docs/CONTRATTO-DATI.md` **non compaiono nel diff**, e
-il perimetro era scritto così nella richiesta. Nessuna schermata nuova, rotte
-**26** e schermate **27**, nessun numero del §8 e del §9 mosso, guardrail
-**115 = 102 + 13** invariati. `EXPECTED_KEYS` passa da **789 a 791** — due
-chiavi nuove nei quattro dizionari, contate sull'albero e non stimate.
-`build`, `build:demo`, `lint` e `typecheck` a zero.
+comando in testa a questo file. **È resa e testo, più una riga di layer dati
+che i founder hanno autorizzato a passata aperta**: `provider.ts`, `types.ts`,
+`schedule.ts`, `mock/` e `docs/CONTRATTO-DATI.md` **non compaiono nel diff**;
+`prefetch.ts` sì, ed è l'eccezione dichiarata più sotto. Nessuna schermata
+nuova, rotte **26** e schermate **27**, nessun numero del §8 e del §9 mosso,
+guardrail **115 = 102 + 13** invariati. `EXPECTED_KEYS` passa da **789 a
+791** — due chiavi nuove nei quattro dizionari, contate sull'albero e non
+stimate. `build`, `build:demo`, `lint` e `typecheck` a zero.
 
 **Comportamento invariato, ed è la premessa**: quali celle sono un `button` e
 quali no non è cambiato. A cambiare è cosa si vede.
@@ -7731,18 +7732,39 @@ trappola del §11, sciolta imponendo il viewport.
 
 ##### Trovato e non toccato
 
-- **`professional.ownSlots` non è scaldata da `prefetchDemo`**, quindi il
-  guardrail della cache fredda parla **a ogni ingresso nel calendario**:
-  *`["professional","meier","own-slots"] si monta a cache fredda`*. **Non è di
-  questa passata**, ed è stato verificato invece che dedotto — `git stash`,
-  ricaricato su master pulito, stesso errore, `git stash pop`. Nasce con la
-  chiusura delle fasce del 01.09.2026: `prefetch.ts` scalda
-  `professional.slots`, cioè gli slot **prenotabili** del lato dipendente, e
-  `ownSlots` è una lettura nuova che nessuno ha aggiunto all'elenco. Sulla build
-  demo diventa un `console.error` sulla schermata che il pitch percorre, e
-  `docs/PITCH.md` dichiara che qualunque log durante la prova è un blocco. Il
+- ~~**`professional.ownSlots` non è scaldata da `prefetchDemo`**, quindi il
+  guardrail della cache fredda parla **a ogni ingresso nel calendario**. Il
   rimedio è una riga in `prefetch.ts`, cioè **layer dati**, fuori dal perimetro
-  di una passata di resa e testo;
+  di una passata di resa e testo.~~ → **chiuso qui, sullo stesso branch**: i
+  founder hanno **riaperto il perimetro di una riga** a passata aperta, con la
+  ragione che il perimetro era stato scritto **prima di sapere che il buco
+  esistesse** — è un difetto della stessa schermata, trovato dalla stessa
+  passata, su un log che `docs/PITCH.md` classifica come blocco durante la
+  prova generale.
+
+  **Era preesistente, ed è stato verificato invece che dedotto**: `git stash`,
+  ricaricato su master pulito, stesso errore, `git stash pop`. Nasce con la
+  chiusura delle fasce del 01.09.2026 — `prefetch.ts` scaldava
+  `professional.slots` e nessuno aveva aggiunto la lettura nuova all'elenco. È
+  il punto debole che la testata di quella funzione dichiara: **una chiave
+  dimenticata non rompe niente**, fa uno sfarfallio, e qui faceva un
+  `console.error` sulla schermata che il pitch percorre.
+
+  **Sta nel blocco del portale e non in quello su tutti i professionisti**, ed
+  è la distinzione che le chiavi facevano già: `professional.slots` è una
+  lettura del **marketplace** — chi prenota guarda la disponibilità di
+  chiunque, quindi si scalda per ognuno del corpo professionale — mentre
+  `ownSlots` è una lettura del **portale**, e di portali ce n'è uno solo.
+  Scaldarla per tutti sarebbe precaricare agende che nessuna schermata chiede.
+  Va quindi dove `professionalId` è già in mano, accanto a profilo, sedute,
+  pazienti e compensi, e la ragione è scritta nel commento accanto alla riga.
+
+  **Provato nei due versi sulla build demo**, che è dove il log conta
+  (`CLAUDE.md` §5.6): senza la riga, entrando nel calendario dai soli link
+  interni la console porta *`["professional","meier","own-slots"] si monta a
+  cache fredda`*; con la riga, **console muta** sulle cinque rotte del portale,
+  chiusura e riapertura di una fascia comprese, e **una sola navigazione** per
+  tutto il giro;
 - **il `CLAUDE.md` §10.D non nomina questa passata**, e non è stato toccato di
   proposito: è la terza voce che quella sezione dovrebbe avere e non ha — dopo
   i due testi dell'annullamento e la chiusura delle fasce, tutti e due del
