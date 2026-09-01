@@ -308,12 +308,19 @@ repository Next non dia niente per scontato.
 
   **E il criterio ha un secondo asse** (20.08.2026): chi conta dichiara **anche
   se il codice morto vale come importatore**, e i due insiemi qui sopra si
-  contano in quattro modi. Il caso è uno solo ed è `checkbox`, importato
-  soltanto da `FlexiblePlanCard.jsx` — che a sua volta non lo importa nessuno,
-  perché il piano "Personalizzato" è in sospeso (§10.A.3) — e contarlo o no
-  sposta di uno **entrambi** gli insiemi. Una regola senza la sua istanza manda
-  il prossimo a cercarla, ed è per questo che il caso sta scritto accanto al
-  criterio.
+  contano in quattro modi. L'istanza era `checkbox`, importato soltanto da
+  `FlexiblePlanCard.jsx` — che a sua volta non lo importa nessuno, perché il
+  piano "Personalizzato" è in sospeso (§10.A.3) — e contarlo o no spostava di
+  uno **entrambi** gli insiemi.
+
+  **Dal 01.09.2026 quell'istanza non c'è più, e il criterio resta.** Il dialogo
+  di annullamento importa `checkbox` per davvero, quindi **nessun componente di
+  `ui/` è oggi importato soltanto da codice morto** e i quattro conti sono
+  tornati due. Il criterio non si toglie con la sua istanza: `FlexiblePlanCard`
+  è ancora lì e il primo componente che importerà solo lui riaprirà la domanda,
+  che a quel punto va **dichiarata prima di contare** e non scoperta dopo. È il
+  caso opposto a quello che la regola descrive — una regola che perde l'istanza
+  invece di non averla mai avuta — e si annota invece di far sparire la riga.
 
   **Le due cifre che stavano qui non erano sbagliate né invecchiate**, ed è il
   motivo per cui questa riga non è una correzione: erano i due insiemi contati
@@ -338,7 +345,16 @@ repository Next non dia niente per scontato.
   scrive davvero `data-state`, `data-side` e `data-align` sul contenuto, con
   l'animazione che parte; `calendar.tsx` non usa varianti `data-*` ma classi di
   react-day-picker e `aria-selected`. Chi ne aggiunge un terzo rifà questa
-  verifica. Cancellarli non è
+  verifica.
+
+  **Il terzo è `checkbox.tsx`** (01.09.2026), uscito dal magazzino per la spunta
+  che apre il messaggio al paziente (§10.D). **Verifica rifatta a schermo, non
+  dedotta**: usa `data-[state=checked]:bg-primary` e
+  `data-[state=checked]:text-primary-foreground`, Radix scrive `data-state` —
+  è il solo attributo `data-*` che mette — e la variante aggancia davvero, con
+  il fondo che passa da trasparente a `primary` al clic. Anche qui nessun
+  `shadcn add` e nessuna dipendenza nuova: `@radix-ui/react-checkbox` era già
+  installato. Cancellarli non è
   reversibile a buon mercato — un `shadcn add` domani riporta la generazione
   Tailwind 4 con le varianti che non agganciano — **e la ragione è questa, non
   gli usi previsti**.
@@ -925,8 +941,8 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 111 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 111 posti.
+call site sono 113 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 113 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
 **Il criterio con cui i call site si contano**, perché una rilevazione futura non
@@ -934,7 +950,7 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **102 + 9 = 111** (17.08.2026). Restano fuori, e sono le tre trappole del
+Oggi **102 + 11 = 113** (01.09.2026). Restano fuori, e sono le tre trappole del
 conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
 nome lungo che **contiene** quello corto.
 
@@ -971,8 +987,16 @@ diversa da quella scritta qui va confrontata **prima col criterio e poi col
 numero**: se il criterio è stato applicato per intero, a essere invecchiata è la
 riga, e si aggiorna con la data. Un guardrail nuovo è un call site nuovo, ed è
 esattamente ciò che è successo passando da 96 a 97 con la tranche tedesca, da
-108 a 109 con il conteggio delle chiavi del §2.7 e da 109 a 111 con
-l'annullamento e il nome dei pazienti (17.08.2026).
+108 a 109 con il conteggio delle chiavi del §2.7, da 109 a 111 con
+l'annullamento e il nome dei pazienti (17.08.2026) e da 111 a 113 con il
+messaggio al paziente (01.09.2026), che di guardrail ne porta due.
+
+**E chi lo ricontasse con un `grep` trova un `112` che non è dei guardrail**
+(01.09.2026): sta nel §2.7 e conta gli **oggetti** di un dizionario. Una
+sostituzione cieca del numero corromperebbe quella riga, ed è la ragione per
+cui questa avvertenza sta accanto al conto invece che nella memoria di chi l'ha
+scoperto — due grandezze diverse hanno avuto lo stesso valore, e succederà
+ancora.
 
 **Il numero compare in questa sezione più di una volta, e una sola porta la
 data.** È quella del criterio, qui sopra; le altre tre — le due che aprono la
@@ -998,7 +1022,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 111 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 113 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 

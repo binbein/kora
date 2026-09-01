@@ -2133,8 +2133,9 @@ l'allineamento fra codice e verbali, l'igiene del repository, l'annullamento
 visibile con la navigazione fra settimane e il salto a data, i criteri e i
 conteggi, le attese e l'ordinamento, l'ordinamento dello stato della seduta, la
 rinomina delle rotte in inglese, la demo pronta, le cifre nelle
-parentetiche, i rimandi del contratto, i fatti del Business Plan, e il check
-rapido con la soglia e i badge. Non aggiungono schermate e
+parentetiche, i rimandi del contratto, i fatti del Business Plan, il check
+rapido con la soglia e i badge, e il messaggio di annullamento. Non aggiungono
+schermate e
 non spostano un numero a schermo.
 
 **I numeri sono tre e contano tre cose diverse**, ed è la riga che mancava
@@ -7244,6 +7245,202 @@ predetta col canvas per il tedesco — **146** — è uscita identica sul render
   che decide ciò che il contratto lascia indeciso — a schermo non c'è più; ma
   **quale sia la cadenza è una decisione dei founder**, e non si chiude
   riscrivendo una frase. La voce è stata lasciata dov'è.
+
+#### Il messaggio di annullamento (01.09.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il
+comando in testa a questo file. **Nessuna schermata nuova**: le rotte restano
+**26** e le schermate **27**, e nessun numero del §8 e del §9 si muove.
+`EXPECTED_KEYS` passa da **780 a 785** — cinque chiavi nuove nei quattro
+dizionari — e i guardrail da **111 a 112**. `build`, `lint` e `typecheck` a
+zero.
+
+**Chiude una decisione che due documenti dichiaravano non presa.** Il commento
+in testa ad `Appointment` diceva *«chi la legge è una decisione di prodotto che
+nessuno ha preso»*, e il `docs/CONTRATTO-DATI.md` §3 lo ripeteva: i founder
+l'hanno presa il 01.09.2026, e la professionista può far arrivare al paziente
+una riga sulla disdetta mentre la nota clinica e quella di seduta avvenuta
+restano sue.
+
+##### Due campi e non un interruttore, ed è la decisione
+
+La strada scartata era **una spunta sulla nota che esiste già** — *"rendi
+visibile al paziente"* sopra un testo scritto per sé — e non è stata scartata
+per gusto: **è la forma che il contratto rifiuta altrove**, con le stesse
+parole. Il commento su `PlatformSession` lo dice dal 17.08.2026: *non lo si
+risolve facendo scegliere alla schermata cosa rendere, perché quella è una
+scelta che qualcuno può disfare*.
+
+**Il danno che quella forma rende possibile non si ripara**: una spunta lasciata
+attiva per distrazione manda al paziente una valutazione clinica, e non esiste
+un ritiro. Con due campi il testo che attraversa il confine è quello che
+qualcuno ha scritto **per** attraversarlo, e non c'è nessuno stato da sbagliare
+— al massimo si scrive un messaggio e non lo si manda.
+
+| campo | dove vive | chi lo legge |
+|---|---|---|
+| `cancellationNote` | solo `ProfessionalSession` | solo chi cura |
+| `cancellationMessage` | `ProfessionalSession` **e** `Appointment` | chi cura, e il paziente |
+
+**`Appointment` continua a non avere `cancellationNote`**, e **`PlatformSession`
+è identico riga per riga** — è la prova che la separazione è di forma e non di
+rendering. Nessun tipo e nessun metodo dell'area HR o admin acquista campi, e
+`SessionNote` non è stato toccato.
+
+##### La firma passa a un oggetto, e la convenzione del §2 regge
+
+`cancelSession(sessionId, note?)` diventa
+`cancelSession(sessionId, { note?, message? })`. **Con due note facoltative i
+parametri posizionali smettono di essere leggibili**: `cancelSession(id,
+undefined, "…")` non dice quale dei due testi sta passando, e **invertirli è un
+errore che compila**.
+
+**Non contraddice il §2 del contratto, e va detto perché**: quella sezione
+dichiara che *sugli input di scrittura il `?` è legittimo*, e qui vale sia
+sull'oggetto sia sui suoi due campi — annullare senza scrivere niente è il caso
+normale. **A normalizzare resta il confine**, come per la richiesta demo:
+assente, vuoto e soli spazi diventano la stessa cosa una volta sola. L'unica
+differenza rispetto a `DemoRequest` è la direzione — là il confine normalizza
+verso `null` perché la lettura dice `| null`, qui verso **l'assenza** perché le
+due proiezioni dicono `?` per la ragione già dichiarata sui tipi.
+
+##### Il guardrail sorveglia il testo, non il nome del campo
+
+Un `assertInDevOutsidePromise` verifica che **nessun `Appointment` porti mai il
+testo di un `cancellationNote`**. Il campo non c'è sul tipo, quindi oggi non può
+arrivarci: **esiste per domani**, contro il refactor che unifica i due campi
+*«perché si assomigliano»* — che è il modo in cui questa garanzia cadrebbe senza
+che nessuno se ne accorga, visto che a schermo le due righe si somigliano
+davvero.
+
+**Guarda il testo e non la chiave**, ed è la mezza riga che lo rende utile: un
+campo rinominato passerebbe un controllo sul nome, mentre è il **testo** a non
+dover attraversare il confine. Quando i due testi coincidono il confronto non
+prova niente, e la condizione lo dichiara invece di fingere il contrario.
+
+**`assertInDevOutsidePromise` e non `assertInDev`**: `getAppointments` lo chiama
+react-query, che cattura, quindi un `throw` finirebbe nello stato d'errore della
+query dove nessuno lo guarda. È la ragione già scritta su `requireProfessional`.
+
+##### Il dialogo: la spunta apre, non pubblica
+
+La seconda casella **non compare finché non la si chiede**, nasce **vuota** e la
+spunta nasce giù. **Non si pre-riempie con la nota privata in nessuna
+circostanza**: sarebbe l'interruttore travestito, con un clic in meno fra il
+testo per sé e il paziente che lo legge. Togliendo la spunta il testo se ne va,
+così un messaggio nascosto non può partire lo stesso, e chiudendo il dialogo si
+torna puliti tutti e tre — come già faceva la nota.
+
+**Due frasi sulla riservatezza, non una**: quella sotto la nota dice che resta
+in agenda, quella sotto il messaggio dice che il paziente lo leggerà. Stanno
+dove si scrive, per la stessa ragione per cui la prima ci stava già.
+
+##### Dal lato del dipendente è una voce, non un log
+
+Il messaggio sta **sotto la riga che dice chi ha annullato**, perché è il
+seguito di quella frase: la disdetta è il fatto, questa è la voce di chi l'ha
+decisa. **Si stacca dal testo di sistema** — filetto a sinistra, testo su
+`foreground`, corpo più grande delle due righe sopra — perché a parlare non è
+più la piattaforma, e leggerlo nel grigio degli avvisi lo farebbe sembrare
+un'altra riga di log.
+
+**Ed è attribuito**: senza il nome davanti, un *"sono malata"* senza soggetto è
+la piattaforma che dice una cosa che non può aver detto. L'attribuzione è una
+chiave di `i18n` e si traduce; **il messaggio no**, perché è testo di chi
+scrive e non copy dell'interfaccia.
+
+##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato prima
+
+**I quattro casi, uno per volta e su tre sedute diverse di Laura:**
+
+- **entrambi** (08.10): il dipendente vede il messaggio, **non** la nota;
+- **solo la nota** (01.10): la riga della disdetta c'è e **nessun messaggio**
+  compare; la nota non è da nessuna parte;
+- **solo il messaggio** (24.09): funziona, e la nota resta assente;
+- **chiudo e riapro**: i due campi sono vuoti e la spunta è giù, dopo aver
+  scritto in tutti e due.
+
+Contate le attribuzioni sulla home: **due**, una per ciascuna delle due sedute
+con un messaggio, e zero sulla terza.
+
+**Le quattro lingue**, sul dialogo e sulla home: l'etichetta della spunta sta su
+**una riga sola** in tutte e quattro, il dialogo resta a 448px e non va in
+overflow. L'attribuzione si traduce, il messaggio resta nella lingua in cui è
+stato scritto — che è giusto, ed è la differenza fra copy e contenuto.
+
+**`grep -rn "cancellationNote"` sulle aree dipendente, HR e admin non restituisce
+niente**, ed è la verifica che vale più delle altre: nel resto di `src/` il nome
+compare in quattro file, tutti dal lato di chi cura o nel layer dati.
+
+##### Il guardrail è stato riscritto prima del merge, ed è la parte più istruttiva
+
+La prima stesura era **una chiamata sola con tre vie d'uscita**, e ne aveva due
+sbagliate in direzioni opposte. Entrambe sono state **riprodotte a schermo prima
+di correggerle**, non dedotte.
+
+**Il falso allarme su un caso normale.** Cercava il testo della nota dentro la
+serializzazione dell'appuntamento, che contiene il messaggio: con nota
+*"malata"* e messaggio *"Sono malata, ti ricontatto io"* scattava senza che
+fosse trapelato niente. Riprodotto: l'errore esce con il testo *«La nota privata
+… è finita nell'appuntamento del dipendente»*.
+
+**E l'effetto va detto con precisione, perché non è quello che si dà per
+scontato del modo `throw`**: la home **si disegna lo stesso**. Il guardrail passa
+da `raiseOutsideCurrentStack`, che rilancia da un microtask per uscire dalla
+cattura di react-query, quindi diventa un errore non catturato — l'overlay di
+Vite in sviluppo, il `console.error` nella build demo — e non una pagina bianca.
+Chi lo trova alla prova del giorno prima si ferma comunque (`docs/PITCH.md`), ma
+non lo trova perché la schermata è sparita.
+
+**La cecità sul bersaglio.** Una delle vie d'uscita era `nota === messaggio`, e
+il refactor che unifica i due campi *«perché si assomigliano»* — cioè la
+minaccia per cui il guardrail esiste — produce **esattamente** quell'uguaglianza.
+Misurato sul caso: con il controllo vecchio l'assert passava, e **la nota era
+visibile al dipendente**.
+
+**Il rimedio è di forma accanto a quello di testo**, e i due non sono duplicati:
+
+| controllo | coglie | non vede |
+|---|---|---|
+| la chiave `cancellationNote` non esiste sull'appuntamento | il refactor che **unifica** | il campo rinominato |
+| nessun valore diverso da `cancellationMessage` è uguale alla nota | il campo **rinominato** | — |
+
+**Provati rompendo il codice ad arte e ripristinandolo subito**, la tecnica della
+passata pre-pitch del 10.08.2026. Con i due campi unificati scattano **tutti e
+due**, con messaggi distinti; con il campo rinominato `noteForPatient` scatta
+**il solo controllo testuale**, che è la prova che la forma da sola non basta.
+Il caso normale non scatta più.
+
+**`cancellationMessage` è l'unico valore escluso dal confronto**, e non è la
+vecchia via d'uscita con un altro nome: là l'uguaglianza faceva passare
+**l'assert intero**, qui toglie **un solo valore** dal confronto — quello che la
+nota può legittimamente eguagliare, quando chi scrive mette lo stesso testo in
+tutti e due.
+
+**I guardrail passano da 111 a 113 e non a 112**, perché le chiamate sono due:
+due minacce diverse meritano due messaggi diversi, e un assert solo con due
+condizioni direbbe a chi lo trova che qualcosa non va senza dirgli quale delle
+due. Il `CLAUDE.md` §5.6 è aggiornato in tutti i punti in cui la cifra compare.
+
+**Ricontarli ha trovato una trappola, ed è finita accanto al conto**: un `grep`
+del numero su `CLAUDE.md` pesca anche un `112` del §2.7, che conta **gli oggetti
+di un dizionario** e non i call site. Una sostituzione cieca avrebbe corrotto
+quella riga. Due grandezze diverse hanno avuto lo stesso valore, e l'avvertenza
+sta nel §5.6 invece che nella memoria di chi l'ha scoperto.
+
+##### Trovato e non toccato
+
+- **`docs/CONTRATTO-DATI.md` §4 dice ancora che «l'ora annullata torna
+  prenotabile»**, mentre il §8.5 dello stesso documento separa l'invariante
+  dalla policy dal 18.08.2026 — *liberare una fascia e riproporla sono due
+  cose* — e il dialogo ha smesso di prometterlo il 19.08.2026. È l'ultimo punto
+  rimasto indietro di quella correzione, ed è fuori dal perimetro di questa
+  passata, che riguarda la nota e la sua destinazione e non l'annullamento in
+  generale;
+- **la notifica resta la voce più vicina del §8.5, e non si è mossa**: una riga
+  che il paziente legge *se apre l'applicazione* non è una riga che gli arriva.
+  Il messaggio rende quella lacuna più visibile invece di ridurla, ed è scritto
+  nel contratto accanto alle altre quattro.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

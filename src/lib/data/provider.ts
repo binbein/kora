@@ -234,16 +234,42 @@ export interface DataProvider {
    * ieri che nessuno ha chiuso resta `scheduled` — e annullarla a posteriori
    * cambierebbe un compenso già maturato.
    *
-   * **La nota è facoltativa e non esce mai verso l'azienda**: arriva su
-   * `ProfessionalSession.cancellationNote`, che è una proiezione di chi cura.
-   * Il `?` è la convenzione degli input di scrittura (§2 del contratto), e a
-   * normalizzare è il confine.
+   * **DUE TESTI FACOLTATIVI, CON DUE DESTINATARI** (founder, 01.09.2026), e la
+   * differenza è di forma e non di rendering:
+   *
+   * - `note` arriva su `ProfessionalSession.cancellationNote`, che è una
+   *   proiezione di chi cura, e **`Appointment` non ha quel campo**;
+   * - `message` arriva su **entrambe** — è la riga che la professionista scrive
+   *   al paziente, e nasce per essere letta da lui.
+   *
+   * **Nessuna delle due esce mai verso l'azienda**, e resta vero adesso che una
+   * esce verso il paziente: il paziente **non è l'azienda**, ed è la distinzione
+   * che tiene in piedi tutta la garanzia. `EmployeeDirectoryEntry` e
+   * `PlatformSession` non hanno un campo su cui l'uno o l'altro possa arrivare.
+   *
+   * **UN OGGETTO E NON DUE `string?` DI FILA.** Con due note facoltative i
+   * parametri posizionali diventano illeggibili al call site:
+   * `cancelSession(id, undefined, "…")` non dice a chi legge quale dei due testi
+   * sta passando, e invertirli è un errore che compila. L'oggetto nomina i due
+   * campi nel punto in cui si scrivono.
+   *
+   * **Il `?` è la convenzione degli input di scrittura** (§2 del contratto), e
+   * qui vale sia sull'oggetto sia sui suoi due campi: annullare senza scrivere
+   * niente è il caso normale. **A normalizzare è il confine**, come per la
+   * richiesta demo — assente, vuoto e soli spazi diventano la stessa cosa una
+   * volta sola. La lettura però **non** dice `| null` come là: i due campi della
+   * proiezione sono `?` per la ragione dichiarata sui tipi — assente vuol dire
+   * che quel testo non c'è, e copre anche la seduta non annullata — quindi il
+   * confine normalizza *verso l'assenza* invece che verso `null`.
    *
    * Chi annulla è il professionista, quindi il motivo non è un parametro: la
    * disdetta dal lato del dipendente non esiste ancora, ed è dichiarata fra i
    * vuoti dell'MVP insieme alla policy di preavviso.
    */
-  cancelSession(sessionId: string, note?: string): Promise<ProfessionalSession>;
+  cancelSession(
+    sessionId: string,
+    input?: { note?: string; message?: string },
+  ): Promise<ProfessionalSession>;
 
   getSessionNote(sessionId: string): Promise<SessionNote | null>;
 

@@ -137,7 +137,12 @@ export class MockDataProvider implements DataProvider {
    */
   private readonly cancellations = new Map<
     string,
-    { reasonKey: "by_patient" | "by_professional"; note: string | null }
+    {
+      reasonKey: "by_patient" | "by_professional";
+      note: string | null;
+      /** La riga scritta al paziente; `null` se non ne è stata scritta una */
+      message: string | null;
+    }
   >();
 
   /*
@@ -220,6 +225,9 @@ export class MockDataProvider implements DataProvider {
       status: "cancelled",
       cancellationReasonKey: cancelled.reasonKey,
       ...(cancelled.note === null ? {} : { cancellationNote: cancelled.note }),
+      ...(cancelled.message === null
+        ? {}
+        : { cancellationMessage: cancelled.message }),
     };
   }
 
@@ -464,7 +472,7 @@ export class MockDataProvider implements DataProvider {
    */
   async cancelSession(
     sessionId: string,
-    note?: string,
+    input?: { note?: string; message?: string },
   ): Promise<ProfessionalSession> {
     const session = PROFESSIONALS.flatMap((professional) =>
       this.sessionsOf(professional.id),
@@ -495,11 +503,17 @@ export class MockDataProvider implements DataProvider {
       );
     }
 
-    // il confine normalizza, come per la richiesta demo: assente, vuota e soli
-    // spazi sono la stessa cosa per chi legge, e diventano `null` una volta sola
+    /*
+     * Il confine normalizza, come per la richiesta demo: assente, vuoto e soli
+     * spazi sono la stessa cosa per chi legge, e diventano `null` una volta
+     * sola. **Vale per tutti e due i testi allo stesso modo**, ed è ciò che
+     * rende legittimi i quattro casi — solo la nota, solo il messaggio,
+     * entrambi, nessuno dei due.
+     */
     this.cancellations.set(sessionId, {
       reasonKey: "by_professional",
-      note: note?.trim() || null,
+      note: input?.note?.trim() || null,
+      message: input?.message?.trim() || null,
     });
 
     return this.applyCancellation(session);
@@ -594,7 +608,7 @@ export class MockDataProvider implements DataProvider {
         const upcomingCancellation =
           session.status === "cancelled" && session.start > DEMO_TODAY;
         if (session.status !== "scheduled" && !upcomingCancellation) continue;
-        mine.push({
+        const appuntamento: Appointment = {
           id: session.id,
           kind: serviceOf(professional),
           professionalId: professional.id,
@@ -609,7 +623,64 @@ export class MockDataProvider implements DataProvider {
           ...(session.cancellationReasonKey === undefined
             ? {}
             : { cancellationReasonKey: session.cancellationReasonKey }),
-        });
+          /* IL MESSAGGIO PASSA, LA NOTA NO, ed è l'unico punto in cui la
+             separazione si esegue invece di essere dichiarata: `message` è
+             nato per essere letto dal paziente, `note` no, e qui il secondo
+             non ha nemmeno un campo dove andare (01.09.2026). Il guardrail
+             qui sotto sorveglia che resti così. */
+          ...(session.cancellationMessage === undefined
+            ? {}
+            : { cancellationMessage: session.cancellationMessage }),
+        };
+        mine.push(appuntamento);
+
+        /*
+         * NESSUN APPUNTAMENTO PORTA IL TESTO DI UNA NOTA PRIVATA (§5.6).
+         *
+         * **SONO DUE CONTROLLI E COLGONO DUE MINACCE DIVERSE**, ed è la riga da
+         * leggere prima di toglierne uno credendolo il duplicato dell'altro:
+         *
+         * - **la forma** coglie il refactor che unifica i due campi "perché si
+         *   assomigliano", che è la minaccia per cui questo guardrail esiste.
+         *   Un refactor del genere fa arrivare qui la chiave, e la chiave o
+         *   c'è o non c'è: non può dare falsi allarmi;
+         * - **il testo** coglie il campo **rinominato**, che la forma non
+         *   vede: `cancellationNote` che diventa `noteForPatient` passerebbe
+         *   un controllo sulla chiave portandosi dietro il testo.
+         *
+         * IL TESTO SI CONFRONTA VALORE PER VALORE, e non cercando una
+         * sottostringa nella serializzazione: quella versione dava un **falso
+         * allarme su un caso normale** — nota "malata" dentro messaggio "Sono
+         * malata, ti ricontatto io" — perché la serializzazione contiene il
+         * messaggio, che contiene la nota. Riprodotto prima di correggerlo.
+         *
+         * `cancellationMessage` è **l'unico valore escluso dal confronto**, e
+         * non è una scorciatoia: è il campo che la nota può legittimamente
+         * eguagliare, quando chi scrive mette lo stesso testo in tutti e due.
+         * La versione precedente lo trattava come una via d'uscita
+         * sull'assert intero — `nota === message` faceva passare tutto — e
+         * quella via era **cieca proprio sul bersaglio**, perché il refactor
+         * che unifica i due campi produce esattamente quell'uguaglianza.
+         *
+         * `assertInDevOutsidePromise` e non `assertInDev`: questo metodo lo
+         * chiama react-query, che cattura, quindi un `throw` finirebbe nello
+         * stato di errore della query dove nessuno lo guarda — è la stessa
+         * ragione scritta su `requireProfessional`.
+         */
+        assertInDevOutsidePromise(
+          !("cancellationNote" in appuntamento),
+          `L'appuntamento della seduta "${session.id}" ha un campo "cancellationNote": i due campi della disdetta sono stati unificati, e la nota privata esce verso il dipendente.`,
+        );
+
+        const nota = session.cancellationNote;
+        assertInDevOutsidePromise(
+          nota === undefined ||
+            !Object.entries(appuntamento).some(
+              ([chiave, valore]) =>
+                chiave !== "cancellationMessage" && valore === nota,
+            ),
+          `Il testo della nota privata della seduta "${session.id}" è finito in un campo dell'appuntamento del dipendente.`,
+        );
       }
     }
 

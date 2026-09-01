@@ -252,6 +252,7 @@ export const en: Dictionary = {
       appointmentCancelled: "Cancelled",
       appointmentCancelledByProfessional: "{professional} cancelled this appointment.",
       appointmentCancelledByPatient: "You cancelled this appointment.",
+      appointmentMessageFrom: "{professional} wrote to you:",
 
       sessions: "You've used {used} of your {total} sessions",
       sessionsWithScheduled:
@@ -556,6 +557,10 @@ export const en: Dictionary = {
         notePlaceholder: "Why the session was cancelled",
         notePrivacy:
           "The note stays in your calendar: the patient's organisation does not see it.",
+        messageToggle: "Also write a message to {patient}",
+        messageLabel: "Message to the patient",
+        messagePlaceholder: "I'm ill, I'll be in touch to reschedule",
+        messagePrivacy: "{patient} will read this message in their app.",
         effect:
           "The hour is no longer taken and the session does not count towards your fees.",
         keep: "Go back",
