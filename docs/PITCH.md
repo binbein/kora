@@ -129,6 +129,23 @@ presentazione.
   "l'annullamento non ha liberato nulla" (`CLAUDE.md` §10.D.3). Con lo slot
   appena prenotato il giro si chiude: sparisce prenotando, torna annullando.
 
+  **E c'è un terzo tempo, dal 01.09.2026: la chiudi e non torna più.** Nel
+  calendario della professionista la cella di venerdì 25.09 alle 10:00 è
+  tornata una fascia libera, e un clic la **chiude** — bordo tratteggiato,
+  "Chiusa" — dopodiché dal portale del dipendente quel venerdì **non è più fra i
+  giorni prenotabili**. Un secondo clic la riapre e ricompare.
+
+  **È la parte che vale più delle prime due**, perché è l'unica in cui si vede
+  che **qualcuno ha deciso** invece che qualcosa sia successo: prenotare e
+  annullare muovono l'agenda, chiudere è la professionista che dice *"quell'ora
+  non la do"*. È la domanda che il `docs/CONTRATTO-DATI.md` §8.5 dichiara non
+  decisa — *«e torna prenotabile da chiunque è un'altra cosa, ed è una policy di
+  prodotto»* — mostrata invece che raccontata.
+
+  **L'ordine è vincolante, ed è l'unica cosa da ricordare**: prenota, annulla,
+  poi chiudi. Chiudere prima toglie di mezzo lo slot provato — è l'unica fascia
+  libera della settimana corrente — e il giro resta senza il suo primo tempo.
+
   **E poi torna dal dipendente**, che dal 18.08.2026 l'annullamento lo vede: la
   seduta resta nella sua home con "Annullato" e con chi l'ha disdetta, e il
   contatore in programma **scende**. È il terzo lato dello stesso record — dopo
