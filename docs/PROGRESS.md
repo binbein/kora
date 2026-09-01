@@ -2133,8 +2133,8 @@ l'allineamento fra codice e verbali, l'igiene del repository, l'annullamento
 visibile con la navigazione fra settimane e il salto a data, i criteri e i
 conteggi, le attese e l'ordinamento, l'ordinamento dello stato della seduta, la
 rinomina delle rotte in inglese, la demo pronta, le cifre nelle
-parentetiche, i rimandi del contratto, e i fatti del Business Plan. Non
-aggiungono schermate e
+parentetiche, i rimandi del contratto, i fatti del Business Plan, e il check
+rapido con la soglia e i badge. Non aggiungono schermate e
 non spostano un numero a schermo.
 
 **I numeri sono tre e contano tre cose diverse**, ed è la riga che mancava
@@ -7087,6 +7087,163 @@ ogni file ha un blob solo. La riscrittura toccherà quel commit e nient'altro.
 - **la riga «ROI potenziale» della p.4 non ha nessuna formula accanto**, quindi
   non è etichettata male — è solo priva di contesto. Il difetto di etichetta è
   della p.6, ed è lì che la voce lo colloca.
+
+#### Il check rapido, la soglia e i badge (20.08.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il
+comando in testa a questo file. **È la prima passata di codice dopo tre
+documentali**, e tocca l'interfaccia in tre punti senza aggiungere niente al
+dominio: `DataProvider`, `types.ts`, `mock/` e `docs/CONTRATTO-DATI.md` **non
+compaiono nel diff**, `EXPECTED_KEYS` resta **780** — una chiave riscritta,
+nessuna aggiunta — le rotte restano **26** e le schermate **27**. `build`,
+`lint` e `typecheck` a zero.
+
+**Nessuno dei tre difetti si vedeva leggendo il codice**: due si vedono solo col
+mouse addosso, e il terzo solo cambiando lingua.
+
+##### Il tocco del check rapido è reversibile, e non confermato
+
+`disabled={answered || submit.isPending}` chiudeva i cinque volti appena la
+risposta era registrata. I bersagli sono larghi e affiancati, quindi **il tocco
+sbagliato è un caso normale e non un incidente**, e restava per tutta la
+giornata senza nessun modo di rimediare.
+
+**Le due strade erano una conferma o un gesto reversibile, ed è stata scelta la
+seconda.** Una conferma **raddoppia «una domanda, un tocco»** (`CLAUDE.md` §8)
+sulla scrittura più piccola del dominio, e nel pitch trasforma in una procedura
+la card che risponde a *«da dove vengono i numeri di stress?»*. Rendere il gesto
+reversibile è la stessa cosa vista dal verso giusto, e costa una riga invece di
+un dialogo.
+
+**`answered` non disabilita più niente**: resta la sola attesa della scrittura
+in corso. **Chi rimette `answered ||` davanti a quel `disabled` riapre il
+difetto, non ne chiude uno** — il commento accanto lo dice, perché è la riga che
+sembra una dimenticanza e non lo è.
+
+**Il provider non è stato toccato, ed è stato verificato prima e non dopo**:
+`submitRapidCheck` riscrive `lastRapidCheck` senza guardare cosa c'era, quindi
+la seconda risposta funzionava già. I volti non scelti riprendono l'hover di
+`FACE_IDLE` — la coppia `accent` del §6.1 — perché **un bersaglio che si può
+premere deve reagire, o si legge come disabilitato**; `FACE_CHOSEN` non si
+muove, e l'anello teal resta il segno della scelta.
+
+**La frase nuova non promette nessuna cadenza, ed è deliberato.** La vecchia
+diceva *«ti richiediamo come stai fra qualche giorno»*, che è la decisione in
+sospeso registrata più in basso in questo file — una stringa che decide ciò che
+il contratto lascia indeciso. Riscriverla con una cadenza diversa avrebbe
+riaperto quel difetto mentre se ne chiudeva un altro, quindi la frase dice che
+la domanda torna **senza dire quando**. La decisione su quale sia la cadenza
+resta dei founder, e la voce resta aperta.
+
+##### La larghezza di una colonna la detta il tedesco, ed è il caso concreto del §2.7
+
+La riga della Direzione usciva con un lucchetto e `t.common.none`, cioè un
+trattino, e il motivo — è sotto la soglia di anonimato — stava nel solo
+attributo `title`. **Un tooltip nativo compare dopo un secondo di fermata, non
+esiste sul touch, e in una demo proiettata non lo vede nessuno**: la riga che
+dimostra la garanzia di privacy dell'intero prodotto si leggeva come un dato
+mancante. Ora rende `t.hr.suppressed`, che esisteva già in tutte e quattro le
+lingue, e il `title` è diventato la spiegazione lunga di un'etichetta che si
+legge da sola.
+
+**Ma la parte che vale oltre il caso è la colonna.** L'etichetta più lunga è la
+tedesca, *«Unter der Schwelle»*, che con il lucchetto e il suo gap misura
+**146px**: in `w-32` (128px) andava a capo, e **`w-36` ne dà 144, cioè manca per
+due pixel**. È passata a `w-40`.
+
+| | larghezza con lucchetto e gap |
+|---|---|
+| **de** «Unter der Schwelle» | **146,0** |
+| en «Below threshold» | 126,3 |
+| fr «Sous le seuil» | 103,1 |
+| it «Sotto soglia» | 97,8 |
+
+**È il §2.7 con un numero accanto** — *niente larghezze fisse su etichette e
+pulsanti, perché il tedesco è ~30% più lungo* — e resta scritto qui perché **la
+prossima colonna con un'etichetta tradotta ha lo stesso problema**, e perché la
+misura dice due cose che la regola da sola non dice: che il tedesco può chiedere
+**il 50% in più** dell'italiano, e che il passo successivo della scala di
+Tailwind può non bastare. I cinque punteggi degli altri reparti restano sotto i
+94px in ogni lingua, quindi a dettare la larghezza è questa riga sola.
+
+##### L'`hover:` ripetuto sui badge non interattivi, e perché non è un duplicato
+
+`badge.tsx` ha `defaultVariants: { variant: "default" }`, e quella variante
+porta `hover:bg-primary/80`. Un call site che passa solo `className="bg-… "`
+sovrascrive il fondo **a riposo** e non l'`hover:`, **che è un'altra classe**:
+al passaggio del mouse il badge diventava blu petrolio pieno. Succedeva su
+`Badge` che sono `<div>`, senza `onClick` e senza link — cioè su **etichette che
+fingevano di essere premibili**.
+
+**Si corregge al call site e non nella definizione**, ed è il `CLAUDE.md` §6.1
+che lo dice per questo file esatto: `src/components/ui/` è congelato (§3), e le
+sue tre eccezioni sono tutte datate e nate perché senza di esse una regola era
+ineseguibile. Questa non lo è: il rimedio esisteva già nel repository, in
+quattro punti che ripetevano il proprio fondo in un `hover:`, ed è stato esteso
+a **25 stringhe su 9 file**. La trasformazione è meccanica — `bg-X` →
+`bg-X hover:bg-X`, stessa opacità — e a schermo il risultato è identico a riposo
+e immobile sotto il mouse.
+
+**I `Badge` con `variant="outline"` non ne hanno bisogno, ed è il criterio che
+distingue i due insiemi**: quella variante è `"text-foreground"` e basta, senza
+nessun `hover:bg-*` da sovrascrivere, quindi non hanno il difetto e un `hover:`
+lì sovrascriverebbe il nulla — cioè codice che il §11 non vuole. Sono quattro
+punti, e la prova è stata fatta col mouse invece che con il ragionamento: il
+badge outline sotto il cursore fa `:hover`, il suo fondo non si muove, e la sua
+lista di classi non contiene **nessun** `hover:`.
+
+**Un commento in `HRFatturazione.tsx`**, dove il difetto è stato notato, dice
+tutto questo accanto al primo badge corretto. È la nota che impedisce al
+prossimo di togliere l'`hover:` credendolo un duplicato — che è esattamente come
+il difetto tornerebbe.
+
+##### Verificato a schermo, viewport 1280×900 e `innerWidth` controllato prima di ogni misura
+
+**E il controllo è servito**: il pannello riportava `visibilityState: hidden` e
+`innerWidth: 0`, quindi le prime misure sarebbero state di un'altra pagina — è
+la trappola del §11, alla sua ennesima comparsa, e si è sciolta imponendo il
+viewport. Da lì la geometria è reale, e la controprova è che la larghezza
+predetta col canvas per il tedesco — **146** — è uscita identica sul render.
+
+- **il check rapido, i due tocchi**: toccato il primo volto, poi il terzo, e la
+  scelta si è spostata; **usciti dalla home e rientrati**, la card si rimonta,
+  rilegge dal provider e mostra ancora il terzo — che è la prova che a essere
+  registrata è l'ultima risposta e non la prima. Tutti e cinque i volti restano
+  abilitati;
+- **l'hover di un volto spento**: da fondo trasparente e testo
+  `rgba(95,112,129,0.4)` a `rgba(221,248,237,0.5)` con testo `rgb(17,57,90)`;
+- **la riga sotto soglia in quattro lingue**, cambiando davvero lingua dal
+  selettore e non solo misurando col canvas: una riga sola in tutte e quattro;
+- **i badge su venti rotte**, cioè tutte quelle che ne rendono almeno uno:
+  **`twMerge` rimuove del tutto `hover:bg-primary/80`**, e l'unica classe
+  `hover:` rimasta ripete il fondo a riposo. Con un hover vero su `/hr/billing`
+  il badge sotto il mouse e quelli fuori misurano lo stesso
+  `rgba(27,172,153,0.1)`, non il `rgb(17,57,90)` del primary pieno.
+
+##### Come sono state misurate
+
+- **i badge difettosi**: si cercano i `<Badge` e le mappe di classi che finiscono
+  su un `Badge`, si tengono quelli in variante **default** — non `outline`, che
+  non ha un `hover:bg` da sovrascrivere — il cui `className` contiene un `bg-` e
+  non un `hover:`. **La variante è metà del criterio**: senza, il conto sale di
+  quattro punti che il difetto non ce l'hanno;
+- **le larghezze delle etichette**: `measureText` su un canvas con il font
+  calcolato dello `span` reale, e poi il render vero nelle quattro lingue;
+- **l'effetto dell'hover**: si legge la lista di classi dopo `twMerge` e si passa
+  il mouse davvero, verificando `element.matches(':hover')` prima di fidarsi del
+  colore.
+
+##### Trovato e non toccato
+
+- **la mappa `tone` di `ProSessioni.tsx` porta un `bg-` senza `hover:` e non è
+  un difetto**: finisce su un `<div>` e non su un `Badge`, quindi non c'è
+  nessuna variante che porti un `hover:bg`. Registrato perché è il primo falso
+  positivo che incontra chi rifà la ricerca con un grep sul solo `bg-`;
+- **la decisione in sospeso sul `doneHint` resta aperta.** La stringa non
+  promette più una cadenza, quindi il difetto che la voce descrive — una stringa
+  che decide ciò che il contratto lascia indeciso — a schermo non c'è più; ma
+  **quale sia la cadenza è una decisione dei founder**, e non si chiude
+  riscrivendo una frase. La voce è stata lasciata dov'è.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
