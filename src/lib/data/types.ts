@@ -581,8 +581,23 @@ export type SessionType = "session" | "first_visit" | "follow_up";
  *
  * LA NOTA DI ANNULLAMENTO NON ARRIVA QUI, ed è la stessa forma di
  * `SessionNote`: è testo libero che la professionista scrive per sé, vive su
- * `ProfessionalSession` e questo tipo **non ha il campo**. Chi la legge è una
- * decisione di prodotto che nessuno ha preso.
+ * `ProfessionalSession` e questo tipo **non ha il campo**.
+ *
+ * IL MESSAGGIO SÌ, E SONO DUE CAMPI E NON UNO (founder, 01.09.2026). La
+ * decisione che questo commento dichiarava non presa è stata presa: la
+ * professionista deve poter far arrivare al paziente una riga sulla disdetta —
+ * *"sono malata, ti ricontatto io per rifissare"* — mentre la nota clinica e
+ * quella di seduta avvenuta restano sue.
+ *
+ * **Non è un interruttore sulla nota che esiste**, ed è la parte che vale più
+ * della funzione. Una spunta *"rendi visibile al paziente"* sopra un testo
+ * scritto per sé è la forma che questo contratto rifiuta altrove — il commento
+ * su `PlatformSession`, qui sotto, lo dice per esteso: *«non lo si risolve
+ * facendo scegliere alla schermata cosa rendere: quella è una scelta che
+ * qualcuno può disfare»*. Una spunta lasciata attiva per distrazione manderebbe
+ * al paziente una valutazione clinica, **e quel danno non si ripara**. Con due
+ * campi il testo che arriva qui è quello che qualcuno ha scritto *per* essere
+ * letto, e non c'è nessuno stato da sbagliare.
  */
 export type Appointment = {
   id: string;
@@ -600,6 +615,22 @@ export type Appointment = {
    * due valori proprio per questo.
    */
   cancellationReasonKey?: "by_patient" | "by_professional";
+  /**
+   * La riga che la professionista scrive **al paziente** annullando
+   * (01.09.2026).
+   *
+   * È l'unico testo libero della disdetta che attraversa il confine, e ci
+   * arriva perché è nato per attraversarlo: `cancellationNote` — quella scritta
+   * per sé — **non ha un campo qui**, ed è la garanzia di forma che questo tipo
+   * dà, non una scelta di rendering.
+   *
+   * Assente vuol dire **che un messaggio non c'è**, e copre due casi che le
+   * schermate non distinguono: la seduta non è annullata, oppure è stata
+   * annullata senza scrivere niente al paziente. È lo stesso prezzo che
+   * `cancellationNote` dichiara sull'altra proiezione, e si paga allo stesso
+   * modo — le schermate leggono la coppia con il motivo.
+   */
+  cancellationMessage?: string;
 };
 
 /**
@@ -648,6 +679,21 @@ export type ProfessionalSession = {
    * prima, e le schermate leggono la coppia (`docs/CONTRATTO-DATI.md` §3).
    */
   cancellationNote?: string;
+  /**
+   * La riga scritta **al paziente**, se la professionista ne ha scritta una
+   * (01.09.2026).
+   *
+   * **Vive qui e anche su `Appointment`**, ed è l'unico campo della disdetta
+   * che lo fa: chi cura vede quello che ha scritto, il paziente lo legge. La
+   * nota qui sopra non ha un campo di là, e la differenza fra i due è tutta
+   * nella loro forma — nessuna schermata sceglie cosa mostrare.
+   *
+   * **Le due non si sostituiscono a vicenda**: si può annullare scrivendo solo
+   * la nota, solo il messaggio, entrambi o niente, e i quattro casi sono
+   * legittimi. Assente vuol dire che quel testo non c'è, con lo stesso prezzo
+   * dichiarato per la nota.
+   */
+  cancellationMessage?: string;
 };
 
 /**

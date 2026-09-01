@@ -137,7 +137,12 @@ export class MockDataProvider implements DataProvider {
    */
   private readonly cancellations = new Map<
     string,
-    { reasonKey: "by_patient" | "by_professional"; note: string | null }
+    {
+      reasonKey: "by_patient" | "by_professional";
+      note: string | null;
+      /** La riga scritta al paziente; `null` se non ne è stata scritta una */
+      message: string | null;
+    }
   >();
 
   /*
@@ -220,6 +225,9 @@ export class MockDataProvider implements DataProvider {
       status: "cancelled",
       cancellationReasonKey: cancelled.reasonKey,
       ...(cancelled.note === null ? {} : { cancellationNote: cancelled.note }),
+      ...(cancelled.message === null
+        ? {}
+        : { cancellationMessage: cancelled.message }),
     };
   }
 
@@ -464,7 +472,7 @@ export class MockDataProvider implements DataProvider {
    */
   async cancelSession(
     sessionId: string,
-    note?: string,
+    input?: { note?: string; message?: string },
   ): Promise<ProfessionalSession> {
     const session = PROFESSIONALS.flatMap((professional) =>
       this.sessionsOf(professional.id),
@@ -495,11 +503,17 @@ export class MockDataProvider implements DataProvider {
       );
     }
 
-    // il confine normalizza, come per la richiesta demo: assente, vuota e soli
-    // spazi sono la stessa cosa per chi legge, e diventano `null` una volta sola
+    /*
+     * Il confine normalizza, come per la richiesta demo: assente, vuoto e soli
+     * spazi sono la stessa cosa per chi legge, e diventano `null` una volta
+     * sola. **Vale per tutti e due i testi allo stesso modo**, ed è ciò che
+     * rende legittimi i quattro casi — solo la nota, solo il messaggio,
+     * entrambi, nessuno dei due.
+     */
     this.cancellations.set(sessionId, {
       reasonKey: "by_professional",
-      note: note?.trim() || null,
+      note: input?.note?.trim() || null,
+      message: input?.message?.trim() || null,
     });
 
     return this.applyCancellation(session);
@@ -609,7 +623,43 @@ export class MockDataProvider implements DataProvider {
           ...(session.cancellationReasonKey === undefined
             ? {}
             : { cancellationReasonKey: session.cancellationReasonKey }),
+          /* IL MESSAGGIO PASSA, LA NOTA NO, ed è l'unico punto in cui la
+             separazione si esegue invece di essere dichiarata: `message` è
+             nato per essere letto dal paziente, `note` no, e qui il secondo
+             non ha nemmeno un campo dove andare (01.09.2026). Il guardrail
+             qui sotto sorveglia che resti così. */
+          ...(session.cancellationMessage === undefined
+            ? {}
+            : { cancellationMessage: session.cancellationMessage }),
         });
+
+        /*
+         * NESSUN APPUNTAMENTO PORTA IL TESTO DI UNA NOTA PRIVATA (§5.6).
+         *
+         * Il campo non c'è sul tipo, quindi oggi non può arrivarci; questo
+         * guardrail esiste per **domani**, contro il refactor che unifica i due
+         * campi "perché si assomigliano" — che è il modo in cui questa garanzia
+         * cadrebbe senza che nessuno se ne accorga, visto che a schermo le due
+         * righe si somigliano davvero.
+         *
+         * Guarda **il testo e non il nome del campo**: un campo rinominato
+         * passerebbe un controllo sulla chiave, mentre il testo è ciò che non
+         * deve attraversare il confine. Il caso vero è quello in cui i due
+         * differiscono — se sono uguali il confronto non prova niente, e il
+         * `!==` lo dichiara invece di fingere il contrario.
+         *
+         * `assertInDevOutsidePromise` e non `assertInDev`: questo metodo lo
+         * chiama react-query, che cattura, quindi un `throw` finirebbe nello
+         * stato di errore della query dove nessuno lo guarda — è la stessa
+         * ragione scritta su `requireProfessional`.
+         */
+        const nota = session.cancellationNote;
+        assertInDevOutsidePromise(
+          nota === undefined ||
+            nota === session.cancellationMessage ||
+            !JSON.stringify(mine[mine.length - 1]).includes(nota),
+          `La nota privata della seduta "${session.id}" è finita nell'appuntamento del dipendente.`,
+        );
       }
     }
 
