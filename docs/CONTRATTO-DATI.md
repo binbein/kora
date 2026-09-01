@@ -627,6 +627,7 @@ compensi e pagamenti.
 | `saveSessionNote` | `["professional", professionalId]` |
 | `bookAppointment` | `["professional", professionalId]` **e** `["employee"]` |
 | `cancelSession` | `["professional", professionalId]` **e** `["employee"]` |
+| `setSlotStatus` | `["professional", professionalId]` **e** `["employee"]` |
 | `submitRapidCheck` | `["employee", "rapid-check"]` |
 | `submitDemoRequest` | `["platform", "demo-requests"]` |
 | `enterAs` | `["session"]` |
@@ -1270,8 +1271,37 @@ il ciclo vero ne ha di più:
     una seduta mancata.
 - **La lista d'attesa**, che è la risposta alla promessa del Business Plan sul
   primo appuntamento entro 24 ore quando gli slot finiscono.
-- **La pubblicazione della disponibilità**: gli slot sono un dato del dataset, e
-  nessun metodo permette a una professionista di dichiarare quando lavora.
+- **La pubblicazione della disponibilità — metà c'è dal 01.09.2026**, e vale la
+  pena dire quale.
+
+  **C'è**: `setSlotStatus`, con cui la professionista **chiude e riapre** una
+  fascia dichiarata. `getProfessionalSlots` gliele restituisce con il loro
+  stato, e `getAvailableSlots` sottrae le chiuse insieme alle occupate — due
+  sottrazioni indipendenti, e ognuna basta da sola. È il gesto che le mancava:
+  fino ad allora **l'unico modo di liberarsi un'ora era che ci fosse una seduta
+  da annullare**, quindi un impegno personale su un'ora libera non aveva nessuna
+  rappresentazione.
+
+  **Chiude anche la domanda che il §8.5 lascia aperta**, dal lato del prodotto e
+  non del contratto: *«e torna prenotabile da chiunque è un'altra cosa, ed è una
+  policy»*. Adesso la risposta è di chi cura — l'ora liberata da una disdetta
+  torna proponibile, e se non deve tornarlo la si chiude.
+
+  **Non c'è, e sono due cose distinte:**
+
+  - **dichiarare fasce nuove.** `INITIAL_SLOTS` resta generato da un piano:
+    nessun metodo permette di aggiungere un'ora che il dataset non prevede, e il
+    verbo che manca è quello. Ne discende un vincolo che va saputo prima:
+    **finché le fasce sono generate, l'identità di una fascia è la coppia
+    professionista + istante d'inizio**, ed è così che `setSlotStatus` la
+    prende. Il giorno in cui si dichiarano, una fascia diventa un record con
+    un'identità propria e quel metodo prende un id — è annotato anche su
+    `ProfessionalSlot`, che è dove lo incontra chi legge i tipi;
+  - **la ricorrenza settimanale.** Una professionista non dice *"il giovedì alle
+    17:30"*, dice una fascia per volta, e ogni chiusura vale per una sola
+    occorrenza. È la forma che serve davvero a chi tiene un'agenda, e non è un
+    dettaglio di comodità: senza, dichiarare un anno di disponibilità è un anno
+    di gesti.
 
 #### Cosa vuol dire "occupato", per chi scriverà il backend
 
