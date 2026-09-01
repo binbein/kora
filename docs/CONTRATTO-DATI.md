@@ -680,9 +680,10 @@ cambia cosa vede chi prenota l'undicesima seduta.
 
 **`cancelSession` invalida le stesse due radici, e per la stessa ragione**: la
 seduta è un record solo. Dal lato del professionista tornano indietro agenda,
-pazienti e disponibilità — l'ora annullata torna prenotabile, ed è il caso che
-dà un senso all'annullamento; dal lato del dipendente l'appuntamento sparisce
-dalla home. **Compenso e contatore non si muovono**, e non è una svista da
+pazienti e disponibilità — **l'ora annullata non è più occupata**, ed è
+l'invariante che dà un senso all'annullamento; **che poi ricompaia fra le
+proponibili è un'altra cosa, ed è una policy che il §8.5 dichiara non decisa**.
+Dal lato del dipendente l'appuntamento sparisce dalla home. **Compenso e contatore non si muovono**, e non è una svista da
 correggere invalidando meno: contano le **erogate**, quindi una seduta in
 programma che sparisce non tocca né l'uno né l'altro. Rileggerli costa una riga
 e decidere qui cosa non è cambiato costerebbe di più.

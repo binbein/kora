@@ -7563,6 +7563,31 @@ dall'altro lato del marketplace.
   cella e la legenda a quattro voci;
 - `build`, `lint` e `typecheck` a zero.
 
+##### L'ultimo punto rimasto con la vecchia formulazione
+
+Il §4 del contratto diceva *«l'ora annullata torna prenotabile, ed è il caso che
+dà un senso all'annullamento»*. Era **indietro rispetto al §8.5 dal
+18.08.2026**, che separa l'invariante — l'ora non è più occupata — dalla policy
+— torna prenotabile da chiunque — e dichiara la seconda non decisa: era
+l'ultimo punto rimasto con la formulazione vecchia, e le passate del 18 e del
+19.08 lo avevano registrato senza chiuderlo.
+
+**Questa passata non lo lascia vecchio: lo rende falso.** Un'ora annullata torna
+prenotabile **a meno che la fascia non sia chiusa**, ed è il §8 riscritto qui
+sopra a dirlo — *«l'ora liberata da una disdetta torna proponibile, e se non
+deve tornarlo la si chiude»*. Il §4 affermava senza condizioni ciò che il §8
+qualifica.
+
+Ora dice **l'invariante** e rimanda al §8.5 per la policy invece di ripeterla.
+Il resto del paragrafo non è stato toccato: le due radici invalidate, il
+compenso e il contatore restano come sono.
+
+**Cercato in tutto il contratto se qualche altro punto affermasse la policy come
+invariante: ce n'era uno solo.** Gli altri otto riscontri della ricerca —
+*«libera la fascia: una seduta annullata non occupa più la sua ora»*, *«questo è
+l'invariante, e vale»*, *«e torna prenotabile da chiunque è un'altra cosa»* —
+dichiarano l'invariante o separano esplicitamente le due cose.
+
 ##### Ricontare la cifra dei guardrail ha trovato una seconda trappola
 
 Il conto passa a **115**, e i punti del `CLAUDE.md` in cui compare sono stati
