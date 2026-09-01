@@ -2135,7 +2135,8 @@ conteggi, le attese e l'ordinamento, l'ordinamento dello stato della seduta, la
 rinomina delle rotte in inglese, la demo pronta, le cifre nelle
 parentetiche, i rimandi del contratto, i fatti del Business Plan, il check
 rapido con la soglia e i badge, il messaggio di annullamento, la chiusura
-delle fasce, e la griglia delle fasce. Non aggiungono schermate e
+delle fasce, la griglia delle fasce, e lo scope delle fasce con le mutation che
+non si contano. Non aggiungono schermate e
 non spostano un numero a schermo.
 
 **I numeri sono tre e contano tre cose diverse**, ed è la riga che mancava
@@ -7765,18 +7766,149 @@ trappola del §11, sciolta imponendo il viewport.
   cache fredda`*; con la riga, **console muta** sulle cinque rotte del portale,
   chiusura e riapertura di una fascia comprese, e **una sola navigazione** per
   tutto il giro;
-- **il `CLAUDE.md` §10.D non nomina questa passata**, e non è stato toccato di
+- ~~**il `CLAUDE.md` §10.D non nomina questa passata**, e non è stato toccato di
   proposito: è la terza voce che quella sezione dovrebbe avere e non ha — dopo
   i due testi dell'annullamento e la chiusura delle fasce, tutti e due del
   01.09.2026 — e i founder hanno la decisione in sospeso su come registrarli
-  insieme. Aggiungere qui la terza avrebbe deciso al posto loro;
+  insieme. Aggiungere qui la terza avrebbe deciso al posto loro;~~ →
+  **chiuse tutte e tre il 02.09.2026**, dalla passata documentale qui sotto:
+  la voce 3 riscritta sui due testi, la voce 6 nuova sulla chiusura delle
+  fasce, e dentro di lei la resa e la riga della disponibilità;
 - **`prenotata` e `passata` si separano solo per il colore del testo**, ΔE
   29.7, perché i loro fondi distano ΔE 4.4 e i loro bordi stanno a 1.19 e
   1.23:1 sul proprio fondo. È preesistente e non è stato cambiato: è una resa
   approvata, e questa passata l'ha **misurata** invece di ereditarla senza
   numeri. Chi la rivedesse ha qui il punto di partenza.
 
-### Punto di partenza — cosa c'è e cosa manca
+#### Lo scope delle fasce, e le mutation che non si contano (02.09.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il
+comando in testa a questo file. **Solo documenti**: `git diff --name-only`
+contro `master` non tocca **nessun file sotto `src/`**, e `typecheck` e `lint`
+escono a zero — eseguiti perché sono quella prova, non perché qualcosa potesse
+muoversi. Nessun numero del §8 e del §9 si muove, rotte **26**, schermate
+**27**, `EXPECTED_KEYS` **791**, guardrail **115 = 102 + 13**.
+
+**Tre disallineamenti, tutti nati dalle due passate del 01.09.2026**, che hanno
+toccato `CLAUDE.md` solo in §5.6 e §3 — cioè hanno mosso le cifre e hanno
+lasciato indietro la sezione che descrive il prodotto.
+
+##### Il §10.D descriveva un dialogo che non esiste più
+
+La voce 3 diceva *«il dialogo accetta una nota libera facoltativa»*. Ne accetta
+**due**, con **due destinatari**, dal 01.09.2026, e la decisione dei founder
+non è che ce ne siano due: è che sono **due campi e non un interruttore**.
+Viveva in `docs/CONTRATTO-DATI.md` §3 e nel verbale del messaggio di
+annullamento, **e non nella costituzione** — cioè non nel file che il §2.8
+dichiara essere il posto delle decisioni non ovvie.
+
+**La voce porta la decisione e il rimando, non la forma.** Il ragionamento sui
+tipi — `PlatformSession` che il campo non ce l'ha, e la garanzia che sta nella
+forma e non nel rendering — resta nel contratto, che è dove il backend lo
+eredita. Qui sta perché la spunta apre e non pubblica, e perché la strada
+scartata non è stata scartata per gusto.
+
+**Il §3 rimandava a §10.D per una cosa che §10.D non descriveva.** La riga sul
+terzo componente uscito dal magazzino — `checkbox.tsx`, *«per la spunta che
+apre il messaggio al paziente (§10.D)»* — è del 01.09.2026 e puntava a vuoto.
+Adesso atterra: la voce 3 la spunta la descrive. **Il rimando non è stato
+toccato**, è il bersaglio che è arrivato.
+
+##### Il §10.D non aveva una voce per la chiusura delle fasce
+
+Mancava del tutto — `setSlotStatus`, `ProfessionalSlot` e perché è separato da
+`AppointmentSlot`, il gesto sul calendario, cosa il metodo rifiuta — mentre il
+precedente era netto: l'annullamento del 17.08 ha preso la voce 3 e la
+navigazione fra settimane del 18.08 la voce 5.
+
+**La voce 6 è scritta sul comportamento di adesso**, non su quello del
+01.09: comprende la resa delle celle e la riga *«la tua disponibilità»* della
+passata mergiata con la PR #78, verificata in `master` prima di descriverla.
+
+**Dice anche cosa non c'è**, che è metà del suo mestiere: **dichiarare fasce
+nuove non esiste**, e con lui la ricorrenza settimanale. È una scelta di scope
+già presa, elencata in `docs/CONTRATTO-DATI.md` §8.5 con l'altra metà che la
+voce chiude, e la voce **rimanda invece di ripetere** — come rimanda a
+`docs/PITCH.md` per il terzo tempo e il suo ordine vincolante.
+
+**La voce 6 e non una voce 3-bis**, ed è la ragione per cui il numero è quello:
+**quattro punti fuori da qui citano `§10.D.3`** — `docs/PITCH.md`, due verbali
+di questo file e un commento di `src/lib/i18n/it.ts` — e tutti e quattro
+parlano dell'annullamento. Rinumerare avrebbe rotto un rimando dentro `src/`,
+che questa passata non può toccare.
+
+##### Il §4 del contratto contava sei mutation e la tabella ne elencava sette
+
+*«Le altre quattro restano»*, *«Sei dal 17.08.2026»*, *«le altre quattro sono
+inserimenti»*: `setSlotStatus` è la settima e **non è un inserimento**.
+
+**Le cifre non sono state aggiornate: sono state tolte.** È la stessa famiglia
+che il `CLAUDE.md` §5.6 e §2.7 hanno già sciolto, e l'hanno sciolta scrivendo
+il criterio invece del valore — un numero in prosa accanto alla lista che lo
+smentisce invecchia a ogni passata, e portarlo a sette oggi vuol dire riaprirlo
+alla prossima scrittura. **A contarle basta la tabella.**
+
+**La distinzione che la frase portava è informazione vera e resta**, riscritta
+sulle categorie invece che sui conteggi: chi **inserisce** un record
+(`bookAppointment`, `submitRapidCheck`, `submitDemoRequest`), chi è un
+**upsert** che prende lo stato desiderato (`saveSessionNote` e `setSlotStatus`
+— ed è la ragione, scritta sul provider, per cui non esistono un `openSlot` e
+un `closeSlot`), e `cancelSession`, che **cambia lo stato di un record
+esistente senza riscriverlo**. `enterAs` resta a sé: non scrive un dato del
+dominio ma la sessione, ed è la sola che in produzione può sparire.
+
+##### Cosa dipendeva dal §10.D, cercato e allineato
+
+**Nessun punto conta le voci di quella sezione**, verificato: gli unici
+riferimenti numerici sono i quattro a `§10.D.3` qui sopra, e la voce 6 li
+lascia dove sono.
+
+**La definizione di "finito" dell'area portava una fotografia invecchiata da
+M2.** Diceva che le date e i giorni della settimana *«oggi sbagliano in tutti e
+quattro i punti in cui compaiono»*, mentre il §11 dichiara quelle quattro
+coppie sparite con la lista che le conteneva e aggiunge *«da lì non ne resta
+nessuna»*. È un **criterio** e non un verbale — è rivolto a chi verrà — quindi
+si corregge con la data: **un criterio con dentro un «oggi» invecchia il giorno
+in cui il criterio è soddisfatto**, ed è la famiglia «numero + avverbio» della
+spazzata del 15.08.2026 sopravvissuta in una parentesi.
+
+**L'inventario delle 27 schermate di M5.b non si muove**, ed è stato
+controllato invece che dato per buono: la riga del calendario dichiara attesa
+`null`, vuoto *«frase esistente sulla settimana»* ed `ErrorNotice` di pagina, e
+tutte e tre restano vere — `ownSlots` è dentro il `loadState` della pagina,
+quindi un suo guasto dà l'errore di pagina che la riga già dichiara.
+
+**Sette punti toccati in tutto**: tre nel §10.D (voce 3 riscritta, la
+qualificazione sul ricomparire, la voce 6), la definizione di "finito"
+dell'area, il §4 del contratto, la voce chiusa nel verbale della passata
+precedente, e questo verbale.
+
+##### Verificato
+
+- **`git diff --name-only` contro `master`: nessun file sotto `src/`**, e i
+  tre soli file toccati sono `CLAUDE.md`, `docs/CONTRATTO-DATI.md` e questo;
+- `typecheck` e `lint` a **zero**, eseguiti per provare quel «nessun file»;
+- **la passata descritta è in `master`**: `78a43fd` è antenato di
+  `origin/master` (PR #78), controllato con `git merge-base --is-ancestor`
+  prima di scrivere la voce 6 — altrimenti avrebbe descritto uno stato
+  intermedio;
+- **niente verifiche a schermo, e va detto perché**: non c'è niente di nuovo a
+  schermo. È la stessa forma delle passate documentali del 15.08.2026, del
+  19.08.2026 e del 20.08.2026.
+
+##### Trovato e non toccato
+
+- **«Decisioni chiuse» si ferma al 14.08.2026**, e non è un difetto di questa
+  passata né dei suoi tre disallineamenti: mancano **tutte** le decisioni dei
+  founder dal 17.08 in poi — le parole, l'anteprima a tre pannelli, la cornice
+  del trimestre, il nome dei pazienti, l'annullamento, il salto a data, il
+  token dell'attesa, le rotte inglesi, i due testi e la chiusura delle fasce.
+  La sezione dichiara di essere il posto in cui una decisione si trova *«senza
+  dover leggere `CLAUDE.md` per intero»*, e da due settimane quella promessa
+  non è più vera. **Aggiungere qui le sole due del 01.09 avrebbe lasciato il
+  buco più difficile da vedere**, perché la sezione sembrerebbe aggiornata. È
+  una passata sua, e va decisa: o si recupera l'arretrato, o la sezione
+  dichiara di essersi fermata e rimanda ai verbali.
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
 professionista, admin; **oggi sono 26**: `/roi` è stata approvata il 07.08.2026
