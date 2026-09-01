@@ -453,6 +453,32 @@ export default function ProCalendario() {
                     const fascia = session ? null : slot;
                     const chiusa = fascia?.status === 'closed';
                     /*
+                     * L'OFFERTA È LA FASCIA LIBERA **E FUTURA**, cioè
+                     * esattamente l'insieme che più sotto diventa un `button`.
+                     *
+                     * Rendere e poter cliccare si decidono sullo stesso
+                     * predicato di proposito: una fascia passata disegnata come
+                     * un'offerta sarebbe l'affordanza che mente — il rimedio
+                     * che le voci morte del footer hanno costretto a fare
+                     * l'08.08.2026, qui prevenuto invece che corretto. Una
+                     * fascia passata arretra con le celle vuote, che è ciò che
+                     * è: un'ora in cui non può più succedere niente.
+                     */
+                    const offerta =
+                      fascia !== null && !chiusa && fascia.start > today;
+                    /*
+                     * LE CINQUE CELLE SI DEVONO DISTINGUERE SENZA IL MOUSE E
+                     * SENZA LEGGERE I NOMI, ed è la prova a cui questa tabella
+                     * risponde riga per riga (02.09.2026).
+                     *
+                     * | cella | fondo | bordo | testo |
+                     * |---|---|---|---|
+                     * | prenotata | teal pallido | 1px teal | cognome |
+                     * | passata | grigio | 1px `border` | cognome |
+                     * | libera | **bianco** | **2px teal pieno** | "Libera" |
+                     * | chiusa | grigio | 2px grigio tratteggiato | "Chiusa" |
+                     * | vuota | **niente** | **niente** | — |
+                     *
                      * IL BORDO TRATTEGGIATO È IL SEGNO PRIMARIO DELLA CHIUSA,
                      * non un complemento del colore (01.09.2026).
                      *
@@ -470,15 +496,36 @@ export default function ProCalendario() {
                      * e senza passarci sopra il mouse. A 2px pieni il bordo dà
                      * **4.6:1** sul fondo della cella, sopra il 3:1 che la
                      * 1.4.11 chiede a un segno non testuale.
+                     *
+                     * LA LIBERA SEGUE LA STESSA REGOLA E NON LA STESSA STRADA
+                     * (02.09.2026). Il segno primario è **il testo** — la cella
+                     * porta la sua etichetta, come la chiusa porta la sua —
+                     * perché il colore non è mai l'unica cosa che porta un
+                     * significato (§6.1). Il fondo aiuta e non può essere una
+                     * tinta: `bg-secondary/10` e `bg-accent/50` cadono a
+                     * **nove punti su 255** l'uno dall'altro, quindi qualunque
+                     * verde pallido si confonderebbe con la prenotata. Il
+                     * bianco è ciò che nessuna delle altre quattro ha, e il
+                     * **2px `secondary-strong`** è ciò che la distingue dalla
+                     * vuota, che ora di bordo non ne ha nessuno — 5.75:1 su
+                     * bianco (§6.1), sopra il 3:1 della 1.4.11.
+                     *
+                     * LA VUOTA ARRETRA, ed è metà del rimedio: disegnava un
+                     * riquadro identico a quello dell'offerta, quindi la
+                     * griglia prometteva venti bersagli e ne aveva uno. Senza
+                     * fondo e senza bordo non promette più niente, e ciò che
+                     * c'è risalta perché è l'unica cosa disegnata.
                      */
-                    const cellClass = `p-1.5 rounded-lg text-xs min-h-[48px] border w-full text-left ${
+                    const cellClass = `p-1.5 rounded-lg text-xs min-h-[48px] w-full text-left ${
                       session
                         ? past
-                          ? 'bg-muted/60 border-border'
-                          : 'bg-secondary/10 border-secondary/30'
+                          ? 'border bg-muted/60 border-border'
+                          : 'border bg-secondary/10 border-secondary/30'
                         : chiusa
-                          ? 'bg-muted border-2 border-dashed border-muted-foreground'
-                          : 'bg-card border-border'
+                          ? 'border-2 border-dashed bg-muted border-muted-foreground'
+                          : offerta
+                            ? 'border-2 bg-card border-secondary-strong'
+                            : ''
                     }`;
                     const content = session && (
                       <div>
@@ -565,11 +612,23 @@ export default function ProCalendario() {
                             })
                           }
                         >
-                          {chiusa && (
-                            <span className="text-muted-foreground">
-                              {t.professional.calendar.slotClosed}
-                            </span>
-                          )}
+                          {/* L'ETICHETTA È IL SEGNO PRIMARIO DI TUTTE E DUE, e
+                              la libera non ne aveva nessuno: la cella diceva di
+                              essere un'offerta con il solo fondo, che era il
+                              fondo della cella vuota. `font-medium` sulla
+                              libera e non sulla chiusa perché una invita e
+                              l'altra constata. */}
+                          <span
+                            className={
+                              chiusa
+                                ? 'text-muted-foreground'
+                                : 'font-medium text-secondary-strong'
+                            }
+                          >
+                            {chiusa
+                              ? t.professional.calendar.slotClosed
+                              : t.professional.calendar.slotFree}
+                          </span>
                         </button>
                       );
                     }
@@ -601,20 +660,35 @@ export default function ProCalendario() {
           senza sedute restava a descrivere tre colori che non c'erano. */}
       {slots.length > 0 && (
       <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
+        {/*
+          * OGNI QUADRATINO PORTA IL DISEGNO VERO DELLA SUA CELLA, ed è la metà
+          * del difetto che si vedeva peggio (02.09.2026): quello di "Libera"
+          * era `bg-card border-border`, cioè il disegno della cella **vuota**,
+          * quindi la legenda insegnava che tutti i riquadri bianchi erano
+          * fasce libere — ce n'era una su venti.
+          *
+          * **La cella vuota non ha una voce**, e non è una dimenticanza: non ha
+          * più un aspetto proprio da nominare, e una voce con il quadratino
+          * invisibile chiederebbe a chi legge di cercare una cosa che non c'è.
+          *
+          * `w-4 h-4` e non `w-3`: su dodici pixel un bordo da due ne lascia
+          * otto di fondo, e i due quadratini che il bordo lo hanno spesso —
+          * libera e chiusa — si leggevano come due bordi e basta.
+          */}
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded bg-secondary/10 border border-secondary/30" />
+          <div className="w-4 h-4 rounded bg-secondary/10 border border-secondary/30" />
           {t.professional.calendar.legendBooked}
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded bg-muted/60 border border-border" />
+          <div className="w-4 h-4 rounded bg-muted/60 border border-border" />
           {t.professional.calendar.legendPast}
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded bg-card border border-border" />
+          <div className="w-4 h-4 rounded bg-card border-2 border-secondary-strong" />
           {t.professional.calendar.legendFree}
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded bg-muted border-2 border-dashed border-muted-foreground" />
+          <div className="w-4 h-4 rounded bg-muted border-2 border-dashed border-muted-foreground" />
           {t.professional.calendar.legendClosed}
         </div>
       </div>

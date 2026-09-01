@@ -529,6 +529,7 @@ export const en: Dictionary = {
       legendFree: "Free",
       legendPast: "Past",
       legendClosed: "Closed",
+      slotFree: "Free",
       slotClosed: "Closed",
       slotCloseLabel: "Close the slot on {weekday} {date} at {time}",
       slotReopenLabel: "Reopen the slot on {weekday} {date} at {time}",
