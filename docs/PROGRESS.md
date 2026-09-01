@@ -7372,6 +7372,62 @@ stato scritto — che è giusto, ed è la differenza fra copy e contenuto.
 niente**, ed è la verifica che vale più delle altre: nel resto di `src/` il nome
 compare in quattro file, tutti dal lato di chi cura o nel layer dati.
 
+##### Il guardrail è stato riscritto prima del merge, ed è la parte più istruttiva
+
+La prima stesura era **una chiamata sola con tre vie d'uscita**, e ne aveva due
+sbagliate in direzioni opposte. Entrambe sono state **riprodotte a schermo prima
+di correggerle**, non dedotte.
+
+**Il falso allarme su un caso normale.** Cercava il testo della nota dentro la
+serializzazione dell'appuntamento, che contiene il messaggio: con nota
+*"malata"* e messaggio *"Sono malata, ti ricontatto io"* scattava senza che
+fosse trapelato niente. Riprodotto: l'errore esce con il testo *«La nota privata
+… è finita nell'appuntamento del dipendente»*.
+
+**E l'effetto va detto con precisione, perché non è quello che si dà per
+scontato del modo `throw`**: la home **si disegna lo stesso**. Il guardrail passa
+da `raiseOutsideCurrentStack`, che rilancia da un microtask per uscire dalla
+cattura di react-query, quindi diventa un errore non catturato — l'overlay di
+Vite in sviluppo, il `console.error` nella build demo — e non una pagina bianca.
+Chi lo trova alla prova del giorno prima si ferma comunque (`docs/PITCH.md`), ma
+non lo trova perché la schermata è sparita.
+
+**La cecità sul bersaglio.** Una delle vie d'uscita era `nota === messaggio`, e
+il refactor che unifica i due campi *«perché si assomigliano»* — cioè la
+minaccia per cui il guardrail esiste — produce **esattamente** quell'uguaglianza.
+Misurato sul caso: con il controllo vecchio l'assert passava, e **la nota era
+visibile al dipendente**.
+
+**Il rimedio è di forma accanto a quello di testo**, e i due non sono duplicati:
+
+| controllo | coglie | non vede |
+|---|---|---|
+| la chiave `cancellationNote` non esiste sull'appuntamento | il refactor che **unifica** | il campo rinominato |
+| nessun valore diverso da `cancellationMessage` è uguale alla nota | il campo **rinominato** | — |
+
+**Provati rompendo il codice ad arte e ripristinandolo subito**, la tecnica della
+passata pre-pitch del 10.08.2026. Con i due campi unificati scattano **tutti e
+due**, con messaggi distinti; con il campo rinominato `noteForPatient` scatta
+**il solo controllo testuale**, che è la prova che la forma da sola non basta.
+Il caso normale non scatta più.
+
+**`cancellationMessage` è l'unico valore escluso dal confronto**, e non è la
+vecchia via d'uscita con un altro nome: là l'uguaglianza faceva passare
+**l'assert intero**, qui toglie **un solo valore** dal confronto — quello che la
+nota può legittimamente eguagliare, quando chi scrive mette lo stesso testo in
+tutti e due.
+
+**I guardrail passano da 111 a 113 e non a 112**, perché le chiamate sono due:
+due minacce diverse meritano due messaggi diversi, e un assert solo con due
+condizioni direbbe a chi lo trova che qualcosa non va senza dirgli quale delle
+due. Il `CLAUDE.md` §5.6 è aggiornato in tutti i punti in cui la cifra compare.
+
+**Ricontarli ha trovato una trappola, ed è finita accanto al conto**: un `grep`
+del numero su `CLAUDE.md` pesca anche un `112` del §2.7, che conta **gli oggetti
+di un dizionario** e non i call site. Una sostituzione cieca avrebbe corrotto
+quella riga. Due grandezze diverse hanno avuto lo stesso valore, e l'avvertenza
+sta nel §5.6 invece che nella memoria di chi l'ha scoperto.
+
 ##### Trovato e non toccato
 
 - **`docs/CONTRATTO-DATI.md` §4 dice ancora che «l'ora annullata torna

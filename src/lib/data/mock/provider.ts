@@ -608,7 +608,7 @@ export class MockDataProvider implements DataProvider {
         const upcomingCancellation =
           session.status === "cancelled" && session.start > DEMO_TODAY;
         if (session.status !== "scheduled" && !upcomingCancellation) continue;
-        mine.push({
+        const appuntamento: Appointment = {
           id: session.id,
           kind: serviceOf(professional),
           professionalId: professional.id,
@@ -631,34 +631,55 @@ export class MockDataProvider implements DataProvider {
           ...(session.cancellationMessage === undefined
             ? {}
             : { cancellationMessage: session.cancellationMessage }),
-        });
+        };
+        mine.push(appuntamento);
 
         /*
          * NESSUN APPUNTAMENTO PORTA IL TESTO DI UNA NOTA PRIVATA (§5.6).
          *
-         * Il campo non c'è sul tipo, quindi oggi non può arrivarci; questo
-         * guardrail esiste per **domani**, contro il refactor che unifica i due
-         * campi "perché si assomigliano" — che è il modo in cui questa garanzia
-         * cadrebbe senza che nessuno se ne accorga, visto che a schermo le due
-         * righe si somigliano davvero.
+         * **SONO DUE CONTROLLI E COLGONO DUE MINACCE DIVERSE**, ed è la riga da
+         * leggere prima di toglierne uno credendolo il duplicato dell'altro:
          *
-         * Guarda **il testo e non il nome del campo**: un campo rinominato
-         * passerebbe un controllo sulla chiave, mentre il testo è ciò che non
-         * deve attraversare il confine. Il caso vero è quello in cui i due
-         * differiscono — se sono uguali il confronto non prova niente, e il
-         * `!==` lo dichiara invece di fingere il contrario.
+         * - **la forma** coglie il refactor che unifica i due campi "perché si
+         *   assomigliano", che è la minaccia per cui questo guardrail esiste.
+         *   Un refactor del genere fa arrivare qui la chiave, e la chiave o
+         *   c'è o non c'è: non può dare falsi allarmi;
+         * - **il testo** coglie il campo **rinominato**, che la forma non
+         *   vede: `cancellationNote` che diventa `noteForPatient` passerebbe
+         *   un controllo sulla chiave portandosi dietro il testo.
+         *
+         * IL TESTO SI CONFRONTA VALORE PER VALORE, e non cercando una
+         * sottostringa nella serializzazione: quella versione dava un **falso
+         * allarme su un caso normale** — nota "malata" dentro messaggio "Sono
+         * malata, ti ricontatto io" — perché la serializzazione contiene il
+         * messaggio, che contiene la nota. Riprodotto prima di correggerlo.
+         *
+         * `cancellationMessage` è **l'unico valore escluso dal confronto**, e
+         * non è una scorciatoia: è il campo che la nota può legittimamente
+         * eguagliare, quando chi scrive mette lo stesso testo in tutti e due.
+         * La versione precedente lo trattava come una via d'uscita
+         * sull'assert intero — `nota === message` faceva passare tutto — e
+         * quella via era **cieca proprio sul bersaglio**, perché il refactor
+         * che unifica i due campi produce esattamente quell'uguaglianza.
          *
          * `assertInDevOutsidePromise` e non `assertInDev`: questo metodo lo
          * chiama react-query, che cattura, quindi un `throw` finirebbe nello
          * stato di errore della query dove nessuno lo guarda — è la stessa
          * ragione scritta su `requireProfessional`.
          */
+        assertInDevOutsidePromise(
+          !("cancellationNote" in appuntamento),
+          `L'appuntamento della seduta "${session.id}" ha un campo "cancellationNote": i due campi della disdetta sono stati unificati, e la nota privata esce verso il dipendente.`,
+        );
+
         const nota = session.cancellationNote;
         assertInDevOutsidePromise(
           nota === undefined ||
-            nota === session.cancellationMessage ||
-            !JSON.stringify(mine[mine.length - 1]).includes(nota),
-          `La nota privata della seduta "${session.id}" è finita nell'appuntamento del dipendente.`,
+            !Object.entries(appuntamento).some(
+              ([chiave, valore]) =>
+                chiave !== "cancellationMessage" && valore === nota,
+            ),
+          `Il testo della nota privata della seduta "${session.id}" è finito in un campo dell'appuntamento del dipendente.`,
         );
       }
     }
