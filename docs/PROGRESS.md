@@ -2142,9 +2142,9 @@ conteggi, le attese e l'ordinamento, l'ordinamento dello stato della seduta, la
 rinomina delle rotte in inglese, la demo pronta, le cifre nelle
 parentetiche, i rimandi del contratto, i fatti del Business Plan, il check
 rapido con la soglia e i badge, il messaggio di annullamento, la chiusura
-delle fasce, la griglia delle fasce, e lo scope delle fasce con le mutation che
-non si contano. Non aggiungono schermate e
-non spostano un numero a schermo.
+delle fasce, la griglia delle fasce, lo scope delle fasce con le mutation che
+non si contano, e l'allineamento fra verbali e commenti. Non aggiungono
+schermate e non spostano un numero a schermo.
 
 **I numeri sono tre e contano tre cose diverse**, ed è la riga che mancava
 accanto all'elenco (20.08.2026): le **PR mergiate** sotto il criterio in fondo
@@ -7918,6 +7918,189 @@ precedente, e questo verbale.
   buco più difficile da vedere**, perché la sezione sembrerebbe aggiornata. È
   una passata sua, e va decisa: o si recupera l'arretrato, o la sezione
   dichiara di essersi fermata e rimanda ai verbali.
+
+#### L'allineamento fra verbali e commenti (01.09.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il
+comando in testa a questo file. **La ripartizione ha un criterio da dichiarare**,
+perché altrimenti si legge come un errore: le modifiche dentro `src/` di questa
+passata toccano **solo commenti**, quindi sono `docs:` anche se stanno in file
+di codice — **il criterio del §2.8 è cosa cambia, non dove sta il file**. L'unico
+`fix:` è quello che cambia una resa, e si vede a schermo.
+
+**Nessun numero del §8 e del §9 si muove**, rotte **26**, schermate **27**,
+`EXPECTED_KEYS` **791**, guardrail **115 = 102 + 13** — rimisurati con i criteri
+del §2.7 e del §5.6, e nessuno dei due si è mosso. `build`, `lint` e `typecheck`
+a zero.
+
+##### Le tre passate del 01.09 si erano datate al 2 settembre
+
+Le due passate delle fasce e quella dello scope avevano scritto **02.09.2026** in
+**11 punti su 5 file** — `CLAUDE.md` (2), questo file (3),
+`docs/CONTRATTO-DATI.md` (1), `prefetch.ts` (1), `ProCalendario.tsx` (4) — e
+**nessun commit del repository è del 2 settembre**. La prova è il comando, non la
+memoria:
+
+```
+git log -12 --format='%h %ad %s' --date=iso
+```
+
+dà #77 alle 21:36, #78 alle 22:35 e #79 alle 22:47, **tutte il 2026-09-01**.
+
+**È la data di stesura, non il contenuto**, e la distinzione tiene in piedi la
+regola per cui i verbali non si riscrivono: un resoconto datato resta quello che
+è, e qui a essere sbagliata era **la data del resoconto**. Le intestazioni dei
+due verbali sono cambiate con il resto, e questa riga è il posto in cui chi
+legge trova scritto perché.
+
+##### Due verbali si contraddicevano
+
+**Il messaggio di annullamento contava i guardrail in due modi.** In testa
+diceva «da 111 a 112», duecento righe più in basso «da 111 a 113 e non a 112,
+perché le chiamate sono due». La seconda è quella giusta e il §5.6 la porta:
+**barrata con la data**, come il file fa altrove, invece di riscrivere un
+resoconto.
+
+**Un verbale di M3 mandava a M5 una scrittura che M5 non ha portato.** Diceva
+*«la scrittura vera dell'admin arriva con le guardie di ruolo di M5»*: le
+guardie sono del 12.08.2026 e **non hanno portato nessuna scrittura del
+back-office** — verificato, non ricordato: `provider.ts` non ne ha una e la
+tabella delle mutation del `docs/CONTRATTO-DATI.md` §4 non ne elenca nessuna.
+Adesso rimanda al **perimetro dell'MVP**, e al perimetro e non a un gruppo per
+la ragione che sta più sotto, fra le cose non toccate.
+
+##### «Decisioni chiuse» è tornata a dire il vero
+
+La sezione dichiara di essere il posto in cui una decisione dei founder si trova
+*«senza dover leggere `CLAUDE.md` per intero»*, e la sua ultima voce era del
+14.08 mentre `CLAUDE.md` e `docs/PITCH.md` ne portavano **diciannove** datate
+dopo. **Per due settimane quella promessa non era vera**, ed è il difetto che la
+passata precedente aveva dichiarato senza chiudere.
+
+**Il criterio con cui sono state raccolte**, perché il recupero sia rifacibile:
+si cercano le **attribuzioni datate** in `CLAUDE.md` e in `docs/PITCH.md` — la
+parentetica `(founder, gg.mm.aaaa)` e le forme «decisione dei founder del …» —
+si tengono le date **≥ 17.08.2026**, e si scarta ciò che è **un criterio scritto
+da una passata** invece che una decisione presa: una data fra parentesi non è
+un'attribuzione. `docs/PITCH.md` non ne porta nessuna dopo il 14.08, e l'unica
+sua voce recuperata — la conferma demo che non nomina l'azienda — è attribuita
+dal verbale che la racconta.
+
+**Una voce per decisione**, nella forma delle esistenti e nell'ordine
+cronologico inverso che la sezione usa già: **data e motivo qui, la regola resta
+dove vive**. In testa alla sezione c'è ora la nota che l'arretrato è stato
+recuperato, con il rimando a questo verbale per il criterio.
+
+##### I commenti che descrivevano un prodotto che non esiste più
+
+Quattro punti certi, più uno trovato dalla spazzata:
+
+| dove | diceva | adesso |
+|---|---|---|
+| `it.ts`, testata | «Oggi c'è l'area professionista, che è quella migrata da M2» | le cinque aree sono di M3 e i dizionari sono quattro; **quante siano lo dice `EXPECTED_KEYS`** |
+| `it.ts`, `admin.sessions.privacyNote` | `ProfessionalSession` non ha un campo per il nome | è **`PlatformSession`**: dal 17.08.2026 la proiezione di chi cura il nome ce l'ha |
+| `LocaleSwitcher.tsx` | «Finché `fr.ts` ed `en.ts` non esistono, `FR` ed `EN` non compaiono» | esistono dal 14.08.2026: resta **la regola** — le sole lingue registrate in `DICTIONARIES`, oggi quattro |
+| `mock/provider.ts` | il JSDoc di `applyCancellation` stava sopra `slotKey`, che ha il suo | spostato sopra il metodo che descrive, **testo invariato** |
+| `types.ts`, `ServiceUsageMonth` | «Il guardrail arriva con il dataset … si fissano lì quando M3 li costruisce» | il guardrail è in `mock/service-usage.ts` da M3 e ne sorveglia **quattro**; i tre totali sono nel §8 dal 07.08.2026 |
+
+**Il quinto l'ha trovato la spazzata**, ed è la famiglia che il §11 governa: *un
+commento che nomina una milestone è una data che scade*.
+
+##### La spazzata, con il criterio e l'esito
+
+```
+grep -rn -i "finché|oggi c'è|non esiste ancora|arriva con|resta da fare|TODO" \
+  src --include="*.ts" --include="*.tsx" --include="*.jsx"
+```
+
+**74 riscontri, e 37 sono rumore dello strumento**: `-i` fa agganciare `TODO`
+dentro la parola **«metodo»**, che in questo repository è ovunque. Vanno saltati
+per primi, o la spazzata sembra tre volte più grande di quello che è — ed è la
+stessa famiglia delle trappole di misura che questo file registra da M1.
+
+**37 riscontri veri, esaminati uno per uno sul codice.** Uno era falso ed è
+stato corretto; gli altri 36 tengono, e il criterio è che la frase dica una cosa
+**dimostrabile oggi**:
+
+- **falso, corretto** — `lib/data/types.ts:1061`, il guardrail «che arriva»;
+- **vere e ancora aperte** — le tre testate di `de.ts`, `fr.ts` ed `en.ts` sulla
+  revisione madrelingua: è una decisione in sospeso di questo file, non una
+  frase invecchiata;
+- **vere e a schermo** — `it.ts:312` (`doneHint`, che dal 20.08 descrive un
+  tocco davvero reversibile), `it.ts:1676` (la ricerca completa è paginazione,
+  §8.12), `it.ts:1797` (`isBookable`);
+- **vere e storiche**, cioè frasi che raccontano com'era e lo dicono —
+  `AdminLayout.tsx:28`, `query-client.ts:39` e `:63`, `platform-metrics.ts:10`,
+  `i18n/index.ts:17` e `:41`, `queries.ts:420`, `provider.ts:504`,
+  `DemoRequest.tsx:35`, `fault-injection.ts:43`;
+- **vere e di comportamento**, cioè condizioni che il codice accanto realizza —
+  `RapidCheckCard.tsx:174`, `SortableTable.tsx:14`, `it.ts:785`,
+  `queries.ts:115`, `provider.ts:268` e `:487`, `types.ts:576`, `:580`, `:705`,
+  `:766`, `:886`, `mock/provider.ts:160`, `mock/professional-portal.ts:403`,
+  `mock/platform.ts:703`, `ProSessioni.tsx:222`, `:246`, `:399`, `:403`,
+  `ProPagamenti.tsx:33`, `HRDipendenti.tsx:54`, `HRDashboard.tsx:340`,
+  `Landing.tsx:196`, `Checkup.tsx:119`, `AdminSessioni.tsx:32`,
+  `AdminProvider.tsx:23`.
+
+**Il trentasettesimo è di questa passata**: il commento nuovo di `Profilo.tsx`,
+che dice *«finché `getEntitlement` non risponde `null`»* — vero, ed è il §3 del
+contratto.
+
+##### La riga coach del profilo seguiva una regola sola su due schermate
+
+La home rende il contatore coach **solo se il piano ha il coach**, con la
+ragione scritta accanto: `coachSessionsPerYear` assente vuol dire che il
+contratto commerciale non prevede il servizio (§9), non che il tetto sia zero.
+**Il profilo la rendeva sempre**, cioè due schermate della stessa area con due
+regole.
+
+**La lettura non si è mossa**: `useEntitlement("coach")` è un hook e si chiama
+su qualunque piano. A cambiare è la resa, e resta mestiere della schermata
+finché `getEntitlement` non può rispondere `null`
+(`docs/CONTRATTO-DATI.md` §3).
+
+##### Verificato
+
+- **A schermo, sulla build demo, viewport 1280×900**, con la tecnica del
+  10.08.2026 — dataset rotto ad arte e **ripristinato subito**, con l'albero
+  ricontrollato pulito dopo: portando Demo SA sull'Essenziale il profilo
+  **prima** diceva *«Sessioni coach 1 su 0»*, **dopo** la riga sparisce e lo
+  psicologo legge *«3 su 6»*. Provato nei due versi con `git stash` sulla sola
+  `Profilo.tsx`;
+- **su Demo SA, che è Plus, non cambia niente**: *«3 su 10»* e *«1 su 4»*, su
+  scheda nuova e con la **console muta**;
+- **`grep` di `02.09.2026` su `CLAUDE.md`, `docs/` e `src/`: zero**;
+- **la struttura delle intestazioni di questo file confrontata con `cc389ff`**:
+  identica, tranne le due voci nuove — ed è il controllo che ha trovato il
+  difetto qui sotto;
+- `build`, `lint` e `typecheck` a zero; guardrail **102 + 13**, chiavi **791**
+  sull'albero, `EXPECTED_KEYS` **791**;
+- **cosa non è stato verificato a schermo**: niente delle sezioni A–E, perché
+  sono date, commenti e documenti — a schermo non cambia una riga, e i due
+  comandi che lo dimostrano sono `lint` e `typecheck`, che non potevano
+  muoversi e infatti non si sono mossi. Le quattro lingue non sono state
+  ripercorse: **nessuna stringa dei dizionari è stata toccata**, e
+  `EXPECTED_KEYS` fermo a 791 è la prova.
+
+##### Trovato e non toccato
+
+- **L'intestazione di «Punto di partenza» era stata cancellata**, ed è un
+  difetto di `0ebafed`, cioè della passata precedente e mia: il verbale nuovo
+  era stato inserito sopra quella sezione senza rimetterne il titolo, quindi il
+  suo contenuto si leggeva come la coda del verbale. **Rimessa in un commit
+  suo**; a trovarla non è stata una rilettura ma il confronto dell'albero delle
+  intestazioni contro `cc389ff`, che è il controllo da rifare dopo ogni
+  inserzione in mezzo a un file lungo;
+- **L'approvazione di un professionista non è in nessun gruppo del §8** del
+  contratto, e per questo il rimando del verbale di M3 è al perimetro e non a un
+  gruppo. Controllati tutti e dodici: §8.3 ha l'onboarding dell'azienda, §8.6 il
+  catalogo delle strutture, e il vetting non sta né lì né altrove. **Non è stato
+  aggiunto un gruppo**: dove va collocato è una decisione dei founder, perché il
+  §8 dichiara che l'ordine dei gruppi è quello in cui vanno affrontati;
+- **`fault-injection.ts:43` dice «`?role=` è la terza, e arriva con il blocco
+  d)»**, e il blocco d) è chiuso dal 12.08.2026. Non è stata toccata perché non
+  è una previsione: dice **da dove viene** la manopola, ed è vero. La riga è qui
+  perché è il riscontro della spazzata su cui si esita più a lungo.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
