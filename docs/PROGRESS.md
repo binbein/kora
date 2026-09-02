@@ -7919,6 +7919,8 @@ precedente, e questo verbale.
   una passata sua, e va decisa: o si recupera l'arretrato, o la sezione
   dichiara di essersi fermata e rimanda ai verbali.
 
+### Punto di partenza — cosa c'è e cosa manca
+
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
 professionista, admin; **oggi sono 26**: `/roi` è stata approvata il 07.08.2026
 e costruita in M3 — `CLAUDE.md` §10), design system e navigazione, 47 componenti
