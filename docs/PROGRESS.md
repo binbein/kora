@@ -7972,6 +7972,156 @@ Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà 
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
 
+> **L'arretrato dal 17.08 al 01.09 è stato recuperato il 01.09.2026**, e la
+> sezione era ferma al 14.08: per due settimane la promessa qui sopra — *«senza
+> dover leggere `CLAUDE.md` per intero»* — non era più vera, e la passata che se
+> ne è accorta l'ha detto invece di aggiungere solo le ultime due. Le voci sono
+> state raccolte cercando le attribuzioni datate in `CLAUDE.md` e in
+> `docs/PITCH.md`; il criterio e cosa è rimasto fuori stanno nel verbale di
+> quella passata.
+
+- **01.09.2026 — La griglia dice cosa sono le sue celle, e le fasce hanno un
+  nome** (`CLAUDE.md` §10.D.6). La fascia libera e la cella vuota erano
+  disegnate uguali, quindi la griglia prometteva venti bersagli e ne aveva uno.
+  A portare il significato è **il testo** e non la tinta — i cinque fondi stanno
+  dentro ΔE 6.6 — e **ciò che non offre niente non si disegna**. Il nome della
+  riga che dice da dove vengono le fasce è dei founder: **«la tua
+  disponibilità»**, e sta nella legenda perché la griglia contiene anche le
+  sedute.
+
+- **01.09.2026 — Una fascia dichiarata si chiude e si riapre** (`CLAUDE.md`
+  §10.D.6). Fino ad allora l'unico modo che la professionista aveva di
+  liberarsi un'ora era che ci fosse **una seduta da annullare**: un impegno
+  personale su un'ora libera non aveva nessuna rappresentazione. È la risposta
+  di chi cura alla policy che il `CONTRATTO-DATI.md` §8.5 dichiara non decisa.
+  **Dichiarare fasce nuove resta fuori**, ed è scope: la pubblicazione della
+  disponibilità è lavoro dell'MVP.
+
+- **01.09.2026 — L'annullamento porta due testi, non un interruttore**
+  (`CLAUDE.md` §10.D.3, §3). La professionista può far arrivare al paziente una
+  riga sulla disdetta mentre la nota clinica resta sua. La strada scartata era
+  una spunta *"rendi visibile al paziente"* sopra il testo che esiste già, e non
+  è stata scartata per gusto: **una spunta lasciata attiva per distrazione manda
+  al paziente una valutazione clinica**, e quel danno non ha un ritiro. Con due
+  campi il testo che passa è quello scritto per passare. Porta con sé il terzo
+  componente uscito dal magazzino di `ui/`, `checkbox.tsx`.
+
+- **20.08.2026 — Il Business Plan non si rinomina, e la storia di git non si
+  tocca** (`CLAUDE.md` §3). Il file si chiama `KORA_BusinessPlan_v6.pdf` e
+  dentro è la **versione 5.0 di giugno 2026**: lo dicono frontespizio, metadati
+  e piè di pagina. Le pagine citate in §9 sono quelle di questo PDF, quindi i
+  rimandi sono giusti e a mentire è solo il nome del file — un rename costerebbe
+  più di quanto chiarisca. Nella stessa decisione è stato misurato il costo
+  della clausola di scadenza dei PDF: **un commit solo**, `2b81f54`.
+
+- **19.08.2026 — Le rotte passano in inglese, i nomi dei file no** (`CLAUDE.md`
+  §10, §3). Quindici indirizzi su ventisei, con tre righe che sono decisioni e
+  non traduzioni — `/plans` allinea l'indirizzo all'entità del dominio,
+  `/employee/doctor` accorcia un termine che il prodotto scrive per intero,
+  `/admin/providers` pluralizza. **I file restano come sono**: le rotte sono la
+  superficie del prodotto, i nomi dei file sono interni, e rinominarli avrebbe
+  raddoppiato il diff di una passata il cui unico valore è essere verificabile.
+
+- **19.08.2026 — Il 73 del profilo salute medio entra nel §8** (`CLAUDE.md` §8).
+  Era in `mock/platform.ts` e non fra le cifre ammesse, dichiarato aperto dal
+  16.08: finché restava fuori era un numero del dataset che il §2.4 non copre.
+  Entra **come valore dichiarato e non derivato**, come le sedute di carriera
+  del roster — dietro non c'è una seconda sorgente, e chi legge il §8 non deve
+  poterlo prendere per derivato.
+
+- **18.08.2026 — Il calendario del professionista salta a una data**
+  (`CLAUDE.md` §10.D.5). Approvato dopo un mock, e la ragione è una misura: le
+  frecce da sole non bastano su un'agenda di sette mesi e mezzo, dove rivedere
+  un percorso concluso costa ventotto clic. Il salto si apre **dall'etichetta
+  della settimana**, così la riga dei comandi non cresce; niente navigazione per
+  anno, e **le KPI non lo seguono** — rispondono a *come sto adesso*.
+
+- **18.08.2026 — L'attesa ha un token suo, `--waiting`** (`CLAUDE.md` §6.1).
+  Tutto ciò che aspetta si dice allo stesso modo, e non con una trasparenza di
+  `warning`: due significati che si distinguono per l'opacità dello stesso
+  colore si sfaldano al primo cambio di fondo, e qui si erano già sfaldati —
+  **l'attesa stava a `/20` e l'allarme a `/15`**, cioè l'attesa era più forte
+  dell'allarme. Un token in più non è un token cambiato: la regola su `warning`
+  e `destructive` non si riscrive, l'attesa **esce** da `warning` invece di
+  diluirlo.
+
+- **17.08.2026 — Una cosa, una parola, e la parola è quella del Business Plan**
+  (`CLAUDE.md` §7). Il prodotto diceva «sedute» nel portale professionista e nel
+  back-office e «sessioni» nei piani, nel portale dipendente e nelle KPI
+  dell'HR. Non era una distinzione, era abitudine. Vince **«sessioni»** perché è
+  la parola che l'investitore ha già letto, e sceglierla non chiede a nessuno di
+  arbitrare fra due gusti — e un coach non tiene una seduta.
+
+- **17.08.2026 — L'anteprima dell'hero è di tre pannelli, uno per lato del
+  prodotto** (`CLAUDE.md` §10.A.1). Un riquadro solo mescolava il punteggio di
+  Laura, il suo appuntamento e una fetta di dashboard HR. I tre pannelli sono
+  **il sommario del giro che il pitch fa subito dopo**, quindi l'ordine non è
+  decorativo. **Il primo clic ferma la rotazione per sempre**: un carosello che
+  riprende da solo toglie la parola a chi la sta usando.
+
+- **17.08.2026 — La barra pubblica ha la voce "Admin"** (`CLAUDE.md` §10.E).
+  Non era una difesa: un indirizzo non linkato non protegge da chi ha il link, e
+  digitarlo **ricarica**, cioè azzera il provider — quindi la richiesta demo
+  inviata durante il giro spariva proprio mentre la si andava a mostrare. A
+  proteggere `/admin` resta il banner dei dati dimostrativi, che adesso è
+  l'unica difesa a schermo. Da qui la presentazione si percorre tutta in avanti.
+
+- **17.08.2026 — La home del dipendente mostra due fatti, non quattro
+  scorciatoie** (`CLAUDE.md` §10.B.2). Le quattro tessere erano **quattro delle
+  sei voci del menu**, cioè la stessa strada disegnata due volte. Al loro posto
+  la data del prossimo check-up e i consulti dell'anno, che si vedevano solo nel
+  profilo, e **non sono link** — o tornerebbe la duplicazione.
+
+- **17.08.2026 — Il medico virtuale arriva a una conclusione** (`CLAUDE.md`
+  §10.B.4). Un arco di quattro scambi, poi la casella si spegne e dice perché:
+  prima ripeteva la stessa frase all'infinito, che è la prima cosa che si vede
+  provandolo due volte. **Il limite è normativo prima che editoriale** — il
+  medico consiglia e orienta, non diagnostica e non prescrive — ed è un vincolo
+  su ogni frase futura di quella chat.
+
+- **17.08.2026 — Il profilo si raggiunge dal riquadro dell'identità, e il
+  riquadro ha una regola** (`CLAUDE.md` §6.5, §10.B.3, §10.D.4). Nei portali
+  dipendente e professionista «Profilo» esce dal menu ed entra nel riquadro, che
+  è dove chi usa un'app cerca le proprie cose; **la rotta resta**, cambia come
+  ci si arriva. La regola del riquadro è stata scritta perché era già stata
+  decisa due volte e alla terza ne sarebbe uscita una forma nuova: icona a
+  sinistra, link **solo dove esiste una schermata di profilo** — mai l'HR — e
+  **l'icona dice cosa c'è dentro il riquadro, non dove porta**.
+
+- **17.08.2026 — La cornice del trimestre nella dashboard HR** (`CLAUDE.md`
+  §10.C.1). Il selettore stava nell'intestazione e sembrava comandare la pagina
+  intera: lo seguono **otto elementi**, e gli altri parlano dell'ultimo mese o
+  dei dodici. La cornice mette insieme gli otto con il selettore in cima e
+  lascia gli altri fuori; **i due banner restano sopra**, perché sono avvisi e
+  la loro posizione è informazione.
+
+- **17.08.2026 — I consulti di medico virtuale tornano nel report HR**
+  (`CLAUDE.md` §10.C.2). Si sommano sui **soli mesi del trimestre** e non si
+  cumulano, e la ragione si vede subito: il cumulato darebbe 118 su tutti e
+  quattro i trimestri, cioè un numero che non si muove accanto a un selettore
+  che si muove. Quel servizio non ha un monte annuo da consumare.
+
+- **17.08.2026 — Il professionista vede il nome dei pazienti, l'amministratore
+  no** (`CLAUDE.md` §10.D.2, §8). Mostrare le iniziali a chi ha la persona in
+  seduta non protegge nessuno: quel nome glielo dice la paziente. **La garanzia
+  del contratto non cade, cambia verso** — vale verso l'azienda e verso
+  l'amministratore di piattaforma, e a garantirlo è la forma del dato, con una
+  terza vista dello stesso record per il back-office.
+
+- **17.08.2026 — Una sessione in programma si può annullare** (`CLAUDE.md`
+  §10.D.3). Dal calendario e dalla lista sessioni, **solo `scheduled` e solo nel
+  futuro**. È la prima scrittura del dominio che non inserisce, e chiude metà
+  del vuoto che il `CONTRATTO-DATI.md` §8.5 dichiara: l'altra metà — preavviso,
+  chi paga una disdetta tardiva, riprogrammazione, disdetta dal lato del
+  dipendente — resta lì.
+
+- **17.08.2026 — La conferma della richiesta demo non nomina l'azienda**
+  (`docs/PITCH.md`). Il testo è generico. **Lo stato resta il record e non un
+  booleano**, perché la garanzia che la conferma non possa comparire senza una
+  scrittura sta lì e non nella frase; la prova a schermo che il record è tornato
+  dal provider si è spostata dove la demo la mostra già, cioè la riga in
+  `/admin`.
+
 - **14.08.2026 — La risposta sul margine si riscrive sul divario fra sessioni
   incluse ed erogate** (`docs/PITCH.md`). Diceva che il margine viene dal
   co-payment e teneva nella stessa frase i CHF 28 incassati e i CHF 70–80 pagati
