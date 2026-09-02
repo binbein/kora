@@ -19,11 +19,15 @@ import type { Locale } from "@/lib/locale";
  * è il nome del gruppo, che è l'unica cosa qui dentro che si traduce.
  *
  * SI MOSTRANO LE SOLE LINGUE DISPONIBILI, cioè quelle che `DICTIONARIES`
- * registra davvero. Finché `fr.ts` ed `en.ts` non esistono, `FR` ed `EN` non
- * compaiono: una sigla spenta che non fa niente è un'affordance morta — il
- * vicolo cieco del §10 in miniatura — e davanti a un investitore invita la
- * domanda "perché è grigia?" nel mezzo di trenta minuti contati. Quando i due
- * dizionari arriveranno, compariranno da sé: questo componente non cambia.
+ * registra davvero — **oggi quattro** (§2.7). È la regola, e non un conto: una
+ * sigla spenta che non fa niente è un'affordance morta — il vicolo cieco del
+ * §10 in miniatura — e davanti a un investitore invita la domanda "perché è
+ * grigia?" nel mezzo di trenta minuti contati.
+ *
+ * **La regola si è già vista lavorare**: il componente è passato da due sigle a
+ * quattro quando `fr.ts` ed `en.ts` sono stati registrati, il 14.08.2026,
+ * **senza che nessuno lo toccasse**. Chi registra la quinta lingua non viene
+ * qui.
  */
 
 /** `it-CH` → `IT`. La sigla è il codice lingua, in maiuscolo. */

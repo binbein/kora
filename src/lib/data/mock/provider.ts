@@ -221,18 +221,6 @@ export class MockDataProvider implements DataProvider {
     );
   }
 
-  /**
-   * L'annullamento avvenuto durante la demo, applicato in proiezione.
-   *
-   * Sta in una funzione perché la usano in due — la lettura e la scrittura, che
-   * deve restituire la seduta com'è appena diventata — e due punti che
-   * costruiscono la stessa forma sono due punti che possono divergere (§5.5).
-   *
-   * **È l'ultima parola sullo stato**: una seduta annullata non è più "in
-   * programma" per nessun lettore — il calendario, gli appuntamenti del
-   * dipendente e lo slot che torna libero leggono tutti `status`, ed è la
-   * ragione per cui non serve toccarne nessuno.
-   */
   /*
    * La chiave di una fascia dentro `closedSlots`.
    *
@@ -251,6 +239,18 @@ export class MockDataProvider implements DataProvider {
     ).sort((a, b) => a.start.getTime() - b.start.getTime());
   }
 
+  /**
+   * L'annullamento avvenuto durante la demo, applicato in proiezione.
+   *
+   * Sta in una funzione perché la usano in due — la lettura e la scrittura, che
+   * deve restituire la seduta com'è appena diventata — e due punti che
+   * costruiscono la stessa forma sono due punti che possono divergere (§5.5).
+   *
+   * **È l'ultima parola sullo stato**: una seduta annullata non è più "in
+   * programma" per nessun lettore — il calendario, gli appuntamenti del
+   * dipendente e lo slot che torna libero leggono tutti `status`, ed è la
+   * ragione per cui non serve toccarne nessuno.
+   */
   private applyCancellation(session: ProfessionalSession): ProfessionalSession {
     const cancelled = this.cancellations.get(session.id);
     if (cancelled === undefined) return session;

@@ -1055,11 +1055,11 @@ export type AiHealthPlan = {
  * divergere, che è il difetto della schermata ereditata, dove la ciambella
  * dice 180 sessioni di psicologo contro le 142 del §8.
  *
- * Invariante per il dataset, che è lavoro di M3 con la dashboard: le sessioni
- * `psychologist`, sommate sui dodici mesi, sono le 142 del §8 — lo stesso
- * numero della KPI dello snapshot, non un secondo conteggio che gli somiglia.
- * Il guardrail arriva con il dataset. I conteggi degli altri tre servizi non
- * sono nel §8: si fissano lì quando M3 li costruisce (§2.4).
+ * Invariante del dataset: le sessioni `psychologist`, sommate sui dodici mesi,
+ * sono le 142 del §8 — lo stesso numero della KPI dello snapshot, non un
+ * secondo conteggio che gli somiglia. **Il guardrail c'è**, in
+ * `mock/service-usage.ts`, e i totali sorvegliati sono quattro: quelli degli
+ * altri tre servizi sono stati approvati il 07.08.2026 e stanno nel §8 (§2.4).
  */
 export type ServiceUsageMonth = {
   /** Primo giorno del mese */

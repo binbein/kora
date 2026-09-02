@@ -11,9 +11,12 @@
  * professionali; app dipendente in seconda persona e calda. Ovunque sentence
  * case, niente punti esclamativi, niente emoji.
  *
- * Le chiavi entrano una schermata alla volta, mentre la si migra: è l'unico
- * modo in cui il §2.7 non costa dieci volte tanto. Oggi c'è l'area
- * professionista, che è quella migrata da M2.
+ * Le chiavi sono entrate una schermata alla volta, mentre la si migrava: è
+ * l'unico modo in cui il §2.7 non costa dieci volte tanto. **Da M3 ci sono
+ * tutte e cinque le aree**, e da M5.e i dizionari sono quattro — questo è
+ * quello di riferimento, e `Translated<Dictionary>` tiene gli altri tre sulle
+ * sue chiavi. Quante siano lo dice `EXPECTED_KEYS` in `placeholders.ts`, che
+ * lo verifica a ogni avvio; il criterio con cui si contano sta nel §2.7.
  */
 export const it = {
   common: {
@@ -1816,8 +1819,10 @@ export const it = {
       statusCompleted: "Erogata",
       statusCancelled: "Annullata",
       /* Le iniziali sono tutto ciò che esce del paziente, e a impedirlo è il
-         tipo: `ProfessionalSession` non ha un campo su cui un nome possa
-         arrivare (`docs/CONTRATTO-DATI.md` §3). */
+         tipo: `PlatformSession` — la proiezione che il back-office legge — non
+         ha un campo su cui un nome possa arrivare (`docs/CONTRATTO-DATI.md`
+         §3). Non è `ProfessionalSession`: dal 17.08.2026 quella porta il nome,
+         perché chi cura lo conosce già. */
       privacyNote: "Dei pazienti escono le sole iniziali, mai il nome.",
     },
 
