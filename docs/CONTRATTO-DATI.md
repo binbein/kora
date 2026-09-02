@@ -637,7 +637,7 @@ fuori.~~ → **a contarle basta la tabella qui sopra**, e la prosa dice invece
 cosa le distingue fra loro. *(Ha dichiarato «cinque» e poi «sei», e la seconda
 cifra è invecchiata con `setSlotStatus`: è il numero in prosa accanto alla
 lista che lo smentisce, la famiglia che il `CLAUDE.md` §5.6 e §2.7 hanno
-sciolto scrivendo il criterio invece del valore. Tolta il 02.09.2026 —
+sciolto scrivendo il criterio invece del valore. Tolta il 01.09.2026 —
 aggiornarla oggi vuol dire riaggiornarla alla prossima scrittura.)*
 
 **`enterAs` è di natura diversa da tutte le altre**: non scrive un dato del

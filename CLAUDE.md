@@ -2547,7 +2547,7 @@ demo scollegate.
    l'identità di una fascia è la coppia professionista + istante d'inizio**, ed
    è così che il metodo la prende.
 
-   **La griglia dice cosa sono le sue celle** (02.09.2026), e non è un dettaglio
+   **La griglia dice cosa sono le sue celle** (01.09.2026), e non è un dettaglio
    di stile: la fascia libera e la cella vuota erano disegnate uguali, cioè la
    schermata prometteva venti bersagli e ne aveva uno. Il segno primario è **il
    testo** — la cella porta la sua etichetta — perché i cinque fondi di questa
@@ -2568,7 +2568,7 @@ elencati sono lo stesso numero che dichiara la KPI; le date e i giorni della
 settimana coincidono con il calendario vero. *(La riga aggiungeva «oggi
 sbagliano in tutti e quattro i punti in cui compaiono», ed era vera fino a M2:
 il §11 dichiara quelle quattro coppie sparite con la lista che le conteneva, e
-«da lì non ne resta nessuna». Corretta il 02.09.2026 — un criterio con dentro
+«da lì non ne resta nessuna». Corretta il 01.09.2026 — un criterio con dentro
 un «oggi» invecchia il giorno in cui il criterio è soddisfatto.)*
 
 **Eccezione dichiarata.** «Una prenotazione fatta in §10.B compare nel calendario»

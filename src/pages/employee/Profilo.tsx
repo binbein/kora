@@ -186,10 +186,27 @@ export default function Profilo() {
             label={t.employee.profile.usage.psychologist}
             value={entitlementValue(psychologist)}
           />
-          <Row
-            label={t.employee.profile.usage.coach}
-            value={entitlementValue(coach)}
-          />
+          {/*
+            * LA RIGA COACH ESISTE SOLO SE IL PIANO HA IL COACH, ed è la stessa
+            * regola della home — `coachSessionsPerYear` assente significa che
+            * il contratto commerciale non prevede il servizio (§9), non che il
+            * tetto sia zero.
+            *
+            * Senza, su un Essenziale questa riga direbbe "1 su 0": il diritto
+            * lo costruisce `?? 0` perché il tipo vuole un numero, e a saltarla
+            * deve essere la schermata finché `getEntitlement` non risponde
+            * `null` (`docs/CONTRATTO-DATI.md` §3). La home lo faceva già e il
+            * profilo no, cioè due schermate della stessa area con due regole.
+            *
+            * **La lettura resta dov'è**: `useEntitlement("coach")` è un hook e
+            * si chiama sempre, a piano o senza. A cambiare è la resa.
+            */}
+          {company.plan.coachSessionsPerYear !== undefined && (
+            <Row
+              label={t.employee.profile.usage.coach}
+              value={entitlementValue(coach)}
+            />
+          )}
           <Row
             label={t.employee.profile.usage.checkup}
             value={

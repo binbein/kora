@@ -99,7 +99,7 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
      * compensi: sono tutte letture di quella professionista lì.
      *
      * Senza questa riga il guardrail della cache fredda parlava **a ogni
-     * ingresso nel calendario** (02.09.2026). La chiave è nata con la chiusura
+     * ingresso nel calendario** (01.09.2026). La chiave è nata con la chiusura
      * delle fasce del 01.09.2026 e nessuno l'aveva aggiunta all'elenco: è il
      * punto debole che la testata di questa funzione dichiara — una chiave
      * dimenticata non rompe niente — e in build demo era un `console.error`

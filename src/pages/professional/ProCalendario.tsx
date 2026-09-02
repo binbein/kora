@@ -469,7 +469,7 @@ export default function ProCalendario() {
                     /*
                      * LE CINQUE CELLE SI DEVONO DISTINGUERE SENZA IL MOUSE E
                      * SENZA LEGGERE I NOMI, ed è la prova a cui questa tabella
-                     * risponde riga per riga (02.09.2026).
+                     * risponde riga per riga (01.09.2026).
                      *
                      * | cella | fondo | bordo | testo |
                      * |---|---|---|---|
@@ -498,7 +498,7 @@ export default function ProCalendario() {
                      * 1.4.11 chiede a un segno non testuale.
                      *
                      * LA LIBERA SEGUE LA STESSA REGOLA E NON LA STESSA STRADA
-                     * (02.09.2026). Il segno primario è **il testo** — la cella
+                     * (01.09.2026). Il segno primario è **il testo** — la cella
                      * porta la sua etichetta, come la chiusa porta la sua —
                      * perché il colore non è mai l'unica cosa che porta un
                      * significato (§6.1). Il fondo aiuta e non può essere una
@@ -662,7 +662,7 @@ export default function ProCalendario() {
       <div className="space-y-2 text-xs text-muted-foreground">
         {/*
           * DA DOVE VENGONO LE FASCE, E LA FRASE STA QUI E NON SOPRA LA GRIGLIA
-          * (founder, 02.09.2026).
+          * (founder, 01.09.2026).
           *
           * La griglia contiene **anche le sedute**, quindi un titolo "La tua
           * disponibilità" sopra di lei mentirebbe sulle celle prenotate e su
@@ -681,7 +681,7 @@ export default function ProCalendario() {
         <p>{t.professional.calendar.availabilityNote}</p>
         {/*
           * OGNI QUADRATINO PORTA IL DISEGNO VERO DELLA SUA CELLA, ed è la metà
-          * del difetto che si vedeva peggio (02.09.2026): quello di "Libera"
+          * del difetto che si vedeva peggio (01.09.2026): quello di "Libera"
           * era `bg-card border-border`, cioè il disegno della cella **vuota**,
           * quindi la legenda insegnava che tutti i riquadri bianchi erano
           * fasce libere — ce n'era una su venti.
