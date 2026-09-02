@@ -884,8 +884,15 @@ consumatore e `submitDemoRequest` ora invalida: la riga "nessuna, oggi" del
 **Aperto e dichiarato:**
 
 - **Il pulsante "Approva" del dialogo professionisti è stato rimosso**, con la
-  decisione dei founder qui sotto. La scrittura vera dell'admin arriva con le
-  guardie di ruolo di M5.
+  decisione dei founder qui sotto. ~~La scrittura vera dell'admin arriva con le
+  guardie di ruolo di M5.~~ → **non è arrivata con loro** (corretto il
+  01.09.2026): le guardie sono state scritte il 12.08.2026 e non hanno portato
+  nessuna scrittura del back-office — `provider.ts` non ne ha una, e la tabella
+  delle mutation del `docs/CONTRATTO-DATI.md` §4 non ne elenca nessuna. È
+  **lavoro dell'MVP** (`docs/CONTRATTO-DATI.md` §8), e il rimando è al perimetro
+  e non a un gruppo perché **nessuno dei dodici la nomina**: §8.3 ha
+  l'onboarding dell'azienda e §8.6 il catalogo delle strutture, l'approvazione
+  di un professionista non sta né lì né altrove.
 - **Anche i due pulsanti "Aggiungi" sono spariti con questa passata**, e la
   ragione è la stessa dell'"Approva": `AdminAziende` ne aveva uno e
   `AdminProvider` uno — *"Aggiungi"* e *"Aggiungi provider"* — e nessuno dei due
@@ -7253,8 +7260,10 @@ predetta col canvas per il tedesco — **146** — è uscita identica sul render
 comando in testa a questo file. **Nessuna schermata nuova**: le rotte restano
 **26** e le schermate **27**, e nessun numero del §8 e del §9 si muove.
 `EXPECTED_KEYS` passa da **780 a 785** — cinque chiavi nuove nei quattro
-dizionari — e i guardrail da **111 a 112**. `build`, `lint` e `typecheck` a
-zero.
+dizionari — e i guardrail da ~~**111 a 112**~~ → **111 a 113** (corretto il
+01.09.2026: duecento righe più in basso questo stesso verbale scrive *"passano
+da 111 a 113 e non a 112, perché le chiamate sono due"*, ed è la cifra che il
+`CLAUDE.md` §5.6 porta). `build`, `lint` e `typecheck` a zero.
 
 **Chiude una decisione che due documenti dichiaravano non presa.** Il commento
 in testa ad `Appointment` diceva *«chi la legge è una decisione di prodotto che
