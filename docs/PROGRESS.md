@@ -19,6 +19,13 @@ lì.
   verificato a schermo** — non l'elenco dei file toccati, che sta in git.
 - Se una milestone chiude con difetti noti e accettati, si scrivono qui: è il posto
   in cui chi riprende scopre cosa non deve rifare da capo.
+- **La data di un verbale e di una correzione è quella di `date` sulla macchina
+  al momento del commit**, non quella che la sessione ricorda — verificata con
+  `git log -1 --format='%ci'` prima di scriverla. Sono due comandi, e servono
+  perché l'errore è già arrivato **in tutti e due i versi in due giorni**: tre
+  passate datate un giorno avanti, e quella che le correggeva datata un giorno
+  indietro. Una sessione lunga ricorda il giorno in cui è cominciata, o quello
+  di cui ha appena scritto per un'ora, e nessuno dei due è necessariamente oggi.
 
 ### Come una passata conta i propri commit
 
@@ -886,7 +893,7 @@ consumatore e `submitDemoRequest` ora invalida: la riga "nessuna, oggi" del
 - **Il pulsante "Approva" del dialogo professionisti è stato rimosso**, con la
   decisione dei founder qui sotto. ~~La scrittura vera dell'admin arriva con le
   guardie di ruolo di M5.~~ → **non è arrivata con loro** (corretto il
-  01.09.2026): le guardie sono state scritte il 12.08.2026 e non hanno portato
+  02.09.2026): le guardie sono state scritte il 12.08.2026 e non hanno portato
   nessuna scrittura del back-office — `provider.ts` non ne ha una, e la tabella
   delle mutation del `docs/CONTRATTO-DATI.md` §4 non ne elenca nessuna. È
   **lavoro dell'MVP** (`docs/CONTRATTO-DATI.md` §8), e il rimando è al perimetro
@@ -7261,7 +7268,7 @@ comando in testa a questo file. **Nessuna schermata nuova**: le rotte restano
 **26** e le schermate **27**, e nessun numero del §8 e del §9 si muove.
 `EXPECTED_KEYS` passa da **780 a 785** — cinque chiavi nuove nei quattro
 dizionari — e i guardrail da ~~**111 a 112**~~ → **111 a 113** (corretto il
-01.09.2026: duecento righe più in basso questo stesso verbale scrive *"passano
+02.09.2026: duecento righe più in basso questo stesso verbale scrive *"passano
 da 111 a 113 e non a 112, perché le chiamate sono due"*, ed è la cifra che il
 `CLAUDE.md` §5.6 porta). `build`, `lint` e `typecheck` a zero.
 
@@ -7919,7 +7926,7 @@ precedente, e questo verbale.
   una passata sua, e va decisa: o si recupera l'arretrato, o la sezione
   dichiara di essersi fermata e rimanda ai verbali.
 
-#### L'allineamento fra verbali e commenti (01.09.2026)
+#### L'allineamento fra verbali e commenti (02.09.2026)
 
 **Questo verbale non conta i propri commit**, e il conto lo dà git con il
 comando in testa a questo file. **La ripartizione ha un criterio da dichiarare**,
@@ -7952,6 +7959,22 @@ regola per cui i verbali non si riscrivono: un resoconto datato resta quello che
 è, e qui a essere sbagliata era **la data del resoconto**. Le intestazioni dei
 due verbali sono cambiate con il resto, e questa riga è il posto in cui chi
 legge trova scritto perché.
+
+**E questa passata è caduta nello stesso errore, nel verso opposto** — l'ha
+trovata la review, non chi scriveva. Correggeva tre passate datate un giorno
+avanti e **si è datata un giorno indietro**: il verbale, la nota in «Decisioni
+chiuse» e le due barrature dicevano 01.09.2026, mentre i suoi otto commit sono
+del **2026-09-02**, fra le 16:59 e le 17:11. Quattro punti, corretti prima del
+merge.
+
+**La causa è la stessa in tutti e due i versi, ed è quella che vale**: la data
+è stata presa **dalla memoria della sessione** invece che dall'orologio. Una
+sessione lunga ricorda il giorno in cui è cominciata, o il giorno di cui ha
+appena parlato per venti minuti, e nessuno dei due è necessariamente oggi —
+questa passata ha passato l'ora precedente a scrivere «01.09» in prosa, ed è la
+data che le è rimasta in mano. Da qui la riga aggiunta in testa a questo file:
+**la data si legge da `date` e si controlla con `git log -1 --format='%ci'`
+prima di scriverla**, che sono due comandi e non una convenzione.
 
 ##### Due verbali si contraddicevano
 
@@ -8069,7 +8092,15 @@ finché `getEntitlement` non può rispondere `null`
   `Profilo.tsx`;
 - **su Demo SA, che è Plus, non cambia niente**: *«3 su 10»* e *«1 su 4»*, su
   scheda nuova e con la **console muta**;
-- **`grep` di `02.09.2026` su `CLAUDE.md`, `docs/` e `src/`: zero**;
+- **le date del 2 settembre che restano sono le sue**, ed è la misura rifatta
+  dopo la correzione della review — prima il conto era **zero secco**, ed è la
+  riga che la correzione ha reso falsa. Un `grep` di `02.09.2026` dà **zero** in
+  `CLAUDE.md`, in `src/`, in `docs/CONTRATTO-DATI.md` e in `docs/PITCH.md`, e
+  **sei** in questo file: **quattro sono le date di questa passata** — il
+  verbale, la nota in «Decisioni chiuse» e le due barrature — e **due non sono
+  date**, sono il motivo di ricerca citato nel testo, una volta nella frase che
+  dice cosa le tre passate avevano scritto e una in questa riga. È la trappola
+  del §5.6 su un'altra cifra: **i riscontri si leggono uno per uno**;
 - **la struttura delle intestazioni di questo file confrontata con `cc389ff`**:
   identica, tranne le due voci nuove — ed è il controllo che ha trovato il
   difetto qui sotto;
@@ -8157,7 +8188,7 @@ Decisioni dei founder, con la data in cui sono state prese. Alcune le eseguirà 
 milestone, ma la decisione è un fatto a sé e va trovata qui senza dover leggere
 `CLAUDE.md` per intero. La regola vive lì; qui restano la data e il motivo.
 
-> **L'arretrato dal 17.08 al 01.09 è stato recuperato il 01.09.2026**, e la
+> **L'arretrato dal 17.08 al 01.09 è stato recuperato il 02.09.2026**, e la
 > sezione era ferma al 14.08: per due settimane la promessa qui sopra — *«senza
 > dover leggere `CLAUDE.md` per intero»* — non era più vera, e la passata che se
 > ne è accorta l'ha detto invece di aggiungere solo le ultime due. Le voci sono
