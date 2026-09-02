@@ -7599,7 +7599,7 @@ diversa dal primo: un **`113` dentro `#11395A`**, l'esadecimale di `primary` nel
 conto adesso dice che le specie sono due e che **i riscontri si leggono uno per
 uno invece di sostituirli**.
 
-#### La griglia delle fasce (02.09.2026)
+#### La griglia delle fasce (01.09.2026)
 
 **Questo verbale non conta i propri commit**, e il conto lo dà git con il
 comando in testa a questo file. **È resa e testo, più una riga di layer dati
@@ -7771,7 +7771,7 @@ trappola del §11, sciolta imponendo il viewport.
   i due testi dell'annullamento e la chiusura delle fasce, tutti e due del
   01.09.2026 — e i founder hanno la decisione in sospeso su come registrarli
   insieme. Aggiungere qui la terza avrebbe deciso al posto loro;~~ →
-  **chiuse tutte e tre il 02.09.2026**, dalla passata documentale qui sotto:
+  **chiuse tutte e tre il 01.09.2026**, dalla passata documentale qui sotto:
   la voce 3 riscritta sui due testi, la voce 6 nuova sulla chiusura delle
   fasce, e dentro di lei la resa e la riga della disponibilità;
 - **`prenotata` e `passata` si separano solo per il colore del testo**, ΔE
@@ -7780,7 +7780,7 @@ trappola del §11, sciolta imponendo il viewport.
   approvata, e questa passata l'ha **misurata** invece di ereditarla senza
   numeri. Chi la rivedesse ha qui il punto di partenza.
 
-#### Lo scope delle fasce, e le mutation che non si contano (02.09.2026)
+#### Lo scope delle fasce, e le mutation che non si contano (01.09.2026)
 
 **Questo verbale non conta i propri commit**, e il conto lo dà git con il
 comando in testa a questo file. **Solo documenti**: `git diff --name-only`
