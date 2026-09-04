@@ -153,7 +153,7 @@ export const it = {
   healthSummary: {
     balanced: "In buon equilibrio",
     attention: "Da tenere d'occhio",
-    at_risk: "A rischio",
+    at_risk: "Da seguire",
   },
 
   sessionType: {
@@ -182,7 +182,7 @@ export const it = {
       psychologists: "Psicologi",
       doctor: "Medico",
       checkup: "Check-up",
-      aiPlan: "Piano AI",
+      aiPlan: "Benessere",
     },
 
     /** "Demo SA · Plus" */
@@ -230,7 +230,7 @@ export const it = {
         mental: "La salute mentale merita attenzione",
       },
       weakestAreaHint:
-        "È l'area da cui parte il tuo piano di prevenzione.",
+        "È l'area da cui parte il tuo piano di benessere.",
 
       appointmentsTitle: "I tuoi prossimi appuntamenti",
       appointmentsEmpty: "Non hai appuntamenti in programma.",
@@ -280,7 +280,7 @@ export const it = {
       doctorConsults: "{n} consulti quest'anno",
       checkupDone: "Fatto",
 
-      planTitle: "Dal tuo piano di prevenzione",
+      planTitle: "Dal tuo piano di benessere",
       planCta: "Vedi il piano",
     },
 
@@ -531,7 +531,7 @@ export const it = {
          */
         explanation: {
           laura:
-            "Il colesterolo è poco sopra il valore consigliato e il rischio da stress risulta moderato. Non è un'emergenza: segui il piano di prevenzione e ripeti il controllo al prossimo check-up.",
+            "Il colesterolo è poco sopra il valore consigliato e il rischio da stress risulta moderato. Non è un'emergenza: segui il piano di benessere e ripeti il controllo al prossimo check-up.",
         },
         disclaimer:
           "Referto dimostrativo con valori di esempio. Non è un documento clinico e non sostituisce il referto del centro che esegue il check-up.",
@@ -579,7 +579,7 @@ export const it = {
     },
 
     aiPlan: {
-      title: "Piano di prevenzione",
+      title: "Piano di benessere",
       subtitle: "Costruito sul tuo profilo di salute.",
       /** "Aggiornato a luglio 2026" */
       generated: "Aggiornato a {month}",
@@ -1419,10 +1419,10 @@ export const it = {
           executive:
             "Check-up executive completo: ECG, eco addome, oculista, sangue completo",
         },
-        aiPlanMonthly: "Piano di prevenzione AI aggiornato ogni mese",
-        /** "Piano di prevenzione AI aggiornato ogni 6 mesi" */
+        aiPlanMonthly: "Piano di benessere aggiornato ogni mese",
+        /** "Piano di benessere aggiornato ogni 6 mesi" */
         aiPlanEveryMonths:
-          "Piano di prevenzione AI aggiornato ogni {months} mesi",
+          "Piano di benessere aggiornato ogni {months} mesi",
         /*
          * I tre livelli della dashboard HR (§9, p.9 e p.10 del BP). Tre frasi
          * intere e non una con un aggettivo variabile: la base dice cosa
@@ -1485,7 +1485,7 @@ export const it = {
       heroTitleLead: "La salute aziendale,",
       heroTitleAccent: "finalmente integrata.",
       heroBody:
-        "Kora unisce psicologi online, medico virtuale, check-up fisici, prevenzione AI e dashboard HR anonima in un unico abbonamento per dipendente.",
+        "Kora unisce psicologi online, medico virtuale, check-up fisici, piano di benessere e dashboard HR anonima in un unico abbonamento per dipendente.",
       heroCtaRoi: "Calcola il ritorno",
       heroCtaDemo: "Prenota una demo",
       heroCompliance: "Hosting in Svizzera. Conforme GDPR e LPD.",
@@ -1545,7 +1545,7 @@ export const it = {
       value: {
         employee: {
           title: "Per il dipendente",
-          body: "Accesso semplice a salute mentale, medico virtuale e prevenzione. Tutto privato, tutto in un unico posto.",
+          body: "Accesso semplice a salute mentale, medico virtuale e benessere. Tutto privato, tutto in un unico posto.",
         },
         company: {
           title: "Per l'azienda",

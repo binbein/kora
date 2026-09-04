@@ -212,7 +212,7 @@ export const fr: Dictionary = {
   healthSummary: {
     balanced: "En bon équilibre",
     attention: "À surveiller",
-    at_risk: "À risque",
+    at_risk: "À accompagner",
   },
 
   sessionType: {
@@ -247,7 +247,7 @@ export const fr: Dictionary = {
       psychologists: "Psychologues",
       doctor: "Médecin",
       checkup: "Check-up",
-      aiPlan: "Plan IA",
+      aiPlan: "Bien-être",
     },
 
     identity: "{company} · {plan}",
@@ -283,7 +283,7 @@ export const fr: Dictionary = {
         nutrition: "L'alimentation mérite de l'attention",
         mental: "La santé mentale mérite de l'attention",
       },
-      weakestAreaHint: "C'est le point de départ de ton plan de prévention.",
+      weakestAreaHint: "C'est le point de départ de ton plan de bien-être.",
 
       appointmentsTitle: "Tes prochains rendez-vous",
       appointmentsEmpty: "Tu n'as aucun rendez-vous prévu.",
@@ -308,7 +308,7 @@ export const fr: Dictionary = {
       doctorConsults: "{n} consultations cette année",
       checkupDone: "Fait",
 
-      planTitle: "De ton plan de prévention",
+      planTitle: "De ton plan de bien-être",
       planCta: "Voir le plan",
     },
 
@@ -462,7 +462,7 @@ export const fr: Dictionary = {
         explanationTitle: "Ce que cela veut dire",
         explanation: {
           laura:
-            "Le cholestérol est légèrement au-dessus de la valeur conseillée et le risque lié au stress est modéré. Ce n'est pas une urgence : suis le plan de prévention et refais le contrôle au prochain check-up.",
+            "Le cholestérol est légèrement au-dessus de la valeur conseillée et le risque lié au stress est modéré. Ce n'est pas une urgence : suis le plan de bien-être et refais le contrôle au prochain check-up.",
         },
         disclaimer:
           "Rapport de démonstration avec des valeurs d'exemple. Ce n'est pas un document clinique et il ne remplace pas le rapport du centre qui effectue le check-up.",
@@ -501,7 +501,7 @@ export const fr: Dictionary = {
     },
 
     aiPlan: {
-      title: "Plan de prévention",
+      title: "Plan de bien-être",
       subtitle: "Construit sur ton profil de santé.",
       generated: "Mis à jour en {month}",
       nextUpdate: "La prochaine mise à jour est en {month}.",
@@ -1094,9 +1094,9 @@ export const fr: Dictionary = {
           executive:
             "Check-up executive complet : ECG, échographie abdominale, ophtalmologue, bilan sanguin complet",
         },
-        aiPlanMonthly: "Plan de prévention IA mis à jour chaque mois",
+        aiPlanMonthly: "Plan de bien-être mis à jour chaque mois",
         aiPlanEveryMonths:
-          "Plan de prévention IA mis à jour tous les {months} mois",
+          "Plan de bien-être mis à jour tous les {months} mois",
         hrDashboard: {
           base: "Tableau de bord RH et ROI de base : utilisation, stress anonymisé, économies en CHF",
           department:
@@ -1134,7 +1134,7 @@ export const fr: Dictionary = {
       heroTitleLead: "La santé en entreprise,",
       heroTitleAccent: "enfin intégrée.",
       heroBody:
-        "Kora réunit psychologues en ligne, médecin virtuel, check-up physiques, prévention IA et tableau de bord RH anonyme dans un seul abonnement par collaborateur.",
+        "Kora réunit psychologues en ligne, médecin virtuel, check-up physiques, plan de bien-être et tableau de bord RH anonyme dans un seul abonnement par collaborateur.",
       heroCtaRoi: "Calculer le retour",
       heroCtaDemo: "Réserver une démo",
       heroCompliance: "Hébergement en Suisse. Conforme au RGPD et à la LPD.",
@@ -1176,7 +1176,7 @@ export const fr: Dictionary = {
       value: {
         employee: {
           title: "Pour le collaborateur",
-          body: "Un accès simple à la santé mentale, au médecin virtuel et à la prévention. Tout est privé, tout est au même endroit.",
+          body: "Un accès simple à la santé mentale, au médecin virtuel et au bien-être. Tout est privé, tout est au même endroit.",
         },
         company: {
           title: "Pour l'entreprise",
