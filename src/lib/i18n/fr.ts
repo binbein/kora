@@ -1000,6 +1000,8 @@ export const fr: Dictionary = {
       legalCookies: "Politique de cookies",
 
       copyright: "© {year} Kora Switzerland SA. Tous droits réservés.",
+      demoNote:
+        "Démo · données fictives · aucune donnée ne quitte ce navigateur",
     },
 
     roi: {
@@ -1229,7 +1231,7 @@ export const fr: Dictionary = {
       messageLabel: "Message",
       optional: "facultatif",
       privacy:
-        "Les données seront traitées conformément à la LPD suisse et au RGPD.",
+        "Ceci est une démo : la demande reste dans votre navigateur et n'est envoyée à personne.",
       submit: "Envoyer la demande",
       submitting: "Envoi en cours",
       error: {

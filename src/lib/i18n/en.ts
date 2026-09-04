@@ -952,6 +952,7 @@ export const en: Dictionary = {
       legalCookies: "Cookie policy",
 
       copyright: "© {year} Kora Switzerland SA. All rights reserved.",
+      demoNote: "Demo · fictional data · no data leaves this browser",
     },
 
     roi: {
@@ -1175,7 +1176,7 @@ export const en: Dictionary = {
       messageLabel: "Message",
       optional: "optional",
       privacy:
-        "Data will be processed in line with the Swiss FADP and the GDPR.",
+        "This is a demo: the request stays in your browser and is not sent to anyone.",
       submit: "Send the request",
       submitting: "Sending",
       error: {

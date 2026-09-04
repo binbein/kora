@@ -1263,6 +1263,10 @@ export const it = {
 
       /** "© 2026 Kora Switzerland SA. Tutti i diritti riservati." */
       copyright: "© {year} Kora Switzerland SA. Tutti i diritti riservati.",
+      /* La nota che vale per ogni schermata, e sta nel footer perché il footer
+         è l'unico punto comune alle quattro rotte pubbliche. */
+      demoNote:
+        "Demo dimostrativa · dati di fantasia · nessun dato lascia questo browser",
     },
 
     /*
@@ -1610,8 +1614,10 @@ export const it = {
       employeesLabel: "Numero di dipendenti",
       messageLabel: "Messaggio",
       optional: "facoltativo",
+      /* Non una promessa di conformità ma un fatto verificabile: il provider
+         vive in memoria (§10), quindi la richiesta non lascia il browser. */
       privacy:
-        "I dati saranno trattati in conformità alla LPD svizzera e al GDPR.",
+        "Questa è una demo dimostrativa: la richiesta resta nel tuo browser e non viene inviata a nessuno.",
       submit: "Invia la richiesta",
       submitting: "Invio in corso",
       /* L'invio non è riuscito. Stessa logica della nota: i dati compilati

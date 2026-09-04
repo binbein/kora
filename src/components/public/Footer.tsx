@@ -134,6 +134,15 @@ export default function Footer() {
             <p className="text-xs opacity-60">{t.public.footer.legalCookies}</p>
           </div>
         </div>
+
+        {/*
+         * Che sia una demo lo dice il footer, che è l'unico punto comune alle
+         * quattro rotte pubbliche. Stesso `opacity-60` del copyright, per la
+         * ragione scritta sopra: lo 0.5 non passa l'AA su questo fondo.
+         */}
+        <p className="mt-4 text-xs opacity-60 text-center md:text-left">
+          {t.public.footer.demoNote}
+        </p>
       </div>
     </footer>
   );
