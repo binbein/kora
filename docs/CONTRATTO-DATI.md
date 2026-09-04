@@ -161,7 +161,10 @@ documento. Qui stanno solo gli invarianti che il codice non può esprimere.
 
 - `Company.anonymityThreshold` è una **proprietà del cliente**, non una costante
   di piattaforma: aziende diverse possono averne di diverse, e la frase che la
-  mostra non cambia perché il numero è un segnaposto.
+  mostra non cambia perché il numero è un segnaposto. **Ha un pavimento e un
+  default, e sono due numeri diversi**: stanno fra gli invarianti della
+  misurazione, qui sotto, insieme alla ragione per cui il valore di Demo SA non
+  è nessuno dei due.
 - I campi opzionali di `Plan` seguono una regola sola: **assente significa che il
   contratto commerciale non lo prevede**, non che il piano ne sia privo. Il
   listino salta la riga invece di trasformarla in una negazione.
@@ -200,7 +203,7 @@ comportamentale non distingue "il reparto sta peggio" da "il reparto ha adottato
 bene il prodotto", e legge come in miglioramento chi si sta ritirando. La
 dashboard HR afferma la prima cosa, quindi il dato deve misurare quella.
 
-Tre invarianti che il backend deve garantire:
+~~Tre~~ quattro invarianti che il backend deve garantire *(il quarto è del 04.09.2026, e il terzo è cresciuto lo stesso giorno)*:
 
 1. **`measuredEmployees` sta su `DepartmentMonth`, mai sull'anagrafica.**
    L'adesione al check rapido si muove — cala proprio quando un reparto va sotto
@@ -210,9 +213,54 @@ Tre invarianti che il backend deve garantire:
    filtrato: un reparto sotto soglia non ha un punteggio nascosto in UI, non ce
    l'ha nel record. `measuredEmployees` invece esce **su entrambi i rami**, perché
    la riga sotto soglia deve poter mostrare quante persone hanno risposto.
-3. **I reparti sotto soglia non entrano nel denominatore** della media aziendale.
-   Un punteggio non pubblicabile non può rientrare da una porta di servizio dentro
-   un aggregato da cui si potrebbe risalire.
+3. **I reparti sotto soglia non entrano né nel numeratore né nel denominatore**
+   della media aziendale. Un punteggio non pubblicabile non può rientrare da una
+   porta di servizio dentro un aggregato da cui si potrebbe risalire.
+
+   **È l'invariante da cui dipende la soppressione, e vale la pena mostrare
+   l'aritmetica** (04.09.2026), perché senza di essa il punto 2 protegge meno di
+   quanto sembri. Chiamiamo `m` i misurati e `s` i punteggi. Se l'aggregato
+   comprendesse anche il reparto soppresso, varrebbe
+
+   > `media × Σm = Σ(sᵢ × mᵢ)` su **tutti** i reparti
+
+   e chi guarda la dashboard ha già il lato destro per i pubblicati — punteggio e
+   misurati stanno su ogni riga della tabella — e il proprio `m` per il
+   soppresso. Resta un'incognita sola, `s`, e si ricava per sottrazione. **Non è
+   il conteggio a essere il dato pericoloso: è il moltiplicatore che rende
+   risolvibile l'equazione**, e l'equazione esiste solo se l'aggregato include
+   ciò che dichiara di escludere.
+
+   Ne discende cosa **non** è la difesa: togliere i misurati dalla riga
+   soppressa. Sarebbe togliere un termine a un'equazione che non deve esistere,
+   e costerebbe l'unica cosa che rende leggibile la tabella — perché due reparti
+   con lo stesso organico abbiano esiti opposti (§3, e `CLAUDE.md` §8). **La
+   difesa è che l'aggregato non contenga il reparto**, ed è un vincolo sul
+   backend, non sul rendering.
+
+   Nel frontend lo sorveglia un guardrail che **confronta le due serie che
+   escono dal provider** — la media aziendale contro la media pesata dei soli
+   record pubblicati — invece di ricalcolarla dal dato grezzo, che
+   verificherebbe l'espressione contro sé stessa. **In produzione quel controllo
+   non esiste**, perché sparisce con `mock/`: è il backend a doverlo tenere, ed è
+   la ragione per cui questo paragrafo lo scrive per esteso invece di rimandare
+   al codice.
+
+4. **La soglia ha un pavimento: 5** (founder, 02.09.2026). Resta una proprietà
+   del cliente e non una costante di piattaforma — aziende diverse possono
+   averne di diverse, e la frase che la mostra non cambia perché il numero è un
+   segnaposto (§3, azienda) — ma **sotto 5 smette di essere una soglia**: un
+   punteggio calcolato su quattro risposte descrive un gruppo che chi ci lavora
+   sa nominare, e l'anonimato diventa una parola.
+
+   **Il default di produzione è 10**, e il pavimento non lo sostituisce: il
+   pavimento è ciò che nessun cliente può scendere sotto, il default è ciò che
+   riceve chi non chiede niente. Sono due numeri con due mestieri, e confonderli
+   vuol dire consegnare a ogni cliente il minimo legale.
+
+   **Il 12 di Demo SA è un valore del dataset**, non una raccomandazione: sta in
+   `CLAUDE.md` §8 con la ragione per cui non è 15, e chi implementa il backend
+   non deve prenderlo per il default.
 
 **Un reparto senza record mensili esce dall'elenco, e va deciso se è giusto.**
 `getLatestStressByDepartment` promette l'ultimo record di ogni reparto, e senza
