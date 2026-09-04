@@ -156,3 +156,50 @@ for (const department of DEPARTMENTS) {
     `${department.id}: una rilevazione senza misurati non è distinguibile da un reparto che non esiste.`,
   );
 }
+
+/*
+ * LA MEDIA AZIENDALE NON CONTIENE I REPARTI SOPPRESSI, E QUI SI VERIFICA CHE
+ * NON LI CONTENGA — non che il codice che la calcola dica di escluderli.
+ *
+ * È l'invariante da cui dipende la soppressione: finché l'aggregato esclude un
+ * reparto da **numeratore e denominatore**, il suo punteggio non si ricava per
+ * sottrazione da ciò che il client riceve. Il giorno in cui rientrasse anche
+ * solo nel denominatore, i conteggi che la tabella mostra su ogni riga
+ * diventerebbero il moltiplicatore che rende l'aritmetica risolvibile
+ * (`docs/CONTRATTO-DATI.md` §3).
+ *
+ * SI CONFRONTANO LE DUE SERIE CHE ESCONO DAL PROVIDER, non la serie contro
+ * l'espressione che l'ha prodotta: ricalcolarla da `DEPARTMENT_MONTHS`
+ * verificherebbe `buildCompanySeries` contro sé stessa — la trappola che il
+ * `docs/CONTRATTO-DATI.md` §3 nomina a proposito della data delle note. Qui il
+ * lato destro è fatto dei soli record **pubblicati**, cioè di quello che il
+ * client vede: se la media che gli arriva non si ricostruisce da lì, porta
+ * dentro qualcosa che lui non ha.
+ *
+ * Ne discende che questo controllo è anche il primo a rompersi se qualcuno
+ * cambia `buildCompanySeries` per includere i soppressi, che è esattamente il
+ * modo in cui la falla nascerebbe.
+ */
+for (const [index, companyRecord] of COMPANY_STRESS_HISTORY.entries()) {
+  let weightedSum = 0;
+  let weight = 0;
+
+  for (const department of DEPARTMENTS) {
+    const record = DEPARTMENT_STRESS_HISTORY[department.id][index];
+    if (record === undefined || record.suppressed) continue;
+    weightedSum += record.score * record.measuredEmployees;
+    weight += record.measuredEmployees;
+  }
+
+  const expected = weight === 0 ? null : Math.round(weightedSum / weight);
+  const actual = companyRecord.suppressed ? null : companyRecord.score;
+
+  assertInDev(
+    actual === expected,
+    `La media aziendale del mese ${index + 1} vale ${actual}, mentre i reparti pubblicati ne danno ${expected}: l'aggregato contiene qualcosa che il client non riceve.`,
+  );
+  assertInDev(
+    companyRecord.measuredEmployees === weight,
+    `Il denominatore della media aziendale del mese ${index + 1} è ${companyRecord.measuredEmployees}, mentre i reparti pubblicati ne sommano ${weight}: un reparto soppresso pesa su un aggregato da cui è escluso.`,
+  );
+}
