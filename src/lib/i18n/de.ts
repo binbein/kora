@@ -230,7 +230,7 @@ export const de: Dictionary = {
         nutrition: "Die Ernährung verdient Aufmerksamkeit",
         mental: "Die psychische Gesundheit verdient Aufmerksamkeit",
       },
-      weakestAreaHint: "Hier setzt dein Plan für dein Wohlbefinden an.",
+      weakestAreaHint: "Hier setzt dein Plan fürs Wohlbefinden an.",
 
       appointmentsTitle: "Deine nächsten Termine",
       appointmentsEmpty: "Du hast keine geplanten Termine.",
@@ -252,7 +252,7 @@ export const de: Dictionary = {
       doctorConsults: "{n} Beratungen in diesem Jahr",
       checkupDone: "Erledigt",
 
-      planTitle: "Aus deinem Plan für dein Wohlbefinden",
+      planTitle: "Aus deinem Plan fürs Wohlbefinden",
       planCta: "Plan ansehen",
     },
 
@@ -404,7 +404,7 @@ export const de: Dictionary = {
         explanationTitle: "Was das bedeutet",
         explanation: {
           laura:
-            "Das Cholesterin liegt leicht über dem empfohlenen Wert und das Stressrisiko ist mässig. Das ist kein Notfall: folge dem Plan für dein Wohlbefinden und wiederhole die Kontrolle beim nächsten Check-up.",
+            "Das Cholesterin liegt leicht über dem empfohlenen Wert und das Stressrisiko ist mässig. Das ist kein Notfall: folge dem Plan fürs Wohlbefinden und wiederhole die Kontrolle beim nächsten Check-up.",
         },
         disclaimer:
           "Demonstrativer Befund mit Beispielwerten. Er ist kein klinisches Dokument und ersetzt nicht den Befund des Zentrums, das den Check-up durchführt.",
@@ -443,7 +443,7 @@ export const de: Dictionary = {
     },
 
     aiPlan: {
-      title: "Plan für dein Wohlbefinden",
+      title: "Plan fürs Wohlbefinden",
       subtitle: "Auf dein Gesundheitsprofil abgestimmt.",
       generated: "Aktualisiert im {month}",
       nextUpdate: "Die nächste Aktualisierung erfolgt im {month}.",
@@ -999,9 +999,9 @@ export const de: Dictionary = {
           executive:
             "Vollständiger Executive-Check-up: EKG, Bauchultraschall, Augenarzt, komplettes Blutbild",
         },
-        aiPlanMonthly: "Plan für dein Wohlbefinden, monatlich aktualisiert",
+        aiPlanMonthly: "Plan für das Wohlbefinden, monatlich aktualisiert",
         aiPlanEveryMonths:
-          "Plan für dein Wohlbefinden, alle {months} Monate aktualisiert",
+          "Plan für das Wohlbefinden, alle {months} Monate aktualisiert",
         hrDashboard: {
           base: "HR-Dashboard und Basis-ROI: Nutzung, anonymisierter Stress, Einsparung in CHF",
           department:
