@@ -26,6 +26,7 @@ import { interpolate, t } from "@/lib/i18n";
  */
 
 export type PlanFeatureKey =
+  | "firstSession"
   | "sessions"
   | "intro"
   | "coach"
@@ -54,6 +55,18 @@ export type PlanFeature = {
 export function planFeatures(plan: Plan): PlanFeature[] {
   const f = t.public.plans.feature;
   const features: PlanFeature[] = [];
+
+  /*
+   * Prima di tutto il resto: è la promessa che risponde alla domanda "e perché
+   * non passo dalla LAMal", e vale su tutti e tre i piani (§9). Sta in cima
+   * perché è l'accesso, e le righe sotto sono cosa si ottiene una volta dentro.
+   */
+  features.push({
+    key: "firstSession",
+    text: interpolate(f.firstSession, {
+      hours: formatNumber(plan.firstSessionWithinHours),
+    }),
+  });
 
   features.push({
     key: "sessions",

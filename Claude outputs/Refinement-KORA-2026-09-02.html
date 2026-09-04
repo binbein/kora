@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Refinement KORA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --ground: #F5F8F9;
+    --surface: #FFFFFF;
+    --surface-2: #EEF3F5;
+    --ink: #14202B;
+    --muted: #5B6B7A;
+    --line: #D9E2E8;
+    --primary: #11395A;
+    --primary-ink: #11395A;
+    --teal: #1BAC99;
+    --teal-strong: #147A6D;
+    --mint: #E3F6F2;
+    --mint-ink: #0F4A42;
+    --amber: #E3A93B;
+    --amber-ground: #FBF1DC;
+    --amber-ink: #6B4A0C;
+    --waiting-ground: #FBF3D2;
+    --waiting-ink: #5F4A0A;
+    --rose-ground: #FBE7E7;
+    --rose-ink: #8A2A2A;
+    --focus: #1BAC99;
+    --shadow: 0 1px 2px rgba(17, 57, 90, 0.06), 0 8px 24px rgba(17, 57, 90, 0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0E171E;
+      --surface: #15212A;
+      --surface-2: #1C2A35;
+      --ink: #E6EDF2;
+      --muted: #9AAAB8;
+      --line: #2A3A47;
+      --primary: #7FB3D9;
+      --primary-ink: #A9CCE8;
+      --teal: #2BC2AD;
+      --teal-strong: #5FD1BF;
+      --mint: #143733;
+      --mint-ink: #BFEFE4;
+      --amber: #E3A93B;
+      --amber-ground: #3A2E12;
+      --amber-ink: #F2D28A;
+      --waiting-ground: #3A3212;
+      --waiting-ink: #F0DF9A;
+      --rose-ground: #3D1F1F;
+      --rose-ink: #F0B4B4;
+      --focus: #5FD1BF;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0E171E;
+    --surface: #15212A;
+    --surface-2: #1C2A35;
+    --ink: #E6EDF2;
+    --muted: #9AAAB8;
+    --line: #2A3A47;
+    --primary: #7FB3D9;
+    --primary-ink: #A9CCE8;
+    --teal: #2BC2AD;
+    --teal-strong: #5FD1BF;
+    --mint: #143733;
+    --mint-ink: #BFEFE4;
+    --amber: #E3A93B;
+    --amber-ground: #3A2E12;
+    --amber-ink: #F2D28A;
+    --waiting-ground: #3A3212;
+    --waiting-ink: #F0DF9A;
+    --rose-ground: #3D1F1F;
+    --rose-ink: #F0B4B4;
+    --focus: #5FD1BF;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.25);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: "DM Sans", "Inter", "Helvetica Neue", Arial, sans-serif;
+    color: var(--primary-ink);
+    text-wrap: balance;
+    line-height: 1.15;
+    margin: 0;
+  }
+  h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.01em; }
+  h2 { font-size: 1.55rem; font-weight: 700; }
+  h3 { font-size: 1.15rem; font-weight: 600; }
+  h4 { font-size: 0.95rem; font-weight: 600; }
+  p { margin: 0; }
+  a { color: var(--teal-strong); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--focus); outline-offset: 2px;
+  }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88em; background: var(--surface-2); padding: 0.05em 0.35em; border-radius: 4px; }
+  strong { font-weight: 600; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 48px 20px 96px; }
+  .wide { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  .eyebrow {
+    font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--teal-strong); font-weight: 600;
+  }
+  .lede { font-size: 1.08rem; color: var(--muted); max-width: 62ch; }
+  header.top { display: flex; flex-direction: column; gap: 14px; margin-bottom: 40px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 0.86rem; color: var(--muted); }
+  .meta b { color: var(--ink); font-weight: 500; }
+
+  /* indice */
+  .index { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 18px 0; margin-bottom: 44px; }
+  .index ol { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; }
+  .index li { display: grid; grid-template-columns: 1.6em 1fr auto; gap: 8px; align-items: baseline; font-size: 0.92rem; }
+  .index li .n { font-family: "DM Sans", sans-serif; font-weight: 600; color: var(--teal-strong); font-variant-numeric: tabular-nums; }
+  .index li a { color: var(--ink); text-decoration: none; }
+  .index li a:hover { text-decoration: underline; }
+  @media (max-width: 640px) { .index ol { grid-template-columns: 1fr; } }
+
+  /* stato */
+  .pill {
+    display: inline-block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 999px; white-space: nowrap; line-height: 1.6;
+  }
+  .pill.ok { background: var(--mint); color: var(--mint-ink); }
+  .pill.check { background: var(--amber-ground); color: var(--amber-ink); }
+  .pill.later { background: var(--waiting-ground); color: var(--waiting-ink); }
+
+  /* sezioni */
+  section.q { padding: 36px 0; border-top: 1px solid var(--line); display: grid; gap: 18px; }
+  section.q:first-of-type { border-top: 0; }
+  .qhead { display: grid; grid-template-columns: 2.2rem 1fr; gap: 12px; align-items: start; }
+  .qhead .n { font-family: "DM Sans", sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--teal); line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .qhead .titles { display: grid; gap: 6px; }
+  .qhead .asked { color: var(--muted); font-size: 0.95rem; font-style: italic; }
+  .qhead .state { margin-top: 4px; }
+
+  .agreed {
+    background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--teal);
+    border-radius: 6px; padding: 16px 18px; display: grid; gap: 10px; box-shadow: var(--shadow);
+  }
+  .agreed .lbl { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal-strong); font-weight: 600; }
+  .agreed ul { margin: 0; padding-left: 1.15em; display: grid; gap: 6px; }
+  .agreed li::marker { color: var(--teal); }
+
+  .horizon { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .horizon > div { background: var(--surface-2); border-radius: 6px; padding: 12px 14px; font-size: 0.9rem; display: grid; gap: 4px; align-content: start; }
+  .horizon .h { font-family: "DM Sans", sans-serif; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .horizon .none { color: var(--muted); }
+  @media (max-width: 640px) { .horizon { grid-template-columns: 1fr; } }
+
+  .who { font-size: 0.9rem; color: var(--muted); }
+  .who b { color: var(--ink); font-weight: 500; }
+  .note { font-size: 0.9rem; color: var(--muted); }
+
+  /* liste finali */
+  .block { padding: 36px 0; border-top: 1px solid var(--line); display: grid; gap: 14px; }
+  .block ul { margin: 0; padding-left: 1.15em; display: grid; gap: 8px; }
+  .block li::marker { color: var(--teal); }
+
+  /* calcolatore */
+  .calc-wrap { padding: 36px 0 8px; border-top: 1px solid var(--line); }
+  .calc {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow);
+    padding: 22px; display: grid; grid-template-columns: minmax(260px, 340px) 1fr; gap: 24px; margin-top: 16px;
+  }
+  @media (max-width: 800px) { .calc { grid-template-columns: 1fr; } }
+  .calc h3 { margin-bottom: 4px; }
+  .fields { display: grid; gap: 12px; align-content: start; }
+  .field { display: grid; gap: 4px; }
+  .field label { font-size: 0.8rem; color: var(--muted); font-weight: 500; }
+  .field .row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+  input[type="number"], select {
+    font: inherit; font-size: 0.95rem; color: var(--ink); background: var(--surface); border: 1px solid var(--line);
+    border-radius: 6px; padding: 7px 10px; width: 100%; font-variant-numeric: tabular-nums;
+  }
+  input[type="range"] { width: 100%; accent-color: var(--teal); }
+  .field label.check { display: flex; gap: 8px; align-items: flex-start; color: var(--ink); font-weight: 400; font-size: 0.86rem; line-height: 1.4; cursor: pointer; }
+  .field label.check input { margin: 3px 0 0; accent-color: var(--teal); }
+  .field .val { font-family: "DM Sans", sans-serif; font-weight: 600; min-width: 2.5ch; text-align: right; font-variant-numeric: tabular-nums; }
+  fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 12px; }
+  legend { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal-strong); font-weight: 600; padding: 0; margin-bottom: 4px; }
+  .split { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+  .out { display: grid; gap: 16px; align-content: start; }
+  table.cmp { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  table.cmp th, table.cmp td { padding: 10px 8px; text-align: right; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  table.cmp th { font-family: "DM Sans", sans-serif; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+  table.cmp td:first-child, table.cmp th:first-child { text-align: left; }
+  table.cmp td.best { color: var(--teal-strong); font-weight: 600; }
+  table.cmp td.worse { color: var(--rose-ink); }
+  .verdict { background: var(--mint); color: var(--mint-ink); border-radius: 6px; padding: 12px 14px; font-size: 0.95rem; display: grid; gap: 4px; }
+  .verdict b { font-weight: 600; }
+  .warn { background: var(--amber-ground); color: var(--amber-ink); border-left: 4px solid var(--amber); border-radius: 6px; padding: 12px 14px; font-size: 0.92rem; display: grid; gap: 4px; }
+  .warn b { font-weight: 600; }
+  .kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .kpi { background: var(--surface-2); border-radius: 6px; padding: 12px 14px; display: grid; gap: 2px; }
+  .kpi .l { font-size: 0.78rem; color: var(--muted); }
+  .kpi .v { font-family: "DM Sans", sans-serif; font-size: 1.35rem; font-weight: 700; color: var(--primary-ink); font-variant-numeric: tabular-nums; }
+  .kpi .d { font-size: 0.82rem; color: var(--muted); }
+  .kpi.good .v { color: var(--teal-strong); }
+  .kpi.bad .v { color: var(--rose-ink); }
+  .assump { font-size: 0.85rem; color: var(--muted); display: grid; gap: 4px; margin-top: 14px; }
+  .assump ul { margin: 0; padding-left: 1.15em; }
+
+  .tableflow { overflow-x: auto; }
+  table.grid { border-collapse: collapse; font-size: 0.9rem; width: 100%; min-width: 560px; }
+  table.grid th, table.grid td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: right; font-variant-numeric: tabular-nums; }
+  table.grid th { font-family: "DM Sans", sans-serif; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600; }
+  table.grid td:first-child, table.grid th:first-child { text-align: left; }
+  table.grid td.pick { background: var(--mint); color: var(--mint-ink); font-weight: 600; }
+
+  footer.end { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 0.85rem; color: var(--muted); display: grid; gap: 6px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+<style>
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow">Documento di lavoro · non ratificato</p>
+    <h1>Refinement KORA</h1>
+    <p class="lede">Le dieci domande aperte fra demo, MVP e prodotto finale, con quello che si è accordato il 2 settembre 2026 e cosa ne discende. Il calcolatore dei due binari sta al punto 2.</p>
+    <div class="meta">
+      <span>Esito del brainstorming del <b>02.09.2026</b> (CTO)</span>
+      <span>Da condividere con il <b>CEO</b></span>
+      <span>Sostituisce, per queste decisioni, il <a href="https://claude.ai/code/artifact/5140bc20-22ba-48fa-8b49-7bc5bbc9ba61">Perimetro del 20.08</a>, che resta come contesto</span>
+    </div>
+    <div class="meta">
+      <span><span class="pill ok">Deciso</span> si applica</span>
+      <span><span class="pill check">Da verificare</span> deciso il principio, un consulente conferma</span>
+      <span><span class="pill later">Rimandato</span> post-demo, pre-MVP</span>
+    </div>
+  </header>
+
+  <nav class="index" aria-label="Le dieci domande">
+    <ol>
+      <li><span class="n">1</span><a href="#q1">Il punteggio individuale</a><span class="pill ok">Deciso</span></li>
+      <li><span class="n">2</span><a href="#q2">Psicoterapia via LAMal: i due binari</a><span class="pill check">Da verificare</span></li>
+      <li><span class="n">3</span><a href="#q3">Il protocollo per chi sta male</a><span class="pill ok">Deciso</span></li>
+      <li><span class="n">4</span><a href="#q4">Professionisti indipendenti</a><span class="pill later">Rimandato</span></li>
+      <li><span class="n">5</span><a href="#q5">La soglia per reparto</a><span class="pill ok">Deciso</span></li>
+      <li><span class="n">6</span><a href="#q6">Intermediazione sulla cassa malati</a><span class="pill ok">Deciso</span></li>
+      <li><span class="n">7</span><a href="#q7">I frontalieri</a><span class="pill check">Da verificare</span></li>
+      <li><span class="n">8</span><a href="#q8">La pagina del professionista</a><span class="pill ok">Deciso</span></li>
+      <li><span class="n">9</span><a href="#q9">Filtri genere e specializzazione</a><span class="pill check">Da verificare</span></li>
+      <li><span class="n">10</span><a href="#q10">Italia e UE, dopo</a><span class="pill ok">Deciso</span></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section class="q" id="q1">
+    <div class="qhead">
+      <span class="n">1</span>
+      <div class="titles">
+        <h2>Il punteggio individuale resta</h2>
+        <p class="asked">«Zona grigia punteggio AI: un modo non proprio vietato ma abbastanza tutelato per non toglierlo?»</p>
+        <div class="state"><span class="pill ok">Deciso</span></div>
+      </div>
+    </div>
+    <p>Le tre norme (dispositivi medici, AI Act, lavoro) non colpiscono un punteggio individuale in sé: colpiscono <strong>cosa si dichiara che fa</strong> e <strong>da cosa lo si ricava</strong>. Un profilo di benessere calcolato da un questionario auto-compilato, presentato come stile di vita, non è dispositivo medico; il divieto sul riconoscimento delle emozioni vale solo per i dati biometrici; l'alto rischio nel lavoro vale per i sistemi usati dal datore per valutare le persone. Gli obblighi per l'alto rischio sono comunque slittati al 2 dicembre 2027.</p>
+    <div class="agreed">
+      <p class="lbl">Accordato</p>
+      <ul>
+        <li>Uno <strong>scopo dichiarato per iscritto</strong>, identico in marketing, schermate e contratti: benessere e abitudini, mai diagnosi, prognosi o prevenzione di malattia.</li>
+        <li><strong>Niente termini di malattia</strong> negli output individuali: «rischio», «prevenzione», «pre-clinico», «a rischio» escono dalle etichette di ciò che il software calcola. Il referto del centro check-up è un documento del centro e può restare com'è.</li>
+        <li>Il punteggio nasce <strong>solo da ciò che la persona dichiara</strong>. Mai da comportamento, voce, volto o uso dell'app (coerente con ArGV3 art. 26).</li>
+        <li>Il datore <strong>non lo vede mai</strong>, né lo usa nessuna decisione automatica.</li>
+        <li>Se il piano è un motore a regole, <strong>non si chiama «AI»</strong>: la parola aumenta l'esposizione senza dare valore.</li>
+        <li>Un <strong>memo di qualificazione</strong> (criteri MDCG 2019-11 / Swissmedic) firmato da un consulente regolatorio, come prova di buona fede.</li>
+      </ul>
+    </div>
+    <div class="horizon">
+      <div><span class="h">Demo</span><span>Solo parole: «Piano di prevenzione AI» → «Piano di benessere»; la sintesi «A rischio» del profilo → «Da seguire». La rotta <code>/employee/ai-plan</code> e la voce «Piano AI» sono scope congelato: da decidere insieme.</span></div>
+      <div><span class="h">MVP</span><span>Dichiarazione di scopo scritta; memo regolatorio; la chat del medico resta un medico vero.</span></div>
+      <div><span class="h">Finale</span><span>Se un giorno un software fa triage o suggerisce diagnosi, è dispositivo medico classe IIa: si decide allora, con un percorso di certificazione.</span></div>
+    </div>
+    <p class="who"><b>Chi serve:</b> consulente regolatorio per il memo (qualche migliaio di franchi), pre-MVP.</p>
+  </section>
+
+  <!-- 2 -->
+  <section class="q" id="q2">
+    <div class="qhead">
+      <span class="n">2</span>
+      <div class="titles">
+        <h2>Psicoterapia via LAMal: due binari, sceglie il dipendente</h2>
+        <p class="asked">«Rimborsiamo fino a N sedute, la franchigia scala, poi continuano con lo psicoterapeuta rimborsato dall'assicurazione. Tutti ci guadagnano, anche scalando. E chi non ha la prescrizione?»</p>
+        <div class="state"><span class="pill check">Da verificare</span></div>
+      </div>
+    </div>
+    <p>Come funziona la LAMal dal 1.7.2022: psicoterapia psicologica a carico della base <strong>su prescrizione medica</strong> (medicina interna generale, pediatria, psichiatria, psicosomatica; gli altri medici solo 10 sedute in crisi), <strong>15 sedute per prescrizione, 30 in totale</strong>, poi garanzia dell'assicuratore. Il terapeuta deve avere il titolo federale di psicoterapeuta, l'autorizzazione cantonale e il numero RCC. Il paziente paga franchigia e il 10% fino a CHF 700 l'anno. Le tariffe cantonali provvisorie stanno intorno a CHF 150–160 l'ora.</p>
+    <p>Il conto dice una cosa netta: il binario LAMal è <strong>ottimo per chi ha franchigia bassa e pessimo per chi ce l'ha alta</strong>. Un binario solo perde sempre da una parte. Due binari con scelta libera vincono da entrambe, e il costo di KORA per utente-anno ha un tetto fisso invece che aperto.</p>
+    <div class="agreed">
+      <p class="lbl">Accordato</p>
+      <ul>
+        <li><strong>Binario KORA</strong> (quello di oggi): sessioni incluse nel piano, senza prescrizione, senza diagnosi, senza assicuratore. Chiunque parte da qui.</li>
+        <li><strong>Binario LAMal</strong>: prescrizione, diagnosi, il terapeuta fattura alla cassa malati, e KORA rimborsa al dipendente la partecipazione ai costi <strong>fino a un tetto annuo</strong> (500 o 750, lo decide il calcolo sul bacino).</li>
+        <li>La <strong>prescrizione si ottiene dentro KORA</strong>: il medico virtuale, se è un medico vero con il titolo giusto, fa un consulto video e prescrive (consulto a sua volta rimborsato). Oppure il medico di famiglia. Chi non la vuole resta sul binario KORA.</li>
+        <li><strong>Il terapeuta non cambia</strong> tra i binari, quindi la rete si costruisce prima di tutto con <strong>psicoterapeuti riconosciuti LAMal</strong>; psicologi non psicoterapeuti e coach stanno sul solo binario KORA.</li>
+        <li><strong>Terza porta, le complementari</strong>: molte rimborsano in parte anche senza prescrizione. KORA aiuta solo a chiedere il rimborso, senza toccare dati.</li>
+        <li>Ai terapeuti si può chiedere un <strong>canone fisso di piattaforma</strong>; una percentuale per sessione sul fatturato LAMal rischia la «dicotomia» (spartizione di onorari), vietata per le professioni sanitarie.</li>
+      </ul>
+    </div>
+    <p>Due vincoli trovati, da mettere sul tavolo: la LAMal <strong>non accetta di norma una terapia tutta online</strong>, serve una parte in presenza, quindi terapeuti con uno studio in Ticino; e la <strong>diagnosi sulla fattura la vede la cassa malati</strong>, quindi il binario si sceglie consapevolmente. Nessuna piattaforma svizzera oggi gestisce la psicoterapia a carico della base: Aepsy dichiara esplicitamente di non farlo. È uno spazio vuoto.</p>
+    <div class="horizon">
+      <div><span class="h">Demo</span><span class="none">Niente a schermo.</span></div>
+      <div><span class="h">MVP</span><span>Nel contratto dati: la sessione ha un <strong>pagatore</strong> (KORA · LAMal · complementare · paziente); la qualifica distingue lo psicoterapeuta LAMal; il piano porta il tetto di rimborso; il profilo porta, facoltativo, il regime assicurativo.</span></div>
+      <div><span class="h">Finale</span><span>Pilot con un assicuratore; canone terapeuti; apertura oltre le aziende (familiari, privati) con la stessa macchina.</span></div>
+    </div>
+    <p class="who"><b>Chi serve:</b> avvocato (dicotomia, responsabilità del medico prescrittore, esercizio in presenza) e fiscalista (il rimborso della franchigia è quasi certamente salario imponibile).</p>
+  </section>
+</div>
+
+<!-- calcolatore, a tutta larghezza -->
+<div class="wide">
+  <div class="calc-wrap" id="calc">
+    <p class="eyebrow">Punto 2 · lo strumento</p>
+    <h2>Il calcolatore dei due binari</h2>
+    <p class="note" style="margin-top:6px; max-width:70ch">Un dipendente, un anno. Cambia franchigia e sessioni e guarda chi paga cosa sui due binari. I valori di partenza sono quelli del piano Plus della demo e delle tariffe cantonali provvisorie.</p>
+
+    <div class="calc">
+      <div class="fields">
+        <fieldset>
+          <legend>Le leve di KORA</legend>
+          <div class="field"><label for="t">Tariffa LAMal per sessione (CHF)</label><input id="t" type="number" min="50" max="400" step="5" value="155"></div>
+          <div class="field"><label for="fee">Compenso KORA per sessione (CHF)</label><input id="fee" type="number" min="30" max="300" step="5" value="75"></div>
+          <div class="field"><label for="incl">Sessioni incluse nel piano</label><input id="incl" type="number" min="0" max="30" step="1" value="10"></div>
+          <div class="field"><label for="copay">Co-payment del dipendente oltre le incluse (CHF)</label><input id="copay" type="number" min="0" max="200" step="1" value="28"></div>
+          <div class="field"><label for="cap">Tetto annuo di rimborso della partecipazione (CHF)</label><input id="cap" type="number" min="0" max="3000" step="50" value="500"></div>
+          <div class="field"><label class="check"><input id="tie" type="checkbox"> A parità di costo per il dipendente, KORA propone il binario LAMal</label></div>
+        </fieldset>
+        <fieldset>
+          <legend>Il dipendente</legend>
+          <div class="field"><label for="fr">Franchigia (CHF)</label>
+            <select id="fr">
+              <option value="300">300</option><option value="500">500</option><option value="1000" selected>1'000</option>
+              <option value="1500">1'500</option><option value="2000">2'000</option><option value="2500">2'500</option>
+            </select></div>
+          <div class="field"><label for="n">Sessioni nell'anno</label>
+            <div class="row"><input id="n" type="range" min="1" max="30" step="1" value="10" aria-label="Sessioni nell'anno"><span class="val num" id="nval">10</span></div></div>
+        </fieldset>
+      </div>
+
+      <div class="out">
+        <table class="cmp" aria-label="Confronto fra i due binari">
+          <thead><tr><th>Per l'anno, CHF</th><th>Binario KORA</th><th>Binario LAMal</th></tr></thead>
+          <tbody>
+            <tr><td>KORA paga</td><td id="k1">—</td><td id="k2">—</td></tr>
+            <tr><td>Il dipendente paga</td><td id="e1">—</td><td id="e2">—</td></tr>
+            <tr><td>Il terapeuta incassa</td><td id="p1">—</td><td id="p2">—</td></tr>
+          </tbody>
+        </table>
+        <div class="verdict" id="verdict"></div>
+        <div class="warn" id="warn" hidden></div>
+        <div class="kpis">
+          <div class="kpi" id="bound-box"><span class="l">Costo massimo di KORA per utente-anno, con scelta libera</span><span class="v num" id="bound">—</span><span class="d" id="bound-d">il maggiore fra le incluse × compenso e il tetto</span></div>
+          <div class="kpi"><span class="l">Oggi, senza tetto, oltre le incluse</span><span class="v num" id="leak">—</span><span class="d">quanto KORA perde per ogni sessione extra</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc" id="pool">
+      <div class="fields">
+        <fieldset>
+          <legend>Il bacino</legend>
+          <div class="field"><label for="users">Utenti attivi nell'anno (chi fa almeno una sessione)</label><input id="users" type="number" min="1" max="100000" step="1" value="40"></div>
+          <div class="field"><label>Franchigie: quota di dipendenti a 300 · 1'000 · 2'500 (%)</label>
+            <div class="split"><input id="f1" type="number" min="0" max="100" value="35" aria-label="quota a 300"><input id="f2" type="number" min="0" max="100" value="30" aria-label="quota a 1'000"><input id="f3" type="number" min="0" max="100" value="35" aria-label="quota a 2'500"></div></div>
+          <div class="field"><label>Uso: quota di utenti con 3 · 10 · 20 sessioni (%)</label>
+            <div class="split"><input id="u1" type="number" min="0" max="100" value="50" aria-label="quota con 3 sessioni"><input id="u2" type="number" min="0" max="100" value="35" aria-label="quota con 10 sessioni"><input id="u3" type="number" min="0" max="100" value="15" aria-label="quota con 20 sessioni"></div></div>
+        </fieldset>
+        <fieldset>
+          <legend>Il canone ai terapeuti (facoltativo)</legend>
+          <div class="split" style="grid-template-columns:1fr 1fr">
+            <div class="field"><label for="ther">Terapeuti in rete</label><input id="ther" type="number" min="0" max="1000" value="5"></div>
+            <div class="field"><label for="fee-m">CHF al mese ciascuno</label><input id="fee-m" type="number" min="0" max="2000" step="10" value="0"></div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="out">
+        <div class="kpis">
+          <div class="kpi"><span class="l">Costo KORA per utente attivo · oggi</span><span class="v num" id="pk-today">—</span><span class="d">solo binario KORA</span></div>
+          <div class="kpi"><span class="l">Costo KORA per utente attivo · due binari</span><span class="v num" id="pk-hyb">—</span><span class="d">ognuno sceglie il binario che gli costa meno</span></div>
+          <div class="kpi"><span class="l">Totale anno · oggi</span><span class="v num" id="pt-today">—</span><span class="d">sul bacino</span></div>
+          <div class="kpi" id="pt-box"><span class="l">Totale anno · due binari, netto del canone</span><span class="v num" id="pt-hyb">—</span><span class="d" id="pt-diff">—</span></div>
+        </div>
+        <div class="tableflow">
+          <table class="grid" aria-label="Il binario scelto in ogni caso">
+            <thead><tr><th>Binario scelto</th><th>3 sessioni</th><th>10 sessioni</th><th>20 sessioni</th></tr></thead>
+            <tbody id="gridbody"></tbody>
+          </table>
+        </div>
+        <p class="note">In verde il binario LAMal, dove il dipendente lo sceglie perché gli costa meno. A parità resta sul binario KORA (nessuna diagnosi), salvo la spunta qui a sinistra. Il costo KORA in tabella è quello del binario scelto.</p>
+      </div>
+    </div>
+
+    <div class="assump">
+      <b>Cosa il calcolo assume, e cosa non modella</b>
+      <ul>
+        <li>Franchigia non ancora consumata da altre cure: è il caso peggiore per KORA. Nella realtà una parte della franchigia se ne va altrove e il rimborso costa meno.</li>
+        <li>Aliquota del 10% fino a CHF 700 l'anno, come da LAMal. Il consulto medico per la prescrizione è a carico della base, non di KORA.</li>
+        <li>Non modella le tasse sul rimborso (probabile salario imponibile), i tempi di rimborso dell'assicuratore, né la quota di sessioni in presenza che la LAMal chiede.</li>
+        <li>I frontalieri nel sistema italiano non hanno franchigia: per loro esiste il solo binario KORA. Nel bacino vanno contati a parte.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:8px">
+  <!-- 3 -->
+  <section class="q" id="q3">
+    <div class="qhead">
+      <span class="n">3</span>
+      <div class="titles">
+        <h2>Chi sta male: decide il professionista, la piattaforma lo rende possibile</h2>
+        <p class="asked">«Se il paziente dice “mi voglio suicidare”: trasmettere i dati alle autorità? Non è violazione della privacy? Come funziona nel mondo?»</p>
+        <div class="state"><span class="pill ok">Deciso</span></div>
+      </div>
+    </div>
+    <p>In Svizzera non esiste un obbligo di denuncia come il «duty to warn» americano. Esiste il <strong>diritto</strong> di rompere il segreto in <strong>stato di necessità</strong> (art. 17 CP): pericolo immediato, non altrimenti evitabile, solo il minimo necessario. Esiste il diritto di segnalare all'autorità di protezione chi mette in pericolo se stesso (art. 453 CC) e, nel caso estremo, il collocamento a scopo di assistenza (art. 426 ss. CC), che decide un medico o l'autorità. In Ticino il segreto si scioglie anche con consenso scritto o autorizzazione del Medico cantonale (art. 20 LSan). Passare il minimo al 144 per salvare una vita <strong>non viola la privacy</strong>: la LPD ammette il trattamento giustificato da un interesse preponderante. Nel mondo le piattaforme fanno tutte la stessa cosa: non sono servizi di crisi e lo dicono, mostrano i numeri ovunque, hanno un protocollo e un responsabile clinico, e il terapeuta segue la legge del posto.</p>
+    <div class="agreed">
+      <p class="lbl">Accordato</p>
+      <ul>
+        <li>Un <strong>responsabile clinico</strong> nominato e raggiungibile, prima del primo utente.</li>
+        <li>Una <strong>procedura scritta</strong> per i professionisti: cosa fare, chi chiamare, cosa documentare.</li>
+        <li><strong>Nessun allarme automatico a terzi</strong> dal software. Quando il check rapido è «molto male» o la chat contiene segnali: numeri (144 · 143 · 147) e offerta di un contatto umano entro un tempo dichiarato.</li>
+        <li>All'iscrizione un <strong>consenso facoltativo</strong> («se segnali un pericolo, un clinico di KORA può contattarti») e un <strong>contatto di emergenza</strong> facoltativo.</li>
+        <li>I numeri dipendono da dove sta la persona: 144 in Svizzera, 112 in Italia (vedi punto 7).</li>
+      </ul>
+    </div>
+    <div class="horizon">
+      <div><span class="h">Demo</span><span>Dopo un «molto male» nel check rapido: una riga con i numeri e l'offerta di contatto. Costa poco e risponde alla domanda che il pitch oggi lascia scoperta.</span></div>
+      <div><span class="h">MVP</span><span>Protocollo, responsabile clinico, consenso e contatto d'emergenza nel profilo, segnali nella chat. È il gruppo 8.1 del contratto dati.</span></div>
+      <div><span class="h">Finale</span><span>Formazione dei professionisti, revisione annuale del protocollo.</span></div>
+    </div>
+    <p class="who"><b>Chi serve:</b> uno psichiatra o psicologo senior come responsabile clinico; l'avvocato per la procedura. È la stessa lettera all'Ufficio di sanità del punto 8.</p>
+  </section>
+
+  <!-- 4 -->
+  <section class="q" id="q4">
+    <div class="qhead">
+      <span class="n">4</span>
+      <div class="titles">
+        <h2>Professionisti indipendenti: lo decidono i fatti, non il contratto</h2>
+        <p class="asked">«I professionisti devono essere liberi professionisti, mai nostri dipendenti. Non credo che non si possa fare.»</p>
+        <div class="state"><span class="pill later">Rimandato</span></div>
+      </div>
+    </div>
+    <p>Si può fare, ma lo decide come funziona davvero il rapporto. Su Uber (2022–2023) il Tribunale federale ha guardato: margine di manovra, controllo tramite app, chi fissa il prezzo, rischio imprenditoriale, libertà di lavorare per altri. Oggi KORA ha due segnali contro: <strong>il compenso lo fissa KORA</strong> ed <strong>è KORA che fattura e paga</strong>.</p>
+    <div class="agreed">
+      <p class="lbl">Accordato in principio</p>
+      <ul>
+        <li>Il professionista dichiara la <strong>propria tariffa</strong> dentro una fascia, o KORA trattiene una commissione su una tariffa sua.</li>
+        <li>Il professionista <strong>emette fattura</strong> (a KORA o al cliente); non riceve «un pagamento».</li>
+        <li>Nessuna esclusività, nessuna istruzione clinica (solo standard di qualità e di piattaforma), disponibilità decisa da lui, costi e RC a suo carico.</li>
+        <li>Ogni professionista <strong>riconosciuto indipendente dalla cassa AVS</strong> prima di iniziare; KORA può chiedere un chiarimento di statuto.</li>
+      </ul>
+    </div>
+    <div class="horizon">
+      <div><span class="h">Demo</span><span class="none">Niente. Il testo «Kora emette la fattura e paga entro il 5» resta finché il modello non è deciso.</span></div>
+      <div><span class="h">MVP</span><span>Modello economico del mandato scritto con l'avvocato; fatturazione dal lato del professionista.</span></div>
+      <div><span class="h">Finale</span><span>Chiarimento di statuto AVS per ogni nuovo ingresso.</span></div>
+    </div>
+    <p class="who"><b>Chi serve:</b> avvocato del lavoro e cassa di compensazione, post-demo.</p>
+  </section>
+
+  <!-- 5 -->
+  <section class="q" id="q5">
+    <div class="qhead">
+      <span class="n">5</span>
+      <div class="titles">
+        <h2>Soglia per reparto: pavimento 5, default 10, e la falla per differenza</h2>
+        <p class="asked">«Sotto una certa soglia, per esempio 5 dipendenti, niente grafici: così non si risale alle persone.»</p>
+        <div class="state"><span class="pill ok">Deciso</span></div>
+      </div>
+    </div>
+    <p>Il meccanismo c'è già (Demo SA: 12 misurati). Cinque è la soglia minima classica delle statistiche pubbliche ed è difendibile per una singola fotografia; è troppo bassa per una serie mensile, dove chi guarda i mesi in sequenza ricostruisce chi entra e chi esce. E c'è una falla indipendente dalla cifra: la dashboard mostra <strong>il numero di misurati anche del reparto soppresso</strong> e <strong>la media aziendale</strong>; con medie e conteggi degli altri reparti, il valore del reparto nascosto si ricalcola con una sottrazione.</p>
+    <div class="agreed">
+      <p class="lbl">Accordato</p>
+      <ul>
+        <li>Soglia sui <strong>misurati nel periodo</strong> (non sull'organico), <strong>pavimento 5</strong>, <strong>default 10</strong>, parametro per cliente.</li>
+        <li>Per il reparto sotto soglia <strong>non si mostra il conteggio</strong>, oppure la media aziendale si calcola sui soli reparti pubblicati e lo si dice.</li>
+        <li>Il 12 di Demo SA è un valore del dataset, non la regola: resta.</li>
+      </ul>
+    </div>
+    <div class="horizon">
+      <div><span class="h">Demo</span><span>Chiudere la falla per differenza. È piccolo.</span></div>
+      <div><span class="h">MVP</span><span>Soglia per cliente con pavimento; regola scritta nel contratto dati (§3, invarianti).</span></div>
+      <div><span class="h">Finale</span><span>Per gruppi fra 5 e 9 solo la fascia (basso · medio · alto), il punteggio esatto da 10.</span></div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="q" id="q6">
+    <div class="qhead">
+      <span class="n">6</span>
+      <div class="titles">
+        <h2>L'intermediazione sulla cassa malati esce dal Business Plan</h2>
+        <p class="asked">«Intermediazione sull'assicurazione di base: cos'era?»</p>
+        <div class="state"><span class="pill ok">Deciso</span></div>
+      </div>
+    </div>
+    <p>Il Business Plan contava fra i ricavi le provvigioni di KORA come <strong>broker della cassa malati</strong> dei dipendenti. Dal 1.9.2024 la convenzione di settore è vincolante per legge: per una polizza di base la provvigione è <strong>al massimo CHF 70 una tantum</strong>, con divieto di telefonate a freddo, verbale di consulenza e obblighi formativi. E avvicinerebbe KORA agli assicuratori, che è uno dei divieti del posizionamento.</p>
+    <div class="agreed">
+      <p class="lbl">Accordato</p>
+      <ul>
+        <li>Si toglie dal Business Plan alla prossima stesura.</li>
+        <li>La strada inversa resta buona: <strong>l'assicuratore che vende KORA</strong> ai propri clienti aziendali, senza che un dato passi.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="q" id="q7">
+    <div class="qhead">
+      <span class="n">7</span>
+      <div class="titles">
+        <h2>I frontalieri sono il mercato, non un caso limite</h2>
+        <p class="asked">«I lavoratori frontalieri come vengono trattati dentro KORA?»</p>
+        <div class="state"><span class="pill check">Da verificare</span></div>
+      </div>
+    </div>
+    <p>In un'azienda ticinese da 120 persone i frontalieri possono essere un terzo o metà. Chi risiede in Italia ha il <strong>diritto di opzione</strong>: entro tre mesi dall'assunzione chiede l'esenzione dalla LAMal e resta nel sistema italiano. Vive nell'UE, quindi il GDPR si applica in pratica. Una seduta video con un paziente che si trova fisicamente in Italia potrebbe essere esercizio in Italia, dove vale l'obbligo di albo: non è chiaro. Il dovere del datore (ArGV3) vale per tutti i suoi dipendenti, residenza a parte.</p>
+    <div class="agreed">
+      <p class="lbl">Accordato</p>
+      <ul>
+        <li>Nel profilo, facoltativi: <strong>paese di residenza</strong> e <strong>regime assicurativo</strong> (LAMal · sistema italiano). Il binario LAMal esiste solo per chi ha la LAMal.</li>
+        <li>Progettare a <strong>standard GDPR</strong> fin dall'MVP: così il problema sparisce.</li>
+        <li>Rete con professionisti a <strong>doppia iscrizione</strong> (in Ticino sono tanti); termini di servizio che dicono per chi è il servizio.</li>
+        <li><strong>Numeri di emergenza per paese</strong>: 144 · 112.</li>
+      </ul>
+    </div>
+    <div class="horizon">
+      <div><span class="h">Demo</span><span class="none">Niente.</span></div>
+      <div><span class="h">MVP</span><span>I due campi nel profilo; emergenza per paese; termini.</span></div>
+      <div><span class="h">Finale</span><span>Parere sull'esercizio online verso l'Italia; eventuale rete italiana.</span></div>
+    </div>
+    <p class="who"><b>Chi serve:</b> avvocato, una volta, sull'esercizio online verso un paziente in Italia.</p>
+  </section>
+
+  <!-- 8 -->
+  <section class="q" id="q8">
+    <div class="qhead">
+      <span class="n">8</span>
+      <div class="titles">
+        <h2>Pagina del professionista: foto e bio in demo, video e recensioni nell'MVP</h2>
+        <p class="asked">«Pagina con immagine anche grande, video messaggio, bio e recensioni. Demo o MVP?»</p>
+        <div class="state"><span class="pill ok">Deciso</span></div>
+      </div>
+    </div>
+    <div class="agreed">
+      <p class="lbl">Accordato</p>
+      <ul>
+        <li><strong>Demo</strong>: foto, ma <strong>sintetiche o illustrate</strong> (il §8 vieta persone reali riconoscibili); bio e valutazione media ci sono già.</li>
+        <li><strong>MVP</strong>: video di presentazione (un video finto in demo sarebbe un vicolo cieco); recensioni <strong>verificate</strong> con regole: solo pazienti con sessioni erogate, moderate, senza contenuti clinici, il professionista non vede chi. È il gruppo 8.11 del contratto dati.</li>
+        <li>Due avvertenze: molte piattaforme cliniche serie non mostrano recensioni pubbliche, perché la soddisfazione non misura la qualità clinica e una recensione negativa espone il paziente; in Ticino la pubblicità delle professioni sanitarie deve essere «oggettiva» e le testimonianze sono a rischio.</li>
+      </ul>
+    </div>
+    <p class="who"><b>Chi serve:</b> la lettera all'Ufficio di sanità del Cantone, la stessa del colloquio gratuito e del protocollo: tre domande in una.</p>
+  </section>
+
+  <!-- 9 -->
+  <section class="q" id="q9">
+    <div class="qhead">
+      <span class="n">9</span>
+      <div class="titles">
+        <h2>Filtri: genere, specializzazione, lingua, primo orario</h2>
+        <p class="asked">«Filtri psicologo su donna/uomo e area di specializzazione.»</p>
+        <div class="state"><span class="pill check">Da verificare</span></div>
+      </div>
+    </div>
+    <div class="agreed">
+      <p class="lbl">Accordato</p>
+      <ul>
+        <li>Specializzazione e lingua esistono già nei dati. Il genere oggi è nascosto nella qualifica (<code>_f</code>/<code>_m</code>): serve un <strong>campo esplicito</strong> con «preferisco non dire».</li>
+        <li>Nessun problema legale: è una preferenza del paziente.</li>
+        <li>Il filtro che vale di più è <strong>«primo orario disponibile»</strong>.</li>
+      </ul>
+    </div>
+    <div class="horizon">
+      <div><span class="h">Demo</span><span>Con cinque professionisti i filtri danno uno o due risultati e sembrano rotti. <strong>Da decidere</strong>: allargare il roster del §8, oppure filtri solo nell'MVP.</span></div>
+      <div><span class="h">MVP</span><span>Campo genere; filtri genere · specializzazione · lingua · primo orario.</span></div>
+      <div><span class="h">Finale</span><span class="none">—</span></div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="q" id="q10">
+    <div class="qhead">
+      <span class="n">10</span>
+      <div class="titles">
+        <h2>Italia e UE: non ora, ma senza cablare la Svizzera dove non serve</h2>
+        <p class="asked">«La stiamo strutturando sotto normative svizzere. Per Italia o UE sarebbe un cambiamento enorme?»</p>
+        <div class="state"><span class="pill ok">Deciso</span></div>
+      </div>
+    </div>
+    <p>Nel software no, nel business sì. Modello dati, ruoli, anonimato, quattro lingue, contratto dati: tutto passa. Cambiano i <strong>moduli paese</strong>: chi paga (in Italia niente cassa malati: SSN e fondi integrativi), le credenziali dei professionisti (Ordine, albo), le regole di telemedicina, fatturazione elettronica e IVA, testi legali, numero d'emergenza, residenza dei dati, l'AI Act per intero. Stima: 20–30% del codice, 70% di lavoro legale-commerciale. Due cose a favore dell'Italia: la valutazione dello <strong>stress lavoro-correlato è obbligatoria</strong> (D.Lgs. 81/2008 art. 28), e l'assistenza psicologica come <strong>welfare aziendale</strong> è esente da tasse e contributi (art. 51 TUIR). Contro: prezzi più bassi e piattaforme di welfare già radicate.</p>
+    <div class="agreed">
+      <p class="lbl">Accordato</p>
+      <ul>
+        <li>Nessun lavoro per l'Italia ora.</li>
+        <li>Nel contratto dati dell'MVP un'astrazione <strong>«paese»</strong>: valuta, numero d'emergenza, tipi di credenziale, pagatore, testi legali, residenza dei dati.</li>
+        <li>Tre ipotesi svizzere oggi cablate nel codice, da sciogliere quando si tocca il punto: la valuta dentro <code>format.ts</code> (<code>formatCHF</code>), il 144 nelle stringhe, le qualifiche come lista chiusa.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- liste finali -->
+  <div class="block" id="demo-now">
+    <h2>Cosa cambia subito nella demo</h2>
+    <p class="note">Costa zero e un investitore lo vede.</p>
+    <ul>
+      <li><strong>Le parole del punto 1</strong>: «Piano di prevenzione AI» → «Piano di benessere», «A rischio» → «Da seguire». Voce di menu e rotta: decisione da prendere.</li>
+      <li><strong>La falla per differenza</strong> nella dashboard HR (punto 5).</li>
+      <li><strong>Il «molto male» del check rapido</strong> mostra i numeri e l'offerta di contatto (punto 3).</li>
+      <li><strong>Foto sintetiche</strong> dei professionisti, se si decide di farle ora (punto 8).</li>
+    </ul>
+  </div>
+
+  <div class="block" id="contract">
+    <h2>Cosa entra nel contratto dati per l'MVP</h2>
+    <ul>
+      <li>La sessione ha un <strong>pagatore</strong>: KORA · LAMal · complementare · paziente (punto 2).</li>
+      <li>La qualifica distingue lo <strong>psicoterapeuta riconosciuto LAMal</strong>; il professionista ha un <strong>genere</strong> esplicito (punti 2, 9).</li>
+      <li>Il piano porta il <strong>tetto annuo di rimborso</strong> della partecipazione (punto 2).</li>
+      <li>Il profilo porta, facoltativi, <strong>paese di residenza</strong>, <strong>regime assicurativo</strong>, <strong>contatto di emergenza</strong> e il <strong>consenso al contatto</strong> in caso di pericolo (punti 3, 7).</li>
+      <li>La <strong>soglia di anonimato</strong> è per cliente, con pavimento 5 e default 10 (punto 5).</li>
+      <li>Un'astrazione <strong>paese</strong> (punto 10).</li>
+      <li>Il gruppo 8.1 (escalation clinica) ha ora una forma decisa: nessun allarme automatico, numeri per paese, contatto umano (punto 3).</li>
+    </ul>
+  </div>
+
+  <div class="block" id="consultants">
+    <h2>Da portare ai consulenti, post-demo e pre-MVP</h2>
+    <ul>
+      <li><strong>Ufficio di sanità del Cantone Ticino</strong>, una lettera: colloquio gratuito, testimonianze/recensioni, protocollo (punti 3, 8).</li>
+      <li><strong>Avvocato</strong>: mandato e indipendenza (4), dicotomia e canone terapeuti (2), esercizio online verso l'Italia (7), procedura di crisi (3).</li>
+      <li><strong>Fiscalista</strong>: il rimborso della partecipazione ai costi come salario (2).</li>
+      <li><strong>Consulente regolatorio</strong>: memo di qualificazione del punteggio e del piano (1).</li>
+      <li><strong>Cassa AVS</strong>: chiarimento di statuto dei professionisti (4).</li>
+      <li><strong>Responsabile clinico</strong>: da nominare prima del primo utente (3).</li>
+    </ul>
+  </div>
+
+  <footer class="end">
+    <span>Fonti principali: UFSP (disciplinamento psicoterapeuti 1.7.2022; frontalieri), Atupri (psicoterapia online), Aepsy (copertura), SVV e Beobachter (convenzione intermediari), Artias (Uber, TF 2022–2023), Leitfaden Schweigepflicht Basel-Stadt 2023 e RDAT Ticino (segreto professionale), Swissmedic e MDCG 2019-11 (software medico), FPF e linee guida della Commissione UE 2025 (AI Act art. 5), CSA (Digital Omnibus).</span>
+    <span>Le cifre del calcolatore sono ipotesi di lavoro, non tariffe contrattuali.</span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const chf = (v) => "CHF " + Math.round(v).toLocaleString("de-CH").replace(/’|’|'/g, "'");
+  const QUOTA_CAP = 700;
+
+  function read() {
+    return {
+      t: +$("t").value || 0, fee: +$("fee").value || 0, incl: +$("incl").value || 0,
+      copay: +$("copay").value || 0, cap: +$("cap").value || 0,
+    };
+  }
+  function oop(n, F, p) {
+    const tot = n * p.t; const fr = Math.min(tot, F); const rest = Math.max(0, tot - fr);
+    return fr + Math.min(0.10 * rest, QUOTA_CAP);
+  }
+  function kora(n, p) {
+    const k = Math.min(n, p.incl) * p.fee + Math.max(0, n - p.incl) * Math.max(0, p.fee - p.copay);
+    const e = Math.max(0, n - p.incl) * p.copay;
+    return { k, e, ther: n * p.fee };
+  }
+  function lamal(n, F, p) {
+    const o = oop(n, F, p); const k = Math.min(o, p.cap);
+    return { k, e: o - k, ther: n * p.t };
+  }
+  function choose(n, F, p) {
+    const a = kora(n, p), b = lamal(n, F, p);
+    const tie = $("tie").checked && b.e === a.e && b.k < a.k;
+    return (b.e < a.e || tie) ? { track: "lamal", ...b } : { track: "kora", ...a };
+  }
+
+  function renderOne() {
+    const p = read(); const F = +$("fr").value; const n = +$("n").value;
+    $("nval").textContent = n;
+    const a = kora(n, p), b = lamal(n, F, p);
+    $("k1").textContent = chf(a.k); $("k2").textContent = chf(b.k);
+    $("e1").textContent = chf(a.e); $("e2").textContent = chf(b.e);
+    $("p1").textContent = chf(a.ther); $("p2").textContent = chf(b.ther);
+    for (const id of ["k1","k2","e1","e2"]) $(id).classList.remove("best","worse");
+    if (a.e !== b.e) { (a.e < b.e ? $("e1") : $("e2")).classList.add("best"); (a.e < b.e ? $("e2") : $("e1")).classList.add("worse"); }
+    if (a.k !== b.k) { (a.k < b.k ? $("k1") : $("k2")).classList.add("best"); }
+    const pick = choose(n, F, p);
+    const who = pick.track === "lamal" ? "il binario LAMal" : "il binario KORA";
+    const saving = Math.abs(a.e - b.e);
+    let first = `<b>Per questo dipendente conviene ${who}</b>`;
+    if (a.e === b.e) first += pick.track === "lamal" ? `: paga zero su tutti e due, e KORA propone la LAMal perché le costa meno.` : `: paga zero su tutti e due, e sul binario KORA non c'è diagnosi.`;
+    else first += ` (risparmia ${chf(saving)} nell'anno).`;
+    const line = `<span>${first}</span><span>KORA paga ${chf(pick.k)}; il terapeuta incassa ${chf(pick.ther)}.</span>`;
+    $("verdict").innerHTML = line;
+    const leak = Math.max(0, p.fee - p.copay);
+    $("leak").textContent = chf(leak) + " / sessione";
+    if (leak > 0) {
+      $("bound").textContent = "Nessun tetto";
+      $("bound-d").textContent = `il tetto vale solo sul binario LAMal: sul binario KORA ogni sessione oltre le incluse costa a KORA ${chf(leak)}, senza limite`;
+      $("bound-box").classList.add("bad");
+      $("warn").hidden = false;
+      $("warn").innerHTML = `<b>Il binario KORA resta aperto.</b><span>Con il co-payment a ${chf(p.copay)} e il compenso a ${chf(p.fee)}, KORA perde ${chf(leak)} per ogni sessione oltre le ${p.incl} incluse, quante ne faccia il dipendente. Il tetto annuo limita solo il binario LAMal. Per chiudere anche il binario KORA, porta il co-payment almeno a ${chf(p.fee)}: da lì il percorso lungo conviene alla LAMal a qualunque franchigia.</span>`;
+    } else {
+      $("bound").textContent = chf(Math.max(p.incl * p.fee, p.cap));
+      $("bound-d").textContent = "il maggiore fra le incluse × compenso e il tetto";
+      $("bound-box").classList.remove("bad");
+      $("warn").hidden = true;
+    }
+  }
+
+  function shares(ids) {
+    const v = ids.map((id) => Math.max(0, +$(id).value || 0)); const s = v.reduce((x, y) => x + y, 0) || 1;
+    return v.map((x) => x / s);
+  }
+  function renderPool() {
+    const p = read();
+    const users = Math.max(0, +$("users").value || 0);
+    const FR = [300, 1000, 2500], NS = [3, 10, 20];
+    const fs = shares(["f1","f2","f3"]), us = shares(["u1","u2","u3"]);
+    let today = 0, hyb = 0; const rows = [];
+    FR.forEach((F, i) => {
+      const cells = [];
+      NS.forEach((n, j) => {
+        const w = fs[i] * us[j]; const a = kora(n, p); const c = choose(n, F, p);
+        today += w * a.k; hyb += w * c.k;
+        cells.push({ track: c.track, k: c.k });
+      });
+      rows.push({ F, cells });
+    });
+    const fee = Math.max(0, +$("ther").value || 0) * Math.max(0, +$("fee-m").value || 0) * 12;
+    const tToday = today * users, tHyb = hyb * users - fee;
+    $("pk-today").textContent = chf(today); $("pk-hyb").textContent = chf(hyb);
+    $("pt-today").textContent = chf(tToday); $("pt-hyb").textContent = chf(tHyb);
+    const diff = tToday - tHyb;
+    $("pt-diff").textContent = diff >= 0 ? `KORA spende ${chf(diff)} in meno` : `KORA spende ${chf(-diff)} in più`;
+    $("pt-box").classList.toggle("good", diff > 0); $("pt-box").classList.toggle("bad", diff < 0);
+    $("gridbody").innerHTML = rows.map((r) =>
+      `<tr><td>Franchigia ${r.F.toLocaleString("de-CH").replace(/’|’/g, "'")}</td>` +
+      r.cells.map((c) => `<td class="${c.track === "lamal" ? "pick" : ""}">${c.track === "lamal" ? "LAMal" : "KORA"} · ${chf(c.k)}</td>`).join("") + "</tr>"
+    ).join("");
+  }
+
+  function renderAll() { renderOne(); renderPool(); }
+  document.querySelectorAll("#calc input, #calc select").forEach((el) => el.addEventListener("input", renderAll));
+  renderAll();
+})();
+</script>
+
+</body>
+</html>

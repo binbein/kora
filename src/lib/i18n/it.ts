@@ -322,6 +322,8 @@ export const it = {
       title: "Parla con qualcuno",
       subtitle:
         "Psicologi e coach della rete Kora. Scegli chi ti segue e prenota quando ti è comodo.",
+      /** "Prima sessione entro 72 ore, in video" */
+      firstSession: "Prima sessione entro {hours} ore, in video",
       filter: {
         psychologist: "Psicologi",
         coach: "Coach",
@@ -1381,6 +1383,8 @@ export const it = {
       cta: "Richiedi preventivo",
 
       feature: {
+        /** "Prima sessione entro 72 ore" */
+        firstSession: "Prima sessione entro {hours} ore",
         /** "10 sessioni di psicologo all'anno" */
         sessions: "{count} sessioni di psicologo all'anno",
         /* "una volta" è l'informazione: il §9 lo dà una sola volta, non a ogni

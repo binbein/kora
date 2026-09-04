@@ -292,6 +292,7 @@ export const en: Dictionary = {
       title: "Talk to someone",
       subtitle:
         "Psychologists and coaches in the Kora network. Choose who supports you and book when it suits you.",
+      firstSession: "First session within {hours} hours, by video",
       filter: {
         psychologist: "Psychologists",
         coach: "Coaches",
@@ -1022,6 +1023,7 @@ export const en: Dictionary = {
       cta: "Request a quote",
 
       feature: {
+        firstSession: "First session within {hours} hours",
         sessions: "{count} psychologist sessions a year",
         intro: "Free introductory consultation, once",
         coach: "{count} coach sessions a year",

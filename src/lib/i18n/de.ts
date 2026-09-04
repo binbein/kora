@@ -278,6 +278,7 @@ export const de: Dictionary = {
       title: "Sprich mit jemandem",
       subtitle:
         "Psychologinnen, Psychologen und Coaches im Kora-Netzwerk. Wähle, wer dich begleitet, und buche, wann es dir passt.",
+      firstSession: "Erste Sitzung innert {hours} Stunden, per Video",
       filter: {
         psychologist: "Psychologie",
         coach: "Coaching",
@@ -976,6 +977,7 @@ export const de: Dictionary = {
       cta: "Offerte anfragen",
 
       feature: {
+        firstSession: "Erste Sitzung innert {hours} Stunden",
         sessions: "{count} Psychologiesitzungen pro Jahr",
         intro: "Kostenloses Erstgespräch, einmalig",
         coach: "{count} Coaching-Sitzungen pro Jahr",
