@@ -1350,7 +1350,8 @@ export const it = {
       linearityNote:
         "Ogni voce cresce in proporzione all'organico: il rapporto resta {ratio} a qualunque numero di dipendenti.",
 
-      sources: "Scenario conservativo. Fonti: SECO, Job Stress Index.",
+      sources:
+        "Scenario conservativo. Fonti: SECO 2024, Job Stress Index 2024, Eurofound; il costo del turnover è una stima conservativa.",
 
       ctaTitle: "Questi numeri, sulla vostra azienda",
       ctaBody:

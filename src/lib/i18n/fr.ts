@@ -1051,7 +1051,8 @@ export const fr: Dictionary = {
       linearityNote:
         "Chaque poste croît proportionnellement à l'effectif : le rapport reste {ratio} quel que soit le nombre de collaborateurs.",
 
-      sources: "Scénario conservateur. Sources : SECO, Job Stress Index.",
+      sources:
+        "Scénario conservateur. Sources : SECO 2024, Job Stress Index 2024, Eurofound ; le coût du turnover est une estimation conservatrice.",
 
       ctaTitle: "Ces chiffres, sur votre entreprise",
       ctaBody:

@@ -998,7 +998,8 @@ export const en: Dictionary = {
       linearityNote:
         "Every item grows in proportion to headcount: the ratio stays {ratio} at any number of employees.",
 
-      sources: "Conservative scenario. Sources: SECO, Job Stress Index.",
+      sources:
+        "Conservative scenario. Sources: SECO 2024, Job Stress Index 2024, Eurofound; the turnover cost is a conservative estimate.",
 
       ctaTitle: "These figures, on your company",
       ctaBody:

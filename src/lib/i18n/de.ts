@@ -953,7 +953,8 @@ export const de: Dictionary = {
       linearityNote:
         "Jede Position wächst proportional zur Belegschaft: das Verhältnis bleibt {ratio} bei jeder Anzahl Mitarbeitender.",
 
-      sources: "Konservatives Szenario. Quellen: SECO, Job Stress Index.",
+      sources:
+        "Konservatives Szenario. Quellen: SECO 2024, Job Stress Index 2024, Eurofound; die Fluktuationskosten sind eine konservative Schätzung.",
 
       ctaTitle: "Diese Zahlen, auf Ihr Unternehmen gerechnet",
       ctaBody:
