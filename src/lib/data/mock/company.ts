@@ -31,6 +31,7 @@ export const PLANS: Record<PlanId, Plan> = {
     extraSessionPrice: 35,
     virtualDoctorSlaHours: 12,
     virtualDoctorConsultsPerYear: 3,
+    firstSessionWithinHours: 72,
     // una volta sola, non uno per sessione: scritto senza il tetto si legge
     // come un extra ricorrente (§9)
     freeIntroInterview: true,
@@ -43,6 +44,7 @@ export const PLANS: Record<PlanId, Plan> = {
     extraSessionPrice: 28,
     virtualDoctorSlaHours: 4,
     virtualDoctorConsultsPerYear: "unlimited",
+    firstSessionWithinHours: 72,
     coachSessionsPerYear: 4,
     checkup: "annual",
     aiPlanEveryMonths: 6,
@@ -62,6 +64,7 @@ export const PLANS: Record<PlanId, Plan> = {
     extraSessionPrice: 22,
     virtualDoctorSlaHours: 1,
     virtualDoctorConsultsPerYear: "unlimited",
+    firstSessionWithinHours: 72,
     coachSessionsPerYear: 6,
     nutritionistSessionsPerYear: 4,
     liveWorkshopsPerYear: 2,

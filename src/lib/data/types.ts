@@ -83,6 +83,19 @@ export type Plan = {
   /** Ore entro cui il medico virtuale risponde: 12 / 4 / 1 */
   virtualDoctorSlaHours: number;
   /**
+   * Ore entro cui il piano promette la prima sessione: 72 su tutti e tre (§9).
+   *
+   * **Obbligatorio**, come `hrDashboard` e per la stessa ragione: il §9 lo
+   * dichiara per tutti e tre i piani, quindi non esiste il caso "il contratto
+   * commerciale non lo prevede" e un campo assente sarebbe indistinguibile da
+   * un piano su cui nessuno ha ancora deciso.
+   *
+   * Oggi i tre valori coincidono, e il campo esiste lo stesso invece di essere
+   * una costante: è una **promessa del contratto commerciale**, quindi il
+   * giorno in cui un piano la stringe cambia il dato e non la schermata.
+   */
+  firstSessionWithinHours: number;
+  /**
    * Consulti di medico virtuale inclusi in un anno: tre sull'Essenziale, senza
    * tetto sugli altri due. `"unlimited"` invece del campo assente, perché un
    * piano senza tetto e un piano di cui non conosciamo il tetto sono due cose
