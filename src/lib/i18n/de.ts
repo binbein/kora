@@ -271,7 +271,7 @@ export const de: Dictionary = {
         body: "Tipp erneut, um es nochmals zu versuchen.",
       },
       done: "Danke, erfasst.",
-      doneHint: "Du kannst deine Antwort heute noch ändern. Danach fragen wir dich wieder.",
+      doneHint: "Du kannst deine Antwort heute noch ändern.",
     },
 
     psychologists: {
@@ -843,8 +843,8 @@ export const de: Dictionary = {
           body: "Das Dashboard zeigt anonyme Statistiken, aggregiert nach Abteilung oder Unternehmen.",
         },
         encryption: {
-          title: "Ende-zu-Ende-Verschlüsselung",
-          body: "Die Gesundheitsdaten sind bei der Übertragung und im Ruhezustand nach AES-256 verschlüsselt.",
+          title: "Verschlüsselt bei Übertragung und Speicherung",
+          body: "Die Gesundheitsdaten werden verschlüsselt übertragen (TLS) und verschlüsselt gespeichert.",
         },
         hosting: {
           title: "Hosting in der Schweiz",
@@ -979,7 +979,7 @@ export const de: Dictionary = {
       feature: {
         firstSession: "Erste Sitzung innert {hours} Stunden",
         sessions: "{count} Psychologiesitzungen pro Jahr",
-        intro: "Kostenloses Erstgespräch, einmalig",
+        intro: "Erstgespräch inbegriffen, einmalig",
         coach: "{count} Coaching-Sitzungen pro Jahr",
         psychiatrist: "Psychiatrische Betreuung auf Anfrage inbegriffen",
         nutritionist: "{count} Ernährungsberatungen pro Jahr",
@@ -1111,7 +1111,7 @@ export const de: Dictionary = {
         hosting: "Hosting in der Schweiz",
         gdpr: "DSGVO-konform",
         lpd: "DSG-konform",
-        encryption: "Ende-zu-Ende-Verschlüsselung",
+        encryption: "Verschlüsselt bei Übertragung und Speicherung",
       },
 
       finalTitle: "Holen Sie Kora in Ihr Unternehmen.",

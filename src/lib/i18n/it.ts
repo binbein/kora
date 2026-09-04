@@ -309,7 +309,7 @@ export const it = {
         body: "Tocca di nuovo per riprovare.",
       },
       done: "Grazie, registrato.",
-      doneHint: "Puoi cambiare la risposta finché è oggi. Poi te lo chiediamo di nuovo.",
+      doneHint: "Puoi cambiare la risposta finché è oggi.",
     },
 
     /*
@@ -1183,8 +1183,8 @@ export const it = {
           body: "La dashboard mostra statistiche anonime, aggregate per reparto o per azienda.",
         },
         encryption: {
-          title: "Crittografia end-to-end",
-          body: "I dati sanitari sono crittografati in transito e a riposo con standard AES-256.",
+          title: "Cifratura in transito e a riposo",
+          body: "I dati sanitari viaggiano cifrati (TLS) e sono conservati cifrati.",
         },
         hosting: {
           title: "Hosting in Svizzera",
@@ -1389,7 +1389,7 @@ export const it = {
         sessions: "{count} sessioni di psicologo all'anno",
         /* "una volta" è l'informazione: il §9 lo dà una sola volta, non a ogni
            sessione, e senza il tetto si legge come un extra ricorrente. */
-        intro: "Colloquio conoscitivo gratuito, una volta",
+        intro: "Colloquio conoscitivo incluso, una volta",
         /** "4 sessioni di coach all'anno" */
         coach: "{count} sessioni di coach all'anno",
         psychiatrist: "Psichiatra su richiesta incluso",
@@ -1585,7 +1585,7 @@ export const it = {
         hosting: "Hosting in Svizzera",
         gdpr: "Conforme GDPR",
         lpd: "Conforme LPD",
-        encryption: "Crittografia end-to-end",
+        encryption: "Cifratura in transito e a riposo",
       },
 
       finalTitle: "Porta Kora nella tua azienda.",

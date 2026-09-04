@@ -327,7 +327,7 @@ export const fr: Dictionary = {
         body: "Appuie à nouveau pour réessayer.",
       },
       done: "Merci, c'est enregistré.",
-      doneHint: "Tu peux encore changer ta réponse aujourd'hui. Ensuite, on te redemandera.",
+      doneHint: "Tu peux encore changer ta réponse aujourd'hui.",
     },
 
     psychologists: {
@@ -933,8 +933,8 @@ export const fr: Dictionary = {
           body: "Le tableau de bord montre des statistiques anonymes, agrégées par département ou par entreprise.",
         },
         encryption: {
-          title: "Chiffrement de bout en bout",
-          body: "Les données de santé sont chiffrées en transit et au repos, avec le standard AES-256.",
+          title: "Chiffrement en transit et au repos",
+          body: "Les données de santé circulent chiffrées (TLS) et sont conservées chiffrées.",
         },
         hosting: {
           title: "Hébergement en Suisse",
@@ -1077,7 +1077,7 @@ export const fr: Dictionary = {
       feature: {
         firstSession: "Première séance dans les {hours} heures",
         sessions: "{count} séances de psychologue par an",
-        intro: "Entretien de découverte gratuit, une fois",
+        intro: "Entretien de découverte inclus, une fois",
         coach: "{count} séances de coach par an",
         psychiatrist: "Psychiatre sur demande inclus",
         nutritionist: "{count} séances de nutritionniste par an",
@@ -1208,7 +1208,7 @@ export const fr: Dictionary = {
         hosting: "Hébergement en Suisse",
         gdpr: "Conforme au RGPD",
         lpd: "Conforme à la LPD",
-        encryption: "Chiffrement de bout en bout",
+        encryption: "Chiffrement en transit et au repos",
       },
 
       finalTitle: "Amenez Kora dans votre entreprise.",

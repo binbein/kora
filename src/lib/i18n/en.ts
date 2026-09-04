@@ -285,7 +285,7 @@ export const en: Dictionary = {
         body: "Tap again to try once more.",
       },
       done: "Thanks, recorded.",
-      doneHint: "You can still change your answer today. Then we'll ask you again.",
+      doneHint: "You can still change your answer today.",
     },
 
     psychologists: {
@@ -884,8 +884,8 @@ export const en: Dictionary = {
           body: "The dashboard shows anonymous statistics, aggregated by department or by organisation.",
         },
         encryption: {
-          title: "End-to-end encryption",
-          body: "Health data is encrypted in transit and at rest, to the AES-256 standard.",
+          title: "Encrypted in transit and at rest",
+          body: "Health data travels encrypted (TLS) and is stored encrypted.",
         },
         hosting: {
           title: "Hosting in Switzerland",
@@ -1025,7 +1025,7 @@ export const en: Dictionary = {
       feature: {
         firstSession: "First session within {hours} hours",
         sessions: "{count} psychologist sessions a year",
-        intro: "Free introductory consultation, once",
+        intro: "Introductory consultation included, once",
         coach: "{count} coach sessions a year",
         psychiatrist: "Psychiatrist on request included",
         nutritionist: "{count} nutritionist sessions a year",
@@ -1155,7 +1155,7 @@ export const en: Dictionary = {
         hosting: "Hosting in Switzerland",
         gdpr: "GDPR compliant",
         lpd: "FADP compliant",
-        encryption: "End-to-end encryption",
+        encryption: "Encrypted in transit and at rest",
       },
 
       finalTitle: "Bring Kora into your company.",
