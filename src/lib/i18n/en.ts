@@ -177,7 +177,7 @@ export const en: Dictionary = {
   healthSummary: {
     balanced: "Well balanced",
     attention: "Worth watching",
-    at_risk: "At risk",
+    at_risk: "Worth following up",
   },
 
   sessionType: {
@@ -206,7 +206,7 @@ export const en: Dictionary = {
       psychologists: "Psychologists",
       doctor: "Doctor",
       checkup: "Check-up",
-      aiPlan: "AI plan",
+      aiPlan: "Wellbeing",
     },
 
     identity: "{company} · {plan}",
@@ -244,7 +244,7 @@ export const en: Dictionary = {
         nutrition: "Nutrition deserves some attention",
         mental: "Mental health deserves some attention",
       },
-      weakestAreaHint: "It's where your prevention plan starts.",
+      weakestAreaHint: "It's where your wellbeing plan starts.",
 
       appointmentsTitle: "Your next appointments",
       appointmentsEmpty: "You don't have any appointments scheduled.",
@@ -266,7 +266,7 @@ export const en: Dictionary = {
       doctorConsults: "{n} consultations this year",
       checkupDone: "Done",
 
-      planTitle: "From your prevention plan",
+      planTitle: "From your wellbeing plan",
       planCta: "See the plan",
     },
 
@@ -285,13 +285,14 @@ export const en: Dictionary = {
         body: "Tap again to try once more.",
       },
       done: "Thanks, recorded.",
-      doneHint: "You can still change your answer today. Then we'll ask you again.",
+      doneHint: "You can still change your answer today.",
     },
 
     psychologists: {
       title: "Talk to someone",
       subtitle:
         "Psychologists and coaches in the Kora network. Choose who supports you and book when it suits you.",
+      firstSession: "First session within {hours} hours, by video",
       filter: {
         psychologist: "Psychologists",
         coach: "Coaches",
@@ -419,7 +420,7 @@ export const en: Dictionary = {
         explanationTitle: "What this means",
         explanation: {
           laura:
-            "Your cholesterol is slightly above the recommended value and your stress-related risk is moderate. It isn't an emergency: follow your prevention plan and repeat the test at your next check-up.",
+            "Your cholesterol is slightly above the recommended value and your stress-related risk is moderate. It isn't an emergency: follow your wellbeing plan and repeat the test at your next check-up.",
         },
         disclaimer:
           "Demonstration report with example values. It is not a clinical document and does not replace the report from the centre carrying out the check-up.",
@@ -458,7 +459,7 @@ export const en: Dictionary = {
     },
 
     aiPlan: {
-      title: "Prevention plan",
+      title: "Wellbeing plan",
       subtitle: "Built on your health profile.",
       generated: "Updated in {month}",
       nextUpdate: "The next update is in {month}.",
@@ -883,8 +884,8 @@ export const en: Dictionary = {
           body: "The dashboard shows anonymous statistics, aggregated by department or by organisation.",
         },
         encryption: {
-          title: "End-to-end encryption",
-          body: "Health data is encrypted in transit and at rest, to the AES-256 standard.",
+          title: "Encrypted in transit and at rest",
+          body: "Health data travels encrypted (TLS) and is stored encrypted.",
         },
         hosting: {
           title: "Hosting in Switzerland",
@@ -951,6 +952,7 @@ export const en: Dictionary = {
       legalCookies: "Cookie policy",
 
       copyright: "© {year} Kora Switzerland SA. All rights reserved.",
+      demoNote: "Demo · fictional data · no data leaves this browser",
     },
 
     roi: {
@@ -996,7 +998,8 @@ export const en: Dictionary = {
       linearityNote:
         "Every item grows in proportion to headcount: the ratio stays {ratio} at any number of employees.",
 
-      sources: "Conservative scenario. Sources: SECO, Job Stress Index.",
+      sources:
+        "Conservative scenario. Sources: SECO 2024, Job Stress Index 2024, Eurofound; the turnover cost is a conservative estimate.",
 
       ctaTitle: "These figures, on your company",
       ctaBody:
@@ -1022,8 +1025,9 @@ export const en: Dictionary = {
       cta: "Request a quote",
 
       feature: {
+        firstSession: "First session within {hours} hours",
         sessions: "{count} psychologist sessions a year",
-        intro: "Free introductory consultation, once",
+        intro: "Introductory consultation included, once",
         coach: "{count} coach sessions a year",
         psychiatrist: "Psychiatrist on request included",
         nutritionist: "{count} nutritionist sessions a year",
@@ -1040,8 +1044,8 @@ export const en: Dictionary = {
           executive:
             "Full executive check-up: ECG, abdominal ultrasound, eye test, complete blood panel",
         },
-        aiPlanMonthly: "AI prevention plan updated every month",
-        aiPlanEveryMonths: "AI prevention plan updated every {months} months",
+        aiPlanMonthly: "Wellbeing plan updated every month",
+        aiPlanEveryMonths: "Wellbeing plan updated every {months} months",
         hrDashboard: {
           base: "Basic HR dashboard and ROI: usage, anonymised stress, savings in CHF",
           department:
@@ -1079,7 +1083,7 @@ export const en: Dictionary = {
       heroTitleLead: "Workplace health,",
       heroTitleAccent: "finally integrated.",
       heroBody:
-        "Kora brings together online psychologists, a virtual doctor, physical check-ups, AI prevention and an anonymous HR dashboard in a single subscription per employee.",
+        "Kora brings together online psychologists, a virtual doctor, physical check-ups, a wellbeing plan and an anonymous HR dashboard in a single subscription per employee.",
       heroCtaRoi: "Calculate the return",
       heroCtaDemo: "Book a demo",
       heroCompliance: "Hosting in Switzerland. GDPR and FADP compliant.",
@@ -1121,7 +1125,7 @@ export const en: Dictionary = {
       value: {
         employee: {
           title: "For the employee",
-          body: "Simple access to mental health, a virtual doctor and prevention. All private, all in one place.",
+          body: "Simple access to mental health, a virtual doctor and wellbeing. All private, all in one place.",
         },
         company: {
           title: "For the company",
@@ -1153,7 +1157,7 @@ export const en: Dictionary = {
         hosting: "Hosting in Switzerland",
         gdpr: "GDPR compliant",
         lpd: "FADP compliant",
-        encryption: "End-to-end encryption",
+        encryption: "Encrypted in transit and at rest",
       },
 
       finalTitle: "Bring Kora into your company.",
@@ -1173,7 +1177,7 @@ export const en: Dictionary = {
       messageLabel: "Message",
       optional: "optional",
       privacy:
-        "Data will be processed in line with the Swiss FADP and the GDPR.",
+        "This is a demo: the request stays in your browser and is not sent to anyone.",
       submit: "Send the request",
       submitting: "Sending",
       error: {

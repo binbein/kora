@@ -212,7 +212,7 @@ export const fr: Dictionary = {
   healthSummary: {
     balanced: "En bon équilibre",
     attention: "À surveiller",
-    at_risk: "À risque",
+    at_risk: "À accompagner",
   },
 
   sessionType: {
@@ -247,7 +247,7 @@ export const fr: Dictionary = {
       psychologists: "Psychologues",
       doctor: "Médecin",
       checkup: "Check-up",
-      aiPlan: "Plan IA",
+      aiPlan: "Bien-être",
     },
 
     identity: "{company} · {plan}",
@@ -283,7 +283,7 @@ export const fr: Dictionary = {
         nutrition: "L'alimentation mérite de l'attention",
         mental: "La santé mentale mérite de l'attention",
       },
-      weakestAreaHint: "C'est le point de départ de ton plan de prévention.",
+      weakestAreaHint: "C'est le point de départ de ton plan de bien-être.",
 
       appointmentsTitle: "Tes prochains rendez-vous",
       appointmentsEmpty: "Tu n'as aucun rendez-vous prévu.",
@@ -308,7 +308,7 @@ export const fr: Dictionary = {
       doctorConsults: "{n} consultations cette année",
       checkupDone: "Fait",
 
-      planTitle: "De ton plan de prévention",
+      planTitle: "De ton plan de bien-être",
       planCta: "Voir le plan",
     },
 
@@ -327,13 +327,14 @@ export const fr: Dictionary = {
         body: "Appuie à nouveau pour réessayer.",
       },
       done: "Merci, c'est enregistré.",
-      doneHint: "Tu peux encore changer ta réponse aujourd'hui. Ensuite, on te redemandera.",
+      doneHint: "Tu peux encore changer ta réponse aujourd'hui.",
     },
 
     psychologists: {
       title: "Parle à quelqu'un",
       subtitle:
         "Psychologues et coachs du réseau Kora. Choisis qui t'accompagne et réserve quand cela t'arrange.",
+      firstSession: "Première séance dans les {hours} heures, en vidéo",
       filter: {
         psychologist: "Psychologues",
         coach: "Coachs",
@@ -461,7 +462,7 @@ export const fr: Dictionary = {
         explanationTitle: "Ce que cela veut dire",
         explanation: {
           laura:
-            "Le cholestérol est légèrement au-dessus de la valeur conseillée et le risque lié au stress est modéré. Ce n'est pas une urgence : suis le plan de prévention et refais le contrôle au prochain check-up.",
+            "Le cholestérol est légèrement au-dessus de la valeur conseillée et le risque lié au stress est modéré. Ce n'est pas une urgence : suis le plan de bien-être et refais le contrôle au prochain check-up.",
         },
         disclaimer:
           "Rapport de démonstration avec des valeurs d'exemple. Ce n'est pas un document clinique et il ne remplace pas le rapport du centre qui effectue le check-up.",
@@ -500,7 +501,7 @@ export const fr: Dictionary = {
     },
 
     aiPlan: {
-      title: "Plan de prévention",
+      title: "Plan de bien-être",
       subtitle: "Construit sur ton profil de santé.",
       generated: "Mis à jour en {month}",
       nextUpdate: "La prochaine mise à jour est en {month}.",
@@ -932,8 +933,8 @@ export const fr: Dictionary = {
           body: "Le tableau de bord montre des statistiques anonymes, agrégées par département ou par entreprise.",
         },
         encryption: {
-          title: "Chiffrement de bout en bout",
-          body: "Les données de santé sont chiffrées en transit et au repos, avec le standard AES-256.",
+          title: "Chiffrement en transit et au repos",
+          body: "Les données de santé circulent chiffrées (TLS) et sont conservées chiffrées.",
         },
         hosting: {
           title: "Hébergement en Suisse",
@@ -999,6 +1000,8 @@ export const fr: Dictionary = {
       legalCookies: "Politique de cookies",
 
       copyright: "© {year} Kora Switzerland SA. Tous droits réservés.",
+      demoNote:
+        "Démo · données fictives · aucune donnée ne quitte ce navigateur",
     },
 
     roi: {
@@ -1048,7 +1051,8 @@ export const fr: Dictionary = {
       linearityNote:
         "Chaque poste croît proportionnellement à l'effectif : le rapport reste {ratio} quel que soit le nombre de collaborateurs.",
 
-      sources: "Scénario conservateur. Sources : SECO, Job Stress Index.",
+      sources:
+        "Scénario conservateur. Sources : SECO 2024, Job Stress Index 2024, Eurofound ; le coût du turnover est une estimation conservatrice.",
 
       ctaTitle: "Ces chiffres, sur votre entreprise",
       ctaBody:
@@ -1074,8 +1078,9 @@ export const fr: Dictionary = {
       cta: "Demander une offre",
 
       feature: {
+        firstSession: "Première séance dans les {hours} heures",
         sessions: "{count} séances de psychologue par an",
-        intro: "Entretien de découverte gratuit, une fois",
+        intro: "Entretien de découverte inclus, une fois",
         coach: "{count} séances de coach par an",
         psychiatrist: "Psychiatre sur demande inclus",
         nutritionist: "{count} séances de nutritionniste par an",
@@ -1092,9 +1097,9 @@ export const fr: Dictionary = {
           executive:
             "Check-up executive complet : ECG, échographie abdominale, ophtalmologue, bilan sanguin complet",
         },
-        aiPlanMonthly: "Plan de prévention IA mis à jour chaque mois",
+        aiPlanMonthly: "Plan de bien-être mis à jour chaque mois",
         aiPlanEveryMonths:
-          "Plan de prévention IA mis à jour tous les {months} mois",
+          "Plan de bien-être mis à jour tous les {months} mois",
         hrDashboard: {
           base: "Tableau de bord RH et ROI de base : utilisation, stress anonymisé, économies en CHF",
           department:
@@ -1132,7 +1137,7 @@ export const fr: Dictionary = {
       heroTitleLead: "La santé en entreprise,",
       heroTitleAccent: "enfin intégrée.",
       heroBody:
-        "Kora réunit psychologues en ligne, médecin virtuel, check-up physiques, prévention IA et tableau de bord RH anonyme dans un seul abonnement par collaborateur.",
+        "Kora réunit psychologues en ligne, médecin virtuel, check-up physiques, plan de bien-être et tableau de bord RH anonyme dans un seul abonnement par collaborateur.",
       heroCtaRoi: "Calculer le retour",
       heroCtaDemo: "Réserver une démo",
       heroCompliance: "Hébergement en Suisse. Conforme au RGPD et à la LPD.",
@@ -1174,7 +1179,7 @@ export const fr: Dictionary = {
       value: {
         employee: {
           title: "Pour le collaborateur",
-          body: "Un accès simple à la santé mentale, au médecin virtuel et à la prévention. Tout est privé, tout est au même endroit.",
+          body: "Un accès simple à la santé mentale, au médecin virtuel et au bien-être. Tout est privé, tout est au même endroit.",
         },
         company: {
           title: "Pour l'entreprise",
@@ -1206,7 +1211,7 @@ export const fr: Dictionary = {
         hosting: "Hébergement en Suisse",
         gdpr: "Conforme au RGPD",
         lpd: "Conforme à la LPD",
-        encryption: "Chiffrement de bout en bout",
+        encryption: "Chiffrement en transit et au repos",
       },
 
       finalTitle: "Amenez Kora dans votre entreprise.",
@@ -1227,7 +1232,7 @@ export const fr: Dictionary = {
       messageLabel: "Message",
       optional: "facultatif",
       privacy:
-        "Les données seront traitées conformément à la LPD suisse et au RGPD.",
+        "Ceci est une démo : la demande reste dans votre navigateur et n'est envoyée à personne.",
       submit: "Envoyer la demande",
       submitting: "Envoi en cours",
       error: {

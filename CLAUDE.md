@@ -9,7 +9,7 @@ file, segnalarlo prima di procedere.
 
 KORA è una piattaforma B2B di salute aziendale per il mercato svizzero (abbonamento
 mensile per dipendente: psicologo con cap annuale, coach, medico virtuale, check-up
-fisico, prevenzione AI, dashboard HR con ROI).
+fisico, piano di benessere, dashboard HR con ROI).
 
 Questo repository ha **due obiettivi insieme**, e l'ordine conta:
 
@@ -866,7 +866,7 @@ niente refetch al focus della finestra durante una presentazione.
 
 `types.ts` copre tutto il dominio delle schermate di §10, non solo quello della
 vecchia demo: azienda, reparti, dipendente, professionista, appuntamenti, sessioni,
-compensi, check-up e strutture, piano di prevenzione, piani di abbonamento, report,
+compensi, check-up e strutture, piano di benessere, piani di abbonamento, report,
 richieste demo, utenti e ruoli.
 
 I 12 schemi in `base44/entities/*.jsonc` del progetto originale sono una **lista di
@@ -941,8 +941,8 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 115 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 115 posti.
+call site sono 116 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 116 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
 **Il criterio con cui i call site si contano**, perché una rilevazione futura non
@@ -950,7 +950,7 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **102 + 13 = 115** (01.09.2026). Restano fuori, e sono le tre trappole del
+Oggi **103 + 13 = 116** (04.09.2026). Restano fuori, e sono le tre trappole del
 conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
 nome lungo che **contiene** quello corto.
 
@@ -990,7 +990,8 @@ esattamente ciò che è successo passando da 96 a 97 con la tranche tedesca, da
 108 a 109 con il conteggio delle chiavi del §2.7, da 109 a 111 con
 l'annullamento e il nome dei pazienti (17.08.2026), da 111 a 113 con il
 messaggio al paziente (01.09.2026), che di guardrail ne porta due, e da 113 a
-115 con la chiusura delle fasce.
+115 con la chiusura delle fasce, e da 115 a 116 con la prima sessione entro 72
+ore.
 
 **E chi lo ricontasse con un `grep` trova cifre che non sono dei guardrail**
 (01.09.2026), che è la ragione per cui questa avvertenza sta accanto al conto
@@ -1025,7 +1026,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 115 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 116 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 
@@ -1521,6 +1522,33 @@ Qui la si eviterebbe al contrario, mettendola in un elemento che non la merita.
   attivo del back-office, che è un flag di account con "Inattivo" per opposto.
   Il criterio è che la parola sia libera dove descrive **una persona dell'area
   HR**, ed è lì che il prestito morde.
+- **«AI», «prevenzione», «rischio» e «diagnosi» non compaiono nelle etichette di
+  ciò che il software calcola per una persona** (founder, 04.09.2026). Non è
+  registro: è **lo scopo dichiarato**, che è il criterio con cui si decide se un
+  software è un dispositivo medico. Un piano che si chiama "di prevenzione" e un
+  punteggio che dice "a rischio" dichiarano che il software **previene una
+  malattia** e **classifica lo stato clinico** di chi lo usa — cioè la finalità
+  medica, non l'uso che qualcuno ne fa. La stessa etichetta detta come benessere
+  non la dichiara, e il prodotto sotto è identico: a cambiare è ciò che
+  affermiamo di fare, che è la sola cosa che quel criterio guarda.
+
+  **Vale sulle etichette, non sulle parole.** Le tre famiglie che restano, e
+  sono tutte fuori dal perimetro della regola:
+
+  - **la malattia in senso economico** — `public.roi.*`, dove "popolazione a
+    rischio" descrive un costo aziendale e non una persona che legge di sé;
+  - **il referto del centro convenzionato** — `employee.checkup.report.*`: lo
+    scrive un medico, non il software, ed è l'unico dato sanitario individuale
+    del dominio (`docs/CONTRATTO-DATI.md` §3);
+  - **le negazioni**, che sono la protezione e non la promessa: *"l'azienda non
+    vede mai sessioni, referti, diagnosi"*, e *"una diagnosi da qui non posso
+    farla"* del medico virtuale, che il §10.B.4 tiene per un vincolo normativo
+    prima che editoriale.
+
+  **E non vale su chi parla per sé.** La bio della Dr.ssa Keller dice *"con
+  attenzione alla prevenzione"*: è una professionista che descrive il proprio
+  metodo, e la riga qui sotto — *un professionista parla come parlerebbe lui* —
+  la protegge. La regola riguarda ciò che **il prodotto** afferma di calcolare.
 - La privacy è un argomento di vendita: la nota *"Dati aggregati e anonimi · soglia
   minima {n} dipendenti misurati per reparto"* con icona lucchetto è sempre visibile
   in dashboard. Dice **"misurati"**, non "dipendenti" né "iscritti": la soglia conta
@@ -1897,7 +1925,7 @@ esisterà davvero.
 ## 9. Numeri ufficiali dal Business Plan (unici ammessi)
 
 Piani: **Essenziale CHF 38** (6 sessioni/anno, extra CHF 35, medico virtuale 12h con
-3 consulti/anno, colloquio conoscitivo gratuito una volta, dashboard HR + ROI
+3 consulti/anno, colloquio conoscitivo incluso una volta, dashboard HR + ROI
 base — % di utilizzo, stress anonimizzato, risparmio in CHF) · **Plus CHF 55** (10
 sessioni/anno, extra CHF 28, coach 4 sessioni/anno, medico 4h consulti illimitati,
 check-up annuale, piano AI ogni 6 mesi, dashboard HR per reparto con report
@@ -1908,6 +1936,14 @@ psichiatra su richiesta incluso, 2 workshop live/anno inclusi, familiari inclusi
 check-up executive completo 1 volta/anno — ECG, eco addome, oculista, sangue
 completo —, piano prevenzione AI aggiornato mensilmente, dashboard HR avanzata con
 report mensile e call mensile col team clinico). La demo usa il piano Plus.
+
+**Questa trascrizione dice "piano AI" e "piano prevenzione AI" perché così lo
+chiama il Business Plan** (founder, 04.09.2026). **L'etichetta a schermo no**: il
+§7 vieta "AI" e "prevenzione" su ciò che il software calcola per una persona, e
+il prodotto lo chiama **piano di benessere** in tutte e quattro le lingue. Le due
+cose non si allineano fra loro — una trascrizione che si riscrive smette di
+essere una trascrizione — e questa riga esiste perché chi copiasse la voce da
+qui in una card riporterebbe indietro la parola.
 
 **Le ultime tre voci dell'Executive mancavano da questa trascrizione**, non dal
 Business Plan (p.10). La conseguenza era che il piano più caro risultava offrire
@@ -1939,12 +1975,48 @@ ne ha uno più esteso: sono due voci diverse e la card deve poterle distinguere.
 **Il colloquio conoscitivo dell'Essenziale è una volta sola**, non uno per
 sessione: la card deve dirlo, altrimenti si legge come un extra ricorrente.
 
+**E si dice "incluso", non "gratuito"** (founder, 04.09.2026). Il BP scrive
+"gratuito" e questa riga lo trascriveva: **in Ticino le professioni sanitarie
+non possono offrire prestazioni gratuite**, quindi la parola non è una sfumatura
+di tono ma un'affermazione che espone chi eroga. "Incluso" dice **la stessa cosa
+al dipendente** — non paga nulla in più — e la dice dal lato giusto: il colloquio
+è dentro l'abbonamento che l'azienda ha comprato, non un regalo del
+professionista. Il campo resta `freeIntroInterview`: è un nome interno, e i nomi
+interni non seguono le etichette (§3).
+
 **Sull'Executive, "incluso" è l'informazione**: psichiatra e workshop non sono
 opzioni a pagamento e non hanno un prezzo da mostrare. Il coaching ha un tetto
 (6/anno) e va detto, come i 4/anno del Plus.
 
 **Tutti e tre i piani includono il medico virtuale.** Il tetto di consulti vive su
 `Plan` insieme all'SLA, così la card lo dice dove esiste e lo tace dove non c'è.
+
+**Prima sessione entro 72 ore, su tutti e tre i piani** (founder, 04.09.2026).
+Vive su `Plan` come l'SLA del medico virtuale, e per la stessa ragione: è una
+promessa del contratto commerciale, quindi la card la legge dal piano invece di
+elencarla a mano.
+
+**Sostituisce le "24 ore, nessuna lista d'attesa" del Business Plan** (p.11), e
+vale la formula del §10.B.1: **dove i due divergono vince questo file, e il
+documento si aggiorna.** La ragione non è prudenza, è che le 24 ore sono una
+promessa che **il dataset non regge**: il primo slot libero della rete cade il
+**24.09 alle 09:00**, cioè trentatré ore dopo `DEMO_TODAY`, e vale per la sola
+Dr.ssa Colombo. Una promessa a 24 ore sarebbe vera per un professionista su
+quattro e falsa per gli altri tre, davanti a una schermata di prenotazione che
+li elenca tutti.
+
+**A 72 ore la promessa è sorvegliata invece che dichiarata**: un guardrail in
+`mock/scheduling.ts` verifica che almeno un professionista prenotabile abbia una
+fascia libera dentro la finestra. È il primo numero commerciale del §9 che ha un
+controllo dietro, ed è ciò che lo rende diverso da una riga di listino — se
+qualcuno sposta il piano delle fasce, la promessa smette di essere vera **in
+sviluppo, dove lancia**, non in sala.
+
+**La "nessuna lista d'attesa" non entra qui.** È l'altra metà della frase del BP
+e non si trascrive, perché sarebbe una promessa sull'assenza di un oggetto che
+il prodotto non ha: la lista d'attesa è una voce del perimetro dell'MVP
+(`docs/CONTRATTO-DATI.md` §8.5), e affermarne l'assenza vorrebbe dire descrivere
+un meccanismo che non esiste.
 
 **Estensione partner sul piano Plus: + CHF 15 per dipendente al mese**, opzionale
 (BP p.9). Va detto **per dipendente**: scritto "+ CHF 15/mese" si legge come una
@@ -2229,6 +2301,19 @@ riga la prima sessione che le rilegge le "corregge":
 **Il conto non si muove**: quindici più undici fanno le **26** rotte dello scope
 di questo §10, e le schermate restano **27**.
 
+**Una sedicesima si è mossa dopo, e non è una traduzione** (founder,
+04.09.2026): `/employee/ai-plan` è diventata **`/employee/wellbeing-plan`**,
+insieme alle etichette che il §7 ha ripulito. La rinomina del 19.08.2026
+portava in inglese un indirizzo italiano; questa **cambia una parola del
+prodotto**, ed è l'unica ragione per cui una rotta si è mossa due volte.
+
+**Vale la regola dei nomi interni**, che non cambia: la pagina resta
+`PianoAI.tsx`, il tipo `AiHealthPlan`, l'hook `useAiHealthPlan` e la chiave di
+cache `["employee", "ai-plan"]`. **E il vecchio indirizzo non redirige**: dà la
+404, come i quindici del 19.08.2026 — il giro del pitch non digita indirizzi
+(§10, come si naviga), quindi un redirect sarebbe codice per un caso che nessun
+percorso produce (§11).
+
 ### A. Pubblica — `/`, `/roi`, `/plans`, `/demo`
 1. **Landing**: hero, problema, tre livelli di valore, anteprima piani, privacy, CTA.
 
@@ -2281,7 +2366,7 @@ divergere dal §9 — è il modo in cui si chiudono i tre disallineamenti aperti
 M0, non correggendo tre righe di JSX che la prossima passata riaprirebbe.
 
 ### B. Portale dipendente — `/employee` + 5 sottopagine
-Home, Psicologi, Medico virtuale, Check-up, Piano AI, Profilo.
+Home, Psicologi, Medico virtuale, Check-up, Benessere, Profilo.
 
 1. **Check rapido nella home** — costruito in M3. **Una domanda, un tocco** (§8).
    È il segnale su cui poggia ogni dato di stress della dashboard HR, e senza di

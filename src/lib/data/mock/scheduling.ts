@@ -1,6 +1,7 @@
 import { overlaps } from "../../dates";
 import { assertInDev } from "../guardrails";
-import type { AppointmentSlot } from "../types";
+import { isBookable, type AppointmentSlot } from "../types";
+import { COMPANY } from "./company";
 import { DEMO_TODAY } from "./demo-date";
 import { PROFESSIONALS } from "./people";
 
@@ -115,4 +116,35 @@ for (const [index, slot] of INITIAL_SLOTS.entries()) {
       `Gli slot di ${slot.professionalId} e ${other.professionalId} si sovrappongono: chi prenota è la stessa persona e non può fare entrambe le sedute.`,
     );
   }
+}
+
+/*
+ * LA PRIMA SESSIONE ENTRO 72 ORE È SORVEGLIATA, NON DICHIARATA (§9).
+ *
+ * Il piano la promette e tre schermate la mostrano: senza questo controllo
+ * sarebbe una frase del listino che nessun dato sostiene, ed è la famiglia che
+ * il §5.5 vieta — un numero a schermo che non si può contraddire perché dietro
+ * non c'è niente.
+ *
+ * Conta i soli **prenotabili**: la Dr.ssa Keller ha il mandato non firmato,
+ * quindi la prenotazione non la propone e una sua fascia non manterrebbe la
+ * promessa (§8). Oggi la soddisfa la Dr.ssa Colombo il giorno dopo alle 09:00,
+ * e la finestra ne contiene altre — il margine è voluto, perché la promessa
+ * non deve poggiare su un'unica fascia che qualcuno può spostare.
+ */
+{
+  const bookable = new Set(
+    PROFESSIONALS.filter(isBookable).map((professional) => professional.id),
+  );
+  const deadline = new Date(DEMO_TODAY);
+  deadline.setHours(
+    deadline.getHours() + COMPANY.plan.firstSessionWithinHours,
+  );
+
+  assertInDev(
+    INITIAL_SLOTS.some(
+      (slot) => bookable.has(slot.professionalId) && slot.start <= deadline,
+    ),
+    `Nessun professionista prenotabile ha una fascia libera entro ${COMPANY.plan.firstSessionWithinHours} ore dal giorno della demo: il listino promette la prima sessione entro quella finestra (§9).`,
+  );
 }

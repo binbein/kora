@@ -88,7 +88,11 @@ export default function EmployeeNav() {
       icon: ClipboardCheck,
       label: t.employee.nav.checkup,
     },
-    { path: "/employee/ai-plan", icon: Sparkles, label: t.employee.nav.aiPlan },
+    {
+      path: "/employee/wellbeing-plan",
+      icon: Sparkles,
+      label: t.employee.nav.aiPlan,
+    },
   ];
 
   return (

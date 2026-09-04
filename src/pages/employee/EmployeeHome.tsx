@@ -509,7 +509,7 @@ export default function EmployeeHome() {
               {goals[weakest.goalKey]}
             </p>
             <Button size="sm" variant="outline" className="mt-3" asChild>
-              <Link to="/employee/ai-plan">{t.employee.home.planCta}</Link>
+              <Link to="/employee/wellbeing-plan">{t.employee.home.planCta}</Link>
             </Button>
           </div>
         </div>

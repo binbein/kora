@@ -17,6 +17,7 @@ import { ErrorNotice } from "@/components/kora/StateNotice";
 import {
   loadState,
   useAvailableSlots,
+  useCompany,
   useEntitlement,
   useProfessionals,
 } from "@/lib/data/queries";
@@ -410,6 +411,7 @@ function ProfessionalList({
 export default function Psicologi() {
   const [searchParams, setSearchParams] = useSearchParams();
   const professionalsQuery = useProfessionals();
+  const companyQuery = useCompany();
   const [booking, setBooking] = useState<Professional | null>(null);
 
   /*
@@ -421,12 +423,13 @@ export default function Psicologi() {
 
   /* I tre casi (M5.b), registro consumer. La lista vuota ha già la sua frase
      in `ProfessionalList`: è un caso previsto, non un guasto. */
-  const page = loadState([professionalsQuery]);
+  const page = loadState([professionalsQuery, companyQuery]);
   if (page.state === "error") {
     return <ErrorNotice copy={t.employee.state.error} onRetry={page.retry} />;
   }
   const professionals = professionalsQuery.data;
-  if (professionals === undefined) return null;
+  const company = companyQuery.data;
+  if (professionals === undefined || company === undefined) return null;
 
   /*
    * Solo i prenotabili. Il provider restituisce il roster intero perché il
@@ -448,6 +451,13 @@ export default function Psicologi() {
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
           {t.employee.psychologists.subtitle}
+        </p>
+        {/* La promessa del piano (§9), letta dal piano dell'azienda e non
+            scritta qui: è la riga che risponde a "e perché non la LAMal". */}
+        <p className="text-sm text-secondary-strong font-medium mt-1">
+          {interpolate(t.employee.psychologists.firstSession, {
+            hours: formatNumber(company.plan.firstSessionWithinHours),
+          })}
         </p>
       </div>
 

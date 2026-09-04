@@ -175,6 +175,21 @@ documento. Qui stanno solo gli invarianti che il codice non può esprimere.
   booleano perché la domanda ha senso su tutti e tre e su due la risposta è "no":
   un campo assente lo renderebbe indistinguibile da un piano su cui nessuno ha
   ancora deciso.
+- **`Plan.firstSessionWithinHours` è obbligatorio**, e per la stessa ragione dei
+  due qui sopra: il `CLAUDE.md` §9 dichiara la prima sessione entro 72 ore su
+  tutti e tre i piani (founder, 04.09.2026), quindi non esiste il caso "il
+  contratto commerciale non lo prevede". Oggi i tre valori coincidono e il campo
+  esiste lo stesso invece di essere una costante: è una promessa del contratto
+  commerciale, quindi il giorno in cui un piano la stringe cambia il dato e non
+  la schermata.
+
+  **In produzione è una promessa da mantenere, non da dichiarare.** Nel frontend
+  la sorveglia un guardrail sul dataset — almeno un professionista prenotabile
+  ha una fascia libera dentro la finestra — e quel controllo **non sopravvive
+  alla cancellazione di `mock/`**: con agende vere è il backend a dover sapere
+  se la rete regge il tetto, e la domanda che ne discende è cosa mostra la
+  prenotazione **il giorno in cui non lo regge**. È la stessa famiglia della
+  lista d'attesa (§8.5), e non è decisa.
 - `Department` **non** porta il conteggio dei misurati. Vive sul record mensile.
 
 ### Misurazione dello stress — la parte più delicata
@@ -1280,8 +1295,13 @@ il ciclo vero ne ha di più:
     qui sopra la copre, ed è la metà che manca proprio ora che l'altra c'è: una
     disdetta di domani mattina che il dipendente scopre dopodomani è, per lui,
     una seduta mancata.
-- **La lista d'attesa**, che è la risposta alla promessa del Business Plan sul
-  primo appuntamento entro 24 ore quando gli slot finiscono.
+- **La lista d'attesa**, che è la risposta alla promessa sul primo appuntamento
+  quando gli slot finiscono. ~~Il Business Plan la fissa a 24 ore.~~ →
+  **dal 04.09.2026 la promessa del prodotto è di 72 ore** e sostituisce le "24
+  ore, nessuna lista d'attesa" del documento (`CLAUDE.md` §9): il dataset non
+  regge le 24, e l'assenza di lista d'attesa non si trascrive perché sarebbe
+  affermare l'assenza di un oggetto che il prodotto non ha — cioè proprio questa
+  voce.
 - **La pubblicazione della disponibilità — metà c'è dal 01.09.2026**, e vale la
   pena dire quale.
 
@@ -1493,7 +1513,7 @@ Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
   righe possano leggersi uguali — e va presa prima che il primo cliente vero
   abbia due omonimi, il che su 420 dipendenti è il primo giorno.
 
-### 8.9 L'avanzamento del piano di prevenzione non ha una sorgente
+### 8.9 L'avanzamento del piano di benessere non ha una sorgente
 
 **`AiPlanArea.progressPercent` è l'unico numero del dominio che non misura
 niente.** Le cinque aree del piano lo portano come valore dichiarato del dataset
