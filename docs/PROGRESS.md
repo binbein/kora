@@ -2150,8 +2150,16 @@ rinomina delle rotte in inglese, la demo pronta, le cifre nelle
 parentetiche, i rimandi del contratto, i fatti del Business Plan, il check
 rapido con la soglia e i badge, il messaggio di annullamento, la chiusura
 delle fasce, la griglia delle fasce, lo scope delle fasce con le mutation che
-non si contano, e l'allineamento fra verbali e commenti. Non aggiungono
-schermate e non spostano un numero a schermo.
+non si contano, l'allineamento fra verbali e commenti, e le parole che espongono
+con le promesse che non teniamo. Non aggiungono schermate.
+
+**~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
+volta** (04.09.2026): il listino porta ora *"prima sessione entro 72 ore"*, che è
+un numero **nuovo del §9** e non un dato del dataset che si muove. La distinzione
+è quella del §2.4 — una cifra entra a schermo solo dopo essere entrata in §8 o
+§9, con l'attribuzione — e la riga si corregge invece di restare smentita: quello
+che resta vero di tutte, ed era la parte utile della frase, è che **una passata
+di refinement non allarga lo scope del §10**.
 
 **I numeri sono tre e contano tre cose diverse**, ed è la riga che mancava
 accanto all'elenco (20.08.2026): le **PR mergiate** sotto il criterio in fondo
@@ -8133,6 +8141,203 @@ finché `getEntitlement` non può rispondere `null`
   è una previsione: dice **da dove viene** la manopola, ed è vero. La riga è qui
   perché è il riscontro della spazzata su cui si esita più a lungo.
 
+#### Le parole che espongono e le promesse che non teniamo (04.09.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il comando
+in testa a questo file. **Nessuna schermata nuova**: le rotte restano **26** e le
+schermate **27**. Una rotta cambia indirizzo e una cifra nuova entra a schermo,
+ed è la prima volta per una passata di refinement: le due cose hanno la loro riga
+in testa alla sezione e in `CLAUDE.md` §9 e §10.
+
+**Cosa muove i numeri di questo file**: `EXPECTED_KEYS` da **791** a **794** — tre
+chiavi nuove, nessuna tolta — e i guardrail da **115** a **116**, `103 + 13`,
+rimisurati con i criteri del §5.6 e del §2.7. `build`, `lint` e `typecheck` a zero.
+
+**Lo scopo, detto una volta**: togliere dalla demo le parole che la espongono —
+dispositivo medico, AI Act, pubblicità sanitaria — e le promesse che il prodotto
+non mantiene. **Senza aggiungere funzioni**: sono stringhe, un campo di piano, una
+rotta e documenti. Le decisioni sono dei founder e stanno in «Decisioni chiuse».
+
+##### Il piano non è «AI» e non è «prevenzione»
+
+**Il criterio è lo scopo dichiarato, ed è la ragione per cui la regola sta nel
+§7** e non in una nota di copy: è il criterio con cui si decide se un software è
+un dispositivo medico. Un piano *"di prevenzione"* e un punteggio *"a rischio"*
+affermano che il prodotto **previene una malattia** e **classifica lo stato
+clinico** di chi lo usa. Il prodotto sotto è identico; a cambiare è ciò che
+dichiariamo di fare, che è la sola cosa che quel criterio guarda.
+
+Cambiate le etichette: la voce di menu, il titolo del piano, la card della home,
+le due righe del listino, l'hero e il blocco «per il dipendente» della landing, il
+suggerimento sotto l'area più debole, e `healthSummary.at_risk`, che diceva **«A
+rischio»** e dice **«Da seguire»**. Quattro lingue, e la rotta con loro:
+`/employee/ai-plan` → **`/employee/wellbeing-plan`**.
+
+**I riscontri sono stati valutati uno per uno, non sostituiti**, e ne restano
+otto in quattro lingue — due famiglie, dichiarate nel §7:
+
+| dove | perché resta |
+|---|---|
+| `public.roi.*` — *"30% della popolazione a rischio"* | è **un costo aziendale**, non una persona che legge di sé |
+| `employee.checkup.report.*` — *"il rischio da stress risulta moderato"* | lo scrive **il medico del centro**, ed è l'unico dato sanitario individuale del dominio |
+
+**Il referto ha avuto bisogno di una parola lo stesso, e non è il divieto**:
+mandava a *"segui il piano di prevenzione"*, cioè a un piano che nell'app non si
+chiama più così. È cambiato **il nome del piano**, non il registro clinico della
+frase — *una cosa, una parola* (§7) vale anche quando la parola sta in una frase
+esente.
+
+**Due riscontri non sono stati toccati e vale la pena dire perché**, perché sono
+i due su cui si esita:
+
+- **la bio della Dr.ssa Keller** — *"con attenzione alla prevenzione"* — è **una
+  professionista che descrive il proprio metodo**, e il §7 la protegge da sempre:
+  *un professionista parla come parlerebbe lui*. La regola riguarda ciò che **il
+  prodotto** afferma di calcolare, ed è scritta così apposta;
+- **le negazioni** — *"l'azienda non vede mai sessioni, referti, diagnosi"*,
+  *"una diagnosi da qui non posso farla"* — sono **la protezione**, non la
+  promessa. Toglierle avrebbe indebolito ciò che la regola difende.
+
+**I nomi interni non seguono**, per la decisione del 19.08.2026: `PianoAI.tsx`,
+`AiHealthPlan`, `useAiHealthPlan` e la chiave di cache `["employee", "ai-plan"]`
+restano. **E il vecchio indirizzo non redirige**: dà la 404, verificata a schermo,
+come i quindici del 19.08.2026 — il giro del pitch non digita indirizzi, quindi un
+redirect sarebbe un ramo che nessun percorso produce (§11).
+
+##### Le promesse che il prodotto non mantiene
+
+Quattro, e ognuna sostituita **dal fatto che c'è sotto** invece che ammorbidita.
+
+**La crittografia**, che era una decisione in sospeso dal 15.08.2026 e si chiude
+qui: *"Crittografia end-to-end … con standard AES-256"* diventa *"Cifratura in
+transito e a riposo"* e *"I dati sanitari viaggiano cifrati (TLS) e sono
+conservati cifrati"*. **Le due parole sono uscite per due ragioni diverse**:
+"end-to-end" ha un significato tecnico preciso e **incompatibile** con un backend
+che calcola aggregati e conserva le note; "AES-256" non è incompatibile, è **un
+impegno che nessuno ha preso**, su un dettaglio che al lettore non dice niente. Il
+chip della landing era il punto più esposto — lo vede chiunque apra la demo — e
+porta la stessa frase della pagina privacy HR.
+
+**La cadenza del check rapido**, anch'essa in sospeso dal 15.08.2026: il
+`doneHint` perde *"Poi te lo chiediamo di nuovo"*. **Chiusa togliendo, non
+decidendo** — sceglierne una sarebbe stato lo stesso difetto con una parola più
+precisa — e quale sia la cadenza resta dei founder, con il vuoto dov'era già
+(`docs/CONTRATTO-DATI.md` §3).
+
+**Il colloquio conoscitivo**, che era *"gratuito"* e ora è *"incluso"*: in Ticino
+le professioni sanitarie non possono offrire prestazioni gratuite. Al dipendente
+la frase dice la stessa cosa e la dice dal lato che non espone chi eroga.
+
+**L'informativa della richiesta demo**, che prometteva *"trattati in conformità
+alla LPD svizzera e al GDPR"* a una persona che scrive nome, email e telefono
+**veri**, con dietro nessun trattamento, nessuna conservazione e nessun titolare.
+Adesso dice il fatto: **la richiesta resta nel browser e non viene inviata a
+nessuno**, che è vero per costruzione perché il provider vive in memoria
+(`CLAUDE.md` §10). **La stessa cosa nel footer**, sotto il copyright, in quattro
+lingue — *"Demo dimostrativa · dati di fantasia · nessun dato lascia questo
+browser"* — perché il footer è l'unico punto comune alle quattro rotte pubbliche.
+
+**Le cinque stringhe della residenza dei dati non si toccano**: quella decisione
+è commerciale e resta aperta. La distinzione è la sostanza della passata — si è
+sostituita **la promessa che si poteva rimpiazzare con un fatto**, non quella che
+aspetta qualcuno.
+
+##### Le fonti del calcolatore, e le due voci che non ne hanno
+
+Il calcolatore citava *"Fonti: SECO, Job Stress Index"*: due nomi senza anno e
+senza perimetro, cioè una bibliografia che non si può controllare. Gli anni
+vengono dalle pp. 5-7 del Business Plan e **niente è stato inventato**.
+
+**Due delle quattro voci delle perdite non hanno nessuna fonte nel documento** —
+il turnover, con i suoi CHF 50.000 per abbandono, e i CHF 65.000 di stipendio
+medio che la voce pre-burnout moltiplica. Sul turnover la frase dice quello che il
+BP dice di sé stesso, *stima conservativa*; l'altra è rimasta fuori. Entrambe sono
+ora il **quinto fatto** fra i «Business Plan da riallineare».
+
+**Confindustria e la scala di Stanford restano nel documento e non a schermo**
+(founder): sono italiana e americana, e uno scenario conservativo svizzero che vi
+si appoggia invita la domanda sbagliata.
+
+##### Le 72 ore, che sono l'unica cosa che questa passata aggiunge
+
+`Plan.firstSessionWithinHours` è **72 su tutti e tre i piani**, obbligatorio come
+`hrDashboard` e per la stessa ragione: il §9 lo dichiara per tutti e tre, quindi
+non esiste il caso *"il contratto commerciale non lo prevede"*. Oggi i tre valori
+coincidono e **il campo esiste lo stesso invece di essere una costante**: è una
+promessa commerciale, quindi il giorno in cui un piano la stringe cambia il dato e
+non la schermata.
+
+**Sostituisce le "24 ore, nessuna lista d'attesa" del BP** (p.11) sotto la regola
+del §10.B.1, e la ragione non è prudenza: **le 24 ore il dataset non le regge**.
+La prima fascia libera della rete cade il **24.09 alle 09:00** ed è della sola
+Dr.ssa Colombo, quindi la promessa sarebbe vera per un professionista su quattro
+davanti a una schermata che li elenca tutti. La seconda metà della frase — *nessuna
+lista d'attesa* — **non si trascrive**: afferma l'assenza di un oggetto che il
+prodotto non ha, e la lista d'attesa è una voce del perimetro dell'MVP. È il
+**sesto fatto** da riallineare.
+
+**È il primo numero commerciale del §9 con un guardrail dietro**, ed è ciò che lo
+rende diverso da una riga di listino: `mock/scheduling.ts` verifica che almeno un
+professionista **prenotabile** abbia una fascia libera nella finestra — la
+Dr.ssa Keller non conta, il mandato non è firmato e la prenotazione non la propone.
+
+**Il guardrail sa fallire, ed è stato provato invece che dedotto**: portando il
+campo a 1 ora la build demo logga *"Nessun professionista prenotabile ha una fascia
+libera entro 1 ore dal giorno della demo"*, e il dataset è stato rimesso a posto
+subito, con l'albero ricontrollato pulito e la console muta su una scheda nuova. È
+la tecnica del 10.08.2026.
+
+A schermo la promessa sta in due punti, e tutti e due leggono dal piano: **il
+listino**, dove è la **prima** voce perché è l'accesso e le righe sotto sono cosa
+si ottiene una volta dentro, e **la testata della prenotazione**, dove la domanda
+che risponde viene fatta davvero. `docs/PITCH.md` guadagna la risposta pronta sulla
+LAMal, che prima non esisteva.
+
+##### Verificato
+
+- **a schermo, sulla build demo, viewport 1280×900**, su landing, `/plans`,
+  `/roi`, `/demo`, `/employee`, `/employee/wellbeing-plan`,
+  `/employee/psychologists` e `/hr/privacy`, **nelle quattro lingue**: ogni
+  stringa cambiata è stata letta dove si vede, non nel diff;
+- **il check rapido**, toccato davvero: dopo la risposta la card dice *"Grazie,
+  registrato."* e *"Puoi cambiare la risposta finché è oggi."*, senza la seconda
+  frase;
+- **il vecchio indirizzo dà la 404** con il messaggio che nomina il percorso;
+- **console muta su scheda nuova**, cioè nessun guardrail loggato dalla build
+  demo — che con `assertInDev` è anche la prova che i 116 passano tutti;
+- **nessun overflow orizzontale in tedesco**, che è la lingua lunga:
+  `scrollWidth === clientWidth` su landing, `/plans`, `/employee`,
+  `/employee/psychologists` e `/employee/wellbeing-plan`;
+- **i cinque numeri di ancoraggio del §9 non si muovono**: `/roi` a N=100 mostra
+  CHF 1'289'500, CHF 221'150, CHF 66'000, CHF 155'150 e 2.35:1;
+- **`EXPECTED_KEYS` 794** sull'albero sintattico nei quattro dizionari, con il
+  comando del §2.7, e **116 = 103 + 13** call site con il criterio del §5.6.
+
+##### Trovato e non toccato
+
+- **La landing non mostra le 72 ore.** L'anteprima piani dichiara le proprie voci
+  per chiave (`PREVIEW_FEATURES` in `Landing.tsx`), quindi la riga nuova non entra
+  finché non la si aggiunge lì — e **quale sottoinsieme mostri l'anteprima è una
+  scelta editoriale di quella schermata**, non una conseguenza. Va detto perché
+  chi legge *"il piano porta la promessa"* si aspetta di trovarla sulla prima
+  schermata del pitch, e lì non c'è. È una decisione dei founder.
+- **`docs/PROGRESS.md:1281` cita `/employee/ai-plan`** nell'inventario di M5.b:
+  è un verbale datato e non si riscrive (`CLAUDE.md` §10, gli indirizzi cambiano
+  e i verbali no).
+- **`docs/PITCH.md` dice "sedute" in tre punti di prosa** — le KPI del
+  calendario, la seduta da annullare, le sedute della professionista — mentre la
+  sua stessa riga in testa prescrive *"si dice sessioni, mai sedute"*. Non è testo
+  a schermo, quindi il §7 non lo copre; è il documento che non segue il proprio
+  consiglio, ed è una passata di lettura, non di questa.
+- **Il messaggio del guardrail nuovo dice "entro 1 ore"** quando lo si rompe con
+  il valore 1. È testo per chi sviluppa e non passa da `i18n`, quindi la regola
+  delle frasi intere del §2.7 non lo tocca — ma chi lo leggesse per la prima volta
+  ci inciampa.
+- **Il consenso resta l'unica voce aperta della sua classe.** Delle tre che
+  l'intestazione delle decisioni in sospeso contava, due si chiudono qui: resta
+  quella che afferma un **fatto giuridico compiuto**, che è anche la più grave, e
+  non si chiude riscrivendo una frase.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -8195,6 +8400,41 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 > state raccolte cercando le attribuzioni datate in `CLAUDE.md` e in
 > `docs/PITCH.md`; il criterio e cosa è rimasto fuori stanno nel verbale di
 > quella passata.
+
+- **04.09.2026 — «AI», «prevenzione», «rischio» e «diagnosi» non compaiono
+  sulle etichette di ciò che il software calcola per una persona** (`CLAUDE.md`
+  §7). Non è registro, è **lo scopo dichiarato**, che è il criterio con cui si
+  decide se un software è un dispositivo medico: un piano "di prevenzione" e un
+  punteggio "a rischio" affermano che il prodotto previene una malattia e
+  classifica uno stato clinico. Restano fuori dalla regola la lettura economica
+  del calcolatore, il referto scritto dal medico del centro, le negazioni, e chi
+  parla per sé — la bio di una professionista.
+
+- **04.09.2026 — Prima sessione entro 72 ore, su tutti e tre i piani**
+  (`CLAUDE.md` §9). Sostituisce le *"24 ore, nessuna lista d'attesa"* del
+  Business Plan sotto la regola del §10.B.1, e la ragione è che **il dataset non
+  regge le 24**: la prima fascia libera cade il 24.09 alle 09:00 ed è di una
+  professionista su quattro. Vive su `Plan`, non è una costante, ed è il primo
+  numero commerciale del §9 con un guardrail dietro.
+
+- **04.09.2026 — Il colloquio conoscitivo è "incluso", non "gratuito"**
+  (`CLAUDE.md` §9). In Ticino le professioni sanitarie non possono offrire
+  prestazioni gratuite. Al dipendente la frase dice la stessa cosa — non paga
+  nulla in più — e la dice dal lato che non espone chi eroga. Il campo resta
+  `freeIntroInterview`: è un nome interno.
+
+- **04.09.2026 — `/employee/ai-plan` diventa `/employee/wellbeing-plan`**
+  (`CLAUDE.md` §10). L'indirizzo è superficie del prodotto e portava la parola
+  che le etichette hanno perso. **Non è la rinomina del 19.08.2026 che
+  continua**: quella traduceva, questa cambia una parola del prodotto — ed è
+  l'unica rotta che si è mossa due volte. I nomi interni non seguono.
+
+- **04.09.2026 — La demo dichiara cosa fa dei dati di chi la visita**
+  (`CLAUDE.md` §10.A.4). L'informativa della richiesta demo prometteva
+  conformità LPD e GDPR a una persona che scrive nome, email e telefono veri,
+  con dietro nessun trattamento e nessun titolare. Adesso dice il fatto — la
+  richiesta resta nel browser — che è vero per costruzione, e il footer lo
+  ripete per le quattro rotte pubbliche.
 
 - **01.09.2026 — La griglia dice cosa sono le sue celle, e le fasce hanno un
   nome** (`CLAUDE.md` §10.D.6). La fascia libera e la cella vuota erano
@@ -8710,8 +8950,11 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 
 ## Decisioni in sospeso
 
-**Tre delle voci qui sotto sono la stessa classe di rischio, ed è quella che la
-residenza dei dati ha inaugurato**: una **promessa di meccanismo** scritta in una
+**~~Tre~~ una delle voci qui sotto è la stessa classe di rischio, ed è quella
+che la residenza dei dati ha inaugurato** *(erano tre — crittografia, consenso e
+`doneHint` — e il 04.09.2026 ne sono state chiuse due: resta il consenso. La
+cifra si corregge qui invece di restare a contare voci chiuse, che è la regola
+di questo file sui numeri in prosa accanto a una lista)*: una **promessa di meccanismo** scritta in una
 schermata che un cliente firmerà, mentre il meccanismo non esiste e nessuno ha
 ratificato la frase. Si riconoscono da una prova sola — *se un cliente ci
 chiedesse di dimostrarla domani, cosa gli mostreremmo?* — e per questo portano
@@ -8749,38 +8992,64 @@ prevedeva.
 > con una lasca nello stesso diritto sarebbe stato lo stesso errore una tacca più
 > piccolo, dentro la passata che esiste per chiuderlo.
 
-- **La crittografia end-to-end è promessa a schermo e non è verificabile**
-  (15.08.2026). La pagina privacy dell'HR dichiara *"i dati sanitari sono
-  crittografati in transito e a riposo con standard AES-256"*, e la landing porta
-  lo stesso claim come chip accanto a "Hosting in Svizzera".
+- ~~**La crittografia end-to-end è promessa a schermo e non è verificabile**
+  (15.08.2026).~~ → **chiusa il 04.09.2026**, e sulla strada che la voce
+  indicava per prima: **la frase si riscrive su ciò che si farà davvero**, non
+  l'architettura sull'affermazione. Le tre stringhe dicono ora *"Cifratura in
+  transito e a riposo"* e *"I dati sanitari viaggiano cifrati (TLS) e sono
+  conservati cifrati"*, in tutte e quattro le lingue.
 
-  **Quante stringhe la promettono, con il criterio**: in `src/lib/i18n/it.ts`
-  sono **3** — cercando le stringhe che nominano la cifratura — cioè il **titolo
-  e il corpo** del principio nel riquadro privacy HR
-  (`hr.privacy.principle.encryption`) e il **chip della landing**
-  (`public.landing.privacyChip.encryption`). Ognuna ha le sue tre traduzioni,
-  quindi a cambiare sarebbero dodici stringhe su quattro file, ma **il conto che
-  conta è tre**: sono tre punti a schermo, ed è quello il numero da rileggere.
+  **"End-to-end" è uscito perché non era compatibile**, ed è l'argomento della
+  voce stessa: con un backend che calcola aggregati per reparto, deriva il
+  diritto alle sedute e conserva le note di sessione, *solo gli estremi possono
+  leggere* è falso. **"AES-256" è uscito per un'altra ragione**, e vale la pena
+  distinguerle: non è incompatibile, è **un impegno che nessuno ha preso** su un
+  dettaglio che al lettore non dice niente — nominare un cifrario è precisione
+  che si può solo smentire.
 
-  **Il chip della landing è il punto più esposto e non è quello che si
-  guarderebbe per primo**: la pagina privacy HR la vede un cliente che sta
-  valutando, il chip lo vede **chiunque apra la demo**, investitori compresi, ed
-  è nel percorso del pitch.
+  **Il chip della landing era il punto più esposto**, come la voce diceva, ed è
+  il primo che si vede aprendo la demo: adesso porta la stessa frase della
+  pagina privacy HR, che è la seconda metà della correzione — le due schermate
+  dicevano la stessa cosa e devono continuare a dirla.
 
-  **Perché è una decisione e non un compito.** "End-to-end" ha un significato
-  tecnico preciso — solo gli estremi possono leggere — e con un backend che
-  calcola aggregati per reparto, deriva il diritto alle sedute e conserva le note
-  di sessione, *quel* significato non è compatibile con l'architettura descritta
-  in questo documento. Cifratura in transito e a riposo lo è, ma è un'altra
-  affermazione. Quindi o la frase si riscrive su ciò che si farà davvero, o
-  l'architettura deve cambiare — e la seconda è una decisione che cambia il §8.2
-  del contratto, non una riga di `i18n`.
+  **Il §8.2 del `docs/CONTRATTO-DATI.md` non si muove**: chi è titolare, chi
+  responsabile, e come si concilia il segreto professionale con la
+  conservazione della nota restano decisioni aperte. Questa voce riguardava
+  **una frase a schermo**, non il meccanismo dietro.
 
-  **Proprietario: i founder**, insieme a chi scriverà il backend — è una scelta
-  di architettura prima che di copy. **Il trigger è il primo dato sanitario
-  vero**, cioè lo stesso del protocollo clinico: il giorno in cui esiste un
-  referto di una persona reale, la frase o è vera o è una dichiarazione falsa a
-  un cliente.
+  Il testo originale, che descrive quello che c'era:
+  >
+  > (15.08.2026). La pagina privacy dell'HR dichiara *"i dati sanitari sono
+  > crittografati in transito e a riposo con standard AES-256"*, e la landing porta
+  > lo stesso claim come chip accanto a "Hosting in Svizzera".
+  >
+  > **Quante stringhe la promettono, con il criterio**: in `src/lib/i18n/it.ts`
+  > sono **3** — cercando le stringhe che nominano la cifratura — cioè il **titolo
+  > e il corpo** del principio nel riquadro privacy HR
+  > (`hr.privacy.principle.encryption`) e il **chip della landing**
+  > (`public.landing.privacyChip.encryption`). Ognuna ha le sue tre traduzioni,
+  > quindi a cambiare sarebbero dodici stringhe su quattro file, ma **il conto che
+  > conta è tre**: sono tre punti a schermo, ed è quello il numero da rileggere.
+  >
+  > **Il chip della landing è il punto più esposto e non è quello che si
+  > guarderebbe per primo**: la pagina privacy HR la vede un cliente che sta
+  > valutando, il chip lo vede **chiunque apra la demo**, investitori compresi, ed
+  > è nel percorso del pitch.
+  >
+  > **Perché è una decisione e non un compito.** "End-to-end" ha un significato
+  > tecnico preciso — solo gli estremi possono leggere — e con un backend che
+  > calcola aggregati per reparto, deriva il diritto alle sedute e conserva le note
+  > di sessione, *quel* significato non è compatibile con l'architettura descritta
+  > in questo documento. Cifratura in transito e a riposo lo è, ma è un'altra
+  > affermazione. Quindi o la frase si riscrive su ciò che si farà davvero, o
+  > l'architettura deve cambiare — e la seconda è una decisione che cambia il §8.2
+  > del contratto, non una riga di `i18n`.
+  >
+  > **Proprietario: i founder**, insieme a chi scriverà il backend — è una scelta
+  > di architettura prima che di copy. **Il trigger è il primo dato sanitario
+  > vero**, cioè lo stesso del protocollo clinico: il giorno in cui esiste un
+  > referto di una persona reale, la frase o è vera o è una dichiarazione falsa a
+  > un cliente.
 
 - **Il consenso è promesso come già raccolto, e non esiste** (15.08.2026). La
   stessa pagina dichiara *"ogni dipendente conferma il consenso durante
@@ -8807,28 +9076,54 @@ prevedeva.
   protocollo clinico: il consenso o si raccoglie prima del primo dato, o non lo
   si raccoglie mai per quel dato.
 
-- **Il `doneHint` del check rapido promette una cadenza che il contratto non ha**
-  (15.08.2026). Dopo aver risposto, la card dice *"ti richiediamo come stai fra
-  qualche giorno"*. Il `CONTRATTO-DATI.md` §3 dichiara esplicitamente che **la
-  cadenza non esiste**: il contratto non dice ogni quanto si chiede, quindi non
-  può dire quando la risposta è dovuta, e non esistono né l'invito né il ritardo.
+- ~~**Il `doneHint` del check rapido promette una cadenza che il contratto non
+  ha** (15.08.2026).~~ → **chiusa il 04.09.2026**. La stringa ha perso la
+  seconda frase: dice *"Puoi cambiare la risposta finché è oggi."* e non
+  aggiunge più *"Poi te lo chiediamo di nuovo"*, in tutte e quattro le lingue.
 
-  **Quante stringhe**: **1**, `employee.rapidCheck.doneHint`, più le sue tre
-  traduzioni. È l'unica del prodotto che affermi una ricorrenza.
+  **Chiusa togliendo, non decidendo**, ed è la forma che la voce stessa
+  chiedeva: il difetto era che **una stringa a schermo stava decidendo ciò che
+  il contratto lascia indeciso**, quindi il rimedio non era scegliere una
+  cadenza — sarebbe stato lo stesso difetto con una parola più precisa — ma
+  smettere di affermarne una. **Quale sia la cadenza resta una decisione dei
+  founder**, e il vuoto sta dove viveva già: `docs/CONTRATTO-DATI.md` §3, fra le
+  tre cose che mancano al check rapido.
 
-  **È la minore delle tre e va nominata comunque**, perché il difetto ha una
-  forma che le altre due non hanno: **una stringa a schermo sta decidendo ciò che
-  il contratto lascia indeciso.** "Fra qualche giorno" non è vago per prudenza —
-  esclude già la cadenza mensile e quella settimanale, cioè restringe una scelta
-  di prodotto che nessuno ha fatto, e la restringe nel punto in cui il §2.7 vuole
-  frasi intere e non decisioni nascoste nel copy.
+  **Quello che resta è la metà vera, ed è anche l'utile**: la risposta si può
+  cambiare finché è oggi, che è la proprietà che il tocco reversibile del
+  20.08.2026 ha costruito e che a chi legge serve davvero.
 
-  **Proprietario: i founder**, ed è una decisione di prodotto piccola con una
-  conseguenza di dominio grande — la cadenza è ciò da cui dipendono i misurati
-  del periodo, quindi la soglia di anonimato (`CLAUDE.md` §8). **Il trigger è il
-  primo pilot**, che è anche il momento in cui il check rapido smette di essere
-  un tocco in una demo e diventa la sorgente dei dati di stress veri. Fino ad
-  allora la frase non fa danno, e non va confermata per inerzia.
+  *(La passata del 20.08.2026 aveva già tolto l'intervallo — da «ti richiediamo
+  come stai fra qualche giorno» a «Poi te lo chiediamo di nuovo» — e aveva
+  ragione a lasciare la voce aperta: quella riscrittura toglieva **la cadenza**
+  e teneva **la ricorrenza**, che è ciò che la voce del 15.08 chiamava per nome
+  — «l'unica del prodotto che affermi una ricorrenza». È la seconda frase che
+  esce oggi, e sono due mezze correzioni della stessa riga a due settimane di
+  distanza.)*
+
+  Il testo originale, che descrive quello che c'era:
+  >
+  > (15.08.2026). Dopo aver risposto, la card dice *"ti richiediamo come stai fra
+  > qualche giorno"*. Il `CONTRATTO-DATI.md` §3 dichiara esplicitamente che **la
+  > cadenza non esiste**: il contratto non dice ogni quanto si chiede, quindi non
+  > può dire quando la risposta è dovuta, e non esistono né l'invito né il ritardo.
+  >
+  > **Quante stringhe**: **1**, `employee.rapidCheck.doneHint`, più le sue tre
+  > traduzioni. È l'unica del prodotto che affermi una ricorrenza.
+  >
+  > **È la minore delle tre e va nominata comunque**, perché il difetto ha una
+  > forma che le altre due non hanno: **una stringa a schermo sta decidendo ciò che
+  > il contratto lascia indeciso.** "Fra qualche giorno" non è vago per prudenza —
+  > esclude già la cadenza mensile e quella settimanale, cioè restringe una scelta
+  > di prodotto che nessuno ha fatto, e la restringe nel punto in cui il §2.7 vuole
+  > frasi intere e non decisioni nascoste nel copy.
+  >
+  > **Proprietario: i founder**, ed è una decisione di prodotto piccola con una
+  > conseguenza di dominio grande — la cadenza è ciò da cui dipendono i misurati
+  > del periodo, quindi la soglia di anonimato (`CLAUDE.md` §8). **Il trigger è il
+  > primo pilot**, che è anche il momento in cui il check rapido smette di essere
+  > un tocco in una demo e diventa la sorgente dei dati di stress veri. Fino ad
+  > allora la frase non fa danno, e non va confermata per inerzia.
 
 - **Il protocollo clinico e il referente non esistono, e il prodotto ne ha
   bisogno prima degli utenti** (15.08.2026). Il §2.6 di *"Dubbi Business per
@@ -8896,11 +9191,28 @@ prevedeva.
   in `src/lib/i18n/it.ts` sono **5** le stringhe che nominano la **residenza**
   — "Hosting in Svizzera" o "server in Svizzera" — cioè il titolo e il corpo
   del riquadro privacy della landing, il footer, la riga di conformità
-  dell'hero e il badge. **Altre 6 promettono conformità LPD/GDPR o
-  "piattaforma svizzera" senza dire dove stanno i dati**, fra cui
-  l'informativa in fondo alla richiesta demo: sono adiacenti e vanno rilette
-  quel giorno, ma non sono la stessa promessa e **non si sommano alle prime
-  cinque**. Sono 5 + 6, non 11, e nemmeno 6.
+  dell'hero e il badge. **Altre ~~6~~ 5 promettono conformità LPD/GDPR o
+  "piattaforma svizzera" senza dire dove stanno i dati**: sono adiacenti e
+  vanno rilette quel giorno, ma non sono la stessa promessa e **non si sommano
+  alle prime cinque**. Sono 5 + 5, non 10, e nemmeno 5.
+
+  **La sesta era l'informativa in fondo alla richiesta demo, ed è uscita dal
+  conto il 04.09.2026** — non perché qualcuno l'abbia ricontata, ma perché
+  **quella frase non promette più niente**: prometteva che i dati sarebbero
+  stati *"trattati in conformità alla LPD svizzera e al GDPR"*, e adesso dice
+  che **la richiesta resta nel browser e non viene inviata a nessuno**. È vero
+  per costruzione — il provider vive in memoria (`CLAUDE.md` §10) — quindi è
+  l'unica delle undici che si può dimostrare invece di ratificare.
+
+  **La stessa nota sta ora anche nel footer pubblico**, sotto il copyright:
+  *"Demo dimostrativa · dati di fantasia · nessun dato lascia questo browser"*,
+  in tutte e quattro le lingue. Non entra in nessuno dei due conti di questa
+  voce — non nomina la residenza né la conformità — e sta nel footer perché è
+  l'unico punto comune alle quattro rotte pubbliche.
+
+  **Le cinque della residenza non si toccano**, ed è la riga qui sotto che lo
+  dice: per la demo vanno bene. A cambiare è stata **la promessa che si poteva
+  sostituire con un fatto**, non quella che aspetta una decisione commerciale.
 
   **Per la demo va bene così e non si tocca niente.** La promessa è coerente
   con il prodotto che il pitch racconta, ed è la stessa coerenza per cui il §3
@@ -8986,16 +9298,57 @@ prevedeva.
      tocca**. Ma chi ricalcola voce per voce trova due righe che non combaciano.
      Il BP deve allineare lo split o dichiarare da cosa esce il 217.000.
 
-  **Perché è una decisione e non un compito.** Nessuno dei quattro si chiude
-  scrivendo codice o correggendo una riga di questo repository: si chiudono
+  5. **Le fonti mancanti delle perdite** (04.09.2026). Le tabelle delle pp. 5-7
+     citano nome e anno per l'assenteismo (SECO CH 2024, Confindustria 2023), per
+     il presenteismo (Job Stress Index CH 2024, Stanford Presenteeism Scale) e
+     per la prevalenza pre-burnout (Job Stress Index, Eurofound). **Due voci del
+     modello non hanno nessuna fonte**: il **turnover** — *"4,3 abbandoni × CHF
+     50.000 costo medio"*, dove la tabella 3.4 non ha colonna fonte e la 3.3 non
+     porta il tasso — e i **CHF 65.000 di stipendio medio** che la voce
+     pre-burnout moltiplica.
+
+     **Il calcolatore adesso cita le fonti che esistono** e sul turnover dice
+     quello che dice il BP di sé stesso — *stima conservativa* — perché
+     inventarne una sarebbe stato il §2.4 disatteso nel punto in cui la pagina
+     promette di essere verificabile. **Confindustria e la scala di Stanford
+     restano nel documento e non a schermo**: sono italiana e americana, e uno
+     scenario conservativo svizzero che vi si appoggia invita la domanda
+     sbagliata.
+
+     Il BP deve dare una fonte alle due voci o dichiararle stime, come fa già
+     per la ricerca e sostituzione.
+
+  6. **Il primo appuntamento entro 24 ore** (04.09.2026). Il BP **p.11** promette
+     *"primo appuntamento entro 24 ore, nessuna lista d'attesa"*; il prodotto
+     promette **72 ore** su tutti e tre i piani, e `CLAUDE.md` §9 lo dichiara con
+     la ragione. **Stessa regola dei punti 1 e 2** — §10.B.1, dove i due divergono
+     vince quel file e il documento si aggiorna — e questa volta la divergenza non
+     è di prudenza: **le 24 ore il dataset non le regge**, perché la prima fascia
+     libera della rete cade il 24.09 alle 09:00 e appartiene a una professionista
+     su quattro.
+
+     **La seconda metà della frase è un problema a sé**: *"nessuna lista
+     d'attesa"* afferma l'assenza di un oggetto che il prodotto non ha —
+     la lista d'attesa è una voce del perimetro dell'MVP
+     (`docs/CONTRATTO-DATI.md` §8.5) — quindi non si trascrive in §9 e non si
+     dice in sala.
+
+  **Perché è una decisione e non un compito.** Nessuno dei ~~quattro~~ sei si
+  chiude scrivendo codice o correggendo una riga di questo repository: si chiudono
   **modificando il Business Plan**, che è un documento commerciale con una sua
   versione e un suo destinatario. E su ognuno c'è una scelta che non è nostra —
   la soglia si riporta a 12 o si riformula sull'insieme giusto, il check rapido
   si riporta a una domanda o il prodotto ne aggiunge due, il 220–440 si toglie o
   si riconduce, lo split del turnover si allinea o si dichiara.
 
-  **§9 non è stato toccato, ed è la parte da non fraintendere** (founder,
-  20.08.2026). §9 è l'elenco dei numeri **che il prodotto può mostrare**, e un
+  **Il punto 6 è l'eccezione dichiarata alla riga qui sotto** (04.09.2026): §9
+  **è** stato toccato, e non perché un numero sbagliato del BP sia diventato
+  ammissibile — perché i founder hanno preso una decisione di prodotto che lo
+  sostituisce, con la sua ragione, come il §10.B.1 prevede. È il verso opposto
+  del 220–440, che resta fuori proprio perché nessuno ha deciso niente su di lui.
+
+  **§9 non è stato toccato ~~dalla revisione del 20.08.2026~~, ed è la parte da
+  non fraintendere** (founder, 20.08.2026). §9 è l'elenco dei numeri **che il prodotto può mostrare**, e un
   numero sbagliato del BP non diventa ammissibile perché lo abbiamo trovato:
   diventa una cosa da correggere alla fonte. Il 220–440 non entra in §9 **e non
   ci entra nemmeno come rimando**, e `docs/PITCH.md` **non guadagna una risposta
@@ -9003,9 +9356,10 @@ prevedeva.
   la decisione evita. **Questa voce è il suo unico posto.**
 
   **Proprietario: i founder**, che sono gli autori del documento. **Il trigger è
-  la prossima versione del Business Plan**, e i quattro si chiudono in una
-  stesura sola: toccano quattro pagine diverse dello stesso file, e aprirlo
-  quattro volte è il modo di allinearne tre.
+  la prossima versione del Business Plan**, e i ~~quattro~~ sei si chiudono in
+  una stesura sola: toccano poche pagine dello stesso file, e aprirlo una volta
+  per voce è il modo di allinearne la metà. *(Erano quattro fino al 04.09.2026,
+  e la cifra si aggiorna qui perché è accanto all'elenco che la smentirebbe.)*
 
 *(Erano in sospeso anche l'emoji nel saluto della home dipendente, decisa il
 07.08.2026 — si toglie — e la **palette con la CTA verde piena**, decisa il

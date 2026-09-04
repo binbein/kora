@@ -601,6 +601,14 @@ l'onestà è anche l'unica cosa che regge la domanda successiva, che è *"e chi
 risponde alle tre di notte?"* — a cui una funzione descritta e non costruita non
 ha niente da rispondere.
 
+### "E se uno vuole passare dalla LAMal?"
+
+**Prima sessione entro 72 ore, e nient'altro da fare**: nessuna prescrizione
+medica, nessuna diagnosi che finisce all'assicuratore, nessuna franchigia da
+pagare (`CLAUDE.md` §9). Dalla LAMal servono una prescrizione e quindici sessioni
+per volta, e una terapia tutta online non è ammessa. **Non descrivere un modello
+a due binari**: non c'è, e nominarlo apre una domanda che il prodotto non regge.
+
 ---
 
 ## Cosa non promettere
