@@ -2151,7 +2151,8 @@ parentetiche, i rimandi del contratto, i fatti del Business Plan, il check
 rapido con la soglia e i badge, il messaggio di annullamento, la chiusura
 delle fasce, la griglia delle fasce, lo scope delle fasce con le mutation che
 non si contano, l'allineamento fra verbali e commenti, e le parole che espongono
-con le promesse che non teniamo. Non aggiungono schermate.
+con le promesse che non teniamo, e la soglia di anonimato con la sottrazione che
+non deve esistere. Non aggiungono schermate.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
 volta** (04.09.2026): il listino porta ora *"prima sessione entro 72 ore"*, che è
@@ -8338,6 +8339,158 @@ LAMal, che prima non esisteva.
   quella che afferma un **fatto giuridico compiuto**, che è anche la più grave, e
   non si chiude riscrivendo una frase.
 
+#### La soglia di anonimato, e la sottrazione che non deve esistere (04.09.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il comando
+in testa a questo file. **Nessuna schermata nuova e nessuna stringa nuova**: le
+rotte restano **26**, le schermate **27**, `EXPECTED_KEYS` **794**. I guardrail
+passano da **116** a **119** — `106 + 13`, col criterio del §5.6 — e **nessun
+numero a schermo si muove**: la passata aggiunge due invarianti e non tocca né la
+media aziendale né le serie.
+
+##### La domanda di partenza, e perché la risposta è cambiata
+
+La richiesta era **togliere il conteggio dei misurati dalla riga soppressa**, con
+la garanzia nel tipo: `StressRecord` avrebbe perso `measuredEmployees` sulla
+variante `suppressed`, perché da quel numero il punteggio di un reparto sotto
+soglia si ricalcola per sottrazione.
+
+**L'aritmetica è giusta, e le condizioni in cui vale non ci sono.** Vale la pena
+scriverla per esteso, perché è la ragione per cui l'invariante nuovo esiste.
+Chiamando `m` i misurati e `s` i punteggi, se l'aggregato aziendale comprendesse
+anche il reparto soppresso varrebbe
+
+```
+media × Σm = Σ(sᵢ × mᵢ)     su TUTTI i reparti
+```
+
+e chi guarda la dashboard ha già il lato destro per i reparti pubblicati —
+punteggio e misurati stanno su ogni riga della tabella — più il proprio `m` per
+il soppresso. Resta un'incognita sola, `s`, e si ricava.
+
+**Misurato sul dataset di oggi, prima di muovere qualunque cosa**, e sono due
+fatti indipendenti:
+
+- **l'aggregato non contiene il reparto soppresso.** `buildCompanySeries`
+  (`mock/measurement.ts`) lo esclude da **numeratore e denominatore**, quindi
+  l'equazione qui sopra non si scrive: la media aziendale non ha dentro niente
+  della Direzione. Ricalcolata a mano dai dodici mesi, la serie fa
+  `53 52 52 51 50 50 49 48 48 48 47 46` — cioè esattamente quella del §8 — con
+  pesi da 75 a 87, che sono la somma dei soli pubblicati;
+- **la Direzione non ha punteggi.** `SCORES.board` è `null` in tutti e dodici i
+  mesi: non c'è un valore soppresso, c'è un reparto che non si è mai potuto
+  misurare. Anche con l'equazione risolvibile non uscirebbe niente.
+
+##### Perché il conteggio resta
+
+**Un conteggio di partecipazione non è un dato sanitario.** Dice quante persone
+hanno risposto, non come stanno: è il denominatore della pubblicabilità, non una
+misura di nessuno. Confonderlo con il punteggio è lo stesso passo falso che il
+`CLAUDE.md` §8 vieta al contrario — *lo stress non si deduce mai dal
+comportamento* — letto dall'altra parte.
+
+**E toglierlo costerebbe la riga che rende leggibile la tabella.** Il §8 lo
+prescrive con un caso concreto: Direzione e HR + Legale hanno **lo stesso
+organico**, 15, ed esiti opposti. A schermo oggi sono
+
+| | |
+|---|---|
+| `HR + Legale` | 15 dipendenti · **14 misurati** · 26% · Basso |
+| `Direzione` | 15 dipendenti · **11 misurati** · 🔒 Sotto soglia |
+
+e senza il secondo numero la seconda riga direbbe soltanto *"15 dipendenti"*
+accanto a un lucchetto: chi guarda vedrebbe **che** è soppressa e non più
+**perché**. È anche l'argomento su cui `docs/PITCH.md` costruisce due risposte
+pronte — *"HR + Legale ha lo stesso organico ed è pubblicabile: è per questo che
+i misurati stanno su ogni riga"* — e sarebbero diventate indimostrabili sulla
+schermata che le sostiene.
+
+**La difesa non è a schermo, ed è questo il punto della passata**: togliere un
+termine da un'equazione è una difesa solo finché l'equazione non si riscrive. A
+proteggere è che **l'equazione non esista**, cioè che l'aggregato non contenga il
+reparto — e quello è un vincolo sul backend, non sul rendering.
+
+##### Perché la via di mezzo non regge
+
+Era la terza strada considerata: **il tipo perde il campo** — garanzia
+strutturale per chi scriverà il backend — **e la schermata continua a mostrare il
+numero** leggendolo da un'altra parte. Non regge, e per la regola che questo
+repository ha già scritto due volte: **il provider è l'unica fonte** (§5.1), e
+reintrodurre un dato da fuori è la porta di servizio che il tipo esisterebbe per
+chiudere. Sarebbe la stessa forma del *"non lo si risolve facendo scegliere alla
+schermata cosa rendere"* con cui il §10.D.2 tiene il nome del paziente fuori dal
+back-office, applicata al contrario e per questo sbagliata.
+
+##### I due invarianti, scritti e resi eseguibili
+
+**Il primo: la media aziendale esclude i reparti soppressi da numeratore e
+denominatore.** Era scritto in tre punti — `CLAUDE.md` §8, il commento di
+`buildCompanySeries`, il `docs/CONTRATTO-DATI.md` §3 — ed **eseguito in
+nessuno**. Adesso è un guardrail in `mock/stress.ts`, e la scelta di dove metterlo
+è metà del lavoro:
+
+**confronta le due serie che escono dal provider**, non la serie contro
+l'espressione che l'ha prodotta. Ricalcolarla da `DEPARTMENT_MONTHS` avrebbe
+verificato `buildCompanySeries` contro sé stessa — la trappola che il
+`docs/CONTRATTO-DATI.md` §3 nomina a proposito della data delle note di sessione.
+Il lato destro è fatto dei soli record **pubblicati**, cioè di ciò che il client
+vede: se la media che gli arriva non si ricostruisce da lì, porta dentro
+qualcosa che lui non ha. Sono **due assertion e non una**, perché i due modi di
+sbagliare sono diversi: il punteggio, e il peso.
+
+**Provato rompendolo**, non dedotto: spostando `weight += …` sopra la guardia di
+pubblicabilità — cioè facendo rientrare il reparto soppresso nel solo
+denominatore, che è il caso subdolo perché la media resta plausibile — la build
+demo logga **ventiquattro righe**, due per mese. Ripristinato con `git checkout`
+e riverificato con la console muta su una scheda nuova.
+
+**In produzione quel guardrail non esiste**, perché sparisce con `mock/`: è il
+motivo per cui il §3 del contratto ora scrive l'aritmetica per esteso invece di
+rimandare al codice.
+
+**Il secondo: la soglia ha un pavimento, 5** (founder, 02.09.2026). Resta una
+proprietà del cliente — aziende diverse possono averne di diverse — ma sotto 5 un
+punteggio di reparto è la media di un gruppo che chi ci lavora sa nominare. Un
+guardrail in `mock/company.ts` lo verifica sull'unico cliente che c'è.
+
+**Il pavimento e il default sono due numeri con due mestieri**, e il contratto lo
+dice perché confonderli significa consegnare a ogni cliente il minimo legale: il
+pavimento è ciò sotto cui nessuno può scendere, il **default di produzione è
+10**, e **il 12 di Demo SA è un valore del dataset** con la sua ragione nel §8.
+
+##### Verificato
+
+- **A schermo, sulla build demo, viewport 1280×900, nelle quattro lingue**: la
+  tabella «Stress per reparto» di `/hr` è **identica a prima**, riga per riga, e
+  la Direzione porta ancora *"15 dipendenti · 11 misurati"* con «Sotto soglia» e
+  il lucchetto — `15 Mitarbeitende · 11 gemessen`, `15 collaborateurs · 11
+  mesurés`, `15 employees · 11 measured`;
+- **i numeri della dashboard non si muovono**: 120, soglia 12, CHF 14'200, 16
+  giorni, 68%, 82 su 120, 41 attivi, 142 su 1'200;
+- **la serie aziendale ricalcolata a mano** dà i dodici valori del §8, e i pesi
+  sono la somma dei soli reparti pubblicati;
+- **console muta su scheda nuova** in tutte e quattro le lingue, cioè i 119
+  guardrail passano;
+- `build`, `lint` e `typecheck` a zero; `EXPECTED_KEYS` fermo a **794**, che è la
+  prova che nessuna stringa è stata toccata.
+
+##### Trovato e non toccato
+
+- **Il tipo `StressRecord` continua ad ammettere `measuredEmployees` sulla
+  variante soppressa**, ed è una scelta e non un residuo: è il campo che la
+  tabella mostra. Chi rileggesse la richiesta di partenza in questo file deve
+  sapere che la garanzia è stata spostata **dall'assenza del campo all'assenza
+  dell'equazione**, non dimenticata.
+- **`getLatestStressByDepartment` resta l'unico punto in cui un reparto senza
+  record sparisce dall'elenco** invece di comparire soppresso: è già dichiarato
+  nel `docs/CONTRATTO-DATI.md` §3 come una scelta del backend, e questa passata
+  non la tocca.
+- **Il guardrail nuovo confronta due serie che oggi hanno la stessa lunghezza per
+  costruzione.** Se un giorno le due divergessero — dodici record aziendali e
+  undici di reparto — il `record === undefined` le salterebbe invece di
+  segnalarle. Non è un difetto oggi: un guardrail accanto verifica già che ogni
+  reparto abbia esattamente `HISTORY_MONTHS.length` rilevazioni.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -8400,6 +8553,15 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 > state raccolte cercando le attribuzioni datate in `CLAUDE.md` e in
 > `docs/PITCH.md`; il criterio e cosa è rimasto fuori stanno nel verbale di
 > quella passata.
+
+- **02.09.2026 — La soglia di anonimato ha un pavimento: 5** (`CLAUDE.md` §8,
+  `docs/CONTRATTO-DATI.md` §3). Resta una proprietà del cliente, ma sotto 5 un
+  punteggio di reparto è la media di un gruppo che chi ci lavora sa nominare.
+  **Il default di produzione è 10**, che è un numero diverso e con un altro
+  mestiere: il pavimento è ciò sotto cui nessuno scende, il default è ciò che
+  riceve chi non chiede niente. Il 12 di Demo SA non è nessuno dei due — è un
+  valore del dataset. *(Registrata il 04.09.2026, con la passata che l'ha
+  eseguita.)*
 
 - **04.09.2026 — «AI», «prevenzione», «rischio» e «diagnosi» non compaiono
   sulle etichette di ciò che il software calcola per una persona** (`CLAUDE.md`

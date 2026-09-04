@@ -137,3 +137,20 @@ assertInDev(
   departmentHeadcount === COMPANY.employeeCount,
   `I sei reparti sommano a ${departmentHeadcount} dipendenti, l'azienda ne dichiara ${COMPANY.employeeCount} (§8).`,
 );
+
+/*
+ * IL PAVIMENTO DELLA SOGLIA DI ANONIMATO (founder, 02.09.2026).
+ *
+ * `anonymityThreshold` è una proprietà del cliente e non una costante di
+ * piattaforma: aziende diverse possono averne di diverse
+ * (`docs/CONTRATTO-DATI.md` §3). Ma **sotto 5 la soglia smette di essere una
+ * soglia**: con quattro risposte un punteggio di reparto è la media di un
+ * gruppo che chi ci lavora sa nominare, e l'anonimato diventa una parola.
+ *
+ * È il controllo che in produzione sta sul confine — nessun cliente può
+ * scendere sotto — e qui vale sul dataset, che è l'unico cliente che c'è.
+ */
+assertInDev(
+  COMPANY.anonymityThreshold >= 5,
+  `La soglia di anonimato di ${COMPANY.name} è ${COMPANY.anonymityThreshold}: sotto 5 un punteggio di reparto descrive un gruppo che chi ci lavora sa nominare.`,
+);

@@ -941,8 +941,8 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 116 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 116 posti.
+call site sono 119 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 119 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
 **Il criterio con cui i call site si contano**, perché una rilevazione futura non
@@ -950,7 +950,7 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **103 + 13 = 116** (04.09.2026). Restano fuori, e sono le tre trappole del
+Oggi **106 + 13 = 119** (04.09.2026). Restano fuori, e sono le tre trappole del
 conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
 nome lungo che **contiene** quello corto.
 
@@ -990,8 +990,9 @@ esattamente ciò che è successo passando da 96 a 97 con la tranche tedesca, da
 108 a 109 con il conteggio delle chiavi del §2.7, da 109 a 111 con
 l'annullamento e il nome dei pazienti (17.08.2026), da 111 a 113 con il
 messaggio al paziente (01.09.2026), che di guardrail ne porta due, e da 113 a
-115 con la chiusura delle fasce, e da 115 a 116 con la prima sessione entro 72
-ore.
+115 con la chiusura delle fasce, da 115 a 116 con la prima sessione entro 72
+ore, e da 116 a 119 con la soglia di anonimato — la media aziendale ne porta
+due, uno per il punteggio e uno per il peso.
 
 **E chi lo ricontasse con un `grep` trova cifre che non sono dei guardrail**
 (01.09.2026), che è la ragione per cui questa avvertenza sta accanto al conto
@@ -1026,7 +1027,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 116 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 119 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 
@@ -1674,6 +1675,17 @@ che salta il check perché la riga sparisca dalla dashboard — il dataset
 funzionerebbe grazie a un numero implausibile. A 12 c'è margine sopra, e la
 Direzione resta sotto.
 
+**La soglia ha un pavimento, e il pavimento è 5** (founder, 02.09.2026). Resta
+una **proprietà del cliente** e non una costante di piattaforma — aziende
+diverse possono averne di diverse — ma **sotto 5 smette di essere una soglia**:
+un punteggio calcolato su quattro risposte descrive un gruppo che chi ci lavora
+sa nominare. Un guardrail in `mock/company.ts` lo verifica sull'unico cliente
+che c'è; in produzione il controllo sta sul confine, e **il default è 10**, che
+è un numero diverso dal pavimento e con un altro mestiere. **Il 12 di Demo SA è
+un valore del dataset**, non il default: le due cifre e la loro differenza
+stanno in `docs/CONTRATTO-DATI.md` §3, che è dove le legge chi scrive il
+backend.
+
 **Iscritti: 82**, il 68% di 120. Gli iscritti sono chi ha attivato l'account
 per prenotare le sessioni: essere iscritto ed essere misurato sono
 indipendenti, nessuno dei due implica l'altro, e il cambio di modello di
@@ -1702,6 +1714,15 @@ verificati a schermo:
 **I misurati si mostrano su ogni riga**, non solo su quelle sotto soglia: con il
 solo organico, i due reparti da 15 sarebbero due righe identiche con esiti opposti,
 e una delle due sembrerebbe rotta.
+
+**E restano anche sulla riga soppressa, che è la domanda che questa regola si
+sente fare** (04.09.2026): un conteggio di partecipazione non è un dato
+sanitario — dice quante persone hanno risposto, non come stanno — e toglierlo
+renderebbe illeggibile proprio la riga che la regola esiste per spiegare. **A
+impedire che da lì si risalga al punteggio è un'altra cosa**: l'invariante per
+cui l'aggregato esclude il reparto soppresso da numeratore e denominatore, con
+l'aritmetica di cosa succederebbe altrimenti, in `docs/CONTRATTO-DATI.md` §3.
+Non è una difesa a schermo, ed è il motivo per cui questa riga non si tocca.
 
 **La serie aziendale è derivata, mai scritta a mano**: media dei punteggi di
 reparto pesata sui dipendenti misurati, con i reparti sotto soglia esclusi —
