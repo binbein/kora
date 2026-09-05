@@ -2153,7 +2153,8 @@ delle fasce, la griglia delle fasce, lo scope delle fasce con le mutation che
 non si contano, l'allineamento fra verbali e commenti, e le parole che espongono
 con le promesse che non teniamo, e la soglia di anonimato con la sottrazione che
 non deve esistere, e il numero d'emergenza dove la persona dichiara di stare
-malissimo. Non aggiungono schermate.
+malissimo, e le zero richieste esterne rese eseguibili. Non aggiungono
+schermate.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
 volta** (04.09.2026): il listino porta ora *"prima sessione entro 72 ore"*, che è
@@ -8615,6 +8616,171 @@ suo unico stato.
   descrivere lì lo stesso stato che nel check rapido fa comparire il blocco, e
   non succede niente di diverso. È una delle quattro voci che il §8.1 tiene
   aperte, e questa passata non la sfiora.
+
+#### Zero richieste esterne, resa eseguibile (05.09.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il comando
+in testa a questo file. **Nessuna riga di `src/` cambia**, nessuna schermata,
+nessuna stringa: rotte **26**, schermate **27**, `EXPECTED_KEYS` **799**,
+guardrail **119**. Non è una passata di dati — è una proprietà che nessuno
+imponeva e che adesso due controlli fanno fallire.
+
+##### La proprietà era vera e non la teneva nessuno
+
+Il §3 lo dichiara dal 07.08.2026: **le richieste esterne a runtime sono zero**, e
+i font sono self-hostati perché una richiesta ai server di Google trasmette l'IP
+di chi guarda — incompatibile con quello che le nostre schermate promettono. Non
+è performance, è coerenza con l'argomento di vendita.
+
+**Ma era una frase, non un controllo.** Il prossimo widget con un'icona da CDN,
+una mappa o una analytics l'avrebbe portata via **in silenzio**, e a schermo non
+si sarebbe visto niente: è esattamente la famiglia dei disallineamenti che il
+§5.6 descrive per i guardrail.
+
+##### La misura, prima di scrivere qualunque cosa
+
+**Sul sorgente: zero riscontri.** Cercando `fetch(`, `new XMLHttpRequest`,
+`new WebSocket`, `new EventSource` e `navigator.sendBeacon` in tutto `src/`, non
+c'è niente da correggere — la regola nasce su un albero pulito, che è la
+condizione per cui è utile.
+
+**Sul risultato: quindici host**, e classificarli è stato metà del lavoro. Una
+ricerca di `https?://` in `dist/` trova per forza il rumore che una dipendenza si
+porta dietro, e **quattordici dei quindici non sono richieste**:
+
+| famiglia | host | cosa sono |
+|---|---|---|
+| namespace XML | `www.w3.org`, `jspdf.default.namespaceuri` | `xmlns` degli SVG; il secondo non è nemmeno un host |
+| banner di licenza | `html2canvas.hertzen.com`, `hertzen.com`, `opensource.org` | commenti `/*!` che il minificatore conserva |
+| attribuzioni | `www.phpied.com`, `www.myersdaily.org`, `www.fpdf.org`, `www.cs.cmu.edu` | riferimenti nei commenti di jsPDF |
+| messaggi d'errore | `reactjs.org`, `reactrouter.com`, `fb.me`, `github.com` | testo che una libreria stampa in console |
+| base di parsing | `localhost` | la base fittizia con cui react-router costruisce un `new URL()` senza `location` |
+
+**Il quindicesimo è l'unico che conta, ed è `cdnjs.cloudflare.com`**: il ramo
+`output("pdfobjectnewwindow")` di jsPDF caricherebbe `pdfobject` da CDN. **Il
+nostro chiamante non lo percorre** — `lib/report-pdf.ts` chiude con `doc.save()`
+— quindi la stringa è nel bundle e il ramo è irraggiungibile. È in allowlist con
+quella frase accanto, ed è la sola voce che tornerebbe a essere una richiesta
+vera se qualcuno cambiasse modo di uscita.
+
+**I domini `.example` del dataset non compaiono nella misura**, e la voce c'è lo
+stesso. Le email sono `m.bianchi@demo-sa.example`, cioè senza schema, quindi il
+motivo di ricerca non le aggancia: la riga è in allowlist come **suffisso** per
+il giorno in cui un valore del dataset ne avesse uno — fallirebbe la build per un
+indirizzo che nessuno può registrare e che nessuno chiama. È dichiarata come tale
+nel file, con scritto che oggi non aggancia niente.
+
+##### La trappola che questa passata ha trovato su sé stessa
+
+**Aggiungere le regole di rete in un blocco proprio ha spento la regola
+dell'orologio in tutto `src/`.** `no-restricted-syntax` **non si somma fra
+blocchi**: l'ultimo blocco che la dichiara sostituisce per intero i precedenti,
+per i file che entrambi coprono. Il lint restava verde, e `new Date()` aveva
+smesso di essere segnalato ovunque.
+
+**A trovarla non è stato un ragionamento, è stata una prova**: una sonda con
+`new Date()` accanto a un `fetch()` in `src/lib/format.ts` ha riportato **solo il
+fetch**. Senza quella verifica la passata avrebbe consegnato una regola nuova e
+una vecchia spenta, e nessuno se ne sarebbe accorto finché qualcuno non avesse
+chiamato l'orologio.
+
+**È la stessa trappola che `eslint.config.js` già raccontava di sé**, quattro
+blocchi più su, a proposito dei due preset: *"i loro `rules` arrivano da uno
+spread e la chiave `rules:` scritta a mano più sotto li sovrascriveva per
+intero. Né eslint:recommended né react/recommended erano attivi, e il lint
+usciva verde perché non stava guardando."* Il commento c'era e non ha impedito
+niente, perché parlava dei preset e non della meccanica.
+
+**Il rimedio non è ricordarselo**: i selettori sono diventati **tre costanti in
+testa al file** — orologio, memoizzazione, rete — e i due perimetri le
+**compongono** invece di riscriverle. I due blocchi sono disgiunti: `src/` meno
+`src/lib/data/http/`, e `src/lib/data/http/` da solo. Un solo elenco per
+famiglia, nessuna coppia di liste da tenere allineata a mano, e il commento in
+testa dice la meccanica invece dell'istanza.
+
+##### L'esenzione che esiste prima della cartella che esenta
+
+`src/lib/data/http/` **non esiste**, ed è scritta lo stesso in tutti e due i
+controlli. È il posto del §5.7 dove le chiamate vivranno il giorno in cui `mock/`
+si cancella: **scriverla adesso costa una riga e toglie la tentazione di
+spegnere la regola quel giorno**, che è il modo in cui una regola muore.
+
+E il secondo blocco non è vuoto: dentro `http/` **l'orologio e il divieto di
+memoizzare continuano a valere**. Quel giorno a spegnersi è la sola regola di
+rete, e solo lì.
+
+##### Perché i controlli sono due
+
+Nessuno dei due basta, e le due lacune sono complementari:
+
+- **il lint non entra in `node_modules`**, e il rischio vero è cosa fa una
+  dipendenza al suo interno; non vede nemmeno un URL che arriva da un `<link>`,
+  da un `<img>` o da un `@import` del CSS, che non è una chiamata e nessun
+  selettore di sintassi aggancia;
+- **il controllo sul bundle non distingue una chiamata da una stringa** — è
+  tutta la ragione per cui l'allowlist esiste — e **lascia passare una richiesta
+  verso un host che già ammette**. Quella riga di codice però il lint la
+  vedrebbe.
+
+Si coprono a vicenda esattamente su questo, ed è scritto in tutti e due i file.
+
+##### Due scelte dello script, dichiarate
+
+**`dist/` mancante è un fallimento, non un successo.** Un controllo che passa
+quando non ha niente da guardare è il censimento che dichiara zero su ciò che non
+ha percorso — la trappola che il §6.1 registra per il contrasto, dove un
+`opacity` invisibile allo strumento aveva prodotto uno zero falso di quattro
+nodi. Per la stessa ragione **il riepilogo dice quanti file ha letto**: è l'unico
+numero che distingue *"non c'è niente"* da *"non ho guardato"*.
+
+**Nessuna dipendenza nuova**: Node puro, così gira su una macchina appena clonata
+e in CI senza aggiungere niente al `package.json` — che è anche la ragione per
+cui non è un plugin ESLint.
+
+##### Verificato
+
+- **La misura prima**: zero riscontri nel sorgente, quindici host nel bundle,
+  classificati uno per uno leggendo il contesto di ognuno — non il solo nome.
+- **I due controlli mordono, provato rompendoli.** Con
+  `fetch("https://example.org")` dentro `formatCHF`:
+  - `npm run lint` esce **1** con
+    *«Nessuna richiesta di rete fuori da lib/data/http: CLAUDE.md §3»* su
+    `src/lib/format.ts:95`;
+  - `npm run build` esce **1** con *«1 host non dichiarato nel bundle»*,
+    `example.org`, e il file di `dist/` in cui sta.
+
+  La riga è stata tolta e i due comandi sono tornati verdi. **`example.org` non
+  è coperto dal suffisso `.example`** — finisce in `.org` — ed è la ragione per
+  cui la sonda funziona.
+- **I due perimetri del lint, provati separatamente**: una sonda fuori da
+  `http/` con sette forme — `new Date()`, `Date.now()`, `fetch`, `WebSocket`,
+  `EventSource`, `XMLHttpRequest`, `sendBeacon` — le riporta **tutte e sette**;
+  la stessa sonda dentro `src/lib/data/http/` lascia passare il `fetch` e
+  **segnala ancora l'orologio**. Le due cartelle di prova sono state cancellate.
+- **`npm run build` e `npm run build:demo` verdi**, tutti e due con la riga
+  `[rete] 7 file di dist/ letti, nessun host fuori dall'allowlist`.
+- **`vercel.json` continua a chiamare `build:demo`** — verificato leggendolo, non
+  ricordato — quindi il controllo gira anche sulle preview di branch e sul
+  deploy dell'alias pubblico.
+- `lint` e `typecheck` a zero.
+
+##### Trovato e non toccato
+
+- **Il controllo guarda `dist/`, non la rete.** Non prova che il browser non
+  faccia richieste: prova che **nel bundle non ci sono host non dichiarati**. Una
+  verifica sul traffico vero è un'altra cosa e chiede un browser: chi la volesse
+  la fa dal pannello di rete con la demo aperta, ed è la misura che il §11
+  chiederebbe. Questa è la parte che si può automatizzare senza dipendenze.
+- **`node_modules` non è coperto in nessuno dei due sensi**, ed è dichiarato:
+  il lint non ci entra, e il controllo sul bundle vede solo ciò che il
+  minificatore ci ha lasciato dentro. Una dipendenza che costruisse un URL
+  concatenando stringhe passerebbe tutti e due — è il limite di una ricerca
+  testuale, non un difetto da correggere qui.
+- **`scripts/` non è coperto dal lint**: i blocchi di `eslint.config.js`
+  dichiarano tutti `files: ["src/**"]`, quindi il file nuovo non viene
+  esaminato. Non è un difetto oggi — è uno script Node di novanta righe che non
+  ha regole da rispettare — ma chi aggiungerà il secondo file lì dentro deve
+  sapere che nessuno lo guarda.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

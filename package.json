@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "build:demo": "vite build --mode demo",
+    "build": "vite build && node scripts/check-external-requests.mjs",
+    "build:demo": "vite build --mode demo && node scripts/check-external-requests.mjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p ./tsconfig.json",
