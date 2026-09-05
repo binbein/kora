@@ -1085,29 +1085,58 @@ quello: lì stanno le esclusioni decise, qui i vuoti da colmare.
 **È la prima voce perché non è una funzione: è una condizione per avere utenti.**
 
 Non esiste nessun percorso di presa in carico urgente. Il check rapido accetta il
-valore peggiore e non succede niente; la chat del medico virtuale non rileva il
-rischio; nessuna soglia, su nessun dato, produce una segnalazione a un essere
-umano.
+valore peggiore e **nessuno viene avvisato**; la chat del medico virtuale non
+rileva il rischio; nessuna soglia, su nessun dato, produce una segnalazione a un
+essere umano.
 
-**Il numero d'emergenza è esposto in due punti**, e vanno detti con precisione
-perché sono l'unico presidio che esiste: il **disclaimer** della chat del medico
-virtuale — *"in caso di emergenza chiama il 144"* — e, dal 17.08.2026,
+**Il numero d'emergenza è esposto in ~~due~~ tre punti**, e vanno detti con
+precisione perché sono l'unico presidio che esiste: il **disclaimer** della chat
+del medico virtuale — *"in caso di emergenza chiama il 144"* — dal 17.08.2026
 **l'ultima risposta dell'arco** della chat stessa, che dopo aver orientato
-aggiunge *"se i sintomi peggiorano all'improvviso, chiami il 144"*. Entrambi in
-tutte e quattro le lingue.
+aggiunge *"se i sintomi peggiorano all'improvviso, chiami il 144"*, e dal
+**05.09.2026 il check rapido alla risposta peggiore**. Tutti e tre in tutte e
+quattro le lingue.
 
-**Sono due punti della stessa schermata, e questo è il fatto che conta.** In
-particolare il 144 **non è nel check rapido**, che è invece **dove il valore
-peggiore si può dichiarare senza parlare con nessuno**: una risposta, un tocco,
-nessun interlocutore e nessun numero.
+**~~Sono due punti della stessa schermata, e questo è il fatto che conta.~~** →
+**il terzo è su un'altra schermata, ed è quella che contava.** I due della chat
+sono dentro una conversazione, cioè dove qualcuno sta già parlando; il check
+rapido era **dove il valore peggiore si dichiara senza parlare con nessuno** —
+una risposta, un tocco, nessun interlocutore e nessun numero — ed è lì che il
+numero adesso c'è, insieme al **143** del Telefono Amico e a un collegamento
+alla prenotazione di uno psicologo.
 
-La distinzione decide dove il lavoro va fatto: non è un numero da aggiungere
-alla chat, che ora ne ha due, è un percorso che manca al punto di ingresso che
-raccoglie il segnale peggiore. *(Fino al 15.08.2026 questa voce diceva che la
-chat "non espone nessun numero d'emergenza": era falsa, e faceva sembrare il
-vuoto più grande e più semplice di com'è. Fino al 17.08.2026 diceva "un punto
-solo", ed è invecchiata con l'arco della chat — che ha aggiunto il secondo senza
-spostare il vuoto di un centimetro.)*
+**Ciò che manca non si è mosso di un centimetro**, ed è la ragione per cui
+questa voce resta la prima del §8:
+
+- **la presa in carico**: nessuno viene avvisato, e la schermata lo **dichiara**
+  invece di lasciarlo intendere — *"Kora non avvisa nessuno al posto tuo"*;
+- **il responsabile clinico**: chi risponderebbe, e con quale protocollo;
+- **il consenso al contatto**: la stessa frase dice che il referente clinico può
+  contattare *"solo se lo hai chiesto tu"*, e **quel consenso non esiste** —
+  non c'è un campo, non c'è una scrittura, non c'è una schermata dove chiederlo.
+  È il §8.2, letto dal lato di questa voce;
+- **i segnali nella chat**: il medico virtuale continua a non rilevare il
+  rischio, e le sue quattro risposte non guardano cosa la persona ha scritto.
+
+**Un numero non è un percorso**, ed è la distinzione che questa voce esisteva per
+tenere: il lavoro non era *aggiungere il 144 da qualche parte*, era **dare al
+segnale peggiore un posto dove arrivare**. Il terzo punto toglie l'assurdo — una
+persona che dichiara di stare malissimo e non vede nemmeno un numero — e non
+costruisce il percorso.
+
+**I numeri dipendono dal paese, e il paese non c'è** (05.09.2026). 144 e 143
+sono i numeri svizzeri, e stanno in `CLAUDE.md` §8 come valori della demo: in
+produzione seguono **la persona**, non la piattaforma — 112 in Italia — e
+`EmployeeProfile` un paese non ce l'ha, esattamente come non ha una lingua
+(§8.8). **È il modulo paese, ed è lavoro dell'MVP**: finché non esiste, un campo
+che il dataset non sa riempire non si aggiunge al contratto per anticiparlo.
+
+*(Fino al 15.08.2026 questa voce diceva che la chat "non espone nessun numero
+d'emergenza": era falsa, e faceva sembrare il vuoto più grande e più semplice di
+com'è. Fino al 17.08.2026 diceva "un punto solo", ed è invecchiata con l'arco
+della chat — che ha aggiunto il secondo senza spostare il vuoto di un
+centimetro. Il terzo lo sposta di poco e nella direzione giusta, e questa voce
+dice quanto poco.)*
 
 Non c'è perché **manca la decisione a monte**: quale protocollo si applica e chi
 è il referente clinico che risponde. Sono scelte dei founder e non di chi scrive

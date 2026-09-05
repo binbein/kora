@@ -1662,6 +1662,36 @@ cosa, quindi il dato deve misurare quella e non un suo surrogato. È un vincolo,
 una preferenza: nessuna metrica di stress, in nessuna schermata, si calcola a
 partire dall'uso del prodotto.
 
+**I numeri d'emergenza della demo, Svizzera: 144 e 143** (founder, 05.09.2026).
+Il **144** è il soccorso sanitario e il **143** è il Telefono Amico — *Die
+Dargebotene Hand*, *La Main Tendue* — attivi ventiquattro ore su ventiquattro.
+Non sono cifre nuove del prodotto: il 144 era già a schermo in due punti della
+chat del medico virtuale, e questa riga gli dà la casa che il §2.4 chiede,
+insieme al 143 che entra con il check rapido.
+
+**Sono valori della demo, non costanti di piattaforma**, ed è la stessa
+distinzione della soglia di anonimato: **in produzione dipendono dal paese della
+persona** — 144 in Svizzera, 112 in Italia — e il profilo del dipendente un
+paese non ce l'ha. Il modulo paese è lavoro dell'MVP
+(`docs/CONTRATTO-DATI.md` §8.1), e finché non esiste **la demo è svizzera e lo
+dichiara qui**.
+
+**Dove compaiono, e perché il terzo punto vale più dei primi due**: i due della
+chat sono dentro una conversazione, cioè dove qualcuno sta già parlando; il
+terzo è **il check rapido alla risposta peggiore**, che è l'unico punto del
+prodotto in cui una persona dichiara di stare malissimo **senza nessun
+interlocutore**. È il punto che il `docs/CONTRATTO-DATI.md` §8.1 nominava come
+scoperto.
+
+**Il numero a schermo e il numero del link `tel:` sono lo stesso valore**, letto
+una volta sola (§5.5): un numero d'emergenza scritto due volte è un numero che
+può divergere, e qui divergere vuol dire comporre una chiamata sbagliata.
+
+**Non ne discende nessun allarme.** Il prodotto non avvisa nessuno al posto di
+chi risponde, e la frase a schermo lo dice: la presa in carico, il responsabile
+clinico e il consenso al contatto restano il vuoto del §8.1 del contratto, che
+questa riga non chiude.
+
 **I tre conteggi che erano sospesi, decisi.** Il dataset di M2 si costruisce su
 questi.
 

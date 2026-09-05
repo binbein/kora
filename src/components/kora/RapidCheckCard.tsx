@@ -1,4 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Angry, CheckCircle2, Frown, Laugh, Meh, Smile } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -6,7 +8,7 @@ import { dataProvider } from "@/lib/data";
 import { loadState, useRapidCheckAnswer } from "@/lib/data/queries";
 import { queryKeys } from "@/lib/data/query-keys";
 import type { RapidCheckAnswer } from "@/lib/data/types";
-import { t } from "@/lib/i18n";
+import { interpolate, t } from "@/lib/i18n";
 import { ErrorNotice } from "@/components/kora/StateNotice";
 
 /*
@@ -80,6 +82,28 @@ const FACE_CHOSEN =
  */
 const FACE_MUTED =
   "border-transparent bg-transparent text-muted-foreground/40 hover:border-secondary/40 hover:bg-accent/50 hover:text-accent-foreground";
+
+/*
+ * I NUMERI D'EMERGENZA DELLA DEMO, SVIZZERA (CLAUDE.md §8): 144 il soccorso
+ * sanitario, 143 il Telefono Amico.
+ *
+ * Stanno qui e non nelle stringhe perché **lo stesso valore alimenta il testo e
+ * il link `tel:`** (§5.5): scritti due volte potrebbero divergere, e qui
+ * divergere vuol dire comporre una chiamata sbagliata.
+ *
+ * Non vengono dal provider, e non è una dimenticanza: in produzione dipendono
+ * dal **paese della persona** — 144 in Svizzera, 112 in Italia — e il profilo
+ * del dipendente un paese non ce l'ha. Il modulo paese è lavoro dell'MVP
+ * (`docs/CONTRATTO-DATI.md` §8.1); un campo che il dataset non sa riempire non
+ * si aggiunge al contratto per anticiparlo (§11).
+ */
+const EMERGENCY_NUMBER = "144";
+const HELPLINE_NUMBER = "143";
+
+/* Testo leggibile e link riconoscibile: `foreground` dà 13.53:1 sulla card,
+   mentre `secondary` come testo starebbe a 2.83:1 (§6.1). */
+const CRISIS_LINK =
+  "inline-block rounded-sm text-sm text-foreground underline underline-offset-4 hover:text-secondary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 
 export default function RapidCheckCard() {
   const queryClient = useQueryClient();
@@ -205,6 +229,61 @@ export default function RapidCheckCard() {
           );
         })}
       </div>
+
+      {/*
+        * IL NUMERO STA DOVE QUALCUNO DICHIARA DI STARE MALISSIMO.
+        *
+        * Compare **solo** sulla risposta peggiore, e sparisce se la risposta
+        * cambia: non c'è nessuno stato nuovo, si legge dal valore registrato —
+        * che è anche il motivo per cui sopravvive a un cambio di schermata e
+        * non a una risposta diversa.
+        *
+        * STA SOTTO I VOLTI E NON SOTTO "Grazie, registrato", ed è una scelta:
+        * inserito fra l'intestazione e la riga dei volti sposterebbe i cinque
+        * bersagli **sotto il dito** nel momento del tocco, che è precisamente
+        * ciò che il commento della riga dei volti esiste per evitare. Qui la
+        * card cresce verso il basso e la scelta resta dov'era.
+        *
+        * NON È UN ALLARME, e la riga in fondo lo dice invece di lasciarlo
+        * intendere: il prodotto non avvisa nessuno al posto di chi risponde.
+        * La presa in carico e il consenso al contatto sono il vuoto del
+        * `docs/CONTRATTO-DATI.md` §8.1, e questo blocco non lo chiude — mette
+        * un numero dove non ce n'era nessuno.
+        */}
+      {answer?.value === 5 && (
+        <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+          <p className="text-sm font-semibold">
+            {t.employee.rapidCheck.crisis.title}
+          </p>
+
+          <ul className="mt-2 space-y-1.5">
+            <li>
+              <a href={`tel:${EMERGENCY_NUMBER}`} className={CRISIS_LINK}>
+                {interpolate(t.employee.rapidCheck.crisis.emergency, {
+                  number: EMERGENCY_NUMBER,
+                })}
+              </a>
+            </li>
+            <li>
+              <a href={`tel:${HELPLINE_NUMBER}`} className={CRISIS_LINK}>
+                {interpolate(t.employee.rapidCheck.crisis.helpline, {
+                  number: HELPLINE_NUMBER,
+                })}
+              </a>
+            </li>
+          </ul>
+
+          <Button size="sm" className="mt-3" asChild>
+            <Link to="/employee/psychologists">
+              {t.employee.rapidCheck.crisis.cta}
+            </Link>
+          </Button>
+
+          <p className="text-xs text-muted-foreground mt-3">
+            {t.employee.rapidCheck.crisis.note}
+          </p>
+        </div>
+      )}
 
       {/*
         * Il fallimento della scrittura si dice **dove sta il gesto**, e senza
