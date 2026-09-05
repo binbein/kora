@@ -286,6 +286,14 @@ export const en: Dictionary = {
       },
       done: "Thanks, recorded.",
       doneHint: "You can still change your answer today.",
+
+      crisis: {
+        title: "If this is a hard moment, don't stay with it alone",
+        emergency: "{number} — emergencies, around the clock",
+        helpline: "{number} — Telefono Amico, around the clock",
+        cta: "Talk to someone today",
+        note: "Kora does not alert anyone on your behalf. Your clinical contact can only reach out if you have asked them to.",
+      },
     },
 
     psychologists: {

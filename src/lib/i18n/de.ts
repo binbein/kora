@@ -272,6 +272,14 @@ export const de: Dictionary = {
       },
       done: "Danke, erfasst.",
       doneHint: "Du kannst deine Antwort heute noch ändern.",
+
+      crisis: {
+        title: "Wenn es dir gerade schwerfällt, bleib damit nicht allein",
+        emergency: "{number} — Notruf, rund um die Uhr",
+        helpline: "{number} — Die Dargebotene Hand, rund um die Uhr",
+        cta: "Sprich heute mit jemandem",
+        note: "Kora meldet niemanden an deiner Stelle. Deine klinische Ansprechperson kann dich nur kontaktieren, wenn du selbst darum gebeten hast.",
+      },
     },
 
     psychologists: {

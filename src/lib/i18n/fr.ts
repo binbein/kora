@@ -328,6 +328,14 @@ export const fr: Dictionary = {
       },
       done: "Merci, c'est enregistré.",
       doneHint: "Tu peux encore changer ta réponse aujourd'hui.",
+
+      crisis: {
+        title: "Si le moment est difficile, ne reste pas seule",
+        emergency: "{number} — urgences, 24 h sur 24",
+        helpline: "{number} — La Main Tendue, 24 h sur 24",
+        cta: "Parle à quelqu'un aujourd'hui",
+        note: "Kora ne prévient personne à ta place. Ta personne de référence clinique ne peut te contacter que si tu l'as demandé toi-même.",
+      },
     },
 
     psychologists: {

@@ -310,6 +310,28 @@ export const it = {
       },
       done: "Grazie, registrato.",
       doneHint: "Puoi cambiare la risposta finché è oggi.",
+
+      /*
+       * Compare **solo** sotto la risposta peggiore (§8), ed è l'unico punto
+       * del prodotto in cui il numero d'emergenza sta dove qualcuno dichiara
+       * di stare male senza nessun interlocutore.
+       *
+       * `{number}` e non la cifra dentro la frase: lo stesso valore alimenta il
+       * testo e il link `tel:`, e due copie possono divergere (§5.5). È anche
+       * ciò che lascia al tedesco e al francese l'ordine che vogliono.
+       */
+      crisis: {
+        title: "Se è un momento difficile, non restare da sola",
+        /** "144 — emergenze, 24 ore su 24" */
+        emergency: "{number} — emergenze, 24 ore su 24",
+        /** "143 — Telefono Amico, 24 ore su 24" */
+        helpline: "{number} — Telefono Amico, 24 ore su 24",
+        cta: "Parla con qualcuno oggi",
+        /* Dice l'invariante — nessun allarme automatico — senza promettere il
+           consenso al contatto, che non esiste ed è lavoro dell'MVP
+           (`docs/CONTRATTO-DATI.md` §8.1). */
+        note: "Kora non avvisa nessuno al posto tuo. Il tuo referente clinico può contattarti solo se lo hai chiesto tu.",
+      },
     },
 
     /*
