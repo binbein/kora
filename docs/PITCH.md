@@ -574,22 +574,28 @@ superato i controlli.*
 ### "E se qualcuno sta male davvero?"
 
 **Il percorso di escalation non c'è, e la demo non lo simula.** È la risposta da
-dare per intero e senza attenuarla: il check rapido accetta anche la risposta
-peggiore e non succede niente, e la chat del medico virtuale non rileva il
-rischio.
+dare per intero e senza attenuarla: **alla risposta peggiore non viene avvisato
+nessuno**, e la chat del medico virtuale non rileva il rischio. *(Fino al
+05.09.2026 questa riga diceva "non succede niente", e da quel giorno non è più
+vero alla lettera: qualcosa a schermo succede — il paragrafo qui sotto — mentre
+la parte che conta, che nessun essere umano riceve il segnale, non è cambiata.)*
 
-**Il 144 è a schermo in due punti, ed entrambi sono nella chat del medico.** Il
-disclaimer sotto la conversazione — *"in caso di emergenza chiama il 144"* — e
-la risposta con cui la chat si chiude, che orienta e aggiunge *"se i sintomi
-peggiorano all'improvviso, chiami il 144"*. **Non c'è nel check rapido**, che è
-invece il punto in cui il valore peggiore si dichiara senza parlare con nessuno.
+**Il 144 è a schermo in tre punti**, e dal 05.09.2026 **il terzo è proprio dove
+il valore peggiore si dichiara**: toccando "Molto male" nel check rapido
+compaiono il 144, il 143 del Telefono Amico e un collegamento per prenotare uno
+psicologo. Gli altri due sono nella chat del medico — il disclaimer sotto la
+conversazione e la risposta con cui la chat si chiude.
 
-Detto così non attenua la risposta, la precisa: **quello che manca non è un
-numero da aggiungere, è un percorso dove il segnale arriva.** Se qualcuno lo ha
-visto nella chat mentre mostravi il medico virtuale, questa è la frase che tiene
-insieme le due cose invece di sembrare una contraddizione. *(Fino al 17.08.2026
-il numero era in un punto solo; il secondo è arrivato con l'arco della chat, e
-non sposta la lacuna di un centimetro.)*
+**Mostralo invece di raccontarlo**, ed è un tocco solo: è la prova che
+l'osservazione è stata presa sul serio, sulla schermata che la riceveva peggio.
+
+**Ma la lacuna resta, e va detta subito dopo**: **quello che manca non è un
+numero, è un percorso dove il segnale arriva.** Nessuno viene avvisato, e **la
+schermata lo dichiara** — *"Kora non avvisa nessuno al posto tuo"*. Il
+referente clinico e il protocollo non esistono, e nemmeno il consenso a essere
+contattati. *(Fino al 17.08.2026 il numero era in un punto solo; il secondo è
+arrivato con l'arco della chat, il terzo il 05.09.2026 — e sposta la lacuna di
+poco, non la chiude.)*
 
 **Il referente clinico e il protocollo si definiscono prima del primo utente
 attivo.** È il momento in cui la domanda smette di essere teorica, ed è lì che va

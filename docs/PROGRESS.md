@@ -2152,7 +2152,8 @@ rapido con la soglia e i badge, il messaggio di annullamento, la chiusura
 delle fasce, la griglia delle fasce, lo scope delle fasce con le mutation che
 non si contano, l'allineamento fra verbali e commenti, e le parole che espongono
 con le promesse che non teniamo, e la soglia di anonimato con la sottrazione che
-non deve esistere. Non aggiungono schermate.
+non deve esistere, e il numero d'emergenza dove la persona dichiara di stare
+malissimo. Non aggiungono schermate.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
 volta** (04.09.2026): il listino porta ora *"prima sessione entro 72 ore"*, che è
@@ -8491,6 +8492,130 @@ pavimento è ciò sotto cui nessuno può scendere, il **default di produzione è
   segnalarle. Non è un difetto oggi: un guardrail accanto verifica già che ogni
   reparto abbia esattamente `HISTORY_MONTHS.length` rilevazioni.
 
+#### Il numero d'emergenza dove il segnale peggiore si dichiara (05.09.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il comando
+in testa a questo file. **Nessuna schermata nuova e nessuna scrittura nuova**: le
+rotte restano **26**, le schermate **27**, i guardrail **119** — `106 + 13`, col
+criterio del §5.6 — e **nessun numero della dashboard si muove**.
+`EXPECTED_KEYS` passa da **794** a **799**: cinque chiavi nuove, nessuna tolta.
+
+##### Il vuoto che questa passata riduce, e quello che non tocca
+
+Il `docs/CONTRATTO-DATI.md` §8.1 lo diceva da sempre e lo diceva bene: il 144 era
+a schermo **in due punti, tutti e due nella chat del medico virtuale** — cioè
+dentro una conversazione, dove qualcuno sta già parlando — mentre **il check
+rapido era il punto in cui il valore peggiore si dichiara senza parlare con
+nessuno**. Una risposta, un tocco, nessun interlocutore e nessun numero.
+
+Da oggi toccando **«Molto male»** compaiono, sotto i cinque volti: il **144**, il
+**143** del Telefono Amico, un pulsante che porta alla prenotazione di uno
+psicologo, e una riga che dichiara cosa il prodotto **non** fa.
+
+**Un numero non è un percorso, e il verbale lo scrive perché la voce del §8.1
+resta la prima del perimetro**: il lavoro non era *aggiungere il 144 da qualche
+parte*, era **dare al segnale peggiore un posto dove arrivare**. Questa passata
+toglie l'assurdo — una persona che dichiara di stare malissimo e non vede nemmeno
+un numero — e **non costruisce il percorso**. Restano fuori, e sono nominati uno
+per uno nel §8.1: la presa in carico, il responsabile clinico, il consenso al
+contatto, e i segnali nella chat.
+
+##### La riga che dice cosa il prodotto non fa
+
+*«Kora non avvisa nessuno al posto tuo. Il tuo referente clinico può contattarti
+solo se lo hai chiesto tu.»*
+
+**È la frase su cui si è deciso di più**, e le sue due metà fanno due cose
+diverse. La prima **dichiara l'invariante**: nessun allarme automatico, nessuna
+soglia che produce una segnalazione a un essere umano. È l'unica affermazione
+della passata che sia vera per costruzione, ed è quella che va detta a chi sta
+male — perché l'alternativa, cioè lasciarlo intendere, è la cosa che si scopre nel
+momento peggiore.
+
+La seconda metà **nomina un consenso che non esiste**, ed è deliberato: *"solo se
+lo hai chiesto tu"* descrive una condizione che oggi nessuno può soddisfare — non
+c'è un campo, non c'è una scrittura, non c'è una schermata dove chiederlo (§8.2
+del contratto). **Dice cosa il prodotto non fa senza promettere il meccanismo che
+manca**, ed è la stessa disciplina con cui l'informativa della richiesta demo, il
+04.09.2026, ha sostituito una promessa di conformità con un fatto verificabile.
+Il consenso arriva quando arriva il modulo che lo raccoglie.
+
+##### I due numeri stanno nel componente, e non è una scorciatoia
+
+**Non sono nelle stringhe**, benché siano testo a schermo, e la ragione è il §5.5:
+**lo stesso valore alimenta la frase e il link `tel:`**. Scritti due volte — una
+dentro la traduzione e una dentro l'`href` — potrebbero divergere, e qui divergere
+vuol dire **comporre una chiamata sbagliata**. Le stringhe portano `{number}`,
+che è anche ciò che lascia al tedesco e al francese l'ordine che vogliono.
+
+**Non vengono nemmeno dal provider**, e neanche questa è una dimenticanza: in
+produzione i numeri seguono **il paese della persona** — 144 in Svizzera, 112 in
+Italia — e `EmployeeProfile` un paese non ce l'ha, esattamente come non ha una
+lingua (`docs/CONTRATTO-DATI.md` §8.8). Il **modulo paese è lavoro dell'MVP**, e
+un campo che il dataset non sa riempire onestamente non si aggiunge al contratto
+per anticiparlo (§11). I due valori entrano invece in `CLAUDE.md` §8, che è dove
+il §2.4 vuole le cifre prima che vadano a schermo.
+
+**Restano tre occorrenze del 144 nel repository**, ed è il conto che il §8.1
+dichiara: le due della chat vivono **dentro frasi in prosa** — *"in caso di
+emergenza chiama il 144"* — dove il numero non alimenta nessun link e non ha un
+gemello da cui divergere. Non sono state toccate: unificarle avrebbe voluto dire
+riscrivere due frasi in quattro lingue per una simmetria che non chiude nessun
+difetto.
+
+##### Dove sta il blocco, e perché non dove sembrava
+
+**Sotto i volti, non sotto «Grazie, registrato».** Inserirlo fra l'intestazione e
+la riga dei cinque volti li avrebbe spostati **sotto il dito** nell'istante del
+tocco, che è precisamente ciò che il commento di quella riga esiste per evitare —
+*"la card non salta sotto le dita al tocco"*. Così la card cresce verso il basso e
+la scelta resta dov'era, verificato toccando.
+
+**Nessuno stato nuovo**: la condizione è `answer?.value === 5`, letta dal valore
+già registrato. Ne discendono due comportamenti che si vedono e che sono giusti
+tutti e due — sopravvive a un cambio di schermata, perché la risposta vive nel
+provider, e **non sopravvive a una risposta diversa**, perché è la risposta il
+suo unico stato.
+
+##### Verificato
+
+- **A schermo, sulla build demo, viewport 1280×900, nelle quattro lingue**: il
+  blocco compare toccando «Molto male» e **sparisce cambiando risposta** —
+  provato nella sequenza `Bene → Molto male → Non bene → Molto male`, con i link
+  `tel:` contati a ogni passo: **0, 2, 0, 2**;
+- **i due link compongono i numeri giusti**: `tel:144` e `tel:143`, con il testo
+  che li contiene — `144 — Notruf, rund um die Uhr`, `143 — La Main Tendue, 24 h
+  sur 24`, `143 — Telefono Amico, around the clock`;
+- **il pulsante porta davvero alla prenotazione**: cliccato in tedesco, atterra su
+  `/employee/psychologists`;
+- **nessun overflow orizzontale in tedesco**, che è la lingua lunga, né in
+  inglese: `scrollWidth === clientWidth` su `/employee`;
+- **console muta** su scheda nuova e dopo i quattro tocchi;
+- `build`, `lint` e `typecheck` a zero; `EXPECTED_KEYS` **799** sull'albero
+  sintattico nei quattro dizionari, guardrail **119** invariati.
+
+##### Trovato e non toccato
+
+- **«non restare da sola» è al femminile**, ed è la stringa che i founder hanno
+  scritto. Nella demo funziona — la persona è Laura Bernasconi — ma **il prodotto
+  la mostrerebbe a chiunque**, e le altre stringhe del registro consumer sono
+  epicene. È una decisione di copy dei founder, non di chi scrive il codice, e
+  vale per l'italiano e per il francese (*"ne reste pas seule"*); tedesco e
+  inglese non hanno il problema. **Va portata alla revisione madrelingua**
+  insieme al resto di quei tre file, dove il `fr.ts` ha già in testa una domanda
+  della stessa famiglia.
+- **Il blocco non ha un guardrail**, e non è una dimenticanza: non c'è un secondo
+  numero contro cui verificarlo — è il caso che il `docs/CONTRATTO-DATI.md` §3
+  descrive per la data delle note, cioè un controllo che verificherebbe
+  l'espressione contro sé stessa. Quello che si può sorvegliare è già sorvegliato
+  dal tipo: `value` è l'unione `1 | 2 | 3 | 4 | 5`, quindi il `=== 5` non può
+  diventare irraggiungibile per un refuso.
+- **La chat del medico virtuale continua a non guardare cosa la persona
+  scrive.** Le sue quattro risposte seguono un arco fisso, quindi qualcuno può
+  descrivere lì lo stesso stato che nel check rapido fa comparire il blocco, e
+  non succede niente di diverso. È una delle quattro voci che il §8.1 tiene
+  aperte, e questa passata non la sfiora.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -9298,8 +9423,22 @@ prevedeva.
   allertato, con quale procedura?)».
 
   **Cosa manca nel prodotto**: nessun percorso di presa in carico urgente, il
-  check rapido accetta il valore peggiore senza che succeda niente, la chat del
-  medico non rileva il rischio. **Il numero d'emergenza c'è**, in due punti —
+  check rapido accetta il valore peggiore **senza che nessuno venga avvisato**,
+  la chat del medico non rileva il rischio.
+
+  **Dal 05.09.2026 il numero d'emergenza c'è anche lì, e la voce resta
+  aperta.** Toccando "Molto male" compaiono il 144, il 143 del Telefono Amico e
+  un collegamento alla prenotazione, in tutte e quattro le lingue. **Non chiude
+  niente di questa voce**: il protocollo non esiste, il referente clinico
+  nemmeno, e la frase a schermo lo dichiara invece di lasciarlo intendere —
+  *"Kora non avvisa nessuno al posto tuo"*. **Il consenso al contatto che quella
+  frase nomina non esiste come dato**, ed è il §8.2 del contratto letto da
+  questo lato: la seconda metà della riga — *"solo se lo hai chiesto tu"* —
+  descrive una condizione che oggi nessuno può soddisfare, ed è deliberato,
+  perché dice cosa il prodotto **non** fa senza promettere il meccanismo che
+  manca. Quello che è cambiato è che una persona che dichiara di stare malissimo
+  adesso vede un numero; quello che non è cambiato è **dove arriva il segnale**,
+  cioè da nessuna parte. **Il numero d'emergenza c'è**, in due punti —
   il disclaimer della chat del medico e l'ultima risposta del suo arco, in tutte
   e quattro le lingue — e **non è nel check rapido**, che è dove il valore
   peggiore si dichiara senza parlare con nessuno. Il perimetro sta in
