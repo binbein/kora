@@ -47,12 +47,30 @@ Non serve nessun file `.env`: non c'è backend, e non deve essercene uno
 | | |
 |---|---|
 | `npm run dev` | server di sviluppo |
-| `npm run build` | build di produzione in `dist/` |
+| `npm run build` | build di produzione in `dist/`, **più il controllo sulle richieste esterne** |
 | `npm run build:demo` | build di produzione **con i guardrail che parlano** — è quella che si deploya |
 | `npm run preview` | serve l'ultimo build |
 | `npm run lint` | ESLint — deve uscire a zero, warning compresi |
 | `npm run lint:fix` | ESLint con le correzioni automatiche |
 | `npm run typecheck` | `tsc` — deve uscire a zero |
+
+## Zero richieste esterne, e i due controlli che la tengono
+
+La demo non chiama nessun server che non sia il suo: i font sono self-hostati,
+non c'è nessun CDN, nessuna analytics, nessuna mappa. Non è una scelta di
+prestazioni — una richiesta a un terzo trasmette l'IP di chi guarda, e le
+schermate promettono hosting in Svizzera, LPD e GDPR. La regola sta in
+`CLAUDE.md` §3; qui c'è come si verifica.
+
+| | |
+|---|---|
+| **sorgente** | `npm run lint` — vieta `fetch`, `XMLHttpRequest`, `WebSocket`, `EventSource` e `sendBeacon` in tutto `src/`, tranne `src/lib/data/http/` |
+| **risultato** | `npm run build` — `scripts/check-external-requests.mjs` legge `dist/` e fallisce elencando host e file se ne trova uno fuori dall'allowlist |
+
+L'allowlist sta dentro lo script, e ogni voce porta accanto la ragione per cui
+**non** è una richiesta: quasi tutte sono banner di licenza e URL dentro i
+messaggi d'errore delle dipendenze. Se aggiungendone una la ragione non si
+riesce a scrivere, il controllo ha appena fatto il suo mestiere.
 
 ## I tre modi, e cosa fanno i guardrail
 

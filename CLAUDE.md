@@ -472,6 +472,36 @@ repository Next non dia niente per scontato.
   esterne a runtime sono zero**, ed è una proprietà da non perdere: vale anche per
   CDN, icone, analytics e mappe.
 
+  **E da oggi non la tiene la buona volontà: la impongono due controlli**
+  (05.09.2026). Erano una proprietà vera che nessuno verificava — il tipo di
+  cosa che il prossimo widget porta via in silenzio, senza che niente lo
+  segnali:
+
+  - **sul sorgente**, un blocco `no-restricted-syntax` in `eslint.config.js`
+    vieta `fetch`, `XMLHttpRequest`, `WebSocket`, `EventSource` e `sendBeacon`
+    in tutto `src/` **tranne `src/lib/data/http/`**, che è il posto del §5.7
+    dove le chiamate vivranno il giorno in cui `mock/` si cancella;
+  - **sul risultato**, `scripts/check-external-requests.mjs` scandisce `dist/`
+    dopo ogni build e **fa fallire la build** se trova un host fuori da
+    un'allowlist dichiarata nel file, dove ogni voce porta accanto la ragione
+    per cui non è una richiesta. Gira su `build` e su `build:demo`, quindi
+    anche su Vercel.
+
+  **Sono due e non uno perché nessuno dei due basta**: il lint non entra in
+  `node_modules` — e il rischio vero è cosa fa una dipendenza al suo interno —
+  né vede un URL che arriva da un `<link>` o da un `@import`; il controllo sul
+  bundle non distingue una chiamata da una stringa, e lascia passare una
+  richiesta verso un host che l'allowlist già ammette. Si coprono a vicenda
+  esattamente lì.
+
+  **L'allowlist non è una lista di host di cui ci fidiamo**, ed è la riga da
+  leggere prima di allungarla: è l'elenco delle stringhe che il bundle
+  **contiene senza chiamarle**. Alla prima misura erano quindici host e
+  quattordici erano rumore — namespace XML, banner di licenza, attribuzioni in
+  commento, URL dentro messaggi d'errore. Chi ne aggiunge una scrive perché non
+  è una richiesta; **se non riesce a scriverla, ha trovato quello che il
+  controllo cerca**.
+
 ### Dipendenze
 
 I pacchetti che il `package.json` ereditava senza che nessuno li importasse sono
