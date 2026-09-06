@@ -248,10 +248,20 @@ export function useStressHistory(departmentId?: string) {
   });
 }
 
-export function useLatestStressByDepartment() {
+/**
+ * Lo stress di ogni reparto nel trimestre scelto.
+ *
+ * `enabled` sul periodo, come le altre letture per trimestre: il selettore lo
+ * ha sempre, ma la firma resta quella delle sue vicine — e la chiave non si
+ * costruisce su un `Quarter` mancante.
+ */
+export function useStressByDepartment(period: Quarter | undefined) {
   return useQuery({
-    queryKey: queryKeys.company.latestStress(),
-    queryFn: () => dataProvider.getLatestStressByDepartment(),
+    queryKey: queryKeys.company.stressByDepartment(
+      period ? quarterKey(period) : "",
+    ),
+    queryFn: () => dataProvider.getStressByDepartment(period as Quarter),
+    enabled: period !== undefined,
   });
 }
 

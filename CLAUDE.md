@@ -2714,10 +2714,13 @@ Dashboard, Dipendenti, Report, Fatturazione, Privacy.
 
    **Quello che segue il trimestre sta dentro una cornice, con il selettore in
    cima** (founder, 17.08.2026). Il selettore stava nell'intestazione e sembrava
-   comandare la pagina intera: non è così, e **lo seguono otto elementi** — le
-   sei KPI, la ciambella della distribuzione e l'evidenziazione nel grafico del
-   risparmio. Fuori e sotto sta quello che parla dell'ultimo mese o dei dodici:
-   stress per reparto, trend, utilizzo servizi.
+   comandare la pagina intera: non è così, e **lo seguono nove elementi** — le
+   sei KPI, **lo stress per reparto**, la ciambella della distribuzione e
+   l'evidenziazione nel grafico del risparmio. Fuori e sotto sta quello che parla
+   dei dodici mesi: trend e utilizzo servizi.
+
+   *(Erano otto fino al 06.09.2026, e il nono è lo stress per reparto: la riga
+   qui sotto racconta perché stava fuori e cosa è servito per farlo entrare.)*
 
    **I due banner restano sopra la cornice** — alert precoce e soglia di
    anonimato — e non ci entrano: sono avvisi, e la loro posizione è parte
@@ -2728,10 +2731,26 @@ Dashboard, Dipendenti, Report, Fatturazione, Privacy.
    che confronta **tutti e quattro** i trimestri: dentro una cornice intitolata
    al trimestre selezionato, quattro barre vanno spiegate.
 
-   **La tabella dello stress per reparto non segue il selettore**, ed è un
+   ~~**La tabella dello stress per reparto non segue il selettore**, ed è un
    difetto noto da M3 che **questa riorganizzazione non chiude**: finendo fuori
    dalla cornice smette di *sembrare* un errore e diventa quello che è — un
-   blocco che parla dell'ultimo mese. Resta aperto, e sta in `docs/PROGRESS.md`.
+   blocco che parla dell'ultimo mese. Resta aperto, e sta in
+   `docs/PROGRESS.md`.~~ → **chiuso il 06.09.2026**, e la tabella è entrata nella
+   cornice.
+
+   **Richiedeva un metodo, ed è per questo che nessuna passata l'aveva chiuso**:
+   il provider sapeva rispondere solo con **l'ultimo mese in assoluto**, quindi
+   spostare la tabella dentro la cornice l'avrebbe fatta *sembrare* di seguire il
+   selettore senza seguirlo — cioè peggio di lasciarla fuori.
+   `getStressByDepartment(period)` prende un trimestre e risponde con **l'ultimo
+   mese di quel trimestre di cui esiste un record**, e la lettura di prima è
+   sparita perché non la leggeva più nessuno (§11).
+
+   **Di un trimestre si mostra un mese, non la media dei tre**, ed è la scelta
+   che il titolo dichiara — *"ultimo mese del trimestre"*: un punteggio di stress
+   è una fotografia, e mediarne tre darebbe un numero che nessuna rilevazione ha
+   prodotto. Sul trimestre in corso è l'ultimo mese arrivato, che è l'unica
+   lettura possibile finché il trimestre non è chiuso.
 2. **Report**: le metriche del trimestre e le raccomandazioni, **compresi i
    consulti di medico virtuale** (founder, 17.08.2026), che la migrazione di M3
    aveva perso insieme al campo che li alimentava. Si sommano sui **soli mesi del

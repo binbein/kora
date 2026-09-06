@@ -1038,12 +1038,16 @@ export const it = {
     /** "Psicologo: 142" */
     distributionEntry: "{service}: {count}",
 
-    /* "ultimo mese" nel titolo non è pignoleria: tutto il resto della schermata
-       segue il selettore del trimestre, questa tabella no — lo stress è una
-       serie mensile (§5.3) e il §8 la fissa sull'ultimo rilevamento. Senza
-       dirlo, chi apre un trimestre chiuso legge dati di settembre credendoli
-       suoi. */
-    stressByDepartment: "Stress per reparto · ultimo mese",
+    /* Il periodo resta nel titolo, e dice un'altra cosa dal 06.09.2026: la
+       tabella **segue** il selettore, ma lo stress è una serie mensile (§5.3) e
+       di un trimestre mostra il suo **ultimo mese**, non la media dei tre.
+       Senza dirlo, tre mesi ridotti a una riga si leggono come un trimestre
+       intero.
+
+       *(Diceva "· ultimo mese" e basta, quando la tabella non seguiva il
+       selettore: il periodo era assoluto, adesso è relativo al trimestre
+       scelto.)* */
+    stressByDepartment: "Stress per reparto · ultimo mese del trimestre",
     /* Organico e misurati su ogni riga, anche su quelle pubblicabili: è l'unico
        modo di vedere perché la Direzione è sotto soglia e HR + Legale no, visto
        che hanno lo stesso organico. Senza, due righe identiche danno esiti

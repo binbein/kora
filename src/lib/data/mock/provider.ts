@@ -18,6 +18,7 @@ import {
   type ServiceUsageMonth,
   type VirtualDoctorConsult,
   patientInitials,
+  quarterOf,
   sameQuarter,
   serviceOf,
   type Appointment,
@@ -311,22 +312,38 @@ export class MockDataProvider implements DataProvider {
     return Promise.resolve(DEPARTMENT_STRESS_HISTORY[departmentId] ?? []);
   }
 
-  getLatestStressByDepartment(): Promise<StressRecord[]> {
-    /*
-     * Il `?? []` è quello di `getStressHistory` qui sopra, e da solo non
-     * basterebbe: su una serie vuota l'ultimo elemento è `undefined`, quindi il
-     * buco finirebbe **dentro l'array di ritorno** e la dashboard esploderebbe
-     * una riga più in là, leggendo `measuredEmployees` di niente.
-     *
-     * Un reparto senza record esce dall'elenco invece di comparire con una riga
-     * inventata: la funzione promette l'ultimo record di ogni reparto, e senza
-     * record non c'è un ultimo record. Fabbricarne uno soppresso vorrebbe dire
-     * dichiarare un dato che il provider non ha.
-     */
+  /**
+   * La rilevazione di ogni reparto nel trimestre scelto.
+   *
+   * **L'ultimo mese del trimestre di cui esiste un record**, non la media dei
+   * tre: mediarli darebbe un numero che nessuna rilevazione ha prodotto.
+   *
+   * IL FILTRO HA DUE CONDIZIONI E LA SECONDA NON È RIDONDANTE. La prima tiene i
+   * mesi del trimestre; la seconda scarta quelli **oltre il giorno della demo**,
+   * e serve al trimestre in corso — dove "l'ultimo mese del trimestre" e
+   * "l'ultimo mese arrivato" sono due cose diverse. Oggi coincidono, perché la
+   * serie finisce nel mese di `DEMO_TODAY`; il giorno in cui il dataset
+   * arrivasse a fine trimestre la tabella mostrerebbe un mese che non è ancora
+   * successo.
+   *
+   * Il `?? []` è quello di `getStressHistory`, e da solo non basterebbe: su una
+   * serie vuota l'ultimo elemento è `undefined`, quindi il buco finirebbe
+   * **dentro l'array di ritorno** e la dashboard esploderebbe una riga più in
+   * là, leggendo `measuredEmployees` di niente.
+   *
+   * Un reparto senza record nel trimestre esce dall'elenco invece di comparire
+   * con una riga inventata: senza record non c'è un ultimo record, e
+   * fabbricarne uno soppresso dichiarerebbe un dato che il provider non ha.
+   */
+  getStressByDepartment(period: Quarter): Promise<StressRecord[]> {
     return Promise.resolve(
       DEPARTMENTS.flatMap((department) => {
-        const series = DEPARTMENT_STRESS_HISTORY[department.id] ?? [];
-        const latest = series[series.length - 1];
+        const inQuarter = (DEPARTMENT_STRESS_HISTORY[department.id] ?? []).filter(
+          (record) =>
+            sameQuarter(quarterOf(record.month), period) &&
+            record.month <= DEMO_TODAY,
+        );
+        const latest = inQuarter[inQuarter.length - 1];
         return latest === undefined ? [] : [latest];
       }),
     );

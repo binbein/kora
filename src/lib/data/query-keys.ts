@@ -107,7 +107,16 @@ export const queryKeys = {
     plans: () => ["company", "plans"] as const,
     stressHistory: (departmentId?: string) =>
       ["company", "stress", departmentId ?? "all"] as const,
-    latestStress: () => ["company", "stress", "latest"] as const,
+    /*
+     * Lo stress per reparto **di un trimestre**, con il periodo nella chiave.
+     *
+     * Sta con le altre letture HR per periodo — lo snapshot ROI e il report — e
+     * per la stessa ragione: il trimestre entra come **stringa** e non come
+     * oggetto, perché due `Quarter` con gli stessi campi sono due oggetti
+     * diversi e react-query confronta le chiavi per struttura.
+     */
+    stressByDepartment: (period: string) =>
+      ["company", "stress", "by-department", period] as const,
     earlyAlert: () => ["company", "early-alert"] as const,
     quarters: () => ["company", "quarters"] as const,
     currentQuarter: () => ["company", "quarters", "current"] as const,

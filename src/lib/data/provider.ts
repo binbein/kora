@@ -108,8 +108,27 @@ export interface DataProvider {
    */
   getStressHistory(departmentId?: string): Promise<StressRecord[]>;
 
-  /** Ultima rilevazione di ogni reparto, nell'ordine di `getDepartments()`. */
-  getLatestStressByDepartment(): Promise<StressRecord[]>;
+  /**
+   * La rilevazione di ogni reparto per un trimestre, nell'ordine di
+   * `getDepartments()`.
+   *
+   * **È l'ultimo mese del trimestre di cui esiste un record**, non la media dei
+   * tre: un punteggio di stress è una fotografia, e mediarne tre darebbe un
+   * numero che nessuna rilevazione ha mai prodotto. Sul trimestre in corso è
+   * quindi **l'ultimo mese arrivato**, che è l'unica lettura possibile finché il
+   * trimestre non è chiuso.
+   *
+   * **Un reparto senza record nel trimestre non compare**, ed è la semantica già
+   * scelta il 16.08.2026 per la lettura che questa sostituisce: senza record non
+   * c'è un ultimo record, e fabbricarne uno soppresso dichiarerebbe un dato che
+   * il provider non ha. La conseguenza in produzione — un reparto appena creato
+   * sparisce dalla tabella senza lasciare traccia — sta in
+   * `docs/CONTRATTO-DATI.md` §3, con le due strade per risolverla.
+   *
+   * **La soppressione è già avvenuta**, come per `getStressHistory`: un reparto
+   * sotto soglia arriva senza punteggio, non con un punteggio da nascondere.
+   */
+  getStressByDepartment(period: Quarter): Promise<StressRecord[]>;
 
   /** L'alert precoce attivo, se c'è. */
   getEarlyAlert(): Promise<EarlyAlert | null>;
