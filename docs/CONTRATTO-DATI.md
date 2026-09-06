@@ -404,6 +404,35 @@ In produzione nessuna delle due cose è garantita, ed è lì che l'invariante se
 
 ### Percorso dipendente
 
+**`HealthProfile` è derivato dalle risposte dell'assessment, non memorizzato**
+(06.09.2026). Le dieci risposte sono il dato; punteggio, sintesi e area debole
+sono tre letture di quelle — la formula sta in `CLAUDE.md` §8, compresa la
+regola sul pareggio che la rende deterministica. Salvare il punteggio accanto
+alle risposte sarebbe la stessa cosa detta due volte (`CLAUDE.md` §5.5), e la
+copia salvata smetterebbe di tornare al primo cambio di formula.
+
+**In produzione la conseguenza è concreta**: la formula appartiene al backend,
+non al client, perché è lei a decidere cosa un cliente legge di sé. Il frontend
+la esegue oggi solo perché dietro non c'è nessuno che possa eseguirla.
+
+**`AssessmentAnswers` è `Record<AssessmentQuestionId, 1|2|3|4|5>`**: dieci id
+noti, e il testo delle domande vive nei dizionari come ogni testo a schermo — il
+tipo porta la chiave, non la frase, per la stessa ragione di `bioKey` e
+`qualificationKey` (§6). Un `Record` e non una lista: l'ordine con cui si
+risponde non è un dato, e una lista di dieci numeri si può disallineare dalle
+domande senza che niente lo dica.
+
+**In produzione le domande diventano un dato**, e allora il tipo cambia: un
+questionario che si versiona — perché una domanda si riformula, e le risposte
+vecchie devono restare leggibili — è un'entità sua, e `AssessmentAnswers`
+smetterà di essere un record di chiavi note. Oggi le dieci domande sono
+contenuto della demo, quindi il tipo dice il vero.
+
+**Chi ha risposto non è un campo.** `PlatformUser.assessmentCompleted` dice
+**che** l'assessment è stato fatto e mai cosa ha detto (§3, piattaforma), e resta
+l'unica traccia che l'area con i nomi può vedere: le risposte non escono da
+nessuna parte, come la nota di sessione e il referto.
+
 `getEntitlement` prende **quale servizio**, non solo lo psicologo:
 `CappedServiceKind` è l'unione stretta dei due che il Plus cappa a un numero di
 sedute l'anno. Il medico virtuale è illimitato e il check-up si conta una volta
@@ -725,6 +754,8 @@ compensi e pagamenti.
 | `cancelAppointment` | `["professional", professionalId]` **e** `["employee"]` |
 | `setSlotStatus` | `["professional", professionalId]` **e** `["employee"]` |
 | `submitRapidCheck` | `["employee", "rapid-check"]` |
+| `activate` | *(niente)* |
+| `submitAssessment` | `["employee"]` |
 | `submitDemoRequest` | `["platform", "demo-requests"]` |
 | `enterAs` | `["session"]` |
 
@@ -821,6 +852,31 @@ dall'orologio; in produzione lo stato è un **evento dichiarativo** (§8.5) e un
 seduta di ieri che nessuno ha chiuso resta `scheduled` — annullarla toglierebbe
 un compenso già maturato. Il backend deve controllarle entrambe: un `409` sul
 confine HTTP, come per lo slot occupato.
+
+**`activate` non invalida niente, ed è l'unica lettura-scrittura del dominio che
+non tocca la cache** (06.09.2026). Verifica un codice azienda e restituisce
+l'azienda, oppure `null` se il codice non risolve: **non scrive nessun record**,
+e nella demo non esiste ancora l'account che creerebbe. In produzione è la
+scrittura che crea l'iscrizione — e allora invaliderà, perché a muoversi saranno
+gli iscritti dell'azienda (§8.3).
+
+**`consent` è un tipo letterale `true`, non un booleano**, ed è la parte da non
+scorciare: con un `boolean` il chiamante può passare `false`, e un metodo che
+accetta *"attiva senza consenso"* è un metodo che qualcuno chiamerà così. Il
+consenso non è un parametro dell'attivazione, è la sua **precondizione**, e il
+tipo la esprime invece di lasciarla a un controllo che si può togliere.
+
+**Per chi implementa il backend ne discende un vincolo, non una convenzione**:
+il consenso va **registrato**, con il momento e la versione del testo accettato.
+Il tipo letterale dice che senza consenso non si chiama; non dice che è stato
+raccolto, e la prova di averlo raccolto è ciò che in produzione serve davvero.
+Oggi quella registrazione non esiste — è il §8.2.
+
+**`submitAssessment` invalida la radice del dipendente**, e non la sola query del
+profilo: dall'assessment nasce `HealthProfile`, che la home e il Profilo leggono,
+e **le aree del piano di benessere si ordinano sull'area debole** — quindi anche
+il piano cambia. Sono due letture dello stesso fatto, ed è la ragione per cui la
+radice è la superficie giusta.
 
 **`submitRapidCheck` invalida solo la risposta**, non la radice: il check rapido
 non muove contatori né appuntamenti, e invalidare più del necessario farebbe
@@ -1213,10 +1269,31 @@ demo non lo simula.
 
 ### 8.2 Consenso e diritti dell'interessato
 
-**Nessun consenso viene raccolto in nessun punto** del percorso: non
+~~**Nessun consenso viene raccolto in nessun punto** del percorso: non
 all'attivazione, non prima dell'assessment iniziale, non prima del check rapido,
-non prima del check-up. Non esistono l'export dei propri dati né la loro
-cancellazione, né come metodo del provider né come schermata.
+non prima del check-up.~~ → **il consenso all'attivazione c'è dal 06.09.2026**, e
+vale la pena dire quanto poco sposta.
+
+**C'è**: `/activate` lo chiede con una spunta obbligatoria prima
+dell'assessment, e `activate` non si può chiamare senza — il tipo di `consent` è
+il letterale `true` (§4). È il punto giusto in cui chiederlo, perché è **prima
+del primo dato**: le dieci risposte arrivano dopo.
+
+**Non c'è, e sono quattro cose distinte:**
+
+- **la registrazione del consenso.** Nessuna entità dice *chi* ha acconsentito,
+  *quando* e a *quale testo*. Il tipo impedisce di attivare senza spunta; non
+  conserva la prova, che è ciò che in produzione serve davvero — e la versione
+  del testo serve perché il testo cambierà.
+- **la revoca.** Non c'è un metodo, non c'è una schermata, e soprattutto non è
+  deciso **cosa succede ai dati già raccolti** quando qualcuno revoca: è la
+  stessa domanda dell'offboarding (§8.3), su un dato che la persona ha dato di
+  sua iniziativa.
+- **l'export e la cancellazione** dei propri dati, che restano inesistenti.
+- **il consenso sugli altri punti di raccolta**: il check rapido, il check-up e
+  la chat del medico virtuale non ne chiedono nessuno. Se il consenso
+  all'attivazione li copra tutti è una domanda per il legale, non per chi scrive
+  il codice — e finché non ha risposta, questa voce non è chiusa.
 
 E c'è una domanda che sta **a monte** e che oggi non ha risposta: **chi è
 titolare e chi responsabile del trattamento** dei dati clinici — la piattaforma,
@@ -1237,8 +1314,14 @@ Privacy policy, termini e cookie policy sono pagine di testo senza superficie di
 backend, e il loro perimetro sta in `docs/PROGRESS.md` insieme all'inventario
 delle promesse che le schermate fanno già oggi. La distinzione serve a chi
 implementa: **questa sezione è il meccanismo, quelle pagine lo dichiarano** — e
-pubblicare la dichiarazione senza il meccanismo è ciò che il prodotto sta già
-facendo in tre punti, registrati fra le decisioni in sospeso di quel file.
+pubblicare la dichiarazione senza il meccanismo è ciò che il prodotto ha fatto
+fino al 06.09.2026, registrato fra le decisioni in sospeso di quel file.
+
+*(La riga diceva **"in tre punti"**, ed era la cifra di prima del 04.09.2026:
+quel giorno due delle tre voci sono state chiuse e questa non è stata riletta.
+La terza era proprio il consenso, e si chiude oggi — quindi la cifra esce invece
+di essere riportata a uno, che è la regola che il `CLAUDE.md` §5.6 ha fissato per
+i numeri in prosa accanto a una lista.)*
 
 ### 8.3 Ciclo di vita dell'azienda e del dipendente
 

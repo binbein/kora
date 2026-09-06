@@ -9719,11 +9719,15 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 
 ## Decisioni in sospeso
 
-**~~Tre~~ una delle voci qui sotto è la stessa classe di rischio, ed è quella
-che la residenza dei dati ha inaugurato** *(erano tre — crittografia, consenso e
-`doneHint` — e il 04.09.2026 ne sono state chiuse due: resta il consenso. La
-cifra si corregge qui invece di restare a contare voci chiuse, che è la regola
-di questo file sui numeri in prosa accanto a una lista)*: una **promessa di meccanismo** scritta in una
+**~~Tre~~ ~~una~~ nessuna delle voci qui sotto è più di quella classe di
+rischio, ed era quella che la residenza dei dati ha inaugurato** *(erano tre —
+crittografia, consenso e `doneHint` — il 04.09.2026 ne sono state chiuse due, e
+il 06.09.2026 la terza. La cifra si corregge qui invece di restare a contare
+voci chiuse, ed è la seconda correzione in tre giorni: **è il segno che la
+cifra non doveva esserci**, che è la regola di questo file sui numeri in prosa
+accanto a una lista. Resta scritta barrata perché la classe di rischio non è
+sparita — la descrive il resto del paragrafo, e il giorno in cui una schermata
+tornerà a prometterne una si riconosce da qui)*: una **promessa di meccanismo** scritta in una
 schermata che un cliente firmerà, mentre il meccanismo non esiste e nessuno ha
 ratificato la frase. Si riconoscono da una prova sola — *se un cliente ci
 chiedesse di dimostrarla domani, cosa gli mostreremmo?* — e per questo portano
@@ -9820,12 +9824,32 @@ prevedeva.
   > referto di una persona reale, la frase o è vera o è una dichiarazione falsa a
   > un cliente.
 
-- **Il consenso è promesso come già raccolto, e non esiste** (15.08.2026). La
+- ~~**Il consenso è promesso come già raccolto, e non esiste** (15.08.2026). La
   stessa pagina dichiara *"ogni dipendente conferma il consenso durante
   l'attivazione e può revocarlo in ogni momento"*. Il `CONTRATTO-DATI.md` §8.2
   dice l'opposto alla lettera: **nessun consenso viene raccolto in nessun punto**
   del percorso, e non esistono né l'export dei propri dati né la loro
-  cancellazione.
+  cancellazione.~~ → **chiusa il 06.09.2026**, e la chiusura ha due metà
+  disuguali.
+
+  **Il consenso adesso si raccoglie**: `/activate` lo chiede con una spunta
+  obbligatoria prima delle dieci domande — cioè **prima del primo dato** — e il
+  metodo non si può chiamare senza, perché il tipo di `consent` è il letterale
+  `true`. La frase della privacy HR ha smesso di affermare un fatto che non era
+  successo.
+
+  **La revoca no, e la frase ha smesso di prometterla**: il corpo dice ora *"La
+  revoca e l'esportazione dei propri dati arrivano con la messa in produzione"*,
+  che è vero e sta scritto nel `docs/CONTRATTO-DATI.md` §8.2. **È la chiusura
+  onesta di questa voce**, non la sua soluzione: quello che era una
+  dichiarazione falsa a un cliente è diventato metà meccanismo e metà promessa
+  dichiarata come tale.
+
+  **Restano aperte quattro cose**, e stanno nel §8.2 del contratto: la
+  **registrazione** del consenso — chi, quando, a quale versione del testo — la
+  **revoca** con la domanda su cosa succede ai dati già raccolti, **export e
+  cancellazione**, e se il consenso all'attivazione **copra gli altri punti di
+  raccolta**. Quest'ultima è per il legale, non per chi scrive il codice.
 
   **Quante stringhe, con il criterio**: in `src/lib/i18n/it.ts` sono **2** —
   cercando le stringhe che nominano il consenso o la revoca — il **titolo e il
