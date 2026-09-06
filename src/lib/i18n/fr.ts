@@ -1263,6 +1263,19 @@ export const fr: Dictionary = {
       successHome: "Retour à l'accueil",
       successRoi: "En attendant, calculez le retour",
     },
+
+    /* Le lien anonyme du check rapide (§10.A.5). Registre consommateur —
+       **tu** — comme la carte du check rapide dans le portail collaborateur :
+       ici on demande à une personne comment elle va, pas à une cliente qui lit
+       un tableau de bord. */
+    check: {
+      subject: "{company} · {department}",
+      intro:
+        "Réponds sans compte : ta réponse n'entre que dans la moyenne du département. Personne ne sait que c'est toi.",
+      invalid: "Ce lien n'est plus valable",
+      back: "Retour à Kora",
+      withAccount: "Avec le compte Kora, tu peux aussi réserver une séance.",
+    },
   },
 
   /*

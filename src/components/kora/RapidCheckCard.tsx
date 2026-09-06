@@ -105,10 +105,47 @@ const HELPLINE_NUMBER = "143";
 const CRISIS_LINK =
   "inline-block rounded-sm text-sm text-foreground underline underline-offset-4 hover:text-secondary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 
-export default function RapidCheckCard() {
+/*
+ * IL TOKEN CAMBIA TRE COSE, E SONO TUTTE LA STESSA (§10.A.5).
+ *
+ * Con il token la card sta sulla pagina del link anonimo, dove **non c'è un
+ * account**: da lì la risposta di chi ha l'account non è né la sua né una
+ * risposta a una domanda che qualcuno abbia fatto. Quindi la lettura si spegne,
+ * l'esito arriva dalla mutation — l'unico posto in cui esiste — e non si
+ * invalida niente.
+ *
+ * È una prop e non un secondo componente perché a cambiare è **da dove viene il
+ * reparto**, non cosa la card mostra: i cinque volti, la correzione e il blocco
+ * dei numeri d'emergenza sono gli stessi, e duplicarli vorrebbe dire due card
+ * che possono divergere sulla parte che conta di più.
+ */
+export default function RapidCheckCard({ token }: { token?: string }) {
   const queryClient = useQueryClient();
-  const answerQuery = useRapidCheckAnswer();
-  const answer = answerQuery.data;
+  const anonymous = token !== undefined;
+  const answerQuery = useRapidCheckAnswer(!anonymous);
+
+  const submit = useMutation({
+    mutationFn: (value: RapidCheckAnswer["value"]) =>
+      dataProvider.submitRapidCheck(
+        value,
+        token === undefined ? undefined : { token },
+      ),
+    /*
+     * Invalida la sola risposta e non la radice del dipendente: il check rapido
+     * non muove i contatori né gli appuntamenti, e invalidare più del necessario
+     * farebbe rileggere mezza schermata per un tocco.
+     *
+     * **Dal link anonimo non invalida niente**: quella chiave è la risposta di
+     * chi ha l'account, e farla rileggere restituirebbe ciò che c'era prima —
+     * una lettura in più per confermare che niente è cambiato.
+     */
+    onSuccess: () => {
+      if (anonymous) return;
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.employee.rapidCheck(),
+      });
+    },
+  });
 
   /*
    * LA LETTURA HA IL SUO STATO, E FINO AL 16.08.2026 NON CE L'AVEVA.
@@ -121,17 +158,7 @@ export default function RapidCheckCard() {
    */
   const read = loadState([answerQuery]);
 
-  const submit = useMutation({
-    mutationFn: (value: RapidCheckAnswer["value"]) =>
-      dataProvider.submitRapidCheck(value),
-    /*
-     * Invalida la sola risposta e non la radice del dipendente: il check rapido
-     * non muove i contatori né gli appuntamenti, e invalidare più del necessario
-     * farebbe rileggere mezza schermata per un tocco.
-     */
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: queryKeys.employee.rapidCheck() }),
-  });
+  const answer = anonymous ? (submit.data ?? null) : answerQuery.data;
 
   /*
    * L'errore resta **dentro la card**, e non al posto della home: il check
@@ -139,7 +166,7 @@ export default function RapidCheckCard() {
    * lettura che riguarda cinque volti toglierebbe di mezzo gli appuntamenti e i
    * contatori, che sono arrivati benissimo (M5.b).
    */
-  if (read.state === "error") {
+  if (!anonymous && read.state === "error") {
     return (
       <Card className="p-5">
         <ErrorNotice copy={t.employee.state.error} onRetry={read.retry} />
@@ -273,11 +300,30 @@ export default function RapidCheckCard() {
             </li>
           </ul>
 
-          <Button size="sm" className="mt-3" asChild>
-            <Link to="/employee/psychologists">
-              {t.employee.rapidCheck.crisis.cta}
-            </Link>
-          </Button>
+          {/*
+            * DAL LINK ANONIMO NON SI PRENOTA, ED È UNA SCELTA (§10.A.5).
+            *
+            * La CTA porta nel portale dipendente, e chi risponde da un link un
+            * account non ce l'ha: in produzione sarebbe una porta chiusa, e la
+            * demo non disegna una strada che il prodotto non ha. Al suo posto
+            * una riga che nomina l'account **senza linkarlo** — l'attivazione è
+            * lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.3), e quel giorno la
+            * riga guadagna il suo link.
+            *
+            * I due numeri restano su tutte e due le strade: sono il punto del
+            * §8, e qui vale doppio perché di interlocutori non ce n'è nessuno.
+            */}
+          {anonymous ? (
+            <p className="text-sm text-muted-foreground mt-3">
+              {t.public.check.withAccount}
+            </p>
+          ) : (
+            <Button size="sm" className="mt-3" asChild>
+              <Link to="/employee/psychologists">
+                {t.employee.rapidCheck.crisis.cta}
+              </Link>
+            </Button>
+          )}
 
           <p className="text-xs text-muted-foreground mt-3">
             {t.employee.rapidCheck.crisis.note}

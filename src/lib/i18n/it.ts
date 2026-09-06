@@ -1678,6 +1678,35 @@ export const it = {
       successHome: "Torna alla home",
       successRoi: "Intanto, calcola il ritorno",
     },
+
+    /*
+     * Il link anonimo del check rapido (§10.A.5).
+     *
+     * Le chiavi stanno in `public` perché la rotta è pubblica, e il **registro
+     * è consumer** — seconda persona — perché a leggerle è una persona a cui si
+     * chiede come sta, non un cliente che guarda una dashboard: è la stessa
+     * ragione per cui la card del check rapido dà del tu nella home del
+     * dipendente (§6.4). L'area non decide il registro, lo decide chi legge.
+     */
+    check: {
+      /** "Demo SA · Vendite": azienda e reparto a cui il link porta. */
+      subject: "{company} · {department}",
+      /* Dice le due cose che chi apre un link vuole sapere: che non serve un
+         account, e dove finisce quello che tocca. */
+      intro:
+        "Rispondi senza account: la tua risposta entra solo nella media del reparto. Nessuno sa che sei tu.",
+      /* Token ignoto o scaduto: il contratto non li distingue di proposito
+         (`docs/CONTRATTO-DATI.md` §3), quindi la frase non prova a dirlo. */
+      invalid: "Questo link non è più valido",
+      /* L'uscita, prima e dopo la risposta: senza, la pagina è un vicolo cieco
+         (§10.B) e il pitch dovrebbe usare il tasto Indietro del browser. */
+      back: "Torna a Kora",
+      /* Prende il posto della CTA "Parla con qualcuno oggi" quando la risposta
+         arriva dal link: prenotare richiede un account, e chi non ce l'ha
+         troverebbe una porta chiusa. **Non è un link**, e lo diventerà il giorno
+         in cui l'attivazione esiste (`docs/CONTRATTO-DATI.md` §8.3). */
+      withAccount: "Con l'account Kora puoi anche prenotare una sessione.",
+    },
   },
 
   /*

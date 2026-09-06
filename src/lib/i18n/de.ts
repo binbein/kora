@@ -1167,6 +1167,19 @@ export const de: Dictionary = {
       successHome: "Zur Startseite",
       successRoi: "Berechnen Sie inzwischen die Rendite",
     },
+
+    /* Der anonyme Link des Schnellchecks (§10.A.5). Konsumentenregister —
+       **du** — wie die Schnellcheck-Karte im Mitarbeitendenportal: hier wird
+       eine Person gefragt, wie es ihr geht, nicht eine Kundin, die ein
+       Dashboard liest. */
+    check: {
+      subject: "{company} · {department}",
+      intro:
+        "Antworte ohne Konto: Deine Antwort fliesst nur in den Durchschnitt der Abteilung ein. Niemand weiss, dass du es bist.",
+      invalid: "Dieser Link ist nicht mehr gültig",
+      back: "Zurück zu Kora",
+      withAccount: "Mit dem Kora-Konto kannst du auch eine Sitzung buchen.",
+    },
   },
 
   /* Back-office: registro strumento, **Sie**, come l'area HR. */

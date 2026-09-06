@@ -1208,6 +1208,18 @@ export const en: Dictionary = {
       successHome: "Back to home",
       successRoi: "In the meantime, calculate the return",
     },
+
+    /* The anonymous rapid-check link (§10.A.5). Consumer register, like the
+       rapid-check card in the employee portal: this asks a person how they
+       are, not a customer reading a dashboard. */
+    check: {
+      subject: "{company} · {department}",
+      intro:
+        "Answer without an account: your answer only goes into the department's average. Nobody knows it's you.",
+      invalid: "This link is no longer valid",
+      back: "Back to Kora",
+      withAccount: "With a Kora account you can also book a session.",
+    },
   },
 
   /*
