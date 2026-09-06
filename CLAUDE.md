@@ -350,8 +350,23 @@ repository Next non dia niente per scontato.
   la sintassi a parentesi (`data-[state=open]`, `data-[side=bottom]`) e Radix
   scrive davvero `data-state`, `data-side` e `data-align` sul contenuto, con
   l'animazione che parte; `calendar.tsx` non usa varianti `data-*` ma classi di
-  react-day-picker e `aria-selected`. Chi ne aggiunge un terzo rifà questa
-  verifica.
+  react-day-picker e `aria-selected`. Chi ne aggiunge un altro rifà questa
+  verifica — e ne sono già usciti altri due, qui sotto.
+
+  **Il quarto è `alert-dialog.tsx`** (06.09.2026), uscito dal magazzino per la
+  conferma della disdetta del dipendente (§10.B.5). **Verifica rifatta a
+  schermo**: usa `data-[state=open]` e `data-[state=closed]` su overlay e
+  contenuto, Radix scrive `data-state` su tutti e due, e con il dialogo aperto
+  l'`animationName` calcolato è `enter` su entrambi — cioè la variante aggancia,
+  non solo esiste. Anche qui nessun `shadcn add` e nessuna dipendenza nuova:
+  `@radix-ui/react-alert-dialog` era già installato.
+
+  **Perché un `AlertDialog` e non il `Dialog` che la demo già usa**: la disdetta
+  della professionista si **scrive** — nota, messaggio, campi da compilare — e
+  quella del dipendente è una **domanda con due risposte**. Un `AlertDialog` è
+  modale sul serio: non si chiude cliccando fuori, e il fuoco parte dentro. Per
+  un gesto che non si ritira è la forma giusta, ed è la ragione per cui il
+  componente esisteva senza chiamanti.
 
   **Il terzo è `checkbox.tsx`** (01.09.2026), uscito dal magazzino per la spunta
   che apre il messaggio al paziente (§10.D). **Verifica rifatta a schermo, non
@@ -360,7 +375,10 @@ repository Next non dia niente per scontato.
   è il solo attributo `data-*` che mette — e la variante aggancia davvero, con
   il fondo che passa da trasparente a `primary` al clic. Anche qui nessun
   `shadcn add` e nessuna dipendenza nuova: `@radix-ui/react-checkbox` era già
-  installato. Cancellarli non è
+  installato.
+
+  **Quattro uscite, quattro verifiche, e nessuna dedotta dalla precedente**: è
+  il senso della cautela, e vale per il quinto. Cancellarli non è
   reversibile a buon mercato — un `shadcn add` domani riporta la generazione
   Tailwind 4 con le varianti che non agganciano — **e la ragione è questa, non
   gli usi previsti**.
