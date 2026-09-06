@@ -2154,8 +2154,9 @@ non si contano, l'allineamento fra verbali e commenti, e le parole che espongono
 con le promesse che non teniamo, e la soglia di anonimato con la sottrazione che
 non deve esistere, e il numero d'emergenza dove la persona dichiara di stare
 malissimo, e le zero richieste esterne rese eseguibili, e **il link anonimo del
-check rapido**, e **la disdetta dal lato del dipendente**. Non aggiungono
-schermate — **tranne il link anonimo**, ed è la riga qui sotto.
+check rapido**, e **la disdetta dal lato del dipendente**, e **l'attivazione
+dell'account**. Non aggiungono
+schermate — **tranne il link anonimo e l'attivazione**, ed è la riga qui sotto.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
 volta** (04.09.2026): il listino porta ora *"prima sessione entro 72 ore"*, che è
@@ -2226,9 +2227,10 @@ ventotto e non la ventinovesima, che **cambia come ci si comporta a schermo** su
 richiesta dei founder. La distinzione utile non era fra igiene e prodotto: era
 che una passata di refinement **non allarga lo scope del §10**.
 
-**E quella distinzione è caduta il 06.09.2026, per decisione dei founder.** Il
-link anonimo del check rapido è **una rotta nuova** — le rotte passano a 27 e le
-schermate a 28 — quindi l'ultima dell'elenco allarga lo scope del §10, che è
+**E quella distinzione è caduta il 06.09.2026, per decisione dei founder** — due
+volte nello stesso giorno. Il link anonimo del check rapido e l'attivazione
+dell'account sono **due rotte nuove**: le rotte passano a **28** e le schermate a
+**29**, quindi le ultime due dell'elenco allargano lo scope del §10, che è
 esattamente ciò che nessuna delle precedenti faceva.
 
 **Non ne discende un permesso, e la riga si scrive perché non ne discenda**: una
@@ -9074,11 +9076,149 @@ interni**:
   produzione, senza una policy di preavviso, questo vuol dire che si può
   disdire cinque minuti prima.
 
+#### L'attivazione e l'assessment (06.09.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il comando
+in testa a questo file. Rotte **27 → 28**, schermate **28 → 29**,
+`EXPECTED_KEYS` **815 → 865**, guardrail **123 → 125**.
+
+##### Due cose dichiarate e non costruite
+
+**Il 78/100 compariva e nessuno vedeva da dove**, ed è la prima domanda che quel
+numero si tira dietro guardando il portale dipendente. Era un valore scritto su
+`LAURA.healthProfile`, insieme alla sintesi e all'area debole: tre cifre che
+nessuna sorgente produceva.
+
+**E il consenso era promesso come già raccolto**: la pagina privacy dell'HR
+diceva *"ogni dipendente conferma il consenso durante l'attivazione e può
+revocarlo in ogni momento"*, mentre il `docs/CONTRATTO-DATI.md` §8.2 diceva
+l'opposto alla lettera. Era la voce che le decisioni in sospeso chiamavano **la
+più grave delle tre**, e non per il numero: le altre due promettevano un
+meccanismo, questa affermava un **fatto giuridico compiuto** su una schermata
+rivolta a chi su quella base tratta i dati dei propri dipendenti.
+
+##### Il punteggio smette di essere un valore e diventa un calcolo
+
+`CLAUDE.md` §8 porta ora la formula intera, e `lib/health-profile.ts` la esegue:
+dieci domande, due per area, scala 1–5 con **5 il meglio**, area = media delle sue
+due × 20, totale = media delle dieci × 20 arrotondato, soglie a 70 e 50. Le
+**dieci risposte di Laura** sono il dato nuovo del §8, e da loro escono 78, sonno
+e "In buon equilibrio" — **verificato prima di scrivere una riga di codice**, che
+era la condizione del punto 0.
+
+**Il pareggio ha una regola**, e non è un dettaglio: a parità di minimo vince la
+prima area nell'ordine fisso. Senza, l'area debole dipenderebbe dall'ordine in cui
+il codice percorre una mappa — qualcosa che si cambia senza sapere di aver
+cambiato un numero a schermo. È implementata con un `reduce` e non con un `sort`:
+ordinare metterebbe la regola nelle mani della stabilità dell'algoritmo, che è una
+proprietà del motore e non una decisione nostra. **A schermo si è vista**: in
+tedesco, con dieci risposte tutte al massimo, il profilo esce 100 e l'area debole
+è **Schlaf** — cioè la prima dell'ordine.
+
+##### Il piano di benessere seguiva l'area debole, ma una volta sola
+
+È la conseguenza che la decisione portava con sé, e che il codice **quasi**
+aveva: `mock/ai-plan.ts` ordinava già le aree sull'area debole del profilo, ma al
+**caricamento del modulo**. Da quando le risposte si riscrivono, un ordine
+congelato all'avvio avrebbe fatto dire un'area al profilo e un'altra al piano —
+mentre la home legge la prima area del piano e la chiama *"l'area da cui parte il
+tuo piano di benessere"*.
+
+Il piano è diventato una **funzione dell'area debole**, e il provider la chiama
+con il profilo corrente. Il guardrail statico che c'era **non poteva coprire il
+caso nuovo** — lì il profilo è quello del §8 — quindi ne è nato uno dinamico
+accanto: è il secondo dei due guardrail di questa passata.
+
+##### Quattro passi, una rotta, e il tipo che tiene il consenso
+
+`/activate` sta fuori da ogni layout e senza guardia, come il link anonimo. Lo
+stato del passo vive nel componente: quattro indirizzi sarebbero quattro pagine
+apribili fuori ordine, e tre di loro non vogliono dire niente da sole.
+
+**`consent` è il letterale `true` e non un booleano**, ed è la parte che vale più
+della schermata: con un `boolean` il chiamante può passare `false`, e un metodo
+che accetta *"attiva senza consenso"* è un metodo che qualcuno chiamerà così.
+
+**Ne discende l'ordine dei passi, ed è una conseguenza e non una scelta di
+comodità**: il codice si verifica **dopo** la spunta, perché prima non esiste un
+modo legittimo di chiamare `activate`. Su un codice sconosciuto si torna al primo
+passo con l'errore sul campo. La strada alternativa — una seconda lettura pubblica
+che verifica il codice da sola — sarebbe stata un oracolo che risponde *"questa
+azienda è cliente di Kora"* a chiunque provi una stringa.
+
+**Il `null` non è un errore**, ed è la distinzione che tiene onesta la schermata:
+un codice sconosciuto è la risposta a una domanda mal digitata e si dice sul
+campo; `isError` è il guasto e ha il suo riquadro.
+
+##### La scala è rovesciata rispetto al check rapido, e non riusa i volti
+
+Nel check rapido **1 è "molto bene"**; qui **5 è il meglio**. Riusare i cinque
+volti nello stesso ordine avrebbe registrato 1 dove la persona tocca la faccia
+sorridente — **capovolgendo ogni punteggio in silenzio**. E su *"Mangi frutta e
+verdura ogni giorno?"* una faccia non è la risposta comunque: la riga è la stessa
+— cinque bersagli affiancati, stessi stati — con le etichette della frequenza,
+**Mai → Sempre**, e il 5 a destra. L'avvertenza sta sul tipo, che è il punto in
+cui si sbaglierebbe.
+
+##### Verificato
+
+Sulla build demo a 1280×900, console aperta, **solo link interni**:
+
+- **codice sbagliato**: si arriva al consenso, si spunta, e si torna al primo
+  passo con *"Codice non riconosciuto"* sul campo, il codice ancora scritto;
+- **campo vuoto**: *"Scrivi il codice della tua azienda."*;
+- **senza spunta**: *"Serve il consenso per continuare."*, e non si passa;
+- **codice in minuscolo** (`demo-sa-2026`): entra, perché il confronto è in
+  maiuscolo;
+- **con le risposte del §8**: **78**, "In buon equilibrio", **Sonno** — e la home
+  e `/employee/profile` mostrano gli stessi tre valori;
+- **con altre risposte** (tutte "A volte" tranne l'alimentazione a "Mai"):
+  **52**, "Da tenere d'occhio", **Alimentazione** — e il piano di benessere si è
+  riaperto **su Alimentazione**, con il guardrail dinamico muto;
+- **ricaricando**: il profilo torna **78 / sonno**, perché lo stato del provider
+  muore con la pagina;
+- **le quattro lingue**, tutte e quattro percorse dai quattro passi fino al
+  profilo. In tedesco il layout regge e la regola del pareggio si vede
+  (100 → Schlaf);
+- **da tastiera**: i cinque bersagli si raggiungono con Tab, l'anello di focus si
+  vede, e ogni gruppo è un `fieldset` con la domanda come `legend`;
+- **contrasto sui quattro passi**: **99 nodi di testo percorsi** — 7 al codice, 13
+  al consenso con l'errore a schermo, 68 alle domande, 11 al profilo — **zero
+  sotto soglia** fra i nodi informativi;
+- console muta ovunque; `npm run build`, `npm run build:demo`, `lint` e
+  `typecheck` a zero.
+
+##### Trovato e non toccato
+
+- **Il consenso non viene registrato.** Il tipo impedisce di attivare senza
+  spunta; non conserva **chi**, **quando** e **a quale versione** del testo — che
+  è la prova che in produzione serve davvero. Con la revoca, l'export e la
+  domanda se questo consenso copra gli altri punti di raccolta, resta nel
+  `docs/CONTRATTO-DATI.md` §8.2. **La voce in sospeso si chiude comunque**,
+  perché il difetto che descriveva era una frase che affermava il falso, e quella
+  frase adesso dice il vero.
+- **L'assessment si fa una volta sola.** Non c'è cadenza né storico, quindi il
+  profilo non può dire *"sta migliorando"* — che è metà di quello che serve a chi
+  lo legge di sé. È il §8.10 di quel documento, e non si muove.
+- **Rifare l'assessment cambia Laura per il resto della sessione.** È la
+  conseguenza voluta del profilo derivato, e ha un costo che sta in
+  `docs/PITCH.md`: chi lo mostra durante il giro o risponde come il §8, o lo
+  mostra per ultimo.
+- **`/activate` non crea niente.** Nella demo c'è un dipendente solo e il suo
+  account esiste già: l'attivazione dice a chi porta il codice e registra le
+  risposte. L'onboarding vero — invito, creazione, passaggio da coperto a
+  iscritto — è il §8.3.
+- **La formula gira nel client.** Oggi è l'unico posto dove può girare; in
+  produzione appartiene al backend, perché è lei a decidere cosa una persona
+  legge di sé. `lib/health-profile.ts` sta fuori da `mock/` apposta, e quel
+  giorno non si cancella con il dataset.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
-professionista, admin; **oggi sono 27**: `/roi` è stata approvata il 07.08.2026
-e costruita in M3, `/check/:token` il 06.09.2026 — `CLAUDE.md` §10), design system e navigazione, 47 componenti
+professionista, admin; **oggi sono 28**: `/roi` è stata approvata il 07.08.2026
+e costruita in M3, `/check/:token` e `/activate` il 06.09.2026 —
+`CLAUDE.md` §10), design system e navigazione, 47 componenti
 shadcn (**oggi sono 45**: il sistema di toast, che ne contava tre, è uscito il
 07.08.2026 — decisione qui sotto), grafici recharts.
 
