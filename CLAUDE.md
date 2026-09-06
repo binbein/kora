@@ -977,8 +977,8 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 120 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 120 posti.
+call site sono 123 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 123 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
 **Il criterio con cui i call site si contano**, perché una rilevazione futura non
@@ -986,7 +986,7 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **107 + 13 = 120** (06.09.2026). Restano fuori, e sono le tre trappole del
+Oggi **107 + 16 = 123** (06.09.2026). Restano fuori, e sono le tre trappole del
 conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
 nome lungo che **contiene** quello corto.
 
@@ -1028,8 +1028,9 @@ l'annullamento e il nome dei pazienti (17.08.2026), da 111 a 113 con il
 messaggio al paziente (01.09.2026), che di guardrail ne porta due, e da 113 a
 115 con la chiusura delle fasce, da 115 a 116 con la prima sessione entro 72
 ore, da 116 a 119 con la soglia di anonimato — la media aziendale ne porta
-due, uno per il punteggio e uno per il peso — e da 119 a 120 con il link
-anonimo del check rapido, il cui reparto deve esistere.
+due, uno per il punteggio e uno per il peso — da 119 a 120 con il link
+anonimo del check rapido, il cui reparto deve esistere, e da 120 a 123 con la
+disdetta del dipendente, che ne porta tre perché i suoi rifiuti sono tre.
 
 **E chi lo ricontasse con un `grep` trova cifre che non sono dei guardrail**
 (01.09.2026), che è la ragione per cui questa avvertenza sta accanto al conto
@@ -1064,7 +1065,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 120 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 123 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 
@@ -2557,6 +2558,30 @@ Home, Psicologi, Medico virtuale, Check-up, Benessere, Profilo.
    **Nessuna frase dell'arco nomina un farmaco o afferma una causa**, e
    l'ultima lo dichiara prima di indirizzare. È un vincolo su ogni frase che si
    aggiungerà a quella chat, non una proprietà delle quattro di oggi.
+
+5. **Dalla home si disdice un appuntamento** (founder, 06.09.2026). Non è una
+   rotta nuova né una schermata nuova — è un gesto in più su una riga che c'è,
+   e il conto delle rotte non si muove. Fino a quel giorno **a disdire era solo
+   la professionista**, e il dipendente poteva vedere una disdetta senza poterne
+   fare una: `by_patient` esisteva nell'enumerazione e non lo scriveva nessuno.
+
+   **Solo `scheduled` e solo nel futuro**, che è la stessa precondizione
+   dell'altro verso (§10.D.3), e il pulsante non compare dove sarebbe rifiutato.
+   La conferma è un dialogo, perché il gesto non si ritira: la riga d'effetto
+   dice **l'invariante e non una policy** — *"l'ora torna libera"* — e chi
+   cambia idea riprenota.
+
+   **Non porta testi**, e la ragione sta nel `docs/CONTRATTO-DATI.md` §4: la
+   nota è di chi cura, il messaggio è la sua voce verso il paziente, e una riga
+   scritta da questo lato avrebbe un terzo destinatario che nessuno ha ancora
+   deciso come raggiungere.
+
+   **Le policy restano fuori, ed è metà del punto**: preavviso, chi paga una
+   disdetta tardiva, riprogrammazione e notifica sono le quattro voci che il
+   §8.5 di quel documento tiene aperte. Questa voce chiude **il verbo**, non le
+   regole che un giorno lo governeranno — e il preavviso, da oggi, è quella che
+   pesa di più: finché a disdire era solo chi cura era una cortesia, adesso
+   decide se un'ora persa la paga qualcuno.
 
 **Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — la parte in
 programma del contatore sale, l'appuntamento compare in home, lo slot sparisce dalla
