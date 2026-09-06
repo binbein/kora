@@ -571,16 +571,20 @@ Operations; le date di fatturazione ferme ad aprile su una demo di settembre.
 
 **Aperto e dichiarato:**
 
-- **La tabella stress per reparto non segue il selettore**: mostra l'ultimo mese,
-  perché lo stress è una serie mensile (§5.3) mentre il selettore governa gli
-  aggregati trimestrali. Il titolo lo dice. Se un giorno dovrà seguirlo, serve un
-  metodo nuovo sul provider.
+- ~~**La tabella stress per reparto non segue il selettore**: mostra l'ultimo
+  mese, perché lo stress è una serie mensile (§5.3) mentre il selettore governa
+  gli aggregati trimestrali. Il titolo lo dice. Se un giorno dovrà seguirlo,
+  serve un metodo nuovo sul provider.
 
   **Resta aperto, e dal 17.08.2026 smette di *sembrare* un errore**: la
   riorganizzazione della dashboard ha messo il selettore dentro una cornice
   insieme ai soli otto elementi che lo seguono, e questa tabella è finita fuori,
   dove il suo titolo — "ultimo mese" — è la cosa che ci si aspetta di leggere. La
-  posizione ha tolto la contraddizione apparente; **il difetto è dov'era**.
+  posizione ha tolto la contraddizione apparente; **il difetto è dov'era**.~~ →
+  **chiuso il 06.09.2026**. Il metodo nuovo che la riga prevedeva è
+  `getStressByDepartment(period)`, e la tabella è entrata nella cornice: gli
+  elementi che seguono il selettore sono nove. La riga aveva ragione su tutto,
+  compresa la parte che spiegava perché nessuna passata l'avesse chiuso prima.
 - **L'elenco dipendenti è un estratto di otto righe su 120**, dichiarato a
   schermo e in `CONTRATTO-DATI.md` §7. ~~La paginazione è M5.~~ → **non era di
   M5**, e nessuno dei sei blocchi la contiene: è lavoro dell'MVP, dichiarato in
@@ -2155,7 +2159,7 @@ con le promesse che non teniamo, e la soglia di anonimato con la sottrazione che
 non deve esistere, e il numero d'emergenza dove la persona dichiara di stare
 malissimo, e le zero richieste esterne rese eseguibili, e **il link anonimo del
 check rapido**, e **la disdetta dal lato del dipendente**, e **l'attivazione
-dell'account**. Non aggiungono
+dell'account**, e **lo stress per reparto dentro la cornice**. Non aggiungono
 schermate — **tranne il link anonimo e l'attivazione**, ed è la riga qui sotto.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
@@ -6611,7 +6615,8 @@ overflow orizzontale.
   nuovo sul provider, quindi un cambio del contratto, che è una passata sua. Dalla
   riorganizzazione del 17.08 quel blocco sta fuori dalla cornice e dichiara il
   proprio periodo nel titolo — *"Stress per reparto · ultimo mese"* — quindi non
-  si legge più come un errore;
+  si legge più come un errore; *(la passata sua è arrivata il 06.09.2026, ed è
+  stata esattamente quella che questa riga descriveva)*;
 - **il PDF del report non è stato scaricato in questo giro**: il pannello del
   browser blocca i download, quindi provarlo qui non direbbe niente. È lavoro di
   M4 e questa passata non lo tocca — resta da rifare a mano prima della
@@ -9213,6 +9218,95 @@ Sulla build demo a 1280×900, console aperta, **solo link interni**:
   legge di sé. `lib/health-profile.ts` sta fuori da `mock/` apposta, e quel
   giorno non si cancella con il dataset.
 
+#### Lo stress per reparto dentro la cornice (06.09.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il comando
+in testa a questo file. **Nessuna schermata nuova e nessuna stringa in più**:
+rotte **28**, schermate **29**, `EXPECTED_KEYS` **865** — una stringa è cambiata,
+non aggiunta — guardrail **125**.
+
+##### Il difetto che tre passate avevano registrato senza chiudere
+
+M3 lo lasciò aperto e la riga che lo dichiarava spiegava anche perché: *"se un
+giorno dovrà seguirlo, serve un metodo nuovo sul provider"*. La riorganizzazione
+del 17.08.2026 lo rese **meno visibile senza toccarlo** — la tabella finì fuori
+dalla cornice, dove il suo titolo *"ultimo mese"* è ciò che ci si aspetta di
+leggere — e il verbale di quel giorno lo scrisse: *"la posizione ha tolto la
+contraddizione apparente; il difetto è dov'era"*.
+
+**Ed era la cosa giusta da fare**, perché l'alternativa era peggiore: portare la
+tabella dentro la cornice con il provider di allora l'avrebbe fatta **sembrare**
+di seguire il selettore senza seguirlo.
+
+##### Una lettura per trimestre, e la vecchia sparisce
+
+`getStressByDepartment(period)` risponde con **l'ultimo mese del trimestre di cui
+esiste un record**. Non la media dei tre: un punteggio di stress è una
+fotografia, e mediarne tre darebbe un numero che nessuna rilevazione ha prodotto.
+
+**Il filtro ha due condizioni e la seconda non è ridondante.** La prima tiene i
+mesi del trimestre; la seconda scarta quelli oltre `DEMO_TODAY`, e serve al
+trimestre in corso — dove *"l'ultimo mese del trimestre"* e *"l'ultimo mese
+arrivato"* sono due cose diverse. Oggi coincidono, perché la serie finisce nel
+mese della demo; il giorno in cui il dataset arrivasse a fine trimestre la
+tabella mostrerebbe un mese che non è ancora successo.
+
+**La semantica del reparto senza record non cambia**, ed era già stata scelta il
+16.08.2026: senza record non c'è un ultimo record, e fabbricarne uno soppresso
+dichiarerebbe un dato che il provider non ha. La conseguenza in produzione — un
+reparto appena creato sparisce dalla tabella — sta nel contratto §3 con le due
+strade per risolverla, e non si muove.
+
+**`getLatestStressByDepartment` è sparito**, perché a fine passata non lo leggeva
+più nessuno: verificato che la landing non lo usasse — l'anteprima HR mostra il
+risparmio e l'adozione, non lo stress per reparto — quindi il metodo, la chiave e
+l'hook sono usciti insieme (§11).
+
+##### Il prefetch passa da una chiave a quattro
+
+Era una chiave fissa; adesso è una per trimestre, e sta nel blocco che già
+scaldava lo snapshot ROI e il report per ognuno dei quattro. Il selettore li
+attraversa tutti senza scaldare niente in mezzo — che è ciò che il guardrail
+della cache fredda avrebbe segnalato al primo cambio.
+
+##### Verificato
+
+Sulla build demo a 1280×900, console aperta:
+
+- **la tabella è dentro la cornice**, sotto le KPI e prima dei due grafici, con il
+  titolo *"Stress per reparto · ultimo mese del trimestre"*;
+- **cambia con il selettore**, e i quattro trimestri danno quattro tabelle
+  diverse. Q3 2026 (in corso): Vendite **78% · Alto**, Operations 52%, Finanza
+  44%, IT 31%, HR + Legale 26%. Q4 2025: Vendite **53% · Medio**, Operations 62%,
+  Finanza 55%, IT 42%, HR + Legale 37% — cioè la storia **prima** che le Vendite
+  si stacchino, che è esattamente ciò che il §8 racconta. Q2 2026 è diverso da
+  entrambi;
+- **la soglia di anonimato regge su ogni trimestre**: la Direzione resta *"Sotto
+  soglia"* con 11 misurati oggi e 9 nel Q4 2025, mentre HR + Legale con **12**
+  misurati è pubblicabile — la soglia è "almeno 12", e il caso al limite si è
+  visto;
+- **le KPI e la tabella si muovono insieme**: passando al Q4 2025 il risparmio va
+  a CHF 6'200 e la tabella cambia nello stesso istante;
+- **le quattro lingue**, con il titolo tradotto in tutte e quattro; il tedesco —
+  *"Stress nach Abteilung · letzter Monat des Quartals"* — sta su una riga sola e
+  la tabella non sborda;
+- **console muta, e nessun log di cache fredda** in build demo, né all'apertura né
+  cambiando trimestre;
+- `npm run build`, `npm run build:demo`, `lint` e `typecheck` a zero.
+
+##### Trovato e non toccato
+
+- **Il trend a dodici mesi e l'utilizzo dei servizi restano fuori dalla cornice**,
+  ed è giusto: parlano dei dodici mesi e lo dichiarano nel titolo. Il commento
+  che li introduce è stato riscritto perché nominava anche la tabella.
+- **Il banner dell'alert resta sopra la cornice e resta com'è**: è un avviso, e la
+  sua posizione è parte dell'informazione (§10.C.1). Dice *"ultimo rilevamento"* e
+  non segue il selettore, ed è coerente — un allarme che sparisse cambiando
+  trimestre non sarebbe un allarme.
+- **La media dei tre mesi non è stata costruita**, ed è la scelta che il titolo
+  dichiara. Se un giorno la si volesse, è un secondo metodo e non una variante di
+  questo: due letture della stessa serie che rispondono a due domande diverse.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -9276,6 +9370,22 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 > state raccolte cercando le attribuzioni datate in `CLAUDE.md` e in
 > `docs/PITCH.md`; il criterio e cosa è rimasto fuori stanno nel verbale di
 > quella passata.
+
+- **06.09.2026 — La tabella dello stress per reparto segue il selettore**
+  (`CLAUDE.md` §10.C.1). È il difetto che M3 aveva lasciato aperto e che tre
+  passate avevano registrato senza chiudere, **per la ragione che la riga stessa
+  dichiarava**: richiedeva un metodo nuovo sul provider, cioè un cambio del
+  contratto. `getStressByDepartment(period)` è quel metodo, e
+  `getLatestStressByDepartment` è sparito perché non lo leggeva più nessuno
+  (§11).
+
+  **Di un trimestre si mostra un mese, non la media dei tre**: un punteggio di
+  stress è una fotografia, e mediarne tre darebbe un numero che nessuna
+  rilevazione ha prodotto. Il titolo lo dichiara — *"ultimo mese del trimestre"*
+  — come faceva prima con *"ultimo mese"*, e la differenza fra le due frasi è
+  che adesso il periodo è **relativo** al trimestre scelto.
+
+  Gli elementi dentro la cornice passano da otto a **nove**.
 
 - **06.09.2026 — L'attivazione dell'account è la ventottesima rotta**
   (`CLAUDE.md` §2.6, §8, §10.A.6). `/activate` esce dallo scope congelato perché
