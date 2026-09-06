@@ -60,11 +60,12 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
    sezione nuova senza approvazione esplicita dei founder. Se un'idea sembra buona,
    proporla e fermarsi: la decisione spetta a loro.
 
-   **L'ultima approvazione è del 06.09.2026**, ed è la ventisettesima rotta: il
-   **link anonimo del check rapido**, `/check/:token` (§10.A.5). La regola sta
-   qui, il perché in §10.A e la data anche in `docs/PROGRESS.md`, «Decisioni
-   chiuse» — che è il posto in cui si trova una decisione senza leggere questo
-   file per intero.
+   **Le ultime due approvazioni sono del 06.09.2026**, e sono la ventisettesima
+   e la ventottesima rotta: il **link anonimo del check rapido**,
+   `/check/:token` (§10.A.5), e l'**attivazione dell'account**, `/activate`
+   (§10.A.6). La regola sta qui, il perché in §10.A e le date anche in
+   `docs/PROGRESS.md`, «Decisioni chiuse» — che è il posto in cui si trova una
+   decisione senza leggere questo file per intero.
 7. **Lingua: italiano di default — con architettura pronta per 4 lingue.** La
    piattaforma avrà IT, DE, FR, EN; **la demo si apre in italiano in ogni build**
    (it-CH: valuta CHF, numeri 14'200, date gg.mm.aaaa), e le altre lingue si
@@ -995,8 +996,8 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 123 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 123 posti.
+call site sono 125 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 125 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
 **Il criterio con cui i call site si contano**, perché una rilevazione futura non
@@ -1004,7 +1005,7 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **107 + 16 = 123** (06.09.2026). Restano fuori, e sono le tre trappole del
+Oggi **109 + 16 = 125** (06.09.2026). Restano fuori, e sono le tre trappole del
 conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
 nome lungo che **contiene** quello corto.
 
@@ -1048,7 +1049,9 @@ messaggio al paziente (01.09.2026), che di guardrail ne porta due, e da 113 a
 ore, da 116 a 119 con la soglia di anonimato — la media aziendale ne porta
 due, uno per il punteggio e uno per il peso — da 119 a 120 con il link
 anonimo del check rapido, il cui reparto deve esistere, e da 120 a 123 con la
-disdetta del dipendente, che ne porta tre perché i suoi rifiuti sono tre.
+disdetta del dipendente, che ne porta tre perché i suoi rifiuti sono tre, e da
+123 a 125 con l'assessment — uno sulla formula, uno sull'ordine delle aree del
+piano di benessere.
 
 **E chi lo ricontasse con un `grep` trova cifre che non sono dei guardrail**
 (01.09.2026), che è la ragione per cui questa avvertenza sta accanto al conto
@@ -1083,7 +1086,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 123 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 125 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 
@@ -1628,6 +1631,11 @@ Qui la si eviterebbe al contrario, mettendola in un elemento che non la merita.
 ## 8. Il dataset demo — la storia dei 12 mesi
 
 Azienda: **Demo SA**, Lugano, 120 dipendenti, Piano Plus (CHF 55/dip/mese).
+**Codice azienda: `DEMO-SA-2026`** (founder, 06.09.2026) — è ciò che un
+dipendente digita per attivare il proprio account (§10.A.6). Ha la forma di un
+codice che un'azienda distribuisce e non di un token da indovinare: la
+generazione, la revoca e il fatto che ogni cliente ne abbia uno sono lavoro
+dell'MVP (`docs/CONTRATTO-DATI.md` §8.3), e questo è l'esempio.
 
 > *Il rename da "Alpine Finance SA" a **Demo SA** è stato fatto in M0, l'organico
 > in M3. Il codice ereditato dichiarava **150** in più punti, e la divergenza si è
@@ -1677,6 +1685,37 @@ dataset (§5.5):
   tiene la storia unica sui tre lati: la home e il Profilo non possono dire
   "disponibile", e la pagina check-up mostra il referto invece di riproporre una
   prenotazione. Il prossimo si apre dodici mesi dopo, cioè fuori dalla demo.
+
+**Come si calcola il profilo salute** (founder, 06.09.2026). L'assessment
+iniziale è di **dieci domande, due per ognuna delle cinque aree** — sonno,
+stress, movimento, alimentazione, salute mentale — su una **scala 1–5 in cui 5
+è il meglio**. Da lì:
+
+- **punteggio di un'area** = media delle sue due risposte **× 20**;
+- **punteggio totale** = media delle dieci risposte **× 20**, arrotondato;
+- **area debole** = quella con il punteggio più basso;
+- **sintesi**: **≥ 70** "In buon equilibrio", **50–69** "Da tenere d'occhio",
+  **< 50** "Da seguire".
+
+**Il pareggio ha una regola, e serve a rendere la formula deterministica**: se
+due aree hanno lo stesso punteggio minimo vince **la prima nell'ordine fisso**
+— sonno, stress, movimento, alimentazione, salute mentale. Senza, l'area debole
+dipenderebbe dall'ordine in cui il codice le percorre, che è una cosa che
+qualcuno può cambiare senza accorgersi di aver cambiato un numero a schermo.
+
+**Le risposte di Laura, e riproducono il suo profilo**: sonno **2 e 3**, stress
+**4 e 4**, movimento **4 e 4**, alimentazione **4 e 4**, salute mentale **5 e
+5**. Danno 50 / 80 / 80 / 80 / 100 per area e **78** in totale, con **sonno**
+come area debole e "In buon equilibrio" come sintesi — cioè esattamente il
+78/100 dichiarato qui sopra. **Il punteggio smette di essere un valore scritto e
+diventa il risultato della formula**, e un guardrail verifica che da queste dieci
+risposte escano 78 e `sleep`.
+
+**Le dieci domande vivono nei dizionari**, come ogni testo a schermo: qui stanno
+la formula e le risposte, che sono dati. Il registro è quello consumer del §7, e
+le formulazioni non nominano sintomi — *"Al risveglio ti senti in forze?"* sì,
+*"Hai sintomi di insonnia?"* no: la seconda è una domanda clinica, e il §7 vieta
+al prodotto di dichiarare che classifica lo stato di salute di qualcuno.
 
 Nessuno dei quattro è un numero libero: il piano Plus dà 10 sedute di psicologo,
 4 di coach, consulti di medico virtuale illimitati con risposta entro 4 ore e un
@@ -2350,10 +2389,11 @@ corrente è anche il totale dell'anno. Il consumo del singolo trimestre — 22 /
 
 ## 10. Scope — le schermate e la definizione di "finito"
 
-**27 rotte su cinque aree** (5 + 6 + 5 + 5 + 6). Venticinque sono ereditate da
-base44; la ventiseiesima è `/roi`, approvata dai founder il 07.08.2026, e la
-ventisettesima è `/check/:token`, il link anonimo del check rapido, approvato dai
-founder il 06.09.2026. **Nessuna
+**28 rotte su cinque aree** (6 + 6 + 5 + 5 + 6). Venticinque sono ereditate da
+base44; la ventiseiesima è `/roi`, approvata dai founder il 07.08.2026, la
+ventisettesima è `/check/:token`, il link anonimo del check rapido, e la
+ventottesima è `/activate`, l'attivazione dell'account — approvate tutte e due
+dai founder il 06.09.2026. **Nessuna
 schermata nuova senza
 approvazione** (§2.6); nessuna schermata esistente si elimina senza dirlo.
 
@@ -2364,9 +2404,9 @@ non più della demo (§4, blocco f):
 
 - una **rotta dello scope** è una voce di questo §10, cioè una schermata che
   qualcuno ha approvato e che si raggiunge da un indirizzo dichiarato. Sono le
-  **27** qui sopra;
+  **28** qui sopra;
 - una **schermata** è tutto ciò che l'applicazione può disegnare al posto di una
-  pagina. Sono **28**: le 27 più la **404**, che in `App.tsx` è il catch-all `*`
+  pagina. Sono **29**: le 28 più la **404**, che in `App.tsx` è il catch-all `*`
   — non ha un indirizzo suo, non entra nello scope, e nondimeno va percorsa,
   tradotta e verificata come le altre.
 
@@ -2455,7 +2495,7 @@ cache `["employee", "ai-plan"]`. **E il vecchio indirizzo non redirige**: dà la
 (§10, come si naviga), quindi un redirect sarebbe codice per un caso che nessun
 percorso produce (§11).
 
-### A. Pubblica — `/`, `/roi`, `/plans`, `/demo`, `/check/:token`
+### A. Pubblica — `/`, `/roi`, `/plans`, `/demo`, `/check/:token`, `/activate`
 1. **Landing**: hero, problema, tre livelli di valore, anteprima piani, privacy, CTA.
 
    **L'anteprima dell'hero è di tre pannelli, uno per lato del prodotto** —
@@ -2524,6 +2564,38 @@ percorso produce (§11).
    risposta. Nessun vicolo cieco (§10.B), e serve al pitch, che da lì rientra
    senza il tasto Indietro del browser.
 
+6. **L'attivazione dell'account** — `/activate`, approvata dai founder il
+   06.09.2026 ai sensi del §2.6. Chiude due cose che il prodotto dichiarava e
+   non aveva: **da dove viene il 78/100**, che è la domanda che un investitore
+   fa per prima guardando il profilo del dipendente, e **il consenso**, che la
+   privacy HR prometteva già raccolto mentre nessun punto del percorso lo
+   chiedeva (`docs/CONTRATTO-DATI.md` §8.2).
+
+   **Quattro passi su una rotta sola**, senza layout e senza guardia, come il
+   link anonimo: codice azienda, consenso, le dieci domande, il profilo. Lo
+   stato del passo vive nel componente e **non nell'indirizzo** — quattro rotte
+   per quattro passi sarebbero quattro indirizzi che si possono aprire fuori
+   ordine, e nessuno dei tre di mezzo vuol dire niente da solo.
+
+   **Il consenso è una spunta obbligatoria e non una casella preselezionata**:
+   sopra ci sono tre righe che dicono cosa Kora tratta, per chi, e che l'azienda
+   vede solo dati aggregati. È la stessa disciplina del §10.D.3 — *non lo si
+   risolve facendo scegliere alla schermata cosa rendere* — applicata al verso
+   opposto: il consenso è **dato**, non dedotto da un passo compiuto.
+
+   **Il punteggio nasce dalla formula del §8, e da qui non è più scritto da
+   nessuna parte.** Ne discende ciò che si vede rifacendo l'assessment con altre
+   risposte: il profilo di Laura cambia per il resto della sessione, e un
+   ricaricamento lo riporta a 78 come riporta tutto il resto (§10).
+
+   **E il piano di benessere segue l'area debole** (founder, 06.09.2026). Le sue
+   cinque aree si ordinano con l'area debole del profilo per prima, e un
+   guardrail lo verifica: la home dice *"è l'area da cui parte il tuo piano di
+   benessere"* leggendo la prima del piano, quindi con un ordine fisso il
+   profilo avrebbe detto un'area e il piano un'altra alla prima risposta diversa
+   da quelle di Laura — due numeri sullo stesso fatto (§5.5). Con le risposte del
+   §8 a schermo non cambia niente.
+
 **Finita quando:** il calcolatore è corretto per qualsiasi N fra 20 e 1000, le
 quattro voci sommano al totale mostrato, e a N=100 escono i cinque numeri di §9;
 **le card prezzi leggono da `Plan`**, quindi nessuna delle loro voci può
@@ -2531,7 +2603,9 @@ divergere dal §9 — è il modo in cui si chiudono i tre disallineamenti aperti
 M0, non correggendo tre righe di JSX che la prossima passata riaprirebbe; e il
 link anonimo **registra davvero** — il tocco si salva e si può correggere, un
 token che non esiste non porta in un vicolo cieco, e né la home di Laura né una
-curva della dashboard HR si muovono.
+curva della dashboard HR si muovono; e l'attivazione **produce il profilo** —
+le dieci risposte del §8 danno 78 e sonno, il consenso non si può saltare, e la
+home e il Profilo mostrano quello che l'assessment ha appena calcolato.
 
 ### B. Portale dipendente — `/employee` + 5 sottopagine
 Home, Psicologi, Medico virtuale, Check-up, Benessere, Profilo.
