@@ -263,9 +263,15 @@ dashboard HR afferma la prima cosa, quindi il dato deve misurare quella.
    non deve prenderlo per il default.
 
 **Un reparto senza record mensili esce dall'elenco, e va deciso se è giusto.**
-`getLatestStressByDepartment` promette l'ultimo record di ogni reparto, e senza
-record non c'è un ultimo record: fabbricarne uno soppresso dichiarerebbe un dato
-che il provider non ha, ed è la ragione per cui oggi quel reparto **non compare**.
+`getStressByDepartment` promette l'ultimo record di ogni reparto **nel
+trimestre**, e senza record non c'è un ultimo record: fabbricarne uno soppresso
+dichiarerebbe un dato che il provider non ha, ed è la ragione per cui oggi quel
+reparto **non compare**.
+
+*(La lettura si chiamava `getLatestStressByDepartment` e rispondeva con l'ultimo
+mese in assoluto. Dal 06.09.2026 prende un trimestre, perché la tabella della
+dashboard segue il selettore come il resto della cornice — la semantica del
+reparto senza record è la stessa, ed era già stata scelta il 16.08.2026.)*
 
 In produzione la conseguenza è concreta e va guardata prima di ereditarla: un
 reparto **appena creato** — nessuno ha ancora risposto al check rapido — sparisce
@@ -654,6 +660,7 @@ nascono due e le schermate divergono:
 | **Giorni di assenza evitati** | risparmio ÷ costo di una giornata di assenza |
 | **Utilizzo** (`usagePercent`) | sessioni di psicologo consumate ÷ **monte annuo**, non ÷ trimestre: è la stessa grandezza della KPI "142 su 1'200" |
 | **Check-up completati** | check-up eseguiti ÷ **iscritti**, non ÷ organico: chi non ha attivato l'account non può prenotarlo, e metterlo al denominatore misurerebbe l'adozione una seconda volta |
+| **Stress di un reparto in un trimestre** (`getStressByDepartment`) | l'**ultimo mese del trimestre di cui esiste un record**, non la media dei tre: un punteggio di stress è una fotografia, e mediarne tre darebbe un numero che nessuna rilevazione ha prodotto. Sul trimestre in corso è l'ultimo mese arrivato, che è l'unica lettura possibile finché il trimestre non è chiuso |
 | **Trend dello stress** | ultimo mese del trimestre **meno** l'ultimo del precedente, in punti. `null` sul trimestre più vecchio della finestra, che un precedente non ce l'ha: uno zero direbbe "invariato" dove il dato non esiste |
 | **Consulti di medico virtuale** (`virtualDoctorConsults`) | somma della serie di utilizzo sui **soli mesi del trimestre**, non cumulata. È l'unica riga del report che non si cumula, e la ragione è che quel servizio **non ha un monte annuo**: sul Plus è illimitato (`CLAUDE.md` §9), quindi non c'è niente da consumare e "quanti finora" non è una domanda. Cumulandola darebbe il totale dei dodici mesi su tutti e quattro i trimestri, cioè un numero che non si muove accanto a un selettore che si muove |
 
