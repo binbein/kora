@@ -159,6 +159,32 @@ presentazione.
   la prenotazione che compare nel calendario e la disdetta che lo svuota — e si
   mostra in un clic, senza dire una parola in più.
 
+- **Il link anonimo, dopo la privacy HR, ed è facoltativo** (06.09.2026). In
+  `/hr/privacy` il riquadro **"Anche senza account"** ha ora un link — *"Vedi un
+  esempio di link anonimo"* — che apre `/check/demo-sa-vendite`: logo, **Demo SA
+  · Vendite**, e la stessa card del check rapido. Un tocco, e la risposta è
+  registrata.
+
+  **Serve solo se la domanda arriva**, ed è quella su da dove vengono i numeri
+  di stress: fino al 05.09.2026 il link era **dichiarato in tre punti e non
+  esisteva da nessuna parte** — il riquadro lo prometteva, la risposta pronta lo
+  raccontava, e non c'era niente da aprire. Adesso si mostra invece di
+  raccontarlo, ed è un clic.
+
+  **Torna indietro dal link "Torna a Kora"** in fondo alla pagina, non dal tasto
+  Indietro del browser: quella schermata non ha la barra pubblica — chi la apre
+  ha ricevuto un indirizzo, non sta navigando — e un ricaricamento azzera la
+  demo (`CLAUDE.md` §10).
+
+  **Se tocchi "Molto male", compaiono il 144 e il 143** come nel portale
+  dipendente, e **non compare il pulsante per prenotare**: chi risponde da un
+  link un account non ce l'ha, quindi al suo posto c'è una riga che lo nomina
+  senza linkarlo. Se qualcuno lo nota, è la risposta giusta — la demo non
+  disegna una strada che il prodotto non ha (`CLAUDE.md` §10.A.5).
+
+  **La dashboard HR non si muove**, come per il check rapido in app: vale la
+  risposta pronta qui sotto, e per la stessa ragione.
+
 - **La richiesta demo si mostra alla fine, e non ha più una coreografia.**
   Compila il form da `/demo` durante il giro normale, e quando vuoi mostrarne
   l'esito clicca **Admin** nella barra: la richiesta è in tabella, con azienda,
@@ -213,8 +239,9 @@ trasformare un argomento forte in una correzione ricevuta in sala.
 
 **Detto a voce, è un argomento competitivo.** Quattro lingue nazionali sono la
 condizione per vendere a un'azienda svizzera con sedi in più cantoni, e la
-piattaforma le ha **oggi**, non "le avrà": tutte e ventisette le schermate sono
-state percorse in ognuna delle quattro. È questo il modo di dirlo, non un cambio di
+piattaforma le ha **oggi**, non "le avrà": tutte e ventotto le schermate sono
+state percorse in ognuna delle quattro — la ventottesima è la pagina del link
+anonimo, percorsa nelle quattro il 06.09.2026 (`CLAUDE.md` §10). È questo il modo di dirlo, non un cambio di
 lingua a schermo.
 
 **Se è l'investitore a cliccare una sigla**, la schermata regge e non c'è niente
@@ -371,9 +398,38 @@ disciplina della risposta sull'escalation clinica, e per la stessa ragione — l
 domanda dopo è *"e quando succede?"*, e a una funzione descritta e non costruita
 non c'è niente da rispondere.
 
+### "E chi non si iscrive?"
+
+Arriva subito dopo la risposta sui numeri di stress, ed è la domanda seria: gli
+iscritti di Demo SA sono **82 su 120**, quindi **38 persone** non hanno attivato
+l'account. Chi la fa sta concludendo che la dashboard misura due terzi
+dell'azienda.
+
+**Non è così, e il motivo è il link anonimo**: il check rapido si risponde
+nell'app **oppure** da un link che non richiede un account. È la metà del
+modello che rende il dato indipendente dall'adozione, ed è il motivo per cui
+**i dipendenti misurati possono essere più degli iscritti** — una proprietà
+voluta, non un'incoerenza da spiegare (`CLAUDE.md` §8).
+
+**Mostralo, non raccontarlo**, ed è un clic dalla schermata su cui sei già: in
+`/hr/privacy`, il riquadro "Anche senza account" apre l'esempio. Un tocco sui
+volti e la risposta è registrata, senza aver dichiarato chi sei.
+
+**Perché è il campione giusto, e va detto così**: misurare solo chi ha attivato
+l'account significa misurare solo chi è già ingaggiato — cioè quelli che del
+prodotto hanno meno bisogno. Il dato serve soprattutto dove l'adozione non è
+ancora arrivata.
+
+**Quello che manca, se insistono**: la **distribuzione** del link — come arriva
+a chi non ha una casella aziendale — e la sua **generazione e revoca** sono
+lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.3). Quello che si vede è un
+esempio di link, non lo schema con cui se ne fanno altri. Non promettere il
+QR in bacheca: è la stessa disciplina della risposta sull'escalation clinica.
+
 ### "Se rispondo al check rapido, la dashboard si muove?"
 
-**No, ed è voluto.** La risposta si salva e si rilegge — la card mostra il volto
+**No, ed è voluto**, e vale anche per la risposta data dal link anonimo. La
+risposta si salva e si rilegge — la card mostra il volto
 scelto — ma le curve della dashboard non si spostano: gli aggregati di reparto
 sono **mensili** (`CLAUDE.md` §5.3), e una risposta sola non muove una media
 pesata sui dipendenti misurati.
