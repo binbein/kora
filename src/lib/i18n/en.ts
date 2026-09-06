@@ -254,6 +254,25 @@ export const en: Dictionary = {
       appointmentCancelledByPatient: "You cancelled this appointment.",
       appointmentMessageFrom: "{professional} wrote to you:",
 
+      /* The employee-side cancellation (06.09.2026). Consumer register, and the
+         words follow the professional's twin dialog: it is the same gesture
+         seen from the other side. */
+      cancel: {
+        action: "Cancel",
+        actionLabel:
+          "Cancel the appointment on {weekday} {date} at {time} with {professional}",
+        title: "Cancel this appointment?",
+        summary: "{weekday} {date}, at {time} with {professional}",
+        effect: "The hour becomes free again. If you change your mind, book again.",
+        keep: "Go back",
+        confirm: "Cancel the appointment",
+        confirming: "Cancelling",
+        error: {
+          title: "Appointment not cancelled",
+          body: "The appointment is still scheduled: try again.",
+        },
+      },
+
       sessions: "You've used {used} of your {total} sessions",
       sessionsWithScheduled:
         "You've used {used} of your {total} sessions · {scheduled} scheduled",

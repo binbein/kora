@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import {
   ArrowRight,
   CalendarDays,
 } from "lucide-react";
+import CancelAppointmentDialog from "@/components/employee/CancelAppointmentDialog";
 import PrivacyBanner from "@/components/shared/PrivacyBanner";
 import RapidCheckCard from "@/components/kora/RapidCheckCard";
 import { ErrorNotice } from "@/components/kora/StateNotice";
@@ -172,9 +174,11 @@ function ServiceCounter({
 function AppointmentRow({
   appointment,
   professional,
+  onCancel,
 }: {
   appointment: Appointment;
   professional: Professional | undefined;
+  onCancel: () => void;
 }) {
   const cancelled = appointment.status === "cancelled";
   const professionalName = professional
@@ -237,23 +241,54 @@ function AppointmentRow({
           </div>
         )}
       </div>
-      <Badge
-        variant="outline"
-        className={
-          cancelled
-            ? "flex-shrink-0 text-destructive-strong border-destructive/30"
-            : "flex-shrink-0"
-        }
-      >
-        {cancelled
-          ? t.employee.home.appointmentCancelled
-          : t.sessionType[appointment.type]}
-      </Badge>
+      <div className="flex flex-shrink-0 items-center gap-2">
+        <Badge
+          variant="outline"
+          className={
+            cancelled
+              ? "text-destructive-strong border-destructive/30"
+              : ""
+          }
+        >
+          {cancelled
+            ? t.employee.home.appointmentCancelled
+            : t.sessionType[appointment.type]}
+        </Badge>
+        {/*
+          * IL GESTO NON C'È DOVE SAREBBE RIFIUTATO (§10.B.5): il pulsante
+          * compare sulle sole sedute in programma, che è la precondizione del
+          * metodo. Sull'annullata non serve, e su una passata il provider
+          * rifiuterebbe.
+          *
+          * L'ETICHETTA VISIBILE È UNA PAROLA E QUELLA LETTA È INTERA: fra
+          * tre righe uguali, tre "Annulla" non dicono quale. È la stessa
+          * coppia del pulsante gemello nella lista sessioni della
+          * professionista.
+          */}
+        {!cancelled && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onCancel}
+            aria-label={interpolate(t.employee.home.cancel.actionLabel, {
+              weekday: formatWeekday(appointment.start),
+              date: formatDate(appointment.start),
+              time: formatTime(appointment.start),
+              professional: professionalName,
+            })}
+          >
+            {t.employee.home.cancel.action}
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
 
 export default function EmployeeHome() {
+  /* L'appuntamento che il dialogo sta chiedendo di disdire: stato della
+     schermata, non del dominio, e muore con il dialogo (§5.2). */
+  const [cancelling, setCancelling] = useState<Appointment | null>(null);
   const profileQuery = useEmployeeProfile();
   const appointmentsQuery = useAppointments();
   const professionalsQuery = useProfessionals();
@@ -300,6 +335,15 @@ export default function EmployeeHome() {
   ) {
     return null;
   }
+
+  /* Lo stesso nome che la riga mostra, composto dalla stessa funzione: il
+     dialogo lo riceve invece di rifarsi la ricerca. */
+  const professionalNameOf = (professionalId: string | undefined): string => {
+    const professional = professionals.find(
+      (entry) => entry.id === professionalId,
+    );
+    return professional ? professionalDisplayName(professional) : "";
+  };
 
   /*
    * IL FILTRO SULLO STATO STA QUI, NON NELLA LETTURA (18.08.2026).
@@ -376,11 +420,23 @@ export default function EmployeeHome() {
                 professional={professionals.find(
                   (entry) => entry.id === appointment.professionalId,
                 )}
+                onCancel={() => setCancelling(appointment)}
               />
             ))}
           </div>
         )}
       </Card>
+
+      {/* Il nome si risolve con la stessa funzione della riga, e non con una
+          seconda ricerca: due modi di comporre lo stesso nome sono due nomi che
+          possono divergere (§5.5). */}
+      <CancelAppointmentDialog
+        appointment={cancelling}
+        professionalName={professionalNameOf(
+          cancelling === null ? undefined : cancelling.professionalId,
+        )}
+        onClose={() => setCancelling(null)}
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <ServiceCounter
