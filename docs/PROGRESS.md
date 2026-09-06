@@ -2153,8 +2153,9 @@ delle fasce, la griglia delle fasce, lo scope delle fasce con le mutation che
 non si contano, l'allineamento fra verbali e commenti, e le parole che espongono
 con le promesse che non teniamo, e la soglia di anonimato con la sottrazione che
 non deve esistere, e il numero d'emergenza dove la persona dichiara di stare
-malissimo, e le zero richieste esterne rese eseguibili. Non aggiungono
-schermate.
+malissimo, e le zero richieste esterne rese eseguibili, e **il link anonimo del
+check rapido**. Non aggiungono
+schermate — **tranne l'ultima**, ed è la riga qui sotto.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
 volta** (04.09.2026): il listino porta ora *"prima sessione entro 72 ore"*, che è
@@ -2217,14 +2218,24 @@ giorno. È il criterio del `CLAUDE.md` §10 — un verbale è un resoconto datat
 criterio è rivolto a chi verrà — e si corregge la riga viva, non il verbale.
 
 **Fino al 17.08.2026 la riga finiva con "sono igiene del layer dati, del seam e
-del dizionario", e da questa passata non è più vero di tutte.** Le due metà si
-sono separate: *nessuna schermata nuova e nessun numero mosso* resta vero
-dell'elenco intero — le rotte dello scope sono ancora **26**, `/admin` c'era già
-e a cambiare è il link che ci porta — mentre *igiene* descriveva le prime
+del dizionario", e da quella passata non è più vero di tutte.** Le due metà si
+sono separate: *nessuna schermata nuova e nessun numero mosso* restava vero
+dell'elenco intero — le rotte dello scope erano ancora **26**, `/admin` c'era già
+e a cambiare era il link che ci porta — mentre *igiene* descriveva le prime
 ventotto e non la ventinovesima, che **cambia come ci si comporta a schermo** su
-richiesta dei founder. La distinzione utile non è fra igiene e prodotto: è che
-una passata di refinement **non allarga lo scope del §10**, e questa non lo
-allarga.
+richiesta dei founder. La distinzione utile non era fra igiene e prodotto: era
+che una passata di refinement **non allarga lo scope del §10**.
+
+**E quella distinzione è caduta il 06.09.2026, per decisione dei founder.** Il
+link anonimo del check rapido è **una rotta nuova** — le rotte passano a 27 e le
+schermate a 28 — quindi l'ultima dell'elenco allarga lo scope del §10, che è
+esattamente ciò che nessuna delle precedenti faceva.
+
+**Non ne discende un permesso, e la riga si scrive perché non ne discenda**: una
+passata di refinement continua a non allargare lo scope **di propria
+iniziativa** (`CLAUDE.md` §2.6). A cambiare è chi decide, non chi esegue — la
+decisione sta in «Decisioni chiuse» con la sua data — e la prova che la regola
+tiene è che questa passata **non l'ha proposta**: è arrivata già approvata.
 
 ~~Le due passate del 16.08.2026 si sono dichiarate **l'ultima**, «da qui la demo
 è congelata».~~ → **Non lo erano**, e non per un imprevisto: la prima è stata
@@ -8782,11 +8793,158 @@ cui non è un plugin ESLint.
   ha regole da rispettare — ma chi aggiungerà il secondo file lì dentro deve
   sapere che nessuno lo guarda.
 
+#### Il link anonimo del check rapido (06.09.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il comando
+in testa a questo file. **È la prima passata di refinement che allarga lo scope
+del §10**, e non di propria iniziativa: la decisione è dei founder e sta in
+«Decisioni chiuse». Rotte **26 → 27**, schermate **27 → 28**, `EXPECTED_KEYS`
+**799 → 805**, guardrail **119 → 120**.
+
+##### Il vuoto era una promessa fatta tre volte
+
+Il link anonimo è **la metà del modello di misurazione che rende il dato
+indipendente dall'adozione** (`CLAUDE.md` §8): rispondere al check rapido non
+richiede un account, quindi i misurati possono essere più degli iscritti, e il
+dato vale anche dove l'adozione non è arrivata. È l'argomento con cui il pitch
+risponde a *"da dove vengono i numeri di stress?"*.
+
+**E il prodotto lo dichiarava in tre punti senza averlo**: il §8 lo descrive, il
+riquadro "Anche senza account" di `/hr/privacy` lo promette a un cliente, e
+`docs/PITCH.md` ci costruisce sopra una risposta. Nel contratto era una voce del
+perimetro dell'MVP — *"non esiste come oggetto: non c'è un token, una scadenza,
+un reparto da cui derivarlo"* (`docs/CONTRATTO-DATI.md` §8.3).
+
+**Non è la stessa famiglia dei vuoti dichiarati del §8**, ed è la ragione per cui
+questo è uscito di lì mentre gli altri restano: l'escalation clinica e il consenso
+sono **assenze che le schermate non affermano**, questo era un meccanismo che tre
+schermate affermavano. È la distinzione che le «promesse in sospeso» di questo
+file tengono da agosto, applicata al caso in cui la promessa si poteva mantenere
+in una passata.
+
+##### Il perimetro, e cosa è stato lasciato fuori apposta
+
+Una rotta pubblica, **una lettura** e **un argomento in più** su una scrittura
+che esisteva già:
+
+- `getRapidCheckLink(token)` → `RapidCheckLink | null`, con azienda, reparto
+  (id e nome) e `validUntil`;
+- `submitRapidCheck(value, { token })`: con il token il reparto lo porta il link
+  e la risposta **non ha `employeeId`**, che è il caso per cui quel campo del
+  tipo era opzionale dal principio.
+
+**Il `null` copre due casi e non li distingue**: token ignoto e link scaduto. È
+deliberato — a chi apre un link morto la differenza non serve, e dirgliela
+direbbe a chi prova token a caso quali token sono esistiti.
+
+**Fuori restano generazione, revoca, rinnovo e distribuzione del token**, che
+sono §8.3 e ci restano con la loro voce riscritta: il dataset porta **un
+esempio**, non lo schema con cui se ne fanno altri. Il token è leggibile
+(`demo-sa-vendite`) perché in sala un indirizzo si dice a voce; in produzione
+leggibile vuol dire indovinabile, e la voce del contratto lo scrive.
+
+##### Le due decisioni che valgono più del codice
+
+**La risposta anonima non diventa quella di Laura.** `getRapidCheckAnswer` è la
+risposta di chi ha l'account (`docs/CONTRATTO-DATI.md` §3), quindi con il token
+il mock **non tocca `lastRapidCheck`**, la mutation **non invalida niente**, e la
+schermata legge l'esito dalla mutation — l'unico posto in cui esiste. Scriverci
+dentro avrebbe fatto comparire nella home del portale dipendente la risposta di
+uno sconosciuto, che è il contrario della garanzia per cui il link è anonimo.
+**Verificato a schermo**, ed è la prova che vale più delle altre: risposto dal
+link, la home di Laura mostra ancora *"Come ti senti oggi?"*.
+
+**Dal link non si prenota.** Alla risposta peggiore i due numeri d'emergenza
+restano — è il punto del `CLAUDE.md` §8, e qui vale doppio perché di
+interlocutori non ce n'è nessuno — ma la CTA *"Parla con qualcuno oggi"* **non si
+rende**: porta in `/employee/psychologists`, dove chi non ha un account in
+produzione non entra. Al suo posto una riga attenuata che nomina l'account
+**senza linkarlo**, finché l'attivazione non esiste (§8.3). È la regola del §10
+sui vicoli ciechi applicata al verso opposto: non si disegna una strada che il
+prodotto non ha.
+
+##### La card è una sola, con una prop
+
+`RapidCheckCard` prende `token?`, e il token cambia tre cose che sono la stessa:
+la lettura della risposta autenticata si spegne (`enabled: false`, che è anche
+ciò che la esenta dal controllo sulla cache fredda), l'esito arriva da
+`submit.data`, e non si invalida niente. **Non è un secondo componente** perché a
+cambiare è da dove viene il reparto, non cosa la card mostra: i cinque volti, la
+correzione e il blocco dei numeri sono gli stessi, e duplicarli sarebbero due
+card che possono divergere sulla parte che conta di più.
+
+**La pagina non ha la barra pubblica né una guardia**, ed è una scelta: chi apre
+quell'indirizzo non sta navigando l'applicazione, ha ricevuto un link. Una nav
+con "Piani" e "Prenota una demo" sopra *"come ti senti oggi?"* trasformerebbe una
+misurazione in una pagina di marketing. **Non entra in `prefetchDemo`**: la
+chiave dipende dal token che sta nell'indirizzo, quindi si dichiara
+`coldOnPurpose` — è la seconda esenzione dopo la nota di sessione.
+
+##### Verificato
+
+Sulla build demo a 1280×900, console aperta, navigando **solo dai link interni**:
+
+- `/check/demo-sa-vendite`: logo, **Demo SA · Vendite**, i cinque volti. Toccato
+  "Molto male" → *"Grazie, registrato."*, il 144, il 143, la riga sull'account al
+  posto del pulsante, e la nota che dice che nessuno viene avvisato. **Cambiata
+  la risposta** su "Bene": il blocco dei numeri sparisce, la scelta si sposta.
+- **La home di Laura non si è mossa**: raggiunta con i link interni dopo la
+  risposta anonima, la card mostra ancora la domanda e non *"Grazie, registrato"*.
+- `/check/xyz`: *"Questo link non è più valido"*, con l'uscita verso la landing.
+  Nessun vicolo cieco in nessuno dei tre stati.
+- `?fail=getRapidCheckLink` in sviluppo: lo stato d'errore con "Riprova", e
+  l'uscita resta.
+- **`/hr/privacy` → "Vedi un esempio di link anonimo"**: navigazione interna, la
+  demo non ricarica.
+- **Le quattro lingue**, raggiunte dal selettore della barra pubblica e poi con i
+  link interni fino alla pagina: IT, DE, FR, EN, blocco dei numeri compreso. Il
+  tedesco manda la riga d'introduzione a due righe e non sborda.
+- **Da sola tastiera**: cinque volti e l'uscita, tutti con l'anello di focus
+  visibile.
+- **Censimento del contrasto sulla schermata nuova**: **16 nodi di testo
+  percorsi** nello stato con la risposta e il blocco dei numeri, **11** in quello
+  senza. Zero sotto soglia fra i nodi informativi — l'intestazione 14.6:1, la
+  riga d'introduzione 4.9:1, l'uscita 4.9:1, i due numeri 15.17:1, la riga
+  sull'account 5.1:1.
+- Console muta in tutti i passaggi, in tutte e quattro le lingue; `npm run
+  build`, `npm run build:demo`, `lint` e `typecheck` a zero, con la riga
+  `[rete] 7 file di dist/ letti, nessun host fuori dall'allowlist`.
+
+##### Trovato e non toccato
+
+- **I numeri d'emergenza sono costanti in `RapidCheckCard`**, dalla passata del
+  05.09.2026, e **dipendono dal paese**: 144 e 143 in Svizzera, 112 in Italia. Il
+  posto giusto è il provider, insieme all'astrazione "paese" che oggi non esiste
+  — `EmployeeProfile` un paese non ce l'ha, ed è lavoro dell'MVP
+  (`docs/CONTRATTO-DATI.md` §8.1). **Non si sposta qui**: un campo che il dataset
+  non sa riempire non si aggiunge al contratto per anticiparlo. Il link anonimo
+  lo rende un po' più visibile — adesso quei due numeri escono anche su una
+  schermata che nessuna sessione autenticata attraversa — e non lo cambia.
+- **I quattro volti non scelti stanno a 1.70:1**, e **non è di questa passata**:
+  `FACE_MUTED` porta `text-muted-foreground/40` dal 20.08.2026, e la misura è
+  **identica sulla home del dipendente** — verificata lì, non dedotta. Sono
+  etichette di bersagli premibili, quindi non sono esenti come un controllo
+  disabilitato. Cambiarlo è una modifica alla resa di una schermata approvata,
+  cioè dei founder, e vale per tutte e due le schermate insieme.
+- **Il censimento del `CLAUDE.md` §6.1 non aveva guardato questa schermata**, e
+  non poteva: è nata oggi. La riga lì è stata qualificata con la data invece di
+  essere riscritta, e il censimento di questa schermata è quello qui sopra.
+- **L'indirizzo del link è scritto in `HRPrivacy.tsx`.** È un indirizzo e non un
+  dato — porta all'**esempio** del dataset, non al link di quell'azienda — ma è
+  l'unico punto in cui il token compare fuori da `lib/data`. Il giorno in cui i
+  link si generano, quella schermata mostrerà quello del cliente e l'indirizzo
+  arriverà dal provider come tutto il resto.
+- **La correzione della risposta non ha un periodo**, e sul link anonimo nemmeno
+  una persona: la domanda *"la seconda risposta sostituisce la prima o se ne
+  aggiunge una"* era già aperta nel contratto (§3) e questa passata non la
+  chiude. Nella demo non si vede, perché la risposta anonima non alimenta
+  nessun aggregato.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
-professionista, admin; **oggi sono 26**: `/roi` è stata approvata il 07.08.2026
-e costruita in M3 — `CLAUDE.md` §10), design system e navigazione, 47 componenti
+professionista, admin; **oggi sono 27**: `/roi` è stata approvata il 07.08.2026
+e costruita in M3, `/check/:token` il 06.09.2026 — `CLAUDE.md` §10), design system e navigazione, 47 componenti
 shadcn (**oggi sono 45**: il sistema di toast, che ne contava tre, è uscito il
 07.08.2026 — decisione qui sotto), grafici recharts.
 
@@ -8844,6 +9002,30 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 > state raccolte cercando le attribuzioni datate in `CLAUDE.md` e in
 > `docs/PITCH.md`; il criterio e cosa è rimasto fuori stanno nel verbale di
 > quella passata.
+
+- **06.09.2026 — Il link anonimo del check rapido è la ventisettesima rotta**
+  (`CLAUDE.md` §2.6, §8, §10.A.5). `/check/:token` esce dallo scope congelato
+  perché chiude una **promessa fatta in tre punti e costruita in nessuno**: il
+  §8 descrive il link come la metà del modello di misurazione che rende il dato
+  indipendente dall'adozione, il riquadro "Anche senza account" della privacy HR
+  lo dichiara al cliente, e `docs/PITCH.md` ci costruisce sopra una risposta —
+  mentre nel contratto era una voce del perimetro dell'MVP
+  (`docs/CONTRATTO-DATI.md` §8.3).
+
+  **Il perimetro approvato è stretto**: una rotta pubblica, **una lettura**
+  (`getRapidCheckLink`) e **un argomento in più** sulla scrittura che c'è già.
+  Non entrano la generazione del token, la revoca, il rinnovo e la
+  distribuzione, che restano §8.3: la demo mostra **un esempio di link**, non lo
+  schema con cui se ne fanno altri.
+
+  **Due scelte di resa sono parte della decisione**, e non sono dettagli di
+  schermata. La risposta anonima **non diventa quella della persona
+  autenticata** — la home di Laura non si muove — perché `getRapidCheckAnswer`
+  è di chi ha l'account (`docs/CONTRATTO-DATI.md` §3). E alla risposta peggiore
+  i due numeri d'emergenza restano, mentre la CTA verso il portale dipendente
+  **non si rende**: porterebbe dove chi non ha un account non può entrare, e la
+  demo non disegna una strada che il prodotto non ha. Al suo posto una riga che
+  nomina l'account senza linkarlo, finché l'attivazione non esiste.
 
 - **02.09.2026 — La soglia di anonimato ha un pavimento: 5** (`CLAUDE.md` §8,
   `docs/CONTRATTO-DATI.md` §3). Resta una proprietà del cliente, ma sotto 5 un

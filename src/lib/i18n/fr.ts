@@ -928,6 +928,7 @@ export const fr: Dictionary = {
       anonymousLinkTitle: "Même sans compte",
       anonymousLinkBody:
         "Le check rapide se répond dans l'application ou depuis un lien anonyme, qui ne demande pas d'avoir activé un compte. Mesurer uniquement les personnes inscrites reviendrait à mesurer uniquement celles déjà engagées, alors que la donnée sert surtout là où l'adoption n'est pas encore arrivée.",
+      anonymousLinkExample: "Voir un exemple de lien anonyme",
       thresholdTitle: "Seuil d'anonymat",
       thresholdBody:
         "La donnée d'un département n'est publiée que si, sur cette période, au moins {threshold} collaborateurs mesurés ont répondu. Sous le seuil, le tableau de bord affiche un tiret et non un score.",
@@ -1262,6 +1263,19 @@ export const fr: Dictionary = {
         "Merci de votre intérêt. Notre équipe vous contactera dans un jour ouvrable.",
       successHome: "Retour à l'accueil",
       successRoi: "En attendant, calculez le retour",
+    },
+
+    /* Le lien anonyme du check rapide (§10.A.5). Registre consommateur —
+       **tu** — comme la carte du check rapide dans le portail collaborateur :
+       ici on demande à une personne comment elle va, pas à une cliente qui lit
+       un tableau de bord. */
+    check: {
+      subject: "{company} · {department}",
+      intro:
+        "Réponds sans compte : ta réponse n'entre que dans la moyenne du département. Personne ne sait que c'est toi.",
+      invalid: "Ce lien n'est plus valable",
+      back: "Retour à Kora",
+      withAccount: "Avec le compte Kora, tu peux aussi réserver une séance.",
     },
   },
 

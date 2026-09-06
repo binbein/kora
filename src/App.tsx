@@ -11,6 +11,7 @@ import Landing from '@/pages/public/Landing';
 import Roi from '@/pages/public/Roi';
 import Pricing from '@/pages/public/Pricing';
 import DemoRequest from '@/pages/public/DemoRequest';
+import RapidCheck from '@/pages/public/RapidCheck';
 
 // Employee portal
 import EmployeeLayout from '@/components/employee/EmployeeLayout';
@@ -53,6 +54,13 @@ const AppRoutes = () => (
     <Route path="/roi" element={<Roi />} />
     <Route path="/plans" element={<Pricing />} />
     <Route path="/demo" element={<DemoRequest />} />
+    {/*
+      Il link anonimo del check rapido (§10.A.5). Sta fra le rotte pubbliche e
+      **fuori da ogni layout**: chi apre questo indirizzo non sta navigando
+      l'applicazione, ha ricevuto un link — quindi niente barra pubblica, e
+      niente guardia, perché non si entra in nessun portale.
+    */}
+    <Route path="/check/:token" element={<RapidCheck />} />
 
     {/*
       Ogni portale è dietro la sua guardia, che è **una porta che concede**: in

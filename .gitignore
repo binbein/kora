@@ -33,3 +33,7 @@ base44/.app.jsonc
 
 # Configurazione locale degli strumenti di sviluppo
 .claude/
+
+# I file di lavoro dell'app desktop: sono output di sessione, non sorgente.
+# Ci sono gia' arrivati una volta (8a90314) e sono stati tolti a mano.
+Claude outputs/

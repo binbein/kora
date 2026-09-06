@@ -38,6 +38,7 @@ import {
   type ProfessionalSession,
   type Quarter,
   type RapidCheckAnswer,
+  type RapidCheckLink,
   type RoiSnapshot,
   type Session,
   type SessionEntitlement,
@@ -59,6 +60,7 @@ import {
 import { EMPLOYEE_DIRECTORY, HR_REPORTS, INVOICES } from "./hr";
 import { DEMO_TODAY } from "./demo-date";
 import { LAURA, PROFESSIONALS } from "./people";
+import { resolveRapidCheckLink } from "./rapid-check";
 import {
   CLIENT_COMPANIES,
   PLATFORM_MONTHS,
@@ -1010,18 +1012,55 @@ export class MockDataProvider implements DataProvider {
     return Promise.resolve(this.lastRapidCheck);
   }
 
+  getRapidCheckLink(token: string): Promise<RapidCheckLink | null> {
+    return Promise.resolve(resolveRapidCheckLink(token));
+  }
+
   /*
-   * Prende il solo valore: chi risponde è la persona autenticata, e il suo
-   * reparto lo sa il provider — in produzione lo saprà la sessione. È la stessa
-   * ragione per cui `getCompany()` non prende un identificatore (§7 del
-   * contratto). La variante su link anonimo porterà il reparto dal link.
+   * Senza il token risponde la persona autenticata, e il suo reparto lo sa il
+   * provider — in produzione lo saprà la sessione. È la stessa ragione per cui
+   * `getCompany()` non prende un identificatore (§7 del contratto).
+   *
+   * CON IL TOKEN LA RISPOSTA NON È DI NESSUNO, ed è la parte da non
+   * scorciare: porta il reparto del link, **non porta `employeeId`** e **non
+   * tocca `lastRapidCheck`**. Quello è ciò che `getRapidCheckAnswer`
+   * restituisce, cioè la risposta di chi ha l'account: scriverci dentro
+   * farebbe comparire nella home di Laura la risposta di uno sconosciuto, che
+   * è l'esatto contrario della garanzia per cui il link è anonimo. La
+   * schermata anonima legge l'esito dalla mutation, che è l'unico posto in cui
+   * esiste.
    *
    * **Non tocca le serie del §8.** Le dodici curve della dashboard sono la
    * storia che il pitch racconta, e un tocco fatto davanti a un investitore non
    * deve poterla muovere: qui si dimostra che il segnale esiste, non lo si
-   * aggrega.
+   * aggrega. Vale per tutte e due le strade.
    */
-  submitRapidCheck(value: RapidCheckAnswer["value"]): Promise<RapidCheckAnswer> {
+  submitRapidCheck(
+    value: RapidCheckAnswer["value"],
+    options?: { token: string },
+  ): Promise<RapidCheckAnswer> {
+    if (options !== undefined) {
+      const link = resolveRapidCheckLink(options.token);
+      /*
+       * Un link scaduto o inventato non scrive nel reparto di nessuno. La
+       * schermata non ci arriva — con un token che non risolve mostra il vuoto
+       * e non la card — ma il rifiuto sta sul metodo, come per
+       * `cancelSession` e `setSlotStatus`: è il contratto a dire cosa è
+       * ammesso, non chi lo chiama.
+       */
+      if (link === null) {
+        return Promise.reject(
+          new Error(`Il link "${options.token}" non è valido.`),
+        );
+      }
+
+      return Promise.resolve({
+        departmentId: link.departmentId,
+        value,
+        answeredAt: DEMO_TODAY,
+      });
+    }
+
     const answer: RapidCheckAnswer = {
       departmentId: LAURA.departmentId,
       employeeId: LAURA.id,

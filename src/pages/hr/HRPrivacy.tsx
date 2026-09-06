@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { CheckCircle2, Eye, EyeOff, FileText, Link2, Lock, Server, Shield } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
@@ -95,6 +96,28 @@ export default function HRPrivacy() {
               <h3 className="font-semibold text-sm">{t.hr.privacy.anonymousLinkTitle}</h3>
               <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
                 {t.hr.privacy.anonymousLinkBody}
+              </p>
+              {/*
+                * IL RIQUADRO LO PROMETTEVA DA AGOSTO E NON C'ERA NIENTE DA
+                * APRIRE (§10.A.5). Adesso c'è, e il link ci porta.
+                *
+                * L'INDIRIZZO È SCRITTO QUI, ED È UN INDIRIZZO E NON UN DATO:
+                * porta all'**esempio** del dataset (§8), non a un link di
+                * questa azienda. Il giorno in cui i link si generano — che è
+                * lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.3) — questa
+                * schermata mostrerà quello del cliente, e allora arriverà dal
+                * provider come tutto il resto.
+                *
+                * È un `Link` e non un `<a>`: la demo non ricarica mai, perché
+                * il provider vive in memoria (§10).
+                */}
+              <p className="mt-2">
+                <Link
+                  to="/check/demo-sa-vendite"
+                  className="rounded-sm text-xs text-foreground underline underline-offset-4 hover:text-secondary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  {t.hr.privacy.anonymousLinkExample}
+                </Link>
               </p>
             </div>
           </div>

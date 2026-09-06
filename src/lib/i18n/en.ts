@@ -879,6 +879,7 @@ export const en: Dictionary = {
       anonymousLinkTitle: "Even without an account",
       anonymousLinkBody:
         "The quick check is answered in the app or through an anonymous link, which does not require an activated account. Measuring only the people who enrolled would mean measuring only those already engaged, while the figure matters most where adoption has not arrived yet.",
+      anonymousLinkExample: "See an example of an anonymous link",
       thresholdTitle: "Anonymity threshold",
       thresholdBody:
         "The figure for a department is published only if at least {threshold} measured employees answered in that period. Below the threshold the dashboard shows a dash, not a score.",
@@ -1207,6 +1208,18 @@ export const en: Dictionary = {
         "Thank you for your interest. Our team will contact you within one working day.",
       successHome: "Back to home",
       successRoi: "In the meantime, calculate the return",
+    },
+
+    /* The anonymous rapid-check link (§10.A.5). Consumer register, like the
+       rapid-check card in the employee portal: this asks a person how they
+       are, not a customer reading a dashboard. */
+    check: {
+      subject: "{company} · {department}",
+      intro:
+        "Answer without an account: your answer only goes into the department's average. Nobody knows it's you.",
+      invalid: "This link is no longer valid",
+      back: "Back to Kora",
+      withAccount: "With a Kora account you can also book a session.",
     },
   },
 

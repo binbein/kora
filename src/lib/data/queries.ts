@@ -391,10 +391,40 @@ export function useAiHealthPlan() {
   });
 }
 
-export function useRapidCheckAnswer() {
+/**
+ * La risposta della persona autenticata.
+ *
+ * `enabled` esiste per la sola pagina del link anonimo (§10.A.5), che monta la
+ * stessa card senza avere un account dietro: lì questa lettura non risponderebbe
+ * a nessuna domanda, e risponderebbe con la risposta di **qualcun altro**. Una
+ * query disabilitata è esente dal controllo sulla cache fredda, che è la
+ * ragione per cui `prefetch.ts` non deve saperne niente.
+ */
+export function useRapidCheckAnswer(enabled = true) {
   return useQuery({
     queryKey: queryKeys.employee.rapidCheck(),
     queryFn: () => dataProvider.getRapidCheckAnswer(),
+    enabled,
+  });
+}
+
+/**
+ * A quale azienda e a quale reparto porta un link anonimo.
+ *
+ * `null` è un vuoto legittimo e vuol dire **token ignoto o scaduto**, che il
+ * contratto non distingue di proposito (`docs/CONTRATTO-DATI.md` §3).
+ *
+ * NON SI SCALDA, e non è una dimenticanza: la chiave dipende dal token che sta
+ * nell'indirizzo, quindi `prefetchDemo` non potrebbe conoscerla prima. È anche
+ * l'unica rotta pubblica che non appartiene al giro della presentazione — chi
+ * la apre ci arriva da fuori, con la sua schermata sola — quindi partire freddi
+ * qui non costa niente a nessuno.
+ */
+export function useRapidCheckLink(token: string) {
+  return useQuery({
+    queryKey: queryKeys.rapidCheckLink(token),
+    queryFn: () => dataProvider.getRapidCheckLink(token),
+    meta: { coldOnPurpose: true },
   });
 }
 
