@@ -838,6 +838,7 @@ export const de: Dictionary = {
       anonymousLinkTitle: "Auch ohne Konto",
       anonymousLinkBody:
         "Der Schnellcheck wird in der App oder über einen anonymen Link beantwortet, der kein aktiviertes Konto voraussetzt. Nur die Angemeldeten zu messen hiesse, nur die bereits Erreichten zu messen — und der Wert zählt vor allem dort, wo die Nutzung noch nicht angekommen ist.",
+      anonymousLinkExample: "Beispiel eines anonymen Links ansehen",
       thresholdTitle: "Anonymitätsschwelle",
       thresholdBody:
         "Der Wert einer Abteilung wird nur veröffentlicht, wenn in diesem Zeitraum mindestens {threshold} gemessene Mitarbeitende geantwortet haben. Unter der Schwelle zeigt das Dashboard einen Strich und keinen Wert.",

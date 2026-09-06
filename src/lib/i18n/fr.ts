@@ -928,6 +928,7 @@ export const fr: Dictionary = {
       anonymousLinkTitle: "Même sans compte",
       anonymousLinkBody:
         "Le check rapide se répond dans l'application ou depuis un lien anonyme, qui ne demande pas d'avoir activé un compte. Mesurer uniquement les personnes inscrites reviendrait à mesurer uniquement celles déjà engagées, alors que la donnée sert surtout là où l'adoption n'est pas encore arrivée.",
+      anonymousLinkExample: "Voir un exemple de lien anonyme",
       thresholdTitle: "Seuil d'anonymat",
       thresholdBody:
         "La donnée d'un département n'est publiée que si, sur cette période, au moins {threshold} collaborateurs mesurés ont répondu. Sous le seuil, le tableau de bord affiche un tiret et non un score.",

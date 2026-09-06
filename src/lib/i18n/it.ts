@@ -1192,6 +1192,10 @@ export const it = {
       anonymousLinkTitle: "Anche senza account",
       anonymousLinkBody:
         "Il check rapido si risponde nell'app oppure da un link anonimo, che non richiede di aver attivato l'account. Misurare solo chi si è iscritto vorrebbe dire misurare solo chi è già ingaggiato, e il dato serve soprattutto dove l'adozione non è ancora arrivata.",
+      /* Il riquadro dichiarava il link da agosto e non c'era niente da aprire
+         (§10.A.5). Porta all'esempio del dataset, non a un link dell'azienda:
+         generare i propri è lavoro dell'MVP. */
+      anonymousLinkExample: "Vedi un esempio di link anonimo",
       thresholdTitle: "Soglia di anonimato",
       thresholdBody:
         "Il dato di un reparto viene pubblicato solo se in quel periodo hanno risposto almeno {threshold} dipendenti misurati. Sotto la soglia la dashboard mostra un trattino, non un punteggio.",

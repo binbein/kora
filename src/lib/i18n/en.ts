@@ -879,6 +879,7 @@ export const en: Dictionary = {
       anonymousLinkTitle: "Even without an account",
       anonymousLinkBody:
         "The quick check is answered in the app or through an anonymous link, which does not require an activated account. Measuring only the people who enrolled would mean measuring only those already engaged, while the figure matters most where adoption has not arrived yet.",
+      anonymousLinkExample: "See an example of an anonymous link",
       thresholdTitle: "Anonymity threshold",
       thresholdBody:
         "The figure for a department is published only if at least {threshold} measured employees answered in that period. Below the threshold the dashboard shows a dash, not a score.",
