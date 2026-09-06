@@ -293,6 +293,26 @@ export const fr: Dictionary = {
       appointmentCancelledByPatient: "Tu as annulé ce rendez-vous.",
       appointmentMessageFrom: "{professional} t'a écrit :",
 
+      /* L'annulation du côté du collaborateur (06.09.2026). Registre
+         consommateur, et les mots suivent le dialogue jumeau de la
+         professionnelle : c'est le même geste vu de l'autre côté. */
+      cancel: {
+        action: "Annuler",
+        actionLabel:
+          "Annuler le rendez-vous du {weekday} {date} à {time} avec {professional}",
+        title: "Annuler le rendez-vous ?",
+        summary: "{weekday} {date}, à {time} avec {professional}",
+        effect:
+          "L'heure redevient libre. Si tu changes d'avis, réserve à nouveau.",
+        keep: "Retour",
+        confirm: "Annuler le rendez-vous",
+        confirming: "Annulation",
+        error: {
+          title: "Rendez-vous non annulé",
+          body: "Le rendez-vous est toujours prévu : réessaie.",
+        },
+      },
+
       /* I segnaposto ci sono tutti e cambiano posto: in francese "sur {total}"
          segue il sostantivo, e il guardrail confronta gli insiemi proprio per
          questo (§2.7). */

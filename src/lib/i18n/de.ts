@@ -240,6 +240,26 @@ export const de: Dictionary = {
       appointmentCancelledByPatient: "Du hast den Termin abgesagt.",
       appointmentMessageFrom: "{professional} hat dir geschrieben:",
 
+      /* Die Absage von der Seite der mitarbeitenden Person (06.09.2026).
+         Konsumentenregister, und die Wörter folgen dem Zwillingsdialog der
+         Fachperson: es ist dieselbe Handlung von der anderen Seite. */
+      cancel: {
+        action: "Absagen",
+        actionLabel:
+          "Termin am {weekday} {date} um {time} bei {professional} absagen",
+        title: "Termin absagen?",
+        summary: "{weekday} {date}, um {time} bei {professional}",
+        effect:
+          "Die Zeit wird wieder frei. Wenn du es dir anders überlegst, buche neu.",
+        keep: "Zurück",
+        confirm: "Termin absagen",
+        confirming: "Wird abgesagt",
+        error: {
+          title: "Termin nicht abgesagt",
+          body: "Der Termin steht noch: versuch es nochmals.",
+        },
+      },
+
       sessions: "{used} von {total} Sitzungen genutzt",
       sessionsWithScheduled:
         "{used} von {total} Sitzungen genutzt · {scheduled} geplant",

@@ -722,6 +722,7 @@ compensi e pagamenti.
 | `saveSessionNote` | `["professional", professionalId]` |
 | `bookAppointment` | `["professional", professionalId]` **e** `["employee"]` |
 | `cancelSession` | `["professional", professionalId]` **e** `["employee"]` |
+| `cancelAppointment` | `["professional", professionalId]` **e** `["employee"]` |
 | `setSlotStatus` | `["professional", professionalId]` **e** `["employee"]` |
 | `submitRapidCheck` | `["employee", "rapid-check"]` |
 | `submitDemoRequest` | `["platform", "demo-requests"]` |
@@ -749,6 +750,27 @@ lo stato desiderato e non chiedono a chi chiama di sapere cosa c'era. Diverso
 ancora è `cancelSession`, che **cambia lo stato di un record esistente e non
 lo scrive da capo** — è stata la prima a farlo (17.08.2026), ed è il primo
 passo dentro il ciclo dell'appuntamento che il §8.5 descrive.
+
+**`cancelAppointment` è la stessa transizione dall'altro lato** (06.09.2026), e
+per questo invalida le stesse due radici: la seduta è **un record solo**, e a
+cambiare non è cosa succede ma **chi lo dichiara** — il motivo scritto è
+`by_patient` invece di `by_professional`.
+
+**Non è `cancelSession` con un altro nome, e la differenza è dove cerca.**
+Prende l'id di un **appuntamento** e lo cerca fra quelli della persona
+autenticata — la stessa lista che `getAppointments` restituisce — quindi non può
+toccare la seduta di qualcun altro: *"non trovata"* copre già *"non è tua"*, e
+non serve un rifiuto in più. `cancelSession` cerca invece in tutte le agende,
+perché chi cura ha davanti la propria e un id di seduta è unico nel dominio. **In
+produzione le due ricerche diventano la stessa cosa detta due volte**, perché a
+restringere è la sessione lato server: è la forma del §8.7 applicata a una
+scrittura.
+
+**Non porta testi**, e non è una versione ridotta dell'altra: la nota è di chi
+cura e il messaggio è la sua voce verso il paziente (§3). Un testo scritto da
+questo lato avrebbe **un terzo destinatario** — una riga che chi cura riceve — e
+con lui arriverebbero le domande su quando la legge e come gli arriva, che sono
+la notifica del §8.5. Non sono state poste, quindi il campo non c'è.
 
 **`bookAppointment` invalida due radici perché scrive un record solo.**
 `Appointment` e `ProfessionalSession` sono due proiezioni della stessa seduta
@@ -1400,13 +1422,17 @@ il ciclo vero ne ha di più:
   01.09.2026) — e libera la fascia: una seduta annullata non occupa più la sua
   ora (§4).
 
-  **Le cinque voci qui sotto non si muovono di un centimetro**, e vale la pena
-  dirlo perché il messaggio al paziente le sfiora tutte senza chiuderne
-  nessuna: la disdetta dal lato del dipendente resta inesistente, la policy di
-  preavviso non è decisa, chi paga una disdetta tardiva nemmeno, la
-  riprogrammazione non è un annullamento più una prenotazione, e **la notifica
-  resta la voce più vicina** — una riga che il paziente legge *se apre
-  l'applicazione* non è una riga che gli arriva.
+  **C'è anche l'altro verso, dal 06.09.2026**: `cancelAppointment`, con cui il
+  dipendente disdice dalla sua home. Scrive `by_patient`, che fino a quel
+  giorno era un valore dell'enumerazione **che solo il dataset poteva
+  scrivere**, e rifiuta con la stessa precondizione — in programma e futura.
+  Non porta testi: il perché sta nel §4.
+
+  *(Fino ad allora questa riga diceva che **le cinque voci qui sotto non si
+  muovono di un centimetro**, ed era vera: il messaggio al paziente le sfiorava
+  tutte senza chiuderne nessuna. Adesso una si è chiusa e le altre quattro
+  restano ferme — e sono ferme sul serio, non "quasi", perché nessuna di loro
+  dipendeva dall'esistenza del verbo.)*
 
   **Liberare una fascia e riproporla sono due cose**, e chi implementa
   l'elenco degli slot deve saperlo prima di scriverlo (18.08.2026): la
@@ -1419,15 +1445,27 @@ il ciclo vero ne ha di più:
   conseguenza**: la separazione fra l'invariante e l'assunzione sta in *"cosa
   vuol dire occupato"*, qui sotto (18.08.2026).
 
-  **Manca ancora, e ognuna è una decisione a sé:**
+  **Manca ancora, e ognuna è una decisione a sé** *(erano cinque; la prima si è
+  chiusa il 06.09.2026 e resta qui barrata, perché la sua seconda metà è ancora
+  aperta e vive nella voce del preavviso)*:
 
-  - **la disdetta dal lato del dipendente**, che è l'altra metà del verso:
+  - ~~**la disdetta dal lato del dipendente**, che è l'altra metà del verso:
     `by_patient` esiste nell'enumerazione ed è oggi un valore che **solo il
     dataset può scrivere**. Il metodo per il paziente non c'è, e con lui non
-    c'è la domanda su cosa possa disdire e fino a quando;
+    c'è la domanda su cosa possa disdire e fino a quando~~ → **il metodo c'è**
+    (`cancelAppointment`), e con lui è arrivata **metà** della domanda che
+    portava con sé: *cosa* si può disdire è deciso — una seduta in programma e
+    futura, la stessa precondizione dell'altro verso. ***Fino a quando* non lo
+    è**, ed è la voce qui sotto: oggi il metodo guarda solo che la seduta sia
+    futura, quindi disdire con un'ora di anticipo e con una settimana sono la
+    stessa cosa per il contratto;
   - **la policy di preavviso**, che decide se una disdetta è gratuita. È la
-    regola che dà un senso all'ora in cui si annulla, e oggi il metodo non
-    guarda quanto manca alla seduta: guarda solo che sia futura;
+    regola che dà un senso all'ora in cui si annulla, e oggi **nessuno dei due
+    metodi** guarda quanto manca alla seduta: guardano solo che sia futura. Dal
+    06.09.2026 è la voce che pesa di più delle quattro, ed è un cambio di
+    grado e non di natura: finché a disdire era solo chi cura, il preavviso era
+    una cortesia fra professionisti; adesso che disdice anche chi prenota, è la
+    regola che decide se un'ora persa la paga qualcuno;
   - **chi paga una disdetta tardiva.** È la stessa domanda della mancata
     presentazione qui sopra, spostata di un'ora: se la piattaforma riconosce il
     compenso, la seduta annullata smette di essere neutra sui conti — e oggi lo

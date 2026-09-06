@@ -318,6 +318,39 @@ export interface DataProvider {
    */
   getAppointments(): Promise<Appointment[]>;
   /**
+   * Disdice un appuntamento, dal lato del dipendente (§10.B.5).
+   *
+   * **È la stessa transizione di `cancelSession`, dall'altro verso**: la seduta
+   * è un record solo, e a cambiare non è cosa succede ma **chi lo dichiara** —
+   * il motivo scritto è `by_patient` invece di `by_professional`. Ne discende
+   * che invalida le stesse due radici (`docs/CONTRATTO-DATI.md` §4).
+   *
+   * **RIFIUTA SE L'APPUNTAMENTO NON È ANNULLABILE**, con la stessa
+   * precondizione a due metà: dev'essere `scheduled` e dev'essere ancora
+   * futuro. Oggi la prima implica la seconda perché lo stato si deriva
+   * dall'orologio; in produzione lo stato è un evento che qualcuno dichiara e
+   * le due si separano.
+   *
+   * **CERCA FRA GLI APPUNTAMENTI DI CHI È AUTENTICATO**, cioè nella stessa
+   * lista che `getAppointments` restituisce, e non fra tutte le sedute del
+   * dominio come fa `cancelSession` — che è il metodo di chi cura, e ha davanti
+   * la propria agenda. Da qui **"non trovato" copre già "non è tuo"**, e non
+   * serve un rifiuto in più: la seduta di qualcun altro non è in quella lista.
+   * In produzione a restringere è la sessione lato server (§8.7 del contratto),
+   * quindi la firma non cambia.
+   *
+   * **Non prende testi**, e non è una versione ridotta dell'altro verso: la
+   * nota è di chi cura e il messaggio è la sua voce verso il paziente. Una riga
+   * scritta da qui avrebbe **un terzo destinatario** — chi cura la
+   * riceverebbe — e con lui le domande su quando la legge e come le arriva, che
+   * sono la notifica del §8.5 e non sono decise.
+   *
+   * **Le policy restano fuori**: preavviso, chi paga una disdetta tardiva,
+   * riprogrammazione. Questo metodo è il verbo, non le regole che un giorno lo
+   * governeranno.
+   */
+  cancelAppointment(appointmentId: string): Promise<Appointment>;
+  /**
    * Slot proponibili per un professionista, già filtrati sui liberi.
    *
    * **DUE SOTTRAZIONI E NON UNA** (01.09.2026): dalle fasce dichiarate si

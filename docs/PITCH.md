@@ -142,6 +142,14 @@ presentazione.
   decisa — *«e torna prenotabile da chiunque è un'altra cosa, ed è una policy di
   prodotto»* — mostrata invece che raccontata.
 
+  **Dal 06.09.2026 anche il dipendente può disdire, e il giro non cambia**:
+  l'annullamento che si mostra resta quello della professionista, perché è
+  l'unico dei due che porta **il messaggio al paziente** — cioè la parte che
+  vale. La disdetta dal lato del dipendente è una **risposta pronta** qui sotto,
+  non un passo: mostrarla vorrebbe dire annullare due volte la stessa seduta, e
+  la seconda non avrebbe niente da far vedere che la prima non abbia già
+  mostrato.
+
   **L'ordine è vincolante, ed è l'unica cosa da ricordare**: prenota, annulla,
   poi chiudi. Chiudere prima toglie di mezzo lo slot provato — è l'unica fascia
   libera della settimana corrente — e il giro resta senza il suo primo tempo.
@@ -425,6 +433,41 @@ a chi non ha una casella aziendale — e la sua **generazione e revoca** sono
 lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.3). Quello che si vede è un
 esempio di link, non lo schema con cui se ne fanno altri. Non promettere il
 QR in bacheca: è la stessa disciplina della risposta sull'escalation clinica.
+
+### "E il dipendente può disdire, o deve chiamare?"
+
+Arriva dopo il giro del marketplace, ed è la domanda che nasce vedendo la
+professionista annullare: se la disdetta è un gesto solo del suo lato, il
+prodotto ha un pezzo di telefono dentro.
+
+**Può, dalla sua home, con un dialogo di conferma** (06.09.2026). È lo stesso
+gesto visto dall'altro lato — stessa precondizione, seduta in programma e
+futura — e produce lo stesso effetto: l'ora non è più occupata, il compenso non
+matura, il contatore "in programma" scende. Nel portale della professionista la
+seduta compare fra le annullate con **"Annullata dal paziente"**, che è la
+stessa riga vista dal lato di chi cura.
+
+**Mostrarlo non serve al giro**, e se te lo chiedono si dice così: quello che il
+giro mostra è la disdetta della professionista, perché è l'unico dei due versi
+che porta **una riga scritta al paziente**. Il verso opposto non ha un testo, ed
+è una scelta: una riga scritta da lì avrebbe chi cura come destinatario, e con
+lei la domanda su quando la legge — cioè la notifica, che il prodotto non ha.
+
+**La parte onesta, e va detta senza attenuarla**: quello che manca non è il
+verbo, sono **le regole**. Non c'è una policy di preavviso, quindi disdire con
+un'ora di anticipo e con una settimana sono la stessa cosa; non è deciso chi
+paga una disdetta tardiva; la riprogrammazione non esiste — si annulla e si
+riprenota, che non è la stessa cosa perché perde il filo del percorso; e la
+disdetta **non arriva a nessuno**, si vede aprendo l'applicazione. Sono quattro
+voci del perimetro dell'MVP (`docs/CONTRATTO-DATI.md` §8.5), e **non si dice
+"sono in roadmap"**: è la stessa disciplina della risposta sull'escalation
+clinica.
+
+**Se insistono sul preavviso**, la risposta è che oggi pesa più di ieri e per
+una ragione precisa: finché a disdire era solo chi cura, il preavviso era una
+cortesia fra professionisti; adesso che disdice anche chi prenota, è la regola
+che decide se un'ora persa la paga qualcuno. È una decisione di prodotto, e non
+è presa.
 
 ### "Se rispondo al check rapido, la dashboard si muove?"
 

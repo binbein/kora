@@ -725,6 +725,104 @@ export class MockDataProvider implements DataProvider {
     return Promise.resolve(mine);
   }
 
+  /**
+   * Disdice un appuntamento, dal lato del dipendente (§10.B.5).
+   *
+   * **Scrive nella stessa mappa di `cancelSession`**, cambiando solo il motivo:
+   * da lì `applyCancellation` proietta l'annullamento sui tre lati — il
+   * calendario della professionista, la lista sedute e la home del dipendente —
+   * senza una riga di codice in più. È la ragione per cui quella mappa portava
+   * il motivo da prima che qualcuno potesse scrivere `by_patient`: a cambiare è
+   * chi scrive, non la forma.
+   *
+   * **Cerca fra i propri appuntamenti**, cioè nella lista che `getAppointments`
+   * restituisce, e non fra tutte le sedute del dominio come fa `cancelSession`:
+   * da qui **"non trovato" copre già "non è tuo"** senza un quarto rifiuto. Una
+   * seduta erogata non è in quella lista, ed è giusto che risponda così: non è
+   * un appuntamento.
+   *
+   * Lancia anche in produzione, come `cancelSession` e per la stessa ragione:
+   * sono invarianti dell'API, non del dataset — un backend risponderebbe 404 su
+   * ciò che non trova e 409 su ciò che non si può più annullare.
+   */
+  async cancelAppointment(appointmentId: string): Promise<Appointment> {
+    const appointment = (await this.getAppointments()).find(
+      (entry) => entry.id === appointmentId,
+    );
+
+    assertInDevOutsidePromise(
+      appointment !== undefined,
+      `"${appointmentId}" non è un appuntamento del dipendente: o non esiste, o è di qualcun altro.`,
+    );
+    if (appointment === undefined) {
+      throw new Error(`Nessun appuntamento con id "${appointmentId}".`);
+    }
+
+    /*
+     * I DUE RIFIUTI SONO SEPARATI, e nell'altro verso sono una condizione sola.
+     *
+     * Non è incoerenza: là le due metà coincidono per costruzione — lo stato si
+     * deriva dall'orologio — e il commento lo dice. Qui la prima è
+     * **raggiungibile davvero**, perché `getAppointments` restituisce anche le
+     * annullate ancora future: chi tiene la home aperta mentre la
+     * professionista disdice ha davanti un pulsante su una seduta che non è più
+     * in programma. Separarle è ciò che distingue "l'ha già annullata qualcuno"
+     * da "è troppo tardi" per chi legge il messaggio.
+     */
+    assertInDevOutsidePromise(
+      appointment.status === "scheduled",
+      `L'appuntamento "${appointmentId}" è ${appointment.status}: la home sta offrendo di annullare qualcosa che non è in programma.`,
+    );
+    if (appointment.status !== "scheduled") {
+      throw new Error(
+        `L'appuntamento "${appointmentId}" non è in programma: è ${appointment.status}.`,
+      );
+    }
+
+    assertInDevOutsidePromise(
+      appointment.start > DEMO_TODAY,
+      `L'appuntamento "${appointmentId}" comincia il ${appointment.start.toISOString()}, che non è nel futuro: la home sta offrendo di annullare una seduta già cominciata.`,
+    );
+    if (appointment.start <= DEMO_TODAY) {
+      throw new Error(
+        `L'appuntamento "${appointmentId}" è già cominciato il ${appointment.start.toISOString()}.`,
+      );
+    }
+
+    /*
+     * Nessun testo, e i due campi nascono `null` invece di restare fuori: la
+     * mappa li dichiara, e un `null` esplicito dice **non ne è stato scritto
+     * nessuno** dove un campo assente direbbe che la forma è un'altra. Il
+     * perché non ci siano sta in `provider.ts`.
+     */
+    this.cancellations.set(appointmentId, {
+      reasonKey: "by_patient",
+      note: null,
+      message: null,
+    });
+
+    /*
+     * Si rilegge invece di comporre la risposta a mano, ed è la stessa scelta
+     * di `cancelSession`, che restituisce `applyCancellation(session)`: la
+     * proiezione di un appuntamento la costruisce `getAppointments` e nessun
+     * altro, quindi ricostruirla qui sarebbero due forme che possono divergere
+     * (§5.5).
+     *
+     * **Non può mancare**: quella lista tiene le annullate ancora future, ed è
+     * la ragione per cui esiste dal 18.08.2026. Il ramo è il prezzo di avere
+     * una proiezione sola, non un caso da gestire.
+     */
+    const cancelled = (await this.getAppointments()).find(
+      (entry) => entry.id === appointmentId,
+    );
+    if (cancelled === undefined) {
+      throw new Error(
+        `L'appuntamento "${appointmentId}" è sparito dalla lista subito dopo essere stato annullato.`,
+      );
+    }
+    return cancelled;
+  }
+
   getAvailableSlots(professionalId: string): Promise<AppointmentSlot[]> {
     /*
      * Una seduta **annullata non occupa la sua fascia**: è il caso che dà un

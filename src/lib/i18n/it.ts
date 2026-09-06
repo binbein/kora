@@ -257,6 +257,39 @@ export const it = {
          attribuisce, e la resa la stacca dal testo di sistema (01.09.2026). */
       appointmentMessageFrom: "{professional} ti ha scritto:",
 
+      /*
+       * La disdetta dal lato del dipendente (06.09.2026). Registro consumer, e
+       * le parole seguono il dialogo gemello della professionista: **è lo
+       * stesso gesto visto dall'altro lato**, e due formulazioni diverse per la
+       * stessa cosa sono la doppia parola che il §7 vieta.
+       */
+      cancel: {
+        action: "Annulla",
+        /** "Annulla l'appuntamento di giovedì 24.09.2026 alle 17:30 con Dr.ssa Meier" */
+        actionLabel:
+          "Annulla l'appuntamento di {weekday} {date} alle {time} con {professional}",
+        title: "Annullare l'appuntamento?",
+        /** "giovedì 24.09.2026, alle 17:30 con Dr.ssa Meier" */
+        summary: "{weekday} {date}, alle {time} con {professional}",
+        /*
+         * DICE L'INVARIANTE E NON LA POLICY, come la frase gemella: l'ora non è
+         * più occupata, ed è l'unica cosa vera in tutti i casi. Il preavviso e
+         * chi paga una disdetta tardiva non sono decisi
+         * (`docs/CONTRATTO-DATI.md` §8.5), quindi la frase non li sfiora — e la
+         * seconda metà dice l'unica cosa da fare se si cambia idea.
+         */
+        effect: "L'ora torna libera. Se cambi idea, prenota di nuovo.",
+        keep: "Torna indietro",
+        confirm: "Annulla l'appuntamento",
+        confirming: "Annullamento",
+        /* Dice cosa non è successo, come le altre mutation: l'appuntamento è
+           ancora dov'era, e ritentare è lo stesso pulsante. */
+        error: {
+          title: "Appuntamento non annullato",
+          body: "L'appuntamento è ancora in programma: riprova.",
+        },
+      },
+
       /** "3 su 10 sessioni usate" */
       sessions: "{used} su {total} sessioni usate",
       /*
