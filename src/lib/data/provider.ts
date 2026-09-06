@@ -29,6 +29,8 @@ import type {
   ProfessionalEarnings,
   ProfessionalSession,
   Quarter,
+  AssessmentAnswers,
+  HealthProfile,
   RapidCheckAnswer,
   RapidCheckLink,
   RoiSnapshot,
@@ -302,6 +304,53 @@ export interface DataProvider {
    * assomigliano ma arrivano da strade diverse sono il modo in cui poi
    * divergono.
    */
+  // --- Attivazione dell'account (§10.A.6) -----------------------------------
+
+  /**
+   * Verifica il codice azienda e restituisce il cliente a cui porta.
+   *
+   * `null` è il vuoto legittimo e vuol dire **codice sconosciuto**: non è un
+   * errore da mostrare come guasto, è la risposta a una domanda che qualcuno ha
+   * fatto sbagliando a digitare.
+   *
+   * **`consent` è il letterale `true`, non un booleano**, ed è la parte da non
+   * scorciare: con un `boolean` il chiamante può passare `false`, e un metodo
+   * che accetta *"attiva senza consenso"* è un metodo che qualcuno chiamerà
+   * così. Il consenso non è un parametro dell'attivazione, è la sua
+   * **precondizione**, e il tipo la esprime invece di lasciarla a un controllo
+   * che si può togliere.
+   *
+   * **Non scrive niente, ed è l'unica scrittura del dominio che non invalida.**
+   * Nella demo non esiste ancora l'account che creerebbe; in produzione è la
+   * scrittura che crea l'iscrizione, e allora invaliderà — a muoversi saranno
+   * gli iscritti dell'azienda (`docs/CONTRATTO-DATI.md` §8.3).
+   *
+   * **Il consenso non viene registrato da nessuna parte**, e non è una
+   * dimenticanza: chi ha acconsentito, quando e a quale versione del testo sono
+   * la prova che in produzione serve davvero, e sono §8.2.
+   */
+  activate(input: { companyCode: string; consent: true }): Promise<Company | null>;
+
+  /**
+   * Registra le dieci risposte dell'assessment e restituisce il profilo che ne
+   * esce.
+   *
+   * **Le risposte sono il dato, il profilo è una lettura**: punteggio, sintesi e
+   * area debole si derivano con la formula del §8, quindi questo metodo
+   * restituisce ciò che `getEmployeeProfile` dirà da qui in avanti, non una
+   * seconda copia che può divergere (§5.5).
+   *
+   * **Invalida la radice del dipendente** e non la sola query del profilo: dalle
+   * stesse risposte dipende anche l'ordine delle aree del piano di benessere,
+   * che segue l'area debole (§10.A.6).
+   *
+   * **Sostituisce, non accumula.** Non c'è uno storico degli assessment, ed è
+   * la semplificazione che salta per prima il giorno in cui il profilo dovrà
+   * dire *"sta migliorando"* — la cadenza e la serie sono
+   * `docs/CONTRATTO-DATI.md` §8.10.
+   */
+  submitAssessment(answers: AssessmentAnswers): Promise<HealthProfile>;
+
   getEntitlement(kind: CappedServiceKind): Promise<SessionEntitlement>;
   /**
    * Gli appuntamenti della persona che **non sono ancora passati**, dal più

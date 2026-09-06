@@ -90,6 +90,17 @@ export const PLANS: Record<PlanId, Plan> = {
  */
 export const PLAN_LIST: Plan[] = [PLANS.essenziale, PLANS.plus, PLANS.executive];
 
+/**
+ * Il codice con cui un dipendente di Demo SA attiva il proprio account
+ * (§8, §10.A.6).
+ *
+ * Sta accanto all'azienda perché **è una sua proprietà**, non una costante di
+ * piattaforma: in produzione ogni cliente ne ha uno, e chi lo genera e lo revoca
+ * è lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.3). Si confronta in
+ * maiuscolo, quindi chi lo digita in minuscolo entra lo stesso.
+ */
+export const COMPANY_CODE = "DEMO-SA-2026";
+
 export const COMPANY: Company = {
   id: "demo-sa",
   name: "Demo SA",

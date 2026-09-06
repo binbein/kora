@@ -314,8 +314,20 @@ export default function RapidCheckCard({ token }: { token?: string }) {
             * §8, e qui vale doppio perché di interlocutori non ce n'è nessuno.
             */}
           {anonymous ? (
+            /*
+              * LA RIGA HA GUADAGNATO IL SUO LINK (06.09.2026), ed era la cosa
+              * che il 05.09 le aveva lasciato in sospeso: nominava l'account
+              * senza poterci portare, perché l'attivazione non esisteva. Adesso
+              * esiste (§10.A.6), quindi la frase non è più un vicolo cieco.
+              *
+              * **Resta un link e non un pulsante**: prenotare è ciò che chi ha
+              * l'account fa da dentro, e qui l'invito è ad averlo — il gesto
+              * primario di questa card resta rispondere.
+              */
             <p className="text-sm text-muted-foreground mt-3">
-              {t.public.check.withAccount}
+              <Link to="/activate" className={CRISIS_LINK}>
+                {t.public.check.withAccount}
+              </Link>
             </p>
           ) : (
             <Button size="sm" className="mt-3" asChild>

@@ -366,6 +366,51 @@ export type HealthArea =
   | "nutrition"
   | "mental";
 
+/**
+ * Le dieci domande dell'assessment iniziale (§8, §10.A.6): due per area.
+ *
+ * L'id porta l'area davanti, e non è un vezzo: è ciò che permette alla formula
+ * di raggruppare senza una seconda tabella che dica quale domanda appartiene a
+ * quale area — un secondo elenco che può divergere dal primo (§5.5).
+ *
+ * **Il testo delle domande non sta qui**: vive nei dizionari, come `bioKey` e
+ * `qualificationKey`, perché è una frase da mostrare e cambia con la lingua.
+ */
+export type AssessmentQuestionId =
+  | "sleep_1"
+  | "sleep_2"
+  | "stress_1"
+  | "stress_2"
+  | "activity_1"
+  | "activity_2"
+  | "nutrition_1"
+  | "nutrition_2"
+  | "mental_1"
+  | "mental_2";
+
+/**
+ * Le risposte all'assessment: **1–5, dove 5 è il meglio**.
+ *
+ * ATTENZIONE ALLA SCALA, che è **rovesciata rispetto al check rapido**: là 1 è
+ * "molto bene" e 5 "molto male" (`RapidCheckAnswer`). Sono due strumenti
+ * diversi con due domande diverse — là si chiede come stai oggi, qui quanto
+ * spesso una cosa succede — e mescolarle capovolgerebbe ogni punteggio in
+ * silenzio, senza che niente si rompa.
+ *
+ * **Un `Record` e non una lista**: l'ordine in cui si risponde non è un dato, e
+ * dieci numeri in fila si possono disallineare dalle domande senza che niente lo
+ * dica.
+ */
+export type AssessmentAnswers = Record<AssessmentQuestionId, 1 | 2 | 3 | 4 | 5>;
+
+/**
+ * Il profilo salute, **derivato dalle risposte e non memorizzato**.
+ *
+ * Punteggio, sintesi e area debole sono tre letture delle stesse dieci
+ * risposte, con la formula del §8: salvarli accanto sarebbe la stessa cosa detta
+ * due volte, e la copia salvata smetterebbe di tornare al primo cambio di
+ * formula (§5.5).
+ */
 export type HealthProfile = {
   /** 0–100 */
   score: number;

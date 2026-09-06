@@ -1253,9 +1253,12 @@ export const it = {
           title: "Conformità GDPR e LPD",
           body: "Kora è conforme al GDPR europeo e alla LPD svizzera.",
         },
+        /* La prima frase è diventata vera il 06.09.2026, con `/activate`; la
+           seconda dice quello che manca invece di prometterlo come fatto — la
+           revoca e l'export sono `docs/CONTRATTO-DATI.md` §8.2. */
         consent: {
           title: "Consenso del dipendente",
-          body: "Ogni dipendente conferma il consenso durante l'attivazione e può revocarlo in ogni momento.",
+          body: "Ogni dipendente dà il consenso all'attivazione, prima di qualunque dato. La revoca e l'esportazione dei propri dati arrivano con la messa in produzione.",
         },
       },
     },
@@ -1610,6 +1613,9 @@ export const it = {
         employee: {
           title: "Per il dipendente",
           body: "Accesso semplice a salute mentale, medico virtuale e benessere. Tutto privato, tutto in un unico posto.",
+          /* La porta verso `/activate`: è l'unico dei tre lati che ha qualcosa
+             da fare da qui (§10.A.6). */
+          activate: "Come si attiva",
         },
         company: {
           title: "Per l'azienda",
@@ -1714,6 +1720,116 @@ export const it = {
         "Grazie per l'interesse. Il nostro team risponderà entro un giorno lavorativo.",
       successHome: "Torna alla home",
       successRoi: "Intanto, calcola il ritorno",
+    },
+
+    /*
+     * L'attivazione dell'account (§10.A.6): quattro passi su una rotta sola.
+     *
+     * Registro **consumer** come il link anonimo, e per la stessa ragione: a
+     * leggere è la persona che sta attivando il proprio account, non un cliente
+     * davanti a una dashboard (§6.4).
+     *
+     * LE DIECI DOMANDE NON NOMINANO SINTOMI. "Al risveglio ti senti in forze?"
+     * sì, "Hai sintomi di insonnia?" no: la seconda è una domanda clinica, e il
+     * §7 vieta al prodotto di dichiarare che classifica lo stato di salute di
+     * qualcuno. Sono anche **invariabili al genere**, così la frase non decide
+     * chi la legge.
+     */
+    activate: {
+      title: "Attiva il tuo account",
+      /* Dice chi paga e chi non vede, che sono le due cose che una persona si
+         chiede prima di rispondere a dieci domande sul proprio stato. */
+      intro:
+        "L'abbonamento lo paga la tua azienda. Quello che rispondi qui resta tuo.",
+
+      code: {
+        title: "Il codice della tua azienda",
+        hint: "Lo trovi nell'invito che hai ricevuto.",
+        label: "Codice azienda",
+        placeholder: "DEMO-SA-2026",
+        submit: "Continua",
+        validation: {
+          required: "Scrivi il codice della tua azienda.",
+          /* Il vuoto legittimo della lettura, detto come una risposta e non
+             come un guasto: chi digita male non ha rotto niente. */
+          unknown: "Codice non riconosciuto",
+        },
+        error: {
+          title: "Non siamo riusciti a verificare il codice",
+          body: "Riprova fra un momento.",
+        },
+      },
+
+      consent: {
+        title: "Il consenso, prima dei dati",
+        /* Tre righe: cosa trattiamo, per chi, e cosa vede l'azienda. La terza è
+           la stessa garanzia che la dashboard HR promette dall'altro lato. */
+        whatTitle: "Cosa tratta Kora",
+        what: "Le risposte che dai qui e quello che usi della piattaforma: sessioni, consulti, check-up.",
+        whoTitle: "Per chi",
+        who: "Per te: servono a costruire il tuo profilo e il tuo piano di benessere.",
+        companyTitle: "Cosa vede la tua azienda",
+        company:
+          "Solo dati aggregati e anonimi per reparto. Mai chi sei, mai cosa hai risposto.",
+        checkbox:
+          "Do il consenso al trattamento dei miei dati sanitari da parte di Kora",
+        submit: "Ho letto e do il consenso",
+        /* Nasce con la spunta spenta e compare al tentativo: dire "obbligatoria"
+           prima che qualcuno provi sarebbe un avviso su un errore che non c'è. */
+        required: "Serve il consenso per continuare.",
+        error: {
+          title: "Non siamo riusciti ad attivare l'account",
+          body: "Riprova fra un momento.",
+        },
+      },
+
+      questions: {
+        /** "Stai attivando il tuo account in Demo SA" — il codice è stato
+            riconosciuto, ed è l'unica conferma che quel passo produce. */
+        company: "Stai attivando il tuo account in {company}",
+        title: "Dieci domande, una volta sola",
+        hint: "Non c'è una risposta giusta. Rispondi come ti viene.",
+        /* La scala è la stessa per tutte e dieci, e va da "mai" a "sempre":
+           **5 è il meglio**, al contrario del check rapido, dove 1 è "molto
+           bene". Sono due strumenti con due domande diverse. */
+        scale: {
+          1: "Mai",
+          2: "Raramente",
+          3: "A volte",
+          4: "Spesso",
+          5: "Sempre",
+        },
+        /* Frasi intere e invariabili al genere: nessun aggettivo che debba
+           concordare con chi risponde. */
+        question: {
+          sleep_1: "Al risveglio ti senti in forze?",
+          sleep_2: "Vai a dormire più o meno alla stessa ora?",
+          stress_1: "Alla fine della giornata riesci a staccare?",
+          stress_2: "Senti di avere il carico di lavoro sotto controllo?",
+          activity_1: "Ti muovi almeno mezz'ora al giorno?",
+          activity_2: "Nella settimana trovi tempo per l'attività fisica?",
+          nutrition_1: "Mangi frutta e verdura ogni giorno?",
+          nutrition_2: "Riesci a mangiare con calma?",
+          mental_1: "Nella giornata ti senti di buon umore?",
+          mental_2: "Hai qualcuno con cui parlare quando ne hai bisogno?",
+        },
+        /** "Ne mancano 3" — il conto di quelle senza risposta. */
+        remaining: "Ne mancano {n}",
+        submit: "Vedi il tuo profilo",
+        error: {
+          title: "Non siamo riusciti a salvare le risposte",
+          body: "Tocca di nuovo per riprovare.",
+        },
+      },
+
+      profile: {
+        title: "Il tuo profilo è pronto",
+        /* Dice da dove viene il numero, che è la ragione per cui questa rotta
+           esiste: il punteggio non compare, si calcola. */
+        hint: "Il punteggio arriva dalle tue dieci risposte.",
+        weakestTitle: "L'area da cui parti",
+        home: "Vai alla tua home",
+      },
     },
 
     /*

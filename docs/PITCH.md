@@ -193,6 +193,31 @@ presentazione.
   **La dashboard HR non si muove**, come per il check rapido in app: vale la
   risposta pronta qui sotto, e per la stessa ragione.
 
+- **Da dove viene il 78: `/activate`, in coda al giro e facoltativo**
+  (06.09.2026). Dalla landing, nella card **"Per il dipendente"**, il link *"Come
+  si attiva"* apre i quattro passi: codice azienda, consenso, dieci domande,
+  profilo. Con le risposte del `CLAUDE.md` §8 escono **78, "In buon equilibrio",
+  sonno** — cioè esattamente il profilo che la home del dipendente mostra, e il
+  punto è che **non è scritto da nessuna parte: si calcola**.
+
+  **Serve se la domanda arriva**, ed è quella che un investitore fa per prima
+  guardando il portale dipendente: *da dove viene quel numero?* Fino al
+  05.09.2026 non c'era niente da indicare.
+
+  > ⚠︎ **RIFARE L'ASSESSMENT CAMBIA LAURA PER IL RESTO DELLA DEMO.** Il profilo
+  > **si deriva** dalle dieci risposte, quindi rispondendo diversamente la home,
+  > il Profilo e l'ordine delle aree del piano di benessere si spostano — e
+  > restano spostati. Se lo mostri, **rispondi come il §8** (sonno 2 e 3, stress
+  > 4 e 4, movimento 4 e 4, alimentazione 4 e 4, salute mentale 5 e 5) oppure
+  > **mostralo per ultimo**. Un ricaricamento lo riporta a 78, ma azzera anche
+  > tutto il resto della demo (`CLAUDE.md` §10).
+
+  **Il passo del consenso vale da solo**, ed è quello da indicare se la domanda è
+  sulla privacy: tre righe che dicono cosa Kora tratta, per chi, e che l'azienda
+  vede solo dati aggregati, più una **spunta obbligatoria** che non si può
+  saltare. È il punto in cui la frase della privacy HR ha smesso di essere una
+  promessa.
+
 - **La richiesta demo si mostra alla fine, e non ha più una coreografia.**
   Compila il form da `/demo` durante il giro normale, e quando vuoi mostrarne
   l'esito clicca **Admin** nella barra: la richiesta è in tabella, con azienda,
@@ -433,6 +458,52 @@ a chi non ha una casella aziendale — e la sua **generazione e revoca** sono
 lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.3). Quello che si vede è un
 esempio di link, non lo schema con cui se ne fanno altri. Non promettere il
 QR in bacheca: è la stessa disciplina della risposta sull'escalation clinica.
+
+### "Da dove viene il 78 su 100?"
+
+Arriva guardando il portale dipendente, ed è la prima domanda che quel numero si
+tira dietro. **Da dieci domande, e si può vedere**: `/activate`, in coda al giro,
+mostra l'assessment iniziale — due domande per ognuna delle cinque aree, scala a
+cinque livelli — e il profilo che ne esce.
+
+**La formula è dichiarata** (`CLAUDE.md` §8): punteggio di un'area = media delle
+sue due risposte × 20, totale = media delle dieci × 20, area debole = la più
+bassa, e sopra 70 la sintesi è "In buon equilibrio". Il 78 di Laura è il
+risultato di quelle dieci risposte, non un valore scritto — **e un guardrail lo
+verifica a ogni avvio**.
+
+**Se chiedono se è un test clinico, la risposta è no e va data per intera**: le
+domande non nominano sintomi, il prodotto non fa diagnosi e non classifica lo
+stato di salute di nessuno (`CLAUDE.md` §7). È un questionario auto-riportato che
+costruisce un profilo di benessere, ed è la stessa disciplina per cui il check
+rapido non deduce lo stress dal comportamento.
+
+**Quello che manca, se la domanda va avanti**: l'assessment si fa **una volta
+sola**. Non c'è una cadenza, non c'è uno storico, quindi il profilo non sa dire
+*"sta migliorando"* — che è metà di quello che serve a chi lo legge di sé. È il
+`docs/CONTRATTO-DATI.md` §8.10, e non si promette una roadmap.
+
+### "E il consenso? L'avete davvero?"
+
+Arriva dalla pagina privacy dell'HR, che dichiara *"ogni dipendente dà il
+consenso all'attivazione"*. **Sì, dal 06.09.2026, e si mostra**: è il secondo dei
+quattro passi di `/activate` — tre righe su cosa Kora tratta, per chi e cosa vede
+l'azienda, più una spunta obbligatoria che non si può saltare. Il consenso è
+chiesto **prima delle dieci domande**, cioè prima del primo dato.
+
+**Fino a quel giorno quella frase era una dichiarazione falsa**, e la si è
+corretta invece di lasciarla: prometteva anche una revoca che non esiste. Adesso
+dice *"la revoca e l'esportazione dei propri dati arrivano con la messa in
+produzione"*, che è vero.
+
+**E la parte che manca va detta senza attenuarla**: non registriamo **chi** ha
+acconsentito, **quando** e a **quale versione** del testo — che è la prova che in
+produzione serve davvero — non c'è la revoca, non c'è l'export, e non è deciso se
+questo consenso copra anche il check rapido, il check-up e la chat del medico.
+Quell'ultima è una domanda per il legale (`docs/CONTRATTO-DATI.md` §8.2).
+
+**Non dire "siamo conformi"**: quello che c'è è il momento in cui il consenso si
+chiede, non l'apparato che lo dimostra.
 
 ### "E il dipendente può disdire, o deve chiamare?"
 

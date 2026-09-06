@@ -975,7 +975,7 @@ export const fr: Dictionary = {
         },
         consent: {
           title: "Consentement du collaborateur",
-          body: "Chaque collaborateur confirme son consentement lors de l'activation et peut le révoquer à tout moment.",
+          body: "Chaque collaborateur donne son consentement à l'activation, avant toute donnée. La révocation et l'exportation de ses données arrivent avec la mise en production.",
         },
       },
     },
@@ -1209,6 +1209,7 @@ export const fr: Dictionary = {
         employee: {
           title: "Pour le collaborateur",
           body: "Un accès simple à la santé mentale, au médecin virtuel et au bien-être. Tout est privé, tout est au même endroit.",
+          activate: "Comment s'activer",
         },
         company: {
           title: "Pour l'entreprise",
@@ -1283,6 +1284,88 @@ export const fr: Dictionary = {
         "Merci de votre intérêt. Notre équipe vous contactera dans un jour ouvrable.",
       successHome: "Retour à l'accueil",
       successRoi: "En attendant, calculez le retour",
+    },
+
+    /* L'activation du compte (§10.A.6) : quatre étapes sur une seule route.
+       Registre consommateur comme le lien anonyme. Les dix questions ne nomment
+       aucun symptôme et sont formulées sans accord de genre. */
+    activate: {
+      title: "Active ton compte",
+      intro:
+        "L'abonnement est payé par ton entreprise. Ce que tu réponds ici reste à toi.",
+
+      code: {
+        title: "Le code de ton entreprise",
+        hint: "Tu le trouves dans l'invitation que tu as reçue.",
+        label: "Code entreprise",
+        placeholder: "DEMO-SA-2026",
+        submit: "Continuer",
+        validation: {
+          required: "Saisis le code de ton entreprise.",
+          unknown: "Code non reconnu",
+        },
+        error: {
+          title: "Nous n'avons pas pu vérifier le code",
+          body: "Réessaie dans un instant.",
+        },
+      },
+
+      consent: {
+        title: "Le consentement, avant les données",
+        whatTitle: "Ce que Kora traite",
+        what: "Tes réponses ici et ce que tu utilises de la plateforme : séances, consultations, check-ups.",
+        whoTitle: "Pour qui",
+        who: "Pour toi : elles servent à construire ton profil et ton plan de bien-être.",
+        companyTitle: "Ce que voit ton entreprise",
+        company:
+          "Uniquement des données agrégées et anonymes par département. Jamais qui tu es, jamais ce que tu as répondu.",
+        checkbox:
+          "Je consens au traitement de mes données de santé par Kora",
+        submit: "J'ai lu et je consens",
+        required: "Le consentement est nécessaire pour continuer.",
+        error: {
+          title: "Nous n'avons pas pu activer le compte",
+          body: "Réessaie dans un instant.",
+        },
+      },
+
+      questions: {
+        company: "Tu actives ton compte chez {company}",
+        title: "Dix questions, une seule fois",
+        hint: "Il n'y a pas de bonne réponse. Réponds comme ça vient.",
+        scale: {
+          1: "Jamais",
+          2: "Rarement",
+          3: "Parfois",
+          4: "Souvent",
+          5: "Toujours",
+        },
+        question: {
+          sleep_1: "Au réveil, te sens-tu en forme ?",
+          sleep_2: "Te couches-tu à peu près à la même heure ?",
+          stress_1: "En fin de journée, arrives-tu à décrocher ?",
+          stress_2: "As-tu le sentiment de maîtriser ta charge de travail ?",
+          activity_1: "Bouges-tu au moins une demi-heure par jour ?",
+          activity_2: "Dans la semaine, trouves-tu du temps pour le sport ?",
+          nutrition_1: "Manges-tu des fruits et des légumes chaque jour ?",
+          nutrition_2: "Arrives-tu à manger calmement ?",
+          mental_1: "Dans la journée, es-tu de bonne humeur ?",
+          mental_2: "As-tu quelqu'un à qui parler quand tu en as besoin ?",
+        },
+        remaining: "Il en reste {n}",
+        submit: "Voir mon profil",
+        error: {
+          title: "Nous n'avons pas pu enregistrer les réponses",
+          body: "Appuie à nouveau pour réessayer.",
+        },
+      },
+
+      profile: {
+        title: "Ton profil est prêt",
+        hint: "Le score vient de tes dix réponses.",
+        weakestTitle: "Le domaine par lequel tu commences",
+        home: "Aller à ton accueil",
+      },
     },
 
     /* Le lien anonyme du check rapide (§10.A.5). Registre consommateur —
