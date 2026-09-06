@@ -1,5 +1,7 @@
+import { healthProfileOf } from "@/lib/health-profile";
 import { assertInDev } from "../guardrails";
 import type {
+  AssessmentAnswers,
   EmployeeProfile,
   FullCapacityReference,
   Professional,
@@ -26,6 +28,45 @@ import { DEMO_TODAY } from "./demo-date";
  * (`docs/CONTRATTO-DATI.md` §3). Un id leggibile è un nome che arriva lo
  * stesso, e sarebbe arrivato proprio della persona su cui la demo si regge.
  */
+/*
+ * Le dieci risposte con cui Laura ha fatto l'assessment (§8).
+ *
+ * **Sono il dato, e il 78 non lo è più**: punteggio, sintesi e area debole si
+ * derivano da qui con la formula di `lib/health-profile.ts`, invece di essere
+ * tre valori scritti che possono smettere di tornare con le risposte (§5.5).
+ * Il guardrail qui sotto verifica che il conto dia ancora ciò che il §8
+ * dichiara.
+ */
+export const LAURA_ASSESSMENT: AssessmentAnswers = {
+  sleep_1: 2,
+  sleep_2: 3,
+  stress_1: 4,
+  stress_2: 4,
+  activity_1: 4,
+  activity_2: 4,
+  nutrition_1: 4,
+  nutrition_2: 4,
+  mental_1: 5,
+  mental_2: 5,
+};
+
+const LAURA_PROFILE = healthProfileOf(LAURA_ASSESSMENT);
+
+/*
+ * IL 78 E IL SONNO SONO IL §8, E QUI SI VERIFICA CHE LA FORMULA LI PRODUCA.
+ *
+ * Non è un controllo tautologico come quelli che questo repository rifiuta
+ * altrove: le due sorgenti sono davvero due — le dieci risposte da una parte, la
+ * cifra che il §8 dichiara e che ogni schermata mostra dall'altra — e a
+ * divergere può essere l'una o l'altra. Il giorno in cui qualcuno cambia una
+ * risposta o una soglia, questo lancia invece di far comparire un numero diverso
+ * nella home.
+ */
+assertInDev(
+  LAURA_PROFILE.score === 78 && LAURA_PROFILE.weakestArea === "sleep",
+  `Le risposte dell'assessment di Laura danno ${LAURA_PROFILE.score} e "${LAURA_PROFILE.weakestArea}", mentre il §8 dichiara 78 e "sleep".`,
+);
+
 export const LAURA: EmployeeProfile = {
   id: "lb",
   firstName: "Laura",
@@ -36,11 +77,7 @@ export const LAURA: EmployeeProfile = {
   // gennaio dell'anno in cui cade la demo: la data di iscrizione non è un dato
   // del §8 e non deve diventare una data assoluta che invecchia da sola
   memberSince: new Date(DEMO_TODAY.getFullYear(), 0, 1),
-  healthProfile: {
-    score: 78,
-    summaryKey: "balanced",
-    weakestArea: "sleep",
-  },
+  healthProfile: LAURA_PROFILE,
 };
 
 /*

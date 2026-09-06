@@ -1005,7 +1005,7 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **109 + 16 = 125** (06.09.2026). Restano fuori, e sono le tre trappole del
+Oggi **108 + 17 = 125** (06.09.2026). Restano fuori, e sono le tre trappole del
 conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
 nome lungo che **contiene** quello corto.
 

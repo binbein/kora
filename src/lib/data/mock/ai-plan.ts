@@ -94,23 +94,35 @@ const AREAS: AiPlanArea[] = [
   },
 ];
 
-/*
- * L'area più debole apre il piano, e l'ordine **si deriva** dal profilo invece
- * di essere l'ordine in cui le aree sono scritte qui: è la prima cosa che il
- * dipendente deve leggere, e il giorno in cui il profilo indicasse un'altra
- * area il piano si riordinerebbe da sé.
+/**
+ * Il piano, con l'area più debole in testa.
+ *
+ * **È una funzione dell'area debole e non una costante** (06.09.2026), ed è la
+ * differenza che si vede solo rifacendo l'assessment: l'ordine si derivava dal
+ * profilo, ma **una volta sola**, al caricamento del modulo. Da quando le dieci
+ * risposte si possono riscrivere (§10.A.6) il profilo cambia a runtime, e un
+ * ordine congelato all'avvio avrebbe fatto dire un'area al profilo e un'altra al
+ * piano — i due numeri sullo stesso fatto che il §5.5 vieta.
+ *
+ * `generatedAt` e `nextUpdateAt` **non** si muovono con le risposte: sono la
+ * cadenza del piano commerciale, non un effetto dell'assessment.
  */
-const ORDERED_AREAS: AiPlanArea[] = [
-  ...AREAS.filter((entry) => entry.area === LAURA.healthProfile.weakestArea),
-  ...AREAS.filter((entry) => entry.area !== LAURA.healthProfile.weakestArea),
-];
+export function aiHealthPlanFor(weakestArea: HealthArea): AiHealthPlan {
+  return {
+    id: "ai-plan-laura",
+    generatedAt: regenerationAfter(cyclesSinceJoin),
+    nextUpdateAt: regenerationAfter(cyclesSinceJoin + 1),
+    areas: [
+      ...AREAS.filter((entry) => entry.area === weakestArea),
+      ...AREAS.filter((entry) => entry.area !== weakestArea),
+    ],
+  };
+}
 
-export const LAURA_AI_PLAN: AiHealthPlan = {
-  id: "ai-plan-laura",
-  generatedAt: regenerationAfter(cyclesSinceJoin),
-  nextUpdateAt: regenerationAfter(cyclesSinceJoin + 1),
-  areas: ORDERED_AREAS,
-};
+/** Il piano come lo vede Laura all'avvio, e la base dei guardrail statici. */
+export const LAURA_AI_PLAN: AiHealthPlan = aiHealthPlanFor(
+  LAURA.healthProfile.weakestArea,
+);
 
 // ---------------------------------------------------------------------------
 // Guardrail (§5.6)

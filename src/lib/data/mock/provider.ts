@@ -37,6 +37,8 @@ import {
   type ProfessionalEarnings,
   type ProfessionalSession,
   type Quarter,
+  type AssessmentAnswers,
+  type HealthProfile,
   type RapidCheckAnswer,
   type RapidCheckLink,
   type RoiSnapshot,
@@ -46,20 +48,21 @@ import {
   type StressRecord,
   type UserRole,
 } from "../types";
-import { LAURA_AI_PLAN } from "./ai-plan";
+import { healthProfileOf } from "@/lib/health-profile";
+import { aiHealthPlanFor } from "./ai-plan";
 import {
   CHECKUP_PROVIDERS,
   LAURA_CHECKUP_ELIGIBILITY,
   LAURA_CHECKUP_REPORT,
 } from "./checkup";
-import { COMPANY, DEPARTMENTS, PLANS, PLAN_LIST } from "./company";
+import { COMPANY, COMPANY_CODE, DEPARTMENTS, PLANS, PLAN_LIST } from "./company";
 import {
   employeeEntitlement,
   LAURA_VIRTUAL_DOCTOR_CONSULTS,
 } from "./employee-portal";
 import { EMPLOYEE_DIRECTORY, HR_REPORTS, INVOICES } from "./hr";
 import { DEMO_TODAY } from "./demo-date";
-import { LAURA, PROFESSIONALS } from "./people";
+import { LAURA, LAURA_ASSESSMENT, PROFESSIONALS } from "./people";
 import { resolveRapidCheckLink } from "./rapid-check";
 import {
   CLIENT_COMPANIES,
@@ -172,6 +175,19 @@ export class MockDataProvider implements DataProvider {
    * aver già risposto.
    */
   private lastRapidCheck: RapidCheckAnswer | null = null;
+
+  /*
+   * Le dieci risposte dell'assessment, che partono da quelle del §8.
+   *
+   * **Sono il dato, e il profilo è una lettura**: punteggio, sintesi e area
+   * debole si derivano da qui con la formula, quindi rifare l'assessment sposta
+   * il profilo, la home, il Profilo e l'ordine delle aree del piano **senza che
+   * nessuno di quei quattro punti si allinei a mano** (§5.5).
+   *
+   * Come tutto lo stato del provider muore con un ricaricamento, e quel giorno
+   * Laura torna a 78 (§10).
+   */
+  private assessment: AssessmentAnswers = LAURA_ASSESSMENT;
 
   /*
    * Le richieste di demo arrivate dal form pubblico, in ordine di arrivo.
@@ -566,8 +582,52 @@ export class MockDataProvider implements DataProvider {
     return Promise.resolve(saved);
   }
 
+  /*
+   * Il profilo che esce dalle risposte correnti.
+   *
+   * Sta in una funzione perché la usano in tre — il profilo, il piano di
+   * benessere e la scrittura che le sostituisce — e tre punti che ricalcolano
+   * la stessa cosa sono tre punti che possono divergere (§5.5).
+   */
+  private healthProfile(): HealthProfile {
+    return healthProfileOf(this.assessment);
+  }
+
   getEmployeeProfile(): Promise<EmployeeProfile> {
-    return Promise.resolve(LAURA);
+    return Promise.resolve({ ...LAURA, healthProfile: this.healthProfile() });
+  }
+
+  // --- Attivazione dell'account (§10.A.6) -----------------------------------
+
+  /*
+   * Il codice azienda risolve, oppure non risolve.
+   *
+   * **Il consenso non viene controllato qui**, e non è una dimenticanza: a
+   * impedire la chiamata senza consenso è il **tipo**, che è il letterale
+   * `true` — un controllo a runtime sarebbe la seconda guardia sullo stesso
+   * fatto, e quella che si può togliere.
+   *
+   * Non scrive niente. Nella demo c'è un cliente solo e un dipendente solo
+   * (`docs/CONTRATTO-DATI.md` §7): l'attivazione dice a chi porta il codice, e
+   * l'account che creerebbe esiste già.
+   */
+  activate(input: { companyCode: string; consent: true }): Promise<Company | null> {
+    return Promise.resolve(
+      input.companyCode.trim().toUpperCase() === COMPANY_CODE ? COMPANY : null,
+    );
+  }
+
+  /*
+   * Le dieci risposte sostituiscono le precedenti, e il profilo esce dalla
+   * formula: non c'è nessun punteggio da scrivere accanto.
+   *
+   * **Non accumula**: non esiste uno storico degli assessment, ed è la
+   * semplificazione che salta per prima il giorno in cui il profilo dovrà dire
+   * "sta migliorando" (`docs/CONTRATTO-DATI.md` §8.10).
+   */
+  submitAssessment(answers: AssessmentAnswers): Promise<HealthProfile> {
+    this.assessment = answers;
+    return Promise.resolve(this.healthProfile());
   }
 
   /*
@@ -613,8 +673,31 @@ export class MockDataProvider implements DataProvider {
     return Promise.resolve(LAURA_CHECKUP_REPORT);
   }
 
+  /*
+   * Il piano si ordina sull'area debole **del profilo corrente**, non su quella
+   * dell'avvio: da quando le risposte si riscrivono, un ordine congelato
+   * direbbe un'area mentre il profilo ne dice un'altra.
+   */
   getAiHealthPlan(): Promise<AiHealthPlan> {
-    return Promise.resolve(LAURA_AI_PLAN);
+    const profile = this.healthProfile();
+    const plan = aiHealthPlanFor(profile.weakestArea);
+
+    /*
+     * LA HOME LEGGE LA PRIMA AREA DEL PIANO E LA CHIAMA "l'area da cui parte il
+     * tuo piano di benessere", mentre il profilo mostra la propria: sono due
+     * schermate che affermano lo stesso fatto leggendo due valori diversi.
+     *
+     * Il guardrail statico di `ai-plan.ts` copre l'avvio e **non può coprire
+     * questo**: lì il profilo è quello del §8, qui è quello che l'assessment ha
+     * appena prodotto. È il caso che nasce con la scrittura, quindi il controllo
+     * nasce con lei.
+     */
+    assertInDevOutsidePromise(
+      plan.areas[0].area === profile.weakestArea,
+      `Il piano si apre su "${plan.areas[0].area}" mentre il profilo indica "${profile.weakestArea}": la home direbbe un'area e il profilo un'altra.`,
+    );
+
+    return Promise.resolve(plan);
   }
 
   /*
