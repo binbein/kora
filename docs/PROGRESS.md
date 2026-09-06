@@ -9137,6 +9137,31 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 > `docs/PITCH.md`; il criterio e cosa è rimasto fuori stanno nel verbale di
 > quella passata.
 
+- **06.09.2026 — L'attivazione dell'account è la ventottesima rotta**
+  (`CLAUDE.md` §2.6, §8, §10.A.6). `/activate` esce dallo scope congelato perché
+  chiude **due cose che il prodotto dichiarava e non aveva**: da dove viene il
+  78/100 del profilo — la domanda che un investitore fa per prima guardando il
+  portale dipendente — e **il consenso**, che la privacy HR prometteva già
+  raccolto mentre nessun punto del percorso lo chiedeva.
+
+  **Con lei entrano in `CLAUDE.md` §8 tre cose che erano codice e non dato**: il
+  codice azienda di Demo SA (`DEMO-SA-2026`), la formula del profilo salute —
+  dieci domande, due per area, scala 1–5 con 5 il meglio, area × 20, totale × 20
+  arrotondato, soglie a 70 e 50 — e **le dieci risposte di Laura**, che
+  riproducono il suo 78 con il sonno come area debole. Da qui **il punteggio non
+  è più un valore scritto**: nasce dalla formula, e un guardrail lo verifica.
+
+  **Il pareggio ha una regola**, e serve a rendere la formula deterministica: a
+  parità di minimo vince la prima area nell'ordine fisso. Senza, l'area debole
+  dipenderebbe dall'ordine in cui il codice percorre le aree — una cosa che
+  qualcuno può cambiare senza sapere di aver cambiato un numero a schermo.
+
+  **E il piano di benessere segue l'area debole**, che è la conseguenza che la
+  decisione porta con sé: la home dice *"è l'area da cui parte il tuo piano"*
+  leggendo la prima area del piano, quindi con un ordine fisso il profilo avrebbe
+  detto un'area e il piano un'altra alla prima risposta diversa da quelle di
+  Laura.
+
 - **06.09.2026 — Il link anonimo del check rapido è la ventisettesima rotta**
   (`CLAUDE.md` §2.6, §8, §10.A.5). `/check/:token` esce dallo scope congelato
   perché chiude una **promessa fatta in tre punti e costruita in nessuno**: il
