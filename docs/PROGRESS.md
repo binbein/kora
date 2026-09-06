@@ -8845,6 +8845,30 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 > `docs/PITCH.md`; il criterio e cosa è rimasto fuori stanno nel verbale di
 > quella passata.
 
+- **06.09.2026 — Il link anonimo del check rapido è la ventisettesima rotta**
+  (`CLAUDE.md` §2.6, §8, §10.A.5). `/check/:token` esce dallo scope congelato
+  perché chiude una **promessa fatta in tre punti e costruita in nessuno**: il
+  §8 descrive il link come la metà del modello di misurazione che rende il dato
+  indipendente dall'adozione, il riquadro "Anche senza account" della privacy HR
+  lo dichiara al cliente, e `docs/PITCH.md` ci costruisce sopra una risposta —
+  mentre nel contratto era una voce del perimetro dell'MVP
+  (`docs/CONTRATTO-DATI.md` §8.3).
+
+  **Il perimetro approvato è stretto**: una rotta pubblica, **una lettura**
+  (`getRapidCheckLink`) e **un argomento in più** sulla scrittura che c'è già.
+  Non entrano la generazione del token, la revoca, il rinnovo e la
+  distribuzione, che restano §8.3: la demo mostra **un esempio di link**, non lo
+  schema con cui se ne fanno altri.
+
+  **Due scelte di resa sono parte della decisione**, e non sono dettagli di
+  schermata. La risposta anonima **non diventa quella della persona
+  autenticata** — la home di Laura non si muove — perché `getRapidCheckAnswer`
+  è di chi ha l'account (`docs/CONTRATTO-DATI.md` §3). E alla risposta peggiore
+  i due numeri d'emergenza restano, mentre la CTA verso il portale dipendente
+  **non si rende**: porterebbe dove chi non ha un account non può entrare, e la
+  demo non disegna una strada che il prodotto non ha. Al suo posto una riga che
+  nomina l'account senza linkarlo, finché l'attivazione non esiste.
+
 - **02.09.2026 — La soglia di anonimato ha un pavimento: 5** (`CLAUDE.md` §8,
   `docs/CONTRATTO-DATI.md` §3). Resta una proprietà del cliente, ma sotto 5 un
   punteggio di reparto è la media di un gruppo che chi ci lavora sa nominare.

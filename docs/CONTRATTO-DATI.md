@@ -486,9 +486,41 @@ ne ha tre — e la schermata deve poterlo dire prima che qualcuno scriva. Vale l
 stessa domanda del cap sulle sedute qui sopra: **su quale periodo si conta**.
 
 `RapidCheckAnswer` è il segnale che alimenta ogni dato di stress della dashboard
-(§3, misurazione). La scrittura prende **il solo valore**: chi risponde è la
-persona autenticata e il reparto lo sa il server, come `getCompany()` non prende
-un identificatore (§7). La variante su link anonimo porterà il reparto dal link.
+(§3, misurazione). La scrittura prende **il valore, e nient'altro che il
+valore**: chi risponde è la persona autenticata e il reparto lo sa il server,
+come `getCompany()` non prende un identificatore (§7).
+
+**La variante su link anonimo esiste dal 06.09.2026, e il reparto lo porta il
+link.** `submitRapidCheck` accetta un secondo argomento facoltativo — `{ token }`
+— e questa riga diceva che l'avrebbe accettato: con il token la risposta va al
+reparto che il link dichiara e **non ha `employeeId`**, che è il caso per cui
+quel campo era opzionale fin dal principio (§2).
+
+**Il facoltativo qui non viola la regola del `?`**: non è un campo di un modello
+di lettura, è **un argomento di scrittura**, e la regola lo ammette per la stessa
+ragione per cui `DemoRequestInput.message` ce l'ha. Assente significa *"risponde
+la persona autenticata"*, non *"il token è vuoto"* — sono due chiamate diverse,
+non la stessa con un buco.
+
+**`getRapidCheckLink(token)` risponde `RapidCheckLink | null`**, e il `null`
+copre **due casi che il client non distingue**: il token non esiste, oppure è
+scaduto. È deliberato — a chi apre un link morto la differenza non serve, e
+dirgliela direbbe a chiunque provi un token a caso *quali* token sono esistiti.
+Il tipo porta l'azienda, il reparto (id e nome) e `validUntil`, che è la data
+oltre la quale il link non risponde più.
+
+**Il token non ha una forma, e non è una dimenticanza**: quanto è lungo, come si
+genera, come si revoca e da quale reparto si deriva sono §8.3. Qui è una stringa
+opaca che il server risolve, ed è tutto ciò che il contratto deve dire — perché
+è tutto ciò che il client può farne.
+
+**Il perimetro di ciò che il link espone è la sua parte delicata.** Restituisce
+il nome dell'azienda e del reparto a **chiunque abbia l'indirizzo**, e non c'è
+autenticazione dietro: in produzione è il minimo che serve a far capire a chi
+risponde dove finisce la sua risposta, e **non deve crescere di un campo** —
+niente organico, niente punteggi, niente elenco di persone. Un link di
+misurazione che risponde con dati del reparto è un'API pubblica sull'azienda
+cliente.
 
 **Il check rapido non ha nozione di periodo, e gli mancano tre cose.** La lettura
 restituisce **l'ultima risposta in assoluto**, non quella del periodo corrente:
@@ -771,6 +803,16 @@ confine HTTP, come per lo slot occupato.
 **`submitRapidCheck` invalida solo la risposta**, non la radice: il check rapido
 non muove contatori né appuntamenti, e invalidare più del necessario farebbe
 rileggere mezza schermata per un tocco.
+
+**Col token non invalida niente** (06.09.2026), ed è la riga da leggere prima di
+"correggere" l'asimmetria della tabella. `["employee", "rapid-check"]` è la
+risposta **della persona autenticata**, e quella di un link anonimo non è la sua:
+invalidarla farebbe rileggere `getRapidCheckAnswer`, che risponderebbe con ciò
+che c'era prima — cioè una lettura in più per confermare che niente è cambiato.
+Nel mock la scrittura anonima non tocca nemmeno lo stato che quella lettura
+restituisce, e in produzione sono due record di due soggetti diversi. La
+schermata anonima legge l'esito **dalla mutation**, che è l'unico posto in cui
+esiste.
 
 **`submitDemoRequest` ha aspettato il suo lettore.** Fino al blocco dell'area
 pubblica non invalidava niente, e la riga di questa tabella lo dichiarava: a
@@ -1184,10 +1226,41 @@ Il dataset demo nasce già popolato, quindi nessuno di questi passaggi esiste:
   reparti e la soglia di anonimato. Oggi sono semi del dataset.
 - **Invito e attivazione dei dipendenti**: la differenza fra coperto e iscritto
   è già nel contratto (§3, piattaforma) e il passaggio dall'uno all'altro no.
-- **Il link anonimo del check rapido**: `CLAUDE.md` §8 lo descrive e le schermate
-  lo promettono, ma **non esiste come oggetto** — non c'è un token, una scadenza,
-  un reparto da cui derivarlo. È la metà del modello di misurazione che rende il
-  dato indipendente dall'adozione, quindi non è un dettaglio.
+- ~~**Il link anonimo del check rapido**: `CLAUDE.md` §8 lo descrive e le
+  schermate lo promettono, ma **non esiste come oggetto** — non c'è un token, una
+  scadenza, un reparto da cui derivarlo.~~ → **metà chiusa il 06.09.2026**, e
+  vale la pena dire quale.
+
+  **C'è**: `getRapidCheckLink(token)` e il secondo argomento di
+  `submitRapidCheck` (§3). Un token risolve a un'azienda, a un reparto e a una
+  scadenza; una risposta che arriva da lì entra nel reparto del link e non porta
+  `employeeId`. Il modello di misurazione ha finalmente la metà che lo rende
+  indipendente dall'adozione, invece di prometterla in tre schermate.
+
+  **Non c'è, e sono tre cose distinte:**
+
+  - **la generazione.** Nessun metodo crea un link. Nel dataset ce n'è uno,
+    scritto a mano con un token leggibile perché la demo lo mostra
+    (`CLAUDE.md` §8); in produzione **un token leggibile è indovinabile**, e chi
+    lo genera decide lunghezza, entropia e formato. La domanda che ne discende è
+    di prodotto: **chi lo crea** — l'HR dell'azienda, o la piattaforma per suo
+    conto — e da quale schermata, che oggi non esiste.
+  - **la revoca e il rinnovo.** `validUntil` dice quando un link smette di
+    rispondere e nient'altro: non c'è modo di spegnerne uno prima, né di
+    riemetterlo quando scade. Un link di misurazione che gira per un'azienda e
+    non si può richiamare è un problema di sicurezza prima che di comodità — è
+    la stessa famiglia dell'offboarding qui sotto, vista dal lato del canale.
+  - **la distribuzione.** Il link deve arrivare a chi non ha una casella
+    aziendale, che è la popolazione per cui esiste (§8.8): affiggerlo, stamparlo
+    su un QR, mandarlo su un canale che non è l'email. Non è lavoro di
+    interfaccia, ed è il motivo per cui il canale non è nel contratto.
+
+  **E una che non manca, contro l'apparenza**: nessun tetto sulle risposte per
+  token. Il link è per costruzione risponibile più volte, e la **correzione**
+  della risposta è già una domanda aperta del §3 — se la seconda risposta dello
+  stesso periodo sostituisca la prima o se ne aggiunga una. Sul link anonimo non
+  è una domanda nuova: è quella stessa, senza una persona a cui attribuire il
+  periodo.
 - **Offboarding**: cosa succede ai dati di chi lascia l'azienda, e cosa
   all'azienda che disdice.
 - **Cambio piano, rinnovo del cap, disdetta**: il cap è annuale (§3) e nessun

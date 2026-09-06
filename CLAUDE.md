@@ -59,6 +59,12 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
 6. **Scope congelato.** Le schermate sono quelle di §10. Nessuna schermata, feature o
    sezione nuova senza approvazione esplicita dei founder. Se un'idea sembra buona,
    proporla e fermarsi: la decisione spetta a loro.
+
+   **L'ultima approvazione è del 06.09.2026**, ed è la ventisettesima rotta: il
+   **link anonimo del check rapido**, `/check/:token` (§10.A.5). La regola sta
+   qui, il perché in §10.A e la data anche in `docs/PROGRESS.md`, «Decisioni
+   chiuse» — che è il posto in cui si trova una decisione senza leggere questo
+   file per intero.
 7. **Lingua: italiano di default — con architettura pronta per 4 lingue.** La
    piattaforma avrà IT, DE, FR, EN; **la demo si apre in italiano in ogni build**
    (it-CH: valuta CHF, numeri 14'200, date gg.mm.aaaa), e le altre lingue si
@@ -787,7 +793,7 @@ Il piano approvato dai founder. Ogni milestone finisce con una demo funzionante
     uno stato che nessun percorso produce è codice che il §11 non vuole e che
     nessuno può verificare.
 
-    **Chiuso.** Le 27 schermate distinguono i tre casi — `undefined` sospende,
+    **Chiuso.** Le 27 schermate di allora distinguono i tre casi — `undefined` sospende,
     `null` e le liste vuote rendono il vuoto, `isError` rende l'errore — e la
     regola sta scritta una volta in `loadState`, che **non conosce le forme**:
     il vuoto lo decide la schermata. La dimostrazione è
@@ -971,8 +977,8 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 119 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 119 posti.
+call site sono 120 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 120 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
 **Il criterio con cui i call site si contano**, perché una rilevazione futura non
@@ -980,7 +986,7 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **106 + 13 = 119** (04.09.2026). Restano fuori, e sono le tre trappole del
+Oggi **107 + 13 = 120** (06.09.2026). Restano fuori, e sono le tre trappole del
 conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
 nome lungo che **contiene** quello corto.
 
@@ -1021,8 +1027,9 @@ esattamente ciò che è successo passando da 96 a 97 con la tranche tedesca, da
 l'annullamento e il nome dei pazienti (17.08.2026), da 111 a 113 con il
 messaggio al paziente (01.09.2026), che di guardrail ne porta due, e da 113 a
 115 con la chiusura delle fasce, da 115 a 116 con la prima sessione entro 72
-ore, e da 116 a 119 con la soglia di anonimato — la media aziendale ne porta
-due, uno per il punteggio e uno per il peso.
+ore, da 116 a 119 con la soglia di anonimato — la media aziendale ne porta
+due, uno per il punteggio e uno per il peso — e da 119 a 120 con il link
+anonimo del check rapido, il cui reparto deve esistere.
 
 **E chi lo ricontasse con un `grep` trova cifre che non sono dei guardrail**
 (01.09.2026), che è la ragione per cui questa avvertenza sta accanto al conto
@@ -1057,7 +1064,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 119 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 120 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 
@@ -1187,7 +1194,10 @@ Regole:
   di M5.
 
   **Chiuso dal blocco a)**: il censimento a schermo passa da 79 punti sotto
-  soglia a **zero informativi**, su 27 rotte.
+  soglia a **zero informativi**, su 27 rotte. *(Erano tutte quelle che
+  esistevano: la ventottesima schermata è nata il 06.09.2026 e ha il proprio
+  censimento nella sua passata — un censimento dichiara zero su ciò che ha
+  guardato, ed è la riga qui sotto.)*
 
   **Quello "zero" era falso di quattro nodi, e lo è stato dall'11.08.2026 al
   15.08.2026** — non si riscrive la riga come se avesse sempre detto il vero, si
@@ -1683,6 +1693,33 @@ significa misurare solo chi è già ingaggiato — il campione sbagliato, e quel
 del prodotto ha meno bisogno. **I dipendenti misurati possono quindi essere più
 degli iscritti**, ed è una proprietà voluta del modello: il dato vale anche dove
 l'adozione non è ancora arrivata.
+
+**Il link della demo: reparto Vendite, token `demo-sa-vendite`** (founder,
+06.09.2026). Fino a quel giorno il link anonimo era **promesso in tre punti e
+non esisteva da nessuna parte** — questa sezione, il riquadro "Anche senza
+account" della privacy HR e la risposta pronta di `docs/PITCH.md` — ed è la
+forma di lacuna che costa di più: tre schermate che dichiarano un meccanismo che
+il prodotto non ha. La rotta che lo mostra è la ventisettesima (§10.A.5).
+
+**È il reparto della storia e non uno qualunque**: le Vendite sono quelle che si
+staccano fra il mese 9 e il 12 e su cui scatta l'alert, quindi il link porta
+dove chi guarda è già stato.
+
+**La validità non è una data scritta**: scade **alla fine del mese di
+`DEMO_TODAY`** (§5.4), cioè il 30.09.2026, e si deriva da lì come il rinnovo del
+contratto di Demo SA. Una data assoluta invecchierebbe da sola.
+
+**Il token è opaco e scade; questo è l'esempio, non lo schema.**
+`demo-sa-vendite` si legge, ed è voluto: davanti a un investitore un indirizzo
+che si può dire a voce vale più di trentadue caratteri casuali. **Come si
+genera, quanto è lungo, come si revoca e da quale reparto si deriva sono lavoro
+dell'MVP** (`docs/CONTRATTO-DATI.md` §8.3).
+
+**La risposta che arriva dal link non è di nessuno.** Non porta `employeeId`, non
+diventa la risposta della persona autenticata — la home di Laura non si muove — e
+**non tocca nessuna curva della dashboard**: vale per lei la stessa regola del
+check rapido in app, perché le dodici serie di questa sezione sono la storia
+curata e un tocco fatto durante il pitch non deve poterla spostare.
 
 **Lo stress non si deduce mai dal comportamento** — non dalle sessioni prenotate,
 non dalle aperture dell'app, non da un wearable. Un segnale comportamentale non
@@ -2294,8 +2331,10 @@ corrente è anche il totale dell'anno. Il consumo del singolo trimestre — 22 /
 
 ## 10. Scope — le schermate e la definizione di "finito"
 
-**26 rotte su cinque aree** (4 + 6 + 5 + 5 + 6). Venticinque sono ereditate da
-base44; la ventiseiesima è `/roi`, approvata dai founder il 07.08.2026. **Nessuna
+**27 rotte su cinque aree** (5 + 6 + 5 + 5 + 6). Venticinque sono ereditate da
+base44; la ventiseiesima è `/roi`, approvata dai founder il 07.08.2026, e la
+ventisettesima è `/check/:token`, il link anonimo del check rapido, approvato dai
+founder il 06.09.2026. **Nessuna
 schermata nuova senza
 approvazione** (§2.6); nessuna schermata esistente si elimina senza dirlo.
 
@@ -2306,9 +2345,9 @@ non più della demo (§4, blocco f):
 
 - una **rotta dello scope** è una voce di questo §10, cioè una schermata che
   qualcuno ha approvato e che si raggiunge da un indirizzo dichiarato. Sono le
-  **26** qui sopra;
+  **27** qui sopra;
 - una **schermata** è tutto ciò che l'applicazione può disegnare al posto di una
-  pagina. Sono **27**: le 26 più la **404**, che in `App.tsx` è il catch-all `*`
+  pagina. Sono **28**: le 27 più la **404**, che in `App.tsx` è il catch-all `*`
   — non ha un indirizzo suo, non entra nello scope, e nondimeno va percorsa,
   tradotta e verificata come le altre.
 
@@ -2380,7 +2419,9 @@ riga la prima sessione che le rilegge le "corregge":
   strutture check-up.
 
 **Il conto non si muove**: quindici più undici fanno le **26** rotte dello scope
-di questo §10, e le schermate restano **27**.
+di questo §10, e le schermate restano **27**. *(È il conto del 19.08.2026, e la
+riga non si riscrive perché descrive la rinomina: la rotta anonima del
+06.09.2026 lo porta a 27 e 28, e a dirlo è l'apertura di questa sezione.)*
 
 **Una sedicesima si è mossa dopo, e non è una traduzione** (founder,
 04.09.2026): `/employee/ai-plan` è diventata **`/employee/wellbeing-plan`**,
@@ -2395,7 +2436,7 @@ cache `["employee", "ai-plan"]`. **E il vecchio indirizzo non redirige**: dà la
 (§10, come si naviga), quindi un redirect sarebbe codice per un caso che nessun
 percorso produce (§11).
 
-### A. Pubblica — `/`, `/roi`, `/plans`, `/demo`
+### A. Pubblica — `/`, `/roi`, `/plans`, `/demo`, `/check/:token`
 1. **Landing**: hero, problema, tre livelli di valore, anteprima piani, privacy, CTA.
 
    **L'anteprima dell'hero è di tre pannelli, uno per lato del prodotto** —
@@ -2439,12 +2480,39 @@ percorso produce (§11).
    allo stesso prezzo dell'Essenziale offrendo più di lui.
 4. **Richiesta demo**: form che oggi si risolve in locale e diventerà una
    mutation del provider.
+5. **Il link anonimo del check rapido** — `/check/:token`, approvato dai founder
+   il 06.09.2026 ai sensi del §2.6. È la metà del modello di misurazione che
+   rende il dato indipendente dall'adozione (§8), ed era **promessa in tre punti
+   e costruita in nessuno**: il §8, il riquadro "Anche senza account" della
+   privacy HR e una risposta pronta di `docs/PITCH.md`. Il token e il reparto del
+   dataset stanno in §8.
+
+   **Sta fuori da ogni portale, e non ha né la barra pubblica né una guardia**:
+   chi apre quel link non è dentro l'applicazione, è una persona che ha ricevuto
+   un indirizzo. La schermata porta il logo, il nome dell'azienda e del reparto,
+   la stessa card del check rapido e una riga che dice cosa succede alla
+   risposta.
+
+   **Non offre di prenotare.** Alla risposta peggiore i due numeri d'emergenza
+   restano — è il punto del §8, e qui vale doppio perché di interlocutori non ce
+   n'è nessuno — ma la CTA verso il portale dipendente **non si rende**: porta
+   dove chi non ha un account non può entrare, e la demo non disegna una strada
+   che il prodotto non ha. Al suo posto una riga attenuata che nomina l'account
+   **senza linkarlo**: l'attivazione è lavoro dell'MVP
+   (`docs/CONTRATTO-DATI.md` §8.3), e quel giorno la riga guadagna il suo link.
+
+   **Un'uscita c'è comunque**: un link discreto verso la landing, prima e dopo la
+   risposta. Nessun vicolo cieco (§10.B), e serve al pitch, che da lì rientra
+   senza il tasto Indietro del browser.
 
 **Finita quando:** il calcolatore è corretto per qualsiasi N fra 20 e 1000, le
 quattro voci sommano al totale mostrato, e a N=100 escono i cinque numeri di §9;
-e **le card prezzi leggono da `Plan`**, quindi nessuna delle loro voci può
+**le card prezzi leggono da `Plan`**, quindi nessuna delle loro voci può
 divergere dal §9 — è il modo in cui si chiudono i tre disallineamenti aperti da
-M0, non correggendo tre righe di JSX che la prossima passata riaprirebbe.
+M0, non correggendo tre righe di JSX che la prossima passata riaprirebbe; e il
+link anonimo **registra davvero** — il tocco si salva e si può correggere, un
+token che non esiste non porta in un vicolo cieco, e né la home di Laura né una
+curva della dashboard HR si muovono.
 
 ### B. Portale dipendente — `/employee` + 5 sottopagine
 Home, Psicologi, Medico virtuale, Check-up, Benessere, Profilo.
@@ -2454,7 +2522,8 @@ Home, Psicologi, Medico virtuale, Check-up, Benessere, Profilo.
    esso a un investitore che chiedeva da dove arrivassero quei numeri non avevamo
    niente da indicare. Il Business Plan lo chiama "cuore di KORA" e ne descrive
    tre mensili: dove i due divergono vince questo file, e il documento si aggiorna.
-   È una card nella home, **non una rotta nuova**: non entra nel conto delle 26.
+   È una card nella home, **non una rotta nuova**: non entra nel conto delle
+   rotte, che vive in apertura di questa sezione e in nessun altro punto.
    Approvato dai founder il **06.08.2026** ai sensi del §2.6.
 
 2. **La home mostra due fatti, non quattro scorciatoie** (founder, 17.08.2026).
@@ -2659,7 +2728,7 @@ demo scollegate.
 
 5. **Il calendario si sposta di settimana, e salta a una data** (founder,
    18.08.2026). Non è una rotta nuova né una schermata nuova — è un comando in
-   più su una schermata che c'è, e **le rotte restano 26**.
+   più su una schermata che c'è, e **il conto delle rotte non si muove**.
 
    **Le frecce da sole non bastavano**, ed è la misura che ha portato alla
    decisione: l'agenda della demo copre sette mesi e mezzo, quindi rivedere un
@@ -2682,8 +2751,8 @@ demo scollegate.
 
 6. **Una fascia dichiarata si chiude e si riapre** (founder, 01.09.2026), con
    un clic sulla cella del calendario. Non è una rotta nuova né una schermata
-   nuova — è un gesto in più su una schermata che c'è, e **le rotte restano
-   26**.
+   nuova — è un gesto in più su una schermata che c'è, e **il conto delle rotte
+   non si muove**.
 
    **Il caso che la motiva**: fino ad allora l'unico modo che la professionista
    aveva di liberarsi un'ora era che ci fosse **una seduta da annullare**. Un
