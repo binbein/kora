@@ -31,7 +31,7 @@ import {
   useDepartments,
   useEarlyAlert,
   useHrReport,
-  useLatestStressByDepartment,
+  useStressByDepartment,
   useQuarters,
   useRoiSnapshot,
   useRoiSnapshots,
@@ -129,11 +129,17 @@ function DashboardHeader({
  * LA CORNICE DEL TRIMESTRE (founder, 17.08.2026).
  *
  * Il selettore stava nell'intestazione della pagina e sembrava comandarla
- * tutta. Non è così, ed è misurato: **lo seguono otto elementi** — le sei KPI,
- * la ciambella della distribuzione (cumulata fino al trimestre scelto) e
- * l'evidenziazione nel grafico del risparmio. Non lo seguono il banner
- * dell'alert, lo stress per reparto (che mostra l'ultimo mese), il trend a
- * dodici mesi e l'utilizzo dei servizi.
+ * tutta. Non è così, ed è misurato: **lo seguono nove elementi** — le sei KPI,
+ * lo stress per reparto, la ciambella della distribuzione (cumulata fino al
+ * trimestre scelto) e l'evidenziazione nel grafico del risparmio. Non lo
+ * seguono il banner dell'alert, il trend a dodici mesi e l'utilizzo dei
+ * servizi.
+ *
+ * *(Erano otto fino al 06.09.2026, e il nono è lo stress per reparto: stava
+ * fuori perché il provider sapeva rispondere solo con l'ultimo mese in
+ * assoluto — il difetto che M3 aveva lasciato aperto. Adesso
+ * `getStressByDepartment` prende un trimestre, quindi la tabella è entrata
+ * dentro.)*
  *
  * La cornice è la risposta: **quello che segue il trimestre sta dentro, con il
  * selettore in cima**, e tutto il resto sta fuori e sotto. Il selettore non è
@@ -193,7 +199,6 @@ export default function HRDashboard() {
   const quartersQuery = useQuarters();
   const currentQuarterQuery = useCurrentQuarter();
   const departmentsQuery = useDepartments();
-  const latestStressQuery = useLatestStressByDepartment();
   const companyHistoryQuery = useStressHistory();
   const alertQuery = useEarlyAlert();
   const usageQuery = useServiceUsage();
@@ -206,6 +211,10 @@ export default function HRDashboard() {
 
   const snapshotQuery = useRoiSnapshot(selected);
   const reportQuery = useHrReport(selected);
+  /* Sta con le altre letture per trimestre e non con le sue vicine di dominio:
+     da oggi lo stress per reparto segue il selettore, quindi ha bisogno di
+     `selected` come lo snapshot e il report. */
+  const stressByDepartmentQuery = useStressByDepartment(selected);
   const alertHistoryQuery = useStressHistory(alertQuery.data?.departmentId);
 
   /*
@@ -221,7 +230,7 @@ export default function HRDashboard() {
     quartersQuery,
     currentQuarterQuery,
     departmentsQuery,
-    latestStressQuery,
+    stressByDepartmentQuery,
     companyHistoryQuery,
     alertQuery,
     alertHistoryQuery,
@@ -238,7 +247,7 @@ export default function HRDashboard() {
   const quarters = quartersQuery.data;
   const currentQuarter = currentQuarterQuery.data;
   const departments = departmentsQuery.data;
-  const latestStress = latestStressQuery.data;
+  const stressByDepartment = stressByDepartmentQuery.data;
   const companyHistory = companyHistoryQuery.data;
   const alert = alertQuery.data;
   const usage = usageQuery.data;
@@ -256,7 +265,7 @@ export default function HRDashboard() {
     currentQuarter === undefined ||
     selected === undefined ||
     departments === undefined ||
-    latestStress === undefined ||
+    stressByDepartment === undefined ||
     companyHistory === undefined ||
     alert === undefined ||
     usage === undefined ||
@@ -534,79 +543,10 @@ export default function HRDashboard() {
           />
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-6">
-        <Card className="p-5">
-          <h3 className="font-semibold">{t.hr.distributionTitle}</h3>
-          <p className="text-xs text-muted-foreground mb-4">
-            {interpolate(t.hr.distributionSubtitle, {
-              quarter: quarterLabel(selected, currentQuarter),
-            })}
-          </p>
-          <ResponsiveContainer width="100%" height={230}>
-            <PieChart>
-              <Pie data={distribution} innerRadius={60} outerRadius={90} dataKey="value" nameKey="name" paddingAngle={4} isAnimationActive={false}>
-                {distribution.map((entry) => (
-                  <Cell key={entry.kind} fill={entry.color} />
-                ))}
-              </Pie>
-              {/* Ogni numero a schermo passa da `format.ts` (§11), e il tooltip
-                  di recharts è a schermo quanto il resto: senza `formatter` i
-                  valori escono dal formattatore predefinito della libreria. */}
-              <Tooltip formatter={(value) => formatNumber(Number(value))} />
-            </PieChart>
-          </ResponsiveContainer>
-          <div className="flex flex-wrap gap-3 justify-center mt-2">
-            {distribution.map((entry) => (
-              <div key={entry.kind} className="flex items-center gap-1.5 text-xs tabular-nums">
-                <div className="w-2.5 h-2.5 rounded-full" style={{ background: entry.color }} />
-                {interpolate(t.hr.distributionEntry, {
-                  service: entry.name,
-                  count: formatNumber(entry.value),
-                })}
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        <Card className="p-5">
-          <h3 className="font-semibold">{t.hr.roiTitle}</h3>
-          {/* Dentro una cornice che dice "trimestre selezionato" un grafico a
-              quattro barre va spiegato: senza, sembra che dovrebbe mostrarne
-              una sola. */}
-          <p className="text-xs text-muted-foreground mb-4">{t.hr.roiSubtitle}</p>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={roiChart}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-              <XAxis dataKey="short" tick={{ fontSize: 12 }} />
-              <YAxis tick={{ fontSize: 12 }} />
-              <Tooltip formatter={(value: number) => formatCHF(value)} />
-              {/* il trimestre scelto è pieno, gli altri smorzati: il grafico
-                  dice dove si è, senza una legenda che lo spieghi */}
-              <Bar dataKey="saved" radius={[4, 4, 0, 0]} isAnimationActive={false} name={t.hr.roiTitle}>
-                {roiChart.map((entry) => (
-                  <Cell
-                    key={entry.short}
-                    fill="hsl(var(--secondary))"
-                    fillOpacity={entry.selected ? 1 : 0.35}
-                  />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </Card>
-        </div>
-      </QuarterFrame>
-
-      {/*
-        * Fuori dalla cornice: quello che parla dell'ultimo mese o dei dodici,
-        * e che il selettore non tocca. **Ognuno dichiara il proprio periodo nel
-        * titolo** — "ultimo mese", "ultimi {months} mesi" — perché spostare i
-        * blocchi senza dirlo sposterebbe la confusione invece di toglierla.
-        */}
       <Card className="p-5">
         <h3 className="font-semibold mb-4">{t.hr.stressByDepartment}</h3>
         <div className="space-y-3">
-          {latestStress.map((record) => {
+          {stressByDepartment.map((record) => {
             const department = departments.find(
               (entry) => entry.id === record.departmentId,
             );
@@ -685,6 +625,82 @@ export default function HRDashboard() {
           })}
         </div>
       </Card>
+
+        <div className="grid lg:grid-cols-2 gap-6">
+        <Card className="p-5">
+          <h3 className="font-semibold">{t.hr.distributionTitle}</h3>
+          <p className="text-xs text-muted-foreground mb-4">
+            {interpolate(t.hr.distributionSubtitle, {
+              quarter: quarterLabel(selected, currentQuarter),
+            })}
+          </p>
+          <ResponsiveContainer width="100%" height={230}>
+            <PieChart>
+              <Pie data={distribution} innerRadius={60} outerRadius={90} dataKey="value" nameKey="name" paddingAngle={4} isAnimationActive={false}>
+                {distribution.map((entry) => (
+                  <Cell key={entry.kind} fill={entry.color} />
+                ))}
+              </Pie>
+              {/* Ogni numero a schermo passa da `format.ts` (§11), e il tooltip
+                  di recharts è a schermo quanto il resto: senza `formatter` i
+                  valori escono dal formattatore predefinito della libreria. */}
+              <Tooltip formatter={(value) => formatNumber(Number(value))} />
+            </PieChart>
+          </ResponsiveContainer>
+          <div className="flex flex-wrap gap-3 justify-center mt-2">
+            {distribution.map((entry) => (
+              <div key={entry.kind} className="flex items-center gap-1.5 text-xs tabular-nums">
+                <div className="w-2.5 h-2.5 rounded-full" style={{ background: entry.color }} />
+                {interpolate(t.hr.distributionEntry, {
+                  service: entry.name,
+                  count: formatNumber(entry.value),
+                })}
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        <Card className="p-5">
+          <h3 className="font-semibold">{t.hr.roiTitle}</h3>
+          {/* Dentro una cornice che dice "trimestre selezionato" un grafico a
+              quattro barre va spiegato: senza, sembra che dovrebbe mostrarne
+              una sola. */}
+          <p className="text-xs text-muted-foreground mb-4">{t.hr.roiSubtitle}</p>
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={roiChart}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="short" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip formatter={(value: number) => formatCHF(value)} />
+              {/* il trimestre scelto è pieno, gli altri smorzati: il grafico
+                  dice dove si è, senza una legenda che lo spieghi */}
+              <Bar dataKey="saved" radius={[4, 4, 0, 0]} isAnimationActive={false} name={t.hr.roiTitle}>
+                {roiChart.map((entry) => (
+                  <Cell
+                    key={entry.short}
+                    fill="hsl(var(--secondary))"
+                    fillOpacity={entry.selected ? 1 : 0.35}
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </Card>
+        </div>
+      </QuarterFrame>
+
+      {/*
+        * Fuori dalla cornice: quello che parla dei dodici mesi e che il
+        * selettore non tocca. **Ognuno dichiara il proprio periodo nel
+        * titolo** — "ultimi {months} mesi" — perché spostare i blocchi senza
+        * dirlo sposterebbe la confusione invece di toglierla.
+        *
+        * *(Fino al 06.09.2026 qui c'era anche lo stress per reparto, che
+        * mostrava sempre l'ultimo mese mentre il resto della cornice seguiva
+        * il selettore: era il difetto aperto da M3, e stare fuori lo rendeva
+        * leggibile senza chiuderlo. Adesso il provider sa rispondere per
+        * trimestre, quindi la tabella è entrata dentro.)*
+        */}
 
       <div className="grid lg:grid-cols-2 gap-6">
         <Card className="p-5">

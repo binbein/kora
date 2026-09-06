@@ -158,10 +158,6 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
         ]
       : []),
     queryClient.prefetchQuery({
-      queryKey: queryKeys.company.latestStress(),
-      queryFn: () => dataProvider.getLatestStressByDepartment(),
-    }),
-    queryClient.prefetchQuery({
       queryKey: queryKeys.company.earlyAlert(),
       queryFn: () => dataProvider.getEarlyAlert(),
     }),
@@ -275,6 +271,15 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
       queryClient.prefetchQuery({
         queryKey: queryKeys.company.report(quarterKey(period)),
         queryFn: () => dataProvider.getHrReport(period),
+      }),
+      /* Lo stress per reparto è entrato in questo blocco il 06.09.2026, quando
+         ha smesso di essere una lettura sola: prima era una chiave fissa qui
+         sopra, adesso è una per trimestre come lo snapshot e il report — e il
+         selettore le attraversa tutte e quattro senza scaldarsi nulla in
+         mezzo. */
+      queryClient.prefetchQuery({
+        queryKey: queryKeys.company.stressByDepartment(quarterKey(period)),
+        queryFn: () => dataProvider.getStressByDepartment(period),
       }),
     ]),
   ]);

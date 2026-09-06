@@ -720,7 +720,7 @@ export const de: Dictionary = {
     distributionSubtitle: "kumuliert vom Beginn des Zeitfensters bis {quarter}",
     distributionEntry: "{service}: {count}",
 
-    stressByDepartment: "Stress nach Abteilung · letzter Monat",
+    stressByDepartment: "Stress nach Abteilung · letzter Monat des Quartals",
     departmentMeta: "{employees} Mitarbeitende · {measured} gemessen",
     departmentScore: "{percent} · {level}",
     suppressed: "Unter der Schwelle",
