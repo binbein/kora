@@ -287,6 +287,31 @@ export type RapidCheckAnswer = {
   employeeId?: string;
 };
 
+/**
+ * Il link anonimo del check rapido (§8, §10.A.5): un token, un reparto.
+ *
+ * È la metà del modello di misurazione che rende il dato indipendente
+ * dall'adozione: rispondere non richiede un account, quindi il reparto non può
+ * arrivare dalla persona e lo porta il link.
+ *
+ * IL PERIMETRO È QUESTO E NON DEVE CRESCERE. Il token lo risolve chiunque
+ * abbia l'indirizzo, senza autenticazione: il nome dell'azienda e del reparto
+ * sono il minimo che serve a chi risponde per sapere dove finisce la sua
+ * risposta, e un campo in più — organico, punteggi, persone — farebbe di questa
+ * lettura un'API pubblica sull'azienda cliente.
+ *
+ * `validUntil` è l'ultimo giorno in cui il link risponde. Come si genera un
+ * token, come lo si revoca e come lo si rinnova sono lavoro dell'MVP
+ * (`docs/CONTRATTO-DATI.md` §8.3): qui è una stringa opaca che il server
+ * risolve, ed è tutto ciò che il client può farne.
+ */
+export type RapidCheckLink = {
+  companyName: string;
+  departmentId: string;
+  departmentName: string;
+  validUntil: Date;
+};
+
 // ---------------------------------------------------------------------------
 // ROI
 // ---------------------------------------------------------------------------

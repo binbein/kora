@@ -30,6 +30,7 @@ import type {
   ProfessionalSession,
   Quarter,
   RapidCheckAnswer,
+  RapidCheckLink,
   RoiSnapshot,
   ServiceUsageMonth,
   Session,
@@ -404,19 +405,41 @@ export interface DataProvider {
   getRapidCheckAnswer(): Promise<RapidCheckAnswer | null>;
 
   /**
+   * A quale azienda e a quale reparto porta un link anonimo (§10.A.5).
+   *
+   * `null` copre **due casi che il client non distingue**: il token non esiste,
+   * oppure è scaduto. È deliberato — a chi apre un link morto la differenza non
+   * serve, e dirgliela direbbe a chiunque provi un token a caso quali token
+   * sono esistiti.
+   */
+  getRapidCheckLink(token: string): Promise<RapidCheckLink | null>;
+
+  /**
    * Registra la risposta al check rapido: una domanda, un tocco.
    *
-   * Prende il solo valore perché chi risponde è la persona autenticata e il suo
-   * reparto lo sa il server — è la stessa ragione per cui `getCompany()` non
-   * prende un identificatore (`docs/CONTRATTO-DATI.md` §7). La variante su link
-   * anonimo del §8 porterà il reparto dal link, non da qui.
+   * Senza il secondo argomento prende il solo valore, perché chi risponde è la
+   * persona autenticata e il suo reparto lo sa il server — è la stessa ragione
+   * per cui `getCompany()` non prende un identificatore
+   * (`docs/CONTRATTO-DATI.md` §7).
+   *
+   * **Con `{ token }` la risposta arriva dal link anonimo**: il reparto lo porta
+   * il link e la risposta **non ha `employeeId`**, che è il caso per cui quel
+   * campo del tipo è opzionale. Rifiuta un token che non risolve — un link
+   * scaduto o inventato non deve poter scrivere nel reparto di nessuno.
+   *
+   * **Il facoltativo è un argomento di scrittura, non un campo di lettura**:
+   * assente significa *"risponde la persona autenticata"*, non *"il token è
+   * vuoto"*. Sono due chiamate diverse, non la stessa con un buco.
    *
    * **Nella demo la risposta non entra negli aggregati**: le dodici curve della
    * dashboard sono la storia curata del §8, e un tocco fatto durante il pitch non
    * deve poterla muovere. In produzione questa scrittura è invece esattamente
    * ciò che alimenta quelle serie.
    */
-  submitRapidCheck(value: RapidCheckAnswer["value"]): Promise<RapidCheckAnswer>;
+  submitRapidCheck(
+    value: RapidCheckAnswer["value"],
+    options?: { token: string },
+  ): Promise<RapidCheckAnswer>;
 
   /**
    * I consulti di medico virtuale già avvenuti, dal più vecchio.

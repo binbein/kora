@@ -27,6 +27,17 @@ export const queryKeys = {
    */
   session: () => ["session"] as const,
 
+  /*
+   * Il link anonimo del check rapido (§10.A.5). Sta alla radice e **non sotto
+   * `employee`**, che è la radice di chi ha un account: chi apre quel link non
+   * ne ha uno, e mettercela sotto vorrebbe dire che una prenotazione — che
+   * invalida quella radice — farebbe rileggere un link che non c'entra niente.
+   *
+   * Il token entra nella chiave perché è la domanda: due token sono due
+   * risposte diverse.
+   */
+  rapidCheckLink: (token: string) => ["rapid-check-link", token] as const,
+
   professional: {
     /** Radice di tutto ciò che riguarda un professionista: invalida il resto. */
     root: (professionalId: string) => ["professional", professionalId] as const,
