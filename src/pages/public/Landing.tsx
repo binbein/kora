@@ -476,11 +476,17 @@ function ValueCard({
   title,
   description,
   color,
+  link,
 }: {
   icon: LucideIcon;
   title: string;
   description: string;
   color: "primary" | "secondary" | "executive";
+  /* La porta verso `/activate`, e ce l'ha **una card su tre**: il dipendente è
+     l'unico dei tre lati che ha qualcosa da fare da qui (§10.A.6). Facoltativa
+     perché le altre due non hanno una destinazione, non perché nessuno la
+     passi. */
+  link?: { to: string; label: string };
 }) {
   const bgMap = {
     primary: "bg-primary/10",
@@ -501,6 +507,16 @@ function ValueCard({
       <p className="text-sm text-muted-foreground leading-relaxed">
         {description}
       </p>
+      {link && (
+        <p className="mt-3">
+          <Link
+            to={link.to}
+            className="rounded-sm text-sm text-foreground underline underline-offset-4 hover:text-secondary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            {link.label}
+          </Link>
+        </p>
+      )}
     </Card>
   );
 }
@@ -784,6 +800,10 @@ export default function Landing() {
               title={t.public.landing.value.employee.title}
               description={t.public.landing.value.employee.body}
               color="secondary"
+              link={{
+                to: "/activate",
+                label: t.public.landing.value.employee.activate,
+              }}
             />
             <ValueCard
               icon={Building2}

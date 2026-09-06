@@ -885,7 +885,7 @@ export const de: Dictionary = {
         },
         consent: {
           title: "Einwilligung der Mitarbeitenden",
-          body: "Jede Person bestätigt die Einwilligung bei der Aktivierung und kann sie jederzeit widerrufen.",
+          body: "Jede Person gibt ihre Einwilligung bei der Aktivierung, vor allen Daten. Widerruf und Export der eigenen Daten kommen mit dem Produktivbetrieb.",
         },
       },
     },
@@ -1111,6 +1111,7 @@ export const de: Dictionary = {
         employee: {
           title: "Für die Mitarbeitenden",
           body: "Einfacher Zugang zu psychischer Gesundheit, virtuellem Arzt und Wohlbefinden. Alles privat, alles an einem Ort.",
+          activate: "So wird aktiviert",
         },
         company: {
           title: "Für das Unternehmen",
@@ -1187,6 +1188,88 @@ export const de: Dictionary = {
         "Vielen Dank für Ihr Interesse. Unser Team meldet sich innerhalb eines Arbeitstages bei Ihnen.",
       successHome: "Zur Startseite",
       successRoi: "Berechnen Sie inzwischen die Rendite",
+    },
+
+    /* Die Kontoaktivierung (§10.A.6): vier Schritte auf einer Route.
+       Konsumentenregister wie der anonyme Link. Die zehn Fragen nennen keine
+       Symptome und sind geschlechtsneutral formuliert. */
+    activate: {
+      title: "Aktiviere dein Konto",
+      intro:
+        "Das Abonnement zahlt dein Unternehmen. Was du hier antwortest, bleibt deins.",
+
+      code: {
+        title: "Der Code deines Unternehmens",
+        hint: "Du findest ihn in der Einladung, die du erhalten hast.",
+        label: "Unternehmenscode",
+        placeholder: "DEMO-SA-2026",
+        submit: "Weiter",
+        validation: {
+          required: "Gib den Code deines Unternehmens ein.",
+          unknown: "Code nicht erkannt",
+        },
+        error: {
+          title: "Wir konnten den Code nicht prüfen",
+          body: "Versuch es gleich nochmals.",
+        },
+      },
+
+      consent: {
+        title: "Die Einwilligung, vor den Daten",
+        whatTitle: "Was Kora verarbeitet",
+        what: "Deine Antworten hier und was du von der Plattform nutzt: Sitzungen, Konsultationen, Check-ups.",
+        whoTitle: "Für wen",
+        who: "Für dich: daraus entstehen dein Profil und dein Wohlbefindensplan.",
+        companyTitle: "Was dein Unternehmen sieht",
+        company:
+          "Nur aggregierte und anonyme Daten pro Abteilung. Nie wer du bist, nie was du geantwortet hast.",
+        checkbox:
+          "Ich willige in die Bearbeitung meiner Gesundheitsdaten durch Kora ein",
+        submit: "Gelesen, ich willige ein",
+        required: "Ohne Einwilligung geht es nicht weiter.",
+        error: {
+          title: "Wir konnten das Konto nicht aktivieren",
+          body: "Versuch es gleich nochmals.",
+        },
+      },
+
+      questions: {
+        company: "Du aktivierst dein Konto bei {company}",
+        title: "Zehn Fragen, ein einziges Mal",
+        hint: "Es gibt keine richtige Antwort. Antworte, wie es dir kommt.",
+        scale: {
+          1: "Nie",
+          2: "Selten",
+          3: "Manchmal",
+          4: "Oft",
+          5: "Immer",
+        },
+        question: {
+          sleep_1: "Fühlst du dich beim Aufwachen kräftig?",
+          sleep_2: "Gehst du ungefähr zur gleichen Zeit ins Bett?",
+          stress_1: "Kannst du am Ende des Tages abschalten?",
+          stress_2: "Hast du das Gefühl, die Arbeitslast im Griff zu haben?",
+          activity_1: "Bewegst du dich mindestens eine halbe Stunde pro Tag?",
+          activity_2: "Findest du in der Woche Zeit für Sport?",
+          nutrition_1: "Isst du jeden Tag Früchte und Gemüse?",
+          nutrition_2: "Kannst du in Ruhe essen?",
+          mental_1: "Bist du im Lauf des Tages guter Laune?",
+          mental_2: "Hast du jemanden zum Reden, wenn du es brauchst?",
+        },
+        remaining: "Es fehlen noch {n}",
+        submit: "Zeig mir mein Profil",
+        error: {
+          title: "Wir konnten die Antworten nicht speichern",
+          body: "Tipp erneut, um es nochmals zu versuchen.",
+        },
+      },
+
+      profile: {
+        title: "Dein Profil ist bereit",
+        hint: "Der Wert kommt aus deinen zehn Antworten.",
+        weakestTitle: "Der Bereich, mit dem du startest",
+        home: "Zu deiner Startseite",
+      },
     },
 
     /* Der anonyme Link des Schnellchecks (§10.A.5). Konsumentenregister —

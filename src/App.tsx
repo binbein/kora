@@ -12,6 +12,7 @@ import Roi from '@/pages/public/Roi';
 import Pricing from '@/pages/public/Pricing';
 import DemoRequest from '@/pages/public/DemoRequest';
 import RapidCheck from '@/pages/public/RapidCheck';
+import Activate from '@/pages/public/Activate';
 
 // Employee portal
 import EmployeeLayout from '@/components/employee/EmployeeLayout';
@@ -61,6 +62,13 @@ const AppRoutes = () => (
       niente guardia, perché non si entra in nessun portale.
     */}
     <Route path="/check/:token" element={<RapidCheck />} />
+    {/*
+      L'attivazione dell'account (§10.A.6). Anche lei fuori da ogni layout e
+      senza guardia: chi la apre ha ricevuto un invito, non sta navigando il
+      sito. I quattro passi vivono dentro il componente e non nell'indirizzo —
+      tre di loro non vogliono dire niente da soli.
+    */}
+    <Route path="/activate" element={<Activate />} />
 
     {/*
       Ogni portale è dietro la sua guardia, che è **una porta che concede**: in

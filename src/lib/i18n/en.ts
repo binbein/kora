@@ -925,7 +925,7 @@ export const en: Dictionary = {
         },
         consent: {
           title: "Employee consent",
-          body: "Every employee confirms consent during activation and can withdraw it at any time.",
+          body: "Every employee gives consent at activation, before any data. Withdrawal and export of your own data arrive with the move to production.",
         },
       },
     },
@@ -1154,6 +1154,7 @@ export const en: Dictionary = {
         employee: {
           title: "For the employee",
           body: "Simple access to mental health, a virtual doctor and wellbeing. All private, all in one place.",
+          activate: "How to activate",
         },
         company: {
           title: "For the company",
@@ -1227,6 +1228,86 @@ export const en: Dictionary = {
         "Thank you for your interest. Our team will contact you within one working day.",
       successHome: "Back to home",
       successRoi: "In the meantime, calculate the return",
+    },
+
+    /* Account activation (§10.A.6): four steps on one route. Consumer register,
+       like the anonymous link. The ten questions name no symptoms. */
+    activate: {
+      title: "Activate your account",
+      intro:
+        "Your company pays for the subscription. What you answer here stays yours.",
+
+      code: {
+        title: "Your company's code",
+        hint: "You'll find it in the invitation you received.",
+        label: "Company code",
+        placeholder: "DEMO-SA-2026",
+        submit: "Continue",
+        validation: {
+          required: "Enter your company's code.",
+          unknown: "Code not recognised",
+        },
+        error: {
+          title: "We couldn't check the code",
+          body: "Try again in a moment.",
+        },
+      },
+
+      consent: {
+        title: "Consent, before any data",
+        whatTitle: "What Kora processes",
+        what: "Your answers here and what you use of the platform: sessions, consultations, check-ups.",
+        whoTitle: "For whom",
+        who: "For you: they build your profile and your wellbeing plan.",
+        companyTitle: "What your company sees",
+        company:
+          "Only aggregated, anonymous figures per department. Never who you are, never what you answered.",
+        checkbox: "I consent to Kora processing my health data",
+        submit: "I've read this and I consent",
+        required: "Consent is needed to continue.",
+        error: {
+          title: "We couldn't activate the account",
+          body: "Try again in a moment.",
+        },
+      },
+
+      questions: {
+        company: "You're activating your account at {company}",
+        title: "Ten questions, once only",
+        hint: "There's no right answer. Answer as it comes.",
+        scale: {
+          1: "Never",
+          2: "Rarely",
+          3: "Sometimes",
+          4: "Often",
+          5: "Always",
+        },
+        question: {
+          sleep_1: "Do you wake up feeling rested?",
+          sleep_2: "Do you go to bed at roughly the same time?",
+          stress_1: "At the end of the day, can you switch off?",
+          stress_2: "Do you feel your workload is under control?",
+          activity_1: "Do you move for at least half an hour a day?",
+          activity_2: "Do you find time for exercise during the week?",
+          nutrition_1: "Do you eat fruit and vegetables every day?",
+          nutrition_2: "Do you manage to eat calmly?",
+          mental_1: "Are you in good spirits during the day?",
+          mental_2: "Do you have someone to talk to when you need it?",
+        },
+        remaining: "{n} left",
+        submit: "See your profile",
+        error: {
+          title: "We couldn't save your answers",
+          body: "Tap again to try once more.",
+        },
+      },
+
+      profile: {
+        title: "Your profile is ready",
+        hint: "The score comes from your ten answers.",
+        weakestTitle: "Where you start",
+        home: "Go to your home",
+      },
     },
 
     /* The anonymous rapid-check link (§10.A.5). Consumer register, like the
