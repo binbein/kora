@@ -2154,8 +2154,8 @@ non si contano, l'allineamento fra verbali e commenti, e le parole che espongono
 con le promesse che non teniamo, e la soglia di anonimato con la sottrazione che
 non deve esistere, e il numero d'emergenza dove la persona dichiara di stare
 malissimo, e le zero richieste esterne rese eseguibili, e **il link anonimo del
-check rapido**. Non aggiungono
-schermate — **tranne l'ultima**, ed è la riga qui sotto.
+check rapido**, e **la disdetta dal lato del dipendente**. Non aggiungono
+schermate — **tranne il link anonimo**, ed è la riga qui sotto.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
 volta** (04.09.2026): il listino porta ora *"prima sessione entro 72 ore"*, che è
@@ -8939,6 +8939,140 @@ Sulla build demo a 1280×900, console aperta, navigando **solo dai link interni*
   aggiunge una"* era già aperta nel contratto (§3) e questa passata non la
   chiude. Nella demo non si vede, perché la risposta anonima non alimenta
   nessun aggregato.
+
+#### La disdetta dal lato del dipendente (06.09.2026)
+
+**Questo verbale non conta i propri commit**, e il conto lo dà git con il comando
+in testa a questo file. **Nessuna rotta e nessuna schermata nuova**: restano 27 e
+28. `EXPECTED_KEYS` **805 → 815**, guardrail **120 → 123**.
+
+##### Uno stato che esisteva e che nessuno poteva scrivere
+
+`ProfessionalSession.cancellationReasonKey` ha due valori dal 17.08.2026, e
+`by_patient` era **un valore dell'enumerazione che solo il dataset poteva
+scrivere**: a disdire era soltanto la professionista. Dal 18.08.2026 il
+dipendente **vede** una disdetta nella sua home — la seduta resta al suo posto
+con chi l'ha annullata — e non poteva farne una: vedeva un verso solo di un
+verbo che il dominio dichiarava a due.
+
+Nel contratto era la prima delle cinque voci aperte del §8.5, e la riga
+diceva alla lettera che *«il metodo per il paziente non c'è»*.
+
+##### Una mutation, un dialogo, nessuna policy
+
+`cancelAppointment(appointmentId)` **è la stessa transizione dall'altro verso**:
+scrive nella stessa mappa `cancellations` con `reasonKey: "by_patient"`, e da lì
+`applyCancellation` proietta sui tre lati — calendario, lista sessioni, home —
+**senza una riga di codice in più**. È la ragione per cui quella mappa portava il
+motivo da prima che qualcuno potesse scrivere il secondo valore: a cambiare è chi
+scrive, non la forma.
+
+**Cerca fra gli appuntamenti di chi è autenticato**, cioè nella lista che
+`getAppointments` restituisce, e non fra tutte le sedute del dominio come fa
+`cancelSession` — che è il metodo di chi cura e ha davanti la propria agenda. Da
+qui **"non trovato" copre già "non è tuo"**, e i rifiuti restano tre invece di
+quattro: non trovato, non in programma, già cominciato. Ognuno con il suo
+guardrail e il suo lancio, come l'altro verso.
+
+**I due rifiuti sono separati dove l'altro verso li tiene insieme**, e non è
+incoerenza: là le due metà coincidono per costruzione, qui la prima è
+**raggiungibile davvero**, perché `getAppointments` restituisce anche le
+annullate ancora future — chi tiene la home aperta mentre la professionista
+disdice ha davanti un pulsante su una seduta che non è più in programma.
+
+**Non porta testi.** La nota è di chi cura, il messaggio è la sua voce verso il
+paziente: una riga scritta da questo lato avrebbe **un terzo destinatario**, e
+con lui le domande su quando la legge e come le arriva — cioè la notifica, che è
+una delle quattro voci che restano aperte.
+
+##### Il guardrail che non è stato scritto, e perché
+
+La proposta prevedeva un guardrail *"se serve"* a dimostrare che la proiezione
+del professionista mostra «Annullata dal paziente». **Non serve, e scriverlo
+sarebbe stato un controllo tautologico**: `applyCancellation` è l'unico punto che
+produce lo stato annullato, quindi un controllo che rilegga da lì la seduta
+appena scritta verificherebbe l'espressione contro sé stessa. È la ragione già
+scritta su `bookAppointment` — *«appoggiarsi a `getAvailableSlots` sembrava
+naturale ed era un controllo tautologico»* — e sull'invariante della media
+aziendale nel contratto. La prova è a schermo, ed è nel giro qui sotto.
+
+##### `alert-dialog` esce dal magazzino, ed è la quarta volta
+
+Il §3 obbliga a verificare **a schermo** che le varianti `data-*` di un
+componente shadcn corrispondano ad attributi che Radix scrive davvero. Fatto, e
+non dedotto dalle tre volte precedenti: overlay e contenuto usano
+`data-[state=open]` e `data-[state=closed]`, Radix scrive `data-state` su
+entrambi, e con il dialogo aperto l'`animationName` calcolato è `enter` su tutti
+e due — cioè la variante aggancia. Nessun `shadcn add`, nessuna dipendenza nuova.
+
+**È un `AlertDialog` e non un `Dialog`**, ed è la differenza fra i due gesti: la
+disdetta della professionista si **scrive**, questa è una domanda con due
+risposte. Un `AlertDialog` non si chiude cliccando fuori e parte con il fuoco
+dentro — per un gesto che non si ritira è la forma giusta, ed è il motivo per cui
+quel componente esisteva senza chiamanti.
+
+**Una riga di codice non ovvia**: `AlertDialogAction` chiude il dialogo al clic,
+e con una scrittura che può fallire quella è la chiusura sbagliata — lo stato
+d'errore comparirebbe sotto un dialogo che non c'è più. Il clic fa
+`preventDefault()` e a chiudere è `onSuccess`.
+
+##### Verificato
+
+Il giro intero, sulla build demo a 1280×900, console aperta, **solo link
+interni**:
+
+- prenotato **venerdì 25.09 alle 10:00** dal portale dipendente; la riga compare
+  in home con il suo pulsante e il contatore in programma passa da 3 a **4**;
+- **annullato dalla home**: il dialogo dice *"Annullare l'appuntamento?"*,
+  *"venerdì 25.09.2026, alle 10:00 con Dr.ssa Meier"* e *"L'ora torna libera. Se
+  cambi idea, prenota di nuovo."*; confermando, la riga diventa **"Annullato"**
+  con *"Hai annullato questo appuntamento."*, il pulsante sparisce da quella riga
+  e il contatore torna a **3 in programma** — mentre **`used` resta 3**, perché
+  conta le erogate;
+- **nel portale professionista**, `/professional/sessions` → "Annullate (2)":
+  *"Laura Bernasconi · Venerdì 25.09.2026, 10:00"* con **"Annullata dal
+  paziente"**. Nel calendario la cella delle 10:00 di venerdì 25 è tornata
+  **"Libera"**;
+- **l'ora è di nuovo prenotabile**: riaprendo la prenotazione della Dr.ssa Meier,
+  venerdì 25.09 ha di nuovo **10:00** fra gli orari. È l'invariante del §10.D.6
+  che vale da sé — `getAvailableSlots` sottrae le sole sedute **non** annullate,
+  e la disdetta del dipendente passa dalla stessa mappa, quindi non è stato
+  necessario toccare quella sottrazione;
+- **le quattro lingue sul dialogo**: IT, DE, FR, EN, raggiunte dal selettore
+  della barra pubblica e poi con i link interni. Il tedesco manda la riga
+  d'effetto a due righe e non sborda;
+- **da tastiera**: il fuoco parte su "Torna indietro", un Tab arriva su "Annulla
+  l'appuntamento" con l'anello visibile, e resta dentro il dialogo;
+- **contrasto sul dialogo**: **5 nodi di testo percorsi**, zero sotto soglia —
+  titolo 14.60:1, riepilogo e riga d'effetto 4.90:1, "Torna indietro" 14.60:1,
+  "Annulla l'appuntamento" 11.45:1;
+- **lo stato d'errore**, in sviluppo con `?fail=cancelAppointment`: il dialogo
+  **resta aperto**, sotto i pulsanti compare *"Appuntamento non annullato — L'appuntamento
+  è ancora in programma: riprova."*, il contatore non si muove e la seduta resta
+  in programma;
+- console muta in tutti i passaggi; `npm run build`, `npm run build:demo`, `lint`
+  e `typecheck` a zero.
+
+##### Trovato e non toccato
+
+- **Il preavviso non è deciso, e da oggi pesa di più.** Nessuno dei due metodi
+  guarda quanto manca alla seduta: guardano solo che sia futura. Finché a
+  disdire era solo chi cura era una cortesia fra professionisti; adesso che
+  disdice anche chi prenota, è la regola che decide se un'ora persa la paga
+  qualcuno. Resta una delle quattro voci aperte del `docs/CONTRATTO-DATI.md`
+  §8.5, insieme a chi paga la disdetta tardiva, alla riprogrammazione e alla
+  notifica — e **la notifica è quella che questa passata rende più visibile**:
+  la professionista scopre la disdetta solo aprendo il portale.
+- **Chi disdice non può ripensarci.** Non esiste un "annulla l'annullamento": si
+  riprenota, e la frase del dialogo lo dice invece di lasciarlo intendere. Nel
+  caso di una seduta ricorrente — il giovedì alle 17:30 — riprenotare **non
+  riporta quell'ora**, perché non è una fascia dichiarata: è la distinzione fra
+  liberare e riproporre che il §8.5 tiene da agosto, e qui si vede dal lato di
+  chi ha disdetto.
+- **Il pulsante compare su ogni riga in programma, senza limite di tempo.**
+  Nella demo le sedute future sono tutte lontane, quindi non si vede; in
+  produzione, senza una policy di preavviso, questo vuol dire che si può
+  disdire cinque minuti prima.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
