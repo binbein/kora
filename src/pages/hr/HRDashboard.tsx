@@ -453,9 +453,9 @@ export default function HRDashboard() {
       />
 
       {/*
-        * Dentro la cornice: le sei KPI, la ciambella e il grafico del
-        * risparmio. Sono gli otto elementi che seguono il selettore, e sono
-        * tutti e soli quelli.
+        * Dentro la cornice: le sei KPI, lo stress per reparto, la ciambella e
+        * il grafico del risparmio. Sono i nove elementi che seguono il
+        * selettore, e sono tutti e soli quelli.
         */}
       <QuarterFrame
         quarters={quarters}
