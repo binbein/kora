@@ -2160,7 +2160,8 @@ non deve esistere, e il numero d'emergenza dove la persona dichiara di stare
 malissimo, e le zero richieste esterne rese eseguibili, e **il link anonimo del
 check rapido**, e **la disdetta dal lato del dipendente**, e **l'attivazione
 dell'account**, e **lo stress per reparto dentro la cornice**, e **i residui
-dell'attivazione e della cornice**. Non aggiungono
+dell'attivazione e della cornice**, e **l'id della prenotazione con il codice
+azienda**. Non aggiungono
 schermate — **tranne il link anonimo e l'attivazione**, ed è la riga qui sotto.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
@@ -9385,6 +9386,132 @@ Sulla build demo a 1280×900, console aperta:
 - **Il `CLAUDE.md` §8 nomina il codice e resta com'è**: è lì che una cifra della
   demo vive (§2.4), e il PITCH la cita rimandando invece di duplicarla.
 
+#### L'id della prenotazione, e il codice azienda che non si vedeva (09.09.2026)
+
+**Questo verbale non conta i propri commit.** Nessuna schermata nuova e nessun
+numero del `CLAUDE.md` §8 o §9 che si muova: rotte **28**, schermate **29**.
+`EXPECTED_KEYS` **864 → 866**, le due chiavi della card; guardrail **125 → 126**.
+
+##### Il difetto, e chi l'ha trovato
+
+**L'ha trovato la prova manuale di un founder**, il 09.09.2026, in tre gesti:
+**prenota venerdì 25.09 alle 10:00 → annulla → riprenota lo stesso orario**. La
+prenotazione nuova nasceva **«Annullata»**, e la home accumulava una riga
+annullata per ogni tentativo.
+
+**La causa era un commento che diceva il vero.** L'id era
+`booked-<professionista>-<istante>`, con accanto *"deterministico: lo stesso slot
+non può produrre due id diversi"* — e `cancellations` è indicizzata per id,
+quindi la seduta nuova **ereditava l'annullamento della vecchia** prima ancora di
+esistere. Il commento non descriveva una svista: descriveva esattamente la
+proprietà che rompeva tutto.
+
+**La lezione sta nel commento riscritto, non in questo verbale**, perché è lì che
+la rilegge chi ci mette mano: **determinismo non è unicità**. Una chiave
+costruita da ciò che il record descrive regge finché due record non possono
+descrivere la stessa cosa, e due prenotazioni sulla stessa ora sono quel caso —
+la seconda esiste **perché** la prima è stata annullata.
+
+##### Perché nessuna verifica l'aveva presa
+
+**Perché tutte si fermavano al secondo gesto.** Prenota e annulla: lo slot
+sparisce, l'ora torna libera, il contatore non si muove — ogni invariante che i
+verbali elencano torna, e infatti tornava. Il **terzo** gesto è l'unico che chieda
+*"e adesso che cosa c'è a quell'ora?"*, ed è l'unico che potesse rispondere male.
+
+Da qui il passo di verifica che entra fra le note per chi riprende, in fondo a
+questo file: chi tocca prenotazioni o cancellazioni percorre la sequenza intera,
+e la stessa domanda vale per ogni coppia scrittura/disfacimento del dominio.
+
+##### La correzione
+
+Un progressivo del provider entra nell'id — `booked-<professionista>-<istante>-<n>`
+— e **non riparte mai**, nemmeno dopo un annullamento: gli id di ciò che è stato
+annullato restano in `cancellations`, e riusarne uno rimetterebbe in piedi il
+difetto. Ogni prenotazione è così un record suo, e **la storia resta leggibile**:
+dopo la riprenotazione ci sono una riga annullata e una in programma sullo stesso
+orario, che è ciò che è successo.
+
+Il guardrail nuovo verifica che l'id non appartenga già a nessun altro, e guarda
+**tutti e due** gli archivi: le prenotazioni dicono se il record esiste,
+`cancellations` dice se quell'id ha una storia — ed è la metà che il difetto ha
+mostrato essere quella che conta.
+
+`getAvailableSlots` **non è stato toccato**, ed è stato verificato invece che dato
+per fatto: toglie dai proponibili le sole sedute **non annullate**, leggendo la
+proiezione — `sessionsOf` applica `applyCancellation`, quindi a decidere è
+`status`. Il suo commento adesso lo dice, perché è ciò che tiene insieme le due
+metà: l'ora torna libera **e** l'annullata resta dov'è.
+
+##### Il codice azienda non si vedeva da nessuna parte
+
+`/activate` chiede un codice dal 06.09.2026 e il `CLAUDE.md` §8 lo dichiara, ma
+**nessuna schermata lo mostrava**: chi deve consegnarlo ai propri dipendenti non
+aveva dove leggerlo, e chi presenta nemmeno.
+
+**Sta nel portale HR perché è l'HR che lo consegna** — non nel back-office, dove
+nascerà con l'onboarding dell'azienda (`docs/CONTRATTO-DATI.md` §8.3). È una card
+sopra l'elenco, con il codice in evidenza e selezionabile, e una riga che dice
+cosa ci si fa e nient'altro.
+
+**E il valore ha smesso di essere una costante accanto all'azienda**:
+`Company.activationCode` sta sul dato, perché a leggerlo sono in due — la card e
+`activate` — e due letture dello stesso fatto vengono dallo stesso posto (§5.5).
+Il campo è nel contratto §3 con ciò che **non** promette: come si genera, si
+revoca e si rinnova resta §8.3, insieme al token del link anonimo e per la stessa
+ragione — in produzione un codice leggibile è indovinabile.
+
+##### Verificato
+
+Sulla build demo a 1280×900, console aperta, tutto per navigazione interna:
+
+- **la sequenza dei tre gesti**: prenotata la fascia di venerdì 25.09 alle 10:00,
+  annullata dalla home, riprenotata la stessa ora → la home mostra **una riga
+  annullata e una in programma** sullo stesso orario, non una sola nata
+  annullata;
+- **poi dal portale professionista** annullata quella in programma: le sessioni
+  passano da «In programma (19) · Annullate (2)» a «(18) · (3)», e la fascia
+  delle 10:00 **torna fra i proponibili** — riaperto il dialogo di prenotazione,
+  venerdì 25.09 è di nuovo offerto;
+- **riprenotata una terza volta**: la home mostra **tre record** sullo stesso
+  orario — *"Hai annullato questo appuntamento"*, *"Dr.ssa Meier ha annullato
+  questo appuntamento"* e una in programma — cioè le due disdette con la loro
+  attribuzione e la seduta viva. `used` resta **3 su 10**, e a muoversi è la
+  parte in programma;
+- **la card del codice nelle quattro lingue**, con il codice su una riga sola in
+  tutte: *Codice di attivazione · Aktivierungscode · Code d'activation ·
+  Activation code*. Contrasti misurati sulla card: **15.17** il titolo e il
+  codice, **5.10** la riga sotto — tutti sopra l'AA. `user-select: all`, DM Sans
+  e `tabular-nums` confermati sul nodo, non dedotti dalle classi;
+- **l'attivazione legge dall'azienda**: digitato `demo-sa-2026` in minuscolo,
+  il passo delle domande apre con *"Stai attivando il tuo account in Demo SA"*;
+- **console muta** per tutto il giro, e `npm run build`, `build:demo`, `lint`,
+  `typecheck` a zero.
+
+**Una nota sullo strumento, non sul prodotto**: il pannello del browser di questa
+sessione riportava `visibilityState: hidden` a scheda attiva, quindi le uscite dei
+dialoghi Radix non completavano e l'overlay chiuso restava montato sopra la pagina
+— il caso che il `CLAUDE.md` §11 descrive. Si è rimessa a fuoco la scheda a ogni
+chiusura di dialogo prima di proseguire, e **le misure qui sopra sono state prese
+con `innerWidth` a 1280**, non a scheda sospesa.
+
+##### Trovato e non toccato
+
+- **Il back-office non mostra il codice**, e non è una dimenticanza: là il codice
+  nascerà con l'onboarding dell'azienda, che è lavoro dell'MVP
+  (`docs/CONTRATTO-DATI.md` §8.3). Mostrarlo prima vorrebbe dire disegnare metà
+  di una schermata che non esiste.
+- **Niente pulsante «Copia»**: il gesto che serve è selezionare il codice per
+  dettarlo o incollarlo, e `select-all` lo dà senza promettere un'operazione che
+  non tutti i browser concedono.
+- **La card non promette niente su chi vede cosa.** Quella frase è del banner
+  privacy che le sta sotto, e ripeterla sarebbe la stessa garanzia detta due
+  volte nella stessa schermata.
+- **Il calendario del professionista mostra una cella sola** all'ora che porta
+  più record, perché le annullate non occupano. È coerente con la griglia — che
+  disegna ciò che occupa — e la lista sessioni le distingue con i suoi tre tab.
+  Non è stato toccato.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -10783,3 +10910,16 @@ Nominare i confini è metà del lavoro, e questi quattro tornano a proporsi da s
 - ~~Un `✓` testuale in `Psicologi.jsx`~~ → sostituito con l'icona lucide quando
   M3 ha rifatto la prenotazione, insieme al `bookingStep` morto. Era l'unico
   caso in `src/`.
+- **Chi tocca prenotazioni o cancellazioni percorre la sequenza intera, e la
+  sequenza è: prenota → annulla → riprenota lo stesso orario** (09.09.2026).
+  Non è una raccomandazione generica: è il caso che ha nascosto per settimane
+  l'id non univoco delle prenotazioni, e le verifiche delle passate precedenti
+  non lo percorrevano — si fermavano tutte al **secondo** gesto, dove ogni
+  invariante torna. Il terzo è quello che chiede *"e adesso che cosa c'è a
+  quell'ora?"*, ed è l'unico che possa rispondere male. Il verbale
+  del 09.09.2026 racconta com'è emerso.
+
+  **Vale per ogni coppia scrittura/disfacimento**, non per le sole prenotazioni:
+  chiudere e riaprire una fascia, rispondere e correggere un check rapido,
+  rifare un assessment. La domanda da farsi è sempre la terza, **mai la
+  seconda**.
