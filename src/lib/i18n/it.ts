@@ -1750,7 +1750,6 @@ export const it = {
         title: "Il codice della tua azienda",
         hint: "Lo trovi nell'invito che hai ricevuto.",
         label: "Codice azienda",
-        placeholder: "DEMO-SA-2026",
         submit: "Continua",
         validation: {
           required: "Scrivi il codice della tua azienda.",

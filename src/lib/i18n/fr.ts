@@ -1298,7 +1298,6 @@ export const fr: Dictionary = {
         title: "Le code de ton entreprise",
         hint: "Tu le trouves dans l'invitation que tu as reçue.",
         label: "Code entreprise",
-        placeholder: "DEMO-SA-2026",
         submit: "Continuer",
         validation: {
           required: "Saisis le code de ton entreprise.",
