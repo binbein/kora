@@ -182,7 +182,6 @@ export default function Activate() {
                 <Input
                   id="company-code"
                   className="mt-1.5"
-                  placeholder={t.public.activate.code.placeholder}
                   {...form.register("companyCode")}
                 />
                 {form.formState.errors.companyCode && (

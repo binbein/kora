@@ -1241,7 +1241,6 @@ export const en: Dictionary = {
         title: "Your company's code",
         hint: "You'll find it in the invitation you received.",
         label: "Company code",
-        placeholder: "DEMO-SA-2026",
         submit: "Continue",
         validation: {
           required: "Enter your company's code.",

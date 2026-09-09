@@ -2159,7 +2159,8 @@ con le promesse che non teniamo, e la soglia di anonimato con la sottrazione che
 non deve esistere, e il numero d'emergenza dove la persona dichiara di stare
 malissimo, e le zero richieste esterne rese eseguibili, e **il link anonimo del
 check rapido**, e **la disdetta dal lato del dipendente**, e **l'attivazione
-dell'account**, e **lo stress per reparto dentro la cornice**. Non aggiungono
+dell'account**, e **lo stress per reparto dentro la cornice**, e **i residui
+dell'attivazione e della cornice**. Non aggiungono
 schermate — **tranne il link anonimo e l'attivazione**, ed è la riga qui sotto.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
@@ -9306,6 +9307,83 @@ Sulla build demo a 1280×900, console aperta:
 - **La media dei tre mesi non è stata costruita**, ed è la scelta che il titolo
   dichiara. Se un giorno la si volesse, è un secondo metodo e non una variante di
   questo: due letture della stessa serie che rispondono a due domande diverse.
+
+#### I residui dell'attivazione e della cornice (09.09.2026)
+
+**Questo verbale non conta i propri commit.** Nessuna schermata nuova e nessun
+numero del `CLAUDE.md` §8 o §9 che si muova: rotte **28**, schermate **29**,
+guardrail **125**. `EXPECTED_KEYS` passa da **865 a 864**, ed è l'unico
+conteggio che cambia — una stringa **tolta**, non aggiunta.
+
+##### Il commento che contava otto elementi
+
+La passata del 06.09.2026 ha portato la tabella dello stress dentro la cornice e
+ha aggiornato la testata di `HRDashboard.tsx` — *"lo seguono nove elementi"* —
+**ma non il commento che sta sopra il `QuarterFrame` che li rende**, rimasto a
+*"gli otto elementi che seguono il selettore, e sono tutti e soli quelli"*. Due
+conti dello stesso insieme nello stesso file, e a essere invecchiato era quello
+che si legge stando sul codice invece che in cima.
+
+Adesso dice nove e li elenca **nell'ordine in cui la cornice li rende** — sei
+KPI, stress per reparto, ciambella, risparmio — che è un ordine verificato a
+schermo, non dedotto leggendo il JSX.
+
+##### Il codice azienda esce dai dizionari
+
+`activate.code.placeholder` valeva `DEMO-SA-2026` in tutte e quattro le lingue:
+il codice vero di Demo SA scritto in un secondo posto oltre a `mock/company.ts`
+(§5.5), e **mostrato dentro il campo che lo chiede**. Un segnaposto che porta la
+risposta della domanda che pone non è un aiuto — è una schermata che si finge
+compilata, e nessun prodotto pre-compila il codice dell'azienda di chi si sta
+attivando.
+
+**Il campo non resta muto, ed è la ragione per cui la stringa si è potuta
+togliere invece di riscriverla**: `label` dice cosa vuole — *"Codice azienda"* —
+e `hint` dove si trova — *"Lo trovi nell'invito che hai ricevuto"*. Esistevano
+già tutte e due.
+
+##### Il codice va dove serve a chi presenta
+
+Toglierlo da schermo lo toglie anche a chi sta per aprire `/activate` in sala,
+quindi entra in `docs/PITCH.md`, nel passo *"Da dove viene il 78"*.
+
+**Le dieci risposte no, ed è la parte da non rifare**: c'erano già in chiaro nel
+riquadro ⚠︎ dello stesso passo, e **nell'ordine delle domande** — verificato che
+`ASSESSMENT_QUESTIONS` derivi da `HEALTH_AREAS` due per area, quindi sonno ·
+stress · movimento · alimentazione · salute mentale **è** quell'ordine.
+Riscriverle nel corpo del passo sarebbe stata la cifra ripetuta in due punti che
+questo repository ha sciolto per le chiavi (`CLAUDE.md` §2.7) e per i call site
+(§5.6).
+
+##### Verificato
+
+Sulla build demo a 1280×900, console aperta:
+
+- **`/activate` nelle quattro lingue**, con il campo vuoto e **senza attributo
+  `placeholder`** — misurato sul DOM e non guardato: `getAttribute("placeholder")`
+  è `null` in tutte e quattro, con `label` e `hint` al loro posto;
+- **l'attivazione funziona ancora**: digitato `DEMO-SA-2026`, dato il consenso, e
+  il passo delle domande apre con *"Stai attivando il tuo account in Demo SA"*;
+- **le dieci domande a schermo confermano l'ordine** scritto nel PITCH — sonno,
+  stress, movimento, alimentazione, salute mentale, due per area;
+- **`/hr` non si muove di un pixel**, e l'ordine dei blocchi dentro la cornice è
+  quello che il commento adesso elenca: le KPI, *"Stress per reparto · ultimo
+  mese del trimestre"*, *"Distribuzione servizi"*, *"Risparmio per trimestre"*.
+  Trend e utilizzo restano fuori;
+- il conto sull'albero sintattico (`CLAUDE.md` §2.7) dà **864 su tutti e quattro**
+  i dizionari, cioè esattamente `EXPECTED_KEYS`;
+- **console muta**, e `npm run build`, `build:demo`, `lint`, `typecheck` a zero.
+
+##### Trovato e non toccato
+
+- **`label` e `hint` non sono stati riscritti.** Dicono già cosa il campo vuole e
+  dove si trova il codice, e ritoccarli avrebbe allargato una passata di pulizia
+  a una scelta di copy che nessuno ha chiesto.
+- **`COMPANY_CODE` resta in `mock/company.ts`**, che è l'unico posto in cui quel
+  valore deve stare: è dataset, e il giorno di `http/` se ne va con la cartella
+  (§5.7).
+- **Il `CLAUDE.md` §8 nomina il codice e resta com'è**: è lì che una cifra della
+  demo vive (§2.4), e il PITCH la cita rimandando invece di duplicarla.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

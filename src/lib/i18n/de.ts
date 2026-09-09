@@ -1202,7 +1202,6 @@ export const de: Dictionary = {
         title: "Der Code deines Unternehmens",
         hint: "Du findest ihn in der Einladung, die du erhalten hast.",
         label: "Unternehmenscode",
-        placeholder: "DEMO-SA-2026",
         submit: "Weiter",
         validation: {
           required: "Gib den Code deines Unternehmens ein.",
