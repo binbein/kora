@@ -201,11 +201,17 @@ presentazione.
   punto è che **non è scritto da nessuna parte: si calcola**.
 
   **Il codice da digitare è `DEMO-SA-2026`** (`CLAUDE.md` §8), e va saputo prima
-  di salire sul palco: dal 09.09.2026 la schermata **non lo suggerisce più** —
-  mostrarlo dentro il campo era il codice vero scritto in un secondo posto, e
-  nessun prodotto pre-compila il codice della tua azienda. Il campo dice cosa
-  vuole e dove si trova — *"Codice azienda"*, *"Lo trovi nell'invito che hai
-  ricevuto"* — e a dire quale sia, qui, è questa riga.
+  di salire sul palco: la schermata **non lo suggerisce** — mostrarlo dentro il
+  campo sarebbe il codice vero scritto in un secondo posto, e nessun prodotto
+  pre-compila il codice della tua azienda. Il campo dice cosa vuole e dove si
+  trova — *"Codice azienda"*, *"Lo trovi nell'invito che hai ricevuto"*.
+
+  **E dal 09.09.2026 si legge a schermo**, nella pagina **Dipendenti** dell'HR:
+  una card *"Codice di attivazione"* sopra l'elenco (`CLAUDE.md` §10.C.4). È lì
+  perché è l'HR che lo consegna ai propri dipendenti, ed è anche la risposta alla
+  domanda *"e i dipendenti come ci arrivano?"* — si indica, invece di
+  raccontarla. **Resta scritto anche qui** per chi presenta e non vuole passare
+  da `/hr/employees` per prenderlo.
 
   **Serve se la domanda arriva**, ed è quella che un investitore fa per prima
   guardando il portale dipendente: *da dove viene quel numero?* Fino al
