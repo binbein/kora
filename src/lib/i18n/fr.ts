@@ -849,6 +849,10 @@ export const fr: Dictionary = {
       sampleNote:
         "Le tableau montre un extrait de {n} collaborateurs sur {total} : le tri porte sur l'extrait.",
       empty: "Aucun collaborateur à afficher.",
+      activationCode: {
+        title: "Code d'activation",
+        hint: "Avec ce code, les collaborateurs activent leur compte eux-mêmes.",
+      },
       privacyNote:
         "Les noms sont abrégés. Kora ne montre jamais de données de santé individuelles à l'entreprise.",
       columnEmployee: "Collaborateur",

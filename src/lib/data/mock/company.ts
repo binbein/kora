@@ -90,17 +90,6 @@ export const PLANS: Record<PlanId, Plan> = {
  */
 export const PLAN_LIST: Plan[] = [PLANS.essenziale, PLANS.plus, PLANS.executive];
 
-/**
- * Il codice con cui un dipendente di Demo SA attiva il proprio account
- * (§8, §10.A.6).
- *
- * Sta accanto all'azienda perché **è una sua proprietà**, non una costante di
- * piattaforma: in produzione ogni cliente ne ha uno, e chi lo genera e lo revoca
- * è lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.3). Si confronta in
- * maiuscolo, quindi chi lo digita in minuscolo entra lo stesso.
- */
-export const COMPANY_CODE = "DEMO-SA-2026";
-
 export const COMPANY: Company = {
   id: "demo-sa",
   name: "Demo SA",
@@ -111,6 +100,14 @@ export const COMPANY: Company = {
   // con la soglia a 15 sarebbe pubblicabile solo con il 100% di risposte in
   // tutti e dodici i mesi (§8)
   anonymityThreshold: 12,
+  /*
+   * Il codice del §8, e sta sul dato invece che in una costante accanto
+   * (09.09.2026): lo mostra la pagina Dipendenti dell'HR e lo confronta
+   * `activate`, quindi due letture dello stesso fatto — e una costante che
+   * l'azienda non porta è il secondo posto da cui può divergere (§5.5). Si
+   * confronta in maiuscolo, così chi lo digita in minuscolo entra lo stesso.
+   */
+  activationCode: "DEMO-SA-2026",
   // fine dell'anno in cui cade la demo: come per l'iscrizione di Laura, una data
   // assoluta invecchierebbe da sola mentre `DEMO_TODAY` resta l'unica manopola
   contractRenewsOn: new Date(DEMO_TODAY.getFullYear(), 11, 31),

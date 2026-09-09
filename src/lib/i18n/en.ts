@@ -800,6 +800,10 @@ export const en: Dictionary = {
       sampleNote:
         "The table shows an extract of {n} employees out of {total}: sorting sorts the extract.",
       empty: "No employee to show.",
+      activationCode: {
+        title: "Activation code",
+        hint: "With this code employees activate their account themselves.",
+      },
       privacyNote:
         "Names are abbreviated. Kora never shows individual health data to the organisation.",
       columnEmployee: "Employee",

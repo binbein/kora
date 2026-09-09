@@ -56,7 +56,7 @@ import {
   LAURA_CHECKUP_ELIGIBILITY,
   LAURA_CHECKUP_REPORT,
 } from "./checkup";
-import { COMPANY, COMPANY_CODE, DEPARTMENTS, PLANS, PLAN_LIST } from "./company";
+import { COMPANY, DEPARTMENTS, PLANS, PLAN_LIST } from "./company";
 import {
   employeeEntitlement,
   LAURA_VIRTUAL_DOCTOR_CONSULTS,
@@ -645,7 +645,9 @@ export class MockDataProvider implements DataProvider {
    */
   activate(input: { companyCode: string; consent: true }): Promise<Company | null> {
     return Promise.resolve(
-      input.companyCode.trim().toUpperCase() === COMPANY_CODE ? COMPANY : null,
+      input.companyCode.trim().toUpperCase() === COMPANY.activationCode
+        ? COMPANY
+        : null,
     );
   }
 

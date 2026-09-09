@@ -106,6 +106,33 @@ export default function HRDipendenti() {
         )}
       </div>
 
+      {/*
+        * IL CODICE DI ATTIVAZIONE STA QUI PERCHÉ È L'HR CHE LO CONSEGNA
+        * (founder, 09.09.2026).
+        *
+        * Fino a oggi non si vedeva da nessuna parte: `/activate` lo chiede e il
+        * dataset lo dichiara (CLAUDE.md §8), ma nessuna schermata lo mostrava a
+        * chi deve distribuirlo — nemmeno a chi presenta. Non sta nel
+        * back-office, dove nascerà con l'onboarding dell'azienda
+        * (`docs/CONTRATTO-DATI.md` §8.3), che non esiste.
+        *
+        * `select-all` e non un pulsante "Copia": il gesto che serve è
+        * selezionarlo per dettarlo o incollarlo, e un comando che promette di
+        * aver copiato qualcosa va verificato dove non tutti i browser lo
+        * concedono.
+        */}
+      <Card className="p-5">
+        <h2 className="text-sm font-semibold">
+          {t.hr.employees.activationCode.title}
+        </h2>
+        <p className="font-display text-2xl font-bold tabular-nums mt-2 select-all">
+          {company.activationCode}
+        </p>
+        <p className="text-sm text-muted-foreground mt-1">
+          {t.hr.employees.activationCode.hint}
+        </p>
+      </Card>
+
       <PrivacyBanner icon={Lock} message={t.hr.employees.privacyNote} />
 
       <Card>
