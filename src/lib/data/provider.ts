@@ -32,6 +32,7 @@ import type {
   AssessmentAnswers,
   HealthProfile,
   RapidCheckAnswer,
+  RapidCheckEntry,
   RapidCheckLink,
   RoiSnapshot,
   ServiceUsageMonth,
@@ -514,6 +515,25 @@ export interface DataProvider {
 
   /** La risposta di oggi, se è già stata data. */
   getRapidCheckAnswer(): Promise<RapidCheckAnswer | null>;
+
+  /**
+   * La curva personale del check rapido, un punto al mese, dal più vecchio.
+   *
+   * **LA VEDE SOLO CHI HA RISPOSTO.** Nessuna lettura dell'area HR o del
+   * back-office restituisce questa serie né qualcosa da cui si possa ricavare:
+   * l'azienda vede la media del reparto sopra la soglia di anonimato, e questa
+   * è la stessa misurazione dal lato di chi la produce. È la garanzia di forma
+   * del §3, applicata al segnale invece che al nome.
+   *
+   * **La risposta di oggi, se è stata data, sostituisce l'ultimo mese** invece
+   * di aggiungersi in coda: il tocco della home e l'ultimo punto della curva
+   * sono la stessa risposta, e due numeri sullo stesso fatto devono essere lo
+   * stesso numero (`CLAUDE.md` §5.5).
+   *
+   * Lista vuota quando non c'è storico: è un vuoto legittimo, non un errore, e
+   * la schermata non rende la curva (§5).
+   */
+  getRapidCheckHistory(): Promise<RapidCheckEntry[]>;
 
   /**
    * A quale azienda e a quale reparto porta un link anonimo (§10.A.5).

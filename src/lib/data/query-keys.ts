@@ -142,6 +142,15 @@ export const queryKeys = {
     virtualDoctorConsults: () => ["employee", "virtual-doctor"] as const,
     aiPlan: () => ["employee", "ai-plan"] as const,
     rapidCheck: () => ["employee", "rapid-check"] as const,
+    /*
+     * Sta **sotto** `rapidCheck` e non accanto, ed è una scelta: il tocco
+     * invalida `["employee", "rapid-check"]`, che per prefisso porta con sé
+     * anche questa: la risposta di oggi è l'ultimo punto della curva, quindi
+     * rileggere l'una senza l'altra le farebbe divergere per un istante
+     * (`docs/CONTRATTO-DATI.md` §4). Una chiave sorella avrebbe chiesto alla
+     * mutation di elencarle tutte e due.
+     */
+    rapidCheckHistory: () => ["employee", "rapid-check", "history"] as const,
   },
 
   /*

@@ -290,11 +290,40 @@ export type EarlyAlert = {
  */
 export type RapidCheckAnswer = {
   departmentId: string;
-  /** 1 = molto bene, 5 = molto male */
-  value: 1 | 2 | 3 | 4 | 5;
+  value: RapidCheckValue;
   answeredAt: Date;
   /** Assente quando la risposta arriva dal link anonimo */
   employeeId?: string;
+};
+
+/**
+ * La scala del check rapido: **1 è "molto bene", 5 "molto male"**.
+ *
+ * Ha un nome perché la usano in due — la risposta e la serie storica — e la
+ * stessa unione scritta due volte è un posto in più in cui allargarla per metà
+ * (§5.5). **Non è la scala dell'assessment**, che è rovesciata: là 5 è il meglio
+ * (`AssessmentAnswers`).
+ */
+export type RapidCheckValue = 1 | 2 | 3 | 4 | 5;
+
+/**
+ * Un punto della curva personale del check rapido (§10.B.6).
+ *
+ * **PORTA IL MESE E IL VALORE, E NIENT'ALTRO.** Non il reparto e non la persona:
+ * è la lettura di chi guarda sé stesso, e quei due campi servono ad aggregare —
+ * cioè al lato che questa curva non deve avere. `RapidCheckAnswer` li porta
+ * perché è ciò che si scrive; qui si legge, e si legge di sé.
+ *
+ * **Un valore al mese**: la granularità è quella delle serie aziendali (§5.3),
+ * così la curva della persona e il trend della dashboard parlano degli stessi
+ * mesi. In produzione, dove il check rapido è ricorrente e più frequente di così
+ * (`docs/CONTRATTO-DATI.md` §3), il mese resta l'unità con cui si mostra e
+ * diventa un'aggregazione invece di una risposta.
+ */
+export type RapidCheckEntry = {
+  /** Primo giorno del mese */
+  month: Date;
+  value: RapidCheckValue;
 };
 
 /**

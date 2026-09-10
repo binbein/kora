@@ -345,6 +345,24 @@ export const it = {
       doneHint: "Puoi cambiare la risposta finché è oggi.",
 
       /*
+       * La curva personale (§10.B.6). Il titolo è **invariabile al genere**,
+       * come le dieci domande dell'assessment: il prodotto lo usano tutti, e
+       * "come sei stata" deciderebbe chi lo legge.
+       *
+       * L'asse e il tooltip non hanno stringhe proprie: dicono le parole di
+       * `option` qui sopra, che sono le stesse dei cinque volti. Due scale con
+       * due vocabolari per lo stesso valore sarebbero due modi di leggere la
+       * stessa risposta (§7).
+       */
+      history: {
+        title: "Come sono andati gli ultimi {months} mesi",
+        /* La riga che dà senso alla card: la stessa misurazione, dal lato di
+           chi la produce. L'azienda vede la media del reparto sopra la soglia,
+           mai questa curva. */
+        private: "Questa curva la vedi solo tu.",
+      },
+
+      /*
        * Compare **solo** sotto la risposta peggiore (§8), ed è l'unico punto
        * del prodotto in cui il numero d'emergenza sta dove qualcuno dichiara
        * di stare male senza nessun interlocutore.

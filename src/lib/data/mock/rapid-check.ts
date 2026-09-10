@@ -1,6 +1,7 @@
 import { assertInDev } from "../guardrails";
-import type { RapidCheckLink } from "../types";
+import type { RapidCheckEntry, RapidCheckLink, RapidCheckValue } from "../types";
 import { COMPANY, DEPARTMENTS } from "./company";
+import { HISTORY_MONTHS, MONTHS_OF_HISTORY } from "./measurement";
 import { DEMO_TODAY } from "./demo-date";
 
 /*
@@ -96,3 +97,50 @@ export function resolveRapidCheckLink(token: string): RapidCheckLink | null {
   if (link === undefined) return null;
   return link.validUntil >= DEMO_TODAY ? link : null;
 }
+
+/*
+ * La curva personale di Laura (CLAUDE.md §8, founder 10.09.2026).
+ *
+ * SCALA ROVESCIATA RISPETTO ALL'ASSESSMENT, e il commento sta qui perché è il
+ * punto in cui si sbaglierebbe: **1 è "molto bene", 5 "molto male"**. Là 5 è il
+ * meglio, e mescolare le due capovolgerebbe una curva senza che niente si
+ * rompa.
+ *
+ * NON RACCONTANO NIENTE CHE IL §8 NON RACCONTI. Media 2.58, nessuna corsa
+ * monotona più lunga di due, e il primo valore uguale all'ultimo: non c'è trend
+ * da leggere, che è precisamente ciò che serve — una persona "in buon
+ * equilibrio" oscilla fra "bene" e "così così".
+ *
+ * L'UNICO 4 È MARZO 2026, il mese del referto del check-up che segnala il sonno.
+ * È una coerenza **scelta** e nessun codice la tiene: un guardrail su quella
+ * coincidenza la trasformerebbe in un invariante che non è.
+ *
+ * NON ALIMENTANO NESSUN AGGREGATO, come il tocco fatto durante la demo: la
+ * serie di Operations non si muove di un punto per le risposte della sua
+ * dipendente (`docs/CONTRATTO-DATI.md` §7).
+ */
+const LAURA_RAPID_CHECK: RapidCheckValue[] = [
+  3, 2, 2, 3, 2, 4, 2, 3, 2, 2, 3, 3,
+];
+
+/**
+ * La curva, un punto al mese, dal più vecchio.
+ *
+ * I mesi sono quelli della finestra dei dodici — non una seconda griglia — così
+ * la curva della persona e il trend della dashboard parlano degli stessi mesi
+ * (§5.5).
+ */
+export const RAPID_CHECK_HISTORY: RapidCheckEntry[] = HISTORY_MONTHS.map(
+  (month, index) => ({ month, value: LAURA_RAPID_CHECK[index] }),
+);
+
+/*
+ * Un valore per ogni mese della finestra. Senza, la curva mostrerebbe meno punti
+ * del trend che le sta accanto in un'altra schermata, o cadrebbe su mesi che la
+ * finestra non contiene — e a schermo si legge come un dato mancante invece che
+ * come una serie scritta male.
+ */
+assertInDev(
+  LAURA_RAPID_CHECK.length === MONTHS_OF_HISTORY,
+  `Il check rapido di Laura ha ${LAURA_RAPID_CHECK.length} valori, la finestra ne conta ${MONTHS_OF_HISTORY}.`,
+);

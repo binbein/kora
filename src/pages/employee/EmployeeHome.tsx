@@ -1,5 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,7 +26,7 @@ import ScoreRing from "@/components/kora/ScoreRing";
 import PrivacyBanner from "@/components/shared/PrivacyBanner";
 import RapidCheckCard from "@/components/kora/RapidCheckCard";
 import { ErrorNotice } from "@/components/kora/StateNotice";
-import { formatDate, formatNumber, formatTime, formatWeekday } from "@/lib/format";
+import { formatDate, formatMonthShort, formatNumber, formatTime, formatWeekday } from "@/lib/format";
 import { interpolate, t } from "@/lib/i18n";
 import {
   loadState,
@@ -28,6 +37,7 @@ import {
   useEmployeeProfile,
   useEntitlement,
   useProfessionals,
+  useRapidCheckHistory,
   useVirtualDoctorConsults,
 } from "@/lib/data/queries";
 import {
@@ -35,6 +45,7 @@ import {
   type Appointment,
   type CappedServiceKind,
   type Professional,
+  type RapidCheckValue,
 } from "@/lib/data/types";
 
 /*
@@ -248,6 +259,106 @@ function AppointmentRow({
   );
 }
 
+/*
+ * La curva personale del check rapido (CLAUDE.md §10.B.6).
+ *
+ * LA VEDE SOLO CHI HA RISPOSTO, e la riga sotto il grafico lo dice. È la stessa
+ * misurazione che alimenta la dashboard HR, letta dal lato di chi la produce:
+ * l'azienda ne vede la media del proprio reparto sopra la soglia di anonimato,
+ * mai questa curva.
+ *
+ * L'ASSE Y È ROVESCIATO, e non è un vezzo: su una curva che dice come si sta,
+ * **in alto deve stare il meglio**. La scala del check rapido ha 1 per "molto
+ * bene", quindi senza `reversed` un mese buono scenderebbe e la curva si
+ * leggerebbe al contrario di quello che dice (founder, 10.09.2026).
+ *
+ * LE ETICHETTE SONO PAROLE E STANNO SOLO AGLI ESTREMI. I numeri di quella scala
+ * non vogliono dire niente a chi guarda — "3" non è un punteggio, è un volto — e
+ * i cinque tick riempirebbero l'asse di cifre che nessuno ha mai visto. Le
+ * parole sono quelle dei cinque volti, non una seconda formulazione (§7), e il
+ * tooltip legge dalla stessa riga.
+ *
+ * NESSUNA ANIMAZIONE D'INGRESSO (§6.2), come ogni serie di questa demo.
+ *
+ * LA CARD HA UNA LETTURA SUA, quindi ha i suoi tre casi, come `ServiceCounter`:
+ * una curva che non arriva non porta via la home. **Il vuoto non si rende**: una
+ * curva senza punti non è un'informazione, e chi non ha mai risposto non ha
+ * niente da guardare.
+ */
+function RapidCheckHistoryCard() {
+  const historyQuery = useRapidCheckHistory();
+
+  const card = loadState([historyQuery]);
+  if (card.state === "error") {
+    return (
+      <Card className="p-5">
+        <ErrorNotice copy={t.employee.state.error} onRetry={card.retry} />
+      </Card>
+    );
+  }
+
+  const history = historyQuery.data;
+  if (history === undefined || history.length === 0) return null;
+
+  const points = history.map((entry) => ({
+    month: formatMonthShort(entry.month),
+    value: entry.value,
+  }));
+
+  /* Le parole dei volti, prese dalla riga che la card del tocco già usa. */
+  const label = (value: number) =>
+    t.employee.rapidCheck.option[value as RapidCheckValue];
+
+  return (
+    <Card className="p-5">
+      <h2 className="font-semibold mb-4">
+        {interpolate(t.employee.rapidCheck.history.title, {
+          months: formatNumber(history.length),
+        })}
+      </h2>
+
+      <ResponsiveContainer width="100%" height={180}>
+        {/* Il margine in cima serve all'etichetta dell'estremo alto: senza,
+            "Molto bene" cade sul bordo del grafico e recharts la **scarta in
+            silenzio** invece di tagliarla — l'asse resterebbe con una parola
+            sola, cioè con la metà che dice il contrario di quello che serve. */}
+        <LineChart data={points} margin={{ top: 10, right: 8, bottom: 0, left: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+          <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+          {/* `reversed` più `ticks` agli estremi: il dominio resta 1–5, a
+              cambiare è da che parte si legge. */}
+          {/* `interval={0}` rende **tutti** i tick chiesti: il default lascia a
+              recharts la libertà di saltarne, e qui i tick sono due — saltarne
+              uno vuol dire perdere metà della scala. */}
+          <YAxis
+            reversed
+            domain={[1, 5]}
+            ticks={[1, 5]}
+            interval={0}
+            tickFormatter={label}
+            tick={{ fontSize: 12 }}
+            width={96}
+          />
+          <Tooltip formatter={(value) => label(Number(value))} />
+          <Line
+            type="monotone"
+            dataKey="value"
+            stroke="hsl(var(--secondary))"
+            strokeWidth={2.5}
+            dot={{ r: 3 }}
+            isAnimationActive={false}
+            name={t.employee.rapidCheck.question}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+
+      <p className="text-sm text-muted-foreground mt-3">
+        {t.employee.rapidCheck.history.private}
+      </p>
+    </Card>
+  );
+}
+
 export default function EmployeeHome() {
   /* L'appuntamento che il dialogo sta chiedendo di disdire: stato della
      schermata, non del dominio, e muore con il dialogo (§5.2). */
@@ -346,6 +457,8 @@ export default function EmployeeHome() {
       <PrivacyBanner message={t.employee.privacy} />
 
       <RapidCheckCard />
+
+      <RapidCheckHistoryCard />
 
       <Card className="p-6">
         <div className="flex flex-col sm:flex-row items-center gap-6">
