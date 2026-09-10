@@ -215,6 +215,10 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
       queryFn: () => dataProvider.getRapidCheckAnswer(),
     }),
     queryClient.prefetchQuery({
+      queryKey: queryKeys.employee.rapidCheckHistory(),
+      queryFn: () => dataProvider.getRapidCheckHistory(),
+    }),
+    queryClient.prefetchQuery({
       queryKey: queryKeys.checkup.providers(),
       queryFn: () => dataProvider.getCheckupProviders(),
     }),

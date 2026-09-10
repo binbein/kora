@@ -349,6 +349,11 @@ export const fr: Dictionary = {
       done: "Merci, c'est enregistré.",
       doneHint: "Tu peux encore changer ta réponse aujourd'hui.",
 
+      history: {
+        title: "Comment se sont passés les {months} derniers mois",
+        private: "Cette courbe n'est visible que par toi.",
+      },
+
       crisis: {
         title: "Si le moment est difficile, ne reste pas seule",
         emergency: "{number} — urgences, 24 h sur 24",

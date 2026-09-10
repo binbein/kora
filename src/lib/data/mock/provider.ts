@@ -41,6 +41,7 @@ import {
   type AssessmentAnswers,
   type HealthProfile,
   type RapidCheckAnswer,
+  type RapidCheckEntry,
   type RapidCheckLink,
   type RoiSnapshot,
   type Session,
@@ -64,7 +65,7 @@ import {
 import { DEPARTMENT_ENROLLMENT, HR_REPORTS, INVOICES } from "./hr";
 import { DEMO_TODAY } from "./demo-date";
 import { LAURA, LAURA_ASSESSMENT, PROFESSIONALS } from "./people";
-import { resolveRapidCheckLink } from "./rapid-check";
+import { RAPID_CHECK_HISTORY, resolveRapidCheckLink } from "./rapid-check";
 import {
   CLIENT_COMPANIES,
   PLATFORM_MONTHS,
@@ -1302,6 +1303,36 @@ export class MockDataProvider implements DataProvider {
    */
   getRapidCheckAnswer(): Promise<RapidCheckAnswer | null> {
     return Promise.resolve(this.lastRapidCheck);
+  }
+
+  /*
+   * LA RISPOSTA DI OGGI SOSTITUISCE L'ULTIMO MESE, non si aggiunge in coda.
+   *
+   * `DEMO_TODAY` cade dentro l'ultimo mese della finestra, quindi il tocco e
+   * l'ultimo punto della curva sono **la stessa risposta**: aggiungerla farebbe
+   * due punti per settembre, cioè due numeri sullo stesso fatto (§5.5). A
+   * schermo si vede toccando un volto — l'ultimo punto si muove, non ne nasce
+   * uno accanto.
+   *
+   * **Il link anonimo non la muove**, e non serve un controllo qui: quella
+   * strada non scrive `lastRapidCheck`, che è l'unica cosa che questa lettura
+   * guarda. La risposta di uno sconosciuto nella curva di Laura sarebbe il
+   * contrario esatto della garanzia per cui il link è anonimo.
+   *
+   * Non porta reparto né persona: `RapidCheckEntry` non ha quei campi, ed è la
+   * differenza fra scrivere una misurazione e leggere la propria.
+   */
+  getRapidCheckHistory(): Promise<RapidCheckEntry[]> {
+    const answer = this.lastRapidCheck;
+    if (answer === null) return Promise.resolve(RAPID_CHECK_HISTORY);
+
+    return Promise.resolve(
+      RAPID_CHECK_HISTORY.map((entry, index) =>
+        index === RAPID_CHECK_HISTORY.length - 1
+          ? { ...entry, value: answer.value }
+          : entry,
+      ),
+    );
   }
 
   getRapidCheckLink(token: string): Promise<RapidCheckLink | null> {

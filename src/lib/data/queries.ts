@@ -418,6 +418,13 @@ export function useRapidCheckAnswer(enabled = true) {
   });
 }
 
+export function useRapidCheckHistory() {
+  return useQuery({
+    queryKey: queryKeys.employee.rapidCheckHistory(),
+    queryFn: () => dataProvider.getRapidCheckHistory(),
+  });
+}
+
 /**
  * A quale azienda e a quale reparto porta un link anonimo.
  *
