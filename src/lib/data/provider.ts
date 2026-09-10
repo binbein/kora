@@ -16,7 +16,7 @@ import type {
   DemoRequestInput,
   Department,
   EarlyAlert,
-  EmployeeDirectoryEntry,
+  DepartmentEnrollment,
   HrReport,
   Invoice,
   EmployeeProfile,
@@ -160,12 +160,22 @@ export interface DataProvider {
   getHrReport(period: Quarter): Promise<HrReport | null>;
 
   /**
-   * L'elenco dipendenti che l'azienda può vedere: iniziali e reparto, mai un
-   * nome. Nel dataset demo è un estratto di otto righe su 120 — la paginazione
-   * è lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.12) — e la schermata lo
-   * dichiara invece di far credere il contrario.
+   * Quanti si sono iscritti e quanti hanno fatto il check-up, **per reparto**,
+   * nell'ordine di `getDepartments()`.
+   *
+   * È ciò che l'azienda può vedere delle proprie persone, e la risposta non ne
+   * nomina nessuna: **l'HR vede quanti, mai chi** (founder, 10.09.2026). Fino a
+   * quel giorno c'era `getEmployeeDirectory`, che rispondeva con una riga per
+   * dipendente — iniziali, reparto, iscrizione, stato del check-up — cioè un
+   * segnale individuale su un servizio sanitario.
+   *
+   * `checkupCompleted` arriva **già soppresso** sotto la soglia di anonimato
+   * del cliente, come il punteggio di stress e per la stessa ragione: la
+   * soppressione è del server, non della schermata. Il denominatore però è un
+   * altro — gli iscritti del reparto invece dei misurati del periodo — e il
+   * perché sta in `docs/CONTRATTO-DATI.md` §3.
    */
-  getEmployeeDirectory(): Promise<EmployeeDirectoryEntry[]>;
+  getDepartmentEnrollment(): Promise<DepartmentEnrollment[]>;
 
   /** Le fatture dell'abbonamento, dalla più recente. */
   getInvoices(): Promise<Invoice[]>;

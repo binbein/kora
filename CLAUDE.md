@@ -1409,13 +1409,17 @@ Regole:
   "Nuovo" dei pazienti e "Da tenere d'occhio" del referto, che sono **dati** o
   segnalazioni cliniche e non attese.
 
-  **E resta neutro il "Non iscritto" dell'elenco dipendenti**, che alla prima
-  lettura sembrava il settimo punto: **non è un'attesa**, perché nessuno in Kora
-  sta lavorando su quella persona — è il denominatore della curva di adozione,
-  quello che il sottotitolo della schermata dichiara come *"82 iscritti su
-  120"*. La regola nuova **non guadagna un'eccezione**: quella riga non aspetta.
-  Fino al 19.08.2026 diceva "In attesa", ed è la parola che era sbagliata, non
-  il colore (§7).
+  **E restava neutro il "Non iscritto" dell'elenco dipendenti**, che alla prima
+  lettura sembrava il settimo punto: **non era un'attesa**, perché nessuno in
+  Kora stava lavorando su quella persona — era il denominatore della curva di
+  adozione, quello che il sottotitolo della schermata dichiara come *"82 iscritti
+  su 120"*. La regola nuova **non guadagnò un'eccezione**: quella riga non
+  aspettava. Fino al 19.08.2026 diceva "In attesa", ed è la parola che era
+  sbagliata, non il colore (§7).
+
+  *(Il badge è uscito il 10.09.2026 con la riga per persona che lo portava — §7,
+  e §10.C.5. Il caso resta perché la domanda che poneva torna a ogni etichetta
+  nuova: giallo non vuol dire attesa, e neutro non vuol dire irrilevante.)*
 
   **Dichiarato anche nella palette `.dark`**, che è inerte e resta completa: un
   token che esiste in una palette sola è un buco che si vede il giorno in cui
@@ -1574,10 +1578,16 @@ Qui la si eviterebbe al contrario, mettendola in un elemento che non la merita.
 
   **Il rimedio non inventa una quinta parola**, ed è la regola che vale oltre il
   caso: le parole erano già nel dizionario — *"{enrolled} iscritti su {total}"*
-  nel sottotitolo della stessa schermata — quindi il badge dice **"Iscritto /
-  Non iscritto"**, e in tedesco, francese e inglese la coppia viene dalla stessa
+  nel sottotitolo della stessa schermata — quindi il badge disse **"Iscritto /
+  Non iscritto"**, e in tedesco, francese e inglese la coppia veniva dalla stessa
   riga (`angemeldet`, `inscrits`, `enrolled`). Coniarne una nuova avrebbe
   riaperto il difetto che la correzione chiude.
+
+  **Il badge non c'è più dal 10.09.2026**, perché non c'è più la riga per persona
+  che lo portava (§10.C.5): la parola è passata alla **colonna**, *"Iscritti"*,
+  che conta invece di qualificare. **La regola non si muove di un millimetro** —
+  è la stessa parola, e la dashboard continua a chiamare *attivi* un'altra cosa —
+  e il caso resta scritto perché è il caso, non il suo componente.
 
   **"Attivo" resta libero dove descrive un'altra cosa**, e la verifica si fa
   guardando **la parola** e non le due chiavi: un piano attivo, un'azienda o una
@@ -1681,11 +1691,16 @@ dataset (§5.5):
   ricava dalla lista dei consulti, non è uno scalare: due numeri che descrivono
   la stessa cosa devono essere lo stesso numero. I 2 stanno dentro i 118 consulti
   aziendali dei dodici mesi, che su 82 iscritti fanno una media di 1.4.
-- **Il check-up è completato**, con referto di marzo. È la stessa cosa che
-  l'elenco dipendenti dell'HR dichiara della riga `L.B.`, ed è il vincolo che
-  tiene la storia unica sui tre lati: la home e il Profilo non possono dire
-  "disponibile", e la pagina check-up mostra il referto invece di riproporre una
-  prenotazione. Il prossimo si apre dodici mesi dopo, cioè fuori dalla demo.
+- **Il check-up è completato**, con referto di marzo: la home e il Profilo non
+  possono dire "disponibile", e la pagina check-up mostra il referto invece di
+  riproporre una prenotazione. Il prossimo si apre dodici mesi dopo, cioè fuori
+  dalla demo.
+
+  *(Il vincolo teneva la storia unita su **tre** lati e da oggi sono due: fino al
+  10.09.2026 l'elenco dipendenti dell'HR dichiarava `completed` sulla riga
+  `L.B.`, e un guardrail confrontava le due dichiarazioni. **L'HR non vede più
+  Laura** — vede quanti si sono iscritti per reparto — quindi il terzo lato non
+  esiste e il guardrail è uscito con lui.)*
 
 **Come si calcola il profilo salute** (founder, 06.09.2026). L'assessment
 iniziale è di **dieci domande, due per ognuna delle cinque aree** — sonno,
@@ -1846,6 +1861,38 @@ backend.
 per prenotare le sessioni: essere iscritto ed essere misurato sono
 indipendenti, nessuno dei due implica l'altro, e il cambio di modello di
 misurazione non li tocca.
+
+**Iscritti e check-up per reparto** (founder, 10.09.2026). Sono le due colonne
+che l'area HR mostra da quando l'elenco per persona è uscito (§10.C.5): l'HR
+vede **quanti**, mai chi.
+
+| reparto | organico | iscritti | check-up completati |
+|---|---|---|---|
+| Operations | 31 | 23 | 15 |
+| Vendite | 24 | 15 | 9 |
+| Finanza | 18 | 13 | 8 |
+| IT | 17 | 12 | 8 |
+| HR + Legale | 15 | 12 | 7 |
+| Direzione | 15 | 7 | 4 |
+
+**Le due somme sono i due numeri che il resto della demo già dichiara**, e per
+questo hanno un guardrail invece di una promessa: gli iscritti fanno **82**,
+cioè quelli dello snapshot del trimestre corrente, e i check-up fanno **51**,
+cioè il totale dei dodici mesi della serie di utilizzo qui sotto. Nessuna cifra
+nuova entra a schermo (§2.4): entra la loro **ripartizione**.
+
+**Tre coerenze sono scelte, non conseguenze**, e si scrivono perché una
+rilettura non le prenda per casuali:
+
+- **le Vendite hanno l'adozione più bassa fra i reparti pubblicati** (63%), che
+  è coerente con il reparto della storia — e resta una coerenza narrativa, non
+  una deduzione: lo stress **non si deduce mai dal comportamento**, e l'adozione
+  è comportamento;
+- **la Direzione è l'unica soppressa**, come nella tabella dello stress, e ci
+  arriva per la sua strada: 7 iscritti sotto la soglia di 12;
+- **IT e HR + Legale stanno esattamente a 12**, cioè sul limite, che è il caso
+  che a schermo si vede una volta sola — la soglia è "almeno 12", quindi
+  pubblicano.
 
 **Misurati per reparto: una serie derivata, non una cifra congelata** (§5.5), e
 **il conteggio sta sul record mensile del reparto, non su `Department`**:
@@ -2782,10 +2829,55 @@ Dashboard, Dipendenti, Report, Fatturazione, Privacy.
    `activate`, e due letture dello stesso fatto vengono dallo stesso posto
    (§5.5).
 
-   **La riga sotto il codice dice cosa ci si fa e nient'altro** — *"Con questo
-   codice i dipendenti attivano l'account da soli"*. Non promette niente su chi
-   vede cosa: quella è la frase del banner privacy che sta sotto, e ripeterla qui
-   sarebbe la stessa garanzia detta in due punti della stessa schermata.
+   **La riga sotto il codice dice cosa ci si fa** — *"Con questo codice i
+   dipendenti attivano l'account da soli"*. ~~Non promette niente su chi vede
+   cosa.~~ → **Da oggi lo dice**, con una seconda riga: *"L'azienda vede quanti
+   si sono iscritti per reparto, mai chi"* (founder, 10.09.2026).
+
+   **Il 09.09.2026 quella frase non poteva esserci**, ed è la ragione per cui la
+   riga si corregge invece di essere riscritta: quel giorno l'elenco sotto
+   mostrava ancora **chi**, riga per riga, e la promessa sarebbe stata falsa
+   proprio sulla schermata che la portava. È diventata vera con la voce qui
+   sotto.
+
+   **Dice la stessa cosa del banner e non le stesse parole**: là il fatto in
+   breve — *"L'azienda vede quanti, mai chi"* — qui cosa comporta il codice che
+   si sta consegnando. Ripeterla parola per parola sarebbe la stessa garanzia
+   detta due volte nella stessa schermata.
+
+5. **L'area HR conta per reparto, e non elenca le persone** (founder,
+   10.09.2026). La schermata resta — è `/hr/employees`, e il conto delle rotte
+   non si muove — **cambia cosa mostra**: una riga per reparto con organico,
+   iscritti e check-up completati, al posto di una riga per persona con
+   iniziali, reparto, iscrizione e stato del check-up.
+
+   **Il caso che la motiva**: quella riga era **un segnale individuale su un
+   servizio sanitario**, e le iniziali non bastavano a proteggerlo — in un
+   reparto da sei persone due lettere e un reparto identificano. La garanzia di
+   prima era vera e insufficiente: il tipo non aveva un campo per il nome, ma
+   aveva una riga per persona.
+
+   **Non si risolve mascherando**, ed è la stessa disciplina del §10.D.2 vista
+   dall'altro lato: si risolve nella forma del dato. `getEmployeeDirectory` ed
+   `EmployeeDirectoryEntry` sono usciti dal contratto, e
+   `getDepartmentEnrollment` non ha nessuna riga da ricondurre a nessuno.
+
+   **Il check-up di un reparto si sopprime sotto la soglia di anonimato**, come
+   il punteggio di stress e con lo stesso numero. **A cambiare è il
+   denominatore** — là i misurati del periodo, qui gli iscritti del reparto — e
+   la ragione sta in `docs/CONTRATTO-DATI.md` §3: il check-up si prenota
+   dall'account, e sull'organico la regola non escluderebbe nessuno dei sei
+   reparti, cioè sarebbe un ramo che nessun dato raggiunge (§11).
+
+   **Gli iscritti restano su ogni riga**, anche su quella soppressa, per la
+   stessa ragione dei misurati nella tabella dello stress: è adesione e non un
+   dato sanitario, e senza di loro la riga che la soppressione esiste per
+   spiegare diventa illeggibile.
+
+   **Nessuna cifra nuova a schermo** (§2.4): le due somme sono l'82 dello
+   snapshot e il 51 della serie di utilizzo, che la dashboard già dichiara — e
+   sono due guardrail, non due promesse. Entra la loro **ripartizione**, che sta
+   in §8.
 
 **Finita quando:** la storia dei 12 mesi si capisce senza parlare; il selettore
 trimestre cambia davvero i dati; la soglia di anonimato si legge dai numeri in

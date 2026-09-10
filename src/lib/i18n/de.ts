@@ -752,26 +752,19 @@ export const de: Dictionary = {
     employees: {
       title: "Mitarbeitende",
       subtitle: "{enrolled} von {total} angemeldet · nur anonyme Daten",
-      sampleNote:
-        "Die Tabelle zeigt einen Auszug von {n} Mitarbeitenden von {total}: sortiert wird der Auszug.",
-      empty: "Keine Mitarbeitenden anzuzeigen.",
+      empty: "Keine Abteilung anzuzeigen.",
       activationCode: {
         title: "Aktivierungscode",
         hint: "Mit diesem Code aktivieren die Mitarbeitenden ihr Konto selbst.",
+        privacy:
+          "Das Unternehmen sieht, wie viele sich pro Abteilung angemeldet haben, nie wer.",
       },
-      privacyNote:
-        "Die Namen sind abgekürzt. Kora zeigt dem Unternehmen nie individuelle Gesundheitsdaten.",
-      columnEmployee: "Mitarbeitende",
+      privacyNote: "Das Unternehmen sieht wie viele, nie wer.",
       columnDepartment: "Abteilung",
-      columnStatus: "Status",
-      columnCheckup: "Check-up",
-      enrolled: "Angemeldet",
-      notEnrolled: "Nicht angemeldet",
-      checkup: {
-        completed: "Abgeschlossen",
-        booked: "Gebucht",
-        available: "Verfügbar",
-      },
+      columnHeadcount: "Belegschaft",
+      columnEnrolled: "Angemeldet",
+      columnCheckup: "Check-ups abgeschlossen",
+      enrolledValue: "{n} · {percent}",
     },
 
     billing: {

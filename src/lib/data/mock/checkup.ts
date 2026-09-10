@@ -7,8 +7,6 @@ import type {
 } from "../types";
 import { COMPANY } from "./company";
 import { DEMO_TODAY } from "./demo-date";
-import { EMPLOYEE_DIRECTORY } from "./hr";
-import { LAURA } from "./people";
 
 /*
  * Il check-up di Laura e la rete convenzionata (CLAUDE.md §8, §10.B).
@@ -170,21 +168,6 @@ assertInDev(
 assertInDev(
   LAURA_CHECKUP.start < DEMO_TODAY,
   "Il check-up di Laura è già stato fatto, quindi cade prima del giorno della demo.",
-);
-
-/*
- * Il vincolo che tiene unita la storia sui tre lati (§8): l'elenco che l'azienda
- * vede dichiara `completed` per la riga di Laura, e il portale dipendente non
- * può dire un'altra cosa. Se qualcuno cambia una delle due, questa riga lo ferma
- * invece di lasciare due schermate che si contraddicono.
- */
-const lauraInDirectory = EMPLOYEE_DIRECTORY.find(
-  (entry) => entry.employeeId === LAURA.id,
-);
-
-assertInDev(
-  lauraInDirectory?.checkupStatus === "completed",
-  `L'elenco HR dà il check-up di Laura come "${lauraInDirectory?.checkupStatus}", il portale dipendente lo dà come fatto.`,
 );
 
 assertInDev(

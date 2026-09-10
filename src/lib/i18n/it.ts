@@ -1087,14 +1087,9 @@ export const it = {
       title: "Dipendenti",
       /** "82 iscritti su 120 · solo dati anonimi" */
       subtitle: "{enrolled} iscritti su {total} · solo dati anonimi",
-      /* La tabella è un estratto e lo dice: il codice ereditato contava
-         "6/8 attivati" accanto a una dashboard che ne dichiarava 82 su 120, e
-         chi leggeva entrambe trovava due aziende diverse. */
-      sampleNote:
-        "La tabella mostra un estratto di {n} dipendenti su {total}: ordinarla ordina l'estratto.",
-      /* Nessun dipendente da elencare: succede a un'azienda appena attivata,
-         come Betulla nel portafoglio del back-office (§8). */
-      empty: "Nessun dipendente da mostrare.",
+      /* Nessun reparto da elencare: succede a un'azienda appena attivata, come
+         Betulla nel portafoglio del back-office (§8). */
+      empty: "Nessun reparto da mostrare.",
       /* Il codice sta qui perché **è l'HR che lo consegna**: nel back-office
          nascerà con l'onboarding dell'azienda, che è lavoro dell'MVP
          (`docs/CONTRATTO-DATI.md` §8.3). La riga dice cosa ci si fa e non
@@ -1103,27 +1098,33 @@ export const it = {
       activationCode: {
         title: "Codice di attivazione",
         hint: "Con questo codice i dipendenti attivano l'account da soli.",
+        /* La seconda frase è arrivata il 10.09.2026, quando è diventata vera
+           a schermo: prima l'HR vedeva **chi**, riga per riga. Dice la stessa
+           cosa del banner qui sotto e non le stesse parole — là il fatto in
+           breve, qui cosa comporta il codice che si sta consegnando. */
+        privacy:
+          "L'azienda vede quanti si sono iscritti per reparto, mai chi.",
       },
-      privacyNote:
-        "I nomi sono abbreviati. Kora non mostra mai dati sanitari individuali all'azienda.",
-      columnEmployee: "Dipendente",
+      /* Dice il fatto e non la rassicurazione (founder, 10.09.2026): da questa
+         passata la tabella conta per reparto, quindi la frase descrive ciò che
+         si vede sotto invece di promettere ciò che non si vede. */
+      privacyNote: "L'azienda vede quanti, mai chi.",
       columnDepartment: "Reparto",
-      columnStatus: "Stato",
-      columnCheckup: "Check-up",
-      /* "ISCRITTO", NON "ATTIVO" (19.08.2026). La riga rende `enrolled`, cioè
-         chi ha attivato l'account, mentre un clic più in là la dashboard
-         chiama **attivi** quelli che hanno usato almeno un servizio nel
-         trimestre — la definizione della tabella delle KPI del
-         `docs/CONTRATTO-DATI.md` §3. Sono 82 e 41: due schermate adiacenti,
-         una parola sola, due conteggi. La parola non è nuova, viene dal
-         sottotitolo di questa stessa schermata. */
-      enrolled: "Iscritto",
-      notEnrolled: "Non iscritto",
-      checkup: {
-        completed: "Completato",
-        booked: "Prenotato",
-        available: "Disponibile",
-      },
+      columnHeadcount: "Organico",
+      /* "ISCRITTI", NON "ATTIVI" (19.08.2026). La colonna conta chi ha attivato
+         l'account, mentre un clic più in là la dashboard chiama **attivi**
+         quelli che hanno usato almeno un servizio nel trimestre — la
+         definizione della tabella delle KPI del `docs/CONTRATTO-DATI.md` §3.
+         Sono 82 e 41: due schermate adiacenti, una parola sola, due conteggi.
+         La parola viene dal sottotitolo di questa stessa schermata. */
+      columnEnrolled: "Iscritti",
+      /* L'etichetta dichiara che conta i **completati**, perché il numero
+         accanto agli iscritti si leggerebbe altrimenti come "quanti ne hanno
+         diritto". */
+      columnCheckup: "Check-up completati",
+      /* Il conteggio e la sua quota, in una frase sola: concatenarli in JSX
+         sarebbe testo composto a pezzi (§2.7). */
+      enrolledValue: "{n} · {percent}",
     },
 
     billing: {

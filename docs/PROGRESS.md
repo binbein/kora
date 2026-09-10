@@ -2161,7 +2161,7 @@ malissimo, e le zero richieste esterne rese eseguibili, e **il link anonimo del
 check rapido**, e **la disdetta dal lato del dipendente**, e **l'attivazione
 dell'account**, e **lo stress per reparto dentro la cornice**, e **i residui
 dell'attivazione e della cornice**, e **l'id della prenotazione con il codice
-azienda**. Non aggiungono
+azienda**, e **l'area HR che conta per reparto**. Non aggiungono
 schermate — **tranne il link anonimo e l'attivazione**, ed è la riga qui sotto.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
@@ -9512,6 +9512,128 @@ con `innerWidth` a 1280**, non a scheda sospesa.
   disegna ciò che occupa — e la lista sessioni le distingue con i suoi tre tab.
   Non è stato toccato.
 
+#### L'area HR conta per reparto (10.09.2026)
+
+**Questo verbale non conta i propri commit.** Nessuna schermata nuova e nessuna
+in meno: rotte **28**, schermate **29**. `EXPECTED_KEYS` **866 → 862**;
+guardrail **126 → 125**.
+
+##### Il difetto non era un difetto: era una cosa che funzionava
+
+`/hr/employees` mostrava, per ogni persona, **iniziali, reparto, se era iscritta
+e a che punto era il suo check-up**. Il tipo che la portava era stato scritto con
+cura — `EmployeeDirectoryEntry` **non aveva un campo per il nome**, e il
+contratto lo dichiarava come una garanzia di forma accanto a quella di
+`PlatformSession`.
+
+**La garanzia era vera e insufficiente**, ed è tutto il punto di questa passata:
+il nome non arrivava, ma **arrivava la riga**. In un reparto da sei persone due
+iniziali e un reparto identificano, e lo stato di un check-up è un segnale
+individuale su un servizio sanitario — cioè esattamente il dato che il resto del
+prodotto tiene lontano dall'azienda.
+
+**La decisione è dei founder** (10.09.2026), e sta fra le decisioni chiuse di
+questo file con la sua data e il suo motivo: **l'azienda vede quanti, mai chi**.
+
+##### Non è stato mascherato: è sparita la riga
+
+`getEmployeeDirectory` ed `EmployeeDirectoryEntry` sono usciti dal contratto, e
+al loro posto c'è `getDepartmentEnrollment` — organico, iscritti e check-up
+completati per reparto. **Non c'è niente da ricondurre a nessuno**, ed è la stessa
+disciplina con cui il nome del paziente non raggiunge il back-office: non lo si
+risolve facendo scegliere alla schermata cosa rendere, perché è una scelta che
+qualcuno può disfare.
+
+**La schermata resta**, e il conto delle rotte non si muove: cambia cosa mostra.
+
+##### La seconda soppressione, e perché il denominatore è un altro
+
+I check-up di un reparto si sopprimono **sotto la stessa soglia** del punteggio
+di stress — 12, che è una proprietà del cliente — ma il conteggio confrontato con
+la soglia è diverso: **là i misurati del periodo, qui gli iscritti del reparto**.
+
+**Non è una sfumatura, ed è la ragione per cui è stata scritta nel contratto §3
+accanto all'altra.** Il check-up si prenota dall'account, quindi la popolazione
+da cui il numero potrebbe essere riletto è quella degli iscritti. E
+sull'**organico** la regola non escluderebbe nessuno dei sei reparti — il più
+piccolo ne ha quindici — cioè sarebbe una regola che non si applica mai e, nel
+codice, un ramo che nessun dato raggiunge (§11).
+
+**Gli iscritti restano sulla riga soppressa**, come i misurati sulla riga
+soppressa dello stress: sono adesione e non un dato sanitario, e senza di loro la
+riga che la soppressione esiste per spiegare diventa illeggibile.
+
+##### I sei conteggi, e due guardrail al posto di due promesse
+
+I conteggi sono dei founder (`CLAUDE.md` §8) e le loro **due somme sono numeri
+che altre schermate già dichiarano**: 82 iscritti dallo snapshot del trimestre
+corrente, 51 check-up dalla serie di utilizzo — la KPI della dashboard li mostra
+come *"51 su 82 iscritti"*. Sono due numeri sullo stesso fatto, quindi hanno un
+guardrail ciascuno (§5.5).
+
+Tre coerenze sono scelte e sono scritte nel §8: le **Vendite** hanno l'adozione
+più bassa dei pubblicati, la **Direzione** è l'unica soppressa, **IT e HR +
+Legale** stanno esattamente sul limite. La prima resta una coerenza narrativa e
+non una deduzione — lo stress non si deduce dal comportamento, e l'adozione è
+comportamento.
+
+##### Tre effetti che la decisione non nominava
+
+- **Il guardrail delle identità perde una delle tre liste** e con lei **il
+  confronto sul reparto**: l'estratto dell'HR era l'unica a dichiararne uno,
+  quindi senza di lei quel controllo non poteva più fallire. Un ramo che nessun
+  dato raggiunge è codice che il §11 non vuole, e tenerlo "per il giorno in cui
+  servirà" è la previsione che questo repository ha già visto invecchiare due
+  volte. Restano azienda, id, ruolo e nome — cioè i confronti che distinguono
+  M.B. da S.C.
+- **Il guardrail sul check-up di Laura è uscito.** Verificava che l'elenco HR
+  dichiarasse `completed` per la sua riga: non c'è più una riga da interrogare.
+  L'invariante era «la stessa cosa su tre lati» ed è diventato su due, ed è
+  scritto nel §8 con la data invece di sparire.
+- **Il badge "Iscritto / Non iscritto" è uscito con la riga per persona.** La
+  parola è passata alla **colonna** — *"Iscritti"* — che conta invece di
+  qualificare, e il caso del §7 sulle due accezioni di "attivo" resta scritto:
+  vale il caso, non il componente che lo portava.
+
+##### Verificato
+
+Sulla build demo a 1280×900, console aperta:
+
+- **sei righe, una per reparto**, con organico, iscritti (numero e quota) e
+  check-up completati. **Nessuna riga per persona**, nessuna iniziale;
+- **le somme tornano a schermo**: gli iscritti fanno 82, che è il numero del
+  sottotitolo e della KPI di adozione; i check-up visibili fanno 47, e con i 4
+  soppressi della Direzione fanno il 51 che la dashboard dichiara accanto al 62%;
+- **la Direzione mostra "Sotto soglia" con il lucchetto** — 7 iscritti sotto 12 —
+  ed è la stessa etichetta della tabella dello stress, non una seconda: stessa
+  chiave, stesso tooltip;
+- **ordinando per check-up la riga soppressa resta in fondo in tutte e due le
+  direzioni**, perché `null` si ordina come un vuoto e non come uno zero;
+- **i tre stati**: `?empty=getDepartmentEnrollment` rende *"Nessun reparto da
+  mostrare"*, `?fail=` rende l'errore con il riprova, e senza manopole la pagina
+  si disegna — cioè in **sviluppo**, dove i guardrail lanciano, le due somme
+  passano davvero;
+- **le quattro lingue**, con le colonne su una riga sola in tutte;
+- **contrasti misurati sui nodi della schermata**: il minimo è **4.54** e la
+  soglia è 4.5. Il "Sotto soglia" misura **5.10** sul suo `span`, non sul `td`
+  che lo contiene;
+- **l'altro lato della storia non si muove**: la home del dipendente dice ancora
+  *"Check-up annuale · Fatto"*;
+- console muta, e `npm run build`, `build:demo`, `lint`, `typecheck` a zero.
+
+##### Trovato e non toccato
+
+- **`/admin/sessions` continua a mostrare le iniziali**, ed è ora l'**unico**
+  posto in cui una persona compare senza nome. Il vuoto dell'omonimia si
+  restringe a una schermata e non si chiude: sta nel contratto §8.8, dove è
+  scritto anche perché aggiungere un identificatore lo peggiorerebbe.
+- **La paginazione resta lavoro dell'MVP** (§8.12), e ha perso il suo esempio
+  principale: la voce si corregge invece di sparire, perché le altre liste
+  crescono lo stesso.
+- **Il conteggio dei check-up di un reparto non è una serie**: è un totale, come
+  quello di piattaforma. Il giorno in cui servisse per trimestre è un metodo in
+  più, non un campo in più.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -9575,6 +9697,24 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 > state raccolte cercando le attribuzioni datate in `CLAUDE.md` e in
 > `docs/PITCH.md`; il criterio e cosa è rimasto fuori stanno nel verbale di
 > quella passata.
+
+- **10.09.2026 — L'area HR vede quanti, mai chi** (`CLAUDE.md` §10.C.5). Fino a
+  quel giorno l'elenco dipendenti mostrava, per ogni persona, **iniziali,
+  reparto, se era iscritta e a che punto era il suo check-up**: un segnale
+  individuale su un servizio sanitario, e in un reparto da sei persone due
+  iniziali identificano.
+
+  **La schermata resta, cambia cosa mostra**: una riga per reparto con organico,
+  iscritti e check-up completati. `getEmployeeDirectory` ed
+  `EmployeeDirectoryEntry` escono dal contratto insieme all'estratto di otto
+  righe, e al loro posto c'è `getDepartmentEnrollment`, che **non ha nessuna riga
+  per persona** — la garanzia è la forma del dato, non ciò che la tabella sceglie
+  di rendere.
+
+  **Il check-up di un reparto si sopprime sotto la soglia di anonimato**, come il
+  punteggio di stress e con lo stesso numero; a cambiare è il denominatore —
+  **là i misurati, qui gli iscritti** — e il perché sta nel
+  `docs/CONTRATTO-DATI.md` §3.
 
 - **06.09.2026 — La tabella dello stress per reparto segue il selettore**
   (`CLAUDE.md` §10.C.1). È il difetto che M3 aveva lasciato aperto e che tre
