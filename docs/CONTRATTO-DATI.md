@@ -275,6 +275,28 @@ dashboard HR afferma la prima cosa, quindi il dato deve misurare quella.
    `CLAUDE.md` §8 con la ragione per cui non è 15, e chi implementa il backend
    non deve prenderlo per il default.
 
+**La soppressione ha due applicazioni e una sola soglia** (10.09.2026): il
+punteggio di stress di un reparto e i **check-up completati** che l'azienda vede
+in `DepartmentEnrollment`. Il numero è lo stesso — `Company.anonymityThreshold` —
+e **il denominatore no**:
+
+| cosa si sopprime | si contano | perché quelli |
+|---|---|---|
+| il punteggio di stress del mese | i **misurati** del periodo | il punteggio è la media delle loro risposte: sotto soglia lo si attribuirebbe a un gruppo nominabile |
+| i check-up completati del reparto | gli **iscritti** del reparto | il check-up si prenota dall'account, quindi la popolazione da cui il numero potrebbe essere riletto è quella, non l'organico |
+
+**Non è una sfumatura.** Sull'organico il criterio non escluderebbe nessuno dei
+sei reparti della demo — il più piccolo ne ha quindici e la soglia è dodici —
+cioè sarebbe una regola che non si applica mai, e nel frontend un ramo che
+nessun dato raggiunge è codice che il `CLAUDE.md` §11 vieta. Sugli iscritti la
+Direzione è sotto, ed è lo stesso reparto che la tabella dello stress sopprime
+per la sua strada.
+
+**Vale la stessa disciplina dell'altra**: a sopprimere è il server — il numero
+non arriva al client — mentre **il conteggio degli iscritti esce su entrambi i
+rami**, perché è adesione e non un dato sanitario, e senza di lui la riga che la
+soppressione esiste per spiegare diventa illeggibile.
+
 **Un reparto senza record mensili esce dall'elenco, e va deciso se è giusto.**
 `getStressByDepartment` promette l'ultimo record di ogni reparto **nel
 trimestre**, e senza record non c'è un ultimo record: fabbricarne uno soppresso
@@ -325,10 +347,12 @@ sta nella forma perché una scelta di rendering qualcuno può disfarla.
 **La garanzia non è cambiata, è cambiato verso chi vale.** Una psicologa il nome
 della propria paziente lo conosce già, e mostrarle delle iniziali non protegge
 nessuno; ciò che il contratto impedisce è che quel nome raggiunga **l'azienda**
-(`EmployeeDirectoryEntry`) e **l'amministratore di piattaforma**
-(`PlatformSession`). Le due letture si sono separate esattamente quel giorno:
-finché entrambe portavano le sole iniziali erano la stessa, e la seconda vista
-serviva solo a chi la leggeva.
+e **l'amministratore di piattaforma** (`PlatformSession`). Le due letture si sono
+separate esattamente quel giorno: finché entrambe portavano le sole iniziali
+erano la stessa, e la seconda vista serviva solo a chi la leggeva.
+
+*(Dal lato dell'azienda la garanzia è oggi più forte di così, e non ha più un
+tipo da nominare qui: `DepartmentEnrollment` non ha una riga per persona.)*
 
 **Le iniziali si derivano dal nome** (`patientInitials`) e non sono un campo
 accanto: due valori per lo stesso fatto sono due valori che possono divergere
@@ -411,12 +435,17 @@ appartiene a chi conta: la lista risponde a *cosa c'è sul mio calendario*, il
 contatore a *quante sedute ho in programma*, e sono due domande diverse sullo
 stesso insieme.
 
-`EmployeeDirectoryEntry` è l'altra metà della stessa garanzia, dal lato
-dell'azienda: porta iniziali e reparto e **non ha nessun campo su cui un nome
-possa arrivare**, esattamente come `ProfessionalSession`. Non porta nemmeno un
-dato sanitario — lo stato del check-up dice se è stato fatto, mai cosa ha detto.
-Il suo `checkupStatus` è `null` per chi non ha attivato l'account: la colonna
-esiste per tutti, il valore no (§2).
+`DepartmentEnrollment` è l'altra metà della stessa garanzia, dal lato
+dell'azienda, e la dà in una forma più forte: **non ha una riga per persona**.
+Conta quanti si sono iscritti e quanti hanno fatto il check-up in un reparto, e
+non c'è niente da ricondurre a nessuno.
+
+*(Fino al 10.09.2026 era `EmployeeDirectoryEntry`, una riga per dipendente con
+iniziali, reparto, iscrizione e stato del check-up. Quel tipo la garanzia la dava
+com'è scritta qui sopra — nessun campo su cui un nome possa arrivare — e non
+bastava: **le iniziali di un reparto da sei persone identificano**, e lo stato
+del check-up è un segnale individuale su un servizio sanitario. Il metodo che lo
+restituiva è uscito dall'interfaccia con lui.)*
 
 `SessionNote` porta il testo e **nessun metodo dell'area HR o admin lo
 restituisce**. Le altre proiezioni sanno al massimo che una nota esiste
@@ -624,7 +653,8 @@ stessa cosa di una data lontana.
 
 `CheckupReport` è **l'unico dato sanitario individuale del dominio** e vive solo
 lì, come `SessionNote`: nessun metodo dell'area HR o admin lo restituisce.
-`EmployeeDirectoryEntry` porta lo stato del check-up, mai il suo esito. Sta su un
+Verso l'azienda non esce niente di individuale: `DepartmentEnrollment` conta
+quanti check-up ha fatto un reparto, mai chi né cosa dice il referto. Sta su un
 metodo suo e non dentro l'eligibility perché si chiede quando lo si apre, che è
 anche il modo in cui in produzione lo si permessiona e lo si traccia.
 
@@ -639,7 +669,7 @@ anche il modo in cui in produzione lo si permessiona e lo si traccia.
 > dominio a garantirlo, non la schermata (`CLAUDE.md` §5.5). Al suo posto:
 > `PlatformUser.assessmentCompleted`, che dice **che** l'assessment è stato
 > fatto e mai cosa ha detto — la stessa distinzione con cui
-> `EmployeeDirectoryEntry` porta lo stato del check-up senza portarne l'esito —
+> il referto del check-up non esce da `CheckupReport` —
 > e `PlatformMonth.averageHealthScore`, il punteggio **aggregato**, che è la
 > forma in cui può stare in un'area che vede i nomi: una media non si
 > attribuisce a nessuno.
@@ -691,6 +721,8 @@ nascono due e le schermate divergono:
 | **Giorni di assenza evitati** | risparmio ÷ costo di una giornata di assenza |
 | **Utilizzo** (`usagePercent`) | sessioni di psicologo consumate ÷ **monte annuo**, non ÷ trimestre: è la stessa grandezza della KPI "142 su 1'200" |
 | **Check-up completati** | check-up eseguiti ÷ **iscritti**, non ÷ organico: chi non ha attivato l'account non può prenotarlo, e metterlo al denominatore misurerebbe l'adozione una seconda volta |
+| **Iscritti di un reparto** (`getDepartmentEnrollment`) | quante persone del reparto hanno attivato l'account. È il numeratore dell'adozione applicato a un reparto invece che all'azienda, e la somma sui reparti **è** l'`enrolledEmployees` dello snapshot corrente: due numeri sullo stesso fatto, quindi un guardrail e non una promessa |
+| **Check-up completati di un reparto** | quanti del reparto hanno fatto il check-up, **`null` sotto la soglia di anonimato**. La soglia si applica agli **iscritti** del reparto, non al suo organico — la regola e il perché stanno qui sopra, fra gli invarianti della misurazione |
 | **Stress di un reparto in un trimestre** (`getStressByDepartment`) | l'**ultimo mese del trimestre di cui esiste un record**, non la media dei tre: un punteggio di stress è una fotografia, e mediarne tre darebbe un numero che nessuna rilevazione ha prodotto. Sul trimestre in corso è l'ultimo mese arrivato, che è l'unica lettura possibile finché il trimestre non è chiuso |
 | **Trend dello stress** | ultimo mese del trimestre **meno** l'ultimo del precedente, in punti. `null` sul trimestre più vecchio della finestra, che un precedente non ce l'ha: uno zero direbbe "invariato" dove il dato non esiste |
 | **Consulti di medico virtuale** (`virtualDoctorConsults`) | somma della serie di utilizzo sui **soli mesi del trimestre**, non cumulata. È l'unica riga del report che non si cumula, e la ragione è che quel servizio **non ha un monte annuo**: sul Plus è illimitato (`CLAUDE.md` §9), quindi non c'è niente da consumare e "quanti finora" non è una domanda. Cumulandola darebbe il totale dei dodici mesi su tutti e quattro i trimestri, cioè un numero che non si muove accanto a un selettore che si muove |
@@ -1127,17 +1159,23 @@ invece di restare assunzioni implicite:
   cambia in nessuno dei due scenari — riceve le iniziali e non vede mai un dato
   aziendale — quindi l'unica cosa che incorpora l'assunzione è un guardrail di
   sviluppo, che è il primo a rompersi quel giorno.
-- **L'elenco dipendenti è un estratto di otto righe su 120.** Un elenco vero si
-  pagina e si cerca, ed è **lavoro dell'MVP, non della demo** (§8): questa riga
-  lo mandava a M5, e nessuno dei sei blocchi di quella milestone lo contiene. La
-  schermata lo dichiara invece di far credere che l'azienda abbia otto persone, e
-  l'intestazione conta l'azienda e non la tabella: in produzione
-  `getEmployeeDirectory` prenderà una pagina e un filtro.
-- **Le tre liste di persone si uniscono per iniziali, e nessuna persona compare
-  con due ruoli.** L'estratto dell'HR, l'agenda della professionista e gli utenti
-  del back-office non condividono un id: le iniziali sono l'unica chiave, quindi
-  il dataset è costruito perché chi ha un ruolo diverso da `employee` non compaia
-  negli altri due elenchi, e un guardrail lo verifica. **Non è una regola del
+- ~~**L'elenco dipendenti è un estratto di otto righe su 120.**~~ →
+  **l'elenco non c'è più** (10.09.2026), e con lui la semplificazione: l'area HR
+  conta per reparto, quindi le righe sono sei e non sono un estratto di niente.
+  La paginazione resta nel §8.12 per le liste che restano.
+
+  **La riga si corregge invece di sparire** perché ciò che diceva era vero e la
+  sua fine è istruttiva: un estratto di otto persone su 120 era una
+  semplificazione del **dataset**, e a toglierla non è stata la paginazione — è
+  stata la decisione che quelle otto righe non dovessero esistere affatto.
+- **Le ~~tre~~ due liste di persone si uniscono per iniziali, e nessuna persona
+  compare con due ruoli.** L'agenda della professionista e gli utenti del
+  back-office non condividono un id: le iniziali sono l'unica chiave, quindi il
+  dataset è costruito perché chi ha un ruolo diverso da `employee` non compaia
+  nell'altro elenco, e un guardrail lo verifica. *(Erano tre fino al 10.09.2026,
+  e la terza era l'estratto dell'HR: è uscito con l'elenco per persona, e con lui
+  il confronto sul reparto — era l'unica delle tre a dichiararne uno, quindi
+  senza di lei quel controllo non poteva più fallire.)* **Non è una regola del
   dominio**: una referente HR è una dipendente, può stare nell'elenco della
   propria azienda e può essere in cura. In produzione le liste si uniscono per id
   vero, le iniziali tornano a essere una resa e il vincolo sparisce insieme al
@@ -1731,14 +1769,20 @@ implementare:
   dichiara di essere *l'ultima prenotazione*, e allora chi legge deve filtrare.
   Le due strade non si equivalgono: la prima rende impossibile lo sbaglio, la
   seconda lo lascia a ogni chiamante.
-- **`EmployeeDirectoryEntry.checkupStatus` ha un valore che l'altro lato non sa
-  produrre.** L'elenco dell'HR ammette `"booked"`, ma **nel percorso del
-  dipendente non c'è nessun modo di arrivarci**, perché la prenotazione non
-  esiste: il valore è raggiungibile solo come seme del dataset. È il segno che
-  l'HR era stata progettata su un flusso che il portale non ha, e il giorno in
-  cui `bookCheckup` esiste i due lati vanno riletti insieme — la stessa
-  disciplina con cui il §3 tiene `Appointment` e `ProfessionalSession` come due
-  proiezioni di un record solo.
+- ~~**`EmployeeDirectoryEntry.checkupStatus` ha un valore che l'altro lato non sa
+  produrre**~~ → **il campo non esiste più** (10.09.2026), e con lui il valore.
+  L'elenco dell'HR ammetteva `"booked"` mentre nel percorso del dipendente non
+  c'era nessun modo di arrivarci: era raggiungibile **solo come seme del
+  dataset**, ed era il segno che l'HR era stata progettata su un flusso che il
+  portale non ha.
+
+  **Non è stato risolto, è stato superato**, e la differenza conta per chi
+  costruisce: l'elenco per persona è uscito per una ragione di privacy (§3), e
+  quel valore se n'è andato con lui. `DepartmentEnrollment` conta i **check-up
+  completati** e non conosce nessuno stato intermedio, quindi la domanda torna
+  intera il giorno in cui `bookCheckup` esiste — **cosa vede l'azienda di un
+  check-up prenotato e non ancora fatto**, se qualcosa. Oggi non la si può
+  rimandare a un campo: non c'è.
 
 **Della struttura non si sa né cosa offre né quanto lavora**, e le due cose
 arrivano dalla stessa integrazione. Il back-office aveva due colonne — i
@@ -1807,20 +1851,25 @@ Il dataset descrive un'azienda semplice, e la semplicità è entrata nei tipi:
   liste si uniscono per **id vero** e non per iniziali, quindi il vincolo del
   dataset demo — nessuna coppia di iniziali ripetuta, sorvegliato da un guardrail
   — cade insieme al guardrail. **Manca la seconda metà, ed è quella che si
-  vede.** Le schermate che mostrano una persona senza mostrarne il nome ne
-  mostrano **le iniziali**: l'elenco dipendenti dell'HR e le sessioni del
-  back-office. *(Erano quattro fino al 17.08.2026: i pazienti e le sessioni del
-  professionista ora mostrano il nome, quindi il problema lì non si pone — e
-  **restringere l'elenco è tutto il guadagno**, perché due dei quattro posti in
-  cui l'omonimia sarebbe ambigua erano proprio quelli di chi la persona la
-  conosce.)* Con due `M.B.` nella stessa
-  azienda quelle righe diventano ambigue a chi guarda, e l'ambiguità **non è
-  risolvibile aggiungendo un identificatore**: un id accanto alle iniziali è un
-  pseudonimo stabile, cioè esattamente ciò che l'anonimato di quelle schermate
-  esiste per non dare. La scelta è di prodotto — un discriminante che non
-  identifica, l'ordinamento come unica chiave di riga, o l'ammissione che due
-  righe possano leggersi uguali — e va presa prima che il primo cliente vero
-  abbia due omonimi, il che su 420 dipendenti è il primo giorno.
+  vede** — ma da una schermata sola. L'unico posto che mostra una persona senza
+  mostrarne il nome sono **le sessioni del back-office**: `PlatformSession` porta
+  le iniziali, e con due `M.B.` nella stessa azienda quelle righe diventano
+  ambigue a chi guarda.
+
+  *(Erano quattro fino al 17.08.2026, poi due, e dal 10.09.2026 una. I pazienti e
+  le sessioni del professionista mostrano il nome, quindi lì il problema non si
+  pone; l'elenco dipendenti dell'HR **non mostra più una persona per riga**, e
+  con lui è uscito il posto in cui l'omonimia pesava di più — perché lì le
+  iniziali stavano accanto a un reparto, e reparto più iniziali restringe molto
+  più di due lettere sole.)*
+
+  **L'ambiguità che resta non è risolvibile aggiungendo un identificatore**: un
+  id accanto alle iniziali è uno pseudonimo stabile, cioè esattamente ciò che
+  l'anonimato di quella schermata esiste per non dare. La scelta è di prodotto —
+  un discriminante che non identifica, l'ordinamento come unica chiave di riga, o
+  l'ammissione che due righe possano leggersi uguali — e va presa prima che il
+  primo cliente vero abbia due omonimi, il che su 420 dipendenti è il primo
+  giorno.
 
 ### 8.9 L'avanzamento del piano di benessere non ha una sorgente
 
@@ -1938,13 +1987,16 @@ può stare nella forma del tipo e deve stare nel processo.
 
 ### 8.12 Paginazione
 
-**`getEmployeeDirectory` restituisce otto righe su 120**, e la schermata lo
-dichiara (§7). Un elenco vero si pagina e si cerca, e vale per ogni lista che in
-produzione cresce: dipendenti, sedute, pazienti, richieste demo, utenti di
-piattaforma.
+**Nessuna lista si pagina e nessuna si cerca**, e vale per ogni lista che in
+produzione cresce: sedute, pazienti, richieste demo, utenti di piattaforma.
+
+*(Questa voce si apriva su `getEmployeeDirectory`, che restituiva otto righe su
+120. Quel metodo non esiste più dal 10.09.2026 — l'area HR conta per reparto —
+quindi l'esempio è uscito e le liste da paginare sono quelle qui sopra. La voce
+resta: era la lista più grossa in prospettiva, non l'unica.)*
 
 **Sta qui e non in una milestone della demo.** `docs/PROGRESS.md` la dava a M5,
 ma nessuno dei sei blocchi di quella milestone la contiene, e non è una
-dimenticanza: paginare un estratto di otto righe curate non aggiunge niente alla
-demo e toglie tempo a ciò che il pitch mostra. È lavoro dell'MVP, e questa riga
-gli dà la sua collocazione invece di lasciarla orfana.
+dimenticanza: paginare liste di poche righe curate non aggiunge niente alla demo
+e toglie tempo a ciò che il pitch mostra. È lavoro dell'MVP, e questa riga gli dà
+la sua collocazione invece di lasciarla orfana.

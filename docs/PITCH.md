@@ -395,54 +395,50 @@ risponde meglio. Tre fatti, tutti verificabili:
    trattino con il lucchetto che si vede sulla Direzione.
 
 **E dal lato dell'azienda è il fatto che conta più di tutti, ora che il nome
-esiste da qualche parte**: l'elenco dipendenti porta iniziali e reparto e **non
-ha nessun campo su cui un nome possa arrivare**, e lo stato del check-up dice se
-è stato fatto, mai cosa ha detto (`docs/CONTRATTO-DATI.md` §3). Finché nessuna
-schermata mostrava un nome la frase era vera e poco interessante; adesso dice
-esattamente dove passa il confine, e si mostra aprendo `/hr/employees` dopo il
-portale della Dr.ssa Meier.
+esiste da qualche parte**: `/hr/employees` **non elenca le persone**, conta per
+reparto — e non ha nessuna riga da attribuire a nessuno
+(`docs/CONTRATTO-DATI.md` §3). Si mostra aprendola dopo il portale della Dr.ssa
+Meier: da un lato un nome e un percorso, dall'altro sei righe di conteggi.
+
+*(Fino al 10.09.2026 quell'elenco portava iniziali, reparto e stato del check-up
+di ogni persona, e la frase era «non ha nessun campo su cui un nome possa
+arrivare» — vera, e più debole di quella di oggi. Se qualcuno ha visto la demo
+prima di quella data, è la differenza da nominare.)*
 
 **Va detto come il punto più forte del prodotto, non come una rassicurazione**:
 qui la privacy non è una promessa scritta nell'informativa, è una proprietà della
 forma dei dati — la stessa disciplina per cui i font sono self-hostati e le
 richieste esterne a runtime sono zero (`CLAUDE.md` §3).
 
-### "E se due persone hanno le stesse iniziali?"
+### "L'HR vede quanti, mai chi"
 
-Arriva **subito dopo** quella sulla privacy, cioè mentre `/admin/sessions`
-mostra "M.B." accanto al "Marco Bianchi" del portale della professionista. Tre
-fatti, in quest'ordine.
+Non è una domanda: è la frase con cui si apre `/hr/employees`, e va detta prima
+che qualcuno la cerchi. La schermata mostra **sei righe, una per reparto** —
+organico, iscritti, check-up completati — e non c'è nessuna riga per persona.
 
-**Primo, e va detto per primo perché rende credibile il resto: nella demo non
-succede, ed è un vincolo del dataset — non una proprietà del prodotto.** Nessuna
-coppia di persone condivide le iniziali, e a sorvegliarlo c'è un guardrail che
-fa fallire l'avvio se qualcuno ne aggiunge una: è il modo in cui le tre liste di
-persone restano unibili a mano mentre i dati sono finti.
+**Fino al 10.09.2026 c'era**, ed è la parte che vale la pena raccontare: iniziali
+e reparto, se la persona era iscritta e a che punto era il suo check-up. Il tipo
+non aveva un campo per il nome, e non bastava — **in un reparto da sei persone
+due iniziali e un reparto identificano**, e lo stato di un check-up è un segnale
+individuale su un servizio sanitario. Non è stato mascherato: **è sparita la
+riga**, che è l'unico modo in cui una garanzia del genere si tiene.
 
-**Secondo: in produzione le liste si uniscono per id vero**, e le iniziali
-tornano a essere quello che sono — una resa. Il vincolo del dataset cade insieme
-al guardrail che lo sorveglia, perché non serve più a niente
-(`docs/CONTRATTO-DATI.md` §7).
+**La Direzione mostra "Sotto soglia" con il lucchetto**, come nella tabella dello
+stress e con la stessa soglia — 12. A cambiare è **cosa si conta**: là i
+dipendenti misurati nel periodo, qui gli iscritti del reparto, perché il check-up
+si prenota dall'account. Se qualcuno lo nota, è la risposta giusta e va
+rivendicata: la soglia è una, il denominatore segue il dato che protegge.
 
-**Terzo, ed è la parte onesta: quello che resta aperto è cosa vede chi guarda
-due righe uguali**, ed è una scelta di prodotto che non abbiamo ancora preso
-(§8.8). La strada facile — un identificatore accanto alle iniziali — è
-**esattamente ciò che quelle schermate esistono per non dare**: un pseudonimo
-stabile identifica, e a quel punto l'anonimato è una parola. Le strade sono tre
-— un discriminante che non identifica, l'ordinamento come unica chiave di riga,
-o l'ammissione che due righe possano leggersi uguali — e si citano, non se ne
-sceglie una in sala.
+**Gli iscritti si vedono anche sulla riga soppressa** — la Direzione fa 7 su 15 —
+ed è voluto, per la stessa ragione per cui i misurati restano sulla riga
+soppressa della dashboard: un conteggio di adesione non è un dato sanitario, e
+toglierlo renderebbe illeggibile proprio la riga che la soppressione esiste per
+spiegare.
 
-**Due dettagli che rafforzano la risposta**, e sono di questa demo: i posti in
-cui l'ambiguità morde sono **due** — l'elenco dipendenti dell'HR e le sessioni
-del back-office — perché dal 17.08.2026 i pazienti e le sedute della
-professionista portano il nome. Restringere quell'elenco **è tutto il guadagno**:
-due dei quattro posti erano proprio quelli di chi la persona la conosce.
-
-**Non promettere una soluzione e non dire "è in roadmap"**: è la stessa
-disciplina della risposta sull'escalation clinica, e per la stessa ragione — la
-domanda dopo è *"e quando succede?"*, e a una funzione descritta e non costruita
-non c'è niente da rispondere.
+**Da qui la risposta sulla privacy guadagna un terzo posto dove mostrarsi**, ed è
+il più semplice dei tre: `/professional/patients` fa "Marco Bianchi",
+`/admin/sessions` fa "M.B.", e `/hr/employees` non fa nessun nome perché non ha
+nessuna riga da attribuire.
 
 ### "E chi non si iscrive?"
 
