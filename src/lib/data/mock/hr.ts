@@ -4,7 +4,6 @@ import {
   adoptionPercent,
   quarterKey,
   quarterOf,
-  type EmployeeDirectoryEntry,
   type HrReport,
   type Invoice,
   type Quarter,
@@ -13,7 +12,6 @@ import {
 import { COMPANY, DEPARTMENTS } from "./company";
 import { DEMO_TODAY } from "./demo-date";
 import { COMPANY_MONTHS, HISTORY_MONTHS } from "./measurement";
-import { LAURA } from "./people";
 import { ANNUAL_SESSION_ALLOWANCE, ROI_SNAPSHOTS } from "./roi";
 import { usageThrough, usageWithin } from "./service-usage";
 
@@ -27,91 +25,37 @@ import { usageThrough, usageWithin } from "./service-usage";
  */
 
 /*
- * L'elenco che l'HR vede.
+ * Iscritti e check-up di ogni reparto (CLAUDE.md §8, founder 10.09.2026).
  *
- * SEMPLIFICAZIONE DICHIARATA: sono otto righe su 120 dipendenti. Un elenco vero
- * si pagina e si cerca, ed è lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.12);
- * qui la schermata dice che è un estratto invece
- * di far credere che l'azienda abbia otto persone — che è quello che fa il
- * codice ereditato, dove l'intestazione conta "6/8 attivati" accanto a una
- * dashboard che ne dichiara 82 su 120.
+ * L'HR VEDE QUANTI, MAI CHI. Fino al 10.09.2026 qui c'era `EMPLOYEE_DIRECTORY`,
+ * un estratto di otto righe con iniziali, reparto, iscrizione e stato del
+ * check-up di ogni persona: un segnale individuale su un servizio sanitario, e
+ * in un reparto da sei persone due iniziali identificano. Non è stato ristretto
+ * né mascherato — **è stato sostituito da un conteggio**, che è l'unica forma in
+ * cui quella domanda si può rispondere senza rispondere anche a un'altra.
  *
- * LE INIZIALI SONO LE STESSE DEL PORTALE PROFESSIONISTA, e non per ordine: sei
- * di queste persone sono pazienti della Dr.ssa Meier, quindi hanno per forza
- * attivato l'account. L.B. è Laura Bernasconi — il codice ereditato la dava
- * "in attesa" e in Finance, mentre ha tre sedute erogate ed è in Operations.
- * Stesse iniziali vuol dire stessa persona (§8, difetto aperto da M0).
+ * SONO CIFRE DEL DATASET, e le loro due somme sono numeri che il resto della
+ * demo già dichiara: 82 iscritti e 51 check-up. I guardrail in fondo al file le
+ * verificano invece di lasciarle a una promessa (§5.5).
+ *
+ * `checkupCompleted` È IL VALORE GREZZO: la soppressione sotto soglia la applica
+ * il provider, come per lo stress, così qui resta il dato e là resta la regola.
  */
-export const EMPLOYEE_DIRECTORY: EmployeeDirectoryEntry[] = [
-  {
-    employeeId: LAURA.id,
-    initials: "L.B.",
-    departmentId: LAURA.departmentId,
-    enrolled: true,
-    checkupStatus: "completed",
-  },
-  {
-    employeeId: "gr",
-    initials: "G.R.",
-    departmentId: "finance",
-    enrolled: true,
-    checkupStatus: "completed",
-  },
-  {
-    employeeId: "mb",
-    initials: "M.B.",
-    departmentId: "operations",
-    enrolled: true,
-    checkupStatus: "booked",
-  },
-  {
-    employeeId: "ek",
-    initials: "E.K.",
-    departmentId: "hr-legal",
-    enrolled: true,
-    checkupStatus: "available",
-  },
-  {
-    /*
-     * ERA `sc` / "S.C.", ED ERA UNA COLLISIONE DI IDENTITÀ (16.08.2026).
-     *
-     * S.C. sono anche le iniziali di Sara Conti, la referente HR di Demo SA in
-     * `platform.ts`: per il §8 — stesse iniziali, stessa persona — questa riga,
-     * il suo percorso dalla Dr.ssa Meier e l'utente del back-office parlavano
-     * della stessa persona, e la facevano risultare in Vendite e con il
-     * percorso terapeutico più lungo della demo.
-     *
-     * A cambiare sono le **iniziali**, non il nome: un nome nuovo passa dalla
-     * verifica del §8 e da una decisione dei founder, una coppia di iniziali
-     * libera no.
-     */
-    employeeId: "ig",
-    initials: "I.G.",
-    departmentId: "sales",
-    enrolled: true,
-    checkupStatus: "completed",
-  },
-  {
-    employeeId: "at",
-    initials: "A.T.",
-    departmentId: "it",
-    enrolled: true,
-    checkupStatus: "booked",
-  },
-  {
-    employeeId: "fm",
-    initials: "F.M.",
-    departmentId: "sales",
-    enrolled: false,
-    checkupStatus: null,
-  },
-  {
-    employeeId: "pv",
-    initials: "P.V.",
-    departmentId: "board",
-    enrolled: false,
-    checkupStatus: null,
-  },
+type DepartmentEnrollmentSeed = {
+  departmentId: string;
+  enrolled: number;
+  checkupCompleted: number;
+};
+
+export const DEPARTMENT_ENROLLMENT: DepartmentEnrollmentSeed[] = [
+  { departmentId: "sales", enrolled: 15, checkupCompleted: 9 },
+  { departmentId: "operations", enrolled: 23, checkupCompleted: 15 },
+  { departmentId: "finance", enrolled: 13, checkupCompleted: 8 },
+  { departmentId: "it", enrolled: 12, checkupCompleted: 8 },
+  { departmentId: "hr-legal", enrolled: 12, checkupCompleted: 7 },
+  // sette iscritti sotto la soglia di 12: è l'unico reparto soppresso, come
+  // nella tabella dello stress e per una strada sua (§8)
+  { departmentId: "board", enrolled: 7, checkupCompleted: 4 },
 ];
 
 /*
@@ -227,21 +171,54 @@ export const HR_REPORTS: HrReport[] = ROI_SNAPSHOTS.map(toReport);
 // ---------------------------------------------------------------------------
 
 const departmentIds = new Set(DEPARTMENTS.map((department) => department.id));
-for (const entry of EMPLOYEE_DIRECTORY) {
+for (const row of DEPARTMENT_ENROLLMENT) {
   assertInDev(
-    departmentIds.has(entry.departmentId),
-    `${entry.initials} è nel reparto "${entry.departmentId}", che non esiste fra i sei del §8.`,
+    departmentIds.has(row.departmentId),
+    `Gli iscritti sono dichiarati per il reparto "${row.departmentId}", che non esiste fra i sei del §8.`,
   );
+
+  const department = DEPARTMENTS.find(({ id }) => id === row.departmentId);
+  assertInDev(
+    department === undefined || row.enrolled <= department.employeeCount,
+    `Il reparto "${row.departmentId}" dichiara ${row.enrolled} iscritti su un organico di ${department?.employeeCount}.`,
+  );
+
   /*
-   * Chi non ha attivato l'account non può avere prenotato un check-up: la
-   * colonna resta, il valore no. È il caso che il codice ereditato mostrava con
-   * un trattino scritto a mano dentro i dati.
+   * Il check-up si prenota dall'account, quindi chi non è iscritto non può
+   * averlo fatto: è la stessa cosa che il vecchio estratto diceva riga per riga,
+   * detta sul conteggio.
    */
   assertInDev(
-    entry.enrolled || entry.checkupStatus === null,
-    `${entry.initials} non ha attivato l'account ma ha uno stato di check-up.`,
+    row.checkupCompleted <= row.enrolled,
+    `Il reparto "${row.departmentId}" dichiara ${row.checkupCompleted} check-up su ${row.enrolled} iscritti.`,
   );
 }
+
+/*
+ * LE DUE SOMME SONO NUMERI CHE ALTRE SCHERMATE GIÀ DICHIARANO, e per questo
+ * hanno un guardrail: gli iscritti sono quelli dello snapshot del trimestre
+ * corrente — la KPI di adozione li conta — e i check-up sono il totale dei
+ * dodici mesi della serie di utilizzo, che la KPI mostra come "51 su 82
+ * iscritti". Due numeri sullo stesso fatto devono essere lo stesso numero
+ * (§5.5).
+ */
+const enrolledTotal = DEPARTMENT_ENROLLMENT.reduce(
+  (total, row) => total + row.enrolled,
+  0,
+);
+assertInDev(
+  enrolledTotal === ROI_SNAPSHOTS[0].enrolledEmployees,
+  `Gli iscritti per reparto sommano a ${enrolledTotal}, il trimestre corrente ne dichiara ${ROI_SNAPSHOTS[0].enrolledEmployees}.`,
+);
+
+const checkupTotal = DEPARTMENT_ENROLLMENT.reduce(
+  (total, row) => total + row.checkupCompleted,
+  0,
+);
+assertInDev(
+  checkupTotal === usageThrough(ROI_SNAPSHOTS[0].period).checkup,
+  `I check-up per reparto sommano a ${checkupTotal}, la serie di utilizzo ne conta ${usageThrough(ROI_SNAPSHOTS[0].period).checkup} sui dodici mesi.`,
+);
 
 /*
  * L'UNICITÀ DELLE INIZIALI SI CONTROLLA IN `platform.ts` (16.08.2026).
@@ -256,21 +233,6 @@ for (const entry of EMPLOYEE_DIRECTORY) {
  * duplicato: due controlli sulla stessa condizione sono due posti in cui
  * sbagliarla (§5.6).
  */
-
-/*
- * L'estratto non può essere più lungo dell'azienda, né dichiarare più iscritti
- * di quanti ne abbia il trimestre corrente.
- */
-assertInDev(
-  EMPLOYEE_DIRECTORY.length <= COMPANY.employeeCount,
-  `L'elenco mostra ${EMPLOYEE_DIRECTORY.length} righe su un organico di ${COMPANY.employeeCount}.`,
-);
-
-assertInDev(
-  EMPLOYEE_DIRECTORY.filter((entry) => entry.enrolled).length <=
-    ROI_SNAPSHOTS[0].enrolledEmployees,
-  "L'estratto dell'elenco contiene più iscritti di quanti il trimestre corrente ne dichiari.",
-);
 
 /*
  * Le fatture stanno dentro la finestra dei dodici mesi: una fattura più vecchia

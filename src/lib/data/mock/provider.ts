@@ -10,7 +10,7 @@ import {
   type ClientCompany,
   type DemoRequest,
   type DemoRequestInput,
-  type EmployeeDirectoryEntry,
+  type DepartmentEnrollment,
   type PlatformMonth,
   type PlatformUser,
   type HrReport,
@@ -61,7 +61,7 @@ import {
   employeeEntitlement,
   LAURA_VIRTUAL_DOCTOR_CONSULTS,
 } from "./employee-portal";
-import { EMPLOYEE_DIRECTORY, HR_REPORTS, INVOICES } from "./hr";
+import { DEPARTMENT_ENROLLMENT, HR_REPORTS, INVOICES } from "./hr";
 import { DEMO_TODAY } from "./demo-date";
 import { LAURA, LAURA_ASSESSMENT, PROFESSIONALS } from "./people";
 import { resolveRapidCheckLink } from "./rapid-check";
@@ -398,8 +398,40 @@ export class MockDataProvider implements DataProvider {
     return Promise.resolve(report ?? null);
   }
 
-  getEmployeeDirectory(): Promise<EmployeeDirectoryEntry[]> {
-    return Promise.resolve(EMPLOYEE_DIRECTORY);
+  /*
+   * LA SOPPRESSIONE È QUI, come per lo stress, e non nella schermata: il numero
+   * che non si può pubblicare **non arriva al client**
+   * (`docs/CONTRATTO-DATI.md` §3).
+   *
+   * A decidere sono **gli iscritti del reparto** e non il suo organico, ed è la
+   * differenza con la regola dello stress — là i misurati del periodo. La
+   * ragione è che il check-up si conta su chi può prenotarlo: con l'organico il
+   * ramo non sarebbe nemmeno raggiungibile, perché il reparto più piccolo ne ha
+   * quindici e la soglia è dodici (§11).
+   *
+   * `enrolled` esce sempre, anche dove il check-up è soppresso: è un conteggio
+   * di adesione e non un dato sanitario, ed è la stessa scelta dei misurati che
+   * restano sulla riga soppressa dello stress (§8).
+   */
+  getDepartmentEnrollment(): Promise<DepartmentEnrollment[]> {
+    return Promise.resolve(
+      DEPARTMENTS.map((department) => {
+        const row = DEPARTMENT_ENROLLMENT.find(
+          (entry) => entry.departmentId === department.id,
+        );
+        const enrolled = row?.enrolled ?? 0;
+
+        return {
+          departmentId: department.id,
+          employeeCount: department.employeeCount,
+          enrolled,
+          checkupCompleted:
+            row !== undefined && enrolled >= COMPANY.anonymityThreshold
+              ? row.checkupCompleted
+              : null,
+        };
+      }),
+    );
   }
 
   getInvoices(): Promise<Invoice[]> {

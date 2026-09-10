@@ -124,7 +124,7 @@ export const queryKeys = {
     roiSnapshots: () => ["company", "roi", "all"] as const,
     serviceUsage: () => ["company", "service-usage"] as const,
     report: (period: string) => ["company", "report", period] as const,
-    directory: () => ["company", "directory"] as const,
+    enrollment: () => ["company", "enrollment"] as const,
     invoices: () => ["company", "invoices"] as const,
   },
 

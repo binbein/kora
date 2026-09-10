@@ -178,8 +178,8 @@ export async function prefetchDemo(queryClient: QueryClient): Promise<void> {
       queryFn: () => dataProvider.getServiceUsage(),
     }),
     queryClient.prefetchQuery({
-      queryKey: queryKeys.company.directory(),
-      queryFn: () => dataProvider.getEmployeeDirectory(),
+      queryKey: queryKeys.company.enrollment(),
+      queryFn: () => dataProvider.getDepartmentEnrollment(),
     }),
     queryClient.prefetchQuery({
       queryKey: queryKeys.company.invoices(),

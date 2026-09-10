@@ -739,8 +739,10 @@ export type Appointment = {
  * cura — e mostrarle delle iniziali non protegge nessuno: confonde e basta. Ciò
  * che il contratto garantisce non è che il nome non esista, è **verso chi non
  * esce**: l'azienda e l'amministratore di piattaforma. Le loro proiezioni —
- * `EmployeeDirectoryEntry` e `PlatformSession` — non hanno nessun campo su cui
- * possa arrivare, e quella è la garanzia, non una scelta di rendering.
+ * `DepartmentEnrollment` e `PlatformSession` — non hanno nessun campo su cui
+ * possa arrivare, e quella è la garanzia, non una scelta di rendering. Dal
+ * 10.09.2026 quella dell'azienda è più forte di così: non ha nemmeno una riga
+ * per persona.
  *
  * Le **iniziali non sono un campo**: si derivano con `patientInitials`, perché
  * due valori per lo stesso fatto sono due valori che possono divergere (§5.5).
@@ -804,7 +806,8 @@ export type ProfessionalSession = {
  * **Non lo si risolve facendo scegliere alla schermata cosa rendere**: quella è
  * una scelta che qualcuno può disfare. Qui non c'è **nessun campo su cui un
  * nome possa arrivare**, ed è la stessa garanzia di forma che
- * `EmployeeDirectoryEntry` dà dal lato dell'azienda.
+ * `DepartmentEnrollment` dà dal lato dell'azienda — dove, dal 10.09.2026, non
+ * c'è più nemmeno una riga per persona.
  *
  * Porta il minimo che la schermata mostra: chi, quando, che tipo, com'è andata.
  * Il compenso non è un campo — è la tariffa del professionista moltiplicata per
@@ -1056,8 +1059,10 @@ export type CheckupMeasurement = {
  *
  * È l'unico dato sanitario individuale del dominio, e vive **solo** su questo
  * tipo: nessun metodo dell'area HR o admin lo restituisce, esattamente come per
- * `SessionNote`. `EmployeeDirectoryEntry` porta lo stato del check-up e non il
- * suo esito, e la garanzia è la forma del tipo, non una scelta di rendering.
+ * `SessionNote`. Verso l'azienda non ne esce niente di individuale:
+ * `DepartmentEnrollment` conta quanti check-up ha fatto un reparto, mai chi né
+ * cosa ha detto il referto — e la garanzia è la forma del tipo, non una scelta
+ * di rendering.
  *
  * Nella demo i valori sono quelli già a schermo e dichiaratamente dimostrativi:
  * la schermata lo dice con il disclaimer di M0.
@@ -1165,25 +1170,35 @@ export type ServiceUsageMonth = {
 // ---------------------------------------------------------------------------
 
 /**
- * Una riga dell'elenco dipendenti che l'HR vede (§10.C).
+ * Quante persone di un reparto si sono iscritte, e quante hanno fatto il
+ * check-up (§10.C.5).
  *
- * **Non ha nessun campo su cui un nome possa arrivare**, esattamente come
- * `ProfessionalSession`: chi guarda riceve le iniziali e il reparto, e la
- * garanzia è la forma del tipo, non una scelta di rendering. Non porta nemmeno
- * un dato sanitario — lo stato del check-up dice se è stato fatto, mai cosa ha
- * detto.
+ * **NON HA UNA RIGA PER PERSONA**, ed è la differenza che conta (founder,
+ * 10.09.2026). Fino a quel giorno l'area HR leggeva `EmployeeDirectoryEntry`,
+ * una riga per dipendente con iniziali, reparto, iscrizione e stato del
+ * check-up: quel tipo non aveva un campo per il nome — la garanzia di allora —
+ * ma portava **un segnale individuale su un servizio sanitario**, e in un
+ * reparto da sei persone due iniziali identificano. Qui non c'è niente da
+ * ricondurre a nessuno, perché la persona non è una riga.
  *
- * `checkupStatus` è `null` per chi non ha attivato l'account: la colonna esiste
- * per tutti, il valore no (`docs/CONTRATTO-DATI.md` §2).
+ * `checkupCompleted` è `null` **sotto la soglia di anonimato del cliente**, ed
+ * è la stessa regola dello stress con un denominatore diverso: là i misurati del
+ * periodo, qui gli iscritti del reparto (`docs/CONTRATTO-DATI.md` §3). Come per
+ * lo stress, **a sopprimere è il provider**: il numero non arriva al client, non
+ * è nascosto dalla schermata.
+ *
+ * `enrolled` invece esce sempre, anche sulla riga soppressa, per la ragione con
+ * cui i misurati restano sulla riga soppressa dello stress: è un conteggio di
+ * adesione e non un dato sanitario, e senza di lui la riga che la soppressione
+ * esiste per spiegare diventa illeggibile.
  */
-export type EmployeeDirectoryEntry = {
-  employeeId: string;
-  /** "L.B." — è tutto ciò che l'azienda riceve del nome */
-  initials: string;
+export type DepartmentEnrollment = {
   departmentId: string;
-  /** Ha attivato l'account e può prenotare */
-  enrolled: boolean;
-  checkupStatus: "completed" | "booked" | "available" | null;
+  employeeCount: number;
+  /** Quanti hanno attivato l'account e possono prenotare */
+  enrolled: number;
+  /** Quanti hanno fatto il check-up; `null` sotto la soglia di anonimato */
+  checkupCompleted: number | null;
 };
 
 /**
@@ -1346,9 +1361,9 @@ export type Session = {
  * l'intero contratto.
  *
  * `assessmentCompleted` dice **che** l'assessment è stato fatto, mai cosa ha
- * detto: è la stessa distinzione con cui `EmployeeDirectoryEntry` porta lo
- * stato del check-up senza portarne l'esito. Il punteggio resta, ma **come
- * aggregato**, su `PlatformMonth`.
+ * detto: è la stessa distinzione con cui il referto del check-up non esce da
+ * `CheckupReport`. Il punteggio resta, ma **come aggregato**, su
+ * `PlatformMonth`.
  */
 export type PlatformUser = {
   id: string;

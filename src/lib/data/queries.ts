@@ -316,10 +316,10 @@ export function useHrReport(period: Quarter | undefined) {
   });
 }
 
-export function useEmployeeDirectory() {
+export function useDepartmentEnrollment() {
   return useQuery({
-    queryKey: queryKeys.company.directory(),
-    queryFn: () => dataProvider.getEmployeeDirectory(),
+    queryKey: queryKeys.company.enrollment(),
+    queryFn: () => dataProvider.getDepartmentEnrollment(),
   });
 }
 

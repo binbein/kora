@@ -13,7 +13,6 @@ import type {
 import { patientDisplayName, patientInitials, sameQuarter } from "../types";
 import { COMPANY, PLANS, PLAN_LIST } from "./company";
 import { DEMO_TODAY } from "./demo-date";
-import { EMPLOYEE_DIRECTORY } from "./hr";
 import { HISTORY_MONTHS } from "./measurement";
 import { PORTAL_SESSIONS } from "./professional-portal";
 import { CURRENT_QUARTER, ROI_SNAPSHOTS } from "./roi";
@@ -545,47 +544,42 @@ for (const user of PLATFORM_USERS) {
 }
 
 /*
- * STESSE INIZIALI DEVE VOLER DIRE STESSA PERSONA, E A DIRLO SONO TRE LISTE.
+ * STESSE INIZIALI DEVE VOLER DIRE STESSA PERSONA, E A DIRLO SONO DUE LISTE.
  *
- * L'invariante del §8 esisteva già, ma sorvegliava una lista sola — le iniziali
- * distinte dentro `EMPLOYEE_DIRECTORY` — mentre le persone di questa demo vivono
- * in tre elenchi che non si parlavano: l'estratto dell'HR, l'agenda della Dr.ssa
- * Meier e gli utenti del back-office. È così che S.C. ha potuto essere insieme
- * la referente HR di Demo SA e la paziente con il percorso più lungo, senza che
- * si rompesse niente (corretto il 16.08.2026).
+ * Erano tre fino al 10.09.2026, e la terza era l'estratto dell'HR: è uscito con
+ * l'elenco per persona, perché l'azienda vede ora **quanti si sono iscritti per
+ * reparto e non chi** (§10.C.5). Restano l'agenda della Dr.ssa Meier e gli
+ * utenti del back-office, che sono anche le due liste in cui una collisione fa
+ * danno — quella del 16.08.2026, S.C. insieme referente HR e paziente con il
+ * percorso più lungo, passava esattamente di qui.
  *
- * Sta qui e non in `hr.ts` perché questo è l'unico dei tre file che può
- * importare gli altri due senza chiudere un ciclo — ed è anche l'elenco
- * arrivato per ultimo, cioè quello che ha introdotto la collisione.
+ * IL CONFRONTO SUL REPARTO È USCITO CON LA LISTA CHE LO DICHIARAVA. Era l'unica
+ * a portare un `departmentId`, quindi senza di lei il controllo non poteva più
+ * fallire: un ramo che nessun dato può raggiungere è codice che il §11 non
+ * vuole, e tenerlo "per il giorno in cui servirà" era la previsione che questo
+ * repository ha già visto invecchiare due volte.
  *
- * IL CASO CHE DEVE PASSARE È M.B.: Marco Bianchi sta in tutti e tre gli
- * elenchi ed è la stessa persona, coerente. A distinguerlo da S.C. non è il
- * numero di liste in cui compare, sono i quattro confronti qui sotto.
+ * IL CASO CHE DEVE PASSARE È M.B.: Marco Bianchi è l'utente `user-mb` del
+ * back-office e il paziente del lunedì alle 14:00, ed è la stessa persona. A
+ * distinguerlo da S.C. sono i confronti qui sotto.
  */
 type IdentityClaim = {
   initials: string;
   companyId: string;
-  /** Il reparto, dove la lista lo dichiara: ce l'ha solo l'estratto dell'HR. */
-  departmentId: string | null;
   /** Il ruolo, dove la lista lo dichiara: ce l'ha solo il back-office. */
   role: UserRole | null;
-  /**
-   * Il nome per esteso, **dove la lista ce l'ha**: l'agenda della professionista
-   * e gli utenti del back-office. L'estratto dell'HR non ce l'ha e non deve
-   * averlo — è la lista che l'azienda vede (17.08.2026).
-   */
+  /** Il nome per esteso: da quando le liste sono due, ce l'hanno entrambe. */
   fullName: string | null;
   /**
-   * L'id con cui le due liste di dipendenti si uniscono. Il back-office ha un
+   * L'id di dominio della persona, dove la lista ce l'ha. Il back-office ha un
    * id suo (`user-mb`) che non è quello del dominio, quindi lì è `null`:
    * ricavarlo togliendo il prefisso sarebbe un aggancio su una convenzione di
    * scrittura, cioè la cosa che questo guardrail esiste per non fare.
    */
   personId: string | null;
   /**
-   * Se la lista contiene, per costruzione, dipendenti dell'azienda: l'estratto
-   * e i pazienti sì, gli utenti del back-office no — lì ci sono anche HR e
-   * amministratori.
+   * Se la lista contiene, per costruzione, dipendenti dell'azienda: i pazienti
+   * sì, gli utenti del back-office no — lì ci sono anche HR e amministratori.
    */
   isEmployee: boolean;
   /** Chi lo afferma, perché il messaggio dica dove guardare. */
@@ -593,26 +587,14 @@ type IdentityClaim = {
 };
 
 const identityClaims: IdentityClaim[] = [
-  ...EMPLOYEE_DIRECTORY.map((entry) => ({
-    initials: entry.initials,
-    companyId: COMPANY.id,
-    departmentId: entry.departmentId,
-    role: null,
-    fullName: null,
-    personId: entry.employeeId,
-    isEmployee: true,
-    source: "l'elenco dipendenti dell'HR",
-  })),
   /*
    * I pazienti del portale sono dipendenti di Demo SA: è la stessa azienda vista
-   * dai due lati del marketplace (§10.D). Il reparto non lo dichiarano, quindi
-   * non partecipano al confronto sul reparto.
+   * dai due lati del marketplace (§10.D).
    */
   ...PORTAL_SESSIONS.map((session) => ({
     // derivate dal nome, non dichiarate: dal 17.08.2026 l'agenda porta il nome
     initials: patientInitials(session),
     companyId: COMPANY.id,
-    departmentId: null,
     role: null,
     fullName: patientDisplayName(session),
     personId: session.patientId,
@@ -622,7 +604,6 @@ const identityClaims: IdentityClaim[] = [
   ...PLATFORM_USERS.map((user) => ({
     initials: `${user.firstName.charAt(0)}.${user.lastName.charAt(0)}.`,
     companyId: user.companyId,
-    departmentId: null,
     role: user.role,
     fullName: `${user.firstName} ${user.lastName}`,
     personId: null,
@@ -663,23 +644,7 @@ for (const [initials, group] of groupBy((claim) => claim.initials)) {
     `${initials} compare in più aziende — ${companies.join(", ")} — quindi stesse iniziali non vogliono dire stessa persona (§8).`,
   );
 
-  /*
-   * Il reparto si confronta solo fra chi lo dichiara, e oggi è una lista sola:
-   * questo è l'invariante di unicità che viveva in `hr.ts`, in forma generale
-   * perché il giorno in cui una seconda lista porterà un reparto il confronto
-   * ci sia già.
-   */
-  const departments = declared(group, (claim) => claim.departmentId);
-  assertInDev(
-    departments.length <= 1,
-    `${initials} compare in più reparti — ${departments.join(", ")} — quindi due persone diverse condividono le iniziali (§8).`,
-  );
-
-  /*
-   * Due dipendenti diversi non possono avere le stesse iniziali. È l'altra metà
-   * del controllo che stava in `hr.ts`, e qui vale anche fra le due liste:
-   * l'estratto e l'agenda si uniscono su questo id.
-   */
+  /* Due dipendenti diversi non possono avere le stesse iniziali. */
   const people = declared(group, (claim) => claim.personId);
   assertInDev(
     people.length <= 1,
@@ -687,9 +652,9 @@ for (const [initials, group] of groupBy((claim) => claim.initials)) {
   );
 
   /*
-   * IL CONFRONTO CHE DISTINGUE M.B. DA S.C., e senza il quale i primi tre
-   * lasciavano passare la collisione: azienda, reparto e id tornavano tutti,
-   * perché il back-office non dichiara né reparto né id di dominio.
+   * IL CONFRONTO CHE DISTINGUE M.B. DA S.C., e senza il quale gli altri
+   * lasciavano passare la collisione: azienda e id tornavano, perché il
+   * back-office non dichiara un id di dominio.
    *
    * QUESTA È UNA REGOLA DEL DATASET DEMO, NON DEL DOMINIO, e la distinzione è
    * la correzione del 16.08.2026 a come questa riga era stata scritta. Una
@@ -698,9 +663,9 @@ for (const [initials, group] of groupBy((claim) => claim.initials)) {
    * dire il contrario sarebbe una regola falsa messa in un guardrail.
    *
    * Ciò che è vero e verificabile è più modesto: **in questo dataset le persone
-   * con un ruolo non-`employee` non compaiono negli altri due elenchi.** Le
-   * iniziali sono l'unica chiave che unisce le tre liste — il back-office non
-   * porta né reparto né id di dominio — quindi finché quel vincolo tiene,
+   * con un ruolo non-`employee` non compaiono nell'altro elenco.** Le iniziali
+   * sono l'unica chiave che unisce le due liste — il back-office non porta un id
+   * di dominio — quindi finché quel vincolo tiene,
    * iniziali condivise con un ruolo diverso vogliono dire **due persone che il
    * dataset non sa distinguere**, non una persona con due mestieri.
    *
@@ -720,10 +685,9 @@ for (const [initials, group] of groupBy((claim) => claim.initials)) {
   /*
    * IL CONFRONTO NUOVO, E LO PORTA IL NOME (17.08.2026).
    *
-   * Due liste dichiarano ora un nome per esteso: l'agenda della professionista e
-   * gli utenti del back-office. Se le stesse iniziali portano due nomi diversi,
-   * il §8 è violato **in un modo che i primi quattro confronti non vedono** —
-   * tornano tutti, perché il back-office non dichiara né reparto né id di
+   * Le due liste dichiarano un nome per esteso. Se le stesse iniziali portano
+   * due nomi diversi, il §8 è violato **in un modo che gli altri confronti non
+   * vedono** — tornano tutti, perché il back-office non dichiara un id di
    * dominio, ed è esattamente il buco da cui passò S.C. il 16.08.2026.
    *
    * È il caso di M.B.: Marco Bianchi è l'utente `user-mb` del back-office e il
@@ -740,9 +704,10 @@ for (const [initials, group] of groupBy((claim) => claim.initials)) {
 
 /*
  * E la stessa persona non può avere due iniziali. È la direzione opposta della
- * precedente, e serve perché le due liste si rinominano una alla volta: cambiare
- * le iniziali nell'estratto e lasciarle nell'agenda produce due persone dove ce
- * n'è una, senza che nessuno degli altri controlli se ne accorga.
+ * precedente: l'agenda porta un nome per seduta, quindi lo stesso paziente
+ * scritto in due modi su due sedute produce due persone dove ce n'è una, senza
+ * che nessuno degli altri controlli se ne accorga — quelli raggruppano per
+ * iniziali, e qui sono proprio le iniziali a divergere.
  */
 for (const [personId, group] of groupBy((claim) => claim.personId)) {
   const spellings = declared(group, (claim) => claim.initials);
