@@ -628,9 +628,30 @@ vede perché di risposte ce n'è al massimo una, scritta durante la sessione.
   l'invito né il ritardo, e il denominatore dell'adesione — i misurati del
   periodo, da cui dipende la soglia di anonimato — non è calcolabile dal dato:
   oggi arriva già aggregato (§3, misurazione).
-- **Lo storico non esiste.** `getRapidCheckAnswer` dà un valore, non una serie:
-  la persona non può vedere il proprio andamento, che è metà del senso di un
+- ~~**Lo storico non esiste.**~~ → **c'è dal 10.09.2026**, ed è
+  `getRapidCheckHistory`: un punto al mese sui dodici della finestra, dal più
+  vecchio. La persona vede il proprio andamento, che era metà del senso di un
   check ricorrente.
+
+  **`RapidCheckEntry` porta il mese e il valore, e nient'altro** — non il reparto
+  e non la persona: quei due campi servono ad **aggregare**, cioè al lato che una
+  curva personale non deve avere. `RapidCheckAnswer` li porta perché è ciò che si
+  **scrive**; questa è una lettura, e si legge di sé.
+
+  **Nessun metodo dell'area HR o del back-office restituisce questa serie**, né
+  qualcosa da cui si possa ricavare: è la garanzia di forma del §3 applicata al
+  segnale invece che al nome. L'azienda vede la media del reparto sopra la soglia
+  di anonimato — la stessa misurazione, dall'altro lato.
+
+  **La risposta di oggi sostituisce l'ultimo mese**, non si aggiunge in coda: il
+  tocco della home e l'ultimo punto della curva sono la stessa risposta, e due
+  numeri sullo stesso fatto devono essere lo stesso numero (`CLAUDE.md` §5.5). In
+  produzione, dove il check rapido è più frequente di uno al mese, **il mese
+  diventa un'aggregazione** e questa regola diventa la domanda della cadenza qui
+  sopra: cosa mostra un mese con più risposte dentro.
+
+  **Resta vero che la cadenza non c'è**, ed è la ragione per cui la serie della
+  demo è un valore al mese scritto nel dataset e non una media di risposte.
 - **La correzione non esiste.** Non c'è modo di cambiare una risposta appena
   data, e su un tocco solo l'errore è a un dito di distanza. In produzione va
   deciso se la seconda risposta dello stesso periodo **sostituisce** la prima o
@@ -951,6 +972,14 @@ radice è la superficie giusta.
 **`submitRapidCheck` invalida solo la risposta**, non la radice: il check rapido
 non muove contatori né appuntamenti, e invalidare più del necessario farebbe
 rileggere mezza schermata per un tocco.
+
+**E dal 10.09.2026 quella riga porta con sé una lettura in più senza cambiare**,
+perché la curva personale sta **sotto** quella chiave —
+`["employee", "rapid-check", "history"]` — e l'invalidazione la prende per
+prefisso. Non è un'economia: la risposta di oggi **è** l'ultimo punto della
+curva, quindi rileggerne una senza l'altra le farebbe divergere per un istante a
+schermo. Una chiave sorella avrebbe chiesto alla mutation di elencarle tutte e
+due, cioè a chi scrive di sapere chi legge.
 
 **Col token non invalida niente** (06.09.2026), ed è la riga da leggere prima di
 "correggere" l'asimmetria della tabella. `["employee", "rapid-check"]` è la

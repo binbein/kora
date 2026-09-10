@@ -2697,6 +2697,9 @@ Home, Psicologi, Medico virtuale, Check-up, Benessere, Profilo.
    Approvato dai founder il **06.08.2026** ai sensi del §2.6.
 
 2. **La home mostra due fatti, non quattro scorciatoie** (founder, 17.08.2026).
+   *(E dal 10.09.2026 un elemento in più, che non è una scorciatoia ma un dato
+   che non esisteva da nessuna parte: la curva personale del check rapido, voce
+   6.)*
    Le quattro tessere verso medico virtuale, check-up, piano e profilo erano
    **quattro delle sei voci del menu**, cioè la stessa strada disegnata due
    volte. Al loro posto **la data del prossimo check-up** e **i consulti di
@@ -2751,6 +2754,37 @@ Home, Psicologi, Medico virtuale, Check-up, Benessere, Profilo.
    regole che un giorno lo governeranno — e il preavviso, da oggi, è quella che
    pesa di più: finché a disdire era solo chi cura era una cortesia, adesso
    decide se un'ora persa la paga qualcuno.
+
+6. **Il dipendente vede la propria curva del check rapido; l'azienda mai**
+   (founder, 10.09.2026). Non è una rotta nuova né una schermata nuova — è una
+   card in più sulla home, sotto il check rapido, e il conto delle rotte non si
+   muove.
+
+   **Il caso che la motiva**: il check rapido è il segnale su cui poggia ogni
+   dato di stress della dashboard HR, e chi lo produce non ne vedeva niente. Un
+   check *ricorrente* di cui non si può guardare l'andamento chiede un gesto
+   ogni mese senza restituire mai nulla, ed è metà del suo senso che manca.
+
+   **La lettura è una sola e non porta né reparto né persona**
+   (`getRapidCheckHistory`): sono i due campi che servono ad aggregare, cioè al
+   lato che una curva personale non deve avere. Nessun metodo dell'area HR o del
+   back-office la restituisce — l'azienda vede la media del reparto sopra la
+   soglia, che è la stessa misurazione dall'altro lato.
+
+   **La risposta di oggi sostituisce l'ultimo mese**, non si aggiunge: il tocco e
+   l'ultimo punto sono la stessa risposta, e a schermo si vede toccando un volto
+   — il punto si muove, non ne nasce uno accanto (§5.5). **La risposta che arriva
+   dal link anonimo non lo muove**, ed è la stessa garanzia per cui quel link è
+   anonimo (§10.A.5).
+
+   **L'asse verticale è rovesciato**, e non è un vezzo: su una curva che dice
+   come si sta, **in alto deve stare il meglio**. La scala del check rapido ha 1
+   per "molto bene", quindi senza il rovesciamento un mese buono scenderebbe e la
+   curva si leggerebbe al contrario di ciò che dice. **Le etichette sono le
+   parole dei cinque volti e stanno solo agli estremi**: quei numeri non vogliono
+   dire niente a chi guarda, e il tooltip dice la parola per la stessa ragione.
+
+   **Nessuna animazione d'ingresso** (§6.2), come ogni serie di questa demo.
 
 **Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — la parte in
 programma del contatore sale, l'appuntamento compare in home, lo slot sparisce dalla
