@@ -2161,7 +2161,8 @@ malissimo, e le zero richieste esterne rese eseguibili, e **il link anonimo del
 check rapido**, e **la disdetta dal lato del dipendente**, e **l'attivazione
 dell'account**, e **lo stress per reparto dentro la cornice**, e **i residui
 dell'attivazione e della cornice**, e **l'id della prenotazione con il codice
-azienda**, e **l'area HR che conta per reparto**. Non aggiungono
+azienda**, e **l'area HR che conta per reparto**, e **la curva personale del
+check rapido**. Non aggiungono
 schermate — **tranne il link anonimo e l'attivazione**, ed è la riga qui sotto.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
@@ -9633,6 +9634,131 @@ Sulla build demo a 1280×900, console aperta:
 - **Il conteggio dei check-up di un reparto non è una serie**: è un totale, come
   quello di piattaforma. Il giorno in cui servisse per trimestre è un metodo in
   più, non un campo in più.
+
+#### La curva personale del check rapido (10.09.2026)
+
+**Questo verbale non conta i propri commit.** Nessuna schermata nuova e nessuna
+rotta nuova: rotte **28**, schermate **29**. `EXPECTED_KEYS` **862 → 864**;
+guardrail **125 → 126**.
+
+##### Il segnale tornava a tutti tranne che a chi lo produce
+
+Il check rapido è ciò su cui poggia ogni dato di stress della dashboard HR, e chi
+risponde non ne vedeva niente: un tocco al mese che non restituisce mai nulla. Il
+contratto lo dichiarava fra le tre cose che mancavano al check rapido — *«lo
+storico non esiste: la persona non può vedere il proprio andamento, che è metà
+del senso di un check ricorrente»* — ed è la metà che si chiude qui. **La cadenza
+e la correzione restano aperte**, e la riga si corregge con la sua data invece di
+sparire.
+
+##### Una lettura che non può aggregare
+
+`RapidCheckEntry` porta **il mese e il valore, e nient'altro**: non il reparto e
+non la persona. Non è un'economia di campi — sono i due che servono ad
+**aggregare**, cioè al lato che una curva personale non deve avere.
+`RapidCheckAnswer` li porta perché è ciò che si **scrive**; questa è una lettura,
+e si legge di sé. Nessun metodo dell'area HR o del back-office la restituisce.
+
+**`RapidCheckValue` è stato estratto** e lo usano tutte e due le entità: la scala
+del check rapido era scritta due volte come unione anonima, ed è la scala
+**rovesciata** rispetto all'assessment — 1 è "molto bene" — cioè quella su cui
+sbagliare non rompe niente e capovolge tutto.
+
+##### La risposta di oggi sostituisce l'ultimo mese
+
+`DEMO_TODAY` cade dentro l'ultimo mese della finestra, quindi il tocco della home
+e l'ultimo punto della curva sono **la stessa risposta**: aggiungerla darebbe due
+punti per settembre, cioè due numeri sullo stesso fatto (§5.5).
+
+**L'invalidazione non è stata toccata**, ed è la parte elegante: la curva sta
+*sotto* la chiave della risposta — `["employee", "rapid-check", "history"]` —
+quindi l'invalidazione che il tocco già faceva la prende **per prefisso**. Una
+chiave sorella avrebbe chiesto alla mutation di elencarle tutte e due, cioè a chi
+scrive di sapere chi legge.
+
+##### L'asse rovesciato, e le parole al posto dei numeri
+
+**In alto sta il meglio** (founder): la scala ha 1 per "molto bene", quindi senza
+`reversed` un mese buono scenderebbe e la curva si leggerebbe al contrario di ciò
+che dice. Le etichette sono **solo agli estremi** e sono le parole dei cinque
+volti, non i numeri — "3" non è un punteggio, è un volto — e il tooltip legge
+dalla stessa riga del dizionario, quindi la scala ha un vocabolario solo (§7).
+
+**Due dettagli di recharts sono costati una correzione, e stanno nel codice
+perché si ripresenteranno**: con il tick sul bordo superiore la libreria **scarta
+l'etichetta in silenzio** invece di tagliarla — l'asse usciva con la sola "Molto
+male", cioè con la metà che dice il contrario di quello che serve — e il default
+di `interval` le lascia saltare tick a piacere. Servono un margine in cima e
+`interval={0}`. **Trovato guardando l'asse, non il codice**: a schermo mancava una
+parola, e nessun controllo se ne sarebbe accorto.
+
+##### La serie
+
+I dodici valori sono dei founder (`CLAUDE.md` §8) e non raccontano niente che il
+§8 non racconti: media 2.58, nessuna corsa monotona più lunga di due, primo
+valore uguale all'ultimo — non c'è trend da leggere. **L'unico 4 è marzo 2026**,
+il mese del referto del check-up che segnala il sonno: una coerenza **scelta**, e
+senza guardrail — pinnare una coincidenza narrativa la trasformerebbe in un
+invariante che non è.
+
+Il guardrail che c'è verifica un'altra cosa: **un valore per ogni mese della
+finestra**, così la curva della persona e il trend della dashboard parlano degli
+stessi mesi.
+
+##### Verificato
+
+Sulla build demo a 1280×900, console aperta:
+
+- **dodici punti**, e le loro altezze corrispondono ai dodici valori del §8 —
+  letti dai `cy` dei cerchi, non guardati: `80 45 45 80 45 115 45 80 45 45 80 80`
+  per `3 2 2 3 2 4 2 3 2 2 3 3`, con il **4 più in basso** di tutti;
+- **il tocco muove l'ultimo punto e non ne aggiunge uno**: toccato "Molto bene",
+  settembre passa da 80 a 10 e i punti restano **dodici**;
+- **il link anonimo non la muove**: risposto "Molto male" da
+  `/check/demo-sa-vendite` e tornati alla home per navigazione interna, l'ultimo
+  punto è ancora in cima. La risposta di uno sconosciuto non entra nella curva di
+  Laura;
+- **l'asse dice due parole e non due cifre** — "Molto bene" in alto a `y=10`,
+  "Molto male" in basso a `y=150` — e il tooltip di marzo dice *"Non bene"*;
+- **i tre stati**: `?empty=` non rende la card e lascia intatta la home, `?fail=`
+  mostra l'errore **dentro** la card — *"Questa parte non si è caricata"*, con il
+  riprova — e il resto della home arriva;
+- **le quattro lingue**, con l'asse tradotto (*Sehr gut / Sehr schlecht*, *Très
+  bien / Très mal*, *Very good / Very bad*) e i mesi nel formato di ognuna;
+- console muta, e `npm run build`, `build:demo`, `lint`, `typecheck` a zero.
+
+##### Trovato e non toccato
+
+- **Il titolo è invariabile al genere** — *"Come sono andati gli ultimi 12
+  mesi"* — su decisione dei founder: il prodotto lo usano tutti. Restano al
+  femminile le stringhe che c'erano già, e **si decidono in una passata sola, non
+  qui**. Sono **due chiavi, in due lingue**:
+
+  | chiave | italiano | francese |
+  |---|---|---|
+  | `employee.rapidCheck.crisis.title` | *"…non restare **da sola**"* | *"…ne reste pas **seule**"* |
+  | `employee.profile.memberSince` | *"**Iscritta** da"* | *"**Inscrite** depuis"* |
+
+  **Tedesco e inglese non hanno niente da decidere** — *"bleib damit nicht
+  allein"*, *"Mitglied seit"*, *"don't stay with it alone"*, *"Member since"* —
+  quindi la passata futura tocca due lingue su quattro.
+
+  **La ricerca è stata fatta sui valori e non sui commenti** (§7), e ha trovato
+  **quattro riscontri che non sono casi**, che vale la pena elencare perché il
+  prossimo grep li ritrova: *"la prenotazione non è **andata** a buon fine"*,
+  *"perché la sessione è **stata** annullata"*, *"la nota non è **stata**
+  letta"*, *"dieci domande, una volta **sola**"*. In tutti e quattro il femminile
+  concorda con un **nome** — prenotazione, sessione, nota, volta — non con chi
+  legge. È la stessa trappola dei conteggi: un grep trova la forma, e a
+  distinguere è il criterio.
+- **La cadenza e la correzione del check rapido restano aperte** nel contratto
+  §3: la serie della demo è un valore al mese **scritto**, non una media di
+  risposte, e il giorno in cui le risposte sono più d'una al mese la regola «oggi
+  sostituisce l'ultimo mese» diventa la domanda di cosa mostra un mese con più
+  risposte dentro.
+- **Il nome della serie nel tooltip è la domanda del check rapido** — *"Come ti
+  senti oggi?"* — e su una serie sola si potrebbe togliere. Resta perché dice a
+  cosa il valore risponde, ed è una stringa che esisteva già.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
