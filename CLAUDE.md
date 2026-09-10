@@ -1681,11 +1681,16 @@ dataset (§5.5):
   ricava dalla lista dei consulti, non è uno scalare: due numeri che descrivono
   la stessa cosa devono essere lo stesso numero. I 2 stanno dentro i 118 consulti
   aziendali dei dodici mesi, che su 82 iscritti fanno una media di 1.4.
-- **Il check-up è completato**, con referto di marzo. È la stessa cosa che
-  l'elenco dipendenti dell'HR dichiara della riga `L.B.`, ed è il vincolo che
-  tiene la storia unica sui tre lati: la home e il Profilo non possono dire
-  "disponibile", e la pagina check-up mostra il referto invece di riproporre una
-  prenotazione. Il prossimo si apre dodici mesi dopo, cioè fuori dalla demo.
+- **Il check-up è completato**, con referto di marzo: la home e il Profilo non
+  possono dire "disponibile", e la pagina check-up mostra il referto invece di
+  riproporre una prenotazione. Il prossimo si apre dodici mesi dopo, cioè fuori
+  dalla demo.
+
+  *(Il vincolo teneva la storia unita su **tre** lati e da oggi sono due: fino al
+  10.09.2026 l'elenco dipendenti dell'HR dichiarava `completed` sulla riga
+  `L.B.`, e un guardrail confrontava le due dichiarazioni. **L'HR non vede più
+  Laura** — vede quanti si sono iscritti per reparto — quindi il terzo lato non
+  esiste e il guardrail è uscito con lui.)*
 
 **Come si calcola il profilo salute** (founder, 06.09.2026). L'assessment
 iniziale è di **dieci domande, due per ognuna delle cinque aree** — sonno,
@@ -1846,6 +1851,38 @@ backend.
 per prenotare le sessioni: essere iscritto ed essere misurato sono
 indipendenti, nessuno dei due implica l'altro, e il cambio di modello di
 misurazione non li tocca.
+
+**Iscritti e check-up per reparto** (founder, 10.09.2026). Sono le due colonne
+che l'area HR mostra da quando l'elenco per persona è uscito (§10.C.5): l'HR
+vede **quanti**, mai chi.
+
+| reparto | organico | iscritti | check-up completati |
+|---|---|---|---|
+| Operations | 31 | 23 | 15 |
+| Vendite | 24 | 15 | 9 |
+| Finanza | 18 | 13 | 8 |
+| IT | 17 | 12 | 8 |
+| HR + Legale | 15 | 12 | 7 |
+| Direzione | 15 | 7 | 4 |
+
+**Le due somme sono i due numeri che il resto della demo già dichiara**, e per
+questo hanno un guardrail invece di una promessa: gli iscritti fanno **82**,
+cioè quelli dello snapshot del trimestre corrente, e i check-up fanno **51**,
+cioè il totale dei dodici mesi della serie di utilizzo qui sotto. Nessuna cifra
+nuova entra a schermo (§2.4): entra la loro **ripartizione**.
+
+**Tre coerenze sono scelte, non conseguenze**, e si scrivono perché una
+rilettura non le prenda per casuali:
+
+- **le Vendite hanno l'adozione più bassa fra i reparti pubblicati** (63%), che
+  è coerente con il reparto della storia — e resta una coerenza narrativa, non
+  una deduzione: lo stress **non si deduce mai dal comportamento**, e l'adozione
+  è comportamento;
+- **la Direzione è l'unica soppressa**, come nella tabella dello stress, e ci
+  arriva per la sua strada: 7 iscritti sotto la soglia di 12;
+- **IT e HR + Legale stanno esattamente a 12**, cioè sul limite, che è il caso
+  che a schermo si vede una volta sola — la soglia è "almeno 12", quindi
+  pubblicano.
 
 **Misurati per reparto: una serie derivata, non una cifra congelata** (§5.5), e
 **il conteggio sta sul record mensile del reparto, non su `Department`**:

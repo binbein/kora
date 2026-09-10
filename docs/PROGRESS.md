@@ -9576,6 +9576,24 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 > `docs/PITCH.md`; il criterio e cosa è rimasto fuori stanno nel verbale di
 > quella passata.
 
+- **10.09.2026 — L'area HR vede quanti, mai chi** (`CLAUDE.md` §10.C.5). Fino a
+  quel giorno l'elenco dipendenti mostrava, per ogni persona, **iniziali,
+  reparto, se era iscritta e a che punto era il suo check-up**: un segnale
+  individuale su un servizio sanitario, e in un reparto da sei persone due
+  iniziali identificano.
+
+  **La schermata resta, cambia cosa mostra**: una riga per reparto con organico,
+  iscritti e check-up completati. `getEmployeeDirectory` ed
+  `EmployeeDirectoryEntry` escono dal contratto insieme all'estratto di otto
+  righe, e al loro posto c'è `getDepartmentEnrollment`, che **non ha nessuna riga
+  per persona** — la garanzia è la forma del dato, non ciò che la tabella sceglie
+  di rendere.
+
+  **Il check-up di un reparto si sopprime sotto la soglia di anonimato**, come il
+  punteggio di stress e con lo stesso numero; a cambiare è il denominatore —
+  **là i misurati, qui gli iscritti** — e il perché sta nel
+  `docs/CONTRATTO-DATI.md` §3.
+
 - **06.09.2026 — La tabella dello stress per reparto segue il selettore**
   (`CLAUDE.md` §10.C.1). È il difetto che M3 aveva lasciato aperto e che tre
   passate avevano registrato senza chiudere, **per la ragione che la riga stessa
