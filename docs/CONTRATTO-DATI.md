@@ -193,6 +193,19 @@ documento. Qui stanno solo gli invarianti che il codice non può esprimere.
   se la rete regge il tetto, e la domanda che ne discende è cosa mostra la
   prenotazione **il giorno in cui non lo regge**. È la stessa famiglia della
   lista d'attesa (§8.5), e non è decisa.
+- **`Company.activationCode` è il codice con cui un dipendente attiva il proprio
+  account** (09.09.2026), ed è una proprietà del cliente come la soglia: ogni
+  azienda ne ha uno. Sta sull'entità e non è una costante, perché a leggerlo sono
+  in due — il portale HR, che è chi lo consegna, e `activate`, che lo confronta —
+  e due letture dello stesso fatto devono venire dallo stesso posto
+  (`CLAUDE.md` §5.5).
+
+  **Il campo dice quale sia il codice; non dice niente di come nasce.** La
+  generazione, la revoca, il rinnovo e la lunghezza sono §8.3 insieme a quelli
+  del link anonimo, e sono la stessa famiglia: in produzione **un codice
+  leggibile è indovinabile**, e chi lo genera decide entropia e formato. Il
+  confronto in maiuscolo è una gentilezza del client di oggi, non una regola del
+  contratto.
 - `Department` **non** porta il conteggio dei misurati. Vive sul record mensile.
 
 ### Misurazione dello stress — la parte più delicata
@@ -374,6 +387,24 @@ due casi che le schermate non distinguono — la seduta non è annullata, oppure
 stata annullata senza scrivere niente al paziente. È lo stesso prezzo già
 dichiarato per `cancellationNote`, e si paga allo stesso modo: le schermate
 leggono la coppia con il motivo.
+
+**L'id di una prenotazione identifica quella prenotazione, non l'orario**
+(09.09.2026), ed è la riga che il backend deve mantenere. Sembra ovvia e non lo
+è: un'ora può ospitare **più prenotazioni nel tempo** — la seconda esiste
+proprio perché la prima è stata annullata — quindi una chiave costruita da
+professionista e istante non identifica un record, identifica uno slot.
+
+Il difetto che l'ha fatta scrivere è arrivato dal mock, dove l'id era esattamente
+quello e lo stato di annullamento è indicizzato per id: riprenotando un'ora
+appena liberata, la prenotazione nuova **ereditava l'annullamento della
+vecchia**. In produzione la stessa forma d'errore non ha bisogno di un mock —
+qualunque stato appeso all'id di una seduta (l'annullamento, la nota, il
+compenso) finirebbe sul record sbagliato.
+
+Ne discende cosa il contratto **non** promette: che due sedute non possano
+condividere l'ora d'inizio. Le sedute annullate restano, ed è il modo in cui la
+storia di un'ora si legge — una annullata e una in programma sullo stesso orario
+sono due fatti, non una contraddizione.
 
 **Chi conta gli appuntamenti in programma filtra sullo stato**, e il filtro
 appartiene a chi conta: la lista risponde a *cosa c'è sul mio calendario*, il

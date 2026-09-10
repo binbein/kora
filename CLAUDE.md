@@ -996,8 +996,8 @@ si lavora, non durante il pitch.
 | produzione | `npm run build` | **tace**, e sparisce dal bundle |
 
 **La decisione vive in `src/lib/data/guardrails.ts` e in nessun altro punto.** I
-call site sono 125 e chiamano `assertInDev` senza sapere in che modo girano:
-ripetere la condizione in ognuno significherebbe poterla sbagliare in 125 posti.
+call site sono 126 e chiamano `assertInDev` senza sapere in che modo girano:
+ripetere la condizione in ognuno significherebbe poterla sbagliare in 126 posti.
 Fuori da quel file nessuno legge `import.meta.env`.
 
 **Il criterio con cui i call site si contano**, perché una rilevazione futura non
@@ -1005,7 +1005,7 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **108 + 17 = 125** (06.09.2026). Restano fuori, e sono le tre trappole del
+Oggi **108 + 18 = 126** (09.09.2026). Restano fuori, e sono le tre trappole del
 conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
 nome lungo che **contiene** quello corto.
 
@@ -1051,7 +1051,8 @@ due, uno per il punteggio e uno per il peso — da 119 a 120 con il link
 anonimo del check rapido, il cui reparto deve esistere, e da 120 a 123 con la
 disdetta del dipendente, che ne porta tre perché i suoi rifiuti sono tre, e da
 123 a 125 con l'assessment — uno sulla formula, uno sull'ordine delle aree del
-piano di benessere.
+piano di benessere — e da 125 a 126 con l'id della prenotazione, che non deve
+appartenere già a nessun altro record.
 
 **E chi lo ricontasse con un `grep` trova cifre che non sono dei guardrail**
 (01.09.2026), che è la ragione per cui questa avvertenza sta accanto al conto
@@ -1086,7 +1087,7 @@ senza criterio, ed è lo stesso difetto del 19/11 contro il 13/9 delle CTA.
 
 **I nomi `assertInDev` e `assertInDevOutsidePromise` restano** anche ora che
 girano in due modi su tre: in sviluppo asseriscono, in demo segnalano, in
-produzione tacciono. Rinominarli sarebbe un commit meccanico su 125 chiamate, da
+produzione tacciono. Rinominarli sarebbe un commit meccanico su 126 chiamate, da
 fare il giorno in cui serve davvero e non dentro una passata che deve restare
 leggibile (founder, 10.08.2026).
 
@@ -2761,6 +2762,30 @@ Dashboard, Dipendenti, Report, Fatturazione, Privacy.
    scrive a mano: si genera da una pagina che legge dal provider come tutte le
    altre. Deve restare **una pagina sola**: è un allegato per il consiglio, non un
    fascicolo.
+
+4. **Il codice di attivazione si legge nella pagina Dipendenti** (founder,
+   09.09.2026). Non è una rotta nuova né una schermata nuova — è una card in più
+   su una schermata che c'è, e il conto delle rotte non si muove.
+
+   **Il caso che la motiva**: `/activate` chiede un codice azienda dal
+   06.09.2026 e il §8 lo dichiara, ma **nessuna schermata lo mostrava**. Chi
+   deve consegnarlo ai propri dipendenti non aveva dove leggerlo, e chi presenta
+   nemmeno.
+
+   **Sta nel portale HR perché è l'HR che lo consegna**, e non nel back-office:
+   là il codice nascerà con l'onboarding dell'azienda, che è lavoro dell'MVP
+   (`docs/CONTRATTO-DATI.md` §8.3) — mostrarlo prima vorrebbe dire disegnare
+   metà di una schermata che non esiste.
+
+   **Nessuna cifra nuova** (§2.4): è il `DEMO-SA-2026` del §8, che da oggi vive
+   su `Company` e non in una costante accanto — lo leggono in due, questa card e
+   `activate`, e due letture dello stesso fatto vengono dallo stesso posto
+   (§5.5).
+
+   **La riga sotto il codice dice cosa ci si fa e nient'altro** — *"Con questo
+   codice i dipendenti attivano l'account da soli"*. Non promette niente su chi
+   vede cosa: quella è la frase del banner privacy che sta sotto, e ripeterla qui
+   sarebbe la stessa garanzia detta in due punti della stessa schermata.
 
 **Finita quando:** la storia dei 12 mesi si capisce senza parlare; il selettore
 trimestre cambia davvero i dati; la soglia di anonimato si legge dai numeri in

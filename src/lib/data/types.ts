@@ -170,6 +170,16 @@ export type Company = {
    * cambia né la regola né la frase che la mostra (§7).
    */
   anonymityThreshold: number;
+  /**
+   * Il codice con cui un dipendente di questa azienda attiva il proprio account
+   * (§10.A.6 di `CLAUDE.md`).
+   *
+   * Sta sull'azienda perché **è una sua proprietà**, non una costante di
+   * piattaforma: ogni cliente ne ha uno. Chi lo genera, come si revoca e come si
+   * riemette sono lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.3); qui è il
+   * valore che l'HR consegna ai propri dipendenti e che l'attivazione confronta.
+   */
+  activationCode: string;
   /** Quando scade il contratto in corso: la fatturazione lo mostra. */
   contractRenewsOn: Date;
 };

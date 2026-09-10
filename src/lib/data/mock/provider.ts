@@ -56,7 +56,7 @@ import {
   LAURA_CHECKUP_ELIGIBILITY,
   LAURA_CHECKUP_REPORT,
 } from "./checkup";
-import { COMPANY, COMPANY_CODE, DEPARTMENTS, PLANS, PLAN_LIST } from "./company";
+import { COMPANY, DEPARTMENTS, PLANS, PLAN_LIST } from "./company";
 import {
   employeeEntitlement,
   LAURA_VIRTUAL_DOCTOR_CONSULTS,
@@ -127,6 +127,21 @@ export class MockDataProvider implements DataProvider {
    * l'unico modo perché le due schermate non possano divergere (§10.D).
    */
   private readonly bookedByProfessional = new Map<string, StoredSession[]>();
+
+  /*
+   * Il progressivo che distingue due prenotazioni sulla stessa ora
+   * (09.09.2026).
+   *
+   * Non è un dettaglio di generazione dell'id: è ciò che rende **la
+   * prenotazione** l'identità del record, invece dell'orario in cui cade. Il
+   * perché sta sull'id, in `bookAppointment`.
+   *
+   * Non riparte mai — nemmeno quando una prenotazione viene annullata — perché
+   * gli id di ciò che è stato annullato restano in `cancellations`, e riusarne
+   * uno rimetterebbe in piedi esattamente il difetto che il contatore esiste
+   * per chiudere.
+   */
+  private bookingSequence = 0;
 
   /*
    * Le sedute annullate durante la demo, per id.
@@ -630,7 +645,9 @@ export class MockDataProvider implements DataProvider {
    */
   activate(input: { companyCode: string; consent: true }): Promise<Company | null> {
     return Promise.resolve(
-      input.companyCode.trim().toUpperCase() === COMPANY_CODE ? COMPANY : null,
+      input.companyCode.trim().toUpperCase() === COMPANY.activationCode
+        ? COMPANY
+        : null,
     );
   }
 
@@ -929,10 +946,17 @@ export class MockDataProvider implements DataProvider {
      * senso all'annullamento, e senza il filtro quell'orario non tornava
      * prenotabile da nessuno.
      *
-     * Il dataset di oggi non lo mostra — l'unica cancellazione è di due
+     * Il **dataset seminato** non lo mostra — l'unica cancellazione è di due
      * settimane fa e gli slot proponibili partono dal giorno dopo la demo — ma
-     * il difetto è nel contratto, non nella schermata, e in produzione un
-     * annullamento riguarda quasi sempre una seduta futura.
+     * il giro del pitch sì, e in produzione un annullamento riguarda quasi
+     * sempre una seduta futura.
+     *
+     * **A essere filtrata è la proiezione, non il record memorizzato**:
+     * `sessionsOf` applica `applyCancellation`, quindi a decidere è `status`. È
+     * ciò che tiene insieme le due metà che la prova manuale del 09.09.2026 ha
+     * mostrato non essere ovvie — l'ora torna libera **e** la seduta annullata
+     * resta dov'è — e la prenotazione che quell'ora la riprende è un record
+     * nuovo con un id suo, non quella vecchia riaccesa (`bookAppointment`).
      */
     /*
      * OCCUPATO VUOL DIRE SOVRAPPOSTO, NON "COMINCIA ALLO STESSO ISTANTE"
@@ -1166,9 +1190,50 @@ export class MockDataProvider implements DataProvider {
 
     const mine = sessionsOfPatient(PORTAL_PATIENT_EMPLOYEE_ID, agenda);
 
+    /*
+     * L'ID È DELLA PRENOTAZIONE, NON DELL'ORA — E IL COMMENTO CHE STAVA QUI
+     * DICEVA IL CONTRARIO (09.09.2026).
+     *
+     * L'id era `booked-<professionista>-<istante>`, con accanto la riga
+     * «deterministico: lo stesso slot non può produrre due id diversi». Era vera
+     * alla lettera, **ed è la causa del difetto**: se lo stesso slot dà sempre
+     * lo stesso id e `cancellations` è indicizzata per id, una prenotazione
+     * nuova sull'ora di una annullata **eredita l'annullamento** prima ancora di
+     * esistere — nasce «Annullata», e la home accumula una riga per ogni prova.
+     *
+     * La lezione, che vale oltre questo id: **determinismo non è unicità**. Una
+     * chiave costruita da ciò che il record descrive regge finché due record non
+     * possono descrivere la stessa cosa, e due prenotazioni sulla stessa ora
+     * sono esattamente quel caso — la seconda esiste **perché** la prima è stata
+     * annullata.
+     *
+     * Col progressivo ogni prenotazione è un record suo e la storia resta
+     * leggibile: dopo la riprenotazione ci sono una riga annullata e una in
+     * programma sullo stesso orario, che è ciò che è successo davvero.
+     */
+    const id = `booked-${slot.professionalId}-${slot.start.getTime()}-${(this
+      .bookingSequence += 1)}`;
+
+    const booked = this.bookedByProfessional.get(slot.professionalId) ?? [];
+
+    /*
+     * L'id nuovo non è di nessun altro, e si guardano **tutti e due** gli
+     * archivi.
+     *
+     * Le prenotazioni dicono se il record esiste già; `cancellations` dice se
+     * quell'id ha **una storia**, ed è la metà che il difetto ha mostrato essere
+     * quella che conta — una cancellazione sopravvive alla seduta che l'ha
+     * ricevuta e si applica in proiezione a chiunque si presenti con lo stesso
+     * id.
+     */
+    assertInDevOutsidePromise(
+      !booked.some((session) => session.id === id) &&
+        !this.cancellations.has(id),
+      `L'id "${id}" appartiene già a un'altra prenotazione: due sedute condividerebbero lo stesso record.`,
+    );
+
     const session: StoredSession = {
-      // deterministico: lo stesso slot non può produrre due id diversi
-      id: `booked-${slot.professionalId}-${slot.start.getTime()}`,
+      id,
       patientId: PORTAL_PATIENT_EMPLOYEE_ID,
       // il nome viene dal profilo, non riscritto qui: è la stessa persona che il
       // portale dipendente mostra, e due stringhe uguali possono divergere
@@ -1182,10 +1247,7 @@ export class MockDataProvider implements DataProvider {
       type: mine.length === 0 ? "first_visit" : "session",
     };
 
-    this.bookedByProfessional.set(slot.professionalId, [
-      ...(this.bookedByProfessional.get(slot.professionalId) ?? []),
-      session,
-    ]);
+    this.bookedByProfessional.set(slot.professionalId, [...booked, session]);
 
     return {
       id: session.id,

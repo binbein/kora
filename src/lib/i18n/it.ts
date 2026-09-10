@@ -1095,6 +1095,15 @@ export const it = {
       /* Nessun dipendente da elencare: succede a un'azienda appena attivata,
          come Betulla nel portafoglio del back-office (§8). */
       empty: "Nessun dipendente da mostrare.",
+      /* Il codice sta qui perché **è l'HR che lo consegna**: nel back-office
+         nascerà con l'onboarding dell'azienda, che è lavoro dell'MVP
+         (`docs/CONTRATTO-DATI.md` §8.3). La riga dice cosa ci si fa e non
+         promette niente su chi vede cosa: quella frase ha già il suo posto nel
+         banner privacy qui sotto. */
+      activationCode: {
+        title: "Codice di attivazione",
+        hint: "Con questo codice i dipendenti attivano l'account da soli.",
+      },
       privacyNote:
         "I nomi sono abbreviati. Kora non mostra mai dati sanitari individuali all'azienda.",
       columnEmployee: "Dipendente",

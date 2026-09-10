@@ -755,6 +755,10 @@ export const de: Dictionary = {
       sampleNote:
         "Die Tabelle zeigt einen Auszug von {n} Mitarbeitenden von {total}: sortiert wird der Auszug.",
       empty: "Keine Mitarbeitenden anzuzeigen.",
+      activationCode: {
+        title: "Aktivierungscode",
+        hint: "Mit diesem Code aktivieren die Mitarbeitenden ihr Konto selbst.",
+      },
       privacyNote:
         "Die Namen sind abgekürzt. Kora zeigt dem Unternehmen nie individuelle Gesundheitsdaten.",
       columnEmployee: "Mitarbeitende",
