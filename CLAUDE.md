@@ -624,6 +624,8 @@ kora/
                            lo leggono sia `format.ts` sia `i18n`
       format.ts          ← formatCHF, formatDate, formatPercent — unico punto
       dates.ts           ← aritmetica su giorni e fasce: calcola, non formatta
+      emergency.ts       ← i numeri d'emergenza della demo, letti in due punti
+      orientation.ts     ← la regola di «Non sai da dove partire?» (§10.B.7)
       roi-model.ts       ← formule del calcolatore ROI (§9)
       earnings.ts        ← righe settimanali e totali dei compensi (§10.D)
       schedule.ts        ← la griglia del calendario, costruita dalle sedute
@@ -1623,6 +1625,24 @@ Qui la si eviterebbe al contrario, mettendola in un elemento che non la merita.
   attenzione alla prevenzione"*: è una professionista che descrive il proprio
   metodo, e la riga qui sotto — *un professionista parla come parlerebbe lui* —
   la protegge. La regola riguarda ciò che **il prodotto** afferma di calcolare.
+
+  **La parola che il prodotto usa al posto loro è «orientamento»** (founder,
+  10.09.2026). Nasce con «Non sai da dove partire?» (§10.B.7), dove il prodotto
+  fa la cosa che più somiglia a una valutazione — tre domande e un esito — e
+  quindi è il punto in cui dirlo conta di più: *"è un orientamento, non una
+  valutazione"*.
+
+  **Dice cosa facciamo, non cosa non facciamo**, ed è la differenza con una
+  negazione: un orientamento **indica una direzione fra quelle che esistono
+  già**, e non afferma niente su chi legge. È la stessa forma delle quattro
+  parole vietate letta al rovescio — quelle dichiarano una finalità medica,
+  questa dichiara la finalità che abbiamo davvero.
+
+  **La coppia è «orientamento» / «valutazione»**, e la seconda serve quanto la
+  prima: la frase funziona perché nomina la cosa che non stiamo facendo, invece
+  di lasciarla intendere. In tedesco, francese e inglese la coppia viene dalla
+  stessa riga — *Orientierung / Beurteilung*, *orientation / évaluation*,
+  *guidance / assessment*.
 - La privacy è un argomento di vendita: la nota *"Dati aggregati e anonimi · soglia
   minima {n} dipendenti misurati per reparto"* con icona lucchetto è sempre visibile
   in dashboard. Dice **"misurati"**, non "dipendenti" né "iscritti": la soglia conta
@@ -2697,9 +2717,10 @@ Home, Psicologi, Medico virtuale, Check-up, Benessere, Profilo.
    Approvato dai founder il **06.08.2026** ai sensi del §2.6.
 
 2. **La home mostra due fatti, non quattro scorciatoie** (founder, 17.08.2026).
-   *(E dal 10.09.2026 un elemento in più, che non è una scorciatoia ma un dato
-   che non esisteva da nessuna parte: la curva personale del check rapido, voce
-   6.)*
+   *(E dal 10.09.2026 due elementi in più, che non sono scorciatoie: la curva
+   personale del check rapido, voce 6, che è un dato che non esisteva da nessuna
+   parte, e «Non sai da dove partire?», voce 7, che non porta a una delle sei
+   voci del menu ma **sceglie quale**.)*
    Le quattro tessere verso medico virtuale, check-up, piano e profilo erano
    **quattro delle sei voci del menu**, cioè la stessa strada disegnata due
    volte. Al loro posto **la data del prossimo check-up** e **i consulti di
@@ -2785,6 +2806,52 @@ Home, Psicologi, Medico virtuale, Check-up, Benessere, Profilo.
    dire niente a chi guarda, e il tooltip dice la parola per la stessa ragione.
 
    **Nessuna animazione d'ingresso** (§6.2), come ogni serie di questa demo.
+
+7. **«Non sai da dove partire?»: tre domande e un servizio** (founder,
+   10.09.2026). Non è una rotta nuova né una schermata nuova — è una card e un
+   dialogo sulla home, sotto i due contatori, e il conto delle rotte non si
+   muove.
+
+   **Il caso che la motiva**: il menu offre sei porte e presuppone che chi
+   guarda sappia quale gli serve. Chi non lo sa non ha niente da cliccare, ed è
+   la persona per cui il prodotto esiste.
+
+   **DICHIARA DI ORIENTARE, NON DI VALUTARE**, ed è la riga da cui dipende tutto
+   il resto (§7). Non è un symptom checker e non lo diventa aggiungendo domande:
+   le risposte nominano **aree della vita** — il corpo, i pensieri, il lavoro, un
+   controllo — e non sintomi; l'esito indica **una porta**, non una condizione; e
+   non c'è nessun punteggio. Un triage stabilisce quanto è grave e con che
+   urgenza; questo sceglie a quale servizio già pagato conviene bussare.
+
+   **La regola sta in una funzione pura**, `lib/orientation.ts`, con la tabella
+   per esteso e con il vincolo per chi la modifica: ogni ramo nuovo dev'essere
+   spiegabile dicendo *"questo bisogno lo copre quel servizio"*. Nel momento in
+   cui un ramo si spiega dicendo *"questo sintomo è più serio di quell'altro"*,
+   la funzione ha cambiato mestiere e la decisione non è più di chi scrive il
+   codice.
+
+   **«Molto» cambia una strada sola** — il lavoro, che senza coach o con impatto
+   alto porta allo psicologo — e non tutte: una regola più larga avrebbe reso
+   irraggiungibili due delle quattro uscite, e avrebbe detto senza dirlo che un
+   impatto alto è una faccenda psicologica. Il caso in cui «molto» vuol dire
+   «adesso» lo copre **il 144 del disclaimer**, che sta sotto ogni passo e non
+   dipende da nessuna risposta.
+
+   **Il coach e il check-up esistono solo se il piano li prevede**, con la stessa
+   regola dei contatori (§9): senza, si ripiega sul servizio che copre lo stesso
+   bisogno ed è su tutti e tre — lo psicologo per il lavoro, il medico virtuale
+   per un controllo rimandato. Non si offre mai una porta chiusa.
+
+   **La seconda domanda non sceglie il servizio, e non è un difetto**: serve a
+   distinguere *"vediamo"* da *"non aspettare"*, e il suo unico effetto è una
+   riga in più su «da mesi». Darle un effetto sulla scelta vorrebbe dire
+   inventare la gravità, che è precisamente ciò che questa voce esiste per non
+   fare.
+
+   **Nessuna risposta viene salvata**, e non è una semplificazione della demo:
+   non c'è niente da conservare. Tenerne traccia vorrebbe dire costruire un
+   profilo di ciò che a una persona pesa — cioè il dato che il §10.B.6 tiene
+   lontano da tutti. Lo stato muore con il dialogo.
 
 **Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — la parte in
 programma del contatore sale, l'appuntamento compare in home, lo slot sparisce dalla
