@@ -307,6 +307,53 @@ export const de: Dictionary = {
       },
     },
 
+    startingPoint: {
+      title: "Du weisst nicht, wo du anfangen sollst?",
+      body: "Drei Fragen, und wir sagen dir, mit wem du sprechen kannst. Du musst noch nicht wissen, wonach du suchst.",
+      open: "Loslegen",
+      dialogTitle: "Wo anfangen",
+      burden: {
+        question: "Was belastet dich in dieser Zeit am meisten?",
+        body: "Der Körper",
+        mind: "Gedanken und Stimmung",
+        work: "Arbeit und Entscheidungen",
+        postponed_check: "Eine Untersuchung, die ich aufschiebe",
+      },
+      duration: {
+        question: "Seit wann?",
+        days: "Ein paar Tage",
+        weeks: "Ein paar Wochen",
+        months: "Seit Monaten",
+      },
+      impact: {
+        question: "Wie sehr beeinflusst es deinen Tag?",
+        low: "Wenig",
+        medium: "Ziemlich",
+        high: "Sehr",
+      },
+      outcome: {
+        virtual_doctor:
+          "Fang beim virtuellen Arzt an: Antwort in wenigen Stunden, und du erfährst, ob es mehr braucht.",
+        psychologist:
+          "Fang bei einer Psychologin an: das erste Gespräch klärt, was wirklich nötig ist.",
+        coach:
+          "Fang bei einem Coach an: ihr arbeitet an konkreten Zielen, wenige auf einmal.",
+        checkup:
+          "Fang beim Check-up an: es ist im Plan enthalten und in einer Praxis in deiner Nähe buchbar.",
+      },
+      action: {
+        virtual_doctor: "Virtuellen Arzt öffnen",
+        psychologist: "Psychologin wählen",
+        coach: "Coach wählen",
+        checkup: "Zum Check-up",
+      },
+      longRunning:
+        "Das geht schon eine Weile so: es lohnt sich nicht, noch länger zu warten.",
+      disclaimer:
+        "Das ist eine Orientierung, keine Beurteilung: wenn es dir jetzt schlecht geht, ruf die {number} an.",
+      restart: "Neu beginnen",
+    },
+
     psychologists: {
       title: "Sprich mit jemandem",
       subtitle:

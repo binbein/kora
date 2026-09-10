@@ -386,6 +386,83 @@ export const it = {
     },
 
     /*
+     * «Non sai da dove partire?» (§10.B.7): tre domande e un servizio.
+     *
+     * REGISTRO CONSUMER, E NESSUNA PAROLA CLINICA. Le quattro risposte nominano
+     * **aree della vita** — il corpo, i pensieri, il lavoro, un controllo — e
+     * non sintomi: "cosa ti pesa" è una domanda che una persona si fa da sé,
+     * "che sintomi hai" è una domanda che fa un medico, e il §7 vieta al
+     * prodotto di dichiarare che valuta lo stato di salute di qualcuno.
+     *
+     * L'ESITO DICE DOVE ANDARE, MAI COSA HAI. Le quattro frasi indicano un
+     * servizio e ne dicono la ragione in termini di **cosa ci si fa**, non di
+     * cosa la risposta significherebbe.
+     */
+    startingPoint: {
+      title: "Non sai da dove partire?",
+      body: "Tre domande, e ti diciamo con chi parlarne. Non serve sapere già cosa cercare.",
+      open: "Comincia",
+      /* Il titolo del dialogo ripete l'invito e non lo riassume: chi lo apre ha
+         appena letto la card, e una seconda formulazione lo farebbe dubitare di
+         essere nel posto giusto. */
+      dialogTitle: "Da dove partire",
+      burden: {
+        question: "Cosa ti pesa di più in questo periodo?",
+        body: "Il corpo",
+        mind: "I pensieri e l'umore",
+        work: "Il lavoro e le decisioni",
+        postponed_check: "Un controllo che rimando",
+      },
+      duration: {
+        question: "Da quanto?",
+        days: "Pochi giorni",
+        weeks: "Qualche settimana",
+        months: "Da mesi",
+      },
+      impact: {
+        question: "Quanto ti condiziona la giornata?",
+        low: "Poco",
+        medium: "Abbastanza",
+        high: "Molto",
+      },
+      /* Una frase per servizio, e dicono cosa ci si fa. Quale mostrare lo
+         decide `lib/orientation.ts`, dove sta la tabella. */
+      outcome: {
+        virtual_doctor:
+          "Parti dal medico virtuale: risponde entro poche ore e ti dice se serve altro.",
+        psychologist:
+          "Parti da uno psicologo: il primo incontro serve a capire cosa serve davvero.",
+        coach:
+          "Parti da un coach: si lavora su obiettivi concreti, pochi per volta.",
+        checkup:
+          "Parti dal check-up: è incluso nel piano e si prenota in una struttura vicina.",
+      },
+      action: {
+        virtual_doctor: "Apri il medico virtuale",
+        psychologist: "Scegli uno psicologo",
+        coach: "Scegli un coach",
+        checkup: "Vai al check-up",
+      },
+      /* Compare **solo** su "da mesi", ed e l'unico effetto della seconda
+         domanda: serve a distinguere "vediamo" da "non aspettare", non a
+         classificare. */
+      longRunning: "Va avanti da un po': non è una cosa da rimandare ancora.",
+      /*
+       * STA SOTTO OGNI ESITO E NON DIPENDE DA NESSUNA RISPOSTA (§7).
+       *
+       * Dice le due cose insieme: cosa questa card è — un orientamento, non una
+       * valutazione — e dove si va se "molto" vuol dire "adesso". Il numero è
+       * `{number}` e non la cifra: lo stesso valore alimenta il testo e il link
+       * `tel:` (§5.5), e viene da `lib/emergency.ts`.
+       */
+      disclaimer:
+        "È un orientamento, non una valutazione: se stai male adesso, chiama il {number}.",
+      /* Si può rifare: nessuna risposta viene salvata, quindi non c'è niente da
+         correggere — si ricomincia. */
+      restart: "Ricomincia",
+    },
+
+    /*
      * La prenotazione. L'intestazione non dice "Psicologi" come la voce di menu,
      * perché la schermata elenca anche il coach: dire una cosa sola sopra un
      * elenco che ne contiene due è il difetto che il §5.5 chiama divergenza,

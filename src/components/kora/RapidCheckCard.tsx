@@ -8,6 +8,7 @@ import { dataProvider } from "@/lib/data";
 import { loadState, useRapidCheckAnswer } from "@/lib/data/queries";
 import { queryKeys } from "@/lib/data/query-keys";
 import type { RapidCheckAnswer } from "@/lib/data/types";
+import { EMERGENCY_NUMBER, HELPLINE_NUMBER } from "@/lib/emergency";
 import { interpolate, t } from "@/lib/i18n";
 import { ErrorNotice } from "@/components/kora/StateNotice";
 
@@ -83,22 +84,9 @@ const FACE_CHOSEN =
 const FACE_MUTED =
   "border-transparent bg-transparent text-muted-foreground/40 hover:border-secondary/40 hover:bg-accent/50 hover:text-accent-foreground";
 
-/*
- * I NUMERI D'EMERGENZA DELLA DEMO, SVIZZERA (CLAUDE.md §8): 144 il soccorso
- * sanitario, 143 il Telefono Amico.
- *
- * Stanno qui e non nelle stringhe perché **lo stesso valore alimenta il testo e
- * il link `tel:`** (§5.5): scritti due volte potrebbero divergere, e qui
- * divergere vuol dire comporre una chiamata sbagliata.
- *
- * Non vengono dal provider, e non è una dimenticanza: in produzione dipendono
- * dal **paese della persona** — 144 in Svizzera, 112 in Italia — e il profilo
- * del dipendente un paese non ce l'ha. Il modulo paese è lavoro dell'MVP
- * (`docs/CONTRATTO-DATI.md` §8.1); un campo che il dataset non sa riempire non
- * si aggiunge al contratto per anticiparlo (§11).
- */
-const EMERGENCY_NUMBER = "144";
-const HELPLINE_NUMBER = "143";
+/* I due numeri stanno in `lib/emergency.ts` dal 10.09.2026, da quando i punti
+   che li mostrano sono due: il perché, e cosa succederà il giorno del modulo
+   paese, sono scritti là. */
 
 /* Testo leggibile e link riconoscibile: `foreground` dà 13.53:1 sulla card,
    mentre `secondary` come testo starebbe a 2.83:1 (§6.1). */

@@ -22,6 +22,7 @@ import {
   CalendarDays,
 } from "lucide-react";
 import CancelAppointmentDialog from "@/components/employee/CancelAppointmentDialog";
+import StartingPointDialog from "@/components/employee/StartingPointDialog";
 import ScoreRing from "@/components/kora/ScoreRing";
 import PrivacyBanner from "@/components/shared/PrivacyBanner";
 import RapidCheckCard from "@/components/kora/RapidCheckCard";
@@ -363,6 +364,9 @@ export default function EmployeeHome() {
   /* L'appuntamento che il dialogo sta chiedendo di disdire: stato della
      schermata, non del dominio, e muore con il dialogo (§5.2). */
   const [cancelling, setCancelling] = useState<Appointment | null>(null);
+  /* Se il dialogo dell'orientamento è aperto. Le risposte vivono dentro di lui e
+     non qui: non c'è niente da conservare quando si chiude (§10.B.7). */
+  const [startingPoint, setStartingPoint] = useState(false);
   const profileQuery = useEmployeeProfile();
   const appointmentsQuery = useAppointments();
   const professionalsQuery = useProfessionals();
@@ -550,6 +554,34 @@ export default function EmployeeHome() {
           />
         )}
       </div>
+
+      {/*
+        * «NON SAI DA DOVE PARTIRE?» (founder, 10.09.2026).
+        *
+        * Sta **sotto i due contatori** e non sopra: chi sa già cosa gli serve
+        * trova prima le sessioni che ha, e questa card parla a chi non lo sa —
+        * cioè a chi i contatori non aiutano.
+        *
+        * Chiede il bisogno e indica un servizio. Non legge niente dal provider
+        * oltre al piano, che serve a sapere quali porte esistono, e **non
+        * scrive**: la regola sta in `lib/orientation.ts`, le parole nel
+        * dizionario, e le tre risposte muoiono con il dialogo.
+        */}
+      <Card className="p-5">
+        <h2 className="font-semibold">{t.employee.startingPoint.title}</h2>
+        <p className="text-sm text-muted-foreground mt-1">
+          {t.employee.startingPoint.body}
+        </p>
+        <Button className="mt-4" onClick={() => setStartingPoint(true)}>
+          {t.employee.startingPoint.open}
+        </Button>
+      </Card>
+
+      <StartingPointDialog
+        open={startingPoint}
+        plan={company.plan}
+        onClose={() => setStartingPoint(false)}
+      />
 
       {/*
         * DUE DATI AL POSTO DI QUATTRO SCORCIATOIE (17.08.2026).

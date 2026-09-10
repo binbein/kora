@@ -363,6 +363,53 @@ export const fr: Dictionary = {
       },
     },
 
+    startingPoint: {
+      title: "Tu ne sais pas par où commencer ?",
+      body: "Trois questions, et on te dit à qui en parler. Pas besoin de savoir déjà quoi chercher.",
+      open: "Commencer",
+      dialogTitle: "Par où commencer",
+      burden: {
+        question: "Qu'est-ce qui pèse le plus en ce moment ?",
+        body: "Le corps",
+        mind: "Les pensées et l'humeur",
+        work: "Le travail et les décisions",
+        postponed_check: "Un contrôle que je repousse",
+      },
+      duration: {
+        question: "Depuis quand ?",
+        days: "Quelques jours",
+        weeks: "Quelques semaines",
+        months: "Depuis des mois",
+      },
+      impact: {
+        question: "À quel point ça pèse sur ta journée ?",
+        low: "Peu",
+        medium: "Assez",
+        high: "Beaucoup",
+      },
+      outcome: {
+        virtual_doctor:
+          "Commence par le médecin virtuel : il répond en quelques heures et te dit s'il faut autre chose.",
+        psychologist:
+          "Commence par un psychologue : le premier entretien sert à comprendre ce qu'il faut vraiment.",
+        coach:
+          "Commence par un coach : on travaille sur des objectifs concrets, peu à la fois.",
+        checkup:
+          "Commence par le check-up : il est compris dans le plan et se réserve dans un centre proche.",
+      },
+      action: {
+        virtual_doctor: "Ouvrir le médecin virtuel",
+        psychologist: "Choisir un psychologue",
+        coach: "Choisir un coach",
+        checkup: "Aller au check-up",
+      },
+      longRunning:
+        "Ça dure depuis un moment : ce n'est pas à repousser encore.",
+      disclaimer:
+        "C'est une orientation, pas une évaluation : si ça ne va pas maintenant, appelle le {number}.",
+      restart: "Recommencer",
+    },
+
     psychologists: {
       title: "Parle à quelqu'un",
       subtitle:
