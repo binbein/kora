@@ -2162,7 +2162,7 @@ check rapido**, e **la disdetta dal lato del dipendente**, e **l'attivazione
 dell'account**, e **lo stress per reparto dentro la cornice**, e **i residui
 dell'attivazione e della cornice**, e **l'id della prenotazione con il codice
 azienda**, e **l'area HR che conta per reparto**, e **la curva personale del
-check rapido**. Non aggiungono
+check rapido**, e **«Non sai da dove partire?»**. Non aggiungono
 schermate — **tranne il link anonimo e l'attivazione**, ed è la riga qui sotto.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
@@ -9759,6 +9759,116 @@ Sulla build demo a 1280×900, console aperta:
 - **Il nome della serie nel tooltip è la domanda del check rapido** — *"Come ti
   senti oggi?"* — e su una serie sola si potrebbe togliere. Resta perché dice a
   cosa il valore risponde, ed è una stringa che esisteva già.
+
+#### «Non sai da dove partire?» (10.09.2026)
+
+**Questo verbale non conta i propri commit.** Nessuna rotta e nessuna schermata
+nuova: rotte **28**, schermate **29**. `EXPECTED_KEYS` **864 → 892**; guardrail
+**126**, invariati — qui non c'è niente da sorvegliare, perché non c'è nessun
+dato.
+
+##### Il menu presuppone che tu sappia già
+
+Le sei voci del portale dipendente offrono sei porte e danno per scontato che chi
+guarda sappia quale gli serve. **Chi non lo sa non ha niente da cliccare**, ed è
+la persona per cui il prodotto esiste. La card chiede il bisogno e indica il
+servizio: tre domande, un esito, un pulsante.
+
+##### Dichiara di orientare, non di valutare
+
+È la riga da cui dipende tutto il resto, ed è scritta in tre posti perché in
+nessuno dei tre da sola basterebbe: nel `CLAUDE.md` §10.B.7 come decisione, in
+`lib/orientation.ts` come vincolo per chi tocca il codice, e **a schermo sotto
+ogni passo** come frase che chi risponde legge.
+
+**Le risposte nominano aree della vita e non sintomi** — il corpo, i pensieri, il
+lavoro, un controllo rimandato. *"Cosa ti pesa"* è una domanda che una persona si
+fa da sé; *"che sintomi hai"* è una domanda che fa un medico, e il §7 vieta al
+prodotto di dichiarare che valuta lo stato di salute di qualcuno. **L'esito
+indica una porta, non una condizione**, e non c'è nessun punteggio.
+
+**Il vincolo per chi modificherà la funzione** è la parte che vale oltre questa
+passata: ogni ramo nuovo dev'essere spiegabile dicendo *"questo bisogno lo copre
+quel servizio"*. Nel momento in cui un ramo si spiega dicendo *"questo sintomo è
+più serio di quell'altro"*, la funzione ha cambiato mestiere — e quella non è più
+una decisione di chi scrive il codice.
+
+##### La regola, e la riga che «molto» non attraversa
+
+La tabella sta per esteso nel commento di `orientationFor`. La forma corta: il
+corpo va al medico virtuale e i pensieri allo psicologo, sempre; il lavoro va al
+coach **se il piano ce l'ha e l'impatto non è «molto»**, altrimenti allo
+psicologo; un controllo rimandato va al check-up se il piano ce l'ha, altrimenti
+al medico virtuale.
+
+**La prima stesura della regola faceva sovrascrivere «molto» su tutto**, ed è
+stata stretta dai founder in fase di piano: con quella, **due delle quattro
+uscite diventavano irraggiungibili** ogni volta che qualcuno rispondeva «molto» —
+e la regola avrebbe detto, senza dirlo, che un impatto alto è una faccenda
+psicologica. Il caso in cui «molto» vuol dire «adesso» lo copre il **144 del
+disclaimer**, che sta sotto ogni passo e non dipende da nessuna risposta.
+
+##### La seconda domanda non sceglie, e non è un difetto
+
+«Da quanto?» non tocca il servizio: il suo unico effetto è **una riga in più su
+«da mesi»**. Era il punto aperto del piano — tre opzioni che non spostano niente
+sono una domanda che finge di contare (§11) — e la risposta scelta è che quella
+domanda distingue *"vediamo"* da *"non aspettare"*, non la gravità. Darle un
+effetto sulla scelta avrebbe voluto dire **inventare il triage** che la voce
+esiste per non fare.
+
+##### I due numeri d'emergenza escono da un componente
+
+Il 144 del disclaimer è lo stesso del check rapido, e scriverlo una seconda volta
+è precisamente ciò che il §8 vieta — *"il numero a schermo e il numero del link
+`tel:` sono lo stesso valore, letto una volta sola"* — dove divergere vuol dire
+comporre una chiamata sbagliata.
+
+Le due costanti sono quindi passate da `RapidCheckCard.tsx` a **`lib/emergency.ts`**.
+Stavano in un componente perché avevano **un consumatore solo**; con due, un dato
+dentro un componente è ciò che il §2.1 vieta. Il commento del file dice anche cosa
+succederà: il giorno del modulo paese quel file **diventa una lettura del
+provider**, e le due costanti spariscono con la demo svizzera che descrivono.
+
+##### Verificato
+
+Sulla build demo a 1280×900, console aperta, guidando il dialogo dal DOM:
+
+- **le quattro strade**, con la rotta d'uscita di ognuna: il corpo →
+  `/employee/doctor`, i pensieri → `/employee/psychologists`, il lavoro →
+  `/employee/psychologists?service=coach`, un controllo → `/employee/checkup`;
+- **la quinta prova, che è la variante**: *lavoro + «molto»* → **psicologo**,
+  mentre *controllo + «molto»* resta **check-up** — cioè «molto» cambia una
+  strada sola, come la regola dice;
+- **il piano senza coach**, rotto ad arte togliendo `coachSessionsPerYear` e
+  `checkup` al Plus: il lavoro porta allo **psicologo** e il controllo al
+  **medico virtuale**, e il contatore coach sparisce dalla home con la sua
+  regola. **Ripristinato**, con `git status` pulito e la console muta su una
+  scheda nuova — le cinque righe che il guardrail aveva loggato sul dataset rotto
+  sono la prova che parlava;
+- **la riga di «da mesi»** compare solo su quella durata;
+- **il disclaimer col 144 è visibile dal primo passo**, non solo sotto l'esito:
+  chi apre il dialogo legge cosa sta per fare prima di rispondere;
+- **le quattro lingue**, ognuna su una strada diversa — DE sul coach con la riga
+  di «da mesi», FR sul medico virtuale, EN sul check-up con impatto «molto»;
+- **contrasti misurati sui sette nodi del dialogo**: il peggiore è **4.90**, che
+  è il disclaimer a 12px, contro la soglia di 4.5;
+- console muta, e `npm run build`, `build:demo`, `lint`, `typecheck` a zero.
+
+##### Trovato e non toccato
+
+- **Il pulsante di chiusura del dialogo dice "Close" in tutte e quattro le
+  lingue.** È l'etichetta per i lettori di schermo che `ui/dialog.tsx` scrive, e
+  vale per **ogni dialogo dell'applicazione** — non è di questa passata. Sta in
+  `src/components/ui/`, che è congelato (§3): correggerla è una quarta eccezione
+  al congelamento e passa dai founder.
+- **La funzione non ha un guardrail**, ed è coerente: non c'è nessun dato da
+  contraddire. A tenerla onesta sono il tipo — `switch` esaustivo su
+  `OrientationBurden`, quindi un bisogno nuovo non compila finché non ha una
+  strada — e il commento con la tabella.
+- **Il dialogo non ha un passo indietro**, solo «Ricomincia». Tre domande sono
+  poche e non c'è niente da salvare, quindi tornare di un passo costa quanto
+  rifare; se un giorno le domande fossero cinque, la scelta andrebbe rifatta.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

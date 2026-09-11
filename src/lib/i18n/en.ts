@@ -320,6 +320,53 @@ export const en: Dictionary = {
       },
     },
 
+    startingPoint: {
+      title: "Not sure where to start?",
+      body: "Three questions, and we'll tell you who to talk to. You don't need to know what to look for.",
+      open: "Start",
+      dialogTitle: "Where to start",
+      burden: {
+        question: "What weighs on you most right now?",
+        body: "The body",
+        mind: "Thoughts and mood",
+        work: "Work and decisions",
+        postponed_check: "A check-up I keep postponing",
+      },
+      duration: {
+        question: "For how long?",
+        days: "A few days",
+        weeks: "A few weeks",
+        months: "For months",
+      },
+      impact: {
+        question: "How much does it affect your day?",
+        low: "A little",
+        medium: "Quite a bit",
+        high: "A lot",
+      },
+      outcome: {
+        virtual_doctor:
+          "Start with the virtual doctor: an answer within hours, and you'll know if you need more.",
+        psychologist:
+          "Start with a psychologist: the first session is there to work out what you actually need.",
+        coach:
+          "Start with a coach: you work on concrete goals, a few at a time.",
+        checkup:
+          "Start with the check-up: it's included in the plan and books at a centre near you.",
+      },
+      action: {
+        virtual_doctor: "Open the virtual doctor",
+        psychologist: "Choose a psychologist",
+        coach: "Choose a coach",
+        checkup: "Go to the check-up",
+      },
+      longRunning:
+        "This has been going on a while: it's not worth putting off any longer.",
+      disclaimer:
+        "This is guidance, not an assessment: if you're feeling bad right now, call {number}.",
+      restart: "Start over",
+    },
+
     psychologists: {
       title: "Talk to someone",
       subtitle:

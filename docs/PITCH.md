@@ -440,6 +440,44 @@ il più semplice dei tre: `/professional/patients` fa "Marco Bianchi",
 `/admin/sessions` fa "M.B.", e `/hr/employees` non fa nessun nome perché non ha
 nessuna riga da attribuire.
 
+### "E il symptom checker?"
+
+Arriva da chi ha visto altri prodotti di salute digitale, e la domanda vera che
+c'è sotto è *"come fa una persona a sapere di cosa ha bisogno?"*.
+
+**La risposta è che ce l'abbiamo, e non è un symptom checker**: nella home del
+dipendente c'è **«Non sai da dove partire?»** — tre domande e un servizio. Si
+apre e si mostra, sono tre clic (`CLAUDE.md` §10.B.7).
+
+**Le tre domande non nominano sintomi**, e va detto mentre si aprono: chiedono
+**cosa pesa** — il corpo, i pensieri, il lavoro, un controllo rimandato — da
+quanto, e quanto condiziona la giornata. L'esito indica **una porta fra quelle
+che il piano ha già aperto**, non una condizione, e sotto c'è sempre la stessa
+riga: *"è un orientamento, non una valutazione: se stai male adesso, chiama il
+144"*.
+
+**È la distinzione che regge la risposta, e conviene dirla per prima**: un
+symptom checker stabilisce **quanto è grave**, e per farlo dichiara di
+classificare lo stato di salute di chi lo usa — cioè la finalità medica che in
+Svizzera e in UE fa di un software un dispositivo medico, con certificazioni
+lunghe e care (*"Dubbi Business per CEO"* §2.2). Questo sceglie **a chi
+rivolgersi** fra servizi che l'azienda ha già comprato, ed è la versione
+costruibile oggi della stessa utilità.
+
+**Se chiedono se lo faremo davvero**, la risposta onesta è che è una decisione di
+prodotto e di regolamentazione insieme, non una funzione da mettere in roadmap —
+la stessa disciplina della risposta sull'escalation clinica.
+
+**Cosa mostrare, se c'è tempo per un solo giro**: "il lavoro e le decisioni" →
+"qualche settimana" → "abbastanza" porta al **coach**, che è la voce meno ovvia
+dell'offerta e quella che un investitore non si aspetta. Rispondendo "molto"
+alla terza, la stessa strada porta allo **psicologo**: è l'unico punto in cui
+l'impatto cambia qualcosa, e mostrarlo dice meglio di qualunque frase che la
+regola esiste ed è scritta.
+
+**Nessuna risposta viene salvata**, e se lo chiedono è un punto a favore: non
+teniamo traccia di cosa a una persona pesa. Lo stato muore chiudendo il dialogo.
+
 ### "E chi non si iscrive?"
 
 Arriva subito dopo la risposta sui numeri di stress, ed è la domanda seria: gli
