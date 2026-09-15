@@ -615,6 +615,29 @@ export const fr: Dictionary = {
           "Utilise en dehors des séances les techniques que tu apprends",
         mental_journal: "Note comment tu te sens les jours difficiles",
       },
+
+      path: {
+        heading: "Parcours guidé · {weeks} semaines",
+        week: "Semaine {n}",
+        sleep_4w: {
+          title: "Un rythme pour le sommeil",
+          step: {
+            1: "Pendant une semaine, note l'heure à laquelle tu t'endors et celle à laquelle tu te réveilles",
+            2: "Un peu de lumière naturelle dans l'heure qui suit le réveil",
+            3: "Une routine courte et toujours la même avant de dormir",
+            4: "Regarde comment ça s'est passé et garde les habitudes qui ont aidé",
+          },
+        },
+        stress_4w: {
+          title: "Des moments de pause dans la journée",
+          step: {
+            1: "Repère les moments de la journée qui te pèsent le plus",
+            2: "Déconnecte des écrans pendant la pause de midi",
+            3: "Dix minutes à pied les jours les plus chargés",
+            4: "Choisis les deux habitudes à garder aussi après",
+          },
+        },
+      },
     },
   },
 

@@ -4,8 +4,8 @@ import { Progress } from "@/components/ui/progress";
 import { Moon, Activity, Footprints, Apple, Brain, Sparkles } from "lucide-react";
 import { loadState, useAiHealthPlan } from "@/lib/data/queries";
 import { ErrorNotice } from "@/components/kora/StateNotice";
-import type { HealthArea } from "@/lib/data/types";
-import { formatMonthYear, formatPercent } from "@/lib/format";
+import type { AiPlanPathKey, HealthArea } from "@/lib/data/types";
+import { formatMonthYear, formatNumber, formatPercent } from "@/lib/format";
 import { interpolate, t } from "@/lib/i18n";
 
 /*
@@ -47,6 +47,49 @@ const AREA_STYLE: Record<
   },
   mental: { icon: Brain, iconClass: "text-secondary", wrapClass: "bg-secondary/10" },
 };
+
+/*
+ * Il percorso guidato di un'area (CLAUDE.md §10.B.8).
+ *
+ * NESSUN PULSANTE, ed è la decisione: iscriversi a un percorso è una scrittura
+ * che la demo non simula (§1.1), e un pulsante spento con il motivo
+ * nell'etichetta sarebbe il registro giusto solo se il pulsante servisse a
+ * qualcosa. Il percorso si legge.
+ *
+ * LE SETTIMANE SI CONTANO DALLE TAPPE, non si scrivono accanto: una cifra
+ * vicina all'elenco che la produce resta a dire «4» il giorno in cui le tappe
+ * sono cinque (§5.5). Le chiavi numeriche si percorrono in ordine crescente per
+ * specifica del linguaggio, quindi l'ordine delle tappe è quello del dizionario.
+ */
+function GuidedPath({
+  copy,
+}: {
+  copy: (typeof t.employee.aiPlan.path)[AiPlanPathKey];
+}) {
+  const steps = Object.values(copy.step);
+  return (
+    <div className="mt-4 border-t border-border pt-4">
+      <p className="text-xs text-muted-foreground">
+        {interpolate(t.employee.aiPlan.path.heading, {
+          weeks: formatNumber(steps.length),
+        })}
+      </p>
+      <h3 className="font-semibold text-sm mt-0.5">{copy.title}</h3>
+      <ol className="mt-3 space-y-2">
+        {steps.map((step, index) => (
+          <li key={index} className="text-xs">
+            <span className="block font-medium tabular-nums">
+              {interpolate(t.employee.aiPlan.path.week, {
+                n: formatNumber(index + 1),
+              })}
+            </span>
+            <span className="text-muted-foreground">{step}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
 
 export default function PianoAI() {
   const planQuery = useAiHealthPlan();
@@ -125,6 +168,9 @@ export default function PianoAI() {
                   </li>
                 ))}
               </ul>
+              {area.pathKey !== null && (
+                <GuidedPath copy={t.employee.aiPlan.path[area.pathKey]} />
+              )}
             </Card>
           );
         })}

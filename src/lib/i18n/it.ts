@@ -775,6 +775,37 @@ export const it = {
         mental_techniques: "Usa fuori dalla sessione le tecniche che impari",
         mental_journal: "Annota come ti senti nei giorni difficili",
       },
+
+      /*
+       * I percorsi guidati (CLAUDE.md §8). La durata non è una stringa: si
+       * conta dalle tappe, e `{weeks}` è quel conto. Le tappe hanno la stessa
+       * forma — osserva, cambia, cambia, tieni — e nessuna ripete un
+       * suggerimento qui sopra, che sta nella stessa card.
+       */
+      path: {
+        /** "Percorso guidato · 4 settimane" */
+        heading: "Percorso guidato · {weeks} settimane",
+        /** "Settimana 1" */
+        week: "Settimana {n}",
+        sleep_4w: {
+          title: "Un ritmo per il sonno",
+          step: {
+            1: "Per una settimana segna a che ora ti addormenti e a che ora ti svegli",
+            2: "Un po' di luce naturale entro un'ora dal risveglio",
+            3: "Una routine breve e sempre uguale prima di dormire",
+            4: "Guarda com'è andata e tieni le abitudini che hanno aiutato",
+          },
+        },
+        stress_4w: {
+          title: "Spazi di pausa nella giornata",
+          step: {
+            1: "Nota i momenti della giornata che ti pesano di più",
+            2: "Stacca dagli schermi durante il pranzo",
+            3: "Dieci minuti a piedi nei giorni più pieni",
+            4: "Scegli le due abitudini da tenere anche dopo",
+          },
+        },
+      },
     },
   },
 

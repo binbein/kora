@@ -557,6 +557,29 @@ export const de: Dictionary = {
         mental_techniques: "Nutze die gelernten Techniken auch ausserhalb der Sitzung",
         mental_journal: "Halt fest, wie du dich an schwierigen Tagen fühlst",
       },
+
+      path: {
+        heading: "Begleitetes Programm · {weeks} Wochen",
+        week: "Woche {n}",
+        sleep_4w: {
+          title: "Ein Rhythmus für den Schlaf",
+          step: {
+            1: "Notiere eine Woche lang, wann du einschläfst und wann du aufwachst",
+            2: "Etwas Tageslicht innerhalb einer Stunde nach dem Aufwachen",
+            3: "Eine kurze, immer gleiche Routine vor dem Schlafen",
+            4: "Schau, wie es gelaufen ist, und behalte die Gewohnheiten, die geholfen haben",
+          },
+        },
+        stress_4w: {
+          title: "Raum für Pausen im Alltag",
+          step: {
+            1: "Achte darauf, welche Momente des Tages dich am meisten belasten",
+            2: "Leg in der Mittagspause die Bildschirme weg",
+            3: "Zehn Minuten zu Fuss an den vollsten Tagen",
+            4: "Wähle die zwei Gewohnheiten, die du auch danach behältst",
+          },
+        },
+      },
     },
   },
 

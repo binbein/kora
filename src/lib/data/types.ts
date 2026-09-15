@@ -1128,7 +1128,20 @@ export type AiPlanArea = {
   /** 0–100 */
   progressPercent: number;
   tipKeys: AiPlanTipKey[];
+  /**
+   * Il percorso guidato dell'area, `null` dove l'area non ne ha uno (§8).
+   *
+   * **Una chiave e non il contenuto**: titolo e tappe sono testo e stanno nei
+   * dizionari, come obiettivi e suggerimenti. E nessun campo dice a che
+   * settimana si è arrivati, perché nessuno se n'è mai iscritto: iscriversi è
+   * una scrittura che la demo non simula, e lo stato di un percorso è lo stesso
+   * vuoto dell'avanzamento qui sopra (`docs/CONTRATTO-DATI.md` §8.9).
+   */
+  pathKey: AiPlanPathKey | null;
 };
+
+/** Le chiavi dei percorsi guidati in `i18n`, quattro settimane ciascuno. */
+export type AiPlanPathKey = "sleep_4w" | "stress_4w";
 
 /** Le chiavi dei suggerimenti in `i18n`, tre per ognuna delle cinque aree. */
 export type AiPlanTipKey =
