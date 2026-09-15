@@ -2878,6 +2878,29 @@ Home, Psicologi, Medico virtuale, Check-up, Benessere, Profilo.
    profilo di ciò che a una persona pesa — cioè il dato che il §10.B.6 tiene
    lontano da tutti. Lo stato muore con il dialogo.
 
+8. **Il piano di benessere offre un percorso guidato dove ne ha uno** (founder,
+   15.09.2026). Non è una rotta nuova né una schermata nuova — è un blocco in
+   più dentro la card dell'area, sotto i suggerimenti, e il conto delle rotte
+   non si muove.
+
+   **Il caso che lo motiva**: il prodotto dice che il sonno è l'area da cui
+   partire, e fino a quel giorno non offriva nessun modo di farlo — un obiettivo,
+   una barra e tre suggerimenti, ma nessuna sequenza. Il percorso è quella
+   sequenza: quattro tappe, una a settimana. Quali aree ne hanno uno e la forma
+   delle tappe stanno in §8.
+
+   **È contenuto, non una funzione.** Il blocco dice *«Percorso guidato · 4
+   settimane»*, il titolo e le quattro tappe, e **nessun pulsante**: iscriversi
+   è una scrittura che la demo non simula (§1.1), e un pulsante spento con il
+   motivo nell'etichetta sarebbe il registro giusto solo se il pulsante
+   servisse a qualcosa. Da qui
+   non c'è nemmeno una settimana corrente da mostrare: è lo stesso vuoto della
+   barra del piano (`docs/CONTRATTO-DATI.md` §8.9).
+
+   **Dove l'area non ha un percorso, il blocco non c'è** — né un segnaposto né
+   un *«in arrivo»*: `null` è un valore del contratto, e una promessa su un
+   percorso che nessuno ha scritto è una cosa che il prodotto non ha.
+
 **Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — la parte in
 programma del contatore sale, l'appuntamento compare in home, lo slot sparisce dalla
 disponibilità e compare nel calendario del professionista. Nessun vicolo cieco: ogni
