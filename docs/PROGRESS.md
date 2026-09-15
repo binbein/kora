@@ -2162,7 +2162,8 @@ check rapido**, e **la disdetta dal lato del dipendente**, e **l'attivazione
 dell'account**, e **lo stress per reparto dentro la cornice**, e **i residui
 dell'attivazione e della cornice**, e **l'id della prenotazione con il codice
 azienda**, e **l'area HR che conta per reparto**, e **la curva personale del
-check rapido**, e **«Non sai da dove partire?»**. Non aggiungono
+check rapido**, e **«Non sai da dove partire?»**, e **il percorso guidato del
+piano di benessere**. Non aggiungono
 schermate — **tranne il link anonimo e l'attivazione**, ed è la riga qui sotto.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
@@ -9869,6 +9870,110 @@ Sulla build demo a 1280×900, console aperta, guidando il dialogo dal DOM:
 - **Il dialogo non ha un passo indietro**, solo «Ricomincia». Tre domande sono
   poche e non c'è niente da salvare, quindi tornare di un passo costa quanto
   rifare; se un giorno le domande fossero cinque, la scelta andrebbe rifatta.
+
+#### Il percorso guidato del piano di benessere (15.09.2026)
+
+**Questo verbale non conta i propri commit.** Nessuna rotta e nessuna schermata
+nuova: rotte **28**, schermate **29**. `EXPECTED_KEYS` **892 → 904**, contate
+sull'albero sintattico nei quattro dizionari (`CLAUDE.md` §2.7); guardrail
+**108 + 18 = 126**, rimisurati e invariati.
+
+##### Il piano indicava l'area debole e poi si fermava
+
+La home dice a Laura che il sonno è l'area da cui parte il suo piano, e la card
+del sonno le dava un obiettivo, una barra e tre suggerimenti: **cosa fare, ma
+non in che ordine**. Il percorso guidato è quell'ordine — quattro tappe, una a
+settimana — e sta nella stessa card, sotto i suggerimenti.
+
+**Contenuto, non funzione**: il contratto guadagna **una chiave**,
+`AiPlanArea.pathKey: AiPlanPathKey | null`, e nient'altro. Il dataset ne dà una
+al sonno (`sleep_4w`) e una allo stress (`stress_4w`), `null` alle altre tre
+(`CLAUDE.md` §8). Titolo e tappe stanno nei dizionari, come obiettivi e
+suggerimenti.
+
+##### Nessun pulsante, e il perché
+
+Iscriversi a un percorso è una scrittura che la demo non simula (§1.1), e il
+pulsante spento con il motivo nell'etichetta — il registro che il prodotto usa
+altrove — è quello giusto **solo se il pulsante servisse a qualcosa**. Qui non
+serve: il percorso si legge. Ne discende che **non c'è una settimana corrente**,
+ed è lo stesso vuoto dell'avanzamento del piano: il `docs/CONTRATTO-DATI.md`
+§8.9 lo dice ora anche del percorso, e **la barra non si tocca**.
+
+##### Le settimane si contano, non si scrivono
+
+Il piano proponeva di non scrivere «4 settimane» nel dizionario, e i founder
+l'hanno confermato: il blocco dice *«Percorso guidato · {weeks} settimane»* con
+`{weeks}` uguale al numero delle tappe. Una cifra scritta accanto all'elenco che
+la produce resta a dire «4» il giorno in cui le tappe sono cinque (§5.5).
+L'etichetta *«Settimana {n}»* è **una chiave sola**, e le tappe non portano la
+cifra: stanno sotto le chiavi `1`–`4`, come i cinque volti di
+`rapidCheck.option`.
+
+##### La tappa che ripeteva un suggerimento
+
+**La prima stesura della tappa 1 del sonno era *«Stessa ora per alzarti, anche
+nel weekend»***, e il piano l'aveva segnalata: tre righe sopra, nella stessa
+card, il suggerimento `sleep_schedule` dice *«Vai a letto e alzati sempre alla
+stessa ora»*. I founder l'hanno riscritta, e hanno dato ai due percorsi **la
+stessa forma — osserva, cambia, cambia, tieni** — che quello dello stress aveva
+già: la tappa 1 del sonno è ora *«Per una settimana segna a che ora ti
+addormenti e a che ora ti svegli»*. La forma e il divieto di ripetere un
+suggerimento stanno in `CLAUDE.md` §8.
+
+**Il controllo incrociato chiesto dai founder**, fra le **otto tappe** e i
+**quindici suggerimenti** di `employee.aiPlan.tip`, nelle quattro lingue. Il
+metodo: per ogni coppia, le radici di cinque lettere delle parole piene, tolte
+le parole vuote di ogni lingua; ogni coppia con almeno una radice in comune è
+stata letta. Le coppie candidate sono **9 in italiano, 9 in tedesco, 15 in
+francese e 13 in inglese**, e **nessuna dice la stessa cosa**. La maggior parte
+condivide una parola funzionale che il filtro non toglie — *giorno*, *minuti*,
+*note*, *how*, *comme* in *comment* e *commence* — e **le quattro più vicine**,
+che sono le stesse in tutte le lingue, con la ragione per cui non sono una
+ripetizione:
+
+| tappa | suggerimento | perché no |
+|---|---|---|
+| sonno 1 · *segna a che ora ti addormenti e ti svegli* | `sleep_schedule` · *vai a letto e alzati sempre alla stessa ora* | stessi orari, gesto opposto: la tappa li guarda come sono, il suggerimento li fissa |
+| sonno 3 · *una routine breve e sempre uguale prima di dormire* | `sleep_screens` · *evita gli schermi nei 30 minuti prima di dormire* | stesso momento: il suggerimento toglie una cosa, la tappa ne aggiunge una |
+| stress 2 · *stacca dagli schermi durante il pranzo* | `stress_breaks` · *programma una pausa ogni 90 minuti* | il suggerimento dice quante pause, la tappa cosa fare in una |
+| stress 3 · *dieci minuti a piedi nei giorni più pieni* | `activity_walk` · *comincia con camminate di 30 minuti* | **la coppia più vicina**: tutte e due camminano, ma in due card diverse e con due mestieri — là un'abitudine di movimento da costruire, qui una pausa nei giorni pieni |
+
+##### Verificato
+
+Sulla build demo a 1280×900, console aperta, raggiungendo
+`/employee/wellbeing-plan` dalla barra pubblica e dal menu, lingua per lingua:
+
+- **due card con il blocco e tre senza**, in tutte e quattro le lingue: sonno e
+  stress portano titolo, *«· 4 settimane»* e le quattro tappe con la loro
+  etichetta di settimana; movimento, alimentazione e salute mentale **nessun
+  blocco**, né un segnaposto;
+- **nessun pulsante e nessun link** dentro nessuna delle cinque card;
+- **le tappe nell'ordine del dizionario**, da *Settimana 1* a *4* — *Woche*,
+  *Semaine*, *Week* — e la durata contata: *4 Wochen*, *4 semaines*, *4 weeks*;
+- **contrasti misurati sui venti nodi nuovi**, dieci per blocco: titolo ed
+  etichette di settimana a **15.17**, riga del percorso e testo delle tappe a
+  **5.10** a 12px, contro la soglia di 4.5; nessuna `opacity` sulla catena;
+- **nessuno scorrimento orizzontale** in tedesco, dove la tappa più lunga è
+  *«Schau, wie es gelaufen ist, und behalte die Gewohnheiten, die geholfen
+  haben»*;
+- console muta — compreso il guardrail delle chiavi, che avrebbe loggato se il
+  conto non fosse tornato a 904 — e `npm run build`, `build:demo`, `lint`, `typecheck` a zero.
+
+##### Trovato e non toccato
+
+- **Obiettivi e suggerimenti del piano portano cifre scritte dentro le
+  stringhe**, che non stanno in §8 né passano da `format.ts`: *da 6 a 7 ore*,
+  *del 15% in 8 settimane*, *2 sessioni*, *30 minuti*, *90 minuti*, *14:00* — e
+  in francese *14 h*, cioè un orario localizzato a mano. Erano lì prima di questa
+  passata. Le tappe nuove non ne aggiungono: l'unica quantità è *dieci
+  minuti*, scritta in lettere come testo e non come dato.
+- **`{weeks} settimane` è giusto per due settimane o più.** Un percorso di una
+  settimana direbbe *«1 settimane»*: nessun dizionario ha oggi una forma
+  singolare, e il giorno in cui servisse la strada è `Intl.PluralRules` in
+  `format.ts`, non una seconda chiave.
+- **`docs/PITCH.md` non cambia**: il giro non passa dalla pagina del piano, e
+  nessuna risposta pronta parla dei percorsi.
 
 ### Punto di partenza — cosa c'è e cosa manca
 
