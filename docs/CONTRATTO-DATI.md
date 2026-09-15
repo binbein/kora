@@ -499,6 +499,28 @@ contenuto della demo, quindi il tipo dice il vero.
 l'unica traccia che l'area con i nomi può vedere: le risposte non escono da
 nessuna parte, come la nota di sessione e il referto.
 
+**`AiPlanArea.pathKey` è una chiave, non un percorso** (15.09.2026). Porta
+`AiPlanPathKey | null`: la chiave del percorso guidato dell'area, e `null` dove
+l'area non ne ha uno — che è un valore legittimo e non un vuoto da riempire, come
+lo slot di valore del §2. Titolo e tappe stanno nei dizionari, per la stessa
+ragione di `goalKey` e `tipKeys`; quanti percorsi abbia il dataset e su quali
+aree sta in `CLAUDE.md` §8.
+
+**La durata non è un campo**: si conta dalle tappe, e un numero di settimane
+accanto all'elenco che lo produce sarebbe lo stesso fatto detto due volte
+(`CLAUDE.md` §5.5).
+
+**E del percorso il contratto non dice nient'altro, di proposito.** Nessun campo
+dice se il dipendente l'ha cominciato né a che settimana è arrivato, perché
+nessuna scrittura lo iscrive: è lo stesso vuoto dell'avanzamento del piano, e sta
+nel §8.9.
+
+**In produzione i percorsi diventano un dato**, come le dieci domande: un
+percorso si riscrive, e chi l'ha cominciato con le tappe vecchie deve poterle
+ancora leggere. È un'entità versionata, e `AiPlanPathKey` smetterà di essere
+un'unione di chiavi note. Oggi i due percorsi sono contenuto della demo, quindi
+il tipo dice il vero.
+
 `getEntitlement` prende **quale servizio**, non solo lo psicologo:
 `CappedServiceKind` è l'unione stretta dei due che il Plus cappa a un numero di
 sedute l'anno. Il medico virtuale è illimitato e il check-up si conta una volta
@@ -1932,6 +1954,15 @@ dichiarato è ciò che il dataset demo fa, dichiarandolo; farlo in produzione
 significherebbe mostrare a una persona una misura del proprio comportamento che
 nessuno ha misurato — che è la stessa famiglia del §8 di `CLAUDE.md`, dove nessuna
 metrica di stress si deduce da un surrogato.
+
+**Dal 15.09.2026 due aree portano un percorso guidato, e il vuoto non si
+allarga** (§3, `AiPlanArea.pathKey`). Un percorso è **contenuto**, non
+avanzamento: dice cosa fare settimana per settimana, e a schermo si legge senza
+un pulsante e senza una settimana corrente. **La domanda «a che settimana
+sono?» è questa stessa sezione**: per risponderle serve un'iscrizione, cioè una
+scrittura con una data d'inizio, e da lì la stessa scelta fra le due strade qui
+sopra. Sulla seconda, «ho cominciato un percorso» è un dato su di sé in più, e
+ricade sul consenso del §8.2 come il tracciamento.
 
 ### 8.10 Le tre voci del profilo non hanno una sorgente
 

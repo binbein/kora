@@ -67,30 +67,35 @@ const AREAS: AiPlanArea[] = [
     goalKey: "sleep_hours",
     progressPercent: 40,
     tipKeys: ["sleep_screens", "sleep_schedule", "sleep_caffeine"],
+    pathKey: "sleep_4w",
   },
   {
     area: "stress",
     goalKey: "stress_reduction",
     progressPercent: 35,
     tipKeys: ["stress_breathing", "stress_breaks", "stress_coach"],
+    pathKey: "stress_4w",
   },
   {
     area: "activity",
     goalKey: "activity_weekly",
     progressPercent: 50,
     tipKeys: ["activity_walk", "activity_stairs", "activity_yoga"],
+    pathKey: null,
   },
   {
     area: "nutrition",
     goalKey: "nutrition_cholesterol",
     progressPercent: 25,
     tipKeys: ["nutrition_fibre", "nutrition_fats", "nutrition_recheck"],
+    pathKey: null,
   },
   {
     area: "mental",
     goalKey: "mental_coaching",
     progressPercent: 50,
     tipKeys: ["mental_continue", "mental_techniques", "mental_journal"],
+    pathKey: null,
   },
 ];
 
