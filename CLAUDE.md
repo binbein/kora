@@ -1753,6 +1753,31 @@ le formulazioni non nominano sintomi — *"Al risveglio ti senti in forze?"* sì
 *"Hai sintomi di insonnia?"* no: la seconda è una domanda clinica, e il §7 vieta
 al prodotto di dichiarare che classifica lo stato di salute di qualcuno.
 
+**Il piano di benessere ha due percorsi guidati, di quattro settimane**
+(founder, 15.09.2026): **`sleep_4w` sul sonno e `stress_4w` sullo stress**, e
+nessuno su movimento, alimentazione e salute mentale. Fino a quel giorno il
+prodotto diceva a Laura che il sonno è l'area da cui partire e non le offriva
+nessun modo di farlo; il sonno è la sua area debole, quindi il percorso sta
+nella prima card del piano.
+
+**Quattro settimane, una tappa a settimana — e la durata non si scrive**: a
+schermo si conta dalle tappe (§5.5). Una cifra accanto all'elenco che la
+produce è la cifra che resta a dire «4» il giorno in cui le tappe sono cinque.
+
+**Le tappe vivono nei dizionari**, come le dieci domande: qui stanno quali aree
+hanno un percorso e quanto dura, che sono dati. Due vincoli sul testo, perché
+una rilettura non li scambi per gusto:
+
+- **i due percorsi hanno la stessa forma — osserva, cambia, cambia, tieni.** La
+  prima settimana guarda com'è adesso, le due di mezzo cambiano una cosa
+  ciascuna, l'ultima sceglie cosa tenere;
+- **nessuna tappa ripete un suggerimento del piano.** Il percorso sta sotto i
+  suggerimenti della stessa card, e una tappa che ne ridice uno è la stessa
+  frase scritta due volte a tre righe di distanza.
+
+Il registro è quello consumer del §7, senza termini clinici e **senza promesse
+di risultato**: una tappa dice cosa fare, mai cosa succederà.
+
 **Le risposte di Laura al check rapido, una al mese sui dodici della finestra**
 (founder, 10.09.2026). Sono la sua curva personale, quella che il portale
 dipendente mostra e **che l'azienda non vede mai** (§10.B.6). Sulla scala del
