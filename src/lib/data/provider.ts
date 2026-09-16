@@ -279,8 +279,9 @@ export interface DataProvider {
    *
    * **Nessuna delle due esce mai verso l'azienda**, e resta vero adesso che una
    * esce verso il paziente: il paziente **non è l'azienda**, ed è la distinzione
-   * che tiene in piedi tutta la garanzia. `EmployeeDirectoryEntry` e
-   * `PlatformSession` non hanno un campo su cui l'uno o l'altro possa arrivare.
+   * che tiene in piedi tutta la garanzia. `PlatformSession` non ha un campo su
+   * cui l'uno o l'altro possa arrivare, e `DepartmentEnrollment` non ha
+   * nemmeno una riga per persona.
    *
    * **UN OGGETTO E NON DUE `string?` DI FILA.** Con due note facoltative i
    * parametri posizionali diventano illeggibili al call site:
@@ -696,7 +697,7 @@ export interface DataProvider {
 
   /**
    * Gli utenti della piattaforma. Nel dataset demo è un estratto di sette
-   * righe, come l'elenco dipendenti dell'HR: la schermata lo dichiara.
+   * righe, e la schermata lo dichiara.
    */
   getPlatformUsers(): Promise<PlatformUser[]>;
 }
