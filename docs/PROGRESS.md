@@ -2163,8 +2163,9 @@ dell'account**, e **lo stress per reparto dentro la cornice**, e **i residui
 dell'attivazione e della cornice**, e **l'id della prenotazione con il codice
 azienda**, e **l'area HR che conta per reparto**, e **la curva personale del
 check rapido**, e **«Non sai da dove partire?»**, e **il percorso guidato del
-piano di benessere**, e **i residui dell'elenco per persona**. Non aggiungono
-schermate — **tranne il link anonimo e l'attivazione**, ed è la riga qui sotto.
+piano di benessere**, e **i residui dell'elenco per persona**, e **le risorse
+del portale dipendente**. Non aggiungono schermate — **tranne il link anonimo,
+l'attivazione e le risorse**, ed è la riga qui sotto.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
 volta** (04.09.2026): il listino porta ora *"prima sessione entro 72 ore"*, che è
@@ -10068,6 +10069,137 @@ senza niente da cliccare.
   rifatto il giorno in cui si torna a quell'inventario, perché #91 ha cambiato
   le stringhe della pagina Dipendenti.
 
+#### Le risorse del portale dipendente (16.09.2026)
+
+**Questo verbale non conta i propri commit.** Una rotta nuova, approvata dai
+founder con questa passata: rotte **29** (6 + 7 + 5 + 5 + 6), schermate **30**,
+con la 404 (`CLAUDE.md` §10). `EXPECTED_KEYS` **904 → 960**, contate
+sull'albero sintattico nei quattro dizionari; guardrail **108 + 18 = 126**,
+rimisurati e invariati. `docs/CONTRATTO-DATI.md` non cambia: nessun metodo e
+nessun tipo nuovo.
+
+##### Il piano diceva cosa, e mai come
+
+Il piano di benessere nomina le abitudini — *annota come ti senti*, *una pausa
+ogni tanto*, *camminate* — e non spiega mai come si fanno. `/employee/resources`
+è quel come: **otto schede di testo**, due per il sonno, lo stress e la salute
+mentale, una per il movimento e una per l'alimentazione, ognuna esercizio o
+lettura. Si filtra per area, una scheda si apre in un dialogo con i passi in
+lista, e da ogni card del piano un link porta alle risorse di quell'area già
+filtrate.
+
+**Contenuto, non funzione**: niente audio, video o preferiti, e nessun pulsante
+«Inizia», «Salva» o «Fatto» — sarebbero scritture che la demo non simula.
+
+##### Il catalogo non è un dato
+
+Il catalogo — quali voci, di che area e di che tipo — sta in `lib/resources.ts`,
+come la regola di `orientation.ts`, e il testo nei dizionari. **Non passa dal
+provider** perché è contenuto editoriale uguale per tutti: nessuna voce dipende
+dall'azienda, dal piano o dalla persona. Il giorno in cui diventa gestito entra
+nel contratto. È anche il catalogo a decidere se una card del piano porta il
+link: oggi tutte e cinque lo portano, perché ogni area ha almeno una voce.
+
+##### Cinque decisioni prese in fase di piano
+
+- **La barra in basso, misurata prima di scrivere.** Il §10.B.3 diceva che con
+  cinque voci la barra è completa, e le risorse ne fanno sei. La regola decisa:
+  se sei voci non stanno a 390px con le etichette intere, «Risorse» resta nel
+  menu e non nella barra, **senza accorciare nessuna etichetta**. Misurate su
+  `/employee/doctor`, le sei etichette occupano **336px in italiano, 367 in
+  tedesco e in inglese, 387 in francese**, su 390: stanno tutte, e la voce è
+  nella barra. Il §10.B.3 e il commento di `EmployeeNav` lo dicono, con la
+  regola per la settima;
+- **nessuna chiave `empty`**: con questo catalogo nessun filtro produce una
+  griglia vuota, e una stringa per un ramo che nessun dato raggiunge è codice
+  che il §11 non vuole;
+- **«Risorse per quest'area», senza il nome dell'area**: con `t.healthArea` il
+  link avrebbe detto *«Resources for Sleep»*, con la maiuscola a metà frase, e
+  *«Ressources pour Sommeil»*, senza articolo — e il nome è già il titolo della
+  card;
+- **la scheda sul parlarne con qualcuno rimanda a parole, non con link**, e non
+  porta numeri d'emergenza: un link lì sarebbe JSX scritta per una voce sola, e
+  i numeri stanno nei punti che il §8 elenca;
+- **«Qualche riga la sera» e non «Tre righe la sera»**: il titolo e i tre passi
+  avrebbero detto lo stesso numero due volte, come le «4 settimane» del
+  percorso guidato.
+
+In più, **«Una pausa che funziona» è diventata «Una pausa breve, fatta
+bene»**: la prima prometteva un risultato, che le tappe del percorso guidato
+avevano già escluso.
+
+##### Il controllo incrociato con il piano
+
+Le **49 stringhe** delle risorse — titoli, righe introduttive e passi — contro
+le **23** del piano: i quindici suggerimenti e le otto tappe dei percorsi. Stesso
+metodo del percorso guidato: radici di cinque lettere delle parole piene, tolte
+le parole vuote di ogni lingua, e ogni coppia con almeno una radice in comune
+letta. Le candidate sono **66 in italiano, 60 in tedesco, 83 in francese e 76
+in inglese**, e **nessuna dice la stessa cosa**. Quasi tutte condividono una
+parola di servizio — *più*, *giornata*, *scegli*, *tieni*, *dormire* — e le
+quattro più vicine sono quelle che il piano aveva previsto, dove la risorsa dice
+come si fa una cosa che il suggerimento nomina:
+
+| risorsa | suggerimento del piano | perché non è una ripetizione |
+|---|---|---|
+| `activity_walk` · *Camminare con più gusto* | `activity_walk` · *Comincia con camminate di 30 minuti* | il suggerimento dice quanto camminare, la risorsa come renderlo un'abitudine, e non porta minuti |
+| `stress_pause` · *Fai qualche respiro più lento del solito* | `stress_breathing` · *Dedica 10 minuti al giorno alla respirazione* | il respiro è uno dei passi di una pausa, non la pratica quotidiana che il suggerimento propone |
+| `nutrition_lunch` · *Metti nel piatto un po' di tutto: cereali, proteine, verdure* | `nutrition_fibre` · *Aumenta fibre e verdura a ogni pasto* | il suggerimento dice di aumentare una cosa, la risorsa come si compone un pasto intero |
+| `stress_close_day` · *Segna il passaggio con un gesto sempre uguale* | tappa 3 del sonno · *Una routine breve e sempre uguale prima di dormire* | la stessa idea di rito in due momenti diversi: la fine del lavoro e la sera |
+
+`mental_journal` e il suggerimento *«Annota come ti senti nei giorni
+difficili»* non condividono nemmeno una radice, ma sono la coppia più vicina per
+significato: la risorsa è il come di quel suggerimento, con tre cose da scrivere
+invece di un invito generico.
+
+##### Verificato
+
+Sulla build demo, console aperta:
+
+- **a 1280×900, nelle quattro lingue**: dalla voce di menu la pagina apre su
+  «Tutte» con **otto schede** e la voce attiva; il filtro sul sonno scrive
+  `?area=sleep` e ne lascia **due**, quello sulla salute mentale `?area=mental`
+  e **due**; `?area=bogus` apre su «Tutte» con otto;
+- **il dialogo**: titolo, riga introduttiva e i passi in lista ordinata — cinque
+  per il respiro, quattro per il parlarne — e nessun pulsante oltre la chiusura;
+  la scheda sul parlarne non contiene link;
+- **il ponte dal piano**: cinque link *«Risorse per quest'area»* — *«Ressourcen
+  für diesen Bereich»*, *«Ressources pour ce domaine»*, *«Resources for this
+  area»* — e quello dello stress porta a `?area=stress` con il filtro attivo e
+  le due schede dello stress;
+- **a 390px, nelle quattro lingue**: nessuno scorrimento orizzontale sulla
+  pagina, schede su una colonna, filtri che vanno a capo — due righe, tre in
+  francese — e «Risorse» attiva nella barra in basso;
+- **contrasti su 58 nodi**: intestazione, sei filtri, otto schede, due dialoghi
+  e cinque link. Il minimo è **4.62**, i filtri non attivi a 14px, cioè la resa
+  di `TabsList` già usata negli psicologi; il badge del tipo sta a **10.66**, i
+  link a **5.72**, la riga introduttiva del dialogo a **4.90**. I nodi dei
+  dialoghi risultavano a opacità zero: è l'animazione d'ingresso ferma a
+  pannello nascosto (`CLAUDE.md` §11), non un valore della pagina, e i rapporti
+  sono misurati sul colore;
+- console muta; `npm run build`, `build:demo`, `lint`, `typecheck` a zero.
+
+##### Trovato e non toccato
+
+- **La home del dipendente scorre di lato a 390px**, ed era così prima di
+  questa passata: i cinque volti del check rapido hanno `min-w-[4.5rem]` e la
+  riga arriva a **429px**. Lo si vede solo misurando la barra in basso dalla
+  home, perché lì la finestra di layout si allarga e la barra con lei — è la
+  ragione per cui la misura sopra è fatta su `/employee/doctor`.
+- **A 375px il francese non sta**: le sei etichette occupano 387px. La regola
+  decisa guarda i 390px e la barra resta così; su un telefono più stretto la
+  voce che eccede andrebbe nel menu.
+- **`src/lib/health-profile.ts` non compare nell'albero del `CLAUDE.md` §3**,
+  che dichiara di nominare ogni file di `lib/`. Questa passata ha aggiunto
+  `resources.ts`; l'altro manca da prima.
+- **La testa di «Refinement fra le milestone» dice che una passata di
+  refinement non allarga lo scope del §10**, e il link anonimo, l'attivazione e le risorse lo
+  hanno allargato — tutti e tre con l'approvazione dei founder. La riga non è di
+  questa passata.
+- **Il pulsante di chiusura del dialogo dice «Close» in tutte e quattro le
+  lingue**, come già annotato per «Non sai da dove partire?»: sta in
+  `ui/dialog.tsx`, che è congelato.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -10131,6 +10263,14 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 > state raccolte cercando le attribuzioni datate in `CLAUDE.md` e in
 > `docs/PITCH.md`; il criterio e cosa è rimasto fuori stanno nel verbale di
 > quella passata.
+
+- **16.09.2026 — Le risorse del portale dipendente, la ventinovesima rotta**
+  (`CLAUDE.md` §10.B.9). `/employee/resources`: otto schede di testo, esercizi
+  e letture, legate alle aree del profilo, con la voce «Risorse» nel menu e un
+  link da ogni card del piano di benessere. **Il motivo**: il piano nomina cosa
+  fare e non dice mai come si fa. **Contenuto, non funzione** — nessuna
+  scrittura, nessun pulsante, e il catalogo non passa dal provider perché è
+  contenuto editoriale uguale per tutti.
 
 - **10.09.2026 — L'area HR vede quanti, mai chi** (`CLAUDE.md` §10.C.5). Fino a
   quel giorno l'elenco dipendenti mostrava, per ogni persona, **iniziali,
