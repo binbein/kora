@@ -2023,10 +2023,9 @@ export const it = {
     demoBanner:
       "Back-office interno · dati dimostrativi. Aziende, persone e strutture di questa sezione sono di fantasia e non descrivono clienti reali.",
 
-    /* L'estratto si dichiara, come per l'elenco dipendenti dell'HR: la
-       paginazione è lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.12), e far
-       credere che la piattaforma abbia sette utenti sarebbe peggio che dire
-       quanti se ne stanno mostrando. */
+    /* L'estratto si dichiara: la paginazione è lavoro dell'MVP
+       (`docs/CONTRATTO-DATI.md` §8.12), e far credere che la piattaforma abbia
+       sette utenti sarebbe peggio che dire quanti se ne stanno mostrando. */
     extractNote: "Estratto di {shown} righe su {total}. La ricerca completa arriva con la messa in produzione.",
 
     companies: {
