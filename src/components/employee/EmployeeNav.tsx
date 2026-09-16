@@ -6,6 +6,7 @@ import {
   Stethoscope,
   ClipboardCheck,
   Sparkles,
+  BookOpen,
   User,
   Menu,
   X,
@@ -92,6 +93,11 @@ export default function EmployeeNav() {
       path: "/employee/wellbeing-plan",
       icon: Sparkles,
       label: t.employee.nav.aiPlan,
+    },
+    {
+      path: "/employee/resources",
+      icon: BookOpen,
+      label: t.employee.nav.resources,
     },
   ];
 
@@ -186,10 +192,16 @@ export default function EmployeeNav() {
             *
             * Diceva `.slice(0, 5)` su un elenco di sei: la sesta voce —
             * Profilo — su mobile **non compariva affatto**, e la troncatura
-            * era silenziosa. Con Profilo passato al riquadro dell'identità le
-            * voci sono cinque e la barra è completa, quindi lo `slice` non
-            * toglieva più niente: restava solo il modo di far sparire in
-            * silenzio la prossima voce che qualcuno aggiunge.
+            * era silenziosa. Profilo è passato al riquadro dell'identità, e lo
+            * `slice` è uscito perché era il modo di far sparire in silenzio la
+            * prossima voce che qualcuno aggiunge.
+            *
+            * La prossima è arrivata con le risorse, e le voci sono di nuovo
+            * sei: **stanno tutte a 390px con le etichette intere**, nelle
+            * quattro lingue — la più larga è il francese, 387px. Chi ne
+            * aggiunge una settima rifà la misura: se non sta, la voce resta
+            * nel menu e non nella barra, e nessuna etichetta si accorcia
+            * (CLAUDE.md §10.B.3).
             */}
           {navItems.map(({ path, icon: Icon, label }) => {
             const active = location.pathname === path;

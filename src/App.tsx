@@ -21,6 +21,7 @@ import Psicologi from '@/pages/employee/Psicologi';
 import Medico from '@/pages/employee/Medico';
 import Checkup from '@/pages/employee/Checkup';
 import PianoAI from '@/pages/employee/PianoAI';
+import Risorse from '@/pages/employee/Risorse';
 import Profilo from '@/pages/employee/Profilo';
 
 // HR portal
@@ -95,6 +96,7 @@ const AppRoutes = () => (
       <Route path="doctor" element={<Medico />} />
       <Route path="checkup" element={<Checkup />} />
       <Route path="wellbeing-plan" element={<PianoAI />} />
+      <Route path="resources" element={<Risorse />} />
       <Route path="profile" element={<Profilo />} />
     </Route>
 
