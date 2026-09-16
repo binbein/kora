@@ -191,6 +191,17 @@ presentazione.
   si legge, e che sapere a che settimana si è arrivati è lavoro dell'MVP
   (`docs/CONTRATTO-DATI.md` §8.9).
 
+- **Le risorse, dal piano di benessere, ed è facoltativo** (16.09.2026). In
+  fondo a ogni card del piano c'è *"Risorse per quest'area"*: porta a **Risorse**
+  già filtrate su quell'area, e una scheda si apre in un dialogo con i passi in
+  lista. Dalla card del sonno escono le due del sonno.
+
+  **Serve se la domanda è "e fra una sessione e l'altra?"**: il piano dice cosa
+  fare, le risorse dicono come si fa. **Anche qui non c'è niente da cliccare
+  oltre la scheda** — nessun «Fatto», nessun preferito — e va detto prima che
+  qualcuno lo cerchi: è contenuto, e il sottotitolo lo dichiara — *"Non
+  sostituiscono nessuno"*.
+
 - **Il link anonimo, dopo la privacy HR, ed è facoltativo** (06.09.2026). In
   `/hr/privacy` il riquadro **"Anche senza account"** ha ora un link — *"Vedi un
   esempio di link anonimo"* — che apre `/check/demo-sa-vendite`: logo, **Demo SA
@@ -309,9 +320,9 @@ trasformare un argomento forte in una correzione ricevuta in sala.
 
 **Detto a voce, è un argomento competitivo.** Quattro lingue nazionali sono la
 condizione per vendere a un'azienda svizzera con sedi in più cantoni, e la
-piattaforma le ha **oggi**, non "le avrà": tutte e ventotto le schermate sono
-state percorse in ognuna delle quattro — la ventottesima è la pagina del link
-anonimo, percorsa nelle quattro il 06.09.2026 (`CLAUDE.md` §10). È questo il modo di dirlo, non un cambio di
+piattaforma le ha **oggi**, non "le avrà": tutte le schermate sono state
+percorse in ognuna delle quattro, e ogni schermata nuova entra già percorsa —
+quante siano lo conta il `CLAUDE.md` §10, che è l'unico punto che le conta. È questo il modo di dirlo, non un cambio di
 lingua a schermo.
 
 **Se è l'investitore a cliccare una sigla**, la schermata regge e non c'è niente
