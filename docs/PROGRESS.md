@@ -2164,8 +2164,9 @@ dell'attivazione e della cornice**, e **l'id della prenotazione con il codice
 azienda**, e **l'area HR che conta per reparto**, e **la curva personale del
 check rapido**, e **«Non sai da dove partire?»**, e **il percorso guidato del
 piano di benessere**, e **i residui dell'elenco per persona**, e **le risorse
-del portale dipendente**. Non aggiungono schermate — **tranne il link anonimo,
-l'attivazione e le risorse**, ed è la riga qui sotto.
+del portale dipendente**, e **le guide per i manager**. Non aggiungono
+schermate — **tranne il link anonimo, l'attivazione, le risorse e le guide per i
+manager**, ed è la riga qui sotto.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
 volta** (04.09.2026): il listino porta ora *"prima sessione entro 72 ore"*, che è
@@ -10200,6 +10201,99 @@ Sulla build demo, console aperta:
   lingue**, come già annotato per «Non sai da dove partire?»: sta in
   `ui/dialog.tsx`, che è congelato.
 
+#### Le guide per i manager (16.09.2026)
+
+**Questo verbale non conta i propri commit.** Una rotta nuova, approvata dai
+founder con questa passata: rotte **30** (6 + 7 + 6 + 5 + 6), schermate **31**,
+con la 404 (`CLAUDE.md` §10). `EXPECTED_KEYS` **960 → 1002**, contate
+sull'albero sintattico nei quattro dizionari; guardrail **108 + 18 = 126**,
+rimisurati e invariati. `docs/CONTRATTO-DATI.md` non cambia.
+
+##### L'unico posto che la demo ha per l'azienda mostrava solo numeri
+
+`/hr/managers` porta tre guide di testo per chi guida un team: *quando qualcuno
+dice che non ce la fa*, *come presentare Kora al team*, *quando serve aiuto
+subito*. Ognuna dice **cosa dire, cosa evitare e cosa fare dopo**, tre voci per
+colonna, all'infinito impersonale del registro strumento. In testa un riquadro
+dice che le guide non sanno chi usa Kora, perché in azienda non lo sa nessuno.
+Nessuna lettura dal provider, nessun download, nessuna stampa.
+
+##### Come parlare, mai come riconoscere
+
+È il vincolo che ha comandato sul contenuto, e ora sta nel `CLAUDE.md` §7 con
+la data: **nessun segnale da osservare, nessuna condizione nominata, nessun
+invito a tenere d'occhio qualcuno**. Il criterio con cui si rilegge una frase è
+uno solo: se descrive l'altro invece di dire cosa fare, si toglie.
+
+**L'ha già applicato una volta, al titolo della terza guida.** La traccia diceva
+*«Se una persona è in pericolo adesso»*, e il piano l'ha segnalato: il titolo
+chiede di riconoscere uno stato. È diventato **«Quando serve aiuto subito»**,
+che nomina la situazione, con la riga *«Quando c'è un pericolo immediato non si
+valuta: si chiama.»*
+
+**La verifica sulle parole è stata fatta sui valori, non a occhio**: le 41
+stringhe di `hr.managers` in ognuna delle quattro lingue, cercate per le radici
+delle condizioni — burnout, depressione, ansia, esaurimento, nelle quattro
+lingue — e per *segnale*, *tenere d'occhio*, *sintomo*, *disturbo*, *rischio*,
+*diagnosi* e *prevenzione*. **Zero riscontri** in tutte e quattro.
+
+##### I numeri d'emergenza: cinque punti, una fonte
+
+La terza guida porta il 144 e il 143 come segnaposto, e **la pagina rende come
+link `tel:` la riga intera che ne contiene uno**, con la stessa classe del check
+rapido: lo decide il segnaposto e non l'id della guida. Il nome del 143 è quello
+che il check rapido usa già nel blocco di crisi, lingua per lingua — *Telefono
+Amico* in italiano e in inglese, *Die Dargebotene Hand*, *La Main Tendue* — e
+non si traduce.
+
+**Il §8 elenca ora i cinque punti per nome**, riscritto con la data perché è una
+regola: il disclaimer e la chiusura della chat del medico, il check rapido, il
+disclaimer di «Non sai da dove partire?» e questa guida. **Fino a oggi ne
+contava tre, e il quarto non era stato registrato**: il disclaimer
+dell'orientamento è arrivato il 10.09.2026 con #93, e né il §8 né la risposta
+pronta del pitch l'avevano aggiunto. Il pitch non tiene più un proprio conto e
+rimanda al §8.
+
+**E il 144 della chat era scritto nei dizionari**, dentro due stringhe per
+lingua, mentre il §8 vuole il numero a schermo e quello del link letti da un
+posto solo. Un commit `fix:` a parte lo porta a `{number}` interpolato da
+`lib/emergency.ts`, **senza cambiare una parola** nelle quattro lingue. Da qui
+`lib/emergency.ts` ha **quattro lettori** — il piano ne contava tre, prima che
+la chat entrasse nella passata — e il suo commento e l'albero del §3 lo
+dicono.
+
+##### Verificato
+
+Sulla build demo, console aperta:
+
+- **a 1280×900, nelle quattro lingue**: la voce di menu è la quarta, dopo
+  «Report», e risulta attiva; titolo, riquadro e tre guide; nove liste da tre
+  voci, **affiancate** in ogni guida; nessun pulsante dentro le guide;
+- **i due link `tel:`**: `tel:144` su *«Chiamare il 144»* — *«Die 144
+  anrufen»*, *«Appeler le 144»*, *«Calling 144»* — e `tel:143` sulla riga del
+  Telefono Amico con il nome della lingua;
+- **il rimando al codice**: *«Il codice è nella pagina Dipendenti»* porta a
+  `/hr/employees`, e lì c'è `DEMO-SA-2026`;
+- **a 390px, nelle quattro lingue**: la voce è nel menu dell'HR, le tre colonne
+  vanno **in colonna**, nessuno scorrimento orizzontale;
+- **la chat del medico dopo il `fix:`**: il disclaimer dice ancora *«chiama il
+  144»* nelle quattro lingue, e la risposta che chiude l'arco *«chiami il
+  144»*, arrivata dopo quattro scambi con la casella che si spegne;
+- **nessun 143 o 144 resta nei valori dei dizionari**, cercato sull'albero;
+- **contrasti su 47 nodi** per lingua: il minimo è **4.75**, il testo del
+  riquadro sulla tinta menta, e poi **4.90**, il sottotitolo;
+- console muta; `npm run build`, `build:demo`, `lint`, `typecheck` a zero.
+
+##### Trovato e non toccato
+
+- **I link `tel:` sulla pagina HR sono pensati per un telefono**: dal computer
+  della presentazione aprono l'applicazione di chiamata del sistema, e il pitch
+  lo dice.
+- **Le guide non sono tradotte da madrelingua**, come ogni stringa DE/FR/EN; qui
+  pesa di più che altrove, perché il registro è impersonale e le tre lingue lo
+  rendono in tre modi diversi — il tedesco e il francese all'infinito, l'inglese
+  al gerundio.
+
 ### Punto di partenza — cosa c'è e cosa manca
 
 Ereditato e funzionante: 25 rotte su cinque aree (pubblica, dipendente, HR,
@@ -10263,6 +10357,15 @@ milestone, ma la decisione è un fatto a sé e va trovata qui senza dover legger
 > state raccolte cercando le attribuzioni datate in `CLAUDE.md` e in
 > `docs/PITCH.md`; il criterio e cosa è rimasto fuori stanno nel verbale di
 > quella passata.
+
+- **16.09.2026 — Le guide per i manager, la trentesima rotta** (`CLAUDE.md`
+  §10.C.6). `/hr/managers`: tre guide di testo per chi guida un team — quando
+  qualcuno dice che non ce la fa, come presentare Kora, quando serve aiuto
+  subito. **Il motivo**: l'area HR mostrava solo numeri, e chi si trova davanti
+  una persona in difficoltà non aveva niente da leggere. **Il vincolo, deciso
+  insieme**: le guide dicono come parlare, mai come riconoscere (`CLAUDE.md`
+  §7), perché un manager che impara a individuare chi sta male produce il
+  segnale individuale che l'area HR esiste per non avere.
 
 - **16.09.2026 — Le risorse del portale dipendente, la ventinovesima rotta**
   (`CLAUDE.md` §10.B.9). `/employee/resources`: otto schede di testo, esercizi
