@@ -29,6 +29,7 @@ import HRLayout from '@/components/hr/HRLayout';
 import HRDashboard from '@/pages/hr/HRDashboard';
 import HRDipendenti from '@/pages/hr/HRDipendenti';
 import HRReport from '@/pages/hr/HRReport';
+import HRManager from '@/pages/hr/HRManager';
 import HRFatturazione from '@/pages/hr/HRFatturazione';
 import HRPrivacy from '@/pages/hr/HRPrivacy';
 
@@ -112,6 +113,7 @@ const AppRoutes = () => (
       <Route index element={<HRDashboard />} />
       <Route path="employees" element={<HRDipendenti />} />
       <Route path="report" element={<HRReport />} />
+      <Route path="managers" element={<HRManager />} />
       <Route path="billing" element={<HRFatturazione />} />
       <Route path="privacy" element={<HRPrivacy />} />
     </Route>

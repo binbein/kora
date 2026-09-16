@@ -847,6 +847,7 @@ export const de: Dictionary = {
     navDashboard: "Dashboard",
     navEmployees: "Mitarbeitende",
     navReport: "Bericht",
+    navManagers: "Für Führungskräfte",
     navBilling: "Rechnungen",
     navPrivacy: "Datenschutz",
     navCompanyMeta: "{count} Mitarbeitende · Plan {plan}",
@@ -1006,6 +1007,78 @@ export const de: Dictionary = {
         sessionsValue: "{used} von {total}",
         privacyNote:
           "Aggregierte und anonyme Daten. Kora übermittelt dem Unternehmen keine individuellen Gesundheitsdaten und keine Buchungen, die einzelnen Personen zugeordnet werden können.",
+      },
+    },
+
+    managers: {
+      title: "Für Führungskräfte",
+      subtitle:
+        "Drei kurze Leitfäden für alle, die ein Team führen und vor einem schwierigen Moment stehen. Sie sind für alle gleich und nutzen keine Daten.",
+      noDataTitle: "Diese Leitfäden wissen nicht, wer Kora nutzt",
+      noDataBody:
+        "Niemand im Unternehmen weiss es: Die Plattform zeigt nur aggregierte und anonyme Daten, nie, wer einen Dienst genutzt hat. Die Leitfäden gelten für alle, ob angemeldet oder nicht.",
+      sayTitle: "Was sagen",
+      avoidTitle: "Was vermeiden",
+      thenTitle: "Und danach",
+      codeLink: "Der Code steht auf der Seite Mitarbeitende",
+      guide: {
+        someone_tells_you: {
+          title: "Wenn jemand sagt, dass es nicht mehr geht",
+          lead: "Eine fertige Antwort ist nicht nötig.",
+          say: {
+            1: "Zuhören, ohne zu unterbrechen",
+            2: "Für das Vertrauen danken",
+            3: "Fragen, was jetzt helfen würde",
+          },
+          avoid: {
+            1: "Herunterspielen, auch um zu beruhigen",
+            2: "Ratschläge geben, was zu tun wäre",
+            3: "Nach dem Warum fragen",
+          },
+          then: {
+            1: "Kora als Angebot erwähnen, das es für alle gibt",
+            2: "In ein paar Tagen wieder nachfragen",
+            3: "Mit niemand anderem darüber sprechen",
+          },
+        },
+        talk_about_kora: {
+          title: "Kora dem Team vorstellen",
+          lead: "Ein Angebot für alle wird allen gemeinsam vorgestellt.",
+          say: {
+            1: "Es dem ganzen Team zur gleichen Zeit vorstellen",
+            2: "Sagen, dass das Unternehmen nicht sieht, wer es nutzt",
+            3: "Sagen, dass man das Konto selbst aktiviert, mit dem Firmencode",
+          },
+          avoid: {
+            1: "Fragen, wer sich angemeldet hat",
+            2: "Es einer einzelnen Person vor den anderen empfehlen",
+            3: "Ein Teamziel daraus machen",
+          },
+          then: {
+            1: "Es neuen Teammitgliedern vorstellen",
+            2: "Den Code griffbereit halten",
+            3: "Ab und zu daran erinnern, immer alle zusammen",
+          },
+        },
+        worried_now: {
+          title: "Wenn sofort Hilfe nötig ist",
+          lead: "Bei unmittelbarer Gefahr wird nicht abgewogen: Es wird angerufen.",
+          say: {
+            1: "Bei der Person bleiben",
+            2: "Die {number} anrufen",
+            3: "Der Person sagen, was gerade geschieht",
+          },
+          avoid: {
+            1: "Sie allein lassen",
+            2: "Versprechen, es niemandem zu sagen",
+            3: "Selbst entscheiden, ob es «ernst» ist",
+          },
+          then: {
+            1: "Auf die {helpline}, Die Dargebotene Hand, hinweisen, wenn jemand reden möchte",
+            2: "HR über das informieren, was passiert ist, nicht über das, was die Person gesagt hat",
+            3: "Auch für sich selbst Unterstützung holen, wenn nötig",
+          },
+        },
       },
     },
 
