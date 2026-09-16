@@ -618,8 +618,8 @@ export const it = {
     /*
      * Il check-up. Laura l'ha già fatto (§8), quindi la schermata mostra il
      * referto e dice quando si apre il prossimo, invece di riproporre una
-     * prenotazione: l'elenco dipendenti dell'HR dichiara `completed` per la sua
-     * riga, e due schermate che si contraddicono sono il difetto del §5.5.
+     * prenotazione: la home e il Profilo lo danno per fatto, e due schermate
+     * che si contraddicono sono il difetto del §5.5.
      */
     checkup: {
       title: "Check-up annuale",
