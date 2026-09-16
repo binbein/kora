@@ -60,11 +60,13 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
    sezione nuova senza approvazione esplicita dei founder. Se un'idea sembra buona,
    proporla e fermarsi: la decisione spetta a loro.
 
-   **L'ultima approvazione è del 16.09.2026**, ed è la ventinovesima rotta: le
-   **risorse** del portale dipendente, `/employee/resources` (§10.B.9). Le due
-   precedenti sono del 06.09.2026, la ventisettesima e la ventottesima: il
-   **link anonimo del check rapido**, `/check/:token` (§10.A.5), e
-   l'**attivazione dell'account**, `/activate` (§10.A.6). La regola sta qui, il perché in §10.A e le date anche in
+   **Le ultime due approvazioni sono del 16.09.2026**, e sono la ventinovesima
+   e la trentesima rotta: le **risorse** del portale dipendente,
+   `/employee/resources` (§10.B.9), e le **guide per i manager** del portale
+   HR, `/hr/managers` (§10.C.6). Le due precedenti sono del 06.09.2026, la
+   ventisettesima e la ventottesima: il **link anonimo del check rapido**,
+   `/check/:token` (§10.A.5), e l'**attivazione dell'account**, `/activate`
+   (§10.A.6). La regola sta qui, il perché in §10 e le date anche in
    `docs/PROGRESS.md`, «Decisioni chiuse» — che è il posto in cui si trova una
    decisione senza leggere questo file per intero.
 7. **Lingua: italiano di default — con architettura pronta per 4 lingue.** La
@@ -625,7 +627,7 @@ kora/
                            lo leggono sia `format.ts` sia `i18n`
       format.ts          ← formatCHF, formatDate, formatPercent — unico punto
       dates.ts           ← aritmetica su giorni e fasce: calcola, non formatta
-      emergency.ts       ← i numeri d'emergenza della demo, letti in due punti
+      emergency.ts       ← i numeri d'emergenza della demo, con quattro lettori
       orientation.ts     ← la regola di «Non sai da dove partire?» (§10.B.7)
       resources.ts       ← il catalogo delle risorse del dipendente (§10.B.9)
       roi-model.ts       ← formule del calcolatore ROI (§9)
@@ -1658,6 +1660,22 @@ Qui la si eviterebbe al contrario, mettendola in un elemento che non la merita.
   pagina si apre. **Dice cosa non fanno senza nominare cosa curerebbero**:
   nessun sintomo, nessuna condizione, la stessa disciplina delle quattro parole
   qui sopra.
+
+  **Le guide per i manager dicono come parlare, mai come riconoscere** (founder,
+  16.09.2026). Nessun elenco di segnali da osservare, nessuna parola che nomina
+  una condizione — burnout, depressione, ansia, esaurimento — e nessun invito a
+  «tenere d'occhio» qualcuno (§10.C.6). **La ragione non è il tono**: un
+  manager che impara a individuare chi sta male produce un segnale individuale
+  che l'azienda usa, cioè proprio ciò che l'area HR esiste per non avere —
+  l'azienda vede quanti, mai chi (§10.C.5). **Il criterio con cui si rilegge
+  una frase: se descrive l'altro invece di dire cosa fare, si toglie.** Per la
+  stessa ragione la terza guida si intitola alla situazione e non alla persona
+  — *«Quando serve aiuto subito»* — e la sua prima riga dice *«non si valuta:
+  si chiama»*.
+
+  **Il registro è quello strumento, all'infinito impersonale** —
+  *«Ascoltare, senza interrompere»* — e mai la seconda persona: una guida non dà
+  del tu a chi guida un team, e non parla al suo posto.
 - La privacy è un argomento di vendita: la nota *"Dati aggregati e anonimi · soglia
   minima {n} dipendenti misurati per reparto"* con icona lucchetto è sempre visibile
   in dashboard. Dice **"misurati"**, non "dipendenti" né "iscritti": la soglia conta
@@ -1906,12 +1924,23 @@ paese non ce l'ha. Il modulo paese è lavoro dell'MVP
 (`docs/CONTRATTO-DATI.md` §8.1), e finché non esiste **la demo è svizzera e lo
 dichiara qui**.
 
-**Dove compaiono, e perché il terzo punto vale più dei primi due**: i due della
-chat sono dentro una conversazione, cioè dove qualcuno sta già parlando; il
-terzo è **il check rapido alla risposta peggiore**, che è l'unico punto del
+**Dove compaiono: cinque punti, e tutti leggono da `lib/emergency.ts`**
+(16.09.2026). Nella chat del medico virtuale **il disclaimer** sotto la
+conversazione e **la risposta con cui l'arco si chiude** (§10.B.4); **il check
+rapido alla risposta peggiore**, che è la stessa card nel portale e sul link
+anonimo (§10.A.5); **il disclaimer di «Non sai da dove partire?»**, sotto ogni
+passo (§10.B.7); e **la guida «Quando serve aiuto subito»** della pagina per i
+manager (§10.C.6). *(Fino al 16.09.2026 questa riga ne contava tre: il quarto,
+del 10.09.2026, non era stato registrato, e il 144 della chat era scritto
+dentro due stringhe dei dizionari invece di arrivare dalla fonte comune.)*
+
+**Perché il check rapido vale più degli altri**: i due della chat sono dentro
+una conversazione, cioè dove qualcuno sta già parlando, e il disclaimer
+dell'orientamento sta accanto a una scelta; il check rapido è l'unico punto del
 prodotto in cui una persona dichiara di stare malissimo **senza nessun
 interlocutore**. È il punto che il `docs/CONTRATTO-DATI.md` §8.1 nominava come
-scoperto.
+scoperto. **La guida per i manager è l'unica che non parla a chi sta male**:
+parla a chi gli sta accanto, e dice di chiamare, non di valutare.
 
 **Il numero a schermo e il numero del link `tel:` sono lo stesso valore**, letto
 una volta sola (§5.5): un numero d'emergenza scritto due volte è un numero che
@@ -2526,12 +2555,13 @@ corrente è anche il totale dell'anno. Il consumo del singolo trimestre — 22 /
 
 ## 10. Scope — le schermate e la definizione di "finito"
 
-**29 rotte su cinque aree** (6 + 7 + 5 + 5 + 6). Venticinque sono ereditate da
+**30 rotte su cinque aree** (6 + 7 + 6 + 5 + 6). Venticinque sono ereditate da
 base44; la ventiseiesima è `/roi`, approvata dai founder il 07.08.2026, la
 ventisettesima è `/check/:token`, il link anonimo del check rapido, e la
 ventottesima è `/activate`, l'attivazione dell'account — approvate tutte e due
 dai founder il 06.09.2026 — e la ventinovesima è `/employee/resources`, le
-risorse del portale dipendente, approvata il 16.09.2026. **Nessuna
+risorse del portale dipendente, e la trentesima è `/hr/managers`, le guide per
+i manager — approvate tutte e due il 16.09.2026. **Nessuna
 schermata nuova senza
 approvazione** (§2.6); nessuna schermata esistente si elimina senza dirlo.
 
@@ -2542,9 +2572,9 @@ non più della demo (§4, blocco f):
 
 - una **rotta dello scope** è una voce di questo §10, cioè una schermata che
   qualcuno ha approvato e che si raggiunge da un indirizzo dichiarato. Sono le
-  **29** qui sopra;
+  **30** qui sopra;
 - una **schermata** è tutto ciò che l'applicazione può disegnare al posto di una
-  pagina. Sono **30**: le 29 più la **404**, che in `App.tsx` è il catch-all `*`
+  pagina. Sono **31**: le 30 più la **404**, che in `App.tsx` è il catch-all `*`
   — non ha un indirizzo suo, non entra nello scope, e nondimeno va percorsa,
   tradotta e verificata come le altre.
 
@@ -2997,8 +3027,8 @@ Ne discendono due guardrail dell'area: dopo una prenotazione `used` è invariato
 **nessun numero dell'area HR si muove** — le sessioni consumate dell'azienda contano
 le erogate, e vengono dalla serie di utilizzo (§9), non dall'agenda.
 
-### C. Portale HR — `/hr` + 4 sottopagine
-Dashboard, Dipendenti, Report, Fatturazione, Privacy.
+### C. Portale HR — `/hr` + 5 sottopagine
+Dashboard, Dipendenti, Report, Per i manager, Fatturazione, Privacy.
 
 1. **Dashboard**: KPI, utilizzo servizi, **stress per reparto**, **trend 12 mesi
    azienda vs Vendite con marker dell'alert**, **banner alert precoce** — i tre
@@ -3123,6 +3153,38 @@ Dashboard, Dipendenti, Report, Fatturazione, Privacy.
    snapshot e il 51 della serie di utilizzo, che la dashboard già dichiara — e
    sono due guardrail, non due promesse. Entra la loro **ripartizione**, che sta
    in §8.
+
+6. **Le guide per i manager: come parlare di un momento difficile** (founder,
+   16.09.2026). È la **trentesima rotta**, `/hr/managers`, approvata ai sensi
+   del §2.6, con la sua voce di menu dopo «Report».
+
+   **Il caso che la motiva**: l'area HR è l'unico posto che la demo ha per
+   l'azienda, e fino a quel giorno mostrava soltanto numeri. Chi guida un team
+   e si trova davanti una persona che non ce la fa non aveva niente da leggere.
+   Le guide sono tre — quando qualcuno dice che non ce la fa, come presentare
+   Kora al team, quando serve aiuto subito — e ognuna dice **cosa dire, cosa
+   evitare e cosa fare dopo**.
+
+   **DICONO COME PARLARE, MAI COME RICONOSCERE**, ed è il vincolo che comanda
+   sul contenuto (§7): nessun segnale da osservare, nessuna condizione nominata,
+   nessun invito a tenere d'occhio qualcuno. Una guida che insegnasse a
+   individuare chi sta male riaprirebbe dal lato del manager il segnale
+   individuale che la voce 5 ha tolto dal lato del dato.
+
+   **Uguali per tutti, e non leggono nessun dato.** Non dipendono dall'azienda,
+   dal reparto o da chi usa Kora — che in azienda non sa nessuno — e il
+   riquadro in testa alla pagina lo dice. Per questo non passano dal provider e
+   `docs/CONTRATTO-DATI.md` non cambia: sono testo, e stanno nei dizionari.
+
+   **I numeri d'emergenza sono link `tel:` e arrivano da `lib/emergency.ts`**
+   (§8): la guida che li usa li porta come segnaposto, e la pagina rende la
+   riga intera come link a partire dal segnaposto, non dall'id della guida.
+   **Il rimando al codice di attivazione** porta alla pagina Dipendenti, dove il
+   codice c'è (voce 4).
+
+   **Nessun download e nessuna stampa**: il report ha la sua vista di stampa
+   perché è un allegato per il consiglio (voce 3); queste non sono un documento
+   da consegnare.
 
 **Finita quando:** la storia dei 12 mesi si capisce senza parlare; il selettore
 trimestre cambia davvero i dati; la soglia di anonimato si legge dai numeri in
