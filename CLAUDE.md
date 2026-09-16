@@ -3090,8 +3090,9 @@ demo scollegate.
 
    **La garanzia del contratto non cade, cambia verso.** Non è "il nome non
    esiste", è **verso chi non esce**: l'azienda e l'amministratore di
-   piattaforma. Le loro proiezioni — `EmployeeDirectoryEntry` e
-   `PlatformSession` — non hanno nessun campo su cui possa arrivare.
+   piattaforma. `PlatformSession`, la proiezione del back-office, non ha nessun
+   campo su cui possa arrivare; `DepartmentEnrollment`, quella dell'azienda,
+   non ha nemmeno una riga per persona (§10.C.5).
 
    **`/admin/sessions` riceve una proiezione sua**, ed è la parte da non
    scorciare: quella schermata leggeva la stessa lettura del portale, e con il
