@@ -60,10 +60,11 @@ estetica ma correttezza (contrasto, formattazione svizzera, cifre tabulari).
    sezione nuova senza approvazione esplicita dei founder. Se un'idea sembra buona,
    proporla e fermarsi: la decisione spetta a loro.
 
-   **Le ultime due approvazioni sono del 06.09.2026**, e sono la ventisettesima
-   e la ventottesima rotta: il **link anonimo del check rapido**,
-   `/check/:token` (§10.A.5), e l'**attivazione dell'account**, `/activate`
-   (§10.A.6). La regola sta qui, il perché in §10.A e le date anche in
+   **L'ultima approvazione è del 16.09.2026**, ed è la ventinovesima rotta: le
+   **risorse** del portale dipendente, `/employee/resources` (§10.B.9). Le due
+   precedenti sono del 06.09.2026, la ventisettesima e la ventottesima: il
+   **link anonimo del check rapido**, `/check/:token` (§10.A.5), e
+   l'**attivazione dell'account**, `/activate` (§10.A.6). La regola sta qui, il perché in §10.A e le date anche in
    `docs/PROGRESS.md`, «Decisioni chiuse» — che è il posto in cui si trova una
    decisione senza leggere questo file per intero.
 7. **Lingua: italiano di default — con architettura pronta per 4 lingue.** La
@@ -626,6 +627,7 @@ kora/
       dates.ts           ← aritmetica su giorni e fasce: calcola, non formatta
       emergency.ts       ← i numeri d'emergenza della demo, letti in due punti
       orientation.ts     ← la regola di «Non sai da dove partire?» (§10.B.7)
+      resources.ts       ← il catalogo delle risorse del dipendente (§10.B.9)
       roi-model.ts       ← formule del calcolatore ROI (§9)
       earnings.ts        ← righe settimanali e totali dei compensi (§10.D)
       schedule.ts        ← la griglia del calendario, costruita dalle sedute
@@ -1647,6 +1649,15 @@ Qui la si eviterebbe al contrario, mettendola in un elemento che non la merita.
   di lasciarla intendere. In tedesco, francese e inglese la coppia viene dalla
   stessa riga — *Orientierung / Beurteilung*, *orientation / évaluation*,
   *guidance / assessment*.
+
+  **«Non sostituiscono nessuno» sta nel sottotitolo delle risorse** (founder,
+  16.09.2026), cioè nella prima riga che la pagina fa leggere, e non in una nota
+  in fondo (§10.B.9). Un esercizio di respirazione o una lettura sul sonno sono
+  la cosa del prodotto che più facilmente si prende per un'alternativa a una
+  persona — lo psicologo, il medico — e la frase lo esclude nel punto in cui la
+  pagina si apre. **Dice cosa non fanno senza nominare cosa curerebbero**:
+  nessun sintomo, nessuna condizione, la stessa disciplina delle quattro parole
+  qui sopra.
 - La privacy è un argomento di vendita: la nota *"Dati aggregati e anonimi · soglia
   minima {n} dipendenti misurati per reparto"* con icona lucchetto è sempre visibile
   in dashboard. Dice **"misurati"**, non "dipendenti" né "iscritti": la soglia conta
@@ -2515,11 +2526,12 @@ corrente è anche il totale dell'anno. Il consumo del singolo trimestre — 22 /
 
 ## 10. Scope — le schermate e la definizione di "finito"
 
-**28 rotte su cinque aree** (6 + 6 + 5 + 5 + 6). Venticinque sono ereditate da
+**29 rotte su cinque aree** (6 + 7 + 5 + 5 + 6). Venticinque sono ereditate da
 base44; la ventiseiesima è `/roi`, approvata dai founder il 07.08.2026, la
 ventisettesima è `/check/:token`, il link anonimo del check rapido, e la
 ventottesima è `/activate`, l'attivazione dell'account — approvate tutte e due
-dai founder il 06.09.2026. **Nessuna
+dai founder il 06.09.2026 — e la ventinovesima è `/employee/resources`, le
+risorse del portale dipendente, approvata il 16.09.2026. **Nessuna
 schermata nuova senza
 approvazione** (§2.6); nessuna schermata esistente si elimina senza dirlo.
 
@@ -2530,9 +2542,9 @@ non più della demo (§4, blocco f):
 
 - una **rotta dello scope** è una voce di questo §10, cioè una schermata che
   qualcuno ha approvato e che si raggiunge da un indirizzo dichiarato. Sono le
-  **28** qui sopra;
+  **29** qui sopra;
 - una **schermata** è tutto ciò che l'applicazione può disegnare al posto di una
-  pagina. Sono **29**: le 28 più la **404**, che in `App.tsx` è il catch-all `*`
+  pagina. Sono **30**: le 29 più la **404**, che in `App.tsx` è il catch-all `*`
   — non ha un indirizzo suo, non entra nello scope, e nondimeno va percorsa,
   tradotta e verificata come le altre.
 
@@ -2733,8 +2745,8 @@ curva della dashboard HR si muovono; e l'attivazione **produce il profilo** —
 le dieci risposte del §8 danno 78 e sonno, il consenso non si può saltare, e la
 home e il Profilo mostrano quello che l'assessment ha appena calcolato.
 
-### B. Portale dipendente — `/employee` + 5 sottopagine
-Home, Psicologi, Medico virtuale, Check-up, Benessere, Profilo.
+### B. Portale dipendente — `/employee` + 6 sottopagine
+Home, Psicologi, Medico virtuale, Check-up, Benessere, Risorse, Profilo.
 
 1. **Check rapido nella home** — costruito in M3. **Una domanda, un tocco** (§8).
    È il segnale su cui poggia ogni dato di stress della dashboard HR, e senza di
@@ -2749,7 +2761,10 @@ Home, Psicologi, Medico virtuale, Check-up, Benessere, Profilo.
    *(E dal 10.09.2026 due elementi in più, che non sono scorciatoie: la curva
    personale del check rapido, voce 6, che è un dato che non esisteva da nessuna
    parte, e «Non sai da dove partire?», voce 7, che non porta a una delle sei
-   voci del menu ma **sceglie quale**.)*
+   voci del menu ma **sceglie quale**. **Le risorse del 16.09.2026 non ci
+   entrano**, voce 9: stanno nel menu e nelle card del piano di benessere, e una
+   tessera in home verso di loro sarebbe la duplicazione che questa voce ha
+   tolto.)*
    Le quattro tessere verso medico virtuale, check-up, piano e profilo erano
    **quattro delle sei voci del menu**, cioè la stessa strada disegnata due
    volte. Al loro posto **la data del prossimo check-up** e **i consulti di
@@ -2765,6 +2780,12 @@ Home, Psicologi, Medico virtuale, Check-up, Benessere, Profilo.
    scope. **L'effetto voluto sta su mobile**: la barra in basso mostrava le
    prime cinque di sei voci, quindi Profilo lì non c'era affatto; con cinque
    voci la barra è completa e la troncatura silenziosa sparisce.
+
+   *(Dal 16.09.2026 le voci sono sei, con le risorse, e **la barra le mostra
+   tutte con le etichette intere**: misurate a 390px, le sei stanno in tutte e
+   quattro le lingue, e la più larga è il francese, 387px su 390. È la misura
+   che decide: se una voce in più non ci stesse, **resterebbe nel menu e non
+   nella barra**, invece di accorciare un'etichetta.)*
 
 4. **Il medico virtuale arriva a una conclusione** (founder, 17.08.2026): un
    arco di **quattro scambi** — la risposta a parola chiave, poi quanto dura,
@@ -2904,6 +2925,48 @@ Home, Psicologi, Medico virtuale, Check-up, Benessere, Profilo.
    **Dove l'area non ha un percorso, il blocco non c'è** — né un segnaposto né
    un *«in arrivo»*: `null` è un valore del contratto, e una promessa su un
    percorso che nessuno ha scritto è una cosa che il prodotto non ha.
+
+9. **Le risorse: esercizi e letture brevi per le aree del profilo** (founder,
+   16.09.2026). È la **ventinovesima rotta**, `/employee/resources`, approvata
+   ai sensi del §2.6, con la sua voce di menu dopo «Benessere».
+
+   **Il caso che la motiva**: il piano di benessere nomina cosa fare — *«annota
+   come ti senti nei giorni difficili»* — e non dice mai come si fa. Le risorse
+   sono quel come: otto schede di testo, esercizi e letture, ognuna legata a
+   un'area del profilo.
+
+   **Contenuto, non funzione.** Niente audio, niente video, niente preferiti e
+   nessuna scrittura: nessun pulsante «Inizia», «Salva» o «Fatto», per la
+   stessa ragione del percorso guidato (voce 8). Una scheda si apre in un
+   dialogo con i passi in lista, e si chiude.
+
+   **Il catalogo non passa dal provider**, ed è una scelta: è contenuto
+   editoriale, uguale per tutti, e non un dato della piattaforma. Sta in
+   `lib/resources.ts` — quali voci, di che area e di che tipo — e il testo nei
+   dizionari; il giorno in cui diventa gestito entra nel contratto, e per
+   questo oggi `docs/CONTRATTO-DATI.md` non cambia.
+
+   **Il filtro per area sta nell'indirizzo** (`?area=`), come il servizio nella
+   pagina degli psicologi, ed è ciò che permette alla card di un'area del piano
+   di portare qui già filtrato. **Il link c'è dove il catalogo ha voci per
+   quell'area**: lo decide il catalogo, non la card. Un valore che non è
+   un'area vale «Tutte».
+
+   **Tre vincoli sul testo**, perché una rilettura non li scambi per gusto:
+   registro consumer, senza termini clinici e **senza promesse di risultato**;
+   **nessuna risorsa ripete un suggerimento o una tappa del piano** — dice come
+   si fa una cosa che il piano al massimo nomina; e **nessuna durata e nessun
+   numero**, perché una cifra a schermo senza casa in §8 non entra.
+
+   **La scheda sul parlarne con qualcuno non elenca segnali e non descrive
+   condizioni**: dice che parlarne è normale, e rimanda **a parole** a «Non sai
+   da dove partire?» e agli psicologi. **Non porta link e non porta numeri
+   d'emergenza**: un link lì sarebbe codice scritto per una voce sola, e i
+   numeri stanno nei punti che il §8 elenca, dove qualcuno dichiara di stare
+   male — una lettura che si apre quando si vuole non è uno di quelli.
+
+   **Nessuno stato vuoto**: ogni area ha almeno una voce, quindi nessun filtro
+   produce una griglia vuota, e la stringa che lo direbbe non esiste (§11).
 
 **Finita quando:** prenotare uno psicologo **fa succedere qualcosa** — la parte in
 programma del contatore sale, l'appuntamento compare in home, lo slot sparisce dalla
