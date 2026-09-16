@@ -451,14 +451,14 @@ export const en: Dictionary = {
       arc: {
         impact: "Thank you. How much does it weigh on your day: are you managing work and your usual activities as before, or have you had to give something up?",
         symptoms: "Understood. Do you notice anything alongside it — fever, tiredness or changes in appetite?",
-        guidance: "Thank you, that is enough for me to point you in the right direction. I cannot make a diagnosis from here: if the trouble is linked to stress or mood, book a session with a psychologist from the dedicated section; otherwise please see your own doctor, who can examine you. If the symptoms worsen suddenly, call 144.",
+        guidance: "Thank you, that is enough for me to point you in the right direction. I cannot make a diagnosis from here: if the trouble is linked to stress or mood, book a session with a psychologist from the dedicated section; otherwise please see your own doctor, who can examine you. If the symptoms worsen suddenly, call {number}.",
       },
       closed: "The demonstration conversation ends here.",
       fallback:
         "I understand. Could you describe the problem in more detail? How long have you been feeling it?",
 
       disclaimer:
-        "This conversation is a demonstration simulation. The replies are not medical advice and do not replace a consultation. In an emergency, call 144.",
+        "This conversation is a demonstration simulation. The replies are not medical advice and do not replace a consultation. In an emergency, call {number}.",
       privacy:
         "Conversations are private and protected. Your organisation never has access to this information.",
     },

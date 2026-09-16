@@ -603,7 +603,7 @@ export const it = {
          * l'elenco resta di due voci e la congiunzione regge da sé.
          */
         symptoms: "Chiaro. Nota altro insieme a questo — febbre, stanchezza o cambiamenti nell'appetito?",
-        guidance: "La ringrazio, mi basta per orientarla. Una diagnosi da qui non posso farla: se il disturbo è legato a stress o umore, prenoti una sessione con uno psicologo dalla sezione dedicata; altrimenti si rivolga al suo medico curante, che può visitarla. Se i sintomi peggiorano all'improvviso, chiami il 144.",
+        guidance: "La ringrazio, mi basta per orientarla. Una diagnosi da qui non posso farla: se il disturbo è legato a stress o umore, prenoti una sessione con uno psicologo dalla sezione dedicata; altrimenti si rivolga al suo medico curante, che può visitarla. Se i sintomi peggiorano all'improvviso, chiami il {number}.",
       },
       /* Spenta con il motivo nell'etichetta, come il pulsante del check-up. */
       closed: "La conversazione dimostrativa finisce qui.",
@@ -611,7 +611,7 @@ export const it = {
         "Capisco. Può descrivermi meglio il disturbo? Da quanto tempo lo avverte?",
 
       disclaimer:
-        "Questa conversazione è una simulazione dimostrativa. Le risposte non sono un parere medico e non sostituiscono una visita. In caso di emergenza chiama il 144.",
+        "Questa conversazione è una simulazione dimostrativa. Le risposte non sono un parere medico e non sostituiscono una visita. In caso di emergenza chiama il {number}.",
       privacy:
         "Le conversazioni sono private e protette. La tua azienda non accede mai a queste informazioni.",
     },

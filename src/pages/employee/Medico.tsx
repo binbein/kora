@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Stethoscope, Send, Clock, Shield, AlertTriangle } from "lucide-react";
 import { loadState, useCompany } from "@/lib/data/queries";
 import { ErrorNotice } from "@/components/kora/StateNotice";
+import { EMERGENCY_NUMBER } from "@/lib/emergency";
 import { formatNumber } from "@/lib/format";
 import { interpolate, t } from "@/lib/i18n";
 
@@ -61,7 +62,7 @@ function replyTo(question: string, turn: number): string {
     const arc = [
       t.employee.doctor.arc.impact,
       t.employee.doctor.arc.symptoms,
-      t.employee.doctor.arc.guidance,
+      interpolate(t.employee.doctor.arc.guidance, { number: EMERGENCY_NUMBER }),
     ];
     return arc[Math.min(turn, arc.length) - 1];
   }
@@ -274,7 +275,9 @@ export default function Medico() {
 
       <div className="flex items-start gap-2 rounded-lg border border-border bg-muted px-3 py-2.5 text-xs text-foreground">
         <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-muted-foreground" aria-hidden="true" />
-        <span>{t.employee.doctor.disclaimer}</span>
+        <span>
+          {interpolate(t.employee.doctor.disclaimer, { number: EMERGENCY_NUMBER })}
+        </span>
       </div>
 
       <div className="flex items-start gap-2 text-xs text-muted-foreground">

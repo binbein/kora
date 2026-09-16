@@ -494,14 +494,14 @@ export const fr: Dictionary = {
       arc: {
         impact: "Merci. Dans quelle mesure cela pèse-t-il sur vos journées : arrivez-vous à travailler et à faire vos activités comme d'habitude, ou avez-vous dû renoncer à quelque chose ?",
         symptoms: "Très bien. Remarquez-vous autre chose en même temps — fièvre, fatigue ou changements de l'appétit ?",
-        guidance: "Merci, cela me suffit pour vous orienter. Je ne peux pas poser de diagnostic d'ici : si le trouble est lié au stress ou à l'humeur, réservez une séance avec un psychologue depuis la section dédiée ; sinon, adressez-vous à votre médecin traitant, qui peut vous examiner. Si les symptômes s'aggravent brusquement, appelez le 144.",
+        guidance: "Merci, cela me suffit pour vous orienter. Je ne peux pas poser de diagnostic d'ici : si le trouble est lié au stress ou à l'humeur, réservez une séance avec un psychologue depuis la section dédiée ; sinon, adressez-vous à votre médecin traitant, qui peut vous examiner. Si les symptômes s'aggravent brusquement, appelez le {number}.",
       },
       closed: "La conversation de démonstration s'arrête ici.",
       fallback:
         "Je comprends. Pouvez-vous mieux décrire le trouble ? Depuis combien de temps le ressentez-vous ?",
 
       disclaimer:
-        "Cette conversation est une simulation de démonstration. Les réponses ne sont pas un avis médical et ne remplacent pas une consultation. En cas d'urgence, appelle le 144.",
+        "Cette conversation est une simulation de démonstration. Les réponses ne sont pas un avis médical et ne remplacent pas une consultation. En cas d'urgence, appelle le {number}.",
       privacy:
         "Les conversations sont privées et protégées. Ton entreprise n'accède jamais à ces informations.",
     },

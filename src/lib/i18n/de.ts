@@ -435,7 +435,7 @@ export const de: Dictionary = {
       arc: {
         impact: "Danke. Wie sehr belastet es Sie im Alltag: schaffen Sie Arbeit und Ihre üblichen Dinge wie immer, oder mussten Sie auf etwas verzichten?",
         symptoms: "Verstanden. Bemerken Sie noch etwas dabei — Fieber, Müdigkeit oder Veränderungen beim Appetit?",
-        guidance: "Danke, das genügt mir zur Orientierung. Eine Diagnose kann ich von hier aus nicht stellen: hängt die Beschwerde mit Stress oder Stimmung zusammen, buchen Sie im entsprechenden Bereich eine Sitzung bei einer Psychologin; andernfalls wenden Sie sich an Ihre Hausärztin oder Ihren Hausarzt, die Sie untersuchen können. Verschlimmern sich die Beschwerden plötzlich, rufen Sie die 144.",
+        guidance: "Danke, das genügt mir zur Orientierung. Eine Diagnose kann ich von hier aus nicht stellen: hängt die Beschwerde mit Stress oder Stimmung zusammen, buchen Sie im entsprechenden Bereich eine Sitzung bei einer Psychologin; andernfalls wenden Sie sich an Ihre Hausärztin oder Ihren Hausarzt, die Sie untersuchen können. Verschlimmern sich die Beschwerden plötzlich, rufen Sie die {number}.",
       },
       closed: "Das Demo-Gespräch endet hier.",
       fallback:
@@ -443,7 +443,7 @@ export const de: Dictionary = {
 
       /* Qui torna a parlare il prodotto: du. */
       disclaimer:
-        "Dieses Gespräch ist eine Demonstration. Die Antworten sind keine ärztliche Beurteilung und ersetzen keine Untersuchung. Wähle im Notfall die 144.",
+        "Dieses Gespräch ist eine Demonstration. Die Antworten sind keine ärztliche Beurteilung und ersetzen keine Untersuchung. Wähle im Notfall die {number}.",
       privacy:
         "Die Gespräche sind privat und geschützt. Dein Unternehmen erhält nie Zugriff auf diese Informationen.",
     },
