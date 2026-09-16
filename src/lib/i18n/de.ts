@@ -195,6 +195,7 @@ export const de: Dictionary = {
       doctor: "Arzt",
       checkup: "Check-up",
       aiPlan: "Wohlbefinden",
+      resources: "Ressourcen",
     },
 
     identity: "{company} · {plan}",
@@ -577,6 +578,101 @@ export const de: Dictionary = {
             2: "Leg in der Mittagspause die Bildschirme weg",
             3: "Zehn Minuten zu Fuss an den vollsten Tagen",
             4: "Wähle die zwei Gewohnheiten, die du auch danach behältst",
+          },
+        },
+      },
+      resourcesLink: "Ressourcen für diesen Bereich",
+    },
+
+    resources: {
+      title: "Ressourcen",
+      subtitle:
+        "Kurze Übungen und Texte, wann immer du willst. Sie ersetzen niemanden.",
+      filterAll: "Alle",
+      kind: {
+        exercise: "Übung",
+        reading: "Lektüre",
+      },
+      item: {
+        sleep_breathing: {
+          title: "Langsamer atmen vor dem Schlafen",
+          lead: "Im Bett, bei ausgeschaltetem Licht.",
+          step: {
+            1: "Leg dich hin und leg eine Hand auf den Bauch",
+            2: "Atme durch die Nase ein und lass die Hand sich heben",
+            3: "Atme durch den Mund aus, langsamer als beim Einatmen",
+            4: "Wiederhole das, bis der Atem seinen eigenen Rhythmus findet",
+            5: "Kommt ein Gedanke, lass ihn ziehen und kehr zur Hand zurück",
+          },
+        },
+        sleep_room: {
+          title: "Das Zimmer, in dem du schläfst",
+          lead: "Kleine Dinge im Schlafzimmer, die das Einschlafen leichter machen.",
+          step: {
+            1: "Halte das Zimmer kühl und gut gelüftet",
+            2: "Mach es so dunkel, wie es geht",
+            3: "Nutze das Bett zum Schlafen, nicht zum Arbeiten",
+            4: "Kommt der Schlaf nicht, steh auf und geh zurück, wenn die Müdigkeit kommt",
+          },
+        },
+        stress_pause: {
+          title: "Eine kurze Pause, gut gemacht",
+          lead: "So schaltest du ab, ohne den Raum zu wechseln.",
+          step: {
+            1: "Steh vom Stuhl auf, auch nur für einen Moment",
+            2: "Lass die Schultern sinken und öffne die Hände",
+            3: "Atme ein paar Mal langsamer als sonst",
+            4: "Bevor du weitermachst, wähle eine einzige Sache für jetzt",
+          },
+        },
+        stress_close_day: {
+          title: "Den Arbeitstag abschliessen",
+          lead: "Ein kleines Ritual, damit die Arbeit bei der Arbeit bleibt.",
+          step: {
+            1: "Schreib auf, was offen geblieben ist, damit du es nicht im Kopf behalten musst",
+            2: "Wähle die erste Aufgabe für morgen",
+            3: "Schliess die Mails, nicht nur den Computer",
+            4: "Markiere den Übergang mit einer immer gleichen Geste",
+          },
+        },
+        activity_walk: {
+          title: "Mit mehr Freude gehen",
+          lead: "Wie ein Spaziergang zu etwas wird, das du wiederholen magst.",
+          step: {
+            1: "Wähle eine Strecke, die dir gefällt, auch nur um den Block",
+            2: "Geh in einem Tempo, bei dem du noch reden kannst, ohne ausser Atem zu kommen",
+            3: "Lass ab und zu die Kopfhörer weg und hör, wo du bist",
+            4: "Trag ihn in den Kalender ein wie einen Termin",
+          },
+        },
+        nutrition_lunch: {
+          title: "Ein Mittagessen, das durch den Nachmittag trägt",
+          lead: "Wie du den Teller zusammenstellst, ohne etwas zu zählen.",
+          step: {
+            1: "Leg von allem etwas auf den Teller: Getreide, Eiweiss, Gemüse",
+            2: "Nimm dir Zeit, in Ruhe zu essen",
+            3: "Halte für den Nachmittag Wasser griffbereit",
+            4: "Hast du später Hunger, wähle Obst oder eine Handvoll Nüsse",
+          },
+        },
+        mental_journal: {
+          title: "Ein paar Zeilen am Abend",
+          lead: "Ein einfacher Weg, den Tag zu ordnen.",
+          step: {
+            1: "Leg ein Heft neben das Bett",
+            2: "Schreib eine Sache auf, die gut gelaufen ist",
+            3: "Schreib eine Sache auf, die dich belastet hat, ohne sie zu bewerten",
+            4: "Schreib eine Sache auf, die du von morgen erwartest",
+          },
+        },
+        mental_talk: {
+          title: "Wann du mit jemandem darüber sprichst",
+          lead: "Darüber zu reden, wie es dir geht, ist normal.",
+          step: {
+            1: "Du brauchst keinen bestimmten Grund, um anzufangen",
+            2: "Du kannst bei einer Person beginnen, der du vertraust",
+            3: "Wenn du nicht weisst, welcher Dienst zu dir passt, hilft dir «Du weisst nicht, wo du anfangen sollst?» auf der Startseite bei der Wahl",
+            4: "Psychologische Sitzungen gehören zu deinem Plan",
           },
         },
       },

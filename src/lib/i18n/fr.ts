@@ -248,6 +248,7 @@ export const fr: Dictionary = {
       doctor: "Médecin",
       checkup: "Check-up",
       aiPlan: "Bien-être",
+      resources: "Ressources",
     },
 
     identity: "{company} · {plan}",
@@ -635,6 +636,101 @@ export const fr: Dictionary = {
             2: "Déconnecte des écrans pendant la pause de midi",
             3: "Dix minutes à pied les jours les plus chargés",
             4: "Choisis les deux habitudes à garder aussi après",
+          },
+        },
+      },
+      resourcesLink: "Ressources pour ce domaine",
+    },
+
+    resources: {
+      title: "Ressources",
+      subtitle:
+        "Des exercices et des lectures courtes, quand tu veux. Ils ne remplacent personne.",
+      filterAll: "Toutes",
+      kind: {
+        exercise: "Exercice",
+        reading: "Lecture",
+      },
+      item: {
+        sleep_breathing: {
+          title: "Respirer plus lentement avant de dormir",
+          lead: "À faire au lit, lumière éteinte.",
+          step: {
+            1: "Allonge-toi et pose une main sur ton ventre",
+            2: "Inspire par le nez en laissant la main se soulever",
+            3: "Expire par la bouche, plus lentement que tu n'as inspiré",
+            4: "Recommence jusqu'à ce que la respiration trouve son rythme",
+            5: "Si une pensée arrive, laisse-la passer et reviens à ta main",
+          },
+        },
+        sleep_room: {
+          title: "La chambre où tu dors",
+          lead: "De petites choses dans la chambre qui aident à s'endormir.",
+          step: {
+            1: "Garde la chambre fraîche et aérée",
+            2: "Rends-la aussi sombre que possible",
+            3: "Utilise le lit pour dormir, pas pour travailler",
+            4: "Si le sommeil ne vient pas, lève-toi et reviens quand la fatigue arrive",
+          },
+        },
+        stress_pause: {
+          title: "Une pause courte, bien faite",
+          lead: "Comment décrocher sans changer de pièce.",
+          step: {
+            1: "Lève-toi de ta chaise, même un instant",
+            2: "Laisse tomber les épaules et ouvre les mains",
+            3: "Prends quelques respirations plus lentes que d'habitude",
+            4: "Avant de reprendre, choisis une seule chose à faire maintenant",
+          },
+        },
+        stress_close_day: {
+          title: "Clore la journée de travail",
+          lead: "Un petit rituel pour laisser le travail au travail.",
+          step: {
+            1: "Note ce qui est resté ouvert, pour ne pas avoir à t'en souvenir",
+            2: "Choisis la première chose à faire demain",
+            3: "Ferme ta messagerie, pas seulement l'ordinateur",
+            4: "Marque le passage par un geste toujours le même",
+          },
+        },
+        activity_walk: {
+          title: "Marcher avec plus de plaisir",
+          lead: "Comment faire d'une marche quelque chose qu'on a envie de refaire.",
+          step: {
+            1: "Choisis un parcours qui te plaît, même autour du pâté de maisons",
+            2: "Garde un rythme qui te laisse parler sans perdre ton souffle",
+            3: "De temps en temps, laisse les écouteurs et écoute où tu es",
+            4: "Inscris-la dans ton agenda comme un rendez-vous",
+          },
+        },
+        nutrition_lunch: {
+          title: "Un déjeuner qui tient l'après-midi",
+          lead: "Comment composer l'assiette sans rien compter.",
+          step: {
+            1: "Mets un peu de tout dans l'assiette : céréales, protéines, légumes",
+            2: "Prends le temps de manger au calme",
+            3: "Garde de l'eau à portée de main pour l'après-midi",
+            4: "Si tu as faim plus tard, choisis un fruit ou quelques noix",
+          },
+        },
+        mental_journal: {
+          title: "Quelques lignes le soir",
+          lead: "Une façon simple de remettre de l'ordre dans la journée.",
+          step: {
+            1: "Garde un carnet près du lit",
+            2: "Écris une chose qui s'est bien passée",
+            3: "Écris une chose qui t'a pesé, sans la juger",
+            4: "Écris une chose que tu attends de demain",
+          },
+        },
+        mental_talk: {
+          title: "Quand en parler à quelqu'un",
+          lead: "Parler de comment tu vas, c'est normal.",
+          step: {
+            1: "Pas besoin d'une raison précise pour commencer",
+            2: "Tu peux commencer par une personne de confiance",
+            3: "Si tu ne sais pas quel service te convient, « Tu ne sais pas par où commencer ? » sur la page d'accueil t'aide à choisir",
+            4: "Les séances avec le psychologue font partie de ton plan",
           },
         },
       },

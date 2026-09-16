@@ -183,6 +183,7 @@ export const it = {
       doctor: "Medico",
       checkup: "Check-up",
       aiPlan: "Benessere",
+      resources: "Risorse",
     },
 
     /** "Demo SA · Plus" */
@@ -803,6 +804,109 @@ export const it = {
             2: "Stacca dagli schermi durante il pranzo",
             3: "Dieci minuti a piedi nei giorni più pieni",
             4: "Scegli le due abitudini da tenere anche dopo",
+          },
+        },
+      },
+
+      /* Il ponte verso le risorse: senza segnaposto, perché il nome dell'area
+         è già il titolo della card e dentro una frase non regge la maiuscola. */
+      resourcesLink: "Risorse per quest'area",
+    },
+
+    /*
+     * Le risorse (CLAUDE.md §10.B.9). Il catalogo — quali voci esistono, di
+     * che area e di che tipo — sta in `lib/resources.ts`; qui c'è solo il
+     * testo. I passi non portano cifre: la lista ordinata li numera da sé.
+     */
+    resources: {
+      title: "Risorse",
+      subtitle:
+        "Esercizi e letture brevi, da fare quando vuoi. Non sostituiscono nessuno.",
+      filterAll: "Tutte",
+      kind: {
+        exercise: "Esercizio",
+        reading: "Lettura",
+      },
+      item: {
+        sleep_breathing: {
+          title: "Un respiro più lento prima di dormire",
+          lead: "Da fare a letto, a luce spenta.",
+          step: {
+            1: "Sdraiati e appoggia una mano sulla pancia",
+            2: "Inspira dal naso lasciando che la mano si sollevi",
+            3: "Espira dalla bocca, più piano di come hai inspirato",
+            4: "Ripeti finché il respiro trova un suo ritmo",
+            5: "Se arriva un pensiero, lascialo passare e torna alla mano",
+          },
+        },
+        sleep_room: {
+          title: "La stanza in cui dormi",
+          lead: "Piccole cose della camera che aiutano ad addormentarsi.",
+          step: {
+            1: "Tieni la stanza fresca e arieggiata",
+            2: "Rendila buia quanto puoi",
+            3: "Usa il letto per dormire, non per lavorare",
+            4: "Se il sonno non arriva, alzati e torna quando arriva la stanchezza",
+          },
+        },
+        stress_pause: {
+          title: "Una pausa breve, fatta bene",
+          lead: "Come staccare senza cambiare stanza.",
+          step: {
+            1: "Alzati dalla sedia, anche solo per un momento",
+            2: "Lascia scendere le spalle e apri le mani",
+            3: "Fai qualche respiro più lento del solito",
+            4: "Prima di ricominciare, scegli una cosa sola da fare adesso",
+          },
+        },
+        stress_close_day: {
+          title: "Chiudere la giornata di lavoro",
+          lead: "Un piccolo rito per lasciare il lavoro al lavoro.",
+          step: {
+            1: "Scrivi le cose rimaste aperte, così non devi ricordarle",
+            2: "Scegli la prima cosa da fare domani",
+            3: "Chiudi la posta, non solo il computer",
+            4: "Segna il passaggio con un gesto sempre uguale",
+          },
+        },
+        activity_walk: {
+          title: "Camminare con più gusto",
+          lead: "Come fare di una camminata qualcosa da ripetere.",
+          step: {
+            1: "Scegli un percorso che ti piace, anche intorno all'isolato",
+            2: "Tieni un passo che ti lasci parlare senza fiatone",
+            3: "Ogni tanto lascia le cuffie e ascolta dove sei",
+            4: "Fissala in agenda come un appuntamento",
+          },
+        },
+        nutrition_lunch: {
+          title: "Un pranzo che regge il pomeriggio",
+          lead: "Come comporre il piatto senza contare niente.",
+          step: {
+            1: "Metti nel piatto un po' di tutto: cereali, proteine, verdure",
+            2: "Prenditi il tempo di mangiare con calma",
+            3: "Tieni l'acqua a portata per il pomeriggio",
+            4: "Se hai fame più tardi, scegli frutta o frutta secca",
+          },
+        },
+        mental_journal: {
+          title: "Qualche riga la sera",
+          lead: "Un modo semplice di rimettere in ordine la giornata.",
+          step: {
+            1: "Tieni un quaderno vicino al letto",
+            2: "Scrivi una cosa che è andata bene",
+            3: "Scrivi una cosa che ti ha pesato, senza giudicarla",
+            4: "Scrivi una cosa che ti aspetti da domani",
+          },
+        },
+        mental_talk: {
+          title: "Quando parlarne con qualcuno",
+          lead: "Parlare di come stai è normale.",
+          step: {
+            1: "Non serve un motivo preciso per cominciare",
+            2: "Puoi partire da una persona di cui ti fidi",
+            3: "Se non sai quale servizio fa per te, «Non sai da dove partire?» nella home ti aiuta a scegliere",
+            4: "Le sessioni con lo psicologo fanno parte del tuo piano",
           },
         },
       },

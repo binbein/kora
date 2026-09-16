@@ -2,11 +2,13 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Moon, Activity, Footprints, Apple, Brain, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 import { loadState, useAiHealthPlan } from "@/lib/data/queries";
 import { ErrorNotice } from "@/components/kora/StateNotice";
 import type { AiPlanPathKey, HealthArea } from "@/lib/data/types";
 import { formatMonthYear, formatNumber, formatPercent } from "@/lib/format";
 import { interpolate, t } from "@/lib/i18n";
+import { RESOURCES } from "@/lib/resources";
 
 /*
  * Il piano di prevenzione (CLAUDE.md §10.B).
@@ -170,6 +172,16 @@ export default function PianoAI() {
               </ul>
               {area.pathKey !== null && (
                 <GuidedPath copy={t.employee.aiPlan.path[area.pathKey]} />
+              )}
+              {/* Il link c'è se il catalogo ha voci per l'area, e lo decide lui
+                  (`lib/resources.ts`): la card non sa quali aree ne abbiano. */}
+              {RESOURCES.some((resource) => resource.area === area.area) && (
+                <Link
+                  to={`/employee/resources?area=${area.area}`}
+                  className="inline-block mt-4 text-sm font-medium text-secondary-strong hover:underline"
+                >
+                  {t.employee.aiPlan.resourcesLink}
+                </Link>
               )}
             </Card>
           );

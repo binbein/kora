@@ -207,6 +207,7 @@ export const en: Dictionary = {
       doctor: "Doctor",
       checkup: "Check-up",
       aiPlan: "Wellbeing",
+      resources: "Resources",
     },
 
     identity: "{company} · {plan}",
@@ -591,6 +592,101 @@ export const en: Dictionary = {
             2: "Step away from screens over lunch",
             3: "Ten minutes on foot on your busiest days",
             4: "Pick the two habits you'll keep afterwards",
+          },
+        },
+      },
+      resourcesLink: "Resources for this area",
+    },
+
+    resources: {
+      title: "Resources",
+      subtitle:
+        "Short exercises and reads, whenever you like. They don't replace anyone.",
+      filterAll: "All",
+      kind: {
+        exercise: "Exercise",
+        reading: "Reading",
+      },
+      item: {
+        sleep_breathing: {
+          title: "Slower breathing before sleep",
+          lead: "To do in bed, with the lights off.",
+          step: {
+            1: "Lie down and rest one hand on your belly",
+            2: "Breathe in through your nose and let your hand rise",
+            3: "Breathe out through your mouth, more slowly than you breathed in",
+            4: "Repeat until your breathing finds its own rhythm",
+            5: "If a thought comes, let it pass and go back to your hand",
+          },
+        },
+        sleep_room: {
+          title: "The room you sleep in",
+          lead: "Small things in the bedroom that make falling asleep easier.",
+          step: {
+            1: "Keep the room cool and aired",
+            2: "Make it as dark as you can",
+            3: "Use the bed for sleeping, not for working",
+            4: "If sleep doesn't come, get up and go back when you feel tired",
+          },
+        },
+        stress_pause: {
+          title: "A short break, done well",
+          lead: "How to switch off without leaving the room.",
+          step: {
+            1: "Get up from your chair, even just for a moment",
+            2: "Let your shoulders drop and open your hands",
+            3: "Take a few breaths, slower than usual",
+            4: "Before you start again, pick one single thing to do now",
+          },
+        },
+        stress_close_day: {
+          title: "Closing the working day",
+          lead: "A small ritual to leave work at work.",
+          step: {
+            1: "Write down what's still open, so you don't have to remember it",
+            2: "Pick the first thing to do tomorrow",
+            3: "Close your email, not just the computer",
+            4: "Mark the change with a gesture that's always the same",
+          },
+        },
+        activity_walk: {
+          title: "Walking with more enjoyment",
+          lead: "How to turn a walk into something you want to repeat.",
+          step: {
+            1: "Choose a route you like, even just around the block",
+            2: "Keep a pace that lets you talk without getting out of breath",
+            3: "Now and then leave the headphones and listen to where you are",
+            4: "Put it in your calendar like an appointment",
+          },
+        },
+        nutrition_lunch: {
+          title: "A lunch that carries you through the afternoon",
+          lead: "How to put your plate together without counting anything.",
+          step: {
+            1: "Put a bit of everything on the plate: grains, protein, vegetables",
+            2: "Take the time to eat calmly",
+            3: "Keep water within reach for the afternoon",
+            4: "If you're hungry later, choose fruit or a handful of nuts",
+          },
+        },
+        mental_journal: {
+          title: "A few lines in the evening",
+          lead: "A simple way to put the day in order.",
+          step: {
+            1: "Keep a notebook by the bed",
+            2: "Write one thing that went well",
+            3: "Write one thing that weighed on you, without judging it",
+            4: "Write one thing you expect from tomorrow",
+          },
+        },
+        mental_talk: {
+          title: "When to talk to someone about it",
+          lead: "Talking about how you're doing is normal.",
+          step: {
+            1: "You don't need a specific reason to start",
+            2: "You can start with someone you trust",
+            3: "If you're not sure which service is right for you, “Not sure where to start?” on the home page helps you choose",
+            4: "Sessions with the psychologist are part of your plan",
           },
         },
       },
