@@ -36,10 +36,9 @@ import { interpolate, t } from "@/lib/i18n";
  * utente non può appartenere a un'azienda che l'elenco accanto non contiene —
  * e un guardrail lo verifica sul dataset.
  *
- * È un estratto e la schermata lo dichiara, come l'elenco dipendenti dell'HR:
- * la paginazione è lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.12), e sette
- * righe presentate come "tutti gli utenti" direbbero che la piattaforma ne ha
- * sette.
+ * È un estratto e la schermata lo dichiara: la paginazione è lavoro dell'MVP
+ * (`docs/CONTRATTO-DATI.md` §8.12), e sette righe presentate come "tutti gli
+ * utenti" direbbero che la piattaforma ne ha sette.
  */
 const NO_USERS: PlatformUser[] = [];
 

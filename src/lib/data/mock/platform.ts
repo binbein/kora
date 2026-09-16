@@ -296,7 +296,7 @@ assertInDev(
 );
 
 /*
- * Gli utenti del back-office: un estratto, come l'elenco dipendenti dell'HR.
+ * Gli utenti del back-office: un estratto, e la schermata lo dichiara.
  *
  * I domini stanno sotto il TLD riservato `.example` (RFC 2606), che nessuno può
  * registrare: una persona inventata non deve comparire su un dominio di terzi

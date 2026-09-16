@@ -2163,7 +2163,7 @@ dell'account**, e **lo stress per reparto dentro la cornice**, e **i residui
 dell'attivazione e della cornice**, e **l'id della prenotazione con il codice
 azienda**, e **l'area HR che conta per reparto**, e **la curva personale del
 check rapido**, e **«Non sai da dove partire?»**, e **il percorso guidato del
-piano di benessere**. Non aggiungono
+piano di benessere**, e **i residui dell'elenco per persona**. Non aggiungono
 schermate — **tranne il link anonimo e l'attivazione**, ed è la riga qui sotto.
 
 **~~e non spostano un numero a schermo~~ — l'ultima ne sposta uno, ed è la prima
@@ -9974,6 +9974,99 @@ Sulla build demo a 1280×900, console aperta, raggiungendo
   `format.ts`, non una seconda chiave.
 - **`docs/PITCH.md` non cambia**: il giro non passa dalla pagina del piano, e
   nessuna risposta pronta parla dei percorsi.
+
+#### I residui dell'elenco per persona (16.09.2026)
+
+**Questo verbale non conta i propri commit.** Solo documenti e commenti, nessuna
+modifica funzionale: rotte **28**, schermate **29**, `EXPECTED_KEYS` **904**,
+guardrail **108 + 18 = 126**.
+
+##### Cosa restava indietro
+
+L'elenco per persona dell'area HR è uscito il 10.09.2026, e alcune righe
+scritte prima continuavano a parlarne **al presente**. In più la riga datata
+del conto dei guardrail diceva 126 con la data del 09.09.2026: il numero era
+ancora giusto, ma **la storia no**, perché in mezzo il conto è sceso e risalito.
+
+##### Il conto dei guardrail, rimisurato merge per merge
+
+Con il criterio del `CLAUDE.md` §5.6, sul commit di ogni merge: **#90 126,
+#91 125, #92 126**, e #93 e #94 invariati. La discesa di #91 non è un guardrail
+in meno ma **quattro usciti e tre entrati**. Uscivano con l'elenco per persona
+il check-up di Laura nell'elenco, le righe non oltre l'organico, gli iscritti
+dell'estratto non oltre lo snapshot e le iniziali in un solo reparto; entravano
+il reparto che esiste e le due somme per reparto. La risalita di #92 è la curva
+personale, che deve avere un valore per ogni mese. La riga datata porta ora il
+16.09.2026 e la storia ha i due passi.
+
+##### Il criterio con cui si è scelto cosa toccare
+
+Deciso dai founder in fase di piano, e vale oltre questa passata:
+
+- **un commento del codice che afferma al presente una cosa non più vera si
+  corregge**; uno che racconta al passato, o è già barrato, resta com'è;
+- **in `docs/PROGRESS.md` una riga dentro un verbale non si tocca**, perché i
+  verbali non si riscrivono; una regola in testa al file o fra le decisioni si
+  barra con la data.
+
+**Toccati**, con il testo che era falso:
+
+| dove | cosa diceva |
+|---|---|
+| `CLAUDE.md` §10.D.2 | le proiezioni dell'azienda e del back-office sono `EmployeeDirectoryEntry` e `PlatformSession` |
+| `it.ts`, sopra `employee.checkup` | l'elenco dell'HR dichiara `completed` per la riga di Laura |
+| `it.ts`, sopra `admin.extractNote` | l'estratto si dichiara «come per l'elenco dipendenti dell'HR» |
+| `provider.ts`, `cancelSession` | `EmployeeDirectoryEntry` non ha un campo per nota e messaggio |
+| `provider.ts`, `getPlatformUsers` | un estratto «come l'elenco dipendenti dell'HR» |
+| `mock/platform.ts`, utenti | lo stesso paragone |
+| `AdminUtenti.tsx` | lo stesso paragone |
+| `Checkup.tsx` | l'elenco dell'HR dichiara il check-up della riga `L.B.`, «sui tre lati» |
+
+**Non toccati**, perché raccontano al passato o sono già barrati:
+`types.ts` su `DepartmentEnrollment`, `mock/people.ts`, `mock/hr.ts`, la nota
+di `provider.ts` su `getDepartmentEnrollment`, e nel `CLAUDE.md` il §6.1 sul
+«Non iscritto», il §7 su «attivo», il §8 sul check-up e il §10.C.5. Nel
+contratto il §3, il §7 e il §8.6 sono barrati o al passato; il §8.8 dice *«non
+mostra più una persona per riga»*, che è presente e **vero**.
+
+**`docs/PROGRESS.md` riga 588 non si tocca**: *«L'elenco dipendenti è un
+estratto di otto righe su 120»* sta fra i difetti noti del verbale di M3, area
+HR — cioè dentro un verbale. Lo stesso vale per le altre dodici righe del file
+che nominano l'elenco, tutte in verbali o già al passato fra le decisioni.
+
+##### Il giro del pitch
+
+`docs/PITCH.md`, «Durante», ha due voci facoltative in più, prima del link
+anonimo: **la curva personale** — si tocca un volto e l'ultimo punto si muove;
+l'azienda non la vede — e **il percorso guidato** sul sonno e sullo stress,
+senza niente da cliccare.
+
+##### Verificato
+
+- `grep -rn "EmployeeDirectoryEntry\|elenco dipendenti" CLAUDE.md docs src`:
+  ogni riscontro è al passato, barrato, dentro un verbale, oppure presente e
+  vero — con l'eccezione qui sotto, che non è un verbale né una regola;
+- guardrail rimisurati sul commit di ciascuno degli ultimi sei merge;
+- `npm run typecheck` e `npm run lint` a zero.
+
+##### Trovato e non toccato
+
+- **La stessa famiglia vive sotto un'altra parola**: *«elenco HR»* ed *«elenco
+  dell'HR»*, che il grep della verifica non cerca. Al presente e non più veri:
+  il `CLAUDE.md` §10.B.2 (*«il check-up completato di Laura si legga uguale in
+  home, nel profilo e nell'elenco dell'HR»*) e cinque commenti — `EmployeeNav.tsx`
+  (G.R. *«compare nell'elenco HR»*), `mock/checkup.ts` (*«l'elenco HR ne
+  dichiara lo stato»*), `AdminUtenti.tsx` e `AdminSessioni.tsx` (due paragoni
+  con lo stato del check-up nell'elenco), `EmployeeHome.tsx` (il badge «Fatto»,
+  con la stessa frase del §10.B.2). `Profilo.tsx` lo dice al passato e va bene.
+  Sono il lavoro della prossima passata con lo stesso criterio.
+- **`docs/PROGRESS.md`, l'inventario delle promesse della policy** (sezione del
+  perimetro dell'MVP) dice ancora *«l'elenco dipendenti non ha nessun campo su
+  cui un nome possa arrivare»*, e conta **16** promesse nell'area HR. Non è un
+  verbale né una regola in testa o fra le decisioni, quindi il criterio non la
+  copre; il §10 dice che nel dubbio è un verbale. Il conteggio va comunque
+  rifatto il giorno in cui si torna a quell'inventario, perché #91 ha cambiato
+  le stringhe della pagina Dipendenti.
 
 ### Punto di partenza — cosa c'è e cosa manca
 

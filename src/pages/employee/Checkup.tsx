@@ -25,9 +25,9 @@ import type { CheckupProvider, CheckupReport } from "@/lib/data/types";
  *
  * Laura l'ha già fatto a marzo (§8), quindi questa schermata **non** ripropone
  * una prenotazione: mostra il referto e dice quando si apre il prossimo. È la
- * stessa cosa che l'elenco dipendenti dell'HR dichiara della riga `L.B.`, ed è
- * il punto in cui la storia deve restare una sola sui tre lati — il codice
- * ereditato dava il check-up per "disponibile" qui e per fatto là.
+ * stessa cosa che dicono la home e il Profilo, ed è il punto in cui la storia
+ * deve restare una sola — il codice ereditato dava il check-up per
+ * "disponibile" qui e per fatto altrove.
  *
  * La rete è quella del §8, la stessa del back-office. Il Centro Diagnostico
  * Basalto non compare: è in convenzionamento, e l'admin lo dichiara con zero

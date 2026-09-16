@@ -1007,7 +1007,7 @@ produca un terzo numero come è già successo con le CTA (`docs/PROGRESS.md`):
 si contano le **chiamate** alle due primitive `assertInDev(` e
 `assertInDevOutsidePromise(` sotto `src/`, escluso il file che le definisce —
 cioè `src/lib/data/guardrails.ts`, **per percorso e non per nome di file**.
-Oggi **108 + 18 = 126** (09.09.2026). Restano fuori, e sono le tre trappole del
+Oggi **108 + 18 = 126** (16.09.2026). Restano fuori, e sono le tre trappole del
 conteggio: le righe di `import`, la **prosa dei commenti** che le nomina, e il
 nome lungo che **contiene** quello corto.
 
@@ -1054,7 +1054,11 @@ anonimo del check rapido, il cui reparto deve esistere, e da 120 a 123 con la
 disdetta del dipendente, che ne porta tre perché i suoi rifiuti sono tre, e da
 123 a 125 con l'assessment — uno sulla formula, uno sull'ordine delle aree del
 piano di benessere — e da 125 a 126 con l'id della prenotazione, che non deve
-appartenere già a nessun altro record.
+appartenere già a nessun altro record. Poi è sceso e risalito: da 126 a
+125 con l'area HR che conta per reparto, dove quattro guardrail sono usciti con
+l'elenco per persona e tre sono entrati con i conteggi per reparto — il reparto
+che esiste e le due somme — e da 125 a 126 con la curva personale del check
+rapido, che deve avere un valore per ogni mese della finestra.
 
 **E chi lo ricontasse con un `grep` trova cifre che non sono dei guardrail**
 (01.09.2026), che è la ragione per cui questa avvertenza sta accanto al conto
@@ -3086,8 +3090,9 @@ demo scollegate.
 
    **La garanzia del contratto non cade, cambia verso.** Non è "il nome non
    esiste", è **verso chi non esce**: l'azienda e l'amministratore di
-   piattaforma. Le loro proiezioni — `EmployeeDirectoryEntry` e
-   `PlatformSession` — non hanno nessun campo su cui possa arrivare.
+   piattaforma. `PlatformSession`, la proiezione del back-office, non ha nessun
+   campo su cui possa arrivare; `DepartmentEnrollment`, quella dell'azienda,
+   non ha nemmeno una riga per persona (§10.C.5).
 
    **`/admin/sessions` riceve una proiezione sua**, ed è la parte da non
    scorciare: quella schermata leggeva la stessa lettura del portale, e con il

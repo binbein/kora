@@ -167,6 +167,30 @@ presentazione.
   la prenotazione che compare nel calendario e la disdetta che lo svuota — e si
   mostra in un clic, senza dire una parola in più.
 
+- **La curva personale del check rapido, nella home di Laura, ed è
+  facoltativa** (10.09.2026). Sotto il check rapido c'è la card *"Come sono
+  andati gli ultimi 12 mesi"*: una linea con il meglio in alto e le parole dei
+  volti ai due estremi. **Tocca un volto e l'ultimo punto si muove**, senza che
+  ne nasca uno accanto: la risposta di oggi è il mese corrente.
+
+  **Serve se la domanda è "e il dipendente cosa ci guadagna?"**: il check rapido
+  alimenta la dashboard HR, e questa è la parte che torna a chi risponde. La
+  riga sotto la curva lo dice — *"Questa curva la vedi solo tu"* — e **l'azienda
+  non la vede da nessuna parte**: legge la media del reparto sopra la soglia,
+  mai la curva di una persona (`CLAUDE.md` §10.B.6).
+
+- **Il percorso guidato sul piano di benessere, ed è facoltativo**
+  (15.09.2026). Da **Benessere**, la prima card è il sonno, cioè l'area debole di
+  Laura: sotto i suggerimenti c'è *"Percorso guidato · 4 settimane"* con una
+  tappa a settimana. Lo stesso blocco sta sullo stress; le altre tre aree non ne
+  hanno.
+
+  **Non c'è niente da cliccare, ed è voluto**: iscriversi è una scrittura che la
+  demo non simula, e un pulsante che non fa niente davanti a un investitore
+  invita a premerlo. Se la domanda è *"e poi?"*, la risposta è che il percorso
+  si legge, e che sapere a che settimana si è arrivati è lavoro dell'MVP
+  (`docs/CONTRATTO-DATI.md` §8.9).
+
 - **Il link anonimo, dopo la privacy HR, ed è facoltativo** (06.09.2026). In
   `/hr/privacy` il riquadro **"Anche senza account"** ha ora un link — *"Vedi un
   esempio di link anonimo"* — che apre `/check/demo-sa-vendite`: logo, **Demo SA

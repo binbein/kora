@@ -618,8 +618,8 @@ export const it = {
     /*
      * Il check-up. Laura l'ha già fatto (§8), quindi la schermata mostra il
      * referto e dice quando si apre il prossimo, invece di riproporre una
-     * prenotazione: l'elenco dipendenti dell'HR dichiara `completed` per la sua
-     * riga, e due schermate che si contraddicono sono il difetto del §5.5.
+     * prenotazione: la home e il Profilo lo danno per fatto, e due schermate
+     * che si contraddicono sono il difetto del §5.5.
      */
     checkup: {
       title: "Check-up annuale",
@@ -2023,10 +2023,9 @@ export const it = {
     demoBanner:
       "Back-office interno · dati dimostrativi. Aziende, persone e strutture di questa sezione sono di fantasia e non descrivono clienti reali.",
 
-    /* L'estratto si dichiara, come per l'elenco dipendenti dell'HR: la
-       paginazione è lavoro dell'MVP (`docs/CONTRATTO-DATI.md` §8.12), e far
-       credere che la piattaforma abbia sette utenti sarebbe peggio che dire
-       quanti se ne stanno mostrando. */
+    /* L'estratto si dichiara: la paginazione è lavoro dell'MVP
+       (`docs/CONTRATTO-DATI.md` §8.12), e far credere che la piattaforma abbia
+       sette utenti sarebbe peggio che dire quanti se ne stanno mostrando. */
     extractNote: "Estratto di {shown} righe su {total}. La ricerca completa arriva con la messa in produzione.",
 
     companies: {
