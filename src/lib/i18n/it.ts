@@ -603,7 +603,7 @@ export const it = {
          * l'elenco resta di due voci e la congiunzione regge da sé.
          */
         symptoms: "Chiaro. Nota altro insieme a questo — febbre, stanchezza o cambiamenti nell'appetito?",
-        guidance: "La ringrazio, mi basta per orientarla. Una diagnosi da qui non posso farla: se il disturbo è legato a stress o umore, prenoti una sessione con uno psicologo dalla sezione dedicata; altrimenti si rivolga al suo medico curante, che può visitarla. Se i sintomi peggiorano all'improvviso, chiami il 144.",
+        guidance: "La ringrazio, mi basta per orientarla. Una diagnosi da qui non posso farla: se il disturbo è legato a stress o umore, prenoti una sessione con uno psicologo dalla sezione dedicata; altrimenti si rivolga al suo medico curante, che può visitarla. Se i sintomi peggiorano all'improvviso, chiami il {number}.",
       },
       /* Spenta con il motivo nell'etichetta, come il pulsante del check-up. */
       closed: "La conversazione dimostrativa finisce qui.",
@@ -611,7 +611,7 @@ export const it = {
         "Capisco. Può descrivermi meglio il disturbo? Da quanto tempo lo avverte?",
 
       disclaimer:
-        "Questa conversazione è una simulazione dimostrativa. Le risposte non sono un parere medico e non sostituiscono una visita. In caso di emergenza chiama il 144.",
+        "Questa conversazione è una simulazione dimostrativa. Le risposte non sono un parere medico e non sostituiscono una visita. In caso di emergenza chiama il {number}.",
       privacy:
         "Le conversazioni sono private e protette. La tua azienda non accede mai a queste informazioni.",
     },
@@ -1184,6 +1184,7 @@ export const it = {
     navDashboard: "Dashboard",
     navEmployees: "Dipendenti",
     navReport: "Report",
+    navManagers: "Per i manager",
     navBilling: "Fatturazione",
     navPrivacy: "Privacy",
     /** "120 dipendenti · Piano Plus" */
@@ -1444,6 +1445,84 @@ export const it = {
            non c'è più. */
         privacyNote:
           "Dati aggregati e anonimi. Kora non comunica all'azienda dati sanitari individuali né prenotazioni riconducibili a singole persone.",
+      },
+    },
+
+    /*
+     * Le guide per i manager (CLAUDE.md §10.C.6). Dicono come parlare, mai
+     * come riconoscere (§7): nessun segnale da osservare e nessuna condizione
+     * nominata. I numeri d'emergenza sono segnaposto, e la pagina rende come
+     * link `tel:` la riga intera che ne contiene uno.
+     */
+    managers: {
+      title: "Per i manager",
+      subtitle:
+        "Tre guide brevi per chi guida un team e si trova davanti un momento difficile. Sono uguali per tutti e non usano nessun dato.",
+      noDataTitle: "Queste guide non sanno chi usa Kora",
+      noDataBody:
+        "Nessuno in azienda lo sa: la piattaforma mostra solo dati aggregati e anonimi, mai chi ha usato un servizio. Le guide valgono per chiunque, iscritto o no.",
+      sayTitle: "Cosa dire",
+      avoidTitle: "Cosa evitare",
+      thenTitle: "E poi",
+      codeLink: "Il codice è nella pagina Dipendenti",
+      guide: {
+        someone_tells_you: {
+          title: "Quando qualcuno dice che non ce la fa",
+          lead: "Non serve avere una risposta pronta.",
+          say: {
+            1: "Ascoltare, senza interrompere",
+            2: "Ringraziare per la fiducia",
+            3: "Chiedere che cosa servirebbe adesso",
+          },
+          avoid: {
+            1: "Minimizzare, anche per rassicurare",
+            2: "Dare consigli su cosa dovrebbe fare",
+            3: "Chiedere il perché",
+          },
+          then: {
+            1: "Nominare Kora come un servizio che esiste per tutti",
+            2: "Risentirsi fra qualche giorno",
+            3: "Non parlarne con altri",
+          },
+        },
+        talk_about_kora: {
+          title: "Come presentare Kora al team",
+          lead: "Un servizio per tutti si presenta a tutti insieme.",
+          say: {
+            1: "Presentarlo a tutto il team nello stesso momento",
+            2: "Dire che l'azienda non vede chi lo usa",
+            3: "Dire che l'account si attiva in autonomia, con il codice aziendale",
+          },
+          avoid: {
+            1: "Chiedere chi si è iscritto",
+            2: "Consigliarlo a una persona sola davanti agli altri",
+            3: "Farne un obiettivo del team",
+          },
+          then: {
+            1: "Ripeterlo a chi entra nel team",
+            2: "Tenere il codice a portata di mano",
+            3: "Ricordarlo ogni tanto, sempre a tutti insieme",
+          },
+        },
+        worried_now: {
+          title: "Quando serve aiuto subito",
+          lead: "Quando c'è un pericolo immediato non si valuta: si chiama.",
+          say: {
+            1: "Restare con la persona",
+            2: "Chiamare il {number}",
+            3: "Dire alla persona che cosa si sta facendo",
+          },
+          avoid: {
+            1: "Lasciarla sola",
+            2: "Promettere di non dirlo a nessuno",
+            3: "Valutare da sé se «è grave»",
+          },
+          then: {
+            1: "Indicare il {helpline}, Telefono Amico, a chi ha bisogno di parlare",
+            2: "Informare l'HR di ciò che è successo, non di ciò che la persona ha detto",
+            3: "Chiedere supporto anche per sé, se serve",
+          },
+        },
       },
     },
 

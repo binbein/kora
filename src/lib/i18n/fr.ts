@@ -494,14 +494,14 @@ export const fr: Dictionary = {
       arc: {
         impact: "Merci. Dans quelle mesure cela pèse-t-il sur vos journées : arrivez-vous à travailler et à faire vos activités comme d'habitude, ou avez-vous dû renoncer à quelque chose ?",
         symptoms: "Très bien. Remarquez-vous autre chose en même temps — fièvre, fatigue ou changements de l'appétit ?",
-        guidance: "Merci, cela me suffit pour vous orienter. Je ne peux pas poser de diagnostic d'ici : si le trouble est lié au stress ou à l'humeur, réservez une séance avec un psychologue depuis la section dédiée ; sinon, adressez-vous à votre médecin traitant, qui peut vous examiner. Si les symptômes s'aggravent brusquement, appelez le 144.",
+        guidance: "Merci, cela me suffit pour vous orienter. Je ne peux pas poser de diagnostic d'ici : si le trouble est lié au stress ou à l'humeur, réservez une séance avec un psychologue depuis la section dédiée ; sinon, adressez-vous à votre médecin traitant, qui peut vous examiner. Si les symptômes s'aggravent brusquement, appelez le {number}.",
       },
       closed: "La conversation de démonstration s'arrête ici.",
       fallback:
         "Je comprends. Pouvez-vous mieux décrire le trouble ? Depuis combien de temps le ressentez-vous ?",
 
       disclaimer:
-        "Cette conversation est une simulation de démonstration. Les réponses ne sont pas un avis médical et ne remplacent pas une consultation. En cas d'urgence, appelle le 144.",
+        "Cette conversation est une simulation de démonstration. Les réponses ne sont pas un avis médical et ne remplacent pas une consultation. En cas d'urgence, appelle le {number}.",
       privacy:
         "Les conversations sont privées et protégées. Ton entreprise n'accède jamais à ces informations.",
     },
@@ -940,6 +940,7 @@ export const fr: Dictionary = {
     navDashboard: "Tableau de bord",
     navEmployees: "Collaborateurs",
     navReport: "Rapport",
+    navManagers: "Pour les managers",
     navBilling: "Facturation",
     navPrivacy: "Confidentialité",
     navCompanyMeta: "{count} collaborateurs · Plan {plan}",
@@ -1096,6 +1097,78 @@ export const fr: Dictionary = {
         sessionsValue: "{used} sur {total}",
         privacyNote:
           "Données agrégées et anonymes. Kora ne communique à l'entreprise ni données de santé individuelles ni réservations rattachables à des personnes.",
+      },
+    },
+
+    managers: {
+      title: "Pour les managers",
+      subtitle:
+        "Trois guides courts pour qui dirige une équipe et se trouve face à un moment difficile. Ils sont les mêmes pour tous et n'utilisent aucune donnée.",
+      noDataTitle: "Ces guides ne savent pas qui utilise Kora",
+      noDataBody:
+        "Personne dans l'entreprise ne le sait : la plateforme ne montre que des données agrégées et anonymes, jamais qui a utilisé un service. Les guides valent pour chaque personne, inscrite ou non.",
+      sayTitle: "Quoi dire",
+      avoidTitle: "Quoi éviter",
+      thenTitle: "Et ensuite",
+      codeLink: "Le code se trouve sur la page Collaborateurs",
+      guide: {
+        someone_tells_you: {
+          title: "Quand quelqu'un dit ne plus y arriver",
+          lead: "Pas besoin d'avoir une réponse toute prête.",
+          say: {
+            1: "Écouter, sans interrompre",
+            2: "Remercier pour la confiance",
+            3: "Demander ce qui aiderait maintenant",
+          },
+          avoid: {
+            1: "Minimiser, même pour rassurer",
+            2: "Donner des conseils sur ce qu'il faudrait faire",
+            3: "Demander pourquoi",
+          },
+          then: {
+            1: "Mentionner Kora comme un service qui existe pour tous",
+            2: "Reprendre contact dans quelques jours",
+            3: "Ne pas en parler à d'autres",
+          },
+        },
+        talk_about_kora: {
+          title: "Présenter Kora à l'équipe",
+          lead: "Un service pour tous se présente à tous en même temps.",
+          say: {
+            1: "Le présenter à toute l'équipe au même moment",
+            2: "Dire que l'entreprise ne voit pas qui l'utilise",
+            3: "Dire que le compte s'active en autonomie, avec le code de l'entreprise",
+          },
+          avoid: {
+            1: "Demander qui s'est inscrit",
+            2: "Le conseiller à une seule personne devant les autres",
+            3: "En faire un objectif d'équipe",
+          },
+          then: {
+            1: "Le présenter à qui rejoint l'équipe",
+            2: "Garder le code à portée de main",
+            3: "Le rappeler de temps en temps, toujours à tous ensemble",
+          },
+        },
+        worried_now: {
+          title: "Quand il faut de l'aide tout de suite",
+          lead: "Face à un danger immédiat, on n'évalue pas : on appelle.",
+          say: {
+            1: "Rester avec la personne",
+            2: "Appeler le {number}",
+            3: "Dire à la personne ce qui est en train de se faire",
+          },
+          avoid: {
+            1: "La laisser seule",
+            2: "Promettre de n'en parler à personne",
+            3: "Décider sans aide si « c'est grave »",
+          },
+          then: {
+            1: "Indiquer le {helpline}, La Main Tendue, à qui a besoin de parler",
+            2: "Informer les RH de ce qui s'est passé, pas de ce que la personne a dit",
+            3: "Chercher du soutien pour soi aussi, si besoin",
+          },
+        },
       },
     },
 

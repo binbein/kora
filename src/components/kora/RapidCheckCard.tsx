@@ -84,13 +84,15 @@ const FACE_CHOSEN =
 const FACE_MUTED =
   "border-transparent bg-transparent text-muted-foreground/40 hover:border-secondary/40 hover:bg-accent/50 hover:text-accent-foreground";
 
-/* I due numeri stanno in `lib/emergency.ts` dal 10.09.2026, da quando i punti
-   che li mostrano sono due: il perché, e cosa succederà il giorno del modulo
-   paese, sono scritti là. */
+/* I due numeri stanno in `lib/emergency.ts`, che non è il solo a leggerli: il
+   perché, chi altro li legge e cosa succederà il giorno del modulo paese sono
+   scritti là. */
 
 /* Testo leggibile e link riconoscibile: `foreground` dà 13.53:1 sulla card,
-   mentre `secondary` come testo starebbe a 2.83:1 (§6.1). */
-const CRISIS_LINK =
+   mentre `secondary` come testo starebbe a 2.83:1 (§6.1). La usa anche la
+   guida per i manager: un numero d'emergenza si riconosce allo stesso modo
+   ovunque compaia come link. */
+export const CRISIS_LINK =
   "inline-block rounded-sm text-sm text-foreground underline underline-offset-4 hover:text-secondary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 
 /*

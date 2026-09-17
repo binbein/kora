@@ -228,6 +228,20 @@ presentazione.
   **La dashboard HR non si muove**, come per il check rapido in app: vale la
   risposta pronta qui sotto, e per la stessa ragione.
 
+- **Le guide per i manager, dopo la privacy HR, ed è facoltativo** (16.09.2026).
+  **Per i manager**, nel menu dell'HR dopo «Report»: tre guide di testo — quando
+  qualcuno dice che non ce la fa, come presentare Kora al team, quando serve
+  aiuto subito — ognuna con cosa dire, cosa evitare e cosa fare dopo.
+
+  **Serve se la domanda è "e l'azienda che cosa fa, se non vede niente?"**: la
+  risposta è che l'azienda impara a parlare, non a riconoscere. **Dillo con le
+  parole della pagina**: le guide non nominano nessuna condizione e non
+  chiedono di tenere d'occhio nessuno, e il riquadro in testa dice che non sanno
+  chi usa Kora — perché in azienda non lo sa nessuno.
+
+  **Non c'è niente da scaricare né da stampare**, e il 144 e il 143 della terza
+  guida sono link che chiamano: non toccarli dal computer della presentazione.
+
 - **Da dove viene il 78: `/activate`, in coda al giro e facoltativo**
   (06.09.2026). Dalla landing, nella card **"Per il dipendente"**, il link *"Come
   si attiva"* apre i quattro passi: codice azienda, consenso, dieci domande,
@@ -832,14 +846,20 @@ nessuno**, e la chat del medico virtuale non rileva il rischio. *(Fino al
 vero alla lettera: qualcosa a schermo succede — il paragrafo qui sotto — mentre
 la parte che conta, che nessun essere umano riceve il segnale, non è cambiata.)*
 
-**Il 144 è a schermo in tre punti**, e dal 05.09.2026 **il terzo è proprio dove
-il valore peggiore si dichiara**: toccando "Molto male" nel check rapido
-compaiono il 144, il 143 del Telefono Amico e un collegamento per prenotare uno
-psicologo. Gli altri due sono nella chat del medico — il disclaimer sotto la
-conversazione e la risposta con cui la chat si chiude.
+**Il 144 è a schermo in più punti** — quali e quanti li elenca il `CLAUDE.md`
+§8, e questo file non ne tiene un secondo conto — e dal 05.09.2026 **uno è
+proprio dove il valore peggiore si dichiara**: toccando "Molto male" nel check
+rapido compaiono il 144, il 143 del Telefono Amico e un collegamento per
+prenotare uno psicologo.
 
 **Mostralo invece di raccontarlo**, ed è un tocco solo: è la prova che
 l'osservazione è stata presa sul serio, sulla schermata che la riceveva peggio.
+
+**E dal 16.09.2026 chi sta accanto ha una guida**: in **Per i manager** del
+portale HR, *«Quando serve aiuto subito»* dice di restare con la persona e di
+**chiamare il 144, non di valutare** se è grave. Non chiude la lacuna qui sotto
+— nessuno viene avvisato — ma risponde alla metà della domanda che riguarda il
+collega o il responsabile, e lo fa senza insegnare a riconoscere nessuno.
 
 **Ma la lacuna resta, e va detta subito dopo**: **quello che manca non è un
 numero, è un percorso dove il segnale arriva.** Nessuno viene avvisato, e **la

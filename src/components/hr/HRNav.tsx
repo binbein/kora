@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, CreditCard, FileText, Shield, Building2, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Users, CreditCard, FileText, MessagesSquare, Shield, Building2, Menu, X } from 'lucide-react';
 import KoraLogo from '@/components/shared/KoraLogo';
 import { formatNumber } from '@/lib/format';
 import { interpolate, t } from '@/lib/i18n';
 import { useCompany } from '@/lib/data/queries';
 
 /*
- * La navigazione dell'area HR, condivisa dalle cinque rotte.
+ * La navigazione dell'area HR, condivisa dalle sue rotte.
  *
  * Il riquadro in fondo leggeva "150 dipendenti" scritto a mano, cioè un organico
  * diverso da quello che la dashboard accanto dichiarava. Ora viene dal provider:
@@ -23,6 +23,7 @@ export default function HRNav() {
     { path: '/hr', icon: LayoutDashboard, label: t.hr.navDashboard },
     { path: '/hr/employees', icon: Users, label: t.hr.navEmployees },
     { path: '/hr/report', icon: FileText, label: t.hr.navReport },
+    { path: '/hr/managers', icon: MessagesSquare, label: t.hr.navManagers },
     { path: '/hr/billing', icon: CreditCard, label: t.hr.navBilling },
     { path: '/hr/privacy', icon: Shield, label: t.hr.navPrivacy },
   ];

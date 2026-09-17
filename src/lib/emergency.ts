@@ -13,6 +13,11 @@
  * perché avevano un consumatore solo; con due, un dato dentro un componente è
  * esattamente ciò che il §2.1 vieta.
  *
+ * OGGI I LETTORI SONO QUATTRO (16.09.2026): il check rapido, «Non sai da dove
+ * partire?», la chat del medico virtuale — che fino a quel giorno aveva il 144
+ * scritto nei dizionari — e la guida per i manager. I cinque punti a schermo
+ * sono elencati per nome nel §8, che è l'unico posto che li conta.
+ *
  * NON VENGONO DAL PROVIDER, E QUEL GIORNO ARRIVERANNO DA LÌ. In produzione
  * dipendono dal **paese della persona** — 144 in Svizzera, 112 in Italia — e
  * `EmployeeProfile` un paese non ce l'ha: il modulo paese è lavoro dell'MVP

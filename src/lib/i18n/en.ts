@@ -451,14 +451,14 @@ export const en: Dictionary = {
       arc: {
         impact: "Thank you. How much does it weigh on your day: are you managing work and your usual activities as before, or have you had to give something up?",
         symptoms: "Understood. Do you notice anything alongside it — fever, tiredness or changes in appetite?",
-        guidance: "Thank you, that is enough for me to point you in the right direction. I cannot make a diagnosis from here: if the trouble is linked to stress or mood, book a session with a psychologist from the dedicated section; otherwise please see your own doctor, who can examine you. If the symptoms worsen suddenly, call 144.",
+        guidance: "Thank you, that is enough for me to point you in the right direction. I cannot make a diagnosis from here: if the trouble is linked to stress or mood, book a session with a psychologist from the dedicated section; otherwise please see your own doctor, who can examine you. If the symptoms worsen suddenly, call {number}.",
       },
       closed: "The demonstration conversation ends here.",
       fallback:
         "I understand. Could you describe the problem in more detail? How long have you been feeling it?",
 
       disclaimer:
-        "This conversation is a demonstration simulation. The replies are not medical advice and do not replace a consultation. In an emergency, call 144.",
+        "This conversation is a demonstration simulation. The replies are not medical advice and do not replace a consultation. In an emergency, call {number}.",
       privacy:
         "Conversations are private and protected. Your organisation never has access to this information.",
     },
@@ -890,6 +890,7 @@ export const en: Dictionary = {
     navDashboard: "Dashboard",
     navEmployees: "Employees",
     navReport: "Report",
+    navManagers: "For managers",
     navBilling: "Billing",
     navPrivacy: "Privacy",
     navCompanyMeta: "{count} employees · {plan} plan",
@@ -1046,6 +1047,78 @@ export const en: Dictionary = {
         sessionsValue: "{used} of {total}",
         privacyNote:
           "Aggregated, anonymous data. Kora does not pass individual health data, or bookings traceable to individuals, to the organisation.",
+      },
+    },
+
+    managers: {
+      title: "For managers",
+      subtitle:
+        "Three short guides for anyone who leads a team and faces a difficult moment. They are the same for everyone and use no data.",
+      noDataTitle: "These guides don't know who uses Kora",
+      noDataBody:
+        "Nobody in the company knows: the platform shows only aggregated, anonymous data, never who used a service. The guides apply to everyone, enrolled or not.",
+      sayTitle: "What to say",
+      avoidTitle: "What to avoid",
+      thenTitle: "Afterwards",
+      codeLink: "The code is on the Employees page",
+      guide: {
+        someone_tells_you: {
+          title: "When someone says they can't cope",
+          lead: "There's no need for a ready answer.",
+          say: {
+            1: "Listening, without interrupting",
+            2: "Thanking them for their trust",
+            3: "Asking what would help right now",
+          },
+          avoid: {
+            1: "Downplaying it, even to reassure",
+            2: "Giving advice on what they should do",
+            3: "Asking why",
+          },
+          then: {
+            1: "Mentioning Kora as a service that exists for everyone",
+            2: "Checking in again in a few days",
+            3: "Not talking about it with others",
+          },
+        },
+        talk_about_kora: {
+          title: "Introducing Kora to the team",
+          lead: "A service for everyone is introduced to everyone at once.",
+          say: {
+            1: "Introducing it to the whole team at the same time",
+            2: "Saying that the company doesn't see who uses it",
+            3: "Saying that the account is activated independently, with the company code",
+          },
+          avoid: {
+            1: "Asking who has enrolled",
+            2: "Recommending it to one person in front of the others",
+            3: "Turning it into a team target",
+          },
+          then: {
+            1: "Introducing it to people who join the team",
+            2: "Keeping the code within reach",
+            3: "Mentioning it now and then, always to everyone together",
+          },
+        },
+        worried_now: {
+          title: "When help is needed right away",
+          lead: "In immediate danger, the answer is not to assess but to call.",
+          say: {
+            1: "Staying with the person",
+            2: "Calling {number}",
+            3: "Telling the person what is being done",
+          },
+          avoid: {
+            1: "Leaving them alone",
+            2: "Promising not to tell anyone",
+            3: "Deciding without help whether it's “serious”",
+          },
+          then: {
+            1: "Pointing to {helpline}, Telefono Amico, for anyone who needs to talk",
+            2: "Telling HR what happened, not what the person said",
+            3: "Seeking support for oneself too, if needed",
+          },
+        },
       },
     },
 
